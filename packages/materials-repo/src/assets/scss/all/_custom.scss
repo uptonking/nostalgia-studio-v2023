@@ -1,0 +1,38 @@
+// Bootstrap overrides
+
+@import './custom/_variables.scss';
+@import './custom/mixins/_background-variant.scss';
+@import './custom/utilities/_backgrounds.scss';
+@import './custom/utilities/_floating.scss';
+@import './custom/_text.scss';
+@import './custom/_card.scss';
+@import './custom/_type.scss'; // display font-size
+@import './custom/_badge.scss';
+@import './custom/_reboot.scss';
+@import './custom/_perfect-scrollbar.scss';
+@import './custom/_spinner.scss';
+@import './custom/_buttons.scss';
+@import './custom/_topbar-dd.scss';
+@import './custom/_comments.scss';
+@import './custom/_feeds.scss';
+@import './custom/_activity-timeline.scss';
+@import './custom/_navs.scss';
+@import './custom/_progress.scss';
+@import './custom/_global.scss';
+@import './custom/_input-group.scss';
+
+//Theme core files
+@import './custom/core/theme-colors/_theme-colors.scss';
+@import './custom/core/theme-colors/_dark-theme.scss';
+@import './custom/core/layout/_layout.scss';
+@import './custom/core/topbar/_topbar.scss';
+@import './custom/core/sidebar/_sidebar.scss';
+@import './custom/core/customizer/_customizer.scss';
+
+// pages
+@import './custom/pages/_authentication.scss';
+@import './custom/pages/_gallery-usercard.scss';
+@import './custom/pages/_timeline.scss';
+@import './custom/pages/_dashboard3.scss';
+
+// @import 'rtl/rtl';

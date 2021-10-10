@@ -1,0 +1,43 @@
+{
+  "name": "@datalking/ojs-in-mdx-runtime",
+  "version": "1.0.0",
+  "description": "automatically generated design tokens for the prospect garden design system",
+  "main": "src/index",
+  "scripts": {
+    "build": "rimraf dist && npm run build:tokens",
+    "build:all-tokens": "rimraf dist && ",
+    "build:css": "",
+    "build:tokens": "rimraf dist && node ./scripts/build-tokens.js && npm run build:tokens-post",
+    "build:tokens-post": "fse copy --keepExisting=false dist/halfmoon--dark-vars.css ../css/docs/css/halfmoon--dark-vars.css",
+    "dev": "npm run build",
+    "start": "npm run dev",
+    "test": "jest --config=jest.config.js",
+    "test:log": "node index.js --name nested-a"
+  },
+  "dependencies": {
+    "@mdx-js/mdx": "2.0.0-next.9",
+    "@mdx-js/react": "^2.0.0-next.9",
+    "@mdx-js/util": "2.0.0-next.8",
+    "astring": "^1.7.5",
+    "buble-jsx-only": "^0.19.8",
+    "detab": "^2.0.0",
+    "estree-walker": "^2.0.0",
+    "hast-util-to-estree": "^1.1.0",
+    "mdast-util-to-hast": "^10.1.0",
+    "periscopic": "^2.0.0",
+    "rehype-minify-whitespace": "^4.0.0",
+    "remark-gfm": "^1.0.0",
+    "remark-mdx": "2.0.0-next.9",
+    "remark-parse": "^9.0.0",
+    "remark-squeeze-paragraphs": "^4.0.0",
+    "unified": "^9.2.1",
+    "unist-builder": "^2.0.0"
+  },
+  "devDependencies": {
+    "@atao60/fse-cli": "^0.0.56",
+    "fs-extra": "^10.0.0",
+    "rehype-katex": "^4.0.0",
+    "remark-footnotes": "^3.0.0",
+    "remark-math": "^4.0.0"
+  }
+}

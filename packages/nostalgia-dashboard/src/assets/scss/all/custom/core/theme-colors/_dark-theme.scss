@@ -1,0 +1,258 @@
+//
+// Dark Theme
+//
+[data-theme="dark"] {
+  @import "dark-colors";
+
+  // common body settings
+  color: $theme-dark-text-color;
+  background: $theme-dark-bg-layout !important;
+
+  // -----------------------------------------
+  // basic setting of font colors
+  // -----------------------------------------
+  a.link,
+  .page-wrapper,
+  .form-control,
+  .custom-select,
+  .chat-list .chat-item .chat-content .box.bg-light-info,
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-item.show .nav-link,
+  .nav-tabs .nav-link:hover,
+  .nav-tabs .nav-link:focus,
+  .breadcrumb-item.active,
+  .input-group-text,
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-item.show .nav-link,
+  .nav-tabs .nav-link:hover,
+  .nav-tabs .nav-link:focus,
+  .custom-file-label::after,
+  .table .thead-light th,
+  .dropdown-menu,
+  ul.list-style-none li a,
+  .dropdown-item,
+  .ReactTable .rt-thead.-filters input,
+  .ReactTable .rt-thead.-filters select,
+  .ReactTable .-pagination input,
+  .ReactTable .-pagination select,
+  .ReactTable .-pagination .-btn,
+  .table,
+  .app-drawer .list-group .list-group-item .list-group-item-action,
+  .table-hover tbody tr:hover,
+  .rbc-off-range,
+  .css-esite6-singleValue,
+  .css-1wy0on6 div,
+  .css-dvua67-singleValue,
+  .react-tagsinput,
+  ol.progtrckr li.progtrckr-todo,
+  ol.progtrckr li.progtrckr-doing,
+  .css-12jo7m5,
+  .mailbox .message-center .message-item .message-title,
+  .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
+  .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
+  ol.progtrckr li span {
+    color: $theme-dark-text-color;
+  }
+
+  // -----------------------------------------
+  // basic settings of background colors
+  // -----------------------------------------
+  .card,
+  .custom-select,
+  .form-control,
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-item.show .nav-link,
+  .list-group-item,
+  .custom-file-label,
+  .modal-content,
+  .page-link,
+  .page-item.disabled .page-link,
+  .jsgrid-header-row > .jsgrid-header-cell,
+  .jsgrid-row > .jsgrid-cell,
+  .tab-content,
+  .ReactTable .rt-thead.-filters input,
+  .ReactTable .rt-thead.-filters select,
+  .ReactTable .-pagination input,
+  .ReactTable .-pagination select,
+  .css-bar:after,
+  .right-part.mail-list,
+  .right-part.mail-details,
+  .right-part.mail-compose,
+  .left-part,
+  .card-footer,
+  .rdtPicker thead tr:first-child th:hover,
+  .css-1ajl57w-control,
+  .css-bg1rzq-control {
+    background-color: $theme-dark-card-bg;
+  }
+
+  .mailbox .message-center .message-item:hover,
+  .dropdown-item:hover,
+  .dropdown-item:focus,
+  .picker__button--today,
+  .picker__button--clear,
+  .picker__button--close,
+  .rdtCounter .rdtBtn:hover,
+  td.rdtMonth:hover,
+  td.rdtYear:hover,
+  .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-default,
+  .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-default,
+  .rdtPicker td.rdtDay:hover,
+  .rdtPicker td.rdtHour:hover,
+  .rdtPicker td.rdtMinute:hover,
+  .rdtPicker td.rdtSecond:hover,
+  .rdtPicker .rdtTimeToggle:hover {
+    background: $theme-dark-card-bg;
+  }
+
+  #main-wrapper,
+  .page-wrapper,
+  .progress,
+  .breadcrumb,
+  .dropdown-menu,
+  .css-juf2xh-control,
+  .css-kj6f9i-menu,
+  .css-1szy77t-control,
+  ol.progtrckr li.progtrckr-doing:before,
+  ol.progtrckr li.progtrckr-todo:before,
+  .css-es53b3-multiValue,
+  .bootstrap-switch .bootstrap-switch-label,
+  .css-bar > i,
+  .rdtPicker,
+  .f-icon:hover,
+  .t-icon:hover,
+  .w-icon:hover,
+  .sl-icon:hover,
+  .if-icon:hover,
+  .m-icon:hover,
+  .app-drawer .list-group .list-group-item.bg-light,
+  .app-drawer .list-group .list-group-item .list-group-item-action:hover,
+  .app-drawer .list-group .list-group-item .list-group-item-action.active,
+  .custom-control-label::before,
+  .chat-list .chat-item .chat-content .box,
+  .rbc-today,
+  .jumbotron,
+  .modal-content,
+  .popover,
+  .toast-header,
+  .toast,
+  .input-group-text,
+  .custom-file-label::after,
+  .react-tagsinput {
+    background-color: $theme-dark-bg-layout !important;
+  }
+
+  .customizer {
+    background: $black;
+  }
+
+  // important
+  .chat-list .chat-item.odd .box {
+    background-color: rgba($color: $info, $alpha: 0.5) !important;
+  }
+
+  pre[class*="language-"],
+  .table .thead-light th,
+  .table-hover tbody tr:hover {
+    background: $background-alt !important;
+  }
+
+  //
+  // basic setting of border
+  //
+  .bootstrap-switch,
+  .rdtPicker,
+  .rdtPicker th,
+  .border-bottom,
+  .border-top,
+  .border-left,
+  .border-right,
+  .border,
+  .dropdown-menu,
+  .form-control,
+  .custom-select,
+  .table th,
+  .table td,
+  .modal-header,
+  .modal-footer,
+  blockquote,
+  pre[class*="language-"],
+  .card-group .card,
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-item.show .nav-link,
+  .nav-tabs,
+  .nav-tabs .nav-link:hover,
+  .nav-tabs .nav-link:focus,
+  .list-group-item,
+  .custom-file-label,
+  .input-group-text,
+  .custom-file-label::after,
+  .left-part,
+  .page-link,
+  .profiletimeline,
+  .mailbox .message-center .message-item,
+  .mailbox .nav-link,
+  .dropdown-divider,
+  .table-bordered,
+  .table-bordered td,
+  .table-bordered th,
+  .rbc-month-view,
+  .rbc-day-bg + .rbc-day-bg,
+  .rbc-month-row + .rbc-month-row,
+  .rbc-header,
+  .rbc-time-content > * + * > *,
+  .rbc-time-view,
+  .rbc-day-slot .rbc-time-slot + .rbc-time-slot,
+  .rbc-timeslot-group,
+  .rbc-time-content,
+  .rbc-agenda-view table.rbc-agenda-table tbody > tr > td + td,
+  .rbc-agenda-view table.rbc-agenda-table,
+  .rbc-agenda-view table.rbc-agenda-table tbody > tr + tr,
+  .rdtPicker,
+  .rdtPicker th,
+  .rdtPicker tfoot,
+  .css-1ajl57w-control,
+  .css-bg1rzq-control,
+  .react-tagsinput,
+  ol.progtrckr li.progtrckr-doing,
+  ol.progtrckr li.progtrckr-todo,
+  .steamline .sl-item,
+  .steamline,
+  hr,
+  .right-left-part,
+  .react-tagsinput-tag,
+  .custom-control-label::before,
+  .custom-select,
+  .input-group-text,
+  .ReactTable .rt-thead.-filters input,
+  .ReactTable .rt-thead.-filters select,
+  .rbc-time-header-content,
+  .toast-header,
+  .react-tagsinput {
+    border-color: $theme-dark-border-color !important;
+  }
+
+  .form-control:focus,
+  .ReactTable .rt-thead.-filters input:focus,
+  .ReactTable .rt-thead.-filters select:focus {
+    border-color: $theme-dark-focus-border-color !important;
+  }
+
+  //
+  // Chart stroke
+  //
+  .ct-label {
+    fill: $theme-dark-text-color;
+    color: $theme-dark-text-color;
+  }
+  .ct-grid {
+    stroke: $background-alt;
+  }
+  .c3 line,
+  .c3 path {
+    stroke: rgba(255, 255, 255, 0.1);
+  }
+  .c3 text {
+    fill: $gray-500;
+  }
+}

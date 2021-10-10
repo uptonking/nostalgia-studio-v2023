@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.base",
+  "compilerOptions": {
+    "rootDir": "./",
+    // "rootDirs": ["./src/", "./didact/"],
+    "outDir": "dist",
+    "module": "esnext"
+  },
+  "include": ["./src/", "./didact/"]
+}

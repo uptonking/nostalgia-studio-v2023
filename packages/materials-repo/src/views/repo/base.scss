@@ -1,0 +1,130 @@
+.border {
+  box-shadow: 0 0 0 2px red inset;
+}
+
+.float-left.float-left.float-left {
+  float: left;
+}
+
+.float-right.float-right.float-right {
+  float: right;
+}
+
+.son-float-left > * {
+  float: left;
+}
+
+.son-float-right > * {
+  float: right;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.box-center {
+  margin: 0 auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.clear::after {
+  content: '';
+  // font-size: 0;
+  display: block;
+  clear: both;
+}
+
+.overflow {
+  overflow: hidden;
+}
+
+.height-inherit {
+  height: inherit;
+}
+
+.width-inherit {
+  width: inherit;
+}
+
+.son-input-hidden > input {
+  display: none;
+}
+
+.son-input-allHidden input {
+  display: none;
+}
+
+.son-inline-block,
+.son-inline-block-nowrap {
+  // font-size: 0;
+}
+
+.son-inline-block-nowrap {
+  white-space: nowrap;
+}
+
+.son-inline-block-nowrap > *,
+.son-inline-block > * {
+  display: inline-block;
+  // font-size: initial;
+}
+
+.son-inline-block-center {
+  // font-size: 0;
+}
+
+.son-inline-block-center::before {
+  content: '';
+  height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.son-inline-block-center > * {
+  // font-size: initial;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.none {
+  display: none !important;
+}
+
+.hidden {
+  visibility: hidden !important;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inline-flex,
+.inline-flex-center {
+  display: inline-flex;
+}
+
+.inline-flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.block {
+  display: block !important;
+}

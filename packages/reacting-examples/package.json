@@ -1,0 +1,17 @@
+{
+  "name": "@datalking/reacting-examples",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "build": "rimraf dist && npm run build:prod",
+    "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
+    "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "build:types": "",
+    "demo": "webpack serve --hot --config webpack/webpack.config.demo.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:log": "node index.js --name nested-a"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

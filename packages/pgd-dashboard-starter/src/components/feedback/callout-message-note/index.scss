@@ -1,0 +1,30 @@
+.callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eee;
+  border-left-width: 5px;
+  border-radius: 3px;
+  h4 {
+    margin-top: 0;
+    margin-bottom: 5px;
+  }
+  p:last-child {
+    margin-bottom: 0;
+  }
+  code {
+    border-radius: 3px;
+  }
+  & + .callout {
+    margin-top: -5px;
+  }
+
+  &-light {
+    border-left-color: silver;
+  }
+  &-success {
+    border-left-color: lightgreen;
+  }
+  &-danger {
+    border-left-color: lightcoral;
+  }
+}

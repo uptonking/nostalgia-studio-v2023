@@ -1,0 +1,21 @@
+{
+  "name": "@datalking/reacting",
+  "version": "1.0.0",
+  "description": "another react like framework",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "build": "npm run build:prod",
+    "build:babel": "BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
+    "build:prod": "cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "build:types": "",
+    "demo": "cross-env APP_ENV=reactlike webpack serve --hot --config webpack/webpack.config.demo.js",
+    "demo:reactlike": "cross-env APP_ENV=reactlike webpack serve --hot --config webpack/webpack.config.demo.js",
+    "demo:vanillajs": "webpack serve --hot --config webpack/webpack.config.demo.js",
+    "start": "npm run demo",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:log": "node index.js --name nested-a"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

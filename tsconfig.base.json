@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es5",
+    "allowJs": false,
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "checkJs": false,
+    "lib": ["dom", "es2015", "es2016", "es2017", "esnext"],
+    "experimentalDecorators": false,
+    "noImplicitAny": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": false,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": true,
+    "esModuleInterop": true
+  },
+  "exclude": ["*/node_modules/*"]
+}

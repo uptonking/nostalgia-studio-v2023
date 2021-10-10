@@ -1,0 +1,191 @@
+//
+// Font Colors
+//
+.text-orange {
+  color: rgba($color: $orange, $alpha: 0.5) !important;
+}
+
+.text-cyan {
+  color: rgba($color: $cyan, $alpha: 0.5) !important;
+}
+
+.text-info {
+  color: rgba($color: $info, $alpha: 0.7) !important;
+}
+
+.text-primary {
+  color: rgba($color: $primary, $alpha: 0.7) !important;
+}
+
+.text-success {
+  color: rgba($color: $success, $alpha: 0.5) !important;
+}
+
+.text-dark {
+  color: $gray-200 !important;
+}
+
+//
+// Button and Background colors
+//
+.bg-cyan,
+.btn-cyan {
+  background-color: rgba($color: $cyan, $alpha: 0.5) !important;
+}
+
+.btn-info,
+.bg-info,
+.badge-info {
+  background-color: rgba($color: $info, $alpha: 0.5) !important;
+}
+
+.btn-secondary,
+.bg-secondary,
+.badge-secondary {
+  background-color: rgba($color: $secondary, $alpha: 0.5) !important;
+}
+
+.btn-primary,
+.bg-primary,
+.badge-primary {
+  background-color: rgba($color: $primary, $alpha: 0.5) !important;
+}
+
+.btn-orange,
+.bg-orange {
+  background-color: rgba($color: $orange, $alpha: 0.5) !important;
+}
+
+.btn-success,
+.bg-success,
+.badge-success {
+  background-color: rgba($color: $success, $alpha: 0.5) !important;
+}
+
+.btn-danger,
+.bg-danger,
+.badge-danger {
+  background-color: rgba($color: $danger, $alpha: 0.5) !important;
+}
+
+.bg-warning,
+.btn-warning,
+.badge-warning {
+  background-color: rgba($color: $warning, $alpha: 0.5) !important;
+}
+
+.bg-white {
+  background-color: $theme-dark-card-bg !important;
+}
+
+.bg-dark {
+  background-color: $gray-600 !important;
+}
+
+.round.round-danger {
+  background: rgba($color: $danger, $alpha: 0.5);
+}
+
+.table-danger,
+.table-danger > th,
+.table-danger > td {
+  background-color: rgba($color: $danger, $alpha: 0.2) !important;
+}
+
+.table-success,
+.table-success > th,
+.table-success > td {
+  background-color: rgba($color: $success, $alpha: 0.2) !important;
+}
+
+.bg-light {
+  background-color: $theme-dark-bg-light !important;
+}
+
+.badge-light {
+  background-color: $gray-800;
+  color: $theme-dark-text-color;
+}
+
+.btn-light {
+  background-color: $gray-800;
+  border-color: $gray-800;
+  color: $theme-dark-text-color;
+}
+
+.alert-primary {
+  background-color: rgba($color: #413d6b, $alpha: 0.7);
+  border-color: rgba($color: #d2d8f7, $alpha: 0.3);
+  color: $purple;
+}
+
+.alert-secondary {
+  background-color: rgba($color: #475667, $alpha: 0.7);
+  border-color: rgba($color: #dee2e7, $alpha: 0.3);
+  color: $gray-600;
+}
+
+.alert-success {
+  background-color: rgba($color: #479e79, $alpha: 0.9);
+  border-color: rgba($color: #c4f1de, $alpha: 0.3);
+}
+
+.alert-danger {
+  background-color: rgba($color: #af5e67b3, $alpha: 0.7);
+  border-color: rgba($color: #fcc4ce, $alpha: 0.3);
+}
+
+.alert-warning {
+  background-color: rgba($color: #d6b558b3, $alpha: 0.7);
+  border-color: rgba($color: #fed3ca, $alpha: 0.3);
+}
+
+.alert-info {
+  background-color: rgba($color: #455377, $alpha: 0.7);
+  border-color: rgba($color: #c3d3ff, $alpha: 0.3);
+}
+
+.alert-light {
+  background-color: rgba($color: #fdfefe, $alpha: 0.7);
+  border-color: rgba($color: #fcfdfe, $alpha: 0.3);
+}
+
+.alert-dark {
+  background-color: rgba($color: #d6d6df, $alpha: 0.7);
+  border-color: rgba($color: #c6c6d2, $alpha: 0.3);
+}
+
+//   calendar app
+.rbc-toolbar button {
+  background-color: rgba($color: $info, $alpha: 0.5);
+  border-color: rgba($color: $info, $alpha: 0.5);
+  color: $white;
+  &:hover {
+    background-color: rgba($color: $info, $alpha: 0.7);
+    border-color: rgba($color: $info, $alpha: 0.5);
+    color: $white;
+  }
+}
+
+.rbc-toolbar button.active,
+.rbc-toolbar button.rbc-active {
+  background-color: rgba($color: $info, $alpha: 0.8);
+  border-color: rgba($color: $info, $alpha: 0.8);
+}
+
+.rbc-event.event-default {
+  background-color: rgba($color: $info, $alpha: 0.5);
+}
+
+.rbc-event.event-azure {
+  background-color: rgba($color: $cyan, $alpha: 0.5);
+}
+.rbc-event.event-orange {
+  background-color: rgba($color: $warning, $alpha: 0.5);
+}
+.rbc-event.event-green {
+  background-color: rgba($color: $success, $alpha: 0.5);
+}
+.rbc-event.event-red {
+  background-color: rgba($color: $danger, $alpha: 0.5);
+}

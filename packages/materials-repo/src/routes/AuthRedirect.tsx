@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+
 import Login from '../pages/login';
 import Register from '../pages/register';
-
 import { useGlobalContext } from '../store';
 import { isValidUserRoles } from '../utils/auth';
 
@@ -17,7 +17,7 @@ export function AuthRedirect() {
     state: { auth },
   } = useGlobalContext();
 
-  // console.log(';;pps4 AuthRedirect, ', auth);
+  console.log(';;pps4 AuthRedirect, ', auth);
 
   // isAuthed 若本地存在localstorage时，进入登录页会直接跳转
   if (

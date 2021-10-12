@@ -17,11 +17,11 @@ import {
 } from '../store/settings/actions';
 import { isValidUserRoles } from '../utils/auth';
 import RoutingPagesErrorBoundary from '../views/exception/RoutingPagesErrorBoundary';
+import MiniAppSidePanel from '../views/repo/mini-app/MiniAppSidePanel';
 import Footer from './footer';
 import Header from './header';
 import SetttingsCustomizer from './settings-customizer';
 import { MiniAppSidebar } from './sidebar';
-import MiniAppSidePanel from '../views/repo/mini-app/MiniAppSidePanel';
 
 /**
  * 整个App的整体布局组件，左中右分别是sidebar、page-contents、settings-side-panel。

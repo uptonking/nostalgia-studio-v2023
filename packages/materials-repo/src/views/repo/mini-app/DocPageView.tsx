@@ -1,13 +1,17 @@
 import './mini-app.scss';
+
 import * as React from 'react';
 import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useKeyboardJs from 'react-use/lib/useKeyboardJs';
+import { Card, CardBody } from 'reactstrap';
 import Editor from 'rich-markdown-editor';
+import * as tocbot from 'tocbot';
 
 import { SERVER_BASE_URL } from '../../../common/constants';
 import { axiosPost, submitFileContents } from '../../../services/repoService';
 import { useGlobalContext } from '../../../store';
+import { addPageContentToCaches } from '../../../store/mini-app/actions';
 import {
   deleteEditorItem,
   enableMsg,
@@ -15,15 +19,12 @@ import {
   setMsgOption,
   setRepoViewType,
 } from '../../../store/repo/actions';
+import { setLogoText } from '../../../store/settings/actions';
 import {
   getRelativePathFromPagePathname,
   getRelativePathFromRepoPathname,
   removeTrailingSlashIfExists,
 } from '../../../utils/repo-files-link-utils';
-import { addPageContentToCaches } from '../../../store/mini-app/actions';
-import { Card, CardBody } from 'reactstrap';
-import * as tocbot from 'tocbot';
-import { setLogoText } from '../../../store/settings/actions';
 
 type DocPageViewProps = {
   readOnly?: boolean;
@@ -267,9 +268,7 @@ export function DocPageView(props: DocPageViewProps) {
       <CardBody className='px-5 mini-app'>
         <div className='d-flex justify-content-between'>
           <div></div>
-          <div>
-            <Link to='/edit/page/markdown'>编辑</Link>
-          </div>
+          <div>{/* <Link to='/edit/page/markdown'>编辑</Link> */}</div>
         </div>
         <Editor
           value={pagesContentsCaches[requestPagePath] || ''}

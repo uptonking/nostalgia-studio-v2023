@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+
 import { listItemsForPath } from '../../../services/repoService';
 import { useGlobalContext } from '../../../store';
 import { setMiniAppConfig } from '../../../store/mini-app/actions';
 import {
+  enableMsg,
   hideListItemActionsMenu,
   setMsgOption,
-  enableMsg,
 } from '../../../store/repo/actions';
 import { setLogoText } from '../../../store/settings/actions';
 import { getRelativePathFromRepoPathname } from '../../../utils/repo-files-link-utils';
@@ -98,7 +99,10 @@ function OpenAsMiniAppMenuItem() {
         dispatch(
           setMiniAppConfig({
             miniAppOwner: user.user.username,
-            miniAppName: menuShortName,
+            miniAppName:
+              menuShortName.length > 10
+                ? menuShortName.substring(0, 9)
+                : menuShortName,
             miniAppId:
               user.user.username + '/' + repoName + '/' + menuRelativePath,
             miniAppRoutesConfig,

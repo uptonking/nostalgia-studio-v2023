@@ -3,20 +3,14 @@
 # goals
 
 - offlineable gitbook
-
 # milestone
-
 - ing
   - tiles-preview
   - ak editor examples
 
 - [x] mini-app docs site
 - [x] repo nested folder
-
 # todo-fix
-
-- useClickOutside 清除网盘的右键菜单
-
 - handleToggleSidePanel 改为 setVisible(true/false)，语义更明确
 
 - 重命名时，文件名不能包含 /，可包含.-_
@@ -25,19 +19,17 @@
 - 移动文件
 - 回收站可作为一个新的网盘实现
 
-- 网盘文件中支持 import .tsx,jsx,ts,js,mdx,md
+- 网盘文件中支持 import .tsx, jsx, ts, js, mdx, md
 
 - 文件就地查看，文件在单独页面打开查看
   - 类似 google drive 可以在单独 webapp 查看
 
-
 - 持久化mini-app的目录信息和元数据
 
 - [x] 新建文件为空文件，此时打开编辑器会异常
-# todo-server
 
-- swagger api
 ## todo-mini-app 资料小程序
+
 - markdown-viewer
   - 解析front-matter
 
@@ -52,14 +44,10 @@
 
 - 引入类似网盘顶部路径面包屑到左侧文件目录
 # fix
-
 - new file/folder 在某些情况下会出现 id > key 冲突，不能稳定复现
-
 # refactor
-
 - icon fonts to svg
 # later
-
 - 处理单个大文件的查看和编辑
 
 - publish as a cli app
@@ -76,4 +64,3 @@
 
 - ~~右键菜单替换为顶部工具条~~
   - 右键菜单改为悬浮的点击菜单
-

@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import useKeyboardJs from 'react-use/lib/useKeyboardJs';
-
 import Editor from 'rich-markdown-editor';
+
 import { submitFileContents } from '../../../services/repoService';
 import { useGlobalContext } from '../../../store';
 import {
-  setRepoViewType,
+  deleteEditorItem,
+  enableMsg,
   saveEditorItem,
   setMsgOption,
-  enableMsg,
-  deleteEditorItem,
+  setRepoViewType,
 } from '../../../store/repo/actions';
 
 export function MarkdownEditor() {
@@ -135,7 +135,7 @@ export function MarkdownEditor() {
           <h4>{openingFilename}</h4>
         </div>
         <div>
-          <Link to='/edit/markdown'>编辑</Link>
+          {/* <Link to='/edit/markdown'>编辑</Link> */}
         </div>
       </div>
       {/* <Editor /> */}

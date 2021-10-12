@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rimraf dist && npm run build:prod",
     "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
-    "build:demo": "rimraf dist && cross-env APP_ENV=react webpack --config webpack/webpack.config.prod.js",
+    "build:demo": "rimraf dist && cross-env APP_ENV=react webpack --config webpack/webpack.config.demo.js",
     "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
     "build:types": "",
     "demo": "cross-env APP_ENV=reactfresh webpack serve --hot --config webpack/webpack.config.demo.js",
@@ -42,7 +42,7 @@
     "react-dom": "^17.0.2",
     "react-use": "^17.3.1",
     "react-perfect-scrollbar": "1.5.8",
-    "react-router-dom": "^6.0.0-beta.4",
+    "react-router-dom": "6.0.0-beta.4",
     "reactstrap": "^8.10.0",
     "rich-markdown-editor": "^11.17.8",
     "sqlite": "^4.0.23",

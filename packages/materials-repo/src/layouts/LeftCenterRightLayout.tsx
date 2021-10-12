@@ -194,7 +194,7 @@ export function LeftCenterRightLayout(props) {
               </Suspense>
             </RoutingPagesErrorBoundary>
           </div>
-          <Footer />
+          {/* <Footer /> */}
         </div>
 
         {/* 右侧浮动配置面板 */}

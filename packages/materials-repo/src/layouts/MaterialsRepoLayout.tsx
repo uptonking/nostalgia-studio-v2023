@@ -17,11 +17,11 @@ import {
 } from '../store/settings/actions';
 import { isValidUserRoles } from '../utils/auth';
 import RoutingPagesErrorBoundary from '../views/exception/RoutingPagesErrorBoundary';
+import RepoSidebar from '../views/repo/RepoSidebar';
 import Footer from './footer';
 import Header from './header';
 import SetttingsCustomizer from './settings-customizer';
 import { Sidebar } from './sidebar';
-import RepoSidebar from '../views/repo/RepoSidebar';
 
 /**
  * 整个App的整体布局组件，左中右分别是sidebar、page-contents、settings-side-panel。
@@ -195,7 +195,7 @@ export function MaterialsRepoLayout(props) {
               </Suspense>
             </RoutingPagesErrorBoundary>
           </div>
-          <Footer />
+          {/* <Footer /> */}
         </div>
 
         {/* 右侧浮动配置面板 */}

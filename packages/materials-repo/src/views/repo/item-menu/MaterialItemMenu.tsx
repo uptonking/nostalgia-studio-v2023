@@ -55,7 +55,7 @@ function MaterialItemMenu() {
       <ul className='fm-context-ul p-0'>
         {menuType === 'file' && <DownloadFileMenuItem />}
         {menuType === 'file' && <FileMenuEditorItem />}
-        {menuType === 'file' && <FileMenuCopyItem />}
+        {/* {menuType === 'file' && <FileMenuCopyItem />} */}
         {menuType === 'dir' && <OpenAsMiniAppMenuItem />}
         {menuType !== 'body' && <FileMenuRenameItem />}
         {menuType !== 'body' && <FileMenuDeleteItem />}

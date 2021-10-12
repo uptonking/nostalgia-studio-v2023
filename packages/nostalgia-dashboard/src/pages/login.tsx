@@ -121,12 +121,14 @@ export function Login() {
   );
 
   const isSubmitButtonReady = useMemo(() => {
+    console.log('is-ready, ', username, password);
     return (
       isFormValid(validators, ['username', 'password']) &&
       username.trim() &&
       password.trim()
     );
   }, [password, username]);
+  // console.log('isSubmitButtonReady, ', isSubmitButtonReady);
 
   const testUserLogin = useCallback(() => {
     setUsername('test');

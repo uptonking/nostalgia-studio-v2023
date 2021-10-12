@@ -1,16 +1,16 @@
+import applyDevTools from 'prosemirror-dev-tools';
+import { EditorState, Transaction } from 'prosemirror-state';
+import { DirectEditorProps, EditorProps, EditorView } from 'prosemirror-view';
 import React, {
-  useState,
-  SetStateAction,
+  CSSProperties,
   Dispatch,
-  useRef,
+  SetStateAction,
+  forwardRef,
   useEffect,
   useImperativeHandle,
-  forwardRef,
-  CSSProperties,
+  useRef,
+  useState,
 } from 'react';
-import { EditorView, EditorProps, DirectEditorProps } from 'prosemirror-view';
-import { EditorState, Transaction } from 'prosemirror-state';
-import applyDevTools from 'prosemirror-dev-tools';
 
 type Config = Parameters<typeof EditorState.create>[0];
 
@@ -95,7 +95,7 @@ export const ProseMirrorEditor = forwardRef<Handle, Props>(function ProseMirror(
       state: initialProps.current.state,
       ...buildProps(initialProps.current),
     });
-    applyDevTools(view);
+    // applyDevTools(view);
     viewRef.current = view;
     return () => {
       view.destroy();

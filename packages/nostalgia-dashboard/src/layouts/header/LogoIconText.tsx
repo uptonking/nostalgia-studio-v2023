@@ -30,7 +30,7 @@ export function LogoIconText(props) {
           <img src={logolighticon} alt='homepage' className='light-logo' />
         </b>
         <Link to='/'>
-          <span className='logo-text text-body'>{logoText}</span>
+          <span className='logo-text'>{logoText}</span>
         </Link>
       </NavbarBrand>
 

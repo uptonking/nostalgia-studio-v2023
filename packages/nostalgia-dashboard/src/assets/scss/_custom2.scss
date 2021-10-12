@@ -5,3 +5,13 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.logo-text {
+  color: #3e5569;
+}
+
+[data-theme='dark'] {
+  .logo-text {
+    color: #ffffff;
+  }
+}

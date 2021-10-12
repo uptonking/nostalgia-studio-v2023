@@ -2,7 +2,7 @@
 // 当项目正在运行时，若修改此文件，界面不会显示新值，需要重新运行项目才会显示新的值
 
 const globalSettings = {
-  title: 'Nostalgia',
+  title: 'Dashboard',
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   primaryColor: '#3cba52',
   navTheme: 'light',

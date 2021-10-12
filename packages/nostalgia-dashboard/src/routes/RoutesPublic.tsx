@@ -15,7 +15,7 @@ function PublicRoutes() {
       <Route path='register' element={<Register />} />
       <Route path='login' element={<Login />} />
       <Route path='pwd' element={<ForgotPassword />} />
-      <Route path='*' element={<LandingPage />} />
+      <Route path='*' element={<Login />} />
     </Routes>
   );
 }

@@ -4,7 +4,8 @@ import 'fork-awesome/css/fork-awesome.css';
 import './assets/scss/style.scss';
 
 import * as React from 'react';
-import { HashRouter, BrowserRouter as Router } from 'react-router-dom';
+// import { HashRouter, BrowserRouter as Router } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 
 import RoutesAll from './routes/RoutesAll';
 import configureFakeBackend from './services/mock/fakeBackend';

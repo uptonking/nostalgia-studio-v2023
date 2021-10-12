@@ -1,6 +1,6 @@
 # materials-repo
 
-> knowledge base powered by markdown/mdx files
+> knowledge base powered by markdown/mdx files.   
 > 上传markdown文件后，能以网盘的形式管理，支持打开一个文件夹为资料小程序，打开后会显示一个文档网站
 
 # overview

@@ -1,6 +1,6 @@
 # Dashboard
 
-> A configurable dashboard built with react.
+> A configurable dashboard built with react.  
 > Dashboard可方便开发者快速开发控制台类web app，但暂时没有填充有意义的内容
 
 # overview

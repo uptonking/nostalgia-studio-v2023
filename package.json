@@ -2,7 +2,7 @@
   "name": "@datalking/nostalgia-studio-lab-monorepo",
   "version": "1.0.0",
   "private": true,
-  "description": "a markdown-based, easy-to-read, easy-to-write and content-centric web app for data and ideas.",
+  "description": "markdown-based, easy-to-read, easy-to-write and content-centric web app for data and ideas.",
   "keywords": [
     "markdown"
   ],

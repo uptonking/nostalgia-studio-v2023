@@ -1,8 +1,13 @@
-# [nostalgia studio](https://github.com/datalking/nostalgia-studio-lab/blob/main/packages/materials-repo)
+# nostalgia studio
 
-> knowledge base powered by markdown/mdx files
+> markdown-based and content-centric web app for data and ideas.
 
 - ⚠️️: still under development! use at your own risk!
+# projects
+- [materials-repo](https://github.com/datalking/nostalgia-studio-lab/blob/main/packages/materials-repo)
+  - knowledge base powered by markdown/mdx files
+- [nostalgia-dashboard](https://github.com/datalking/nostalgia-studio-lab/tree/main/packages/nostalgia-dashboard)
+  - A configurable dashboard built with react. 
 # overview
 - 类似网盘的文件管理器
 

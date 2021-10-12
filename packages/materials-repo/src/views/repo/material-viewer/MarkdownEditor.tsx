@@ -134,9 +134,7 @@ export function MarkdownEditor() {
         <div>
           <h4>{openingFilename}</h4>
         </div>
-        <div>
-          {/* <Link to='/edit/markdown'>编辑</Link> */}
-        </div>
+        <div>{/* <Link to='/edit/markdown'>编辑</Link> */}</div>
       </div>
       {/* <Editor /> */}
       <Editor

@@ -67,7 +67,6 @@ export function isFormValid(validators, fieldTypes = ['username', 'password']) {
   Object.keys(validators).forEach((field) => {
     if (fieldTypes.includes(field)) {
       if (!validators[field].valid) {
-        
         status = false;
       }
     }

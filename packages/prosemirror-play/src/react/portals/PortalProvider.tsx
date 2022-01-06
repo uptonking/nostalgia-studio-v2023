@@ -6,7 +6,7 @@ type Listener<T = any> = (data: T) => void;
 
 /** 通过ReactDOM.createPortal()渲染react元素到dom container，
  * 主要是为了支持用react组件作为NodeView。
- * 这里不是标准的react组件，没有继承React.Component.
+ * ! 这里不是标准的react组件，没有继承React.Component.
  */
 export class PortalProvider {
   shouldUpdatePortals: boolean = true;

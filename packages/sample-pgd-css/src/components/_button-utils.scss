@@ -1,0 +1,91 @@
+$button-variants: (primary, secondary, success, danger) !default;
+
+// semantic button variants
+@mixin generate-semantic-button-variants($color-variants) {
+  @each $color in $color-variants {
+    &-#{$color} {
+      color: var(--pg-c--button--#{$color}--text-color);
+      background-color: var(--pg-c--button--#{$color}--bg-color);
+      border-color: var(--pg-c--button--#{$color}--border-color);
+      box-shadow: var(--pg-c--button--#{$color}--box-shadow);
+
+      &.hover,
+      &:hover {
+        color: var(--pg-c--button--#{$color}--hover--text-color);
+        background-color: var(--pg-c--button--#{$color}--hover--bg-color);
+        border-color: var(--pg-c--button--#{$color}--hover--border-color);
+        box-shadow: var(--pg-c--button--#{$color}--hover--box-shadow);
+      }
+
+      &:focus,
+      &:active,
+      &.active {
+        color: var(--pg-c--button--#{$color}--focus--text-color);
+        background-color: var(--pg-c--button--#{$color}--focus--bg-color);
+        border-color: var(--pg-c--button--#{$color}--focus--border-color);
+        box-shadow: var(--pg-c--button--#{$color}--focus--box-shadow);
+        outline: var(--pg-c--button--#{$color}--focus--outline);
+      }
+
+      &.disabled,
+      &.disabled:hover,
+      &.disabled:focus {
+        color: var(--pg-c--button--#{$color}--text-color);
+        background-color: var(--pg-c--button--#{$color}--bg-color);
+        border-color: var(--pg-c--button--#{$color}--border-color);
+        box-shadow: none;
+        outline: none;
+      }
+    }
+  }
+}
+
+// outline button variants
+@mixin generate-outline-button-variants($color-variants) {
+  @each $color in $color-variants {
+    &-#{$color}.outline,
+    &-#{$color}.btn-link {
+      color: var(--pg-c--button--#{$color}--bg-color);
+      border-color: var(--pg-c--button--#{$color}--bg-color);
+      background-color: transparent;
+      box-shadow: none;
+
+      &.hover,
+      &:hover {
+        color: var(--pg-c--button--#{$color}--text-color);
+        background-color: var(--pg-c--button--#{$color}--bg-color);
+        border-color: var(--pg-c--button--#{$color}--bg-color);
+        box-shadow: var(--pg-c--button--#{$color}--box-shadow);
+      }
+
+      &:focus,
+      &:active {
+        color: var(--pg-c--button--#{$color}--bg-color);
+        border-color: var(--pg-c--button--#{$color}--bg-color);
+        background-color: transparent;
+        box-shadow: var(--pg-c--button--#{$color}--focus--box-shadow);
+        outline: var(--pg-c--button--#{$color}--focus--outline);
+      }
+
+      &.disabled,
+      &.disabled:hover,
+      &.disabled:focus {
+        color: var(--pg-c--button--#{$color}--bg-color);
+        border-color: var(--pg-c--button--#{$color}--bg-color);
+        background-color: transparent;
+        box-shadow: none;
+        outline: none;
+      }
+    }
+  }
+}
+
+// link text button
+// todo 与generate-outline-button-variants合并
+@mixin generate-link-text-button($color-variants) {
+  @each $color in $color-variants {
+    &-#{$color}.btn-link {
+      border-color: transparent;
+    }
+  }
+}

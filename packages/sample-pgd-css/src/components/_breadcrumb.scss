@@ -1,0 +1,47 @@
+@use '../../../design-tokens/dist/pg/breadcrumb-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}breadcrumb,
+.#{v.$prefix4pg}breadcrumb-item {
+  // @extend .#{v.$theme-name};
+}
+
+.#{v.$prefix4pg}breadcrumb {
+  padding: var(--pg-c--breadcrumb--padding);
+  margin-top: var(--pg-c--breadcrumb--margin-y);
+  margin-bottom: var(--pg-c--breadcrumb--margin-y);
+  border-radius: var(--pg-c--breadcrumb--border-radius);
+  border: var(--pg-c--breadcrumb--border-width) solid;
+  list-style: none;
+
+  background-color: var(--pg-c--breadcrumb--bg-color);
+  border-color: var(--pg-c--breadcrumb--border-color);
+}
+
+.#{v.$prefix4pg}breadcrumb-item {
+  display: inline-block;
+  margin-bottom: 0;
+
+  &::before {
+
+    content: '/';
+    // content: var(--pg-c--breadcrumb--separator--content);
+    margin-left: var(--pg-c--breadcrumb--separator--margin-left);
+    margin-right: var(--pg-c--breadcrumb--separator--margin-right);
+  }
+
+  &:first-child::before {
+    display: none;
+  }
+
+  &.active a {
+    pointer-events: none;
+    color: inherit;
+  }
+
+  & a:focus {
+    border-radius: var(--pg-c--breadcrumb--link--focus--border-radius);
+    box-shadow: var(--pg-c--breadcrumb--link--focus--box-shadow);
+    outline: var(--pg-c--breadcrumb--link--focus--outline);
+  }
+}

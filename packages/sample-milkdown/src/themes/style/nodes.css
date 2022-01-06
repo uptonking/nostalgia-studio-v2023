@@ -1,0 +1,106 @@
+@define-mixin lines {
+    .paragraph {
+        font-size: 1rem;
+        line-height: 1.5;
+        letter-spacing: 0.5px;
+    }
+
+    .heading {
+        margin: 2.5rem 0;
+        font-weight: 400;
+    }
+
+    .h1 {
+        font-size: 3rem;
+        line-height: 3.5rem;
+    }
+
+    .h2 {
+        font-size: 2.125rem;
+        line-height: 2.25rem;
+    }
+
+    .h3 {
+        font-size: 1.5rem;
+        line-height: 1.5rem;
+    }
+
+    .hr {
+        height: 1px;
+        background-color: palette(line);
+        border-width: 0;
+    }
+
+    .list-item {
+        &,
+        & > * {
+            margin: 0.5rem 0;
+        }
+
+        &,
+        li {
+            &::marker {
+                color: palette(primary);
+            }
+        }
+    }
+}
+
+@define-mixin blocks {
+    .blockquote {
+        padding-left: 1.875rem;
+        line-height: 1.75rem;
+        border-left: 4px solid;
+        border-left-color: palette(primary);
+        * {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+    }
+
+    .image {
+        display: block;
+        margin: 0 auto;
+        object-fit: contain;
+        max-width: 100%;
+        position: relative;
+        height: auto;
+        text-align: center;
+        &.empty {
+            box-sizing: border-box;
+            height: 3rem;
+            background-color: palette(background);
+            border-radius: var(--radius);
+            display: flex;
+            gap: 2rem;
+            justify-content: flex-start;
+            align-items: center;
+            .icon {
+                width: 1.5rem;
+                height: 1.5rem;
+                margin: 0;
+                margin-left: 1rem;
+                position: relative;
+                &:before {
+                    @mixin icon Outlined;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    content: 'image';
+                    font-size: 1.5rem;
+                    line-height: 1.5rem;
+                }
+            }
+            .placeholder {
+                margin: 0;
+                &:before {
+                    content: 'Add an image';
+                    font-size: 0.875rem;
+                    color: palette(neutral, 0.6);
+                }
+            }
+        }
+    }
+}

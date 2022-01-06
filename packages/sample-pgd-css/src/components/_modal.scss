@@ -1,0 +1,103 @@
+@use '../../../design-tokens/dist/pg/modal-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}modal,
+.#{v.$prefix4pg}modal-content {
+  // @extend .#{v.$theme-name};
+}
+
+.#{v.$prefix4pg}modal {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 99;
+  background-color: var(--pg-c--modal--overlay--bg-color);
+}
+
+.#{v.$prefix4pg}modal-dialog {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.#{v.$prefix4pg}modal-content {
+  width: var(--pg-c--modal--content--width);
+  max-width: 100%;
+  padding: var(--pg-c--modal--content--padding);
+  margin: auto;
+  border: var(--pg-c--modal--content--border-width) solid;
+  border-radius: var(--pg-c--modal--content--border-radius);
+
+  color: var(--pg-c--modal--content--text-color);
+  background-color: var(--pg-c--modal--content--bg-color);
+  // background-image: var(--pg-c--modal--content--bg-image);
+  border-color: var(--pg-c--modal--content--border-color);
+  box-shadow: var(--pg-c--modal--content--box-shadow);
+}
+
+.modal-title {
+  margin-top: 0;
+  font-size: var(--pg-c--modal--title--font-size);
+  font-weight: var(--pg-c--modal--title--font-weight);
+}
+
+.modal-full .modal-content {
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  padding: var(--pg-c--modal--fullscreen--content--padding);
+  color: var(--pg-c--modal--fullscreen--content--text-color);
+  background-color: var(--pg-c--modal--fullscreen--content--bg-color);
+  background-image: var(--pg-c--modal--fullscreen--content--bg-image);
+}
+
+.modal-content .close {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+  width: var(--pg-c--modal--close--width);
+  height: var(--pg-c--modal--close--height);
+  padding: 0;
+  border-radius: var(--pg-c--modal--close--border-radius);
+  border: var(--pg-c--modal--close--border-width) solid;
+  font-size: var(--pg-c--modal--close--font-size);
+  transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  color: var(--pg-c--modal--close--text-color);
+  background-color: var(--pg-c--modal--close--bg-color);
+  // background-image: var(--pg-c--modal--close--bg-image);
+  border-color: var(--pg-c--modal--close--border-color);
+  box-shadow: var(--pg-c--modal--close--box-shadow);
+}
+
+/* Showing modals */
+
+.modal:target,
+.modal.show {
+  top: 0;
+}
+
+.modal:target .modal-dialog,
+.modal.show .modal-dialog {
+  top: 0;
+}
+
+.modal:target .modal-content .close,
+.modal.show .modal-content .close {
+  top: 1rem;
+}

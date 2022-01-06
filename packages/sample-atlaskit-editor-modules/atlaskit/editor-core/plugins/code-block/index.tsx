@@ -1,0 +1,82 @@
+import React from 'react';
+
+import { codeBlock } from '../../../adf-schema';
+import type { EditorPlugin, PMPluginFactoryParams } from '../../types';
+import {
+  ACTION,
+  ACTION_SUBJECT,
+  ACTION_SUBJECT_ID,
+  EVENT_TYPE,
+  INPUT_METHOD,
+  addAnalytics,
+} from '../analytics';
+import { messages } from '../block-type/messages';
+import { IconCode } from '../quick-insert/assets';
+import ideUX from './pm-plugins/ide-ux';
+import keymap from './pm-plugins/keymaps';
+import { createPlugin } from './pm-plugins/main';
+import refreshBrowserSelectionOnChange from './refresh-browser-selection';
+import { getToolbarConfig } from './toolbar';
+import { CodeBlockOptions } from './types';
+
+const codeBlockPlugin = (options: CodeBlockOptions = {}): EditorPlugin => ({
+  name: 'codeBlock',
+
+  nodes() {
+    return [{ name: 'codeBlock', node: codeBlock }];
+  },
+
+  pmPlugins() {
+    return [
+      {
+        name: 'codeBlock',
+        plugin: () => createPlugin(options.useLongPressSelection),
+      },
+      {
+        name: 'codeBlockIDEKeyBindings',
+        plugin: () => ideUX,
+      },
+      {
+        name: 'codeBlockKeyMap',
+        plugin: ({ schema }: PMPluginFactoryParams) => keymap(schema),
+      },
+    ];
+  },
+
+  // Workaround for a firefox issue where dom selection is off sync
+  // https://product-fabric.atlassian.net/browse/ED-12442
+  onEditorViewStateUpdated(props) {
+    refreshBrowserSelectionOnChange(
+      props.originalTransaction,
+      props.newEditorState,
+    );
+  },
+
+  pluginsOptions: {
+    quickInsert: ({ formatMessage }) => [
+      {
+        id: 'codeblock',
+        title: formatMessage(messages.codeblock),
+        description: formatMessage(messages.codeblockDescription),
+        keywords: ['code block'],
+        priority: 700,
+        keyshortcut: '```',
+        icon: () => <IconCode />,
+        action(insert, state) {
+          const schema = state.schema;
+          const tr = insert(schema.nodes.codeBlock.createChecked());
+          return addAnalytics(state, tr, {
+            action: ACTION.INSERTED,
+            actionSubject: ACTION_SUBJECT.DOCUMENT,
+            actionSubjectId: ACTION_SUBJECT_ID.CODE_BLOCK,
+            attributes: { inputMethod: INPUT_METHOD.QUICK_INSERT },
+            eventType: EVENT_TYPE.TRACK,
+          });
+        },
+      },
+    ],
+    floatingToolbar: getToolbarConfig(options.allowCopyToClipboard),
+  },
+});
+
+export default codeBlockPlugin;

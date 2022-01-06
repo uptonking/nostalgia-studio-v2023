@@ -1,0 +1,150 @@
+@use '../../base/variables' as v;
+
+// checkbox
+
+.#{v.$prefix4pg}custom-checkbox {
+  display: block;
+  position: relative;
+  line-height: var(--pg-c--form-checkbox--line-height);
+
+  /* Hide the default，若不隐藏，则能通过鼠标拖选大块文字时选中 */
+  & input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  & label {
+    display: inline-block;
+    margin-bottom: 0;
+    padding-left: var(--pg-c--form-checkbox--label--padding-left);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  & label.blank {
+    padding-left: var(--pg-c--form-checkbox--label-blank--padding-left);
+  }
+
+  // checkbox的方框
+  & label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    height: var(--pg-c--form-checkbox--width);
+    width: var(--pg-c--form-checkbox--height);
+    border-radius: var(--pg-c--form-checkbox--border-radius);
+    border: var(--pg-c--form-checkbox--border-width) solid;
+    background-color: var(--pg-c--form-checkbox--bg-color);
+    border-color: var(--pg-c--form-checkbox--border-color);
+    box-shadow: var(--pg-c--form-checkbox--box-shadow);
+  }
+
+  & input[type='checkbox']:checked ~ label::before {
+    background-color: var(--pg-c--form-checkbox--checked--bg-color);
+    border-color: var(--pg-c--form-checkbox--checked--border-color);
+    box-shadow: var(--pg-c--form-checkbox--checked--box-shadow);
+  }
+
+  // checkbox选中时的勾
+  & label::after {
+    content: '';
+    position: absolute;
+    left: var(--pg-c--form-checkbox--checkmark--left);
+    top: var(--pg-c--form-checkbox--checkmark--top);
+    display: none;
+    width: var(--pg-c--form-checkbox--checkmark--width);
+    height: var(--pg-c--form-checkbox--checkmark--height);
+    border: solid var(--pg-c--form-checkbox--checkmark--color);
+    border-width: var(--pg-c--form-checkbox--checkmark--border-width);
+    box-shadow: var(--pg-c--form-checkbox--checkmark--box-shadow);
+    transform: var(--pg-c--form-checkbox--checkmark--transform);
+  }
+
+  & input[type='checkbox']:checked ~ label::after {
+    display: block;
+  }
+
+  & input[type='checkbox']:disabled ~ label {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// radio
+
+.#{v.$prefix4pg}custom-radio {
+  position: relative;
+  display: block;
+  line-height: var(--pg-c--form-radio--line-height);
+
+  // 隐藏默认圆形选中图形，防止拖选时被选中
+  & input[type='radio'] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  & label {
+    display: inline-block;
+    margin-bottom: 0;
+    padding-left: var(--pg-c--form-radio--label--padding-left);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  & label.blank {
+    padding-left: var(--pg-c--form-radio--label-blank--padding-left);
+  }
+
+  & label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    height: var(--pg-c--form-radio--width);
+    width: var(--pg-c--form-radio--height);
+    border-radius: var(--pg-c--form-radio--border-radius);
+    border: var(--pg-c--form-radio--border-width) solid;
+    background-color: var(--pg-c--form-radio--bg-color);
+    border-color: var(--pg-c--form-radio--border-color);
+    box-shadow: var(--pg-c--form-radio--box-shadow);
+  }
+
+  & input[type='radio']:checked ~ label::before {
+    background-color: var(--pg-c--form-radio--checked--bg-color);
+    border-color: var(--pg-c--form-radio--checked--border-color);
+    box-shadow: var(--pg-c--form-radio--checked--box-shadow);
+  }
+
+  & label::after {
+    content: '';
+    position: absolute;
+    left: var(--pg-c--form-radio--checkmark--left);
+    top: var(--pg-c--form-radio--checkmark--top);
+    display: none;
+    width: var(--pg-c--form-radio--checkmark--width);
+    height: var(--pg-c--form-radio--checkmark--height);
+    border-radius: var(--pg-c--form-radio--checkmark--border-radius);
+    background-color: var(--pg-c--form-radio--checkmark--color);
+    box-shadow: var(--pg-c--form-radio--checkmark--box-shadow);
+  }
+
+  & input[type='radio']:checked ~ label::after {
+    display: block;
+  }
+
+  & input[type='radio']:disabled ~ label {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.form-group .custom-radio {
+  margin: var(--pg-c--form-radio--form-group-radio--margin);
+}

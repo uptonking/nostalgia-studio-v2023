@@ -1,0 +1,153 @@
+@use '../../../design-tokens/dist/pg/html-table-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}table {
+  // @extend .#{v.$theme-name};
+}
+
+// #region /folded html- table
+
+.#{v.$prefix4pg}table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: var(--pg-c--html-table--padding);
+}
+
+.table-sm th,
+.table-sm td {
+  padding: var(--pg-c--html-table--sm--padding);
+}
+
+.table-md th,
+.table-md td {
+  padding: var(--pg-c--html-table--md--padding);
+}
+
+.table-lg th,
+.table-lg td {
+  padding: var(--pg-c--html-table--lg--padding);
+}
+
+.table th {
+  font-weight: var(--pg-c--html-table--head--cell--font-weight);
+}
+
+.table tr {
+  border-bottom: var(--pg-c--html-table--border-width) solid
+    var(--pg-c--html-table--border-color);
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.table thead tr {
+  border-width: var(--pg-c--html-table--head--row--border-bottom-border-width);
+}
+
+.table tfoot tr {
+  border-bottom: 0;
+  border-top: var(--pg-c--html-table--foot--row--border-top-border-width) solid
+    var(--pg-c--html-table--border-color);
+}
+
+.table {
+  caption-side: top;
+}
+
+.caption-bottom {
+  caption-side: bottom;
+}
+
+.caption {
+  text-align: left;
+  padding-bottom: var(--pg-c--html-table--caption--padding-y);
+  color: var(--pg-c--html-table--caption--text-color);
+  border-bottom: var(--pg-c--html-table--caption--border-width)
+    var(--pg-c--html-table--caption--border-style)
+    var(--pg-c--html-table--caption--border-color);
+}
+
+/* Borderless table */
+.table-borderless tr,
+.table-borderless thead tr,
+.table-borderless tfoot tr {
+  border: none;
+}
+
+/* Bordered tables */
+.table-bordered,
+.table-outer-bordered {
+  border: var(--pg-c--html-table--border-width) solid;
+  border-color: var(--pg-c--html-table--border-color);
+}
+
+.table-bordered td,
+.table-inner-bordered td,
+.table-bordered th,
+.table-inner-bordered th {
+  border-right: var(--pg-c--html-table--border-width) solid
+    var(--pg-c--html-table--border-color);
+}
+
+.table-bordered td:last-child,
+.table-inner-bordered td:last-child,
+.table-bordered th:last-child,
+.table-inner-bordered th:last-child {
+  border-right: none;
+}
+
+.table-bordered caption,
+.table-outer-bordered caption {
+  border-top: none;
+  border-bottom: none;
+}
+
+/* Striped table */
+.table-striped tbody tr:nth-child(odd) {
+  background-color: var(--pg-c--html-table--striped--bg-color);
+  // background-image: var(--pg-c--html-table--striped-bg-image);
+  // color:red;
+}
+
+/* Hoverable table */
+.table-hover tbody tr:hover {
+  background-color: var(--pg-c--html-table--hoverable--hover--bg-color);
+  // background-image: var(--pg-c--html-table--hoverable-bg-image-hover);
+}
+
+/* Active table */
+.table-active {
+  color: var(--pg-c--html-table--active--text-color);
+  background-color: var(--pg-c--html-table--active--bg-color);
+  // background-image: var(--pg-c--html-table--active-bg-image);
+}
+
+.table-striped tr.table-active:nth-child(odd) {
+  background-color: var(--pg-c--html-table--active--striped--bg-color);
+  // background-image: var(--pg-c--html-table--active--striped--bg-image);
+}
+
+.table-hover .table-active:hover,
+.table-hover.table-striped tr.table-active:nth-child(odd):hover {
+  background-color: var(--pg-c--html-table--active--hoverable--hover--bg-color);
+  // background-image: var(--pg-c--html-table--hoverable-active-bg-image-hover);
+}
+
+/* Responsive tables */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-responsive th,
+.table-responsive td {
+  white-space: nowrap;
+}
+
+// #endregion /folded html- table

@@ -1,0 +1,83 @@
+@use '../../../design-tokens/dist/pg/alert-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}alert,
+.#{v.$prefix4pg}sticky-alerts {
+  // @extend .#{v.$theme-name};
+}
+
+.#{v.$prefix4pg}alert {
+  position: relative;
+  padding: var(--pg-c--alert--padding);
+  border: var(--pg-c--alert--border-width) solid;
+  border-radius: var(--pg-c--alert--border-radius);
+
+
+  color: var(--pg-c--alert--text-color);
+  background-color: var(--pg-c--alert--bg-color);
+  // background-image: var(--pg-c--alert--bg-image);
+  border-color: var(--pg-c--alert--border-color);
+
+  &.dispose {
+    display: none;
+  }
+
+  &-heading {
+    color: inherit;
+    font-size: var(--pg-c--alert--heading--font-size);
+    font-weight: var(--pg-c--alert--heading--font-weight);
+    margin: var(--pg-c--alert--heading--margin);
+  }
+
+  & .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: var(--pg-c--alert--close--padding);
+    border-radius: var(--pg-c--alert--close--border-radius);
+    border: var(--pg-c--alert--close--border-width) solid;
+    line-height: var(--pg-c--alert--close---line-height);
+    font-size: var(--pg-c--alert--close--font-size);
+    cursor: pointer;
+
+
+    color: var(--pg-c--alert--close--text-color);
+    background-color: var(--pg-c--alert--close--bg-color);
+    // background-image: var(--pg-c--alert--close-bg-image);
+    border-color: var(--pg-c--alert--close--border-color);
+    box-shadow: var(--pg-c--alert--close--box-shadow);
+  }
+}
+
+
+
+
+
+// sticky alert
+
+.sticky-alerts {
+  position: fixed;
+  top: var(--pg-c--alert--sticky--top);
+  right: var(--pg-c--alert--sticky--right);
+  z-index: 100; // altert is on top of modals
+
+  & .alert{
+    display: none;
+    width: var(--pg-c--alert--sticky--width);
+    margin-top: 1rem;
+    right: -50rem;
+    box-shadow: var(--pg-c--alert--sticky--box-shadow);
+
+    &.show{
+      right: 0;
+      transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    &.fade{
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0s 0.4s, opacity 0.4s linear;
+
+    }
+  }
+}

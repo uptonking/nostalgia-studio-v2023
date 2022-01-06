@@ -1,0 +1,26 @@
+const { globalPrefix: prefix4g } = require('../utils/globalConfig');
+const gColors = {
+  color: {
+    base: {
+      redest: { value: `hsl(10, 80, 50)` },
+      primary: { value: `{${prefix4g}.color.theme.primary.value}` },
+    },
+  },
+};
+
+module.exports = {
+  [prefix4g]: gColors,
+  color: {
+    borders: {
+      value: `hsl(10, 80, 50)`,
+    },
+    border: {
+      base1: { base: { value: `hsl(10, 80, 50)` } },
+    },
+  },
+  colors: {
+    border: {
+      bases: { value: `hsl(10, 80, 50)` },
+    },
+  },
+};

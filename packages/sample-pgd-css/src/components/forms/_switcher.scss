@@ -1,0 +1,75 @@
+@use '../../base/variables' as v;
+
+.#{v.$prefix4pg}custom-switch {
+  position: relative;
+  display: block;
+  line-height: var(--pg-c--form-switcher--line-height);
+
+  /* Hide the default，防止拖选时选中 */
+  & input[type='checkbox'] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  & label {
+    display: inline-block;
+    margin-bottom: 0;
+    padding-left: var(--pg-c--form-switcher--label--padding-left);
+    cursor: pointer;
+    user-select: none;
+  }
+  & label.blank {
+    padding-left: var(--pg-c--form-switcher--label-blank--padding-left);
+  }
+
+  & label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: var(--pg-c--form-switcher--width);
+    height: var(--pg-c--form-switcher--height);
+    border-radius: var(--pg-c--form-switcher--border-radius);
+    border: var(--pg-c--form-switcher--border-width) solid;
+    background-color: var(--pg-c--form-switcher--bg-color);
+    border-color: var(--pg-c--form-switcher--border-color);
+    box-shadow: var(--pg-c--form-switcher--box-shadow);
+  }
+
+  & input[type='checkbox']:checked ~ label::before {
+    background-color: var(--pg-c--form-switcher--checked--bg-color);
+    border-color: var(--pg-c--form-switcher--checked--border-color);
+    box-shadow: var(--pg-c--form-switcher--checked--box-shadow);
+  }
+
+  & label::after {
+    content: '';
+    position: absolute;
+    top: var(--pg-c--form-switcher--slider--top);
+    left: var(--pg-c--form-switcher--slider--left);
+    width: var(--pg-c--form-switcher--slider--width);
+    height: var(--pg-c--form-switcher--slider--height);
+    background-color: var(--pg-c--form-switcher--slider--bg-color);
+    border: var(--pg-c--form-switcher--slider--border-width) solid;
+    border-color: var(--pg-c--form-switcher--slider--border-color);
+    border-radius: var(--pg-c--form-switcher--slider--border-radius);
+    box-shadow: var(--pg-c--form-switcher--slider--box-shadow);
+    transition: left 0.1s;
+  }
+
+  & input[type='checkbox']:checked ~ label::after {
+    top: var(--pg-c--form-switcher--slider--checked--top);
+    left: var(--pg-c--form-switcher--slider--checked--left);
+    background-color: var(--pg-c--form-switcher--slider--checked--bg-color);
+    border-color: var(--pg-c--form-switcher--slider--checked--border-color);
+    box-shadow: var(--pg-c--form-switcher--slider--checked--box-shadow);
+  }
+
+  & input[type='checkbox']:disabled ~ label {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

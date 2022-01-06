@@ -1,0 +1,84 @@
+@use "sass:map";
+@use '../base/variables' as v;
+
+// 3 types of containers
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+  width: 100%;
+  // 最小屏时两边会显示一点小padding，其他屏会显示max-width宽度并居中
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// @each $bk, $bk-min-width in v.$breakpoints {
+//   @media (min-width: $bk-min-width) {
+//     .container,
+//     .container-#{$bk} {
+//       max-width: map.get(v.$container-max-widths, $bk);
+//       padding-left: 0;
+//       padding-right: 0;
+//     }
+//   }
+// }
+
+@media (min-width: map.get(v.$breakpoints,'sm')) {
+  .container,
+  .container-sm {
+    max-width: map.get(v.$container-max-widths, 'sm');
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: map.get(v.$breakpoints,'md')) {
+  .container,
+  .container-sm,
+  .container-md {
+    max-width: map.get(v.$container-max-widths, 'md');
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: map.get(v.$breakpoints,'lg')) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg {
+    max-width: map.get(v.$container-max-widths, 'lg');
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: map.get(v.$breakpoints,'xl')) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl {
+    max-width: map.get(v.$container-max-widths, 'xl');
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media (min-width: map.get(v.$breakpoints,'xxl')) {
+  .container,
+  .container-sm,
+  .container-md,
+  .container-lg,
+  .container-xl,
+  .container-xxl {
+    max-width: map.get(v.$container-max-widths, 'xxl');
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

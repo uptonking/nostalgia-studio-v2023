@@ -1,0 +1,37 @@
+$maincolor: currentColor !default;
+$size: 32px !default; // pixel for this version
+
+$U1: ceil($size/32) !default;
+$U2: ceil($size/16) !default;
+$U3: ceil($size/12) !default;
+$U4: ceil($size/8) !default;
+$U5: ceil($size/7) !default;
+$U6: ceil($size/5.4) !default;
+$U7: ceil($size/4.9) !default;
+$U8: ceil($size/4) !default;
+$U9: ceil($size/3.7) !default;
+$U10: ceil($size/3.2) !default;
+$U11: ceil($size/3.1) !default;
+$U12: ceil($size/2.7) !default;
+$U13: ceil($size/2.5) !default;
+$U14: ceil($size/2.3) !default;
+$U15: ceil($size/2.2) !default;
+$U16: ceil($size/2) !default;
+$U17: ceil($size/1.9) !default;
+$U18: ceil($size/1.8) !default;
+$U19: ceil($size/1.7) !default;
+$U20: ceil($size/1.6) !default;
+$U21: ceil($size/1.55) !default;
+$U22: ceil($size/1.5) !default;
+$U23: ceil($size/1.4) !default;
+$U24: ceil($size/1.34) !default;
+$U25: ceil($size/1.3) !default;
+$U26: ceil($size/1.25) !default;
+$U27: ceil($size/1.2) !default;
+$U28: ceil($size/1.15) !default;
+$U29: ceil($size/1.12) !default;
+$U30: ceil($size/1.1) !default;
+$U31: ceil($size/1.05) !default;
+$U32: $size !default;
+
+$stroke: $U2 solid !default;

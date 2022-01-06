@@ -1,0 +1,1291 @@
+/* copied from https://saeedalipoor.github.io/icono/ */
+
+.icono-smile:after,
+.icono-meh:after,
+.icono-frown:after,
+.icono-smile,
+.icono-meh,
+.icono-frown,
+.icono-eye,
+.icono-barChart,
+.icono-areaChart,
+.icono-sync,
+.icono-video,
+.icono-image,
+.icono-document,
+.icono-folder,
+.icono-file,
+.icono-commentEmpty,
+.icono-mail:before,
+.icono-mail,
+.icono-tag:after,
+.icono-tag,
+.icono-pin:before,
+.icono-pin,
+.icono-bookmarkEmpty:before,
+.icono-bookmarkEmpty,
+.icono-heart:before,
+.icono-heart:after,
+.icono-heart,
+.icono-home:after,
+.icono-home:before,
+.icono-home,
+.icono-clock,
+.icono-user:before,
+.icono-user,
+.icono-trash,
+.icono-forbidden,
+.icono-search,
+.icono-chain:before,
+.icono-chain:after,
+[class*='icono-check'][class*='Circle'] {
+  border: 2px solid;
+}
+
+.icono-video:before,
+.icono-dropper:before,
+.icono-chain:before,
+.icono-chain:after,
+.icono-indent:before,
+.icono-outdent:before,
+.icono-list:before {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.icono-cup:after,
+.icono-tag:after,
+.icono-user:before,
+.icono-trash:before,
+.icono-search:before {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.icono-eye:before,
+.icono-video:after,
+.icono-document:after,
+.icono-pin:before,
+.icono-clock:before,
+.icono-clock:after,
+.icono-forbidden:before,
+[class*='icono-check']:before,
+[class*='icono-plus']:before,
+[class*='icono-plus']:after,
+[class*='icono-cross']:before,
+[class*='icono-cross']:after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spin {
+  animation: loading-spinner 2s infinite linear;
+}
+
+.spin.step {
+  animation: loading-spinner 0.5s steps(8, end) infinite;
+}
+
+@keyframes loading-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.icono-bars,
+.icono-hamburger {
+  width: 20px;
+  height: 2px;
+  box-shadow: inset 0 0 0 32px, 0 -6px, 0 6px;
+  margin: 16px 7px;
+}
+
+[class*='icono-plus'],
+[class*='icono-cross'] {
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+}
+
+[class*='icono-plus']:before,
+[class*='icono-plus']:after,
+[class*='icono-cross']:before,
+[class*='icono-cross']:after {
+  box-shadow: inset 0 0 0 32px;
+}
+
+[class*='icono-plus']:before,
+[class*='icono-cross']:before {
+  width: 20px;
+  height: 2px;
+}
+
+[class*='icono-plus']:after,
+[class*='icono-cross']:after {
+  height: 20px;
+  width: 2px;
+}
+
+[class*='icono-plus'][class*='Circle']:before,
+[class*='icono-cross'][class*='Circle']:before {
+  width: 18px;
+}
+
+[class*='icono-plus'][class*='Circle']:after,
+[class*='icono-cross'][class*='Circle']:after {
+  height: 18px;
+}
+
+.icono-cross,
+.icono-crossCircle {
+  transform: rotate(45deg);
+}
+
+[class*='icono-check'] {
+  width: 28px;
+  height: 28px;
+  margin: 3px 0 3px 6px;
+  transform: rotate(-45deg);
+}
+
+[class*='icono-check']:before,
+[class*='icono-check']:after {
+  box-shadow: inset 0 0 0 32px;
+}
+
+[class*='icono-check']:before {
+  box-shadow: inset 0 0 0 32px;
+  width: 20px;
+  height: 2px;
+}
+
+[class*='icono-check']:after {
+  position: absolute;
+  height: 12px;
+  width: 2px;
+  left: 4px;
+  bottom: 14px;
+}
+
+[class*='icono-check'][class*='Circle'] {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+}
+
+[class*='icono-check'][class*='Circle']:before {
+  width: 14px;
+  top: 15px;
+  left: 14px;
+}
+
+[class*='icono-check'][class*='Circle']:after {
+  height: 8px;
+  left: 7px;
+  bottom: 10px;
+}
+
+.icono-circle {
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 50%;
+  margin: 6px;
+}
+
+.icono-caretRight,
+.icono-caretDown,
+.icono-caretDownCircle,
+.icono-caretDownSquare,
+.icono-caretUp,
+.icono-caretUpCircle,
+.icono-caretUpSquare,
+.icono-caretLeft,
+.icono-caretLeftCircle,
+.icono-caretLeftSquare,
+.icono-caretRightCircle,
+.icono-caretRightSquare {
+  width: 12px;
+  height: 20px;
+  margin: 7px 11px;
+}
+
+.icono-caretRight:before,
+.icono-caretDown:before,
+.icono-caretDownCircle:before,
+.icono-caretDownSquare:before,
+.icono-caretUp:before,
+.icono-caretUpCircle:before,
+.icono-caretUpSquare:before,
+.icono-caretLeft:before,
+.icono-caretLeftCircle:before,
+.icono-caretLeftSquare:before,
+.icono-caretRightCircle:before,
+.icono-caretRightSquare:before,
+.icono-caretRight:after,
+.icono-caretDown:after,
+.icono-caretDownCircle:after,
+.icono-caretDownSquare:after,
+.icono-caretUp:after,
+.icono-caretUpCircle:after,
+.icono-caretUpSquare:after,
+.icono-caretLeft:after,
+.icono-caretLeftCircle:after,
+.icono-caretLeftSquare:after,
+.icono-caretRightCircle:after,
+.icono-caretRightSquare:after {
+  width: 14px;
+  height: 2px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  right: 2px;
+  box-shadow: inset 0 0 0 32px;
+  transform-origin: right;
+}
+
+.icono-caretRight:before,
+.icono-caretDown:before,
+.icono-caretDownCircle:before,
+.icono-caretDownSquare:before,
+.icono-caretUp:before,
+.icono-caretUpCircle:before,
+.icono-caretUpSquare:before,
+.icono-caretLeft:before,
+.icono-caretLeftCircle:before,
+.icono-caretLeftSquare:before,
+.icono-caretRightCircle:before,
+.icono-caretRightSquare:before {
+  transform: rotate(45deg);
+}
+
+.icono-caretRight:after,
+.icono-caretDown:after,
+.icono-caretDownCircle:after,
+.icono-caretDownSquare:after,
+.icono-caretUp:after,
+.icono-caretUpCircle:after,
+.icono-caretUpSquare:after,
+.icono-caretLeft:after,
+.icono-caretLeftCircle:after,
+.icono-caretLeftSquare:after,
+.icono-caretRightCircle:after,
+.icono-caretRightSquare:after {
+  transform: rotate(-45deg);
+}
+
+.icono-caretLeft,
+.icono-caretLeftCircle,
+.icono-caretLeftSquare {
+  transform: rotate(180deg);
+}
+
+.icono-caretUp,
+.icono-caretUpCircle,
+.icono-caretUpSquare {
+  transform: rotate(-90deg);
+}
+
+.icono-caretDown,
+.icono-caretDownCircle,
+.icono-caretDownSquare {
+  transform: rotate(90deg);
+}
+
+[class*='icono-caret'][class*='Circle']:before,
+[class*='icono-caret'][class*='Circle']:after,
+[class*='icono-caret'][class*='Square']:before,
+[class*='icono-caret'][class*='Square']:after {
+  width: 11px;
+  right: 8px;
+}
+
+.icono-ellipsis {
+  width: 4px;
+  height: 4px;
+  box-shadow: 0 -8px 0, 0 0 0 32px inset, 0 8px 0;
+  margin: 15px;
+}
+
+.icono-tiles {
+  width: 4px;
+  height: 4px;
+  box-shadow: 0 -8px 0, -8px -8px 0, 8px -8px 0, 0 0 0 32px inset, -8px 0 0,
+    8px 0 0, 0 8px 0, -8px 8px 0, 8px 8px 0;
+  margin: 15px;
+}
+
+.icono-list {
+  width: 4px;
+  height: 4px;
+  box-shadow: inset 0 0 0 32px, 0 -8px 0 0, 0 8px 0 0;
+  margin: 15px 26px 15px 4px;
+}
+
+.icono-list:before {
+  width: 18px;
+  height: 4px;
+  left: 8px;
+  box-shadow: inset 0 0 0 32px, 0 -8px 0 0, 0 8px 0 0;
+}
+
+.icono-sliders {
+  height: 30px;
+  width: 30px;
+  margin: 2px;
+}
+
+.icono-sliders:before,
+.icono-sliders:after {
+  transform: translateX(-50%);
+  left: 50%;
+  position: absolute;
+}
+
+.icono-sliders:before {
+  width: 8px;
+  height: 7px;
+  border-radius: 2px;
+  top: 67%;
+  box-shadow: inset 0 0 0 32px, 10px -10px, -10px -14px;
+}
+
+.icono-sliders:after {
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  box-shadow: inset 0 0 0 32px, 10px 0, -10px 0;
+}
+
+.icono-indent,
+.icono-outdent {
+  width: 20px;
+  height: 16px;
+  border-width: 4px 0 4px 8px;
+  border-style: solid;
+  border-color: transparent;
+  box-shadow: 0 -2px, 0 2px, inset 0 2px, inset 0 -2px;
+  margin: 9px 7px;
+}
+
+.icono-indent:before,
+.icono-outdent:before {
+  left: -8px;
+  border: 5px solid;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-width: 0;
+}
+
+.icono-outdent:before {
+  left: -8px;
+  border: 5px solid;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-width: 0;
+  border-left-width: 0;
+  border-right-width: 5px;
+}
+
+.icono-chain {
+  width: 16px;
+  height: 2px;
+  box-shadow: inset 0 0 0 32px;
+  transform: rotate(-45deg);
+  margin: 16px 9px;
+}
+
+.icono-chain:before,
+.icono-chain:after {
+  width: 12px;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.icono-chain:before {
+  right: -10px;
+}
+
+.icono-chain:after {
+  left: -10px;
+}
+
+.icono-search {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  transform: rotate(45deg);
+  margin: 4px 4px 8px 8px;
+}
+
+.icono-search:before {
+  width: 4px;
+  height: 11px;
+  box-shadow: inset 0 0 0 32px;
+  top: 19px;
+  border-radius: 0 0 1px 1px;
+}
+
+.icono-filter {
+  width: 0;
+  height: 0;
+  border: 10px solid;
+  border-bottom: none;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  padding: 3px;
+  box-shadow: inset 0 7px;
+  margin: 9px 4px;
+}
+
+.icono-forbidden {
+  width: 28px;
+  height: 28px;
+  border-width: 3px;
+  border-radius: 50%;
+  margin: 3px;
+  transform: rotate(45deg);
+}
+
+.icono-forbidden:before {
+  width: 24px;
+  height: 4px;
+  box-shadow: inset 0 0 0 32px;
+}
+
+.icono-trash {
+  width: 22px;
+  height: 22px;
+  border-radius: 0 0 3px 3px;
+  border-top: none;
+  margin: 9px 6px 3px;
+}
+
+.icono-trash:before {
+  width: 8px;
+  height: 2px;
+  top: -6px;
+  box-shadow: inset 0 0 0 32px, -10px 2px 0 0, -6px 2px 0 0, 0 2px 0 0,
+    6px 2px 0 0, 10px 2px 0 0;
+}
+
+.icono-dropper {
+  width: 40px;
+  height: 14px;
+  border-width: 3px;
+  border-style: solid;
+  border-right: none;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  box-shadow: -9px 0 0 2px inset, 0 0 0 2px inset;
+  border-radius: 50% 6px 6px 50%;
+  transform: rotate(-45deg);
+  margin: 12px -2px 8px -4px;
+}
+
+.icono-dropper:before {
+  width: 4px;
+  height: 14px;
+  right: 10px;
+  box-shadow: inset 0 0 0 32px;
+}
+
+.icono-spinner {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  box-shadow: -16px 0 0 -9px, -11px -11px 0 -9px, 0 -16px 0 -9px,
+    11px -11px 0 -8px, 16px 0 0 -7px, 11px 11px 0 -7px, 0 16px 0 -7px,
+    -11px 11px 0 -7px;
+  margin: 7px;
+}
+
+.icono-user {
+  width: 32px;
+  height: 14px;
+  border-radius: 64px 64px 0 0 / 64px;
+  margin: 18px 1px 2px;
+}
+
+.icono-user:before {
+  width: 12px;
+  height: 12px;
+  top: -20px;
+  border-radius: 50%;
+}
+
+.icono-sun {
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 50%;
+  box-shadow: -15px 0 0 -9px, 15px 0 0 -9px, 0 -15px 0 -9px, 0 15px 0 -9px,
+    11px 11px 0 -9px, -11px -11px 0 -9px, 11px -11px 0 -9px, -11px 11px 0 -9px;
+  margin: 6px;
+}
+
+.icono-moon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 6px;
+}
+
+.icono-moon:before {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: -2px;
+  left: 6px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 32px;
+}
+
+.icono-clock {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  margin: 4px;
+}
+
+.icono-clock:before,
+.icono-clock:after {
+  top: 35%;
+  box-shadow: inset 0 0 0 32px;
+  border-radius: 2px;
+}
+
+.icono-clock:before {
+  width: 2px;
+  height: 9px;
+}
+
+.icono-clock:after {
+  width: 6px;
+  height: 2px;
+  transform-origin: left center;
+  transform: rotate(45deg) translate(1px, 2px);
+}
+
+.icono-calendar {
+  width: 32px;
+  height: 28px;
+  border-width: 4px 2px 2px;
+  border-style: solid;
+  border-radius: 4px;
+  margin: 5px 1px 1px;
+}
+
+.icono-calendar:before {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  top: 3px;
+  left: 3px;
+  box-shadow: inset 0 0 0 32px, 6px 0, 12px 0, 18px 0, 0 6px, 6px 6px, 12px 6px,
+    18px 6px, 0 12px, 6px 12px, 12px 12px, 18px 12px;
+}
+
+.icono-calendar:after {
+  position: absolute;
+  width: 4px;
+  height: 8px;
+  box-shadow: inset 0 0 0 32px, 16px 0;
+  border-radius: 4px;
+  top: -8px;
+  left: 4px;
+}
+
+.icono-home {
+  width: 22px;
+  height: 16px;
+  border-top: none;
+  margin: 15px 6px 3px;
+}
+
+.icono-home:before {
+  width: 18px;
+  height: 18px;
+  transform: rotate(45deg);
+  position: absolute;
+  left: -2px;
+  top: -7px;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.icono-home:after {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  bottom: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 1px;
+  border-bottom: none;
+}
+
+.icono-heart {
+  width: 20px;
+  height: 20px;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  transform: rotate(45deg);
+  border-radius: 4px 0;
+  margin: 9px 7px 5px;
+}
+
+.icono-heart:before,
+.icono-heart:after {
+  position: absolute;
+}
+
+.icono-heart:before {
+  width: 8px;
+  height: 14px;
+  left: -10px;
+  bottom: -2px;
+  border-radius: 20px 0 0 20px;
+  border-right-color: transparent;
+}
+
+.icono-heart:after {
+  width: 14px;
+  height: 8px;
+  right: -2px;
+  top: -10px;
+  border-radius: 20px 20px 0 0;
+  border-bottom-color: transparent;
+}
+
+.icono-bookmark {
+  width: 0;
+  height: 0;
+  border: 9px solid;
+  border-bottom-color: transparent;
+  box-shadow: 0 -4px;
+  border-radius: 3px 3px 0 0;
+  margin: 10px 8px 6px;
+}
+
+.icono-bookmarkEmpty {
+  width: 18px;
+  height: 22px;
+  border-bottom: none;
+  border-radius: 3px 3px 2px 2px;
+  overflow: hidden;
+  margin: 6px 8px;
+}
+
+.icono-bookmarkEmpty:before {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  bottom: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+  transform: rotate(45deg) translate(35%, 35%);
+}
+
+.icono-pin {
+  width: 26px;
+  height: 26px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  margin: 1px 4px 7px;
+}
+
+.icono-pin:before {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.icono-tag {
+  width: 18px;
+  height: 24px;
+  border-radius: 6px 6px 4px 4px;
+  border-top: none;
+  transform: rotate(45deg);
+  margin: 5px 8px;
+}
+
+.icono-tag:before {
+  position: absolute;
+  top: -4px;
+  left: 1px;
+  width: 10px;
+  height: 10px;
+  border-width: 2px 0 0 2px;
+  border-style: solid;
+  transform: rotate(45deg);
+  border-radius: 5px 0 0 0;
+}
+
+.icono-tag:after {
+  top: 1px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+}
+
+.icono-mail {
+  width: 28px;
+  height: 18px;
+  overflow: hidden;
+  margin: 8px 3px;
+}
+
+.icono-mail:before {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  transform: rotate(50deg) skew(-10deg, -20deg);
+  top: -20px;
+  left: -3px;
+}
+
+.icono-commentEmpty {
+  width: 30px;
+  height: 22px;
+  border-radius: 4px 4px 7px 7px;
+  border-bottom-color: transparent;
+  margin: 5px 2px 7px;
+}
+
+.icono-commentEmpty:before {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-width: 0 0 2px 2px;
+  border-style: solid;
+  transform: rotate(-45deg);
+  bottom: -4px;
+  left: 6px;
+}
+
+.icono-commentEmpty:after {
+  position: absolute;
+  width: 8px;
+  height: 2px;
+  border-width: 0 12px 0 6px;
+  border-style: solid;
+  bottom: 0;
+  left: 0;
+}
+
+.icono-comment {
+  width: 30px;
+  height: 20px;
+  box-shadow: inset 0 0 0 32px;
+  border-radius: 4px;
+  margin: 5px 2px 9px;
+}
+
+.icono-comment:before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  box-shadow: inset 0 0 0 32px;
+  transform: rotate(-45deg);
+  bottom: -4px;
+  left: 6px;
+}
+
+.icono-file {
+  width: 26px;
+  height: 32px;
+  border-radius: 0 12px 0 0;
+  margin: 1px 4px;
+}
+
+.icono-file:before {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  border-style: solid;
+  width: 0;
+  height: 0;
+  border-width: 5px;
+  border-top-color: transparent;
+  border-right-color: transparent;
+}
+
+.icono-folder {
+  width: 18px;
+  height: 22px;
+  border-left-width: 0;
+  border-radius: 0 3px 3px 0;
+  margin: 8px 2px 4px 14px;
+}
+
+.icono-folder:before {
+  position: absolute;
+  width: 12px;
+  height: 20px;
+  left: -12px;
+  bottom: -2px;
+  border-width: 0 0 2px 2px;
+  border-style: solid;
+  border-radius: 0 0 0 3px;
+}
+
+.icono-folder:after {
+  position: absolute;
+  width: 10px;
+  height: 5px;
+  left: -12px;
+  top: -7px;
+  border-width: 2px 2px 0 2px;
+  border-style: solid;
+  border-radius: 3px 3px 0 0;
+}
+
+.icono-document {
+  width: 26px;
+  height: 32px;
+  border-radius: 0 0 0 10px;
+  margin: 1px 4px;
+}
+
+.icono-document:before {
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -3px;
+  bottom: -3px;
+  border-width: 5px;
+  border-style: solid;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.icono-document:after {
+  width: 13px;
+  height: 2px;
+  box-shadow: inset 0 0 0 32px, 0 -5px 0 0, 0 5px 0 0;
+}
+
+.icono-image {
+  width: 30px;
+  height: 26px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 4px 2px;
+}
+
+.icono-image:before {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: -2px;
+  top: 14px;
+  transform: rotate(45deg);
+  box-shadow: inset 0 0 0 32px, 10px -6px 0 0;
+}
+
+.icono-image:after {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 32px;
+  top: 5px;
+  right: 5px;
+}
+
+.icono-video {
+  width: 20px;
+  height: 20px;
+  margin: 7px 7px;
+}
+
+.icono-video:before {
+  width: 3px;
+  height: 3px;
+  left: -8px;
+  box-shadow: inset 0 0 0 32px, 0 -8px 0 0, 0 8px 0 0, 29px 0 0 0, 29px -8px 0 0,
+    29px 8px 0 0;
+}
+
+.icono-video:after {
+  width: 0;
+  height: 0;
+  border-width: 4px 0 4px 6px;
+  border-style: solid;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.icono-music {
+  width: 18px;
+  height: 6px;
+  transform: skewY(-15deg);
+  box-shadow: inset 0 0 0 32px;
+  border-radius: 2px 2px 0 0;
+  margin: 4px 5px 24px 11px;
+}
+
+.icono-music:before {
+  position: absolute;
+  width: 2px;
+  height: 16px;
+  left: 0;
+  top: 4px;
+  box-shadow: inset 0 0 0 32px, 16px 0 0 0;
+}
+
+.icono-music:after {
+  position: absolute;
+  width: 10px;
+  height: 8px;
+  left: -8px;
+  top: 17px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 32px, 16px 0 0 0;
+}
+
+.icono-share {
+  height: 9px;
+  width: 9px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 32px, 22px -11px 0 0, 22px 11px 0 0;
+  margin: 12px 24px 13px 1px;
+}
+
+.icono-share:before,
+.icono-share:after {
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  box-shadow: inset 0 0 0 32px;
+  left: 0;
+}
+
+.icono-share:before {
+  top: -2px;
+  transform: rotate(-25deg);
+}
+
+.icono-share:after {
+  top: 9px;
+  transform: rotate(25deg);
+}
+
+.icono-sync {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  margin: 4px;
+}
+
+.icono-sync:before,
+.icono-sync:after {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 6px;
+  border-style: solid;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+.icono-sync:before {
+  transform: rotate(-45deg);
+  right: -7px;
+  top: 0;
+}
+
+.icono-sync:after {
+  transform: rotate(135deg);
+  left: -7px;
+  bottom: 0;
+}
+
+.icono-reset {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border-width: 2px;
+  border-style: solid;
+  border-left-color: transparent;
+  margin: 4px;
+}
+
+.icono-reset:before {
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -7px;
+  bottom: 0;
+  border-width: 6px;
+  border-style: solid;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(135deg);
+}
+
+.icono-areaChart {
+  width: 30px;
+  height: 22px;
+  border-top-width: 0;
+  border-right-width: 0;
+  border-color: transparent;
+  box-shadow: -2px 2px;
+  overflow: hidden;
+  margin: 4px 0 8px 4px;
+}
+
+.icono-areaChart:before {
+  position: absolute;
+  left: 0;
+  bottom: 7px;
+  border: 6px solid transparent;
+  border-bottom-color: currentColor;
+  box-shadow: 0 7px;
+}
+
+.icono-areaChart:after {
+  position: absolute;
+  left: 11px;
+  bottom: 4px;
+  border-width: 0 6px 13px;
+  border-style: solid;
+  border-color: transparent;
+  border-bottom-color: currentColor;
+  box-shadow: 0 4px;
+}
+
+.icono-barChart {
+  width: 30px;
+  height: 22px;
+  border-top-width: 0;
+  border-right-width: 0;
+  border-color: transparent;
+  box-shadow: -2px 2px;
+  overflow: hidden;
+  box-shadow: -2px 2px;
+  margin: 4px 0 8px 4px;
+}
+
+.icono-barChart:before {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  height: 15px;
+  box-shadow: inset 0 -8px 0 0, 6px 0, 12px 7px, 18px 5px;
+}
+
+.icono-pieChart {
+  width: 0;
+  height: 0;
+  border: 15px solid;
+  border-right-color: transparent;
+  border-radius: 50%;
+  transform: rotate(-45deg);
+  margin: 2px;
+}
+
+.icono-pieChart:before {
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -11px;
+  top: -14px;
+  border: 14px solid;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  border-radius: 50%;
+}
+
+.icono-eye {
+  border-radius: 80% 20%;
+  transform: rotate(45deg);
+  border-width: 2px 1px 1px 2px;
+  height: 28px;
+  width: 28px;
+  margin: 3px 3px;
+}
+
+.icono-eye:before {
+  border-radius: 50%;
+  box-shadow: 0 -3px 0 3px inset;
+  height: 11px;
+  width: 11px;
+}
+
+.icono-smile,
+.icono-meh,
+.icono-frown {
+  border-radius: 50%;
+  height: 30px;
+  width: 30px;
+  margin: 2px;
+}
+
+.icono-smile:before,
+.icono-meh:before,
+.icono-frown:before {
+  border-radius: 50%;
+  box-shadow: 8px 0 0 0, 0 0 0 2px inset;
+  height: 4px;
+  width: 4px;
+  left: 7px;
+  position: absolute;
+  top: 27%;
+}
+
+.icono-smile:after,
+.icono-meh:after,
+.icono-frown:after {
+  border-radius: 50%;
+  transform: translateX(-50%);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  height: 16px;
+  left: 50%;
+  position: absolute;
+  top: 6%;
+  width: 16px;
+}
+
+.icono-frown:before {
+  border-radius: 50%;
+  box-shadow: 8px 0 0 0, 0 0 0 2px inset;
+  height: 4px;
+  width: 4px;
+  left: 7px;
+  position: absolute;
+  top: 27%;
+}
+
+.icono-frown:after {
+  border-radius: 50%;
+  transform: translateX(-50%);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  width: 16px;
+  height: 16px;
+  left: 50%;
+  position: absolute;
+  top: 6%;
+  transform: translateX(-50%) rotate(180deg);
+  transform-origin: center 85%;
+}
+
+.icono-meh:before {
+  border-radius: 50%;
+  box-shadow: 8px 0 0 0, 0 0 0 2px inset;
+  height: 4px;
+  width: 4px;
+  left: 7px;
+  position: absolute;
+  top: 27%;
+}
+
+.icono-meh:after {
+  transform: translateX(-50%);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  height: 16px;
+  left: 50%;
+  position: absolute;
+  top: 0;
+  width: 12px;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-radius: 0;
+}
+
+.icono-cup {
+  width: 22px;
+  height: 16px;
+  box-shadow: inset 0 0 0 32px;
+  border-radius: 0 0 5px 5px;
+  margin: 6px 6px 12px;
+}
+
+.icono-cup:before {
+  position: absolute;
+  right: -3px;
+  top: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px;
+}
+
+.icono-cup:after {
+  bottom: -5px;
+  width: 26px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  box-shadow: inset 0 0 0 32px;
+}
+
+.icono-cart {
+  width: 22px;
+  height: 0;
+  border-width: 14px 6px 0 2px;
+  border-style: solid;
+  border-right-color: transparent;
+  border-left-color: transparent;
+  margin: 9px 3px 11px 9px;
+}
+
+.icono-cart:before {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 32px, 13px 0, -4px -20px 0 1px;
+  top: 2px;
+  left: -3px;
+}
+
+[class*='icono-'] {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  font-style: normal;
+  color: currentColor;
+  text-align: left;
+  text-indent: -9999px;
+  direction: ltr;
+}
+
+[class*='icono-']::before,
+[class*='icono-']::after {
+  box-sizing: content-box;
+  content: '';
+  pointer-events: none;
+}
+
+[class*='icono-'],
+[class*='icono-'] * {
+  box-sizing: border-box;
+}

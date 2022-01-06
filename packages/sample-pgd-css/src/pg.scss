@@ -1,0 +1,49 @@
+/*!
+ * @pgd/components | MIT License
+ *
+ * the css implementation of the prospect garden design system
+ *
+ * Author: jinyaoo <jinyaoo@qq.com>
+ * Source: https://github.com/prospect-garden-design/prospect-garden-design/tree/main/packages/components
+ * Documentation:
+ */
+
+// ------- global variables for themes ----------------- //
+@use '../../design-tokens/dist/pg-global-vars';
+
+// ----------- config, variables, css reset ------------ //
+@use 'base/variables' with ($prefix4pg: "",$theme-name: pg-t-pg); // null is ok
+// @use 'base/variables' with ($prefix4pg: pg-);
+@use 'base/reset-normalize';
+@use 'base/reset-base';
+
+// --------------- layout & navigation ---------------- //
+@use 'layout/container';
+
+@use 'components/navbar';
+@use 'components/sidebar';
+
+// ------------ general html elements & forms ----------- //
+@use 'components/html-list';
+@use 'components/html-table';
+@use 'components/html-details';
+@use 'components/html-elements-common';
+
+@use 'components/forms/forms';
+
+// --------------------- components --------------------- //
+
+@use 'components/button';
+@use 'components/button-group';
+@use 'components/card';
+@use 'components/alert';
+@use 'components/badge';
+@use 'components/breadcrumb';
+@use 'components/dropdown';
+@use 'components/modal';
+@use 'components/tooltip';
+@use 'components/pagination';
+@use 'components/progress';
+
+// ------------------ common css utils ----------------- //
+@use './utilities/utilities';

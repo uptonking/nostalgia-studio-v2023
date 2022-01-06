@@ -1,0 +1,70 @@
+/* #region /folded utils-for-border-and-radius */
+
+// default border: 1px solid black
+
+.border {
+  border: var(--pg-g--size--base--border-width, 1px) solid
+    var(--pg-g--color--border--lm, rgba(0, 0, 0, 0.2)) !important;
+}
+.border-top {
+  border-top: var(--pg-g--size--base--border-width, 1px) solid
+    var(--pg-g--color--border--lm, rgba(0, 0, 0, 0.2)) !important;
+}
+.border-bottom {
+  border-bottom: var(--pg-g--size--base--border-width, 1px) solid
+    var(--pg-g--color--border--lm, rgba(0, 0, 0, 0.2)) !important;
+}
+.border-left {
+  border-left: var(--pg-g--size--base--border-width, 1px) solid
+    var(--pg-g--color--border--lm, rgba(0, 0, 0, 0.2)) !important;
+}
+.border-right {
+  border-right: var(--pg-g--size--base--border-width, 1px) solid
+    var(--pg-g--color--border--lm, rgba(0, 0, 0, 0.2)) !important;
+}
+
+.border-none {
+  border: none !important;
+}
+
+.border-0 {
+  border-width: 0 !important;
+}
+
+// 方角，非圆角
+.rounded-0 {
+  border-radius: 0 !important;
+}
+
+.rounded-circle,
+rounded-pill {
+  border-radius: 50% !important;
+}
+
+.rounded {
+  border-radius: 0.25rem !important;
+}
+
+.rounded-start,
+rounded-left {
+  border-bottom-left-radius: 0.25rem !important;
+  border-top-left-radius: 0.25rem !important;
+}
+
+.rounded-end,
+rounded-right {
+  border-top-right-radius: 0.25rem !important;
+  border-bottom-right-radius: 0.25rem !important;
+}
+
+.rounded-top {
+  border-top-left-radius: 0.25rem !important;
+  border-top-right-radius: 0.25rem !important;
+}
+
+.rounded-bottom {
+  border-bottom-right-radius: 0.25rem !important;
+  border-bottom-left-radius: 0.25rem !important;
+}
+
+/* #endregion /folded utils-for-border-and-radius */

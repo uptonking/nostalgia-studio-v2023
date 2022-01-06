@@ -1,0 +1,91 @@
+@use '../../../design-tokens/dist/pg/button-group-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}btn-group,
+.#{v.$prefix4pg}btn-group-vertical {
+  // @extend .#{v.$theme-name};
+
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+
+  > .btn {
+    position: relative;
+    flex: 1 1 auto;
+  }
+
+  // > .btn:hover,
+  > .btn:focus,
+  > .btn:active,
+  > .btn.active {
+    // 让当前获得焦点的btn能突出显示，如边框不被遮挡
+    z-index: 1;
+  }
+}
+
+.#{v.$prefix4pg}btn-group {
+  // 除第1个btn外，其他btn的左边框左移1px，消除双边框
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) {
+    margin-left: calc((-1) * var(--pg-c--button--border-width));
+  }
+
+  // 除第1个btn外，其他btn的左上角、左下角设为直角
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) > .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  // 除最后一个btn外，其他btn的右上角、右下角设为直角
+  > .btn:not(:last-child),
+  > .btn-group:not(:last-child) > .btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+// container of multiple .btn-group, horizontal only
+.#{v.$prefix4pg}btn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+
+  background-color: var(--pg-c--button-group--toolbar--bg-color);
+
+  > .btn-group {
+    margin: 0.25rem 0.25rem;
+  }
+}
+
+.#{v.$prefix4pg}btn-group-vertical {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  > .btn,
+  > .btn-group {
+    // set all buttons to the same width
+    width: 100%;
+  }
+
+  // 除第1个btn外，其他btn的上边框上移1px，消除双边框
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) {
+    margin-top: calc((-1) * var(--pg-c--button--border-width));
+  }
+
+  // 除第1个btn外，其他btn的左上角、右上角角设为直角
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) > .btn {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  // 除最后一个btn外，其他btn的左下角、右下角设为直角
+  > .btn:not(:last-child),
+  > .btn-group:not(:last-child) > .btn {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}

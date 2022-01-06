@@ -1,0 +1,32 @@
+// global flags
+$prefix4pg: pg- !default;
+
+// predefined themes: pg, bootstrap, pico
+// $theme-name: pg-t-pg !default;
+$theme-name: pg-t-pg !default;
+
+$breakpoints: (
+  // xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+) !default;
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1320px,
+) !default;
+
+// ----- comment vars with prefix test- before build ---- //
+$test-var: null !default;
+// $test-var: 16 !default;
+// the following class wont be present in the output, for test only
+.aaaa {
+  // color: teal;
+  font-size: $test-var;
+}

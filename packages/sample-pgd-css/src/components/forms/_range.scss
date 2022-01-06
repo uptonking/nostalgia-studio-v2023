@@ -1,0 +1,81 @@
+@use '../../base/variables' as v;
+
+.#{v.$prefix4pg}form-range {
+  appearance: none;
+  width: 100%;
+  height: var(--pg-c--form-range--height);
+  padding: 0;
+  border-radius: var(--pg-c--form-range--border-radius);
+  background-color: transparent;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &.is-invalid {
+    box-shadow: var(--pg-c--form-range--invalid--box-shadow);
+  }
+
+  &::-moz-focus-outer {
+    border: 0;
+  }
+
+  // 代表范围的数轴，默认一横线
+  &::-webkit-slider-runnable-track {
+    appearance: none;
+    width: 100%;
+    height: var(--pg-c--form-range--slider-track--height);
+    border-radius: var(--pg-c--form-range--slider-track--border-radius);
+    border: var(--pg-c--form-range--slider-track--border-width) solid;
+    color: transparent;
+    background-color: var(--pg-c--form-range--slider-track--bg-color);
+    border-color: var(--pg-c--form-range--slider-track--border-color);
+    box-shadow: var(--pg-c--form-range--slider-track--box-shadow);
+  }
+
+  // 当前数值指示器，默认圆形
+  &::-webkit-slider-thumb {
+    box-sizing: border-box;
+    appearance: none;
+    margin-top: calc(
+      (-1) *
+        (
+          (
+              var(--pg-c--form-range--slider-thumb--height) -
+                var(--pg-c--form-range--slider-track--height)
+            ) / 2
+        )
+    );
+    // margin-top: 0.25rem;
+
+    width: var(--pg-c--form-range--slider-thumb--width);
+    height: var(--pg-c--form-range--slider-thumb--height);
+    border-radius: var(--pg-c--form-range--slider-thumb--border-radius);
+    border: var(--pg-c--form-range--slider-thumb--border-width) solid;
+    color: transparent;
+    background-color: var(--pg-c--form-range--slider-thumb--bg-color);
+    border-color: var(--pg-c--form-range--slider-thumb--border-color);
+    box-shadow: var(--pg-c--form-range--slider-thumb--box-shadow);
+  }
+}
+
+.#{v.$prefix4pg}range-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+
+  & > .form-range {
+    position: relative;
+    flex: 1 1 0%;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+}

@@ -1,0 +1,311 @@
+@use '../../../../design-tokens/dist/pg/form-vars';
+@use '../../base/variables' as v;
+
+// .#{v.$prefix4pg}form,
+.#{v.$prefix4pg}form-control,
+.#{v.$prefix4pg}form-group,
+.#{v.$prefix4pg}form-row,
+.#{v.$prefix4pg}label,
+.#{v.$prefix4pg}fieldset,
+.#{v.$prefix4pg}legend,
+.#{v.$prefix4pg}custom-checkbox,
+.#{v.$prefix4pg}custom-radio,
+.#{v.$prefix4pg}custom-switch,
+.#{v.$prefix4pg}form-range,
+.#{v.$prefix4pg}range-group,
+.#{v.$prefix4pg}custom-file {
+  // @extend .#{v.$theme-name};
+}
+
+// only for <fieldset>
+.fieldset {
+  padding: 0;
+  border-width: 0;
+}
+
+.label {
+  display: inline-block;
+  margin-bottom: var(--pg-c--form--label--margin-bottom);
+}
+
+.label.required::after {
+  content: '*';
+  color: var(--pg-c--form--required--text-color);
+  margin-left: 0.1875rem;
+}
+
+.legend {
+  display: block;
+  margin-bottom: var(--pg-c--form--legend--margin-bottom);
+}
+
+.form-group {
+  margin-bottom: var(--pg-c--form--group--margin-bottom);
+}
+
+// form rows, usually used with grid utilities
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: var(--pg-c--form--row--margin-bottom);
+
+  &.row-eq-spacing > [class^='col'] {
+    padding-left: var(--pg-c--form--col--padding-x);
+    padding-right: var(--pg-c--form--col--padding-x);
+  }
+
+  &.row-eq-spacing > [class^='col']:first-child {
+    padding-left: 0;
+  }
+
+  &.row-eq-spacing > [class^='col']:last-child {
+    padding-right: 0;
+  }
+}
+
+.form-text {
+  font-size: var(--pg-c--form--text--font-size);
+  padding-top: var(--pg-c--form--text--padding-top);
+  padding-bottom: var(--pg-c--form--text--padding-bottom);
+  border-bottom: var(--pg-c--form--text--border-width)
+    var(--pg-c--form--text--border-style) var(--pg-c--form--text--border-color);
+  color: var(--pg-c--form--text--text-color);
+}
+
+.invalid-feedback {
+  font-size: var(--pg-c--form--invalid--font-size);
+  padding-top: var(--pg-c--form--invalid--padding-top);
+  padding-bottom: var(--pg-c--form--invalid--padding-bottom);
+  color: var(--pg-c--form--invalid--text-color);
+}
+
+// form inline
+.form-inline,
+.form-inline .form-group {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+
+.form-inline .form-group {
+  width: 100%;
+}
+
+.form-inline > .form-control,
+.form-inline > .form-range,
+.form-inline > .input-group,
+.form-inline .form-group > .form-control,
+.form-inline .form-group > .form-range,
+.form-inline .form-group > .input-group {
+  position: relative;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.form-inline > label,
+.form-inline > .custom-control,
+.form-inline > .form-text,
+.form-inline > .invalid-feedback,
+.form-inline .form-group > label,
+.form-inline .form-group > .custom-control,
+.form-inline .form-group > .form-text,
+.form-inline .form-group > .invalid-feedback {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.form-inline > label,
+.form-inline > .form-text,
+.form-inline > .invalid-feedback,
+.form-inline .form-group > label,
+.form-inline .form-group > .form-text,
+.form-inline .form-group > .invalid-feedback {
+  margin: 0;
+  padding: 0;
+  border: none;
+  white-space: nowrap;
+}
+
+.form-inline > .form-control:not(:last-child),
+.form-inline > .form-range:not(:last-child),
+.form-inline > .input-group:not(:last-child),
+.form-inline > label:not(:last-child),
+.form-inline > .custom-control,
+.form-inline > .btn:not(:last-child),
+.form-inline > a.btn:not(:last-child),
+.form-inline > .form-text:not(:last-child),
+.form-inline > .invalid-feedback:not(:last-child),
+.form-inline .form-group > .form-control:not(:last-child),
+.form-inline .form-group > .form-range:not(:last-child),
+.form-inline .form-group > .input-group:not(:last-child),
+.form-inline .form-group > label:not(:last-child),
+.form-inline .form-group > .custom-control,
+.form-inline .form-group > .btn:not(:last-child),
+.form-inline .form-group > a.btn:not(:last-child),
+.form-inline .form-group > .form-text:not(:last-child),
+.form-inline .form-group > .invalid-feedback:not(:last-child) {
+  margin-right: var(--pg-c--form--inline--margin-x);
+}
+
+// form inputs
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: var(--pg-c--form-input--height);
+  padding-left: var(--pg-c--form-input--padding-x);
+  padding-right: var(--pg-c--form-input--padding-x);
+  border-radius: var(--pg-c--form-input--border-radius);
+  border: var(--pg-c--form-input--border-width) solid;
+
+  color: var(--pg-c--form-input--text-color);
+  background-color: var(--pg-c--form-input--bg-color);
+  border-color: var(--pg-c--form-input--border-color);
+  box-shadow: var(--pg-c--form-input--box-shadow);
+  appearance: none;
+
+  &:hover {
+    color: var(--pg-c--form-input--hover--text-color);
+    background-color: var(--pg-c--form-input--hover--bg-color);
+    border-color: var(--pg-c--form-input--hover--border-color);
+    box-shadow: var(--pg-c--form-input--hover--box-shadow);
+  }
+
+  &:focus {
+    color: var(--pg-c--form-input--focus--text-color);
+    background-color: var(--pg-c--form-input--focus--bg-color);
+    border-color: var(--pg-c--form-input--focus--border-color);
+    box-shadow: var(--pg-c--form-input--focus--box-shadow);
+    outline: none;
+  }
+
+  &.disabled,
+  &.disabled:hover {
+    cursor: not-allowed;
+    opacity: 0.6;
+    color: var(--pg-c--form-input--disabled--text-color);
+    background-color: var(--pg-c--form-input--disabled--bg-color);
+    border-color: var(--pg-c--form-input--disabled--border-color);
+    box-shadow: var(--pg-c--form-input--disabled--box-shadow);
+  }
+}
+
+.form-control-sm {
+  height: var(--pg-c--form-input--sm--height);
+  padding-left: var(--pg-c--form-input--sm--padding-x);
+  padding-right: var(--pg-c--form-input--sm--padding-x);
+  font-size: var(--pg-c--form-input--sm--font-size);
+}
+
+.form-control-lg {
+  height: var(--pg-c--form-input--lg--height);
+  padding-left: var(--pg-c--form-input--lg--padding-x);
+  padding-right: var(--pg-c--form-input--lg--padding-x);
+  font-size: var(--pg-c--form-input--lg--font-size);
+}
+
+.form-control::placeholder {
+  color: var(--pg-c--form-input--placeholder--text-color);
+}
+
+// invalid
+.form-group.is-invalid .form-control,
+.form-control.is-invalid {
+  color: var(--pg-c--form-input--invalid--text-color);
+  background-color: var(--pg-c--form-input--invalid--bg-color);
+  border-color: var(--pg-c--form-input--invalid--border-color);
+  box-shadow: var(--pg-c--form-input--invalid--box-shadow);
+
+  &:hover {
+    color: var(--pg-c--form-input--invalid--hover--text-color);
+    background-color: var(--pg-c--form-input--invalid--hover--bg-color);
+    border-color: var(--pg-c--form-input--invalid--hover--border-color);
+    box-shadow: var(--pg-c--form-input--invalid--hover--box-shadow);
+  }
+
+  &:focus {
+    color: var(--pg-c--form-input--invalid--focus--text-color);
+    background-color: var(--pg-c--form-input--invalid--focus--bg-color);
+    border-color: var(--pg-c--form-input--invalid--focus--border-color);
+    box-shadow: var(--pg-c--form-input--invalid--focus--box-shadow);
+    outline: none;
+  }
+}
+
+.form-control.is-invalid::placeholder {
+  color: var(--pg-c--form-input--invalid--placeholder--text-color);
+}
+
+// textarea
+textarea {
+  &.form-control {
+    max-width: 100%;
+    min-height: 6.25rem; // 100
+    padding: var(--pg-c--form-input--padding-x);
+    line-height: var(--pg-c--form-input--textarea--line-height);
+  }
+
+  &.form-control-sm {
+    min-height: 5rem;
+    padding: var(--pg-c--form-input--padding-x);
+  }
+
+  &.form-control-lg {
+    min-height: 8.75rem;
+    padding: var(--pg-c--form-input--lg--padding-x);
+  }
+}
+
+// form input group
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  width: 100%;
+
+  & > .form-control {
+    position: relative;
+    flex: 1 1 0%;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+}
+
+.input-group-prepend,
+.input-group-append {
+  display: flex;
+
+  & > .btn {
+    position: relative;
+  }
+}
+
+.input-group-text {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: var(--pg-c--form-input--group--text--padding-x);
+  padding-right: var(--pg-c--form-input--group--text--padding-x);
+  border-radius: var(--pg-c--form-input--group--text--border-radius);
+  border: var(--pg-c--form-input--group--text--border-width) solid;
+  text-align: center;
+  color: var(--pg-c--form-input--group--text--text-color);
+  background-color: var(--pg-c--form-input--group--text--bg-color);
+  border-color: var(--pg-c--form-input--group--text--border-color);
+  white-space: nowrap;
+}
+
+// number input
+
+.form-number::-webkit-outer-spin-button,
+.form-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.form-number {
+  -moz-appearance: textfield;
+}

@@ -1,0 +1,18 @@
+//*-- Outdent --*\\
+.icono-outdent {
+  @extend .icono-indent;
+  &:before {
+    // @extend .icono-indent:before;
+
+    // copied from .icono-indent:before
+    @extend %stickCenterV;
+    left: -1 * $U8;
+    border: $U5 solid;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-right-width: 0;
+
+    border-left-width: 0;
+    border-right-width: $U5;
+  }
+}

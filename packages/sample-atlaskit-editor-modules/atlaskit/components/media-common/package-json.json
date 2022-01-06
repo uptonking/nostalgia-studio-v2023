@@ -1,0 +1,56 @@
+{
+  "name": "@atlaskit/media-common",
+  "version": "2.8.0",
+  "description": "Includes common utilities used by other media packages",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": "https://bitbucket.org/atlassian/atlassian-frontend",
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "module:es2019": "dist/es2019/index.js",
+  "types": "dist/types/index.d.ts",
+  "sideEffects": false,
+  "atlaskit:src": "src/index.ts",
+  "af:exports": {
+    "./downloadUrl": "./src/downloadUrl.ts",
+    "./mediaFeatureFlags": "./src/mediaFeatureFlags.ts",
+    "./analytics": "./src/analytics/index.ts",
+    "./docs": "./src/docs/index.ts",
+    "./mediaTypeUtils": "./src/mediaTypeUtils/index.ts",
+    ".": "./src/index.ts"
+  },
+  "atlassian": {
+    "team": "Media Experience",
+    "inPublicMirror": true,
+    "releaseModel": "scheduled",
+    "website": {
+      "name": "Media Common"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@atlaskit/analytics-gas-types": "^5.0.5",
+    "@atlaskit/analytics-namespaced-context": "^6.2.0",
+    "@atlaskit/analytics-next": "^8.1.1",
+    "@atlaskit/section-message": "^6.0.0",
+    "@babel/runtime": "^7.0.0"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "*",
+    "@atlaskit/media-test-helpers": "^28.6.0",
+    "@atlassian/atlassian-frontend-prettier-config-1.0.1": "npm:@atlassian/atlassian-frontend-prettier-config@1.0.1",
+    "enzyme": "^3.10.0",
+    "lodash": "^4.17.15",
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "typescript": "3.9.6"
+  },
+  "prettier": "@atlassian/atlassian-frontend-prettier-config-1.0.1"
+}

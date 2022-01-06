@@ -1,0 +1,158 @@
+@use '../../../design-tokens/dist/pg/dropdown-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}dropdown,
+.#{v.$prefix4pg}dropdown-menu {
+  // @extend .#{v.$theme-name};
+}
+
+.#{v.$prefix4pg}dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.#{v.$prefix4pg}dropdown-menu {
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 10;
+  width: auto;
+  min-width: var(--pg-c--dropdown--menu--min-width);
+  padding: var(--pg-c--dropdown--menu--padding);
+  border-radius: var(--pg-c--dropdown--menu--border-radius);
+  border: var(--pg-c--dropdown--menu--border-width) solid;
+  text-align: left;
+  color: var(--pg-c--dropdown--menu--text-color);
+  background-color: var(--pg-c--dropdown--menu--bg-color);
+  // background-image: var(--pg-c--dropdown--menu-bg-image);
+  border-color: var(--pg-c--dropdown--menu--border-color);
+  box-shadow: var(--pg-c--dropdown--menu--box-shadow);
+}
+
+.dropdown.show .dropdown-menu,
+.dropdown.toggle-on-hover:hover .dropdown-menu {
+  visibility: visible;
+  opacity: 1;
+  transition: transform 0.1s, opacity 0.075s;
+}
+
+.dropdown-content {
+  display: block;
+  padding: var(--pg-c--dropdown--content--padding);
+}
+
+.#{v.$prefix4pg}dropdown-divider {
+  height: var(--pg-c--dropdown--divider--height);
+  background-color: var(--pg-c--dropdown--divider--bg-color);
+}
+
+.#{v.$prefix4pg}dropdown-item {
+  display: block;
+  white-space: nowrap;
+  padding: var(--pg-c--dropdown--item--padding);
+  border-radius: var(--pg-c--dropdown--item--border-radius);
+  color: var(--pg-c--dropdown--item--text-color);
+  background-color: var(--pg-c--dropdown--item--bg-color);
+
+  &:hover {
+    text-decoration: none;
+    color: var(--pg-c--dropdown--item--hover--text-color);
+    background-color: var(--pg-c--dropdown--item--hover--bg-color);
+  }
+
+  &:focus {
+    box-shadow: var(--pg-c--dropdown--item--focus--box-shadow);
+    // outline: var(--pg-c--dropdown--item-outline-focus-visible);
+  }
+}
+
+.#{v.$prefix4pg}dropdown-header {
+  font-size: var(--pg-c--dropdown--header--font-size);
+  font-weight: var(--pg-c--dropdown--header--font-weight);
+  padding: var(--pg-c--dropdown--header--padding);
+  margin: var(--pg-c--dropdown--header--margin);
+  color: var(--pg-c--dropdown--header--text-color);
+}
+
+/* Normal dropdown */
+
+.dropdown .dropdown-menu {
+  top: unset;
+  right: unset;
+  bottom: 0;
+  left: 0;
+  // transform: translateY(100%) scale(var(--pg-c--dropdown--menu-scale-before));
+  transform: translateY(100%) scale(0.975);
+}
+
+.dropdown.show .dropdown-menu,
+.dropdown.toggle-on-hover:hover .dropdown-menu {
+  transform: translateY(100%) scale(1);
+}
+
+.dropdown .dropdown-menu-center {
+  top: unset;
+  right: unset;
+  bottom: 0;
+  left: 50%;
+  // transform: translate(-50%, 100%) scale(var(--pg-c--dropdown--menu-scale-before));
+}
+
+.dropdown.show .dropdown-menu-center,
+.dropdown.toggle-on-hover:hover .dropdown-menu-center {
+  transform: translate(-50%, 100%) scale(1);
+}
+
+.dropdown .dropdown-menu-right {
+  top: unset;
+  right: 0;
+  bottom: 0;
+  left: unset;
+  // transform: translateY(100%) scale(var(--pg-c--dropdown--menu-scale-before));
+}
+
+.dropdown.show .dropdown-menu-right,
+.dropdown.toggle-on-hover:hover .dropdown-menu-right {
+  transform: translateY(100%) scale(1);
+}
+
+/* Dropup */
+
+.dropup .dropdown-menu {
+  top: 0;
+  right: unset;
+  bottom: unset;
+  left: 0;
+  // transform: translateY(-100%) scale(var(--pg-c--dropdown--menu-scale-before));
+}
+
+.dropup.show .dropdown-menu,
+.dropup.toggle-on-hover:hover .dropdown-menu {
+  transform: translateY(-100%) scale(1);
+}
+
+.dropup .dropdown-menu-center {
+  top: 0;
+  right: unset;
+  bottom: unset;
+  left: 50%;
+  // transform: translate(-50%, -100%) scale(var(--pg-c--dropdown--menu-scale-before));
+}
+
+.dropup.show .dropdown-menu-center,
+.dropup.toggle-on-hover:hover .dropdown-menu-center {
+  transform: translate(-50%, -100%) scale(1);
+}
+
+.dropup .dropdown-menu-right {
+  top: 0;
+  right: 0;
+  bottom: unset;
+  left: unset;
+  // transform: translateY(-100%) scale(var(--pg-c--dropdown--menu-scale-before));
+}
+
+.dropup.show .dropdown-menu-right,
+.dropup.toggle-on-hover:hover .dropdown-menu-right {
+  transform: translateY(-100%) scale(1);
+}

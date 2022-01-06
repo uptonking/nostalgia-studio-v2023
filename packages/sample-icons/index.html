@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>css icons</title>
+    <link rel="stylesheet" href="dist/icono.css" />
+    <style type="text/css">
+      .icons-container {
+        display: flex;
+        flex-flow: row wrap;
+        /* justify-content: space-around; */
+      }
+
+      .icon-card {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        /* margin: 16px; */
+      }
+
+      span {
+        position: relative;
+        display: inline-block;
+        margin: 20px;
+        padding: 20px;
+        border: 1px solid #bbb;
+        color: #bbb;
+      }
+
+      /* span::before,
+      span::after {
+        position: absolute;
+        content: '';
+        background-color: #777;
+      }
+      span::after {
+        width: 20px;
+        height: 1px;
+        bottom: -20px;
+        right: -32px;
+      }
+      span::before {
+        height: 17px;
+        width: 1px;
+        bottom: -28px;
+        right: -23px;
+      } */
+      span i[class*='icono'] {
+        /* transition: all 0.2s; */
+      }
+
+      span:hover {
+        color: #000;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="icons-container">
+      <!-- <span class="icono-hamburger">没有i元素就无法正常显示图标</span> -->
+      <!-- <div class="icon-card">
+        <span><i class="icono-hamburger">hello 世界</i></span>
+        <p>icono-hamburger</p>
+      </div> -->
+    </div>
+
+    <script>
+      const iconoClassnames = [
+        'hamburger',
+        'plus',
+        'cross',
+        'check',
+        'circle',
+        'caretUp',
+        'caretDown',
+        'caretLeft',
+        'caretRight',
+        'ellipsis',
+        'tiles',
+        'list',
+        'sliders',
+        'outdent',
+        'indent',
+        'chain',
+        'search',
+        'filter',
+        'forbidden',
+        'trash',
+        'dropper',
+        'spinner',
+        'spinner spin step',
+        'user',
+        'sun',
+        'moon',
+        'clock',
+        'calendar',
+        'home',
+        'heart',
+        'bookmark',
+        'bookmarkEmpty',
+        'pin',
+        'tag',
+        'indent',
+        'outdent',
+        'mail',
+        'comment',
+        'commentEmpty',
+        'file',
+        'folder',
+        'document',
+        'image',
+        'video',
+        'music',
+        'share',
+        'sync',
+        'reset',
+        'barChart',
+        'areaChart',
+        'pieChart',
+        'eye',
+        'smile',
+        'frown',
+        'meh',
+        'cup',
+        'cart',
+      ];
+
+      const iconsContainerDomArr = iconoClassnames.map(
+        (iconName) =>
+          `<div class="icon-card">
+            <span><i class="icono-${iconName}">hello 世界</i></span>
+          <p>icono-${iconName}</p>
+      </div>
+      `,
+      );
+
+      document.querySelector(
+        '.icons-container',
+      ).innerHTML = iconsContainerDomArr.join('');
+    </script>
+  </body>
+</html>

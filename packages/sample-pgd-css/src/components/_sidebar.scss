@@ -1,0 +1,130 @@
+@use '../../../design-tokens/dist/pg/sidebar-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}sidebar {
+  // @extend .#{v.$theme-name};
+
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--pg-c--sidebar--width);
+  max-width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 20;
+  background-color: var(--pg-c--sidebar--bg-color);
+  // background-image: var(--pg-c--sidebar--bg-image);
+  border-right: var(--pg-c--sidebar--border-width) solid
+    var(--pg-c--sidebar--border-color);
+  box-shadow: var(--pg-c--sidebar--box-shadow);
+}
+
+.sidebar-menu {
+  margin-top: var(--pg-c--sidebar--menu--margin-y);
+  margin-bottom: var(--pg-c--sidebar--menu--margin-y);
+}
+
+.sidebar-content {
+  display: block;
+  padding: var(--pg-c--sidebar--content--padding);
+  margin: var(--pg-c--sidebar--content--margin-y)
+    var(--pg-c--sidebar--content--margin-x);
+}
+
+.sidebar-divider {
+  height: var(--pg-c--sidebar--divider--height);
+  padding: var(--pg-c--sidebar--divider--padding);
+  margin: var(--pg-c--sidebar--divider--margin);
+  background-color: var(--pg-c--sidebar--divider--bg-color);
+}
+
+.sidebar-link {
+  display: block;
+  height: auto;
+  padding: var(--pg-c--sidebar--link--padding-y)
+    var(--pg-c--sidebar--link--padding-x);
+  margin: var(--pg-c--sidebar--link--margin);
+  min-height: var(--pg-c--sidebar--link--min-height);
+  border: var(--pg-c--sidebar--link--border-width) solid;
+  border-radius: var(--pg-c--sidebar--link--border-radius);
+  border-color: var(--pg-c--sidebar--link--border-color);
+  background-color: var(--pg-c--sidebar--link--bg-color);
+  color: var(--pg-c--sidebar--link--text-color);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+    border-color: var(--pg-c--sidebar--link--hover--border-color);
+    background-color: var(--pg-c--sidebar--link--hover--bg-color);
+    color: var(--pg-c--sidebar--link--hover--text-color);
+  }
+
+  &:focus-visible {
+    text-decoration: none;
+    box-shadow: inset var(--pg-c--sidebar--link--focus--box-shadow);
+    outline: var(--pg-c--sidebar--link--focus--outline);
+  }
+
+  &.active {
+    border-color: var(--pg-c--sidebar--link--active--border-color);
+    background-color: var(--pg-c--sidebar--link--active--bg-color);
+    color: var(--pg-c--sidebar--link--active--text-color);
+  }
+}
+
+.sidebar-title {
+  padding: var(--pg-c--sidebar--title--padding);
+  margin: var(--pg-c--sidebar--title--margin-y)
+    var(--pg-c--sidebar--title--margin-x);
+  font-size: var(--pg-c--sidebar--title--font-size);
+  font-weight: var(--pg-c--sidebar--title--font-weight);
+  color: var(--pg-c--sidebar--title--text-color);
+}
+
+.sidebar-link-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--pg-c--sidebar--icon--width);
+  height: var(--pg-c--sidebar--icon--height);
+  font-size: var(--pg-c--sidebar--icon--font-size);
+  margin-right: var(--pg-c--sidebar--icon--margin-right);
+  color: var(--pg-c--sidebar--icon--text-color);
+  background-color: var(--pg-c--sidebar--icon--bg-color);
+  border: var(--pg-c--sidebar--icon--border-width) solid;
+  border-color: var(--pg-c--sidebar--icon--border-color);
+  border-radius: var(--pg-c--sidebar--icon--border-radius);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  padding: var(--pg-c--sidebar--brand--padding);
+  margin: var(--pg-c--sidebar--brand--margin-y)
+    var(--pg-c--sidebar--brand--margin-x);
+  font-size: var(--pg-c--sidebar--brand--font-size);
+  font-weight: var(--pg-c--sidebar--brand--font-weight);
+  color: var(--pg-c--sidebar--brand--text-color);
+
+  &:hover {
+    text-decoration: none;
+    color: var(--pg-c--sidebar--brand--hover--text-color);
+  }
+
+  &:focus {
+    box-shadow: var(--pg-c--sidebar--link--focus--box-shadow);
+    outline: var(--pg-c--sidebar--link--focus--outline);
+  }
+
+  & img {
+    height: var(--pg-c--sidebar--brand--image--height);
+    margin-right: var(--pg-c--sidebar--brand--image--margin-right);
+  }
+}

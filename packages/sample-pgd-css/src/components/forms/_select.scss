@@ -1,0 +1,35 @@
+select.form-control {
+  text-transform: none;
+}
+
+select.form-control:not([multiple]) {
+  cursor: pointer;
+  padding-right: var(--pg-c--form-select--padding-right);
+  // background-size: var(--pg-c--form-select--bg-size);
+  // background-repeat: var(--pg-c--form-select--bg-repeat);
+  // background-position: var(--pg-c--form-select--bg-position);
+  // background-image: var(--pg-c--form-select--bg-image);
+
+  & > option {
+    color: var(--pg-c--form-select--option--text-color);
+    background-color: var(--pg-c--form-select--option--bg-color);
+
+    &:hover{
+      background-color: var(--pg-c--form-select--option--hover--bg-color);
+    }
+  }
+}
+
+select.form-control[multiple] {
+  overflow: auto;
+  height: auto;
+  padding: var(--pg-c--form-input--padding-x);
+
+  & > option:not(:checked) {
+    color: var(--pg-c--form-input--text-color);
+  }
+
+  & > option:disabled {
+    color: var(--pg-c--form-select--item--disabled--text-color);
+  }
+}

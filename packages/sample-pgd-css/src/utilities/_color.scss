@@ -1,0 +1,59 @@
+/* #region /folded utils-for-color */
+
+.bg-white {
+  // background-color: var(--white-color) !important;
+  background-color: #ffffff !important;
+}
+
+.bg-light {
+  // background-color: var(--gray-color-light) !important;
+  // background-color: #f1f1f1 !important;
+  background-color: var(--pg-g--color--gray--light--val) !important;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+.bg-black {
+  // background-color: var(--black-color) !important;
+  background-color: #000000 !important;
+}
+
+.bg-dark {
+  // background-color: var(--dark-color) !important;
+  background-color: #333 !important;
+}
+
+.bg-dark-light {
+  // background-color: var(--dark-color-light) !important;
+  background-color: #777 !important;
+}
+
+.bg-primary {
+  background-color: var(--pg-g--color--brand--primary--val) !important;
+}
+
+.bg-secondary {
+  background-color: var(--pg-g--color--brand--secondary--val) !important;
+}
+
+.bg-success {
+  background-color: var(--pg-g--color--semantic--success--val) !important;
+}
+
+.bg-danger {
+  background-color: var(--pg-g--color--semantic--danger--val) !important;
+}
+
+.text-white {
+  // color: var(--white-color) !important;
+  color: #ffffff !important;
+}
+
+.text-light {
+  // color: var(--gray-color-light) !important;
+  color: #f1f1f1 !important;
+}
+
+/* #endregion utils-for-color */

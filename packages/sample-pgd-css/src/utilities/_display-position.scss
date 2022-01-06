@@ -1,0 +1,236 @@
+/* #region /folded utils-for-display-position */
+
+.d-none {
+  display: none !important;
+}
+
+.d-inline {
+  display: inline !important;
+}
+
+.d-inline-block {
+  display: inline-block !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.d-inline-flex {
+  display: inline-flex !important;
+}
+
+.d-grid {
+  display: grid !important;
+}
+
+.d-table {
+  display: table !important;
+}
+
+.d-table-row {
+  display: table-row !important;
+}
+
+.d-table-cell {
+  display: table-cell !important;
+}
+
+.overflow-auto {
+  overflow: auto !important;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.overflow-visible {
+  overflow: visible !important;
+}
+
+.overflow-scroll {
+  overflow: scroll !important;
+}
+
+.float-start {
+  float: left !important;
+}
+
+.float-end {
+  float: right !important;
+}
+
+.float-none {
+  float: none !important;
+}
+
+.visible {
+  visibility: visible !important;
+}
+
+.invisible,
+visible-hidden {
+  visibility: hidden !important;
+}
+
+.position-static {
+  position: static !important;
+}
+
+.position-relative {
+  position: relative !important;
+}
+
+.position-absolute {
+  position: absolute !important;
+}
+
+.position-fixed {
+  position: fixed !important;
+}
+
+.position-sticky {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+}
+
+.ratio {
+  position: relative;
+  width: 100%;
+}
+
+.ratio::before {
+  display: block;
+  // padding-top: var(--bs-aspect-ratio);
+  padding-top: 100%;
+  content: '';
+}
+
+.ratio > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.fixed-bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1030;
+}
+
+.sticky-top {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.align-baseline {
+  vertical-align: baseline !important;
+}
+
+.align-top {
+  vertical-align: top !important;
+}
+
+.align-middle {
+  vertical-align: middle !important;
+}
+
+.align-bottom {
+  vertical-align: bottom !important;
+}
+
+.align-text-bottom {
+  vertical-align: text-bottom !important;
+}
+
+.align-text-top {
+  vertical-align: text-top !important;
+}
+
+.top-0 {
+  top: 0 !important;
+}
+
+.bottom-0 {
+  bottom: 0 !important;
+}
+
+.left-0,
+start-0 {
+  left: 0 !important;
+}
+
+.right-0,
+end-0 {
+  right: 0 !important;
+}
+
+.top-auto {
+  top: auto !important;
+}
+
+.bottom-auto {
+  bottom: auto !important;
+}
+
+.left-auto {
+  left: auto !important;
+}
+
+.right-auto {
+  right: auto !important;
+}
+
+// z-index
+
+.z-0 {
+  z-index: 0 !important;
+}
+
+.z-10 {
+  z-index: 10 !important;
+}
+
+.z-20 {
+  z-index: 20 !important;
+}
+
+.z-30 {
+  z-index: 30 !important;
+}
+
+.z-40 {
+  z-index: 40 !important;
+}
+
+.z-50 {
+  z-index: 50 !important;
+}
+
+.z-auto {
+  z-index: auto !important;
+}
+
+.shadow-none {
+  box-shadow: none !important;
+}
+
+/* #endregion utils-for-display-position */

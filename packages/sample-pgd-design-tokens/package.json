@@ -1,0 +1,25 @@
+{
+  "name": "@pgd/design-tokens",
+  "version": "1.0.0",
+  "description": "automatically generated design tokens for the prospect garden design system",
+  "main": "dist",
+  "scripts": {
+    "build": "rimraf dist && npm run build:tokens",
+    "build:all-tokens": "rimraf dist && ",
+    "build:css": "",
+    "build:tokens": "rimraf dist && node ./scripts/build-tokens.js && npm run build:tokens-post",
+    "build:tokens-post": "fse copy --keepExisting=false dist/halfmoon--dark-vars.css ../css/docs/css/halfmoon--dark-vars.css",
+    "dev": "npm run build",
+    "start": "npm run dev",
+    "test": "jest --config=jest.config.js",
+    "test:log": "node index.js --name nested-a"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@atao60/fse-cli": "^0.0.56",
+    "fs-extra": "^10.0.0",
+    "polished": "^4.1.1",
+    "style-dictionary": "^3.0.0-rc.8",
+    "tinycolor2": "^1.4.2"
+  }
+}

@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Ubuntu',
+    'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Consolas, 'Courier New', monospace;
+}
+
+h1 {
+  color: mediumseagreen;
+  /* color: coral; */
+}

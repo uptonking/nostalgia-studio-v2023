@@ -1,0 +1,51 @@
+@use '../../../design-tokens/dist/pg/card-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}card,
+.#{v.$prefix4pg}card-title,
+.#{v.$prefix4pg}content,
+.#{v.$prefix4pg}content-title {
+  // @extend .#{v.$theme-name};
+}
+
+.content {
+  margin: var(--pg-c--card--content--spacing--val);
+}
+
+.content-title {
+  font-size: var(--pg-c--card--content--title--font-size);
+  margin-top: 0;
+}
+
+.card {
+  position: relative;
+  padding: var(--pg-c--card--content--spacing--val);
+  margin: var(--pg-c--card--content--spacing--val);
+  border: var(--pg-c--card--border-width) solid;
+  border-radius: var(--pg-c--card--border-radius);
+  box-shadow: var(--pg-c--card--box-shadow);
+  border-color: var(--pg-c--card--border-color);
+  background-color: var(--pg-c--card--bg-color);
+  color: var(--pg-c--card--text-color);
+}
+
+.card-title {
+  font-size: var(--pg-c--card--title--font-size);
+  margin-top: 0;
+}
+
+// card padding
+
+.p-card {
+  padding: var(--pg-c--card--content--spacing--val);
+}
+
+.px-card {
+  padding-left: var(--pg-c--card--content--spacing--val);
+  padding-right: var(--pg-c--card--content--spacing--val);
+}
+
+.py-card {
+  padding-top: var(--pg-c--card--content--spacing--val);
+  padding-bottom: var(--pg-c--card--content--spacing--val);
+}

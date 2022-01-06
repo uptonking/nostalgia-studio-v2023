@@ -1,0 +1,109 @@
+@use '../../../design-tokens/dist/pg/html-list-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}ul,
+.#{v.$prefix4pg}ol {
+  // @extend .#{v.$theme-name};
+}
+
+// #region /folded html- ul, ol
+
+.#{v.$prefix4pg}ul,
+.#{v.$prefix4pg}ol {
+  padding-left: var(--pg-c--html-list--padding-left);
+  margin-top: var(--pg-c--html-list--margin-y);
+  margin-bottom: var(--pg-c--html-list--margin-y);
+  list-style-position: var(--pg-c--html-list--style-position);
+
+  &.no-bullet li {
+    list-style-type: none;
+  }
+}
+
+.#{v.$prefix4pg}list-inline {
+  list-style-type: none;
+  padding-left: 0;
+
+  & > li {
+    display: inline-block;
+  }
+
+  & > li:not(:last-child) {
+    margin-right: 0.5rem;
+  }
+}
+
+.ul .ul,
+.ul .ol,
+.ol .ul,
+.ol .ol {
+  padding-left: var(--pg-c--html-list--nested--padding-left);
+}
+
+.ul li,
+.ol li {
+  margin-bottom: var(--pg-c--html-list--item--margin-bottom);
+}
+
+// li:last-child {
+//   margin-bottom: 0;
+// }
+
+.#{v.$prefix4pg}ul {
+  list-style: none;
+  padding-left: var(--pg-c--html-list--ul--padding-left);
+
+  & > li {
+    position: relative;
+    padding-left: var(--pg-c--html-list--ul--item--padding-left);
+  }
+
+  &:not(.no-bullet) > li::before {
+    content: '';
+    position: absolute;
+    top: var(--pg-c--html-list--ul--item--bullet--top);
+    left: var(--pg-c--html-list--ul--item--bullet--left);
+    display: inline-block;
+    width: var(--pg-c--html-list--ul--item--bullet--width);
+    height: var(--pg-c--html-list--ul--item--bullet--height);
+    border-radius: var(--pg-c--html-list--ul--item--bullet--border-radius);
+    border: var(--pg-c--html-list--ul--item--bullet--border-width) solid;
+    background-color: var(--pg-c--html-list--ul--item--bullet--bg-color);
+    border-color: var(--pg-c--html-list--ul--item--bullet--border-color);
+    box-shadow: var(--pg-c--html-list--ul--item--bullet--box-shadow);
+  }
+}
+
+.#{v.$prefix4pg}ol {
+  list-style: none;
+  counter-reset: ordered-list-counter;
+  padding-left: var(--pg-c--html-list--ol--padding-left);
+
+  & > li {
+    position: relative;
+    padding-left: var(--pg-c--html-list--ol--item--padding-left);
+    counter-increment: ordered-list-counter;
+  }
+
+  & > li::before {
+    content: counter(ordered-list-counter);
+    position: absolute;
+    top: var(--pg-c--html-list--ol--item--numbering--top);
+    left: var(--pg-c--html-list--ol--item--numbering--left);
+    display: inline-block;
+    min-width: var(--pg-c--html-list--ol--item--numbering--min-width);
+    height: var(--pg-c--html-list--ol--item--numbering--height);
+    padding: var(--pg-c--html-list--ol--item--numbering--padding);
+    border-radius: var(--pg-c--html-list--ol--item--numbering--border-radius);
+    border: var(--pg-c--html-list--ol--item--numbering--border-width) solid;
+    font-size: var(--pg-c--html-list--ol--item--numbering--font-size);
+    line-height: var(--pg-c--html-list--ol--item--numbering--line-height);
+    text-align: center;
+    color: var(--pg-c--html-list--ol--item--numbering--text-color);
+    background-color: var(--pg-c--html-list--ol--item--numbering--bg-color);
+    border-color: var(--pg-c--html-list--ol--item--numbering--border-color);
+    box-shadow: var(--pg-c--html-list--ol--item--numbering--box-shadow);
+  }
+}
+
+// #endregion /folded html- ul, ol

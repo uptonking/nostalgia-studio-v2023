@@ -1,0 +1,58 @@
+{
+  "name": "@atlaskit/conversation",
+  "version": "16.0.30",
+  "description": "Render conversation threads",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": "https://bitbucket.org/atlassian/atlassian-frontend",
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "module:es2019": "dist/es2019/index.js",
+  "types": "dist/types/index.d.ts",
+  "atlaskit:src": "src/index.ts",
+  "atlassian": {
+    "team": "TWP Collab Platform",
+    "deprecatedAutoEntryPoints": true,
+    "inPublicMirror": true,
+    "releaseModel": "continuous",
+    "website": {
+      "name": "Conversation"
+    }
+  },
+  "config": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@atlaskit/analytics-next": "^8.2.0",
+    "@atlaskit/avatar": "^20.3.0",
+    "@atlaskit/comment": "^10.0.0",
+    "@atlaskit/editor-common": "^58.1.0",
+    "@atlaskit/editor-core": "^146.0.0",
+    "@atlaskit/reactions": "^19.1.0",
+    "@atlaskit/renderer": "^78.0.0",
+    "@babel/runtime": "^7.0.0",
+    "date-fns": "^1.30.1",
+    "lodash": "^4.17.15",
+    "react": "^16.8.0",
+    "react-redux": "^5.1.2",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react-dom": "^16.8.0",
+    "styled-components": "^3.2.6"
+  },
+  "devDependencies": {
+    "@atlaskit/analytics-listeners": "^8.0.0",
+    "@atlaskit/docs": "*",
+    "@atlaskit/single-select": "^10.0.0",
+    "@atlaskit/util-data-test": "^15.0.0",
+    "@atlassian/atlassian-frontend-prettier-config-1.0.1": "npm:@atlassian/atlassian-frontend-prettier-config@1.0.1",
+    "enzyme": "^3.10.0",
+    "typescript": "3.9.6"
+  },
+  "prettier": "@atlassian/atlassian-frontend-prettier-config-1.0.1"
+}

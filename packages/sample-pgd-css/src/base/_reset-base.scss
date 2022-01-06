@@ -1,0 +1,94 @@
+@use '../../../design-tokens/dist/pg-vars';
+// @use '../base/variables' as v;
+
+// reset html font-family, font-size, h1-h6 typography, hr
+// if these css variables are undefined, browser defaults will be used
+
+html {
+  // default 16px for width <768px
+  font-size: var(--pg-g--size--base--html--font-size, 100%);
+}
+
+@media (min-width: 768px) {
+  html {
+    // 18px, for 768px <= width < 1400px
+    font-size: var(--pg-g--size--base--html--font-size-md, 112.5%);
+  }
+}
+
+@media (min-width: 1400px) {
+  html {
+    // 20px, for width >= 1400px
+    font-size: var(--pg-g--size--base--html--font-size-xxl, 125%);
+  }
+}
+
+body {
+  color: var(--pg-g--color--base--text--val);
+  background-color: var(--pg-g--color--base--body--bg);
+  line-height: var(--pg-g--size--base--line-height); // always 1.5
+  font-size: var(--pg-g--size--base--font-size); // always 1rem
+  font-weight: 400;
+  font-family: 'Source Han Sans SC', 'Noto Sans CJK SC', 'Source Sans Pro',
+    'Noto Sans', 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, Ubuntu, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+hr {
+  height: 1px;
+  border: none;
+  color: var(--pg-g--color-horizontal-rule);
+  background-color: var(--pg-g--color-horizontal-rule);
+}
+
+/* .h1~h6 utilities are provided in utilities/text */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  // margin-top: 0.625rem; // 10
+  // margin-bottom: 1.25rem; // 20
+  font-weight: var(--pg-g--size--heading--font-weight); // 500
+}
+
+// reset html heading h1~h6
+h1 {
+  font-size: 2.25rem; // 36
+  // line-height: 1.3;
+}
+
+h2 {
+  font-size: 2rem; // 32
+  // line-height: 1.35;
+}
+
+h3 {
+  font-size: 1.75rem; // 28
+  // line-height: 1.4;
+}
+
+h4 {
+  font-size: 1.5rem; // 24
+  // line-height: 1.45;
+}
+
+h5 {
+  font-size: 1.25rem; // 20
+}
+
+h6 {
+  font-size: 1rem; // 16
+}
+
+a {
+  color: var(--pg-g--color--link--text--val, #1a90ff);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--pg-g--color--link--text--hover, #1a90ff);
+    text-decoration: none;
+  }
+}

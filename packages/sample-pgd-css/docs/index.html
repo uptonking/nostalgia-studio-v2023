@@ -1,0 +1,2153 @@
+<!DOCTYPE html>
+<!-- <html class="pg-t-pg pg-t-halfmoon--dark" lang="en"> -->
+<html class="pg-t-pg" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <link rel="icon" href="path/to/fav.png" /> -->
+    <title>css for prospect garden design</title>
+
+    <link href="css/docs-icons.css" rel="stylesheet" />
+    <link href="css/pg.css" rel="stylesheet" />
+    <link href="css/halfmoon--dark-vars.css" rel="stylesheet" />
+
+    <!-- #region /folded styles for docsite -->
+    <style type="text/css">
+      :root {
+      }
+
+      a.secondary {
+        color: #73828c;
+      }
+
+      .nav-header .container {
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .nav-header ul:first-of-type li:nth-of-type(2) {
+        display: none;
+      }
+
+      @media (min-width: 768px) {
+        .nav-header ul:first-of-type li:nth-of-type(2) {
+          display: inline;
+        }
+      }
+
+      .docs-outmost-block {
+        padding-top: 5rem;
+      }
+
+      @media (min-width: 768px) {
+        .docs-outmost-block {
+          display: grid;
+          column-gap: 4rem;
+          grid-template-columns: 12.5rem auto;
+          padding-top: 5rem;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .docs-toc nav {
+          position: fixed;
+          width: 12.5rem;
+          /* max-height: 100%; 100%会导致最底部的内容无法显示在屏幕上，被挡住了*/
+          max-height: calc(100vh - 5.5rem);
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
+
+        .docs-toc nav h1 {
+          display: none;
+        }
+      }
+
+      .docs-toc .collapse-panel {
+        margin-bottom: 1.5rem;
+      }
+
+      .docs-toc .collapse-panel li {
+        padding-left: 0;
+      }
+
+      .docs-toc .collapse-content {
+        border-width: 0px;
+      }
+
+      .docs-content-section {
+        margin-bottom: 1.5rem;
+      }
+
+      /* when clicking the toc, the section title should be visible，
+    使小标题跳到top位置时不会被header挡住 */
+      .docs-content-section::before {
+        content: '';
+        display: block;
+        height: 5rem;
+        margin-top: -5rem;
+      }
+
+      /*------------ pgd docs components styling css ------------*/
+      .docs-content-section .eg-preview {
+        width: 100%;
+        padding: 0.25rem;
+        margin-top: 0.75rem;
+        margin-bottom: 0.75rem;
+        border: 1px solid #fee;
+      }
+
+      #button .eg-preview .btn {
+        margin-right: 0.75rem;
+        margin-bottom: 0.75rem;
+      }
+
+      #progress .eg-preview .progress {
+        margin-right: 0.75rem;
+        margin-bottom: 1.75rem;
+      }
+
+      .pg-t-halfmoon--dark .eg-preview {
+        border-color: #333;
+      }
+    </style>
+    <!-- #endregion /folded styles for docsite -->
+  </head>
+
+  <body>
+    <!-- Top Nav -->
+    <nav class="nav-header navbar fixed-top">
+      <div class="container">
+        <ul class="list-inline">
+          <li>
+            <a href="#!" aria-label="Back home">
+              <span class=""><i class="icono-barChart"></i></span>
+            </a>
+          </li>
+          <li>css for prospect garden design</li>
+          <!-- <li><a href="#docsTOC" class="secondary">components</a></li> -->
+        </ul>
+        <ul class="list-inline ml-auto">
+          <li>
+            <a href="#!" class="secondary">
+              <span class="" id="darkToggler"><i class="icono-moon"></i></span
+            ></a>
+          </li>
+          <li><a href="#!" class="secondary">themes</a></li>
+          <li><a href="#!" class="secondary">i18n</a></li>
+          <li>
+            <a
+              target="_blank"
+              href="https://github.com/prospect-garden-design/prospect-garden-design/tree/main/packages/components"
+              class=""
+              aria-label="prospect garden design css gitHub repository"
+              >github
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="container docs-outmost-block">
+      <!-- Aside -->
+      <aside class="docs-toc" id="docsTOC">
+        <nav>
+          <h1>documentation</h1>
+          <details class="collapse-panel no-arrow" open>
+            <summary class="">getting started</summary>
+            <ul class="ul no-bullet">
+              <li><a href="#overview" class="secondary">overview</a></li>
+              <li><a href="#install" class="secondary">install & usage</a></li>
+              <li><a href="#theming" class="secondary">theming</a></li>
+            </ul>
+          </details>
+          <details class="collapse-panel no-arrow" open>
+            <summary>design tokens</summary>
+            <ul class="ul no-bullet">
+              <li>
+                <a href="#tokensConventions" class="secondary"
+                  >design tokens conventions</a
+                >
+              </li>
+              <li><a href="#color" class="secondary">color palette</a></li>
+              <li><a href="#typography" class="secondary">typography</a></li>
+              <li><a href="#spacing" class="secondary">spacing</a></li>
+            </ul>
+          </details>
+          <details class="collapse-panel no-arrow" open>
+            <summary>general elements</summary>
+            <ul class="ul no-bullet">
+              <li><a href="#button" class="secondary">button</a></li>
+              <li><a href="#code" class="secondary">code</a></li>
+              <li><a href="#list" class="secondary">list - ul & ol</a></li>
+              <li><a href="#table" class="secondary">table</a></li>
+              <li><a href="#details" class="secondary">details collapse</a></li>
+            </ul>
+          </details>
+          <details class="collapse-panel no-arrow" open>
+            <summary>forms</summary>
+            <ul class="ul no-bullet">
+              <li><a href="#form" class="secondary">form</a></li>
+              <li><a href="#input" class="secondary">input</a></li>
+              <li><a href="#checkbox" class="secondary">checkbox</a></li>
+              <li><a href="#radio" class="secondary">radio</a></li>
+              <li><a href="#select" class="secondary">select</a></li>
+              <li><a href="#switcher" class="secondary">switcher</a></li>
+              <li><a href="#range" class="secondary">range</a></li>
+              <li><a href="#file" class="secondary">file</a></li>
+            </ul>
+          </details>
+          <details class="collapse-panel no-arrow" open>
+            <summary id="components">components</summary>
+            <ul class="ul no-bullet">
+              <li><a href="#accordion" class="secondary">accordion</a></li>
+              <li><a href="#alert" class="secondary">alert</a></li>
+              <li><a href="#badge" class="secondary">badge</a></li>
+              <li><a href="#breadcrumb" class="secondary">breadcrumb</a></li>
+              <li>
+                <a href="#button-group" class="secondary">button-group</a>
+              </li>
+              <li><a href="#callout" class="secondary">callout sidenote</a></li>
+              <li><a href="#card" class="secondary">card</a></li>
+              <li><a href="#dropdown" class="secondary">dropdown</a></li>
+              <li><a href="#modal" class="secondary">modal</a></li>
+              <li><a href="#pagination" class="secondary">pagination</a></li>
+              <li><a href="#progress" class="secondary">progress</a></li>
+              <li><a href="#tooltip" class="secondary">tooltip</a></li>
+            </ul>
+          </details>
+          <details class="collapse-panel no-arrow" open>
+            <summary>layout & navigation</summary>
+            <ul class="ul no-bullet">
+              <li><a href="#container" class="secondary">container</a></li>
+              <li><a href="#grid" class="secondary">grid</a></li>
+              <li><a href="#navbar" class="secondary">navbar</a></li>
+              <li><a href="#sidebar" class="secondary">sidebar</a></li>
+            </ul>
+          </details>
+          <details class="collapse-panel no-arrow" open>
+            <summary>utilities</summary>
+            <ul class="ul no-bullet">
+              <li><a href="#utext" class="secondary">text</a></li>
+              <li><a href="#ucolor" class="secondary">color</a></li>
+              <li><a href="#uspacing" class="secondary">spacing</a></li>
+              <li><a href="#usizing" class="secondary">sizing</a></li>
+              <li><a href="#uposition" class="secondary">position</a></li>
+            </ul>
+          </details>
+          <details class="collapse-panel no-arrow" open>
+            <summary>tools & resources</summary>
+            <ul class="ul no-bullet">
+              <li><a href="#changelog" class="secondary">changelog</a></li>
+              <li>
+                <a href="#codebase" class="secondary">codebase overview</a>
+              </li>
+              <li><a href="#references" class="secondary">references</a></li>
+            </ul>
+          </details>
+        </nav>
+      </aside>
+
+      <div class="docs-content" role="document">
+        <!-- <section id="icomp" class="docs-content-section">
+          <h2></h2>
+          <h3></h3>
+          <div class="eg-preview"></div>
+        </section> -->
+
+        <!-- #region /folded getting started -->
+        <section id="overview" class="docs-content-section">
+          <h2 class="">overview</h2>
+          <p>
+            prospect garden css components(a.k.a.
+            <code class="code">@pgd/components</code>) is the css implementation
+            of the prospect garden design system.
+          </p>
+          <p>
+            It's a responsive css framework built to make switching themes easy,
+            heavily based on css variables(a.k.a. css custom properties).
+          </p>
+          <h3 class="h3">features</h3>
+          <ul class="ul">
+            <li>themeable components</li>
+            <li>easy to customize your own components or theme</li>
+            <li>
+              themeable styles are built on top of design tokens, with
+              across-platform kept in mind
+            </li>
+            <li>
+              [WIP]popular themes out of the box, such as bootstrap, material
+              design...
+            </li>
+          </ul>
+          <h3>how it works</h3>
+          <ul class="ul">
+            <li>
+              almost all design tokens are extracted directly from popular open
+              source ui frameworks.
+            </li>
+            <ul class="ul">
+              <li>
+                <a
+                  target="_blank"
+                  href="https://www.gethalfmoon.com/docs/introduction/"
+                  >halfmoon v1.1.0</a
+                >
+                is used as the primary css variables/tokens source.
+              </li>
+              <li>
+                <a
+                  target="_blank"
+                  href="https://getbootstrap.com/docs/5.0/getting-started/introduction/"
+                  >bootstrap v5.0.0</a
+                >
+                is used as the primary css class names source.
+              </li>
+              <li>
+                thanks to these open source frameworks, the design tokens from
+                them can save the ux-unfriendly developers from choosing
+                colors/sizes/...
+              </li>
+            </ul>
+            <li>IE browsers are not supported for lack of css variables.</li>
+            <ul class="ul">
+              <li>
+                as of 2021-03,
+                <a target="_blank" href="https://caniuse.com/css-variables"
+                  >caniuse</a
+                >
+                shows that the global usage of css variables is 95.06%.
+              </li>
+              <li>
+                since the design tokens of
+                <code class="code">@pgd/components</code> is generated using
+                <a
+                  target="_blank"
+                  href="https://amzn.github.io/style-dictionary/#/"
+                  >style-dictionary</a
+                >, it seems possible to generate raw style values directly, and
+                then use the raw values for IE or even other platforms.
+              </li>
+            </ul>
+          </ul>
+        </section>
+        <section id="install" class="docs-content-section">
+          <h2 class="h2">install & usage</h2>
+          <h3>install</h3>
+          <h3>starter template</h3>
+          <p></p>
+        </section>
+        <section id="theming" class="docs-content-section">
+          <h2>theming</h2>
+          <p>3-tier theming system</p>
+          <h3>default theme (a.k.a. base theme)</h3>
+          <h3>themes extensions</h3>
+          <h3>themes variants(including dark theme)</h3>
+        </section>
+        <!-- #endregion getting started -->
+
+        <!-- #region design tokens  -->
+        <section id="tokensConventions" class="docs-content-section">
+          <h2>design tokens conventions</h2>
+          <p>3-tier design tokens</p>
+          <h3>global constant tokens</h3>
+          <h3>global semantic tokens</h3>
+          <h3>component specific tokens</h3>
+        </section>
+        <section id="color" class="docs-content-section">
+          <h2>color palette</h2>
+        </section>
+        <section id="typography" class="docs-content-section">
+          <h2>typography</h2>
+        </section>
+        <section id="spacing" class="docs-content-section">
+          <h2>spacing</h2>
+        </section>
+        <!-- #endregion design tokens  -->
+
+        <!-- #region general html elements -->
+        <section id="code" class="docs-content-section">
+          <p>general html elements can be used in simple use cases.</p>
+          <p>
+            for complex use cases like high interactivity and flexible styling,
+            it's better to build your own components with css here and custom
+            js.
+          </p>
+          <h2>code & kbd</h2>
+          <ul class="ul">
+            <li>
+              <code class="code">.code</code> and
+              <code class="code">.kbd</code> are designed to style inline
+              elements.
+            </li>
+            <li>
+              code blocks are recommended to be styled with other libs like
+              highlight.js/prismjs.
+            </li>
+          </ul>
+          <h3>code</h3>
+          <div class="eg-preview">
+            <ul class="ul">
+              <li>
+                Add the class <code class="code">.some-class</code> to the
+                element to format it.
+              </li>
+              <li><code class="code">10 + 5 = 15</code></li>
+              <li>
+                The default code style is like this:
+                <code class="">f = ma</code>.
+              </li>
+            </ul>
+          </div>
+
+          <h3>kbd: keyboard character</h3>
+          <div class="eg-preview">
+            <ul class="ul">
+              <li>
+                Toggle dark mode by pressing <kbd class="kbd">shift</kbd> +
+                <kbd class="kbd">D</kbd>.
+              </li>
+              <li>
+                The default kbd style is like this: <kbd>ctrl</kbd> +
+                <kbd>D</kbd>.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="list" class="docs-content-section">
+          <h2>list</h2>
+          <h3>ul - unordered list</h3>
+          <div class="eg-preview">
+            <ul class="ul">
+              <li>This is an unordered list.</li>
+              <li>
+                It's styled with only one class <code class="code">.ul</code>.
+              </li>
+              <li>Simple bullet-point list that has no particular order.</li>
+              <li>
+                However, this style only applies to immediate child elements.
+              </li>
+              <li>
+                Nested unordered lists(without classname):
+                <ul class="">
+                  <li>are unaffected by this style</li>
+                  <li>will still show a bullet</li>
+                  <li>and have appropriate left margin</li>
+                </ul>
+              </li>
+              <li>This may still come in handy in some situations.</li>
+            </ul>
+          </div>
+
+          <h3>ol - ordered list</h3>
+          <div class="eg-preview">
+            <ol class="ol">
+              <li>This is an ordered list.</li>
+              <li>
+                It's styled with only one class <code class="code">.ol</code>.
+              </li>
+              <li>Ordered item 3</li>
+              <li>
+                Nested ordered lists(without classname):
+                <ol>
+                  <li>are unaffected by this style</li>
+                  <li>will still show a original number counter</li>
+                  <li>and have appropriate left margin</li>
+                </ol>
+              </li>
+              <li>This may still come in handy in some situations.</li>
+              <li>
+                Another nested unordered lists(with classname
+                <code class="code">.ul</code>):
+                <ul class="ul">
+                  <li>are unaffected by this style</li>
+                  <li>will still show a bullet</li>
+                  <li>and have appropriate left margin</li>
+                </ul>
+              </li>
+              <li>This may still come in handy in some situations.</li>
+            </ol>
+          </div>
+
+          <h3>list without bullets</h3>
+          <div class="eg-preview">
+            <ul class="ul no-bullet">
+              <li>This is an unordered list.</li>
+              <li>
+                It's styled with two classes
+                <code class="code">.ul.no-bullet</code>.
+              </li>
+              <li>Simple bullet-point list that has no particular order.</li>
+              <li>
+                However, this style only applies to immediate child elements.
+              </li>
+              <li>
+                Nested unordered lists(without classname):
+                <ul class="">
+                  <li>are unaffected by this style</li>
+                  <li>will still show a bullet</li>
+                  <li>and have appropriate left margin</li>
+                </ul>
+              </li>
+              <li>This may still come in handy in some situations.</li>
+            </ul>
+          </div>
+
+          <h3>inline list</h3>
+          <div class="eg-preview">
+            <!-- <ul class="ul no-bullet list-inline"> -->
+            <ul class="list-inline">
+              <li class="">items displayed inline.</li>
+              <li class="">bullets removed.</li>
+              <li class="">margin applied.</li>
+            </ul>
+          </div>
+
+          <h3>todo</h3>
+          <div class="">
+            <ul class="ul text-muted">
+              <li>
+                bullet position for unordered list is a little higher than
+                expected
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="table" class="docs-content-section">
+          <h2>table</h2>
+          <p>
+            html <code class="code">&lt;table&gt;</code> can be styled with just
+            one class <code class="code">table</code>
+          </p>
+          <h3>basic table</h3>
+          <div class="eg-preview">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First</th>
+                  <th scope="col">Last</th>
+                  <th scope="col">Handle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>striped table</h3>
+          <div class="eg-preview">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">First</th>
+                  <th scope="col">Last</th>
+                  <th scope="col">Handle</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">1</th>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <th scope="row">2</th>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <th scope="row">3</th>
+                  <td colspan="2">Larry the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="details" class="docs-content-section">
+          <h2>details collapse panel</h2>
+          <p>.collapse-panel > details</p>
+          <p>.collapse-header > summary</p>
+          <p>.collapse-content > contents below summary</p>
+          <p>
+            note: <code class="code">&lt;details&gt;</code> and
+            <code class="code">&lt;summary&gt;</code> elements are not supported
+            in IE 11.
+          </p>
+
+          <h3>browser default details summary element</h3>
+          <div class="eg-preview">
+            <details class="">
+              <summary class="">Why are computers important?</summary>
+              <div class="">
+                Computers are important because they are like bicycles for the
+                mind.
+              </div>
+            </details>
+          </div>
+
+          <h3>basic collapse panel</h3>
+          <div class="eg-preview">
+            <!-- <details class="collapse-panel w-400 mw-full" open> -->
+            <details class="collapse-panel">
+              <summary class="collapse-header">
+                Why are computers important?
+              </summary>
+              <div class="collapse-content">
+                Computers are important because they are like bicycles for the
+                mind.
+              </div>
+            </details>
+          </div>
+          <h3>collapse panel group</h3>
+          <div class="eg-preview">
+            <div class="collapse-group w-75 mw-full">
+              <!-- 1st collapse panel (open by default) -->
+              <details class="collapse-panel 1st" open>
+                <summary class="collapse-header">
+                  <strong>Plain White T-Shirt</strong>
+                  <br />
+                  <span class="text-muted">Price: $20.00</span>
+                </summary>
+                <div class="collapse-content">
+                  A long description that lists all the good sides of the
+                  product and none of the bad. Compels the shopper to add this
+                  product to their cart immediately.
+                </div>
+              </details>
+
+              <!-- 2nd collapse panel -->
+              <details class="collapse-panel">
+                <summary class="collapse-header">
+                  <strong>Cool Jeans</strong>
+                  <br />
+                  <span class="text-muted">Price: $41.00</span>
+                </summary>
+                <div class="collapse-content">
+                  A long description that lists all the good sides of the
+                  product and none of the bad. Compels the shopper to add this
+                  product to their cart immediately.
+                </div>
+              </details>
+
+              <!-- 3rd collapse panel -->
+              <details class="collapse-panel">
+                <summary class="collapse-header">
+                  <strong>Plain White Crop Top</strong>
+                  <br />
+                  <span class="text-muted">Price: $20.00</span>
+                </summary>
+                <div class="collapse-content">
+                  A long description that lists all the good sides of the
+                  product and none of the bad. Compels the shopper to add this
+                  product to their cart immediately.
+                </div>
+              </details>
+            </div>
+          </div>
+        </section>
+        <!-- #endregion general html elements -->
+
+        <!-- #region forms -->
+        <section id="form" class="docs-content-section">
+          <h2>form</h2>
+          <p>forms provide common user input elements.</p>
+          <p>
+            <code class="code">.form-control</code> can be used to style
+            <code class="code">&lt;input&gt;</code>,
+            <code class="code">&lt;select&gt;</code> and
+            <code class="code">&lt;textarea&gt;</code> elements consistently.
+          </p>
+          <p>
+            <code class="code">.form-group</code> can be used to add
+            margin-bottom.
+          </p>
+          <p>
+            <code class="code">.form-text</code> can be used to style muted text
+            below form inputs as descriptive information.
+          </p>
+          <h3>form control</h3>
+          <p>form-control is designed for consistency.</p>
+          <p>
+            it provides consistent sizing/spacing/states/... among form inputs.
+          </p>
+          <h3>form inline</h3>
+          <div class="eg-preview"></div>
+        </section>
+
+        <section id="input" class="docs-content-section">
+          <h2>text input</h2>
+          <p>
+            <code class="code">&lt;input&gt;</code> elements can be styled with
+            <code class="code">.form-control</code>.
+          </p>
+          <p>
+            <code class="code">.form-control</code> will take up the full width
+            of the parent container and have no margins by default.
+          </p>
+          <p>
+            utilities classes can be used to help to position form input
+            controls.
+          </p>
+          <h3>basic text input</h3>
+          <div class="eg-preview">
+            <div class="form-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="normal text input"
+              />
+            </div>
+            <input
+              type="text"
+              class="form-control w-50"
+              placeholder="text input with width: 50%"
+            />
+          </div>
+          <h3>input states</h3>
+          <p>
+            <code class="code">.required</code> can be added to
+            <code class="code">&lt;label&gt;</code> to show a tiny red asterisk
+            * as a reminder.
+          </p>
+          <div class="eg-preview">
+            <input
+              type="text"
+              class="form-control mb-3"
+              value="readonly input"
+              readonly="readonly"
+            />
+            <input
+              type="text"
+              class="form-control disabled mb-3"
+              value="disabled input"
+            />
+            <input
+              type="email"
+              class="form-control is-invalid"
+              placeholder="Email address"
+              value="invalid email address"
+            />
+          </div>
+          <h3>sizing</h3>
+          <div class="eg-preview">
+            <input
+              type="text"
+              class="form-control form-control-lg mb-3"
+              placeholder="large input"
+            />
+            <input
+              type="text"
+              class="form-control mb-3"
+              placeholder="default input"
+            />
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="small input"
+            />
+          </div>
+          <h3>textarea</h3>
+          <p>allow users to input multi-line plain text.</p>
+          <div class="eg-preview p-1">
+            <textarea
+              class="form-control"
+              placeholder="Normal textarea for multi-line input"
+            ></textarea>
+          </div>
+        </section>
+
+        <section id="checkbox" class="docs-content-section">
+          <h2>checkbox</h2>
+          <div class="eg-preview">
+            <div class="custom-checkbox mb-3">
+              <input type="checkbox" id="checkbox-1" value="" />
+              <label for="checkbox-1">Checkbox 1</label>
+            </div>
+            <div class="custom-checkbox mb-3">
+              <input
+                type="checkbox"
+                id="checkbox-2"
+                value=""
+                checked="checked"
+              />
+              <label for="checkbox-2">Checkbox 2</label>
+            </div>
+            <div class="custom-checkbox mb-3">
+              <input
+                type="checkbox"
+                id="checkbox-3"
+                value=""
+                disabled="disabled"
+              />
+              <label for="checkbox-3">Checkbox 3 (disabled)</label>
+            </div>
+            <div class="custom-checkbox">
+              <input
+                type="checkbox"
+                id="checkbox-4"
+                value=""
+                checked="checked"
+                disabled="disabled"
+              />
+              <label for="checkbox-4">Checkbox 4 (disabled)</label>
+            </div>
+          </div>
+        </section>
+
+        <section id="radio" class="docs-content-section">
+          <h2>radio</h2>
+          <div class="eg-preview">
+            <div class="custom-radio mb-3">
+              <input
+                type="radio"
+                name="radio-set-1"
+                id="radio-1"
+                value="radio-1"
+              />
+              <label for="radio-1">Radio 1</label>
+            </div>
+            <div class="custom-radio mb-3">
+              <input
+                type="radio"
+                name="radio-set-1"
+                id="radio-2"
+                checked="checked"
+                value="radio-2"
+              />
+              <label for="radio-2">Radio 2</label>
+            </div>
+            <div class="custom-radio mb-3">
+              <input
+                type="radio"
+                name="radio-set-3"
+                id="radio-3"
+                disabled="disabled"
+                value="radio-3"
+              />
+              <label for="radio-3">Radio 3 (disabled)</label>
+            </div>
+            <div class="custom-radio">
+              <input
+                type="radio"
+                name="radio-set-3"
+                id="radio-4"
+                checked="checked"
+                disabled="disabled"
+                value="radio-4"
+              />
+              <label for="radio-4">Radio 4 (disabled)</label>
+            </div>
+          </div>
+        </section>
+
+        <section id="select" class="docs-content-section">
+          <h2>select</h2>
+          <h3>default single select</h3>
+          <div class="eg-preview p-1">
+            <select class="form-control mb-3" id="select-1">
+              <option value="" selected="selected" disabled="disabled">
+                Select a color
+              </option>
+              <option value="red">Red</option>
+              <option value="blue">Blue</option>
+              <option value="yellow">Yellow</option>
+            </select>
+          </div>
+          <h3>multi select</h3>
+          <div class="eg-preview p-1">
+            <label for="multi-select-1" class="label"
+              >Select one or more colors with <kbd class="kbd">Ctrl</kbd> or
+              <kbd class="kbd">Shift</kbd></label
+            >
+            <select
+              class="form-control"
+              id="multi-select-1"
+              multiple="multiple"
+              size="3"
+            >
+              <option value="red">Red</option>
+              <option value="blue">Blue</option>
+              <option value="yellow">Yellow</option>
+            </select>
+          </div>
+        </section>
+
+        <section id="switcher" class="docs-content-section">
+          <h2>switcher</h2>
+          <div class="eg-preview">
+            <div class="custom-switch mb-3">
+              <input type="checkbox" id="switch-1" value="" />
+              <label for="switch-1">Switch 1</label>
+            </div>
+            <div class="custom-switch mb-3">
+              <input type="checkbox" id="switch-2" value="" checked="checked" />
+              <label for="switch-2">Switch 2</label>
+            </div>
+            <div class="custom-switch mb-3">
+              <input
+                type="checkbox"
+                id="switch-3"
+                value=""
+                disabled="disabled"
+              />
+              <label for="switch-3">Switch 3 (disabled)</label>
+            </div>
+            <div class="custom-switch">
+              <input
+                type="checkbox"
+                id="switch-4"
+                value=""
+                checked="checked"
+                disabled="disabled"
+              />
+              <label for="switch-4">Switch 4 (disabled)</label>
+            </div>
+          </div>
+        </section>
+
+        <section id="range" class="docs-content-section">
+          <h2>range</h2>
+          <h3>basic range slider</h3>
+          <p>note: not working on firefox</p>
+          <div class="eg-preview">
+            <input
+              class="form-range"
+              type="range"
+              id="range-input-1"
+              name="range-input-1"
+              min="0"
+              max="10"
+              step="1"
+            />
+            <br />
+            <!-- class="form-range" -->
+            <input
+              class="form-range"
+              type="range"
+              id="range-input-2"
+              name="range-input-2"
+              min="0"
+              max="10"
+              step="1"
+              disabled="disabled"
+            />
+          </div>
+          <h3>todo: range with values</h3>
+          <p>
+            note: js required.
+            <a target="_blank" href="https://codepen.io/uptonking/pen/bGggqxr"
+              >live on codepen</a
+            >
+          </p>
+          <div class="eg-preview">
+            <input
+              class="form-range"
+              type="range"
+              id="range-input-4"
+              name="range-input-4"
+              min="0"
+              max="100"
+              step="10"
+              value="80"
+              data-bind-value
+              data-target="range-input-4-value-label"
+            />
+            <p class="m-0 text-muted">
+              Current value:
+              <span
+                class="text-dark-lm text-light-dm"
+                id="range-input-4-value-label"
+              ></span>
+            </p>
+          </div>
+        </section>
+
+        <section id="file" class="docs-content-section">
+          <h2>file</h2>
+          <h3>single file input</h3>
+          <div class="eg-preview">
+            <div class="custom-file">
+              <input type="file" id="file-input-1" />
+              <label for="file-input-1">choose one file</label>
+            </div>
+          </div>
+          <h3>multi file input</h3>
+          <div class="eg-preview">
+            <div class="custom-file">
+              <input
+                type="file"
+                id="multi-file-input-1"
+                multiple="multiple"
+                accept=".jpg,.png,.gif"
+              />
+              <label for="multi-file-input-1">choose multiple files</label>
+            </div>
+          </div>
+        </section>
+
+        <!-- #endregion forms -->
+
+        <!-- #region components -->
+
+        <section id="accordion" class="docs-content-section">
+          <h2>accordion</h2>
+          <h3>basic</h3>
+          <div class="eg-preview"></div>
+        </section>
+
+        <section id="alert" class="docs-content-section">
+          <h2>alert</h2>
+          <h3>alert variants</h3>
+          <div class="eg-preview">
+            <div class="alert mb-3" role="alert">
+              <h4 class="alert-heading">Default alert</h4>
+              This is a default alert with some content and
+              <a href="#!" class="alert-link">a link</a>.
+            </div>
+            <div class="alert alert-primary mb-3" role="alert">
+              <h4 class="alert-heading">Primary alert</h4>
+              This is a primary alert with some content and
+              <a href="#!" class="alert-link">a link</a>.
+            </div>
+            <div class="alert alert-success mb-3" role="alert">
+              <h4 class="alert-heading">Success alert</h4>
+              This is a success alert with some content and
+              <a href="#!" class="alert-link">a link</a>.
+            </div>
+            <div class="alert alert-danger mb-3" role="alert">
+              <h4 class="alert-heading">Danger alert</h4>
+              This is a danger alert with some content and
+              <a href="#!" class="alert-link">a link</a>.
+            </div>
+          </div>
+          <h3>todo: sticky alert</h3>
+          <div class="eg-preview"></div>
+        </section>
+
+        <section id="badge" class="docs-content-section">
+          <h2>badge</h2>
+          <h3>badge variants</h3>
+          <div class="eg-preview">
+            <span class="badge">Default</span>
+            <span class="badge badge-primary">Primary</span>
+            <span class="badge badge-success">Success</span>
+            <span class="badge badge-danger">Danger</span>
+          </div>
+
+          <h3>pill badges</h3>
+          <div class="eg-preview">
+            <span class="badge badge-pill">Default</span>
+            <span class="badge badge-primary badge-pill">Primary</span>
+            <span class="badge badge-success badge-pill">Success</span>
+            <span class="badge badge-danger badge-pill">Danger</span>
+          </div>
+
+          <h3>todo: badge group</h3>
+          <div class="eg-preview"></div>
+        </section>
+
+        <section id="breadcrumb" class="docs-content-section">
+          <h2>breadcrumb</h2>
+          <h3>basic breadcrumb</h3>
+          <div class="eg-preview">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#!">Home</a></li>
+              <li class="breadcrumb-item"><a href="#!">Docs</a></li>
+              <li class="breadcrumb-item active" aria-current="page">
+                <a href="#">Breadcrumb</a>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- #region /folded button -->
+        <section id="button" class="docs-content-section">
+          <h2>button</h2>
+
+          <h3>button tags</h3>
+          <ul class="ul">
+            <li>
+              <code class="code">.btn/.btn-*</code> classes are designed to
+              style the html <code class="code">&lt;button&gt;</code>,
+              <code class="code">&lt;a&gt;</code>,
+              <code class="code">&lt;input&gt;</code> elements
+            </li>
+            <li>
+              <code class="code">&lt;a&gt;</code> as button is designed to
+              trigger in-page functionality, instead of jumping to new pages.
+            </li>
+            <li>
+              <code class="code">role="button"</code> should be put on
+              <code class="code">&lt;a&gt;</code> elements for a11y.
+            </li>
+          </ul>
+          <div class="eg-preview">
+            <button class="btn">&lt;button&gt;</button>
+            <a class="btn" href="#!" role="button">&lt;a&gt; link </a>
+            <input type="submit" value="&lt;input submit&gt;" class="btn" />
+            <input type="button" value="&lt;input button&gt;" class="btn" />
+            <div class="btn" tabindex="0" role="button">&lt;div&gt;</div>
+          </div>
+
+          <h3>button semantic variants</h3>
+          <div class="eg-preview">
+            <button class="btn" type="button">Default</button>
+            <button class="btn btn-primary" type="button">Primary</button>
+            <button class="btn btn-secondary" type="button">Secondary</button>
+            <button class="btn btn-success" type="button">Success</button>
+            <button class="btn btn-info" type="button">Info</button>
+            <button class="btn btn-warning" type="button">Warning</button>
+            <button class="btn btn-danger" type="button">Danger</button>
+          </div>
+
+          <h3>button states</h3>
+          <div class="eg-preview">
+            <button class="btn" type="button">Default</button>
+            <button class="btn hover" type="button">Hover</button>
+            <button class="btn active" type="button">Focus/Active</button>
+            <button class="btn disabled" type="button">Disabled</button>
+            <button class="btn loading" type="button">Loading</button>
+          </div>
+          <div class="eg-preview">
+            <button class="btn btn-primary" type="button">Default</button>
+            <button class="btn btn-primary hover" type="button">Hover</button>
+            <button class="btn btn-primary active" type="button">
+              Focus/Active
+            </button>
+            <button class="btn btn-primary disabled" type="button">
+              Disabled
+            </button>
+            <button class="btn btn-primary loading" type="button">
+              Loading
+            </button>
+          </div>
+
+          <h3>button sizes</h3>
+          <div class="eg-preview">
+            <button class="btn btn-sm" type="button">Small</button>
+            <button class="btn" type="button">Default</button>
+            <button class="btn btn-lg" type="button">Large</button>
+          </div>
+
+          <h3>outline/ghost buttons</h3>
+          <div class="eg-preview">
+            <button class="btn" type="button">Default</button>
+            <button class="btn btn-primary outline" type="button">
+              Primary
+            </button>
+            <button class="btn btn-secondary outline" type="button">
+              Secondary
+            </button>
+            <button class="btn btn-success outline" type="button">
+              Success
+            </button>
+            <button class="btn btn-info outline" type="button">Info</button>
+            <button class="btn btn-warning outline" type="button">
+              Warning
+            </button>
+            <button class="btn btn-danger outline" type="button">Danger</button>
+          </div>
+          <div class="eg-preview">
+            <button class="btn btn-link" type="button">Default</button>
+            <button class="btn btn-primary btn-link" type="button">
+              Primary
+            </button>
+            <button class="btn btn-secondary btn-link" type="button">
+              Secondary
+            </button>
+            <button class="btn btn-success btn-link" type="button">
+              Success
+            </button>
+            <button class="btn btn-info btn-link" type="button">Info</button>
+            <button class="btn btn-warning btn-link" type="button">
+              Warning
+            </button>
+            <button class="btn btn-danger btn-link" type="button">
+              Danger
+            </button>
+          </div>
+
+          <h3>rounded buttons</h3>
+          <div class="eg-preview">
+            <button class="btn btn-rounded btn-sm" type="button">Small</button>
+            <button class="btn btn-rounded" type="button">Default</button>
+            <button class="btn btn-rounded btn-lg" type="button">Large</button>
+          </div>
+          <div class="eg-preview">
+            <button class="btn btn-primary btn-rounded btn-sm" type="button">
+              Small
+            </button>
+            <button class="btn btn-primary btn-rounded" type="button">
+              Default
+            </button>
+            <button class="btn btn-primary btn-rounded btn-lg" type="button">
+              Large
+            </button>
+          </div>
+
+          <h3>square/circular Buttons</h3>
+
+          <ul class="ul">
+            <li>
+              <code class="code">.rounded-circle</code> should be put after
+              <code class="code">.btn-square</code> to style a rounded button.
+            </li>
+          </ul>
+
+          <div class="eg-preview">
+            <button class="btn btn-square btn-sm" type="button">S</button>
+            <button class="btn btn-square" type="button">M</button>
+            <button class="btn btn-square btn-lg" type="button">L</button>
+          </div>
+          <div class="eg-preview">
+            <button
+              class="btn btn-primary btn-square btn-sm rounded-circle"
+              type="button"
+            >
+              S
+            </button>
+            <button
+              class="btn btn-primary btn-square rounded-circle"
+              type="button"
+            >
+              M
+            </button>
+            <button
+              class="btn btn-primary btn-square btn-lg rounded-circle"
+              type="button"
+            >
+              L
+            </button>
+          </div>
+
+          <h3>icon buttons(todo)</h3>
+          <div class="eg-preview">
+            <button class="btn" type="button">
+              <span><i class="icono-cross"></i></span>
+              Default
+            </button>
+            <button class="btn btn-primary outline" type="button">
+              Primary
+            </button>
+            <button class="btn-danger" type="button">Danger</button>
+          </div>
+
+          <h3>full width/block buttons</h3>
+          <div class="eg-preview">
+            <button class="btn btn-block" type="button">Default Block</button>
+            <button class="btn btn-primary btn-block" type="button">
+              Primary Block
+            </button>
+          </div>
+        </section>
+        <!-- #endregion /folded button -->
+
+        <!-- #region /folded button-group -->
+        <section id="button-group" class="docs-content-section">
+          <h2>button group</h2>
+
+          <ul class="ul">
+            <li>
+              use button group to group multiple buttons in a single line or in
+              a vertical column.
+            </li>
+            <li>
+              <code class="code">.btn-group</code> is designed to be put on the
+              container element of multiple
+              <code class="code">.btn</code> elements
+            </li>
+            <li>
+              <code class="code">.btn-group</code> uses
+              <code class="code">display: inline-flex;</code> layout.
+            </li>
+            <li>all button tags can be used inside the button group.</li>
+            <li>all button variants can be used inside the button group.</li>
+          </ul>
+
+          <h3>outline button group</h3>
+          <div class="eg-preview">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Outline button group example"
+            >
+              <button class="btn" type="button">Left</button>
+              <button class="btn" type="button">Middle</button>
+              <button class="btn" type="button">Right</button>
+            </div>
+          </div>
+
+          <h3>button group as pagination</h3>
+          <div class="eg-preview">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Button group as pagination"
+            >
+              <button class="btn btn-square" type="button">
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                <span class="sr-only">Prev</span>
+              </button>
+              <button class="btn btn-square" type="button">1</button>
+              <button class="btn btn-square" type="button">2</button>
+              <button class="btn btn-square" type="button">3</button>
+              <button class="btn btn-square" type="button">4</button>
+              <button class="btn btn-square" type="button">5</button>
+              <button class="btn btn-square" type="button">
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                <span class="sr-only">Next</span>
+                <!-- sr-only = only for screen readers -->
+              </button>
+            </div>
+          </div>
+
+          <h3>semantic button group</h3>
+          <ul class="ul">
+            <li>
+              It would be better to add some js for toggling interactivity
+            </li>
+          </ul>
+          <div class="eg-preview">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Primary button group example"
+            >
+              <button class="btn btn-primary" type="button">Left</button>
+              <button class="btn" type="button">Middle</button>
+              <button class="btn" type="button">Right</button>
+            </div>
+          </div>
+          <div class="eg-preview">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Secondary button group example"
+            >
+              <button class="btn" type="button">Left</button>
+              <button class="btn btn-secondary" type="button">Middle</button>
+              <button class="btn" type="button">Right</button>
+            </div>
+          </div>
+          <div class="eg-preview">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="danger button group example"
+            >
+              <button class="btn" type="button">Left</button>
+              <button class="btn" type="button">Middle</button>
+              <button class="btn btn-danger" type="button">Right</button>
+            </div>
+          </div>
+
+          <h3>button group sizes</h3>
+          <div class="eg-preview">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="small button group example"
+            >
+              <button class="btn btn-sm" type="button">Left</button>
+              <button class="btn btn-sm" type="button">Middle</button>
+              <button class="btn btn-sm" type="button">Right</button>
+            </div>
+          </div>
+          <div class="eg-preview">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="default medium button group example"
+            >
+              <button class="btn" type="button">Left</button>
+              <button class="btn" type="button">Middle</button>
+              <button class="btn" type="button">Right</button>
+            </div>
+          </div>
+          <div class="eg-preview">
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="large button group example"
+            >
+              <button class="btn btn-lg" type="button">Left</button>
+              <button class="btn btn-lg" type="button">Middle</button>
+              <button class="btn btn-lg" type="button">Right</button>
+            </div>
+          </div>
+
+          <h3>button toolbar</h3>
+          <ul class="ul">
+            <li>
+              use button toolbar to group multiple button groups in a single
+              line.
+            </li>
+          </ul>
+          <div class="eg-preview">
+            <div
+              class="btn-toolbar"
+              role="toolbar"
+              aria-label="Toolbar with multiple button groups"
+            >
+              <div class="btn-group" role="group" aria-label="First group">
+                <button class="btn btn-square" type="button">1</button>
+                <button class="btn btn-square" type="button">2</button>
+              </div>
+              <div class="btn-group" role="group" aria-label="Second group">
+                <button class="btn btn-square" type="button">41</button>
+                <button class="btn btn-square" type="button">42</button>
+              </div>
+            </div>
+          </div>
+
+          <h3>vertical button group</h3>
+          <div class="eg-preview">
+            <div
+              class="btn-group-vertical"
+              role="group"
+              aria-label="vertical button group example"
+            >
+              <button class="btn" type="button">Top</button>
+              <button class="btn" type="button">Middle</button>
+              <button class="btn" type="button">Bottom</button>
+            </div>
+          </div>
+        </section>
+        <!-- #endregion /folded button-group -->
+
+        <!-- #region /folded card -->
+        <section id="card" class="docs-content-section">
+          <h2>card</h2>
+          <p>
+            card is one of the most popular components for displaying brief and
+            attractive contents.
+          </p>
+          <p>
+            <code class="code">.content</code> can be used to provide a nice
+            margin around the content inside.
+          </p>
+          <p>
+            <code class="code">.card</code> can be used to provide a visual box
+            with nice padding, border and margin.
+          </p>
+          <p>
+            <code class="code">.card</code> and
+            <code class="code">.content</code> can be nested inside one another
+            in any combination to help to organize the content better.
+          </p>
+          <p>
+            the margin around <code class="code">.content</code> is equal to the
+            padding inside <code class="code">.card</code>. This makes nested
+            content and cards have proper alignment.
+          </p>
+
+          <h3>Basic Card</h3>
+          <p>
+            By default, <code class="code">.content</code> and
+            <code class="code">.card</code> will fit the full width of its
+            parent element.
+          </p>
+          <p>
+            However, it's easy to change their parent element's width with
+            utility classes like <code class="code">.w-0/25/50/75</code>.
+          </p>
+          <div class="eg-preview">
+            <div class="card">
+              <h5 class="card-title">第五十四回 史太君破陈腐旧套</h5>
+              <p>
+                这些书都是一个套子，左不过是些佳人才子，最没趣儿。把人家女儿说的那样坏，
+                还说是佳人，编的连影儿也没有了。开口都是书香门第，父亲不是尚书就是宰相，
+                生一个小姐必是爱如珍宝。这小姐必是通文知礼，无所不晓，竟是个绝代佳人。
+                只一见了一个清俊的男人，不管是亲是友，便想起终身大事来，父母也忘了，书礼也忘了，
+                鬼不成鬼，贼不成贼，那一点儿是佳人？便是满腹文章，做出这些事来，也算不得是佳人了……
+              </p>
+              <div class="text-left">
+                <a tabindex="0" class="btn">阅读全文</a>
+              </div>
+            </div>
+          </div>
+          <div class="eg-preview w-75">
+            <div class="card">
+              <h5 class="card-title">
+                Lady Jia ridicules the cliches of romantic fiction
+              </h5>
+              <p class="text-muted">
+                In some cases it’s because the writer is envious of people so
+                much better off than himself, or disappointed because he has
+                tried to obtain their patronage and failed, and deliberately
+                portrays them in this unfavourable light as a means of getting
+                his own back on them...
+              </p>
+              <div class="text-left">
+                <a tabindex="0" class="btn">Read more</a>
+              </div>
+            </div>
+          </div>
+          <h3>card with image</h3>
+          <div class="eg-preview w-50">
+            <div class="card p-0">
+              <img
+                class="img-fluid"
+                src="images/placeholders/640x360.png"
+                alt="img-eg-placeholder-green"
+              />
+              <div class="content">
+                <h5 class="content-title">史太君破陈腐旧套</h5>
+                <p class="text-muted">
+                  这些书都是一个套子，左不过是些佳人才子，最没趣儿。把人家女儿说的那样坏，
+                  还说是佳人，编的连影儿也没有了……
+                </p>
+                <div class="text-right">
+                  <a tabindex="0" class="btn">更多</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3>card with padding</h3>
+          <p>
+            the margin around <code class="code">.content</code> is equal to the
+            padding inside <code class="code">.card</code>.
+          </p>
+          <p>This makes nested content and cards have proper alignment</p>
+          <p>
+            Elements and containers can also be given the same padding as cards
+            using <code class="code">.p-card</code>,
+            <code class="code">.px-card</code>,
+            <code class="code">.py-card</code>
+          </p>
+          <div class="eg-preview w-75 mw-100">
+            <!-- <div class="eg-preview mw-100"> -->
+            <div class="card p-0">
+              <!-- Card header -->
+              <div class="px-card py-2 border-bottom">
+                <h3 class="card-title m-0">Subscribe by email</h3>
+              </div>
+              <!-- Content -->
+              <div class="content">
+                <!-- <form action="..." method="..."> -->
+                <div class="form-group input-group pb-3">
+                  <!-- <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                      </span>
+                    </div> -->
+                  <input
+                    type="email"
+                    class="form-control"
+                    placeholder="Your email"
+                    required="required"
+                  />
+                </div>
+                <input
+                  class="btn btn-primary"
+                  type="submit"
+                  value="Subscribe"
+                />
+                <!-- </form> -->
+              </div>
+              <!-- Card footer -->
+              <div class="px-card py-2 bg-light rounded-bottom">
+                <p class="m-0">
+                  We will notify you whenever we make a new post. No spam, no
+                  marketing, we promise.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- #endregion /folded card -->
+
+        <!-- #region /folded dropdown -->
+        <section id="dropdown" class="docs-content-section">
+          <h2>dropdown</h2>
+          <p>by default, dropdown is toggled by clicking, not by hovering.</p>
+          <p>dropdown toggling requires js.</p>
+          <p>
+            compared to popover, dropdown in open state has no arrow indicator.
+          </p>
+          <p>
+            .dropdown-header can be used to style title for the dropdown menu.
+          </p>
+          <p>.dropdown-item can be used for the main links.</p>
+          <p>.dropdown-divider can be used to style div as divider.</p>
+          <p>
+            .dropdown-content can provide spacing for content to match with
+            headers and dividers.
+          </p>
+          <h3>basic dropdown</h3>
+          <p>toggle by click.</p>
+          <div class="eg-preview">
+            <div class="dropdown show">
+              <button
+                class="btn active"
+                type="button"
+                id="dropdown-toggle-btn-1"
+              >
+                Click me
+                <span><i class="icono-caretDown"></i></span>
+              </button>
+              <div class="dropdown-menu">
+                <h6 class="dropdown-header">Header</h6>
+                <a href="#!" class="dropdown-item">Link 1</a>
+                <a href="#!" class="dropdown-item">Link 2</a>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-content">
+                  <button class="btn btn-sm btn-block" type="button">
+                    Button
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3>hoverable dropdown</h3>
+          <p>toggle by hover.</p>
+          <div class="eg-preview"></div>
+          <h3>todo: dropup</h3>
+          <div class="eg-preview"></div>
+        </section>
+        <!-- #endregion /folded dropdown -->
+
+        <section id="modal" class="docs-content-section">
+          <h2>modal</h2>
+          <section></section>
+          <section></section>
+          <p>
+            <code class="code">.modal</code> makes use of
+            <code class="code">:target</code> pseudo selector, open whenever the
+            url hash matches the <code class="code">id</code> of the modal.
+          </p>
+          <h3>basic modal</h3>
+          <div class="eg-preview">
+            <div class="modal" id="modal-1" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <a href="#!" class="close" role="button" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </a>
+                  <h5 class="modal-title">Modal title</h5>
+                  <p>
+                    This is the modal content. Almost any type of content can be
+                    presented to the user here.
+                  </p>
+                  <div class="text-right mt-20">
+                    <!-- text-right = text-align: right, mt-20 = margin-top: 2rem (20px) -->
+                    <a href="#!" class="btn mr-5" role="button">Close</a>
+                    <a href="#!" class="btn btn-primary" role="button"
+                      >I understand</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a href="#modal-1" class="btn btn-primary" role="button"
+              >Open modal</a
+            >
+          </div>
+          <h3>scrollable modal</h3>
+          <div class="eg-preview"></div>
+        </section>
+
+        <!-- #region /folded progress bar -->
+        <section id="progress" class="docs-content-section">
+          <h2>progress</h2>
+          <h3>progress bar variants</h3>
+          <div class="eg-preview">
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                aria-valuenow="0"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <div class="progress">
+              <div
+                class="progress-bar"
+                role="progressbar"
+                style="width: 80%"
+                aria-valuenow="80"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <div class="progress">
+              <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                style="width: 60%"
+                aria-valuenow="60"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <div class="progress">
+              <div
+                class="progress-bar bg-danger"
+                role="progressbar"
+                style="width: 20%"
+                aria-valuenow="20"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </div>
+
+          <h3>progress bar sizes and labels</h3>
+          <div class="eg-preview">
+            <div class="progress h-4" style="height: 2rem">
+              <div
+                class="progress-bar w-75 rounded-0"
+                role="progressbar"
+                aria-valuenow="75"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                75%
+              </div>
+            </div>
+          </div>
+
+          <h3>progress bar group</h3>
+          <div class="eg-preview">
+            <div class="progress-group">
+              <div class="progress">
+                <div
+                  class="progress-bar bg-success"
+                  role="progressbar"
+                  style="width: 100%"
+                  aria-valuenow="100"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <span class="progress-group-label">
+                <i class="fa fa-check-circle text-success font-size-16"></i>
+                <span class="sr-only">Success</span>
+              </span>
+            </div>
+
+            <div class="progress-group">
+              <div class="progress">
+                <div
+                  class="progress-bar bg-secondary"
+                  role="progressbar"
+                  style="width: 50%"
+                  aria-valuenow="50"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <span class="progress-group-label">
+                <i class="fa fa-warning text-secondary font-size-16"></i>
+                <span class="sr-only">Warning</span>
+              </span>
+            </div>
+
+            <div class="progress-group">
+              <div class="progress">
+                <div
+                  class="progress-bar bg-danger"
+                  role="progressbar"
+                  style="width: 20%"
+                  aria-valuenow="20"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+              <span class="progress-group-label">
+                <i class="fa fa-times-circle text-danger font-size-16"></i>
+                <span class="sr-only">Danger</span>
+              </span>
+            </div>
+          </div>
+
+          <h3>animating progress bar</h3>
+          <div class="eg-preview">
+            <div class="progress">
+              <div
+                class="progress-bar progress-bar-animated"
+                role="progressbar"
+                style="width: 80%"
+                aria-valuenow="80"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+            <div class="progress">
+              <div
+                class="progress-bar bg-success progress-bar-animated highlight-dark"
+                role="progressbar"
+                style="width: 60%"
+                aria-valuenow="60"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              ></div>
+            </div>
+          </div>
+        </section>
+        <!-- #endregion /folded progress bar -->
+
+        <!-- #region /folded tooltip -->
+        <section id="tooltip" class="docs-content-section">
+          <h2>tooltip</h2>
+          <p>
+            tooltip can be created by adding the data-toggle="tooltip" and
+            data-title="..." attributes to an element, and requires no
+            JavaScript.
+          </p>
+          <div class="eg-preview">
+            <button
+              class="btn"
+              data-toggle="tooltip"
+              data-title="Default tooltip"
+              type="button"
+            >
+              Default
+            </button>
+            <button
+              class="btn"
+              data-toggle="tooltip"
+              data-title="Top tooltip"
+              data-placement="top"
+              type="button"
+            >
+              Top
+            </button>
+            <button
+              class="btn"
+              data-toggle="tooltip"
+              data-title="Right tooltip"
+              data-placement="right"
+              type="button"
+            >
+              Right
+            </button>
+            <button
+              class="btn"
+              data-toggle="tooltip"
+              data-title="Bottom tooltip"
+              data-placement="bottom"
+              type="button"
+            >
+              Bottom
+            </button>
+            <button
+              class="btn"
+              data-toggle="tooltip"
+              data-title="Left tooltip"
+              data-placement="left"
+              type="button"
+            >
+              Left
+            </button>
+          </div>
+        </section>
+        <!-- #endregion /folded tooltip -->
+
+        <!-- #endregion Components -->
+
+        <!-- #region layout -->
+        <section id="container" class="docs-content-section">
+          <h2>container</h2>
+          <p>containers can be used to center the content horizontally.</p>
+          <p>3 types of containers are provided:</p>
+          <ul class="ul">
+            <li>
+              <code class="code">.container</code> is responsive at all
+              breakpoints with prefined <code class="code">max-width</code>.
+            </li>
+            <li>
+              <code class="code">.container-fluid</code> is full width at all
+              breakpoints with <code class="code">width: 100%;</code>.
+            </li>
+            <li>
+              <code class="code">.container-sm/md/lg/xl/xxl</code> is
+              <code class="code">width: 100%;</code> before the specified
+              breakpoints, then responsive at the specified breakpoint width and
+              greater width.
+            </li>
+          </ul>
+          <p>
+            <code class="code">.container</code> has no padding and margin by
+            default.
+          </p>
+          <ul class="ul">
+            <li>
+              built-in margins tend to make it unexpected and confusing to align
+              contents.
+            </li>
+            <li>
+              <code class="code">.content</code> is recommended to add margin
+              for contents of containers and cards.
+            </li>
+          </ul>
+          <p>
+            this site use <code class="code">.container</code>, responsive for
+            all screen sizes.
+          </p>
+        </section>
+        <section id="grid" class="docs-content-section">
+          <h2>grid</h2>
+        </section>
+        <!-- #endregion layout -->
+
+        <!-- #region nav -->
+        <!-- #region /folded navbar -->
+        <section id="navbar" class="docs-content-section">
+          <h2>navbar</h2>
+
+          <p>classes in the navbar:</p>
+          <ul class="ul">
+            <li>brand: text/image</li>
+            <li>nav-link/item: active</li>
+            <li>text: muted color</li>
+            <li>content: container for buttons, dropdowns...</li>
+            <li>form-inline: create forms inside navbar</li>
+          </ul>
+          <p>
+            navbar elements are usually used in combination with
+            display/position/spacing/... utility classes.
+          </p>
+
+          <h3>static navbar</h3>
+          <p>static navbar is not fixed at the top or bottom.</p>
+          <div class="eg-preview">
+            <nav class="navbar" id="navbar-6">
+              <div class="navbar-content">
+                <button class="btn btn-action" type="button">
+                  <!-- <i class="fa fa-bars" aria-hidden="true"></i> -->
+                  <span class="sr-only">Toggle sidebar</span>
+                </button>
+              </div>
+              <a class="navbar-brand" style="cursor: pointer">
+                <!-- <img src="fake-logo.svg" alt="navbar-brand-img" /> -->
+                <span><i class="icono-barChart">logo</i></span>
+                <span class="pl-2">Brand</span>
+              </a>
+              <div class="navbar-content ml-auto">
+                <button class="btn" type="button">login</button>
+                <button class="btn btn-primary ml-1" type="button">
+                  sign up
+                </button>
+              </div>
+            </nav>
+          </div>
+
+          <h3>collapsible navbar</h3>
+          <p>collapsible for mobile screens.</p>
+          <div class="eg-preview">
+            <nav class="navbar" id="navbar-collapsible">
+              <div class="navbar-content">
+                <button class="btn btn-action" type="button">
+                  <!-- <i class="fa fa-bars" aria-hidden="true"></i> -->
+                  <span class="sr-only">Toggle sidebar</span>
+                </button>
+              </div>
+              <a class="navbar-brand" style="cursor: pointer">
+                <!-- <img src="fake-logo.svg" alt="navbar-brand-img" /> -->
+                <span><i class="icono-barChart">logo</i></span>
+                <span class="pl-2">Brand</span>
+              </a>
+              <div class="navbar-content ml-auto">
+                <!-- <button class="btn" type="button">login</button>
+                        <button class="btn btn-primary ml-1" type="button">
+                          sign up
+                        </button> -->
+                <span><i class="icono-caretDown"></i></span>
+              </div>
+            </nav>
+          </div>
+        </section>
+        <!-- #endregion /folded navbar -->
+        <!-- #region /folded sidebar -->
+        <section id="sidebar" class="docs-content-section">
+          <h2>sidebar</h2>
+
+          <h3>basic sidebar</h3>
+          <div class="eg-preview">
+            <div class="sidebar position-static">
+              <div class="sidebar-menu">
+                <a tabindex="0" class="sidebar-brand">
+                  <!-- <img src="..." alt="..." /> -->
+                  <span><i class="icono-barChart">logo</i></span>
+                  Brand
+                </a>
+                <div class="sidebar-content">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search"
+                  />
+                  <div class="mt-10 font-size-12">
+                    Press <kbd>Enter</kbd> to search
+                  </div>
+                </div>
+                <h5 class="sidebar-title">Getting started</h5>
+                <div class="sidebar-divider"></div>
+                <a href="#!" class="sidebar-link active">Installation</a>
+                <a href="#!" class="sidebar-link">CLI commands</a>
+                <br />
+                <h5 class="sidebar-title">Components</h5>
+                <div class="sidebar-divider"></div>
+                <a href="#!" class="sidebar-link">File explorer</a>
+                <a href="#!" class="sidebar-link">Spreadsheet</a>
+                <a href="#!" class="sidebar-link">Map</a>
+                <a href="#!" class="sidebar-link">Messenger</a>
+              </div>
+            </div>
+          </div>
+
+          <h3>sidebar links with icons</h3>
+          <div class="eg-preview">
+            <button class="btn">button with data-pg-sidebar</button>
+            <a class="btn" href="#!">anchor link with data-pg-sidebar</a>
+          </div>
+          <h3>sidebar with multi-level & collapsible contents</h3>
+        </section>
+        <!-- #endregion /folded sidebar -->
+
+        <!-- #region /folded pagination -->
+        <section id="pagination" class="docs-content-section">
+          <h2>pagination</h2>
+          <h3>basic pagination</h3>
+          <div class="eg-preview">
+            <ul class="pagination">
+              <!-- Previous page -->
+              <li class="page-item">
+                <a href="#!" class="page-link">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  <span class="sr-only">Previous</span>
+                  <!-- sr-only = only for screen readers -->
+                </a>
+              </li>
+              <!-- Pages and ellipses -->
+              <li class="page-item"><a href="#!" class="page-link">1</a></li>
+              <li class="page-item ellipsis"></li>
+              <li class="page-item"><a href="#!" class="page-link">45</a></li>
+              <!-- Active page item -->
+              <li class="page-item active" aria-current="page">
+                <a href="#!" class="page-link" tabindex="-1">46</a>
+              </li>
+              <li class="page-item"><a href="#!" class="page-link">47</a></li>
+              <li class="page-item ellipsis"></li>
+              <li class="page-item"><a href="#!" class="page-link">86</a></li>
+              <!-- Next page -->
+              <li class="page-item">
+                <a href="#!" class="page-link">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <span class="sr-only">Next</span>
+                  <!-- sr-only = only for screen readers -->
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <h3>rounded pagination</h3>
+          <div class="eg-preview">
+            <ul class="pagination pagination-rounded">
+              <!-- Previous page -->
+              <li class="page-item">
+                <a href="#!" class="page-link">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  <span class="sr-only">Previous</span>
+                  <!-- sr-only = only for screen readers -->
+                </a>
+              </li>
+              <!-- Pages and ellipses -->
+              <li class="page-item"><a href="#!" class="page-link">1</a></li>
+              <li class="page-item ellipsis"></li>
+              <li class="page-item"><a href="#!" class="page-link">45</a></li>
+              <!-- Active page item -->
+              <li class="page-item active" aria-current="page">
+                <a href="#!" class="page-link" tabindex="-1">46</a>
+              </li>
+              <li class="page-item"><a href="#!" class="page-link">47</a></li>
+              <li class="page-item ellipsis"></li>
+              <li class="page-item"><a href="#!" class="page-link">86</a></li>
+              <!-- Next page -->
+              <li class="page-item">
+                <a href="#!" class="page-link">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                  <span class="sr-only">Next</span>
+                  <!-- sr-only = only for screen readers -->
+                </a>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <!-- #endregion /folded pagination -->
+
+        <!-- #endregion nav -->
+
+        <!-- #region Tools & Resources -->
+        <section id="codebase" class="docs-content-section">
+          <h2>sass codebase</h2>
+
+          <h3>about this documentation site</h3>
+
+          <ul class="ul">
+            <li>
+              <code class="code">&lt;body&gt;</code> 只有2个直接子元素，<code
+                class="code"
+                >&lt;nav class="nav-header" &gt;</code
+              >是顶部导航条，<code class="code"
+                >&lt;main class="docs-outmost-block" &gt;</code
+              >是文档内容
+            </li>
+            <ul class="ul">
+              <li>
+                main元素也包含2个直接子元素，<code class="code"
+                  >&lt;aside class="docs-toc" &gt;</code
+                >代表左侧目录，<code class="code"
+                  >&lt;div class="docs-content" &gt;</code
+                >代表右侧长文档，由多个小节多个部分的内容组成
+              </li>
+              <li>
+                每个小节部分的元素是<code class="code"
+                  >&lt;section class="docs-content-section" &gt;</code
+                >
+              </li>
+            </ul>
+          </ul>
+        </section>
+      </div>
+      <!-- #endregion Tools & Resources -->
+    </main>
+
+    <!-- 依赖js实现：I点击目录后高亮当前元素 -->
+    <!-- <script src="bootstrap.bundle.min.js" type="text/javascript"></script> -->
+    <script type="text/javascript">
+      var html = document.querySelector('html');
+      var darkToggler = document.querySelector('#darkToggler');
+
+      darkToggler.addEventListener('click', function toggleDark() {
+        html.classList.toggle('pg-t-halfmoon--dark');
+      });
+    </script>
+  </body>
+</html>

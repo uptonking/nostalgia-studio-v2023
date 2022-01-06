@@ -1,0 +1,72 @@
+@use '../../base/variables' as v;
+
+.#{v.$prefix4pg}custom-file {
+  display: block;
+  position: relative;
+
+  & input[type='file'] {
+    /* Hide the default */
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    z-index: -1;
+  }
+
+  & label {
+    display: inline-block;
+    height: var(--pg-c--form-file--height);
+    padding: var(--pg-c--form-file--padding);
+    border-radius: var(--pg-c--form-file--border-radius);
+    border: var(--pg-c--form-file--border-width) solid;
+    line-height: var(--pg-c--form-file--line-height);
+    cursor: pointer;
+    user-select: none;
+
+    color: var(--pg-c--form-file--text-color);
+    background-color: var(--pg-c--form-file--bg-color);
+    // background-image: var(--pg-c--form-file--bg-image);
+    border-color: var(--pg-c--form-file--border-color);
+    box-shadow: var(--pg-c--form-file--box-shadow);
+  }
+
+  & label:hover {
+    color: var(--pg-c--form-file--hover--text-color);
+    background-color: var(--pg-c--form-file--hover--bg-color);
+    // background-image: var(--pg-c--form-file--hover--bg-image);
+    border-color: var(--pg-c--form-file--hover--border-color);
+    box-shadow: var(--pg-c--form-file--hover--box-shadow);
+  }
+
+  & input[type='file']:focus ~ label {
+    color: var(--pg-c--form-file--focus--text-color);
+    background-color: var(--pg-c--form-file--focus--bg-color);
+    // background-image: var(--pg-c--form-file--focus--bg-image);
+    border-color: var(--pg-c--form-file--focus--border-color);
+    box-shadow: var(--pg-c--form-file--focus--box-shadow);
+  }
+
+  & input[type='file']:disabled ~ label,
+  &:hover input[type='file']:disabled ~ label {
+    opacity: 0.6;
+    cursor: not-allowed;
+    color: var(--pg-c--form-file--text-color);
+    background-color: var(--pg-c--form-file--bg-color);
+    // background-image: var(--pg-c--form-file--bg-image);
+    border-color: var(--pg-c--form-file--border-color);
+    box-shadow: none;
+  }
+
+  & input[type='file']:disabled ~ .file-names {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  & input[type='file'].is-invalid ~ label {
+    color: var(--pg-c--form-file--invalid--text-color);
+    background-color: var(--pg-c--form-file--invalid--bg-color);
+    // background-image: var(--pg-c--form-file--invalid-bg-image);
+    border-color: var(--pg-c--form-file--invalid--border-color);
+    box-shadow: var(--pg-c--form-file--invalid--box-shadow);
+  }
+}

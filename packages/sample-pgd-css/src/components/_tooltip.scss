@@ -1,0 +1,68 @@
+@use '../../../design-tokens/dist/pg/tooltip-vars';
+@use '../base/variables' as v;
+
+[data-toggle='tooltip'],
+.#{v.$prefix4pg}tooltip {
+  // @extend .#{v.$theme-name};
+}
+
+[data-toggle='tooltip'],
+.tooltip {
+  position: relative;
+
+  &::before {
+    content: attr(data-title);
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 90;
+    display: inline-block;
+    width: var(--pg-c--tooltip--width);
+    min-width: var(--pg-c--tooltip--min-width);
+    max-width: var(--pg-c--tooltip--max-width);
+    padding: var(--pg-c--tooltip--padding);
+    border-radius: var(--pg-c--tooltip--border-radius);
+    border: var(--pg-c--tooltip--border-width) solid;
+    white-space: normal;
+    text-align: center;
+    font-size: var(--pg-c--tooltip--font-size);
+    line-height: var(--pg-c--tooltip--line-height);
+
+    color: var(--pg-c--tooltip--text-color);
+    background-color: var(--pg-c--tooltip--bg-color);
+    // background-image: var(--pg-c--tooltip--bg-image);
+    border-color: var(--pg-c--tooltip--border-color);
+    box-shadow: var(--pg-c--tooltip--box-shadow);
+  }
+
+  /* 箭头 */
+  &:hover::before,
+  &:focus::before {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+
+  /* Normal tooltip (top) */
+
+  &::before {
+    margin: var(--pg-c--tooltip--offset-negative) 0 0 0;
+    top: 0;
+    right: unset;
+    bottom: unset;
+    left: 50%;
+    transform: translate(-50%, -100%);
+  }
+
+  /* Bottom tooltip */
+
+  &[data-placement^='bottom']::before {
+    margin: 0 0 var(--pg-c--tooltip--offset-negative) 0;
+
+    top: unset;
+    right: unset;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+  }
+}

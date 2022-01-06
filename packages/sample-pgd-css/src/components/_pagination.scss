@@ -1,0 +1,73 @@
+@use '../../../design-tokens/dist/pg/pagination-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}pagination,
+.#{v.$prefix4pg}page-item {
+  // @extend .#{v.$theme-name};
+}
+
+.#{v.$prefix4pg}pagination {
+  padding-left: 0;
+  margin-top: var(--pg-c--pagination--margin-y);
+  margin-bottom: var(--pg-c--pagination--margin-y);
+
+  list-style: none;
+}
+
+.#{v.$prefix4pg}page-item {
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+
+  &.ellipsis::before {
+    content: '\2026';
+  }
+}
+
+.page-item.ellipsis,
+.page-link {
+  display: inline-block;
+  padding: var(--pg-c--pagination--item--padding);
+  margin: var(--pg-c--pagination--item--margin);
+  min-width: var(--pg-c--pagination--item--width);
+  height: var(--pg-c--pagination--item--height);
+  border: var(--pg-c--pagination--item--border-width) solid;
+  border-radius: var(--pg-c--pagination--item--border-radius);
+  font-size: var(--pg-c--pagination--item--font-size);
+  line-height: var(--pg-c--pagination--item--line-height);
+  text-align: center;
+
+  color: var(--pg-c--pagination--item--text-color);
+  background-color: var(--pg-c--pagination--item--bg-color);
+  // background-image: var(--pg-c--pagination--item--bg-image);
+  border-color: var(--pg-c--pagination--item--border-color);
+}
+
+.page-link {
+  box-shadow: var(--pg-c--pagination--item--box-shadow);
+}
+
+.page-item.active .page-link {
+  color: var(--pg-c--pagination--item--active--text-color);
+  background-color: var(--pg-c--pagination--item--active--bg-color);
+  // background-image: var(--pg-c--pagination--item--active-bg-image);
+  border-color: var(--pg-c--pagination--item--active--border-color);
+  box-shadow: var(--pg-c--pagination--item--active--box-shadow);
+  pointer-events: none;
+}
+
+/* Rounded pagination */
+
+.pagination-rounded .page-item.ellipsis,
+.pagination-rounded .page-link {
+  border-radius: 50%;
+}
+
+/* Disabled state */
+
+.page-item.disabled .page-link,
+.dark-mode .page-item.disabled .page-link {
+  opacity: 0.6;
+  box-shadow: none;
+  pointer-events: none;
+}

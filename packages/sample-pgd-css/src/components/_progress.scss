@@ -1,0 +1,94 @@
+@use '../../../design-tokens/dist/pg/progress-vars';
+@use '../base/variables' as v;
+
+.#{v.$prefix4pg}progress,
+.#{v.$prefix4pg}progress-bar,
+.#{v.$prefix4pg}progress-group {
+  // @extend .#{v.$theme-name};
+}
+
+.#{v.$prefix4pg}progress {
+  display: flex;
+  overflow: hidden;
+  height: var(--pg-c--progress--height);
+  border-radius: var(--pg-c--progress--border-radius);
+  font-size: var(--pg-c--progress--font-size);
+  line-height: var(--pg-c--progress--line-height);
+
+  background-color: var(--pg-c--progress--bg-color);
+}
+
+.#{v.$prefix4pg}progress-bar {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: inherit;
+  text-align: center;
+  white-space: nowrap;
+
+  color: var(--pg-c--progress--bar--text-color);
+  background-color: var(--pg-c--progress--bar--bg-color);
+
+  &:not(:only-child) {
+    border-radius: 0;
+  }
+  &:not(:only-child):last-child {
+    border-top-right-radius: inherit;
+    border-bottom-right-radius: inherit;
+  }
+}
+
+// group
+
+.#{v.$prefix4pg}progress-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+
+  & > .progress {
+    position: relative;
+    flex: 1 1 0%;
+    min-width: 0;
+    margin-bottom: 0;
+  }
+}
+
+
+.progress-group-label {
+  font-size: var(--pg-c--progress--group--label--font-size);
+}
+
+// animated
+
+.progress-bar-animated {
+  position: relative;
+
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    background: var(--pg-c--progress--bar--animated-bg-color);
+    transform: translateX(-100%);
+    animation: progress-bar-shine 2s infinite;
+
+
+    &.highlight-dark::before {
+      background: var(--pg-c--progress--bar--animated-bg-color);
+    }
+  }
+}
+
+@keyframes progress-bar-shine {
+  to {
+    transform: translateX(0);
+    opacity: 0.1;
+  }
+}

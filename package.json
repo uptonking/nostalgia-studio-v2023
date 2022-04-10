@@ -10,6 +10,8 @@
   "author": "jinyaoo <jinyaoo@qq.com>",
   "workspaces": [
     "packages/*",
+    "utils/*",
+    "utils/dnd-kit/packages/*",
     "examples/*",
     "site/*"
   ],
@@ -19,7 +21,7 @@
     "formatter": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "formatter:check": "npm run formatter -- --check",
     "help": "echo 'exec npm start to view the demo'",
-    "preinstall": "npx npm-force-resolutions",
+    "preinstall": "",
     "lint": "npm run formatter:check",
     "lint:js": "",
     "lint:style": "",
@@ -45,8 +47,10 @@
     "not IE 11",
     "not IE_Mob 11"
   ],
-  "resolutions": {
-    "prosemirror-transform": "1.2.5"
+  "overrides": {
+    "@datalking/nostalgia-editor": {
+      "prosemirror-transform": "1.2.5"
+    }
   },
   "dependencies": {
     "@atao60/fse-cli": "^0.0.60",
@@ -100,7 +104,6 @@
     "jest-transform-stub": "^2.0.0",
     "mini-css-extract-plugin": "^2.4.2",
     "node-polyfill-webpack-plugin": "^1.1.3",
-    "npm-force-resolutions": "^0.0.10",
     "prettier": "^2.3.1",
     "react-refresh": "^0.10.0",
     "react-test-renderer": "^17.0.2",
@@ -121,6 +124,6 @@
   },
   "engines": {
     "node": ">=14.0.0",
-    "npm": ">=7.0.0"
+    "npm": ">=8.3.0"
   }
 }

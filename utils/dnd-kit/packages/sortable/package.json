@@ -1,0 +1,42 @@
+{
+  "name": "@dnd-kit/sortable",
+  "version": "6.0.1111",
+  "description": "Official sortable preset and sensors for dnd kit",
+  "author": "Claudéric Demers",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clauderic/dnd-kit.git",
+    "directory": "packages/sortable"
+  },
+  "scripts": {
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose --noClean",
+    "build": "tsdx build --tsconfig tsconfig.build.json",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "dist"
+  ],
+  "dependencies": {
+    "@dnd-kit/utilities": "3.1.0111",
+    "tslib": "^2.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "@dnd-kit/core": "5.0.3111"
+  },
+  "devDependencies": {
+    "@dnd-kit/core": "5.0.3111"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

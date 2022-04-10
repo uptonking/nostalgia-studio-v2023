@@ -1,0 +1,41 @@
+{
+  "name": "@dnd-kit/modifiers",
+  "version": "5.0.0111",
+  "description": "Translate modifier presets for use with `@dnd-kit` packages.",
+  "author": "Claudéric Demers",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clauderic/dnd-kit.git",
+    "directory": "packages/modifiers"
+  },
+  "scripts": {
+    "start": "tsdx watch --tsconfig tsconfig.build.json --verbose --noClean",
+    "build": "tsdx build --tsconfig tsconfig.build.json",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepublish": "npm run build"
+  },
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "dist"
+  ],
+  "dependencies": {
+    "@dnd-kit/utilities": "3.1.0111",
+    "tslib": "^2.0.0"
+  },
+  "peerDependencies": {
+    "@dnd-kit/core": "5.0.3111"
+  },
+  "devDependencies": {
+    "@dnd-kit/core": "5.0.3111"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

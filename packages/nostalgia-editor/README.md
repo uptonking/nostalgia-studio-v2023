@@ -1,5 +1,7 @@
 # README.md: @pgd/components-react
 
+- how to make an editor headless like tiptap
+
 # ojs
 ~~~js ojsLive=true
 md `# Minimal cell test`

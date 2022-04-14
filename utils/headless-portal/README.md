@@ -4,3 +4,4 @@
   - radix
   - react-spectrum
   - react-overlays for react-bootstrap
+  - usePortal

@@ -3,39 +3,39 @@ import {createPortal} from 'react-dom';
 
 import {
   Announcements,
-  closestCenter,
   CollisionDetection,
-  DragOverlay,
   DndContext,
+  DragOverlay,
   DropAnimation,
-  defaultDropAnimation,
-  KeyboardSensor,
   KeyboardCoordinateGetter,
+  KeyboardSensor,
+  MeasuringConfiguration,
   Modifiers,
   MouseSensor,
-  MeasuringConfiguration,
   PointerActivationConstraint,
   ScreenReaderInstructions,
   TouchSensor,
   UniqueIdentifier,
+  closestCenter,
+  defaultDropAnimation,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
 import {
-  arrayMove,
-  useSortable,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  SortingStrategy,
-  rectSortingStrategy,
   AnimateLayoutChanges,
   NewIndexGetter,
+  SortableContext,
+  SortingStrategy,
+  arrayMove,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+  useSortable,
 } from '@dnd-kit/sortable';
 
-import {createRange} from '../../utilities';
 import {Item, List, Wrapper} from '../../components';
+import {createRange} from '../../utilities';
 
-export interface Props {
+export interface SortableProps {
   activationConstraint?: PointerActivationConstraint;
   animateLayoutChanges?: AnimateLayoutChanges;
   adjustScale?: boolean;
@@ -107,7 +107,7 @@ export function Sortable({
   style,
   useDragOverlay = true,
   wrapperStyle = () => ({}),
-}: Props) {
+}: SortableProps) {
   const [items, setItems] = useState<string[]>(
     () =>
       initialItems ??

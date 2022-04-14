@@ -1,15 +1,16 @@
 import React from 'react';
+
 import {MeasuringStrategy} from '@dnd-kit/core';
 import {
-  arraySwap,
   AnimateLayoutChanges,
+  arraySwap,
   defaultAnimateLayoutChanges,
   rectSortingStrategy,
   rectSwappingStrategy,
 } from '@dnd-kit/sortable';
 
-import {Sortable, Props as SortableProps} from './Sortable';
 import {GridContainer} from '../../components';
+import {Sortable, SortableProps} from './Sortable';
 
 export default {
   title: 'Presets/Sortable/Grid',

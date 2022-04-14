@@ -1,18 +1,19 @@
 import React from 'react';
+
 import {MeasuringStrategy} from '@dnd-kit/core';
 import {restrictToWindowEdges} from '@dnd-kit/modifiers';
+import {
+  restrictToFirstScrollableAncestor,
+  restrictToVerticalAxis,
+} from '@dnd-kit/modifiers';
 import {
   AnimateLayoutChanges,
   defaultAnimateLayoutChanges,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {
-  restrictToVerticalAxis,
-  restrictToFirstScrollableAncestor,
-} from '@dnd-kit/modifiers';
 
 import {createRange} from '../../utilities';
-import {Sortable, Props as SortableProps} from './Sortable';
+import {Sortable, SortableProps} from './Sortable';
 
 export default {
   title: 'Presets/Sortable/Vertical',

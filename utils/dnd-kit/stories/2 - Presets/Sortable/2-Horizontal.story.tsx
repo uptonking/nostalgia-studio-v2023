@@ -1,15 +1,16 @@
 import React from 'react';
+
 import {MeasuringStrategy} from '@dnd-kit/core';
+import {restrictToHorizontalAxis} from '@dnd-kit/modifiers';
 import {
   AnimateLayoutChanges,
   defaultAnimateLayoutChanges,
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {restrictToHorizontalAxis} from '@dnd-kit/modifiers';
 
-import {createRange} from '../../utilities';
 import {List} from '../../components';
-import {Sortable, Props as SortableProps} from './Sortable';
+import {createRange} from '../../utilities';
+import {Sortable, SortableProps} from './Sortable';
 
 export default {
   title: 'Presets/Sortable/Horizontal',

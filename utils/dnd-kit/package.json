@@ -26,8 +26,8 @@
     "@dnd-kit/accessibility":"3.0.0111",
     "@dnd-kit/core":"5.0.3111",
     "@dnd-kit/modifiers":"5.0.0111",
-    "@dnd-kit/utilities":"3.1.0111",
-    "@dnd-kit/sortable":"6.0.1111"
+    "@dnd-kit/sortable":"6.0.1111",
+    "@dnd-kit/utilities":"3.1.0111"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^6.3.5",

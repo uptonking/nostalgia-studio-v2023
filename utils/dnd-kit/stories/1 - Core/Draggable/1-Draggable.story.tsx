@@ -1,13 +1,14 @@
 import React, {useMemo, useState} from 'react';
+
 import {
   DndContext,
+  KeyboardSensor,
+  Modifiers,
+  MouseSensor,
+  PointerActivationConstraint,
+  TouchSensor,
   useDraggable,
   useSensor,
-  MouseSensor,
-  TouchSensor,
-  KeyboardSensor,
-  PointerActivationConstraint,
-  Modifiers,
   useSensors,
 } from '@dnd-kit/core';
 import {
@@ -36,7 +37,7 @@ const defaultCoordinates = {
   y: 0,
 };
 
-interface Props {
+interface DraggableStoryProps {
   activationConstraint?: PointerActivationConstraint;
   axis?: Axis;
   handle?: boolean;
@@ -54,7 +55,7 @@ function DraggableStory({
   modifiers,
   style,
   buttonStyle,
-}: Props) {
+}: DraggableStoryProps) {
   const [{x, y}, setCoordinates] = useState<Coordinates>(defaultCoordinates);
   const mouseSensor = useSensor(MouseSensor, {
     activationConstraint,
@@ -112,15 +113,10 @@ function DraggableItem({
   handle,
   buttonStyle,
 }: DraggableItemProps) {
-  const {
-    attributes,
-    isDragging,
-    listeners,
-    setNodeRef,
-    transform,
-  } = useDraggable({
-    id: 'draggable',
-  });
+  const {attributes, isDragging, listeners, setNodeRef, transform} =
+    useDraggable({
+      id: 'draggable',
+    });
 
   return (
     <Draggable

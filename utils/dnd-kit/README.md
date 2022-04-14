@@ -2,6 +2,13 @@
 
 ## Overview
 
+- a fork of https://github.com/clauderic/dnd-kit
+  - lastUpdate20220414: e302bd4488bdfb6735c97ac42c1f4a0b1e8bfdf9
+
+## dev-to
+
+- 解决拖拽失效的bug
+
 <p align="left">
 <a href="https://github.com/clauderic/dnd-kit/actions"><img src="https://badgen.net/github/checks/clauderic/dnd-kit" alt="Build status" /></a>
 <a href="https://www.npmjs.com/package/@dnd-kit/core"><img src="https://img.shields.io/npm/v/@dnd-kit/core.svg" alt="Stable Release" /></a>
@@ -20,6 +27,7 @@
 - **Presets:** Need to build a sortable interface? Check out `@dnd-kit/sortable`, which is a thin layer built on top of `@dnd-kit/core`. More presets coming in the future.
 
 ## Documentation
+
 To learn how to get started with **dnd kit**, visit the official documentation website. You'll find in-depth API documentation, tips and guides to help you build drag and drop interfaces. 
 <p>
 <a href="https://docs.dndkit.com">
@@ -29,7 +37,6 @@ To learn how to get started with **dnd kit**, visit the official documentation w
 <p align="center">
 <img alt="Playful illustration of draggable and droppable concepts" src=".github/assets/concepts-illustration.svg" width="75%" />
 </p>
-
 
 ## Key concepts
 
@@ -48,9 +55,9 @@ Check out our [quick start guide](https://docs.dndkit.com/introduction/getting-s
 
 ### Extensibility
 
-Extensibility is at the core of **dnd kit**. It is built to be lean and extensible. It ships with the features we believe most people will want most of the time, and provides extension points to build the rest on top of `@dnd-kit/core`.
+Extensibility is at the core of **dnd kit**. It is built to be lean and extensible. It ships with the features we believe most people will want most of the time, and provides extension points to build the rest on top of `@dnd-kit/core` .
 
-A prime example of the level of extensibility of **dnd kit** is the [Sortable preset](https://docs.dndkit.com/presets/sortable), which is built using the extension points that are exposed by `@dnd-kit/core`.
+A prime example of the level of extensibility of **dnd kit** is the [Sortable preset](https://docs.dndkit.com/presets/sortable), which is built using the extension points that are exposed by `@dnd-kit/core` .
 
 The primary extension points of **dnd kit** are:
 
@@ -85,9 +92,9 @@ The main **tradeoff** with not using the HTML5 Drag and drop API is that you won
 
 **dnd kit** lets you build drag and drop interfaces without having to mutate the DOM every time an item needs to shift position.
 
-This is possible because **dnd kit** lazily calculates and stores the initial positions and layout of your droppable containers when a drag operation is initiated. These positions are passed down to your components that use `useDraggable` and `useDroppable` so that you can compute the new positions of your items while a drag operation is underway, and move them to their new positions using performant CSS properties that do not trigger a repaint such as `translate3d` and `scale`. For an example of how this can be achieved, check out the implementation of the sorting strategies that are exposed by the [`@dnd-kit/sortable`](packages/sortable/README.md) library.
+This is possible because **dnd kit** lazily calculates and stores the initial positions and layout of your droppable containers when a drag operation is initiated. These positions are passed down to your components that use `useDraggable` and `useDroppable` so that you can compute the new positions of your items while a drag operation is underway, and move them to their new positions using performant CSS properties that do not trigger a repaint such as `translate3d` and `scale` . For an example of how this can be achieved, check out the implementation of the sorting strategies that are exposed by the [ `@dnd-kit/sortable` ](packages/sortable/README.md) library.
 
-This isn't to say that you can't shift the position of the items in the DOM while dragging, this is something that **is supported** and sometimes inevitable. In some cases, it won't be possible to know in advance what the new position and layout of the item until you move it in the DOM. Just know that these kind of mutations to the DOM while dragging are much more expensive and will cause a repaint, so if possible, prefer computing the new positions using `translate3d` and `scale`.
+This isn't to say that you can't shift the position of the items in the DOM while dragging, this is something that **is supported** and sometimes inevitable. In some cases, it won't be possible to know in advance what the new position and layout of the item until you move it in the DOM. Just know that these kind of mutations to the DOM while dragging are much more expensive and will cause a repaint, so if possible, prefer computing the new positions using `translate3d` and `scale` .
 
 #### Synthetic events
 
@@ -121,7 +128,7 @@ In one terminal, run `yarn start` in parallel:
 yarn start
 ```
 
-This builds each package to `<packages>/<package>/dist` and runs the project in watch mode so any edits you save inside `<packages>/<package>/src` cause a rebuild to `<packages>/<package>/dist`. The results will stream to to the terminal.
+This builds each package to `<packages>/<package>/dist` and runs the project in watch mode so any edits you save inside `<packages>/<package>/src` cause a rebuild to `<packages>/<package>/dist` . The results will stream to to the terminal.
 
 ### Running storybook
 
@@ -142,7 +149,7 @@ You can play with local packages in the Parcel-powered playground.
 yarn start:playground
 ```
 
-This will start the playground on `localhost:1234`. If you have lerna running watch in parallel mode in one terminal, and then you run parcel, your playground will hot reload when you make changes to any imported module whose source is inside of `packages/*/src/*`. Note that to accomplish this, each package's `start` command passes TDSX the `--noClean` flag. This prevents Parcel from exploding between rebuilds because of File Not Found errors.
+This will start the playground on `localhost:1234` . If you have lerna running watch in parallel mode in one terminal, and then you run parcel, your playground will hot reload when you make changes to any imported module whose source is inside of `packages/*/src/*` . Note that to accomplish this, each package's `start` command passes TDSX the `--noClean` flag. This prevents Parcel from exploding between rebuilds because of File Not Found errors.
 
 Important Safety Tip: When adding/altering packages in the playground, use `alias` object in package.json. This will tell Parcel to resolve them to the filesystem instead of trying to install the package from NPM. It also fixes duplicate React errors you may run into.
 

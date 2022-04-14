@@ -8,6 +8,7 @@ export type {
   Announcements,
   CancelDrop,
   DndContextProps,
+  DragOverlayProps,
   DropAnimation,
   DraggableMeasuring,
   MeasuringConfiguration,

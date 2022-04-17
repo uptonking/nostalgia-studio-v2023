@@ -9,11 +9,13 @@
   "license": "MIT",
   "author": "jinyaoo <jinyaoo@qq.com>",
   "workspaces": [
+    "site/*",
+    "examples/*",
     "packages/*",
     "utils/*",
     "utils/dnd-kit/packages/*",
-    "examples/*",
-    "site/*"
+    "utils/dnd-kit/playground",
+    "utils/dnd-kit/storybooks"
   ],
   "scripts": {
     "clean": "rimraf \"packages/**/dist\"",

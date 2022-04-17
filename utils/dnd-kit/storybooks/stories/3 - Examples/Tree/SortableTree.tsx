@@ -1,22 +1,23 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
+
 import {
   Announcements,
   DndContext,
-  closestCenter,
+  DragEndEvent,
+  DragMoveEvent,
+  DragOverEvent,
+  DragOverlay,
+  DragStartEvent,
+  DropAnimation,
   KeyboardSensor,
+  MeasuringStrategy,
+  Modifier,
   PointerSensor,
+  closestCenter,
+  defaultDropAnimation,
   useSensor,
   useSensors,
-  DragStartEvent,
-  DragOverlay,
-  DragMoveEvent,
-  DragEndEvent,
-  DragOverEvent,
-  MeasuringStrategy,
-  DropAnimation,
-  defaultDropAnimation,
-  Modifier,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -24,18 +25,18 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
+import {SortableTreeItem} from './components';
+import {sortableTreeKeyboardCoordinates} from './keyboardCoordinates';
+import type {FlattenedItem, SensorContext, TreeItems} from './types';
 import {
   buildTree,
   flattenTree,
-  getProjection,
   getChildCount,
-  removeItem,
+  getProjection,
   removeChildrenOf,
+  removeItem,
   setProperty,
 } from './utilities';
-import type {FlattenedItem, SensorContext, TreeItems} from './types';
-import {sortableTreeKeyboardCoordinates} from './keyboardCoordinates';
-import {SortableTreeItem} from './components';
 
 const initialItems: TreeItems = [
   {
@@ -136,9 +137,10 @@ export function SortableTree({
     })
   );
 
-  const sortedIds = useMemo(() => flattenedItems.map(({id}) => id), [
-    flattenedItems,
-  ]);
+  const sortedIds = useMemo(
+    () => flattenedItems.map(({id}) => id),
+    [flattenedItems]
+  );
   const activeItem = activeId
     ? flattenedItems.find(({id}) => id === activeId)
     : null;

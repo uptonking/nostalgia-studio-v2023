@@ -21,7 +21,15 @@
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
     "declaration": true,
-    "esModuleInterop": true
-  },
-  "exclude": ["*/node_modules/*"]
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@dnd-kit/core": ["utils/dnd-kit/packages/core/src"],
+      "@dnd-kit/accessibility": ["utils/dnd-kit/packages/accessibility/src"],
+      "@dnd-kit/modifiers": ["utils/dnd-kit/packages/modifiers/src"],
+      "@dnd-kit/sortable": ["utils/dnd-kit/packages/sortable/src"],
+      "@dnd-kit/utilities": ["utils/dnd-kit/packages/utilities/src"],
+      "*": ["packages/*", "utils/*", "utils/dnd-kit/packages/*", "*"]
+    }
+  }
 }

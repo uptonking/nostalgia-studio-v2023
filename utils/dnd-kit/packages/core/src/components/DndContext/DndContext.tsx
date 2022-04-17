@@ -1,6 +1,6 @@
 import React, {
-  memo,
   createContext,
+  memo,
   useCallback,
   useEffect,
   useMemo,
@@ -9,24 +9,16 @@ import React, {
   useState,
 } from 'react';
 import {unstable_batchedUpdates} from 'react-dom';
+
 import {
+  Transform,
   add,
   getEventCoordinates,
-  Transform,
-  useLatestValue,
   useIsomorphicLayoutEffect,
+  useLatestValue,
   useUniqueId,
 } from '@dnd-kit/utilities';
 
-import {
-  Action,
-  PublicContext,
-  InternalContext,
-  PublicContextDescriptor,
-  InternalContextDescriptor,
-  getInitialState,
-  reducer,
-} from '../../store';
 import {DndMonitorContext, DndMonitorState} from '../../hooks/monitor';
 import {
   useAutoScroller,
@@ -34,19 +26,20 @@ import {
   useCombineActivators,
   useDragOverlayMeasuring,
   useDroppableMeasuring,
-  useScrollableAncestors,
-  useSensorSetup,
-  useRects,
-  useWindowRect,
   useObservedRect,
+  useRects,
   useScrollOffsets,
   useScrollOffsetsDelta,
+  useScrollableAncestors,
+  useSensorSetup,
+  useWindowRect,
 } from '../../hooks/utilities';
 import type {
   AutoScrollOptions,
   DroppableMeasuring,
   SyntheticListener,
 } from '../../hooks/utilities';
+import {Modifiers, applyModifiers} from '../../modifiers';
 import {
   KeyboardSensor,
   PointerSensor,
@@ -57,31 +50,39 @@ import {
   SensorInstance,
 } from '../../sensors';
 import {
-  adjustScale,
-  CollisionDetection,
-  defaultCoordinates,
-  getAdjustedRect,
-  getRectDelta,
-  getFirstCollision,
-  rectIntersection,
-} from '../../utilities';
-import {getTransformAgnosticClientRect} from '../../utilities/rect';
-import {applyModifiers, Modifiers} from '../../modifiers';
+  Action,
+  InternalContext,
+  InternalContextDescriptor,
+  PublicContext,
+  PublicContextDescriptor,
+  getInitialState,
+  reducer,
+} from '../../store';
 import type {Active, DataRef, Over} from '../../store/types';
 import type {
   ClientRect,
-  DragStartEvent,
   DragCancelEvent,
   DragEndEvent,
   DragMoveEvent,
   DragOverEvent,
+  DragStartEvent,
   UniqueIdentifier,
 } from '../../types';
 import {
+  CollisionDetection,
+  adjustScale,
+  defaultCoordinates,
+  getAdjustedRect,
+  getFirstCollision,
+  getRectDelta,
+  rectIntersection,
+} from '../../utilities';
+import {getTransformAgnosticClientRect} from '../../utilities/rect';
+import {
   Accessibility,
   Announcements,
-  screenReaderInstructions as defaultScreenReaderInstructions,
   ScreenReaderInstructions,
+  screenReaderInstructions as defaultScreenReaderInstructions,
 } from '../Accessibility';
 
 export interface Props {
@@ -190,15 +191,12 @@ export const DndContext = memo(function DndContext({
     () => droppableContainers.getEnabled(),
     [droppableContainers]
   );
-  const {
-    droppableRects,
-    measureDroppableContainers,
-    measuringScheduled,
-  } = useDroppableMeasuring(enabledDroppableContainers, {
-    dragging: isDragging,
-    dependencies: [translate.x, translate.y],
-    config: measuring?.droppable,
-  });
+  const {droppableRects, measureDroppableContainers, measuringScheduled} =
+    useDroppableMeasuring(enabledDroppableContainers, {
+      dragging: isDragging,
+      dependencies: [translate.x, translate.y],
+      config: measuring?.droppable,
+    });
   const activeNode = useCachedNode(draggableNodes, activeId);
   const activationCoordinates = activatorEvent
     ? getEventCoordinates(activatorEvent)
@@ -386,12 +384,8 @@ export const DndContext = memo(function DndContext({
 
       function createHandler(type: Action.DragEnd | Action.DragCancel) {
         return async function handler() {
-          const {
-            active,
-            collisions,
-            over,
-            scrollAdjustedTranslate,
-          } = sensorContext.current;
+          const {active, collisions, over, scrollAdjustedTranslate} =
+            sensorContext.current;
           let event: DragEndEvent | null = null;
 
           if (active && scrollAdjustedTranslate) {
@@ -523,12 +517,8 @@ export const DndContext = memo(function DndContext({
 
   useEffect(
     () => {
-      const {
-        active,
-        collisions,
-        droppableContainers,
-        scrollAdjustedTranslate,
-      } = sensorContext.current;
+      const {active, collisions, droppableContainers, scrollAdjustedTranslate} =
+        sensorContext.current;
 
       if (!active || !activeRef.current || !scrollAdjustedTranslate) {
         return;

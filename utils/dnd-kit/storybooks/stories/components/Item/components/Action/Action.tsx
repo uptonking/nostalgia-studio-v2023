@@ -11,6 +11,7 @@ export interface Props extends React.HTMLAttributes<HTMLButtonElement> {
   cursor?: CSSProperties['cursor'];
 }
 
+/** 可定制样式的button */
 export function Action({active, className, cursor, style, ...props}: Props) {
   return (
     <button

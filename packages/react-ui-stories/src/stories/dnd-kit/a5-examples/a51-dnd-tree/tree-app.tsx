@@ -3,5 +3,9 @@ import React from 'react';
 import { DndTree } from './dnd-tree';
 
 export const TreeApp = () => {
-  return <DndTree collapsible indicator removable />;
+  return (
+    <div style={{ minWidth: 360, maxWidth: 720 }}>
+      <DndTree collapsible removable />
+    </div>
+  );
 };

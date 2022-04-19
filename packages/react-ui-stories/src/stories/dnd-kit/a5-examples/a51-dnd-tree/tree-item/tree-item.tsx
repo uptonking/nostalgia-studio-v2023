@@ -1,9 +1,10 @@
 import classNames from 'classnames';
 import React, { CSSProperties, HTMLAttributes, forwardRef } from 'react';
 
-import styles from './tree-item.module.css';
+import styles from './tree-item.module.scss';
 
-export interface Props extends HTMLAttributes<HTMLLIElement> {
+export type TreeItemProps = {
+  value: string;
   childCount?: number;
   clone?: boolean;
   collapsed?: boolean;
@@ -14,13 +15,12 @@ export interface Props extends HTMLAttributes<HTMLLIElement> {
   handleProps?: any;
   indicator?: boolean;
   indentationWidth: number;
-  value: string;
   onCollapse?(): void;
   onRemove?(): void;
   wrapperRef?(node: HTMLLIElement): void;
-}
+} & HTMLAttributes<HTMLLIElement>;
 
-export const TreeItem = forwardRef<HTMLDivElement, Props>(
+export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
   (
     {
       childCount,

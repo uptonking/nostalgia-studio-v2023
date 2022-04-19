@@ -137,6 +137,7 @@ export function findItemDeep(
   return undefined;
 }
 
+/** 从items中递归移除id对象 */
 export function removeItem(items: TreeItems, id: string) {
   const newItems = [];
 

@@ -1,5 +1,5 @@
 import React, {forwardRef, HTMLAttributes} from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 
 import {removeIcon} from './icons';
 import styles from './Page.module.css';
@@ -31,7 +31,7 @@ export const Page = forwardRef<HTMLButtonElement, Props>(function Page(
 ) {
   return (
     <li
-      className={classNames(
+      className={cx(
         styles.Wrapper,
         active && styles.active,
         clone && styles.clone,

@@ -1,16 +1,16 @@
+import cx from 'classnames';
 import React, {forwardRef} from 'react';
-import classNames from 'classnames';
+
 import type {DraggableSyntheticListeners} from '@dnd-kit/core';
 import type {Transform} from '@dnd-kit/utilities';
 
 import {Handle} from '../Item/components/Handle';
-
+import styles from './Draggable.module.css';
 import {
   draggable,
   draggableHorizontal,
   draggableVertical,
 } from './draggable-svg';
-import styles from './Draggable.module.css';
 
 export enum Axis {
   All,
@@ -48,7 +48,7 @@ export const Draggable = forwardRef<HTMLButtonElement, Props>(
   ) {
     return (
       <div
-        className={classNames(
+        className={cx(
           styles.Draggable,
           dragOverlay && styles.dragOverlay,
           dragging && styles.dragging,

@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import {useDraggable} from '@dnd-kit/core';
 
 import {Header} from './Header';
@@ -26,7 +26,7 @@ export function Sheet({children, expanded, header}: Props) {
 
   return (
     <div
-      className={classNames(styles.Sheet, {
+      className={cx(styles.Sheet, {
         [styles.dragging]: isDragging,
         [styles.expanded]: expanded,
       })}

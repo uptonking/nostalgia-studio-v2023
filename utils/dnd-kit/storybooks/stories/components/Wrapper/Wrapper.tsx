@@ -1,5 +1,5 @@
+import cx from 'classnames';
 import React from 'react';
-import classNames from 'classnames';
 
 import styles from './Wrapper.module.css';
 
@@ -12,7 +12,7 @@ interface Props {
 export function Wrapper({children, center, style}: Props) {
   return (
     <div
-      className={classNames(styles.Wrapper, center && styles.center)}
+      className={cx(styles.Wrapper, center && styles.center)}
       style={style}
     >
       {children}

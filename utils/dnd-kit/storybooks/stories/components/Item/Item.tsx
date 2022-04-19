@@ -1,11 +1,11 @@
+import cx from 'classnames';
 import React, {useEffect} from 'react';
-import classNames from 'classnames';
+
 import type {DraggableSyntheticListeners} from '@dnd-kit/core';
 import type {Transform} from '@dnd-kit/utilities';
 
-import {Handle, Remove} from './components';
-
 import styles from './Item.module.css';
+import {Handle, Remove} from './components';
 
 export interface Props {
   dragOverlay?: boolean;
@@ -92,7 +92,7 @@ export const Item = React.memo(
         })
       ) : (
         <li
-          className={classNames(
+          className={cx(
             styles.Wrapper,
             fadeIn && styles.fadeIn,
             sorting && styles.sorting,
@@ -123,7 +123,7 @@ export const Item = React.memo(
           ref={ref}
         >
           <div
-            className={classNames(
+            className={cx(
               styles.Item,
               dragging && styles.dragging,
               handle && styles.withHandle,

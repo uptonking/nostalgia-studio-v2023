@@ -31,5 +31,6 @@
       "@dnd-kit/utilities": ["utils/dnd-kit/packages/utilities/src"],
       "*": ["packages/*", "utils/*", "utils/dnd-kit/packages/*", "*"]
     }
-  }
+  },
+  "files": ["typings.d.ts"]
 }

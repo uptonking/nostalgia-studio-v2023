@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import {useDroppable} from '@dnd-kit/core';
 
 import styles from './Cell.module.css';
@@ -22,7 +22,7 @@ export function Cell({children, validDropLocation, id, odd, x, y}: Props) {
   return (
     <div
       ref={setNodeRef}
-      className={classNames(
+      className={cx(
         styles.Cell,
         validDropLocation && styles.highlight,
         odd ? styles.odd : styles.even,

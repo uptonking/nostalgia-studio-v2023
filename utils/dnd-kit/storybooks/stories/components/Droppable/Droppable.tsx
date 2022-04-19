@@ -1,9 +1,10 @@
+import cx from 'classnames';
 import React from 'react';
-import {useDroppable, UniqueIdentifier} from '@dnd-kit/core';
-import classNames from 'classnames';
 
-import {droppable} from './droppable-svg';
+import {UniqueIdentifier, useDroppable} from '@dnd-kit/core';
+
 import styles from './Droppable.module.css';
+import {droppable} from './droppable-svg';
 
 interface Props {
   children: React.ReactNode;
@@ -19,7 +20,7 @@ export function Droppable({children, id, dragging}: Props) {
   return (
     <div
       ref={setNodeRef}
-      className={classNames(
+      className={cx(
         styles.Droppable,
         isOver && styles.over,
         dragging && styles.dragging,

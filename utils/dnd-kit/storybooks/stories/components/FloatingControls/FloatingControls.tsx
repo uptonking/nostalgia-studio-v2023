@@ -1,5 +1,5 @@
+import cx from 'classnames';
 import React from 'react';
-import classNames from 'classnames';
 
 import styles from './FloatingControls.module.css';
 
@@ -8,5 +8,5 @@ export interface Props {
 }
 
 export function FloatingControls({children}: Props) {
-  return <div className={classNames(styles.FloatingControls)}>{children}</div>;
+  return <div className={cx(styles.FloatingControls)}>{children}</div>;
 }

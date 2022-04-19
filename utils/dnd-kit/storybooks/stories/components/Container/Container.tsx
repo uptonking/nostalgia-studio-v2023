@@ -1,8 +1,7 @@
+import cx from 'classnames';
 import React, {forwardRef} from 'react';
-import classNames from 'classnames';
 
 import {Handle, Remove} from '../Item';
-
 import styles from './Container.module.css';
 
 export interface Props {
@@ -53,7 +52,7 @@ export const Container = forwardRef<HTMLDivElement, Props>(
             '--columns': columns,
           } as React.CSSProperties
         }
-        className={classNames(
+        className={cx(
           styles.Container,
           unstyled && styles.unstyled,
           horizontal && styles.horizontal,

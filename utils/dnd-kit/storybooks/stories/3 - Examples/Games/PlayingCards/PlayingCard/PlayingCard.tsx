@@ -1,9 +1,8 @@
+import cx from 'classnames';
 import React, {forwardRef} from 'react';
-import classNames from 'classnames';
-
-import {getSuitColor} from './utilities';
 
 import styles from './PlayingCard.module.css';
+import {getSuitColor} from './utilities';
 
 export interface Props {
   value: string;
@@ -40,7 +39,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, Props>(
   ) => {
     return (
       <div
-        className={classNames(styles.Wrapper, transform && styles.sorting)}
+        className={cx(styles.Wrapper, transform && styles.sorting)}
         style={
           {
             '--translate-y': transform ? `${transform.y}px` : undefined,
@@ -52,7 +51,7 @@ export const PlayingCard = forwardRef<HTMLDivElement, Props>(
         ref={ref}
       >
         <div
-          className={classNames(
+          className={cx(
             styles.PlayingCard,
             mountAnimation && styles.mountAnimation,
             isPickedUp && styles.pickedUp,

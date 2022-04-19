@@ -13,7 +13,7 @@ import {
   restrictToHorizontalAxis,
   restrictToParentElement,
 } from '@dnd-kit/modifiers';
-import classNames from 'classnames';
+import cx from 'classnames';
 
 import {State} from './constants';
 import {Thumb} from './Thumb';
@@ -63,7 +63,7 @@ export function Switch({
       <button
         id={id}
         type="button"
-        className={classNames(styles.Switch, {
+        className={cx(styles.Switch, {
           [styles.checked]: checked,
           [styles.dragging]: overId != null,
           [styles.on]: overId === State.On,

@@ -1,5 +1,5 @@
+import cx from 'classnames';
 import React, {CSSProperties} from 'react';
-import classNames from 'classnames';
 
 import styles from './Action.module.css';
 
@@ -16,7 +16,7 @@ export function Action({active, className, cursor, style, ...props}: Props) {
   return (
     <button
       {...props}
-      className={classNames(styles.Action, className)}
+      className={cx(styles.Action, className)}
       tabIndex={0}
       style={
         {

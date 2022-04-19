@@ -1,15 +1,15 @@
 .Wrapper {
-  list-style: none;
   box-sizing: border-box;
   padding-left: var(--spacing);
   margin-bottom: -1px;
+  list-style: none;
 
   &.clone {
     display: inline-block;
-    pointer-events: none;
     padding: 0;
     margin-left: 10px;
     margin-top: 5px;
+    pointer-events: none;
 
     .TreeItem {
       --vertical-padding: 5px;
@@ -92,14 +92,14 @@
   top: -10px;
   right: -10px;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   width: 24px;
   height: 24px;
   border-radius: 50%;
   background-color: #2389ff;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 500;
   color: #fff;
 }
 
@@ -126,8 +126,6 @@
   }
 }
 
-$focused-outline-color: #4c9ffe;
-
 .Action {
   display: flex;
   width: 12px;
@@ -136,7 +134,7 @@ $focused-outline-color: #4c9ffe;
   justify-content: center;
   flex: 0 0 auto;
   touch-action: none;
-  cursor: var(--cursor, pointer);
+  cursor: pointer;
   border-radius: 5px;
   border: none;
   outline: none;
@@ -144,13 +142,11 @@ $focused-outline-color: #4c9ffe;
   background-color: transparent;
   -webkit-tap-highlight-color: transparent;
 
-  @media (hover: hover) {
-    &:hover {
-      background-color: var(--action-background, rgba(0, 0, 0, 0.05));
+  &:hover {
+    background-color: var(--action-background, rgba(0, 0, 0, 0.05));
 
-      svg {
-        fill: #6f7b88;
-      }
+    svg {
+      fill: #6f7b88;
     }
   }
 
@@ -172,7 +168,6 @@ $focused-outline-color: #4c9ffe;
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0),
-      0 0px 0px 2px $focused-outline-color;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0), 0 0px 0px 2px #4c9ffe;
   }
 }

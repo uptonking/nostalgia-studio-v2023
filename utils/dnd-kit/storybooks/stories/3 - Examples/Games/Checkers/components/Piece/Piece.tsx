@@ -1,6 +1,6 @@
-import React, {forwardRef} from 'react';
+import cx from 'classnames';
 import {motion} from 'framer-motion';
-import classNames from 'classnames';
+import React, {forwardRef} from 'react';
 
 import styles from './Piece.module.css';
 
@@ -22,7 +22,7 @@ export const Piece = forwardRef<HTMLElement, Props>(function Piece(
     <Component
       ref={ref}
       layoutId={id}
-      className={classNames(
+      className={cx(
         styles.Piece,
         odd ? styles.odd : styles.even,
         disabled && styles.disabled,

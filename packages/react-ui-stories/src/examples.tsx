@@ -5,8 +5,8 @@ import * as stories from './stories/dnd-kit';
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
-  // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('TreeApp');
+  const [currentStory, setCurrentStory] = useState(storiesNames[0]);
+  // const [currentStory, setCurrentStory] = useState('TreeApp');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

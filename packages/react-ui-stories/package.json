@@ -19,6 +19,7 @@
     "@dnd-kit/modifiers": "5.0.0111",
     "@dnd-kit/sortable": "6.0.1111",
     "@dnd-kit/utilities": "3.1.0111",
+    "classnames":"^2.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },

@@ -18,7 +18,7 @@ import {
 import { DndTreeItem } from './tree-item';
 import type { TreeItems } from './types';
 import { useDndTree } from './use-dnd-tree';
-import { getChildCount } from './utilities';
+import { getChildCount } from './utils';
 
 const measuring = {
   droppable: {

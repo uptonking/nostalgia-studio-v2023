@@ -1,14 +1,14 @@
 import {
+  DroppableContainer,
+  KeyboardCode,
+  KeyboardCoordinateGetter,
   closestCorners,
   getClientRect,
   getFirstCollision,
-  KeyboardCode,
-  KeyboardCoordinateGetter,
-  DroppableContainer,
 } from '@dnd-kit/core';
 
 import type {SensorContext} from './types';
-import {getProjection} from './utilities';
+import {getProjection} from './utils';
 
 const directions: string[] = [
   KeyboardCode.Down,

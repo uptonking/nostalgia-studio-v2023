@@ -3,7 +3,7 @@ import React, { CSSProperties } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import { iOS } from '../utilities';
+import { iOS } from '../utils';
 import { TreeItem, TreeItemProps } from './tree-item';
 
 type DndTreeItemProps = TreeItemProps & {

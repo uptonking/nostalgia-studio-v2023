@@ -17,7 +17,7 @@ import {
   removeChildrenOf,
   removeItem,
   setProperty,
-} from './utilities';
+} from './utils';
 
 const initialItems: TreeItems = [
   {

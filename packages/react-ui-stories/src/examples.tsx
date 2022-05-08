@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import * as stories from './stories/dnd-kit';
+// import * as stories from './stories/dnd-kit';
+import * as stories from './stories/reactjs-popup';
 
 const storiesNames = Object.keys(stories);
 

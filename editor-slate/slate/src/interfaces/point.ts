@@ -1,37 +1,38 @@
-import { isPlainObject } from 'is-plain-object'
-import { produce } from 'immer'
-import { ExtendedType, Operation, Path } from '..'
-import { TextDirection } from './types'
+import { produce } from 'immer';
+import { isPlainObject } from 'is-plain-object';
 
-/**
- * `Point` objects refer to a specific location in a text node in a Slate
- * document. Its path refers to the location of the node in the tree, and its
- * offset refers to the distance into the node's string of text. Points can
- * only refer to `Text` nodes.
- */
+import { TextDirection } from './types';
+import { ExtendedType, Operation, Path } from '..';
 
 export interface BasePoint {
-  path: Path
-  offset: number
+  path: Path;
+  offset: number;
 }
 
-export type Point = ExtendedType<'Point', BasePoint>
+/**
+ * - `Point` objects refer to a specific location in a text node in a Slate
+ * document.
+ * - Its path refers to the location of the node in the tree, and its
+ * offset refers to the distance into the node's string of text.
+ * - Points can only refer to `Text` nodes.
+ */
+export type Point = ExtendedType<'Point', BasePoint>;
 
 export interface PointTransformOptions {
-  affinity?: TextDirection | null
+  affinity?: TextDirection | null;
 }
 
 export interface PointInterface {
-  compare: (point: Point, another: Point) => -1 | 0 | 1
-  isAfter: (point: Point, another: Point) => boolean
-  isBefore: (point: Point, another: Point) => boolean
-  equals: (point: Point, another: Point) => boolean
-  isPoint: (value: any) => value is Point
+  compare: (point: Point, another: Point) => -1 | 0 | 1;
+  isAfter: (point: Point, another: Point) => boolean;
+  isBefore: (point: Point, another: Point) => boolean;
+  equals: (point: Point, another: Point) => boolean;
+  isPoint: (value: any) => value is Point;
   transform: (
     point: Point,
     op: Operation,
-    options?: PointTransformOptions
-  ) => Point | null
+    options?: PointTransformOptions,
+  ) => Point | null;
 }
 
 export const Point: PointInterface = {
@@ -41,15 +42,15 @@ export const Point: PointInterface = {
    */
 
   compare(point: Point, another: Point): -1 | 0 | 1 {
-    const result = Path.compare(point.path, another.path)
+    const result = Path.compare(point.path, another.path);
 
     if (result === 0) {
-      if (point.offset < another.offset) return -1
-      if (point.offset > another.offset) return 1
-      return 0
+      if (point.offset < another.offset) return -1;
+      if (point.offset > another.offset) return 1;
+      return 0;
     }
 
-    return result
+    return result;
   },
 
   /**
@@ -57,7 +58,7 @@ export const Point: PointInterface = {
    */
 
   isAfter(point: Point, another: Point): boolean {
-    return Point.compare(point, another) === 1
+    return Point.compare(point, another) === 1;
   },
 
   /**
@@ -65,7 +66,7 @@ export const Point: PointInterface = {
    */
 
   isBefore(point: Point, another: Point): boolean {
-    return Point.compare(point, another) === -1
+    return Point.compare(point, another) === -1;
   },
 
   /**
@@ -76,7 +77,7 @@ export const Point: PointInterface = {
     // PERF: ensure the offsets are equal first since they are cheaper to check.
     return (
       point.offset === another.offset && Path.equals(point.path, another.path)
-    )
+    );
   },
 
   /**
@@ -88,7 +89,7 @@ export const Point: PointInterface = {
       isPlainObject(value) &&
       typeof value.offset === 'number' &&
       Path.isPath(value.path)
-    )
+    );
   },
 
   /**
@@ -98,20 +99,20 @@ export const Point: PointInterface = {
   transform(
     point: Point | null,
     op: Operation,
-    options: PointTransformOptions = {}
+    options: PointTransformOptions = {},
   ): Point | null {
-    return produce(point, p => {
+    return produce(point, (p) => {
       if (p === null) {
-        return null
+        return null;
       }
-      const { affinity = 'forward' } = options
-      const { path, offset } = p
+      const { affinity = 'forward' } = options;
+      const { path, offset } = p;
 
       switch (op.type) {
         case 'insert_node':
         case 'move_node': {
-          p.path = Path.transform(path, op, options)!
-          break
+          p.path = Path.transform(path, op, options)!;
+          break;
         }
 
         case 'insert_text': {
@@ -120,67 +121,67 @@ export const Point: PointInterface = {
             (op.offset < offset ||
               (op.offset === offset && affinity === 'forward'))
           ) {
-            p.offset += op.text.length
+            p.offset += op.text.length;
           }
 
-          break
+          break;
         }
 
         case 'merge_node': {
           if (Path.equals(op.path, path)) {
-            p.offset += op.position
+            p.offset += op.position;
           }
 
-          p.path = Path.transform(path, op, options)!
-          break
+          p.path = Path.transform(path, op, options)!;
+          break;
         }
 
         case 'remove_text': {
           if (Path.equals(op.path, path) && op.offset <= offset) {
-            p.offset -= Math.min(offset - op.offset, op.text.length)
+            p.offset -= Math.min(offset - op.offset, op.text.length);
           }
 
-          break
+          break;
         }
 
         case 'remove_node': {
           if (Path.equals(op.path, path) || Path.isAncestor(op.path, path)) {
-            return null
+            return null;
           }
 
-          p.path = Path.transform(path, op, options)!
-          break
+          p.path = Path.transform(path, op, options)!;
+          break;
         }
 
         case 'split_node': {
           if (Path.equals(op.path, path)) {
             if (op.position === offset && affinity == null) {
-              return null
+              return null;
             } else if (
               op.position < offset ||
               (op.position === offset && affinity === 'forward')
             ) {
-              p.offset -= op.position
+              p.offset -= op.position;
 
               p.path = Path.transform(path, op, {
                 ...options,
                 affinity: 'forward',
-              })!
+              })!;
             }
           } else {
-            p.path = Path.transform(path, op, options)!
+            p.path = Path.transform(path, op, options)!;
           }
 
-          break
+          break;
         }
       }
-    })
+    });
   },
-}
+};
 
 /**
  * `PointEntry` objects are returned when iterating over `Point` objects that
  * belong to a range.
  */
 
-export type PointEntry = [Point, 'anchor' | 'focus']
+export type PointEntry = [Point, 'anchor' | 'focus'];

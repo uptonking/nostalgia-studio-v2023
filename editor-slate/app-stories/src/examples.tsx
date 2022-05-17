@@ -6,8 +6,8 @@ import * as stories from './stories/slate-author';
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
-  const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  // const [currentStory, setCurrentStory] = useState('TreeApp');
+  // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
+  const [currentStory, setCurrentStory] = useState('A22InlineToolbarApp');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

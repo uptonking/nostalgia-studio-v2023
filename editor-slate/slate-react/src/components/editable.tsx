@@ -113,7 +113,6 @@ export type EditableProps = {
 /**
  * Editable.
  */
-
 export const Editable = (props: EditableProps) => {
   const {
     autoFocus,

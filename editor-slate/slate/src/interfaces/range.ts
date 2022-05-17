@@ -4,17 +4,16 @@ import { isPlainObject } from 'is-plain-object';
 import { RangeDirection } from './types';
 import { ExtendedType, Operation, Path, Point, PointEntry } from '..';
 
-/**
- * `Range` objects are a set of points that refer to a specific span of a Slate
- * document. They can define a span inside a single node or a can span across
- * multiple nodes.
- */
-
 export interface BaseRange {
   anchor: Point;
   focus: Point;
 }
 
+/**
+ * `Range` objects are a set of points that refer to a specific span of a Slate
+ * document. They can define a span inside a single node or a can span across
+ * multiple nodes.
+ */
 export type Range = ExtendedType<'Range', BaseRange>;
 
 export interface RangeEdgesOptions {

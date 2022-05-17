@@ -12,6 +12,7 @@
     "site/*",
     "examples/*",
     "packages/*",
+    "editor-slate/*",
     "utils/*",
     "utils/dnd-kit/packages/*",
     "utils/dnd-kit/playground",

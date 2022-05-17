@@ -29,6 +29,10 @@
       "@dnd-kit/modifiers": ["utils/dnd-kit/packages/modifiers/src"],
       "@dnd-kit/sortable": ["utils/dnd-kit/packages/sortable/src"],
       "@dnd-kit/utilities": ["utils/dnd-kit/packages/utilities/src"],
+      "slate": ["editor-slate/slate/src"],
+      "slate-history": ["editor-slate/slate-history/src"],
+      "slate-react": ["editor-slate/slate-react/src"],
+      "slate-hyperscript": ["editor-slate/slate-hyperscript/src"],
       "*": ["packages/*", "utils/*", "utils/dnd-kit/packages/*", "*"]
     }
   },

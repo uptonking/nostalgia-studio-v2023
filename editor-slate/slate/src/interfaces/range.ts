@@ -1,7 +1,8 @@
-import { produce } from 'immer'
-import { isPlainObject } from 'is-plain-object'
-import { ExtendedType, Operation, Path, Point, PointEntry } from '..'
-import { RangeDirection } from './types'
+import { produce } from 'immer';
+import { isPlainObject } from 'is-plain-object';
+
+import { RangeDirection } from './types';
+import { ExtendedType, Operation, Path, Point, PointEntry } from '..';
 
 /**
  * `Range` objects are a set of points that refer to a specific span of a Slate
@@ -10,38 +11,40 @@ import { RangeDirection } from './types'
  */
 
 export interface BaseRange {
-  anchor: Point
-  focus: Point
+  anchor: Point;
+  focus: Point;
 }
 
-export type Range = ExtendedType<'Range', BaseRange>
+export type Range = ExtendedType<'Range', BaseRange>;
 
 export interface RangeEdgesOptions {
-  reverse?: boolean
+  reverse?: boolean;
 }
 
 export interface RangeTransformOptions {
-  affinity?: RangeDirection | null
+  affinity?: RangeDirection | null;
 }
 
 export interface RangeInterface {
-  edges: (range: Range, options?: RangeEdgesOptions) => [Point, Point]
-  end: (range: Range) => Point
-  equals: (range: Range, another: Range) => boolean
-  includes: (range: Range, target: Path | Point | Range) => boolean
-  intersection: (range: Range, another: Range) => Range | null
-  isBackward: (range: Range) => boolean
-  isCollapsed: (range: Range) => boolean
-  isExpanded: (range: Range) => boolean
-  isForward: (range: Range) => boolean
-  isRange: (value: any) => value is Range
-  points: (range: Range) => Generator<PointEntry, void, undefined>
-  start: (range: Range) => Point
+  /** Get the start and end points of a range, in the order in which they appear in the document. */
+  edges: (range: Range, options?: RangeEdgesOptions) => [Point, Point];
+  end: (range: Range) => Point;
+  equals: (range: Range, another: Range) => boolean;
+  includes: (range: Range, target: Path | Point | Range) => boolean;
+  intersection: (range: Range, another: Range) => Range | null;
+  isBackward: (range: Range) => boolean;
+  /** Check if a range is collapsed, meaning that both its anchor and focus points refer to the exact same position in the document. */
+  isCollapsed: (range: Range) => boolean;
+  isExpanded: (range: Range) => boolean;
+  isForward: (range: Range) => boolean;
+  isRange: (value: any) => value is Range;
+  points: (range: Range) => Generator<PointEntry, void, undefined>;
+  start: (range: Range) => Point;
   transform: (
     range: Range,
     op: Operation,
-    options?: RangeTransformOptions
-  ) => Range | null
+    options?: RangeTransformOptions,
+  ) => Range | null;
 }
 
 export const Range: RangeInterface = {
@@ -51,11 +54,11 @@ export const Range: RangeInterface = {
    */
 
   edges(range: Range, options: RangeEdgesOptions = {}): [Point, Point] {
-    const { reverse = false } = options
-    const { anchor, focus } = range
+    const { reverse = false } = options;
+    const { anchor, focus } = range;
     return Range.isBackward(range) === reverse
       ? [anchor, focus]
-      : [focus, anchor]
+      : [focus, anchor];
   },
 
   /**
@@ -63,8 +66,8 @@ export const Range: RangeInterface = {
    */
 
   end(range: Range): Point {
-    const [, end] = Range.edges(range)
-    return end
+    const [, end] = Range.edges(range);
+    return end;
   },
 
   /**
@@ -75,7 +78,7 @@ export const Range: RangeInterface = {
     return (
       Point.equals(range.anchor, another.anchor) &&
       Point.equals(range.focus, another.focus)
-    )
+    );
   },
 
   /**
@@ -88,27 +91,27 @@ export const Range: RangeInterface = {
         Range.includes(range, target.anchor) ||
         Range.includes(range, target.focus)
       ) {
-        return true
+        return true;
       }
 
-      const [rs, re] = Range.edges(range)
-      const [ts, te] = Range.edges(target)
-      return Point.isBefore(rs, ts) && Point.isAfter(re, te)
+      const [rs, re] = Range.edges(range);
+      const [ts, te] = Range.edges(target);
+      return Point.isBefore(rs, ts) && Point.isAfter(re, te);
     }
 
-    const [start, end] = Range.edges(range)
-    let isAfterStart = false
-    let isBeforeEnd = false
+    const [start, end] = Range.edges(range);
+    let isAfterStart = false;
+    let isBeforeEnd = false;
 
     if (Point.isPoint(target)) {
-      isAfterStart = Point.compare(target, start) >= 0
-      isBeforeEnd = Point.compare(target, end) <= 0
+      isAfterStart = Point.compare(target, start) >= 0;
+      isBeforeEnd = Point.compare(target, end) <= 0;
     } else {
-      isAfterStart = Path.compare(target, start.path) >= 0
-      isBeforeEnd = Path.compare(target, end.path) <= 0
+      isAfterStart = Path.compare(target, start.path) >= 0;
+      isBeforeEnd = Path.compare(target, end.path) <= 0;
     }
 
-    return isAfterStart && isBeforeEnd
+    return isAfterStart && isBeforeEnd;
   },
 
   /**
@@ -116,16 +119,16 @@ export const Range: RangeInterface = {
    */
 
   intersection(range: Range, another: Range): Range | null {
-    const { anchor, focus, ...rest } = range
-    const [s1, e1] = Range.edges(range)
-    const [s2, e2] = Range.edges(another)
-    const start = Point.isBefore(s1, s2) ? s2 : s1
-    const end = Point.isBefore(e1, e2) ? e1 : e2
+    const { anchor, focus, ...rest } = range;
+    const [s1, e1] = Range.edges(range);
+    const [s2, e2] = Range.edges(another);
+    const start = Point.isBefore(s1, s2) ? s2 : s1;
+    const end = Point.isBefore(e1, e2) ? e1 : e2;
 
     if (Point.isBefore(end, start)) {
-      return null
+      return null;
     } else {
-      return { anchor: start, focus: end, ...rest }
+      return { anchor: start, focus: end, ...rest };
     }
   },
 
@@ -135,8 +138,8 @@ export const Range: RangeInterface = {
    */
 
   isBackward(range: Range): boolean {
-    const { anchor, focus } = range
-    return Point.isAfter(anchor, focus)
+    const { anchor, focus } = range;
+    return Point.isAfter(anchor, focus);
   },
 
   /**
@@ -145,8 +148,8 @@ export const Range: RangeInterface = {
    */
 
   isCollapsed(range: Range): boolean {
-    const { anchor, focus } = range
-    return Point.equals(anchor, focus)
+    const { anchor, focus } = range;
+    return Point.equals(anchor, focus);
   },
 
   /**
@@ -156,7 +159,7 @@ export const Range: RangeInterface = {
    */
 
   isExpanded(range: Range): boolean {
-    return !Range.isCollapsed(range)
+    return !Range.isCollapsed(range);
   },
 
   /**
@@ -166,7 +169,7 @@ export const Range: RangeInterface = {
    */
 
   isForward(range: Range): boolean {
-    return !Range.isBackward(range)
+    return !Range.isBackward(range);
   },
 
   /**
@@ -178,7 +181,7 @@ export const Range: RangeInterface = {
       isPlainObject(value) &&
       Point.isPoint(value.anchor) &&
       Point.isPoint(value.focus)
-    )
+    );
   },
 
   /**
@@ -186,8 +189,8 @@ export const Range: RangeInterface = {
    */
 
   *points(range: Range): Generator<PointEntry, void, undefined> {
-    yield [range.anchor, 'anchor']
-    yield [range.focus, 'focus']
+    yield [range.anchor, 'anchor'];
+    yield [range.focus, 'focus'];
   },
 
   /**
@@ -195,8 +198,8 @@ export const Range: RangeInterface = {
    */
 
   start(range: Range): Point {
-    const [start] = Range.edges(range)
-    return start
+    const [start] = Range.edges(range);
+    return start;
   },
 
   /**
@@ -206,49 +209,51 @@ export const Range: RangeInterface = {
   transform(
     range: Range | null,
     op: Operation,
-    options: RangeTransformOptions = {}
+    options: RangeTransformOptions = {},
   ): Range | null {
-    return produce(range, r => {
+    return produce(range, (r) => {
       if (r === null) {
-        return null
+        return null;
       }
-      const { affinity = 'inward' } = options
-      let affinityAnchor: 'forward' | 'backward' | null
-      let affinityFocus: 'forward' | 'backward' | null
+      const { affinity = 'inward' } = options;
+      let affinityAnchor: 'forward' | 'backward' | null;
+      let affinityFocus: 'forward' | 'backward' | null;
 
       if (affinity === 'inward') {
         // If the range is collapsed, make sure to use the same affinity to
         // avoid the two points passing each other and expanding in the opposite
         // direction
-        const isCollapsed = Range.isCollapsed(r)
+        const isCollapsed = Range.isCollapsed(r);
         if (Range.isForward(r)) {
-          affinityAnchor = 'forward'
-          affinityFocus = isCollapsed ? affinityAnchor : 'backward'
+          affinityAnchor = 'forward';
+          affinityFocus = isCollapsed ? affinityAnchor : 'backward';
         } else {
-          affinityAnchor = 'backward'
-          affinityFocus = isCollapsed ? affinityAnchor : 'forward'
+          affinityAnchor = 'backward';
+          affinityFocus = isCollapsed ? affinityAnchor : 'forward';
         }
       } else if (affinity === 'outward') {
         if (Range.isForward(r)) {
-          affinityAnchor = 'backward'
-          affinityFocus = 'forward'
+          affinityAnchor = 'backward';
+          affinityFocus = 'forward';
         } else {
-          affinityAnchor = 'forward'
-          affinityFocus = 'backward'
+          affinityAnchor = 'forward';
+          affinityFocus = 'backward';
         }
       } else {
-        affinityAnchor = affinity
-        affinityFocus = affinity
+        affinityAnchor = affinity;
+        affinityFocus = affinity;
       }
-      const anchor = Point.transform(r.anchor, op, { affinity: affinityAnchor })
-      const focus = Point.transform(r.focus, op, { affinity: affinityFocus })
+      const anchor = Point.transform(r.anchor, op, {
+        affinity: affinityAnchor,
+      });
+      const focus = Point.transform(r.focus, op, { affinity: affinityFocus });
 
       if (!anchor || !focus) {
-        return null
+        return null;
       }
 
-      r.anchor = anchor
-      r.focus = focus
-    })
+      r.anchor = anchor;
+      r.focus = focus;
+    });
   },
-}
+};

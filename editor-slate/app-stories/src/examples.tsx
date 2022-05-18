@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-// import * as stories from './stories/dnd-kit';
 import * as stories from './stories/slate-author';
+
+// import * as stories from './stories/dnd-kit';
+
 
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
   // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('A22InlineToolbarApp');
+  const [currentStory, setCurrentStory] = useState('A21MentionApp');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

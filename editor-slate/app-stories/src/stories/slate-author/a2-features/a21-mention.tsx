@@ -125,8 +125,16 @@ export const MentionApp = () => {
   const handleEditorChange = useCallback(() => {
     const { selection } = editor;
 
+    console.log(
+      ';; onEditorChange-isSelectionChange',
+      editor.operations.every((op) => op.type === 'set_selection'),
+      editor,
+      selection,
+      selection?.anchor?.offset,
+      selection?.focus?.offset,
+    );
+
     if (selection && Range.isCollapsed(selection)) {
-      console.log(';; handleEditorChange', editor);
       const [start] = Range.edges(selection);
 
       const wordBefore = Editor.before(editor, start, { unit: 'word' });

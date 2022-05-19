@@ -76,7 +76,7 @@ export const Menu = React.forwardRef(
       {...props}
       ref={ref}
       style={style}
-      className={cx(className, 'slateMenu')}
+      className={cx('slateMenu', className)}
     />
   ),
 );

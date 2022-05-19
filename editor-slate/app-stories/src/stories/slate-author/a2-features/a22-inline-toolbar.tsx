@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   Descendant,
   Editor,
@@ -8,15 +8,38 @@ import {
   createEditor,
 } from 'slate';
 import { withHistory } from 'slate-history';
-import { Editable, Slate, useFocused, useSlate, withReact } from 'slate-react';
+import {
+  DefaultEditable as Editable,
+  Slate,
+  useFocused,
+  useSlate,
+  withReact,
+} from 'slate-react';
 
 import { Button, Icon, Menu, Portal } from '../components';
 
 /**
- * 💡️ 选中文本时出现的格式化菜单工具条，也可包含其他操作按钮。
+ * 💡️ 选中文本时出现的悬浮工具条示例，一般包含文本格式化按钮，也可包含其他操作按钮。
+ * - 弹框容器一直渲染，通过left大偏移使得默认不可见
+ * - 弹框可见条件是 window.getSelection().getRangeAt(0) 位置，并以此决定弹框位置
  */
 export const InlineToolbarApp = () => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
+
+  const handleBeforeInput = useCallback(
+    (event: InputEvent) => {
+      event.preventDefault();
+      switch (event.inputType) {
+        case 'formatBold':
+          return toggleFormat(editor, 'bold');
+        case 'formatItalic':
+          return toggleFormat(editor, 'italic');
+        case 'formatUnderline':
+          return toggleFormat(editor, 'underlined');
+      }
+    },
+    [editor],
+  );
 
   return (
     <Slate editor={editor} value={initialValue as any}>
@@ -24,17 +47,7 @@ export const InlineToolbarApp = () => {
       <Editable
         renderLeaf={(props) => <Leaf {...props} />}
         placeholder='Enter some text...'
-        onDOMBeforeInput={(event: InputEvent) => {
-          event.preventDefault();
-          switch (event.inputType) {
-            case 'formatBold':
-              return toggleFormat(editor, 'bold');
-            case 'formatItalic':
-              return toggleFormat(editor, 'italic');
-            case 'formatUnderline':
-              return toggleFormat(editor, 'underlined');
-          }
-        }}
+        onDOMBeforeInput={handleBeforeInput}
       />
     </Slate>
   );
@@ -57,6 +70,7 @@ const isFormatActive = (editor, format) => {
   return !!match;
 };
 
+/** slate文本元素 */
 const Leaf = ({ attributes, children, leaf }) => {
   if (leaf.bold) {
     children = <strong>{children}</strong>;
@@ -73,18 +87,20 @@ const Leaf = ({ attributes, children, leaf }) => {
   return <span {...attributes}>{children}</span>;
 };
 
+/**
+ * - 悬浮工具条通过createPortal渲染到body，dom一直是渲染的，页面不可见因为 position: absolute; left: -10000px;。
+ * - 悬浮工具条的位置根据 window.getSelection().getRangeAt(0) 确定。
+ */
 const HoveringToolbar = () => {
-  const ref = useRef<HTMLDivElement | null>();
+  const containerRef = useRef<HTMLDivElement | null>();
   const editor = useSlate();
   const inFocus = useFocused();
 
   useEffect(() => {
-    const el = ref.current;
+    const el = containerRef.current;
     const { selection } = editor;
 
-    if (!el) {
-      return;
-    }
+    if (!el) return;
 
     if (
       !selection ||
@@ -92,6 +108,7 @@ const HoveringToolbar = () => {
       Range.isCollapsed(selection) ||
       Editor.string(editor, selection) === ''
     ) {
+      // 弹框默认样式是class设置的，style设置的是位置样式，去掉style属性会恢复默认位置，变为页面不可见
       el.removeAttribute('style');
       return;
     }
@@ -109,7 +126,8 @@ const HoveringToolbar = () => {
   return (
     <Portal>
       <Menu
-        ref={ref}
+        // menu的样式写在styles.css
+        ref={containerRef}
         onMouseDown={(e) => {
           // prevent toolbar from taking focus away from editor
           e.preventDefault();

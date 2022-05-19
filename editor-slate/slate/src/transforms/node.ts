@@ -72,6 +72,7 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
+  /** Set properties of nodes at the specified location. If no location is specified, use the selection. */
   setNodes: <T extends Node>(
     editor: Editor,
     props: Partial<T>,

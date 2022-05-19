@@ -8,7 +8,7 @@ import React, {
 import { Descendant, Editor, Range, Transforms, createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import {
-  Editable,
+  DefaultEditable as Editable,
   ReactEditor,
   Slate,
   useFocused,
@@ -27,7 +27,6 @@ const withMention = (editor) => {
   editor.isInline = (element) => {
     return element.type === 'mention' ? true : isInline(element);
   };
-
   editor.isVoid = (element) => {
     return element.type === 'mention' ? true : isVoid(element);
   };
@@ -62,10 +61,10 @@ const Element = (props) => {
  * - 下拉列表小弹框出现的实现：渲染到portal，条件是输入range存在且搜索结果非空
  * - 小弹框位置通过range计算得到DOMRect，然后修改style.left/top
  * - 插入inline且void的slate element到编辑器
- * - Slate顶层onChange事件触发频率极高，onKeyDown如果只是鼠标selection则不会触发
+ * - Slate顶层onChange事件触发频率极高，onKeyDown如果只是鼠标selection则不会触发，都需要条件执行
  */
 export const MentionApp = () => {
-  const portalContainer = useRef<HTMLDivElement | null>();
+  const portalContainerRef = useRef<HTMLDivElement | null>();
   // @后输入的所有字符对应的编辑器range，注意选中状态在下拉框时上下移动光标range不变
   const [targetRange, setTargetRange] = useState<Range | undefined>();
   // @后输入的字符，可以是多个字符
@@ -85,6 +84,7 @@ export const MentionApp = () => {
     c.toLowerCase().startsWith(searchChars.toLowerCase()),
   ).slice(0, 10);
 
+  /** keydown时执行operation/transform，更新编辑器数据 */
   const onKeyDown = useCallback(
     (event) => {
       if (targetRange) {
@@ -122,6 +122,7 @@ export const MentionApp = () => {
     [searchResults, editor, selectedIndex, targetRange],
   );
 
+  /** onChange时更新react-state */
   const handleEditorChange = useCallback(() => {
     const { selection } = editor;
 
@@ -162,8 +163,8 @@ export const MentionApp = () => {
 
   useEffect(() => {
     if (targetRange && searchResults.length > 0) {
-      // 每次@后文字长度变化，或搜索结果变化，就从range中计算DOMRect
-      const el = portalContainer.current;
+      // 每次@后文字长度变化，或搜索结果变化，就从range中计算DOMRect，更新小弹框位置
+      const el = portalContainerRef.current;
       const domRange = ReactEditor.toDOMRange(editor, targetRange);
       const rect = domRange.getBoundingClientRect();
       // 找到range位置后，下拉框要出现在该行下面，所以➕️24，否则下拉框会挡住当前行
@@ -183,7 +184,7 @@ export const MentionApp = () => {
       {targetRange && searchResults.length > 0 && (
         <Portal>
           <div
-            ref={portalContainer}
+            ref={portalContainerRef}
             style={{
               position: 'absolute',
               top: '-9999px',

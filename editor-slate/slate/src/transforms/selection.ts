@@ -19,6 +19,7 @@ export interface SelectionSetPointOptions {
 export interface SelectionTransforms {
   /** Collapse the selection to a single point. */
   collapse: (editor: Editor, options?: SelectionCollapseOptions) => void;
+  /** Move the selection's point forward or backward. */
   move: (editor: Editor, options?: SelectionMoveOptions) => void;
   /** Set the selection to a new value specified by target. When a selection already exists, this method is just a proxy for setSelection and will update the existing value. */
   select: (editor: Editor, target: Location) => void;

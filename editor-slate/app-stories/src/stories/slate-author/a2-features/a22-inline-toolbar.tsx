@@ -22,19 +22,31 @@ import { Button, Icon, Menu, Portal } from '../components';
  * 💡️ 选中文本时出现的悬浮工具条示例，一般包含文本格式化按钮，也可包含其他操作按钮。
  * - 弹框容器一直渲染，通过left大偏移使得默认不可见
  * - 弹框可见条件是 window.getSelection().getRangeAt(0) 位置，并以此决定弹框位置
+ * - 🐛️ 原示例存在默认回车无法换行的问题，在handleBeforeInput已解决
+ * - 🐛️ 原示例当光标在浏览器窗口顶端时，弹出的悬浮工具条会被挡住而不可见
  */
 export const InlineToolbarApp = () => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
+  /**
+   * - [What is the purpose of onDOMBeforeInput?](https://github.com/ianstormtaylor/slate/issues/3302)
+   * - It's an event handler for the native DOM `beforeinput` event, because sadly React's synthetic events don't properly expose it.
+   * - In this case it's listening for specific inputTypes that browsers fire for context menus, etc.
+   * - Preventing the default before entering the switch statement for the onDomBeforeInput will disable the ability to type into the editor. In order to actually be able to enter text, you have to preventDefault behaviour only for the format cases.
+   */
   const handleBeforeInput = useCallback(
     (event: InputEvent) => {
-      event.preventDefault();
+      console.log(';; event.inputType ', event.inputType, event);
+
       switch (event.inputType) {
         case 'formatBold':
+          event.preventDefault();
           return toggleFormat(editor, 'bold');
         case 'formatItalic':
+          event.preventDefault();
           return toggleFormat(editor, 'italic');
         case 'formatUnderline':
+          event.preventDefault();
           return toggleFormat(editor, 'underlined');
       }
     },
@@ -55,6 +67,7 @@ export const InlineToolbarApp = () => {
 
 const toggleFormat = (editor, format) => {
   const isActive = isFormatActive(editor, format);
+  console.log(';; toggle format ', format);
   Transforms.setNodes(
     editor,
     { [format]: isActive ? null : true },

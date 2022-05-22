@@ -62,6 +62,7 @@ const Element = (props) => {
  * - 小弹框位置通过range计算得到DOMRect，然后修改style.left/top
  * - 插入inline且void的slate element到编辑器
  * - Slate顶层onChange事件触发频率极高，onKeyDown如果只是鼠标selection则不会触发，都需要条件执行
+ * - 🐛️ 缺点，当光标在浏览器窗口底端时，at下拉菜单弹框会被挡住而不可见
  */
 export const MentionApp = () => {
   const portalContainerRef = useRef<HTMLDivElement | null>();

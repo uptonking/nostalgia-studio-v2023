@@ -27,8 +27,8 @@ const StyledToolBar = styled.div<any>`
   }
 `;
 
-/** FullPageEditor默认使用的Toolbar。
- * todo FunctionComponent中不应该使用React.createRef
+/** FullPageEditor默认使用的Toolbar。会自适应宽度。
+ * - todo FunctionComponent中不应该使用React.createRef
  */
 export const ToolbarWithSizeDetector: React.FunctionComponent<ToolbarWithSizeDetectorProps> =
   (props) => {

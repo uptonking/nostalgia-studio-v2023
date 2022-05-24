@@ -24,7 +24,7 @@ export interface ToolbarProps {
   popupsScrollableElement?: HTMLElement;
   disabled: boolean;
   dispatchAnalyticsEvent?: DispatchAnalyticsEvent;
-  toolbarSize: ToolbarSize;
+  toolbarSize?: ToolbarSize;
   containerElement: HTMLElement | null;
   hasMinWidth?: boolean;
 }

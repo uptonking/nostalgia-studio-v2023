@@ -30,6 +30,7 @@ export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
   display: inline-block;
   margin: 0 8px;
 `;
+Separator.displayName = 'VerticalSeparator';
 
 export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & {

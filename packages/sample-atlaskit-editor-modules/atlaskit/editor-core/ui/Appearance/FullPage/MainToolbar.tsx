@@ -16,8 +16,10 @@ export interface MainToolbarProps {
 
 const toolbarLineHeight = 56;
 
+/** 工具条容器styled.div，默认 position: relative */
 export const MainToolbar = styled.div<MainToolbarProps>`
   position: relative;
+  display: flex;
   align-items: center;
   box-shadow: ${(props: MainToolbarProps) =>
     props.showKeyline
@@ -25,7 +27,6 @@ export const MainToolbar = styled.div<MainToolbarProps>`
       : 'none'};
   transition: box-shadow 200ms ${akEditorSwoopCubicBezier};
   z-index: ${akEditorMenuZIndex};
-  display: flex;
   height: ${toolbarLineHeight}px;
   flex-shrink: 0;
   background-color: white;

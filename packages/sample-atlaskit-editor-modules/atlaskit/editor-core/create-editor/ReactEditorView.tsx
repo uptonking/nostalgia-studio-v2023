@@ -110,9 +110,9 @@ export function shouldReconfigureState(
   );
 }
 
-/** 基于render props定义的编辑器组件，pm-EditorView及各种全局配置会作为数据被渲染，
- * 还基于prosemirror-EditorView，
- * 注意本组件没有使用react state，但ref cb里面有调用forceUpdate */
+/** 基于render props定义的编辑器组件，pm-EditorView及各种全局配置会作为数据被渲染；
+ * - 在constructor中创建pm-editorState，在根元素的callback ref中创建pm-EditorView，
+ * - 注意本组件没有使用react state，但ref cb里面有调用forceUpdate */
 export default class ReactEditorView<T = {}> extends React.Component<
   EditorViewProps & T,
   {},
@@ -412,7 +412,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
     return builtinPlugins;
   }
 
-  /** 根据EditorPlugins提供的配置，创建pm-EditorState */
+  /** 在constructor中，根据EditorPlugins提供的配置，创建pm-EditorState */
   createEditorState = (options: {
     props: EditorViewProps; // 传给本组件ReactEditorView的props
     context: EditorReactContext;
@@ -439,7 +439,7 @@ export default class ReactEditorView<T = {}> extends React.Component<
 
     // 综合计算各项配置数据，返回prosemirror可用的数据结构
     this.config = processPluginsList(editorPlugins);
-    // console.log(';;AkEditorPlugins-config, ', this.config);
+    console.log(';;AkEditorPlugins-config, ', this.config);
 
     const schema = createSchema(this.config);
 

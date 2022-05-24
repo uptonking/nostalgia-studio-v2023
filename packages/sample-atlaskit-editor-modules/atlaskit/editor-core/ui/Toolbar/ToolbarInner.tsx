@@ -5,6 +5,7 @@ import { akEditorMobileMaxWidth } from '../../../editor-shared-styles';
 import type EditorActions from '../../actions';
 import type { ToolbarInnerProps } from './toolbar-types';
 
+/** 普通的styled.div，布局flex */
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
 

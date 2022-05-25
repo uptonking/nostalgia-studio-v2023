@@ -21,7 +21,7 @@ import {
   Transforms,
 } from 'slate';
 
-import useChildren from '../hooks/use-children';
+import { useChildren } from '../hooks/use-children';
 import { DecorateContext } from '../hooks/use-decorate';
 import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
 import { ReadOnlyContext } from '../hooks/use-read-only';
@@ -49,7 +49,7 @@ import {
   IS_UC_MOBILE,
   IS_WECHATBROWSER,
 } from '../utils/environment';
-import Hotkeys from '../utils/hotkeys';
+import { Hotkeys } from '../utils/hotkeys';
 import {
   EDITOR_TO_ELEMENT,
   EDITOR_TO_USER_SELECTION,
@@ -72,7 +72,6 @@ const Children = (props: Parameters<typeof useChildren>[0]) => (
 /**
  * `RenderElementProps` are passed to the `renderElement` handler.
  */
-
 export interface RenderElementProps {
   children: any;
   element: Element;
@@ -88,7 +87,6 @@ export interface RenderElementProps {
 /**
  * `RenderLeafProps` are passed to the `renderLeaf` handler.
  */
-
 export interface RenderLeafProps {
   children: any;
   leaf: Text;
@@ -101,10 +99,9 @@ export interface RenderLeafProps {
 /**
  * `EditableProps` are passed to the `<Editable>` component.
  */
-
 export type EditableProps = {
   decorate?: (entry: NodeEntry) => Range[];
-  /**  */
+  /** react自身的beforeinput事件暴露有问题，需要确认 */
   onDOMBeforeInput?: (event: InputEvent) => void;
   placeholder?: string;
   readOnly?: boolean;
@@ -112,7 +109,7 @@ export type EditableProps = {
   style?: React.CSSProperties;
   renderElement?: (props: RenderElementProps) => JSX.Element;
   /** - When text-level formatting is rendered, the characters are grouped into "leaves" of text that each contain the same formatting applied to them.
-- To customize the rendering of each leaf, you use a custom renderLeaf prop */
+   * - To customize the rendering of each leaf, you use a custom renderLeaf prop */
   renderLeaf?: (props: RenderLeafProps) => JSX.Element;
   renderPlaceholder?: (props: RenderPlaceholderProps) => JSX.Element;
   scrollSelectionIntoView?: (editor: ReactEditor, domRange: DOMRange) => void;
@@ -120,7 +117,12 @@ export type EditableProps = {
 } & React.TextareaHTMLAttributes<HTMLDivElement>;
 
 /**
- * Editable.
+ * 💡 Editable. The main Slate editor.
+ * - 事件顺序：keydown > beforeinput > onchange > keyup
+ * - 对于接收的事件处理器props如onKeyDown，若return true则会跳过此处slate自己的逻辑
+ * - By default, the Editable component comes with a set of event handlers that handle typical rich-text editing behaviors (for example, it implements its own onCopy, onPaste, onDrop, and onKeyDown handlers).
+ * - you may want to extend or override Slate's default behavior, which can be done by passing your own event handler(s) to the Editable component.
+ * - Your custom event handler can control whether or not Slate should execute its own event handling for a given event after your handler runs depending on the return value of your event handler.
  */
 export const Editable = (props: EditableProps) => {
   const {
@@ -146,7 +148,7 @@ export const Editable = (props: EditableProps) => {
   // Update internal state on each render.
   IS_READ_ONLY.set(editor, readOnly);
 
-  // Keep track of some state for the event handler logic.
+  /** Keep track of some state for the event handler logic. */
   const state = useMemo(
     () => ({
       hasInsertPrefixInCompositon: false,
@@ -172,7 +174,7 @@ export const Editable = (props: EditableProps) => {
 
     // Make sure the DOM selection state is in sync.
     const { selection } = editor;
-    const root = ReactEditor.findDocumentOrShadowRoot(editor);
+    const root = ReactEditor.findDocumentOrShadowRoot(editor) as Document;
     const domSelection = root.getSelection();
 
     if (
@@ -263,19 +265,18 @@ export const Editable = (props: EditableProps) => {
     });
   });
 
-  // The autoFocus TextareaHTMLAttribute doesn't do anything on a div, so it
-  // needs to be manually focused.
+  // The autoFocus TextareaHTMLAttribute doesn't do anything on a div, so it needs to be manually focused.
   useEffect(() => {
     if (ref.current && autoFocus) {
       ref.current.focus();
     }
   }, [autoFocus]);
 
-  // Listen on the native `selectionchange` event to be able to update any time
-  // the selection changes. This is required because React's `onSelect` is leaky
-  // and non-standard so it doesn't fire until after a selection has been
-  // released. This causes issues in situations where another change happens
-  // while a selection is being dragged.
+  /**
+   * - Listen on the native `selectionchange` event to be able to update any time the selection changes.
+   * - This is required because React's `onSelect` is leaky and non-standard so it doesn't fire until after a selection has been released.
+   * - This causes issues in situations where another change happens while a selection is being dragged.
+   */
   const onDOMSelectionChange = useCallback(
     throttle(() => {
       if (
@@ -283,7 +284,7 @@ export const Editable = (props: EditableProps) => {
         !state.isUpdatingSelection &&
         !state.isDraggingInternally
       ) {
-        const root = ReactEditor.findDocumentOrShadowRoot(editor);
+        const root = ReactEditor.findDocumentOrShadowRoot(editor) as Document;
         const { activeElement } = root;
         const el = ReactEditor.toDOMNode(editor, editor);
         const domSelection = root.getSelection();
@@ -321,17 +322,23 @@ export const Editable = (props: EditableProps) => {
     [readOnly],
   );
 
+  /** 只是debounce去抖 onDOMSelectionChange 方法，但暂停时间为0 */
   const scheduleOnDOMSelectionChange = useMemo(
     () => debounce(onDOMSelectionChange, 0),
     [onDOMSelectionChange],
   );
 
-  // Listen on the native `beforeinput` event to get real "Level 2" events. This
-  // is required because React's `beforeinput` is fake and never really attaches
-  // to the real event sadly. (2019/11/01)
-  // https://github.com/facebook/react/issues/11211
+  /**
+   * - 定义beforeinput的处理方法。会通过手动domEle.addEventListener注册到元素。
+   * - Listen on the native `beforeinput` event to get real "Level 2" events.
+   * - This is required because React's `beforeinput` is fake and never really attaches
+   * to the real event sadly. (2019/11/01)
+   * - https://github.com/facebook/react/issues/11211
+   */
   const onDOMBeforeInput = useCallback(
     (event: InputEvent) => {
+      console.log(';; s-e onDOMBeforeInput ', event);
+
       if (
         !readOnly &&
         hasEditableTarget(editor, event.target) &&
@@ -610,7 +617,6 @@ export const Editable = (props: EditableProps) => {
   const decorations = [...Node.nodes(editor)].flatMap(([n, p]) =>
     decorate([n, p]),
   );
-
   if (
     placeholder &&
     editor.children.length === 1 &&
@@ -630,6 +636,7 @@ export const Editable = (props: EditableProps) => {
   return (
     <ReadOnlyContext.Provider value={readOnly}>
       <DecorateContext.Provider value={decorate}>
+        {/* @ts-ignore */}
         <Component
           role={readOnly ? undefined : 'textbox'}
           {...attributes}
@@ -720,7 +727,9 @@ export const Editable = (props: EditableProps) => {
               // one, this is due to the window being blurred when the tab
               // itself becomes unfocused, so we want to abort early to allow to
               // editor to stay focused when the tab becomes focused again.
-              const root = ReactEditor.findDocumentOrShadowRoot(editor);
+              const root = ReactEditor.findDocumentOrShadowRoot(
+                editor,
+              ) as Document;
               if (state.latestElement === root.activeElement) {
                 return;
               }
@@ -829,6 +838,53 @@ export const Editable = (props: EditableProps) => {
             },
             [readOnly, attributes.onClick],
           )}
+          onCompositionStart={useCallback(
+            (event: React.CompositionEvent<HTMLDivElement>) => {
+              if (
+                hasEditableTarget(editor, event.target) &&
+                !isEventHandled(event, attributes.onCompositionStart)
+              ) {
+                const { selection, marks } = editor;
+                if (selection) {
+                  if (Range.isExpanded(selection)) {
+                    Editor.deleteFragment(editor);
+                    return;
+                  }
+                  const inline = Editor.above(editor, {
+                    match: (n) => Editor.isInline(editor, n),
+                    mode: 'highest',
+                  });
+                  if (inline) {
+                    const [, inlinePath] = inline;
+                    if (Editor.isEnd(editor, selection.anchor, inlinePath)) {
+                      const point = Editor.after(editor, inlinePath)!;
+                      Transforms.setSelection(editor, {
+                        anchor: point,
+                        focus: point,
+                      });
+                    }
+                  }
+                  // insert new node in advance to ensure composition text will insert
+                  // along with final input text
+                  // add Unicode BOM prefix to avoid normalize removing this node
+                  if (marks) {
+                    state.hasInsertPrefixInCompositon = true;
+                    Transforms.insertNodes(
+                      editor,
+                      {
+                        text: '\uFEFF',
+                        ...marks,
+                      },
+                      {
+                        select: true,
+                      },
+                    );
+                  }
+                }
+              }
+            },
+            [attributes.onCompositionStart],
+          )}
           onCompositionEnd={useCallback(
             (event: React.CompositionEvent<HTMLDivElement>) => {
               if (
@@ -890,53 +946,6 @@ export const Editable = (props: EditableProps) => {
             },
             [attributes.onCompositionUpdate],
           )}
-          onCompositionStart={useCallback(
-            (event: React.CompositionEvent<HTMLDivElement>) => {
-              if (
-                hasEditableTarget(editor, event.target) &&
-                !isEventHandled(event, attributes.onCompositionStart)
-              ) {
-                const { selection, marks } = editor;
-                if (selection) {
-                  if (Range.isExpanded(selection)) {
-                    Editor.deleteFragment(editor);
-                    return;
-                  }
-                  const inline = Editor.above(editor, {
-                    match: (n) => Editor.isInline(editor, n),
-                    mode: 'highest',
-                  });
-                  if (inline) {
-                    const [, inlinePath] = inline;
-                    if (Editor.isEnd(editor, selection.anchor, inlinePath)) {
-                      const point = Editor.after(editor, inlinePath)!;
-                      Transforms.setSelection(editor, {
-                        anchor: point,
-                        focus: point,
-                      });
-                    }
-                  }
-                  // insert new node in advance to ensure composition text will insert
-                  // along with final input text
-                  // add Unicode BOM prefix to avoid normalize removing this node
-                  if (marks) {
-                    state.hasInsertPrefixInCompositon = true;
-                    Transforms.insertNodes(
-                      editor,
-                      {
-                        text: '\uFEFF',
-                        ...marks,
-                      },
-                      {
-                        select: true,
-                      },
-                    );
-                  }
-                }
-              }
-            },
-            [attributes.onCompositionStart],
-          )}
           onCopy={useCallback(
             (event: React.ClipboardEvent<HTMLDivElement>) => {
               if (
@@ -952,6 +961,28 @@ export const Editable = (props: EditableProps) => {
               }
             },
             [attributes.onCopy],
+          )}
+          onPaste={useCallback(
+            (event: React.ClipboardEvent<HTMLDivElement>) => {
+              if (
+                !readOnly &&
+                hasEditableTarget(editor, event.target) &&
+                !isEventHandled(event, attributes.onPaste)
+              ) {
+                // COMPAT: Certain browsers don't support the `beforeinput` event, so we
+                // fall back to React's `onPaste` here instead.
+                // COMPAT: Firefox, Chrome and Safari don't emit `beforeinput` events
+                // when "paste without formatting" is used, so fallback. (2020/02/20)
+                if (
+                  !HAS_BEFORE_INPUT_SUPPORT ||
+                  isPlainTextOnlyPaste(event.nativeEvent)
+                ) {
+                  event.preventDefault();
+                  ReactEditor.insertData(editor, event.clipboardData);
+                }
+              }
+            },
+            [readOnly, attributes.onPaste],
           )}
           onCut={useCallback(
             (event: React.ClipboardEvent<HTMLDivElement>) => {
@@ -1023,6 +1054,24 @@ export const Editable = (props: EditableProps) => {
             },
             [readOnly, attributes.onDragStart],
           )}
+          onDragEnd={useCallback(
+            (event: React.DragEvent<HTMLDivElement>) => {
+              if (
+                !readOnly &&
+                state.isDraggingInternally &&
+                attributes.onDragEnd &&
+                hasTarget(editor, event.target)
+              ) {
+                attributes.onDragEnd(event);
+              }
+
+              // When dropping on a different droppable element than the current editor,
+              // `onDrop` is not called. So we need to clean up in `onDragEnd` instead.
+              // Note: `onDragEnd` is only called when `onDrop` is not called
+              state.isDraggingInternally = false;
+            },
+            [readOnly, attributes.onDragEnd],
+          )}
           onDrop={useCallback(
             (event: React.DragEvent<HTMLDivElement>) => {
               if (
@@ -1066,24 +1115,6 @@ export const Editable = (props: EditableProps) => {
             },
             [readOnly, attributes.onDrop],
           )}
-          onDragEnd={useCallback(
-            (event: React.DragEvent<HTMLDivElement>) => {
-              if (
-                !readOnly &&
-                state.isDraggingInternally &&
-                attributes.onDragEnd &&
-                hasTarget(editor, event.target)
-              ) {
-                attributes.onDragEnd(event);
-              }
-
-              // When dropping on a different droppable element than the current editor,
-              // `onDrop` is not called. So we need to clean up in `onDragEnd` instead.
-              // Note: `onDragEnd` is only called when `onDrop` is not called
-              state.isDraggingInternally = false;
-            },
-            [readOnly, attributes.onDragEnd],
-          )}
           onFocus={useCallback(
             (event: React.FocusEvent<HTMLDivElement>) => {
               if (
@@ -1109,14 +1140,16 @@ export const Editable = (props: EditableProps) => {
             },
             [readOnly, attributes.onFocus],
           )}
+          /** 处理热键 */
           onKeyDown={useCallback(
             (event: React.KeyboardEvent<HTMLDivElement>) => {
+              // console.log(';; s-e onKeyDown ', event);
+
               if (!readOnly && hasEditableTarget(editor, event.target)) {
                 const { nativeEvent } = event;
 
                 // COMPAT: The composition end event isn't fired reliably in all browsers,
-                // so we sometimes might end up stuck in a composition state even though we
-                // aren't composing any more.
+                // so we sometimes might end up stuck in a composition state even though we aren't composing any more.
                 if (
                   ReactEditor.isComposing(editor) &&
                   nativeEvent.isComposing === false
@@ -1378,28 +1411,6 @@ export const Editable = (props: EditableProps) => {
             },
             [readOnly, attributes.onKeyDown],
           )}
-          onPaste={useCallback(
-            (event: React.ClipboardEvent<HTMLDivElement>) => {
-              if (
-                !readOnly &&
-                hasEditableTarget(editor, event.target) &&
-                !isEventHandled(event, attributes.onPaste)
-              ) {
-                // COMPAT: Certain browsers don't support the `beforeinput` event, so we
-                // fall back to React's `onPaste` here instead.
-                // COMPAT: Firefox, Chrome and Safari don't emit `beforeinput` events
-                // when "paste without formatting" is used, so fallback. (2020/02/20)
-                if (
-                  !HAS_BEFORE_INPUT_SUPPORT ||
-                  isPlainTextOnlyPaste(event.nativeEvent)
-                ) {
-                  event.preventDefault();
-                  ReactEditor.insertData(editor, event.clipboardData);
-                }
-              }
-            },
-            [readOnly, attributes.onPaste],
-          )}
         >
           <Children
             decorations={decorations}
@@ -1432,7 +1443,6 @@ export type RenderPlaceholderProps = {
 /**
  * The default placeholder element
  */
-
 export const DefaultPlaceholder = ({
   attributes,
   children,
@@ -1441,13 +1451,11 @@ export const DefaultPlaceholder = ({
 /**
  * A default memoized decorate function.
  */
-
 export const defaultDecorate: (entry: NodeEntry) => Range[] = () => [];
 
 /**
  * A default implement to scroll dom range into view.
  */
-
 const defaultScrollSelectionIntoView = (
   editor: ReactEditor,
   domRange: DOMRange,
@@ -1471,7 +1479,6 @@ const defaultScrollSelectionIntoView = (
 /**
  * Check if the target is in the editor.
  */
-
 export const hasTarget = (
   editor: ReactEditor,
   target: EventTarget | null,
@@ -1482,7 +1489,6 @@ export const hasTarget = (
 /**
  * Check if the target is editable and in the editor.
  */
-
 export const hasEditableTarget = (
   editor: ReactEditor,
   target: EventTarget | null,
@@ -1496,7 +1502,6 @@ export const hasEditableTarget = (
 /**
  * Check if the target is inside void and in an non-readonly editor.
  */
-
 export const isTargetInsideNonReadonlyVoid = (
   editor: ReactEditor,
   target: EventTarget | null,
@@ -1509,9 +1514,8 @@ export const isTargetInsideNonReadonlyVoid = (
 };
 
 /**
- * Check if an event is overrided by a handler.
+ * Check if an event is overridden by a handler.
  */
-
 export const isEventHandled = <
   EventType extends React.SyntheticEvent<unknown, unknown>,
 >(
@@ -1533,9 +1537,8 @@ export const isEventHandled = <
 };
 
 /**
- * Check if a DOM event is overrided by a handler.
+ * Check if a DOM event is overridden by a handler.
  */
-
 export const isDOMEventHandled = <E extends Event>(
   event: E,
   handler?: (event: E) => void | boolean,

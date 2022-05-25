@@ -1,14 +1,15 @@
-import { BaseRange, BaseText } from 'slate'
-import { ReactEditor } from './plugin/react-editor'
+import { BaseRange, BaseText } from 'slate';
+
+import { ReactEditor } from './plugin/react-editor';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: ReactEditor
+    Editor: ReactEditor;
     Text: BaseText & {
-      placeholder?: string
-    }
+      placeholder?: string;
+    };
     Range: BaseRange & {
-      placeholder?: string
-    }
+      placeholder?: string;
+    };
   }
 }

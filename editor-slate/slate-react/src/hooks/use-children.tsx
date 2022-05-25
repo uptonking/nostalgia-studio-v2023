@@ -1,23 +1,23 @@
 import React from 'react'
-import { Editor, Range, Element, Ancestor, Descendant } from 'slate'
+import { Ancestor, Descendant, Editor, Element, Range } from 'slate'
 
-import ElementComponent from '../components/element'
-import TextComponent from '../components/text'
-import { ReactEditor } from '..'
-import { useSlateStatic } from './use-slate-static'
-import { NODE_TO_INDEX, NODE_TO_PARENT } from '../utils/weak-maps'
 import {
   RenderElementProps,
   RenderLeafProps,
   RenderPlaceholderProps,
 } from '../components/editable'
+import ElementComponent from '../components/element'
+import TextComponent from '../components/text'
+import { NODE_TO_INDEX, NODE_TO_PARENT } from '../utils/weak-maps'
 import { SelectedContext } from './use-selected'
+import { useSlateStatic } from './use-slate-static'
+import { ReactEditor } from '..'
 
 /**
  * Children.
  */
 
-const useChildren = (props: {
+export const useChildren = (props: {
   decorations: Range[]
   node: Ancestor
   renderElement?: (props: RenderElementProps) => JSX.Element

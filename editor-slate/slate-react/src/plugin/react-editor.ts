@@ -128,7 +128,8 @@ export const ReactEditor = {
     const root = el.getRootNode();
 
     if (
-      (root instanceof Document || root instanceof ShadowRoot) &&
+      // (root instanceof Document || root instanceof ShadowRoot) &&
+      root instanceof Document &&
       root.getSelection != null
     ) {
       return root;
@@ -188,7 +189,7 @@ export const ReactEditor = {
   deselect(editor: ReactEditor): void {
     const el = ReactEditor.toDOMNode(editor, editor);
     const { selection } = editor;
-    const root = ReactEditor.findDocumentOrShadowRoot(editor);
+    const root = ReactEditor.findDocumentOrShadowRoot(editor) as Document;
     const domSelection = root.getSelection();
 
     if (domSelection && domSelection.rangeCount > 0) {
@@ -457,6 +458,7 @@ export const ReactEditor = {
     if (document.caretRangeFromPoint) {
       domRange = document.caretRangeFromPoint(x, y);
     } else {
+      // @ts-expect-error firefox不支持caretRangeFromPoint
       const position = document.caretPositionFromPoint(x, y);
 
       if (position) {
@@ -483,7 +485,6 @@ export const ReactEditor = {
   /**
    * Find a Slate point from a DOM selection's `domNode` and `domOffset`.
    */
-
   toSlatePoint<T extends boolean>(
     editor: ReactEditor,
     domPoint: DOMPoint,

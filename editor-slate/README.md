@@ -1,5 +1,6 @@
 # slate editor
 
 - forked from https://github.com/ianstormtaylor/slate/commits/main
-  - v0.78.0
-  - 20220507
+  - slate v0.78.0
+  - slate-react v0.79.0
+  - v20220507

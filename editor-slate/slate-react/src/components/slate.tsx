@@ -22,9 +22,10 @@ import { EDITOR_TO_ON_CHANGE } from '../utils/weak-maps';
 /**
  * - A wrapper around the SlateSelectorContext/SlateContext/EditorContext/FocusedContext provider to handle `onChange` events,
  * because the editor is a mutable singleton so it won't ever register as "changed" otherwise.
+ * - 事件顺序：keydown > beforeinput > onchange > keyup
  * - The `value/onChange` convention is provided purely for form-related use cases that expect it.
  * - This is along with the change to how extra props are "controlled". By default they are uncontrolled, but you can pass in any of the other top-level editor properties to take control of them.
- * - the selection, marks, history, or any other props are not required to be controlled. They default to being uncontrolled.
+ * - The selection, marks, history, or any other props are not required to be controlled. They default to being uncontrolled.
  */
 export const Slate = (props: {
   editor: ReactEditor;
@@ -35,7 +36,7 @@ export const Slate = (props: {
   const { editor, children, onChange, value, ...rest } = props;
   const unmountRef = useRef(false);
 
-  const [context, setContext] = React.useState<[ReactEditor]>(() => {
+  const [context, setContext] = useState<[ReactEditor]>(() => {
     if (!Node.isNodeList(value)) {
       throw new Error(
         `[Slate] value is invalid! Expected a list of elements` +
@@ -57,6 +58,8 @@ export const Slate = (props: {
 
   const onContextChange = useCallback(() => {
     if (onChange) {
+      // console.log(';; s-e onChange ', editor);
+
       onChange(editor.children);
     }
 

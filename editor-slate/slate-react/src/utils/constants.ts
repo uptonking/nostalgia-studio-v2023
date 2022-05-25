@@ -1,1 +1,1 @@
-export const TRIPLE_CLICK = 3
+export const TRIPLE_CLICK = 3;

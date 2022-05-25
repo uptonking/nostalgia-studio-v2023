@@ -29,6 +29,7 @@ export const InlineToolbarApp = () => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   /**
+   * - 支持快捷键 ctrl+b
    * - [What is the purpose of onDOMBeforeInput?](https://github.com/ianstormtaylor/slate/issues/3302)
    * - It's an event handler for the native DOM `beforeinput` event, because sadly React's synthetic events don't properly expose it.
    * - In this case it's listening for specific inputTypes that browsers fire for context menus, etc.
@@ -52,6 +53,10 @@ export const InlineToolbarApp = () => {
     },
     [editor],
   );
+
+  useEffect(() => {
+    if (editor) window['se'] = editor;
+  }, [editor]);
 
   return (
     <Slate editor={editor} value={initialValue as any}>
@@ -142,7 +147,7 @@ const HoveringToolbar = () => {
         // menu的样式写在styles.css
         ref={containerRef}
         onMouseDown={(e) => {
-          // prevent toolbar from taking focus away from editor
+          // 若注释掉，则点击工具条button后，工具条会消失，prevent toolbar from taking focus away from editor
           e.preventDefault();
         }}
       >

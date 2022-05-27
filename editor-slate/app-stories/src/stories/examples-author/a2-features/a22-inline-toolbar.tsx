@@ -80,6 +80,7 @@ const toggleFormat = (editor, format) => {
   );
 };
 
+/** todo 判断选中区域文本是否都为某种状态，目前只要选中范围包含加粗的文本，按钮就会高亮，不合预期 */
 const isFormatActive = (editor, format) => {
   const [match] = Editor.nodes(editor, {
     match: (n) => n[format] === true,

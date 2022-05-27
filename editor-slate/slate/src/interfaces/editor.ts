@@ -68,6 +68,7 @@ export interface BaseEditor {
 
   // Overrideable core actions.
   addMark: (key: string, value: any) => void;
+  removeMark: (key: string) => void;
   apply: (operation: Operation) => void;
   deleteBackward: (unit: TextUnit) => void;
   deleteForward: (unit: TextUnit) => void;
@@ -78,7 +79,6 @@ export interface BaseEditor {
   insertFragment: (fragment: Node[]) => void;
   insertNode: (node: Node) => void;
   insertText: (text: string) => void;
-  removeMark: (key: string) => void;
 }
 
 export type Editor = ExtendedType<'Editor', BaseEditor>;

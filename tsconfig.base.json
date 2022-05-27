@@ -38,14 +38,7 @@
       "slate": ["editor-slate/slate/src"],
       "slate-history": ["editor-slate/slate-history/src"],
       "slate-react": ["editor-slate/slate-react/src"],
-      "slate-hyperscript": ["editor-slate/slate-hyperscript/src"],
-      "*": [
-        "packages/*",
-        "utils/*",
-        "utils/floating-ui/*",
-        "utils/dnd-kit/packages/*",
-        "*"
-      ]
+      "slate-hyperscript": ["editor-slate/slate-hyperscript/src"]
     }
   },
   "files": ["typings.d.ts"]

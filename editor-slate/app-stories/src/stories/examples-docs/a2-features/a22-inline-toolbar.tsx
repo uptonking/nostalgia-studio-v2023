@@ -1,3 +1,5 @@
+import './styles.css';
+
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   Descendant,
@@ -19,7 +21,7 @@ import {
 import { Button, Icon, Menu, Portal } from '../components';
 
 /**
- * 💡️ 选中文本时出现的悬浮工具条示例，一般包含文本格式化按钮，也可包含其他操作按钮。
+ * ✨️ 选中文本时出现的悬浮工具条示例，一般包含文本格式化按钮，也可包含其他操作按钮。
  * - 弹框容器一直渲染，通过left大偏移使得默认不可见
  * - 弹框可见条件是 window.getSelection().getRangeAt(0) 位置，并以此决定弹框位置
  * - 🐛️ 原示例存在默认回车无法换行的问题，在handleBeforeInput已解决
@@ -145,12 +147,12 @@ const HoveringToolbar = () => {
   return (
     <Portal>
       <Menu
-        // menu的样式写在styles.css
         ref={containerRef}
         onMouseDown={(e) => {
           // 若注释掉，则点击工具条button后，工具条会消失，prevent toolbar from taking focus away from editor
           e.preventDefault();
         }}
+        className='slate-inline-menu'
       >
         <FormatButton format='bold' icon='format_bold' />
         <FormatButton format='italic' icon='format_italic' />

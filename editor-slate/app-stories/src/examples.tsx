@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import * as stories from './stories/examples-author';
+import * as stories from './stories/examples-docs';
 
 // import * as stories from './stories/dnd-kit';
 

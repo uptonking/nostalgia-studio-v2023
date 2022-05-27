@@ -15,10 +15,10 @@
   "main": "src/index.ts",
   "module": "src/index.ts",
   "unpkg": "./dist/floating-ui.react-dom.min.js",
-  "types": "./index.d.ts",
+  "types": "",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
+      "types": "",
       "module": "./dist/floating-ui.react-dom.esm.js",
       "import": "./dist/floating-ui.react-dom.mjs",
       "default": "./dist/floating-ui.react-dom.js"

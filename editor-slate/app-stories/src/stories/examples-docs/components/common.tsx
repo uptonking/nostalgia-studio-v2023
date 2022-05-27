@@ -76,8 +76,17 @@ export const Menu = React.forwardRef(
       {...props}
       ref={ref}
       style={style}
-      className={cx('slateMenu', className)}
+      className={cx('slate-eg-menu', className)}
     />
+  ),
+);
+
+export const Toolbar = React.forwardRef(
+  (
+    { className, ...props }: PropsWithChildren<BaseProps>,
+    ref: Ref<OrNull<HTMLDivElement>>,
+  ) => (
+    <Menu {...props} ref={ref} className={cx(className, `slate-rte-toolbar`)} />
   ),
 );
 
@@ -97,28 +106,6 @@ export const Menu = React.forwardRef(
 //           padding: 10px 20px;
 //           font-size: 14px;
 //           background: #f8f8e8;
-//         `,
-//       )}
-//     />
-//   ),
-// );
-
-// export const Toolbar = React.forwardRef(
-//   (
-//     { className, ...props }: PropsWithChildren<BaseProps>,
-//     ref: Ref<OrNull<HTMLDivElement>>,
-//   ) => (
-//     <Menu
-//       {...props}
-//       ref={ref}
-//       className={cx(
-//         className,
-//         css`
-//           position: relative;
-//           padding: 1px 18px 17px;
-//           margin: 0 -20px;
-//           border-bottom: 2px solid #eee;
-//           margin-bottom: 20px;
 //         `,
 //       )}
 //     />

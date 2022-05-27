@@ -1,4 +1,4 @@
-.slateMenu {
+.slate-inline-menu {
   position: absolute;
   top: -10000px;
   left: -10000px;
@@ -9,12 +9,4 @@
   background-color: #222;
   border-radius: 4px;
   transition: opacity 0.75s;
-}
-
-.slateMenu > * {
-  display: inline-block;
-}
-
-.slateMenu > * + * {
-  margin-left: 15px;
 }

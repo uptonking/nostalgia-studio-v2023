@@ -17,9 +17,9 @@ import { DIRTY_PATHS, DIRTY_PATH_KEYS, FLUSHING } from './utils/weak-maps'
 import { TextUnit } from './interfaces/types'
 
 /**
- * Create a new Slate `Editor` object.
+ * - Create a new Slate `Editor` object.
+ * - 使用了工厂模式。editor factory
  */
-
 export const createEditor = (): Editor => {
   const editor: Editor = {
     children: [],

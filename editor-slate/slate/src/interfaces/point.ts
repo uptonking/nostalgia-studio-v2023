@@ -10,11 +10,12 @@ export interface BasePoint {
 }
 
 /**
- * - `Point` objects refer to a specific location in a text node in a Slate
- * document.
+ * - `Point` objects refer to a specific location in a text node in a Slate document.
  * - Its path refers to the location of the node in the tree, and its
  * offset refers to the distance into the node's string of text.
  * - Points can only refer to `Text` nodes.
+ * - It can be helpful to think of points as being "cursors" (or "carets") of a selection.
+ * - Points always refer to text nodes! Since they are the only ones with strings that can have cursors.
  */
 export type Point = ExtendedType<'Point', BasePoint>;
 

@@ -337,7 +337,7 @@ export const Editable = (props: EditableProps) => {
    */
   const onDOMBeforeInput = useCallback(
     (event: InputEvent) => {
-      console.log(';; s-e onDOMBeforeInput ', event);
+      // console.log(';; s-e onDOMBeforeInput ', event);
 
       if (
         !readOnly &&

@@ -10,9 +10,9 @@ export interface BaseRange {
 }
 
 /**
- * `Range` objects are a set of points that refer to a specific span of a Slate
- * document. They can define a span inside a single node or a can span across
- * multiple nodes.
+ * - Ranges are a way to refer not just to a single point in the document, but to a wider span of content between two points.
+ * - `Range` objects are a set of points that refer to a specific span of a Slate document.
+ * - They can define a span inside a single node or a can span across multiple nodes.
  */
 export type Range = ExtendedType<'Range', BaseRange>;
 
@@ -46,6 +46,12 @@ export interface RangeInterface {
   ) => Range | null;
 }
 
+/**
+ * - Ranges are a way to refer not just to a single point in the document, but to a wider span of content between two points.
+ * - The terms "anchor" and "focus" are borrowed from the DOM
+ * - One important distinction is that the anchor and focus points of ranges always reference the leaf-level text nodes in a document and never reference elements.
+ * - This behavior is different than the DOM, but it simplifies working with ranges as there are fewer edge cases for you to handle.
+ */
 export const Range: RangeInterface = {
   /**
    * Get the start and end points of a range, in the order in which they appear

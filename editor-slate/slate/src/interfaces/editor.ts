@@ -43,6 +43,11 @@ import {
 
 export type BaseSelection = Range | null;
 
+/**
+ * - selection is a special range that is a property of the top-level Editor
+ * - selection concept is also borrowed from the DOM, although in a greatly-simplified form
+ * - Slate doesn't allow for multiple ranges inside a single selection, which makes things a lot easier to work with.
+ */
 export type Selection = ExtendedType<'Selection', BaseSelection>;
 
 export type EditorMarks = Omit<Text, 'text'>;
@@ -53,16 +58,42 @@ export type EditorMarks = Omit<Text, 'text'>;
  */
 export interface BaseEditor {
   children: Descendant[];
+  /** contains the user's current selection, if any. Don't set it directly; use `Transforms.select` */
   selection: Selection;
+  /** contains all of the operations that have been applied since the last "change" was flushed. (Since Slate batches operations up into ticks of the event loop.) */
   operations: Operation[];
-  /** - represents text-level formatting that will be applied to the next character that is inserted.
+  /**
+   * - stores formatting to be applied when the editor inserts text. If marks is null, the formatting will be taken from the current selection.
+   * - Don't set it directly; use `Editor.addMark` and `Editor.removeMark`.
+   * - represents text-level formatting that will be applied to the next character that is inserted.
    * - This state isn't stored in the document, and is instead stored as an extra property on the editor itself.
    */
   marks: EditorMarks | null;
 
   // Schema-specific node behaviors.
+  /**
+   * - return `false` by default; All elements default to being "block" elements.
+   * - Note that inline nodes cannot be the first or last child of a parent block,
+   * nor can they be next to another inline node in the `children` array.
+   * Slate will automatically space these with `{ text: '' }` children by default with `normalizeNode`.
+   * - elements cannot contain some children that are blocks and some that are inlined.
+   */
   isInline: (element: Element) => boolean;
+  /**
+   * - Elements default to being non-void, meaning that their children are fully editable as text.
+   * - Void Elements must
+   *   - always have one empty child text node (for selection)
+   *   - render using attributes and children (so, their outermost HTML element can't be an HTML void element)
+   *   - set `contentEditable={false}` (for Firefox)
+   */
   isVoid: (element: Element) => boolean;
+  /**
+   * - "Normalizing" is how you can ensure that your editor's content is always of a certain shape.
+   * - It's similar to "validating", except instead of just determining whether the content is valid or invalid, its job is to fix the content to make it valid again.
+   * - `normalizeNode` function gets called every time an operation is applied that inserts or updates a node (or its descendants),
+   * giving you the opportunity to ensure that the changes didn't leave it in an invalid state, and correcting the node if so.
+   * - One thing to understand about normalizeNode constraints is that they are multi-pass.
+   */
   normalizeNode: (entry: NodeEntry) => void;
   onChange: () => void;
 
@@ -81,6 +112,7 @@ export interface BaseEditor {
   insertText: (text: string) => void;
 }
 
+/** A root-level `Editor` node that contains the entire document's content. */
 export type Editor = ExtendedType<'Editor', BaseEditor>;
 
 export interface EditorAboveOptions<T extends Ancestor> {
@@ -337,11 +369,17 @@ export interface EditorInterface {
 
 const IS_EDITOR_CACHE = new WeakMap<object, boolean>();
 
+/**
+ * - All of the behaviors, content and state of a Slate editor is rolled up into a single, top-level `Editor` object.
+ * - Decorations are different from Marks in that they are not stored on editor state.
+ * - Commands are the high-level actions that represent a specific intent of the user. They are represented as helper functions on the `Editor` interface
+ *   - The concept of commands is loosely based on the DOM's built-in execCommand
+ *   - Slate takes care of converting each command into a set of low-level "operations" that are applied to produce a new value
+ */
 export const Editor: EditorInterface = {
   /**
    * Get the ancestor above a location in the document.
    */
-
   above<T extends Ancestor>(
     editor: Editor,
     options: EditorAboveOptions<T> = {},

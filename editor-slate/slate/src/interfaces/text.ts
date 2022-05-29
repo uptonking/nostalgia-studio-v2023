@@ -28,6 +28,10 @@ export interface TextInterface {
   decorations: (node: Text, decorations: Range[]) => Text[]
 }
 
+/**
+ * - leaf-level `Text` nodes which contain the document's text
+ * - Text nodes are the lowest-level nodes in the tree, containing the text content of the document, along with any formatting
+ */
 export const Text: TextInterface = {
   /**
    * Check if two text nodes are equal.

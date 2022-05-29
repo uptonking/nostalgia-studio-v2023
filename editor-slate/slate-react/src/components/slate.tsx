@@ -19,20 +19,28 @@ import { ReactEditor } from '../plugin/react-editor';
 import { IS_REACT_VERSION_17_OR_ABOVE } from '../utils/environment';
 import { EDITOR_TO_ON_CHANGE } from '../utils/weak-maps';
 
+export type SlateProps = {
+  editor: ReactEditor;
+  /**
+   * - Slate Provider's `value` prop is only used as initial state for `editor.children`.
+   * - If your code relies on replacing `editor.children`, you should do so by replacing it directly instead of relying on the "value" prop to do this for you.
+   * - https://github.com/ianstormtaylor/slate/pull/4540
+   */
+  value: Descendant[];
+  children: React.ReactNode;
+  onChange?: (value: Descendant[]) => void;
+};
+
 /**
  * - A wrapper around the SlateSelectorContext/SlateContext/EditorContext/FocusedContext provider to handle `onChange` events,
  * because the editor is a mutable singleton so it won't ever register as "changed" otherwise.
+ * - This provider component keeps track of your Slate editor, its plugins, its value, its selection, and any changes that occur.
  * - 事件顺序：keydown > beforeinput > onchange > keyup
  * - The `value/onChange` convention is provided purely for form-related use cases that expect it.
  * - This is along with the change to how extra props are "controlled". By default they are uncontrolled, but you can pass in any of the other top-level editor properties to take control of them.
  * - The selection, marks, history, or any other props are not required to be controlled. They default to being uncontrolled.
  */
-export const Slate = (props: {
-  editor: ReactEditor;
-  value: Descendant[];
-  children: React.ReactNode;
-  onChange?: (value: Descendant[]) => void;
-}) => {
+export const Slate = (props: SlateProps) => {
   const { editor, children, onChange, value, ...rest } = props;
   const unmountRef = useRef(false);
 

@@ -2,6 +2,7 @@
  * Extendable Custom Types Interface
  */
 
+/** 支持覆盖的接口名 */
 type ExtendableTypes =
   | 'Editor'
   | 'Element'
@@ -24,6 +25,7 @@ export interface CustomTypes {
   [key: string]: unknown
 }
 
+/** 若CustomTypes中存在可覆盖接口名，则 */
 export type ExtendedType<
   K extends ExtendableTypes,
   B

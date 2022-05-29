@@ -1,56 +1,57 @@
-import { produce } from 'immer'
-import { Operation } from '..'
-import { TextDirection } from './types'
+import { produce } from 'immer';
+import { Operation } from '..';
+import { TextDirection } from './types';
 
 /**
- * `Path` arrays are a list of indexes that describe a node's exact position in
- * a Slate node tree. Although they are usually relative to the root `Editor`
- * object, they can be relative to any `Node` object.
+ * - Paths are the lowest-level way to refer to a location.
+ * - Each path is a simple array of numbers that refers to a node in the document tree by its indexes in each of its ancestor nodes down the tree
+ * - `Path` arrays are a list of indexes that describe a node's exact position in a Slate node tree.
+ * - Although they are usually relative to the root `Editor` object, they can be relative to any `Node` object.
+ * - The Editor itself has a path of `[]`
  */
-
-export type Path = number[]
+export type Path = number[];
 
 export interface PathAncestorsOptions {
-  reverse?: boolean
+  reverse?: boolean;
 }
 
 export interface PathLevelsOptions {
-  reverse?: boolean
+  reverse?: boolean;
 }
 
 export interface PathTransformOptions {
-  affinity?: TextDirection | null
+  affinity?: TextDirection | null;
 }
 
 export interface PathInterface {
-  ancestors: (path: Path, options?: PathAncestorsOptions) => Path[]
-  common: (path: Path, another: Path) => Path
-  compare: (path: Path, another: Path) => -1 | 0 | 1
-  endsAfter: (path: Path, another: Path) => boolean
-  endsAt: (path: Path, another: Path) => boolean
-  endsBefore: (path: Path, another: Path) => boolean
-  equals: (path: Path, another: Path) => boolean
-  hasPrevious: (path: Path) => boolean
-  isAfter: (path: Path, another: Path) => boolean
-  isAncestor: (path: Path, another: Path) => boolean
-  isBefore: (path: Path, another: Path) => boolean
-  isChild: (path: Path, another: Path) => boolean
-  isCommon: (path: Path, another: Path) => boolean
-  isDescendant: (path: Path, another: Path) => boolean
-  isParent: (path: Path, another: Path) => boolean
-  isPath: (value: any) => value is Path
-  isSibling: (path: Path, another: Path) => boolean
-  levels: (path: Path, options?: PathLevelsOptions) => Path[]
-  next: (path: Path) => Path
-  operationCanTransformPath: (operation: Operation) => boolean
-  parent: (path: Path) => Path
-  previous: (path: Path) => Path
-  relative: (path: Path, ancestor: Path) => Path
+  ancestors: (path: Path, options?: PathAncestorsOptions) => Path[];
+  common: (path: Path, another: Path) => Path;
+  compare: (path: Path, another: Path) => -1 | 0 | 1;
+  endsAfter: (path: Path, another: Path) => boolean;
+  endsAt: (path: Path, another: Path) => boolean;
+  endsBefore: (path: Path, another: Path) => boolean;
+  equals: (path: Path, another: Path) => boolean;
+  hasPrevious: (path: Path) => boolean;
+  isAfter: (path: Path, another: Path) => boolean;
+  isAncestor: (path: Path, another: Path) => boolean;
+  isBefore: (path: Path, another: Path) => boolean;
+  isChild: (path: Path, another: Path) => boolean;
+  isCommon: (path: Path, another: Path) => boolean;
+  isDescendant: (path: Path, another: Path) => boolean;
+  isParent: (path: Path, another: Path) => boolean;
+  isPath: (value: any) => value is Path;
+  isSibling: (path: Path, another: Path) => boolean;
+  levels: (path: Path, options?: PathLevelsOptions) => Path[];
+  next: (path: Path) => Path;
+  operationCanTransformPath: (operation: Operation) => boolean;
+  parent: (path: Path) => Path;
+  previous: (path: Path) => Path;
+  relative: (path: Path, ancestor: Path) => Path;
   transform: (
     path: Path,
     operation: Operation,
-    options?: PathTransformOptions
-  ) => Path | null
+    options?: PathTransformOptions,
+  ) => Path | null;
 }
 
 export const Path: PathInterface = {
@@ -62,16 +63,16 @@ export const Path: PathInterface = {
    */
 
   ancestors(path: Path, options: PathAncestorsOptions = {}): Path[] {
-    const { reverse = false } = options
-    let paths = Path.levels(path, options)
+    const { reverse = false } = options;
+    let paths = Path.levels(path, options);
 
     if (reverse) {
-      paths = paths.slice(1)
+      paths = paths.slice(1);
     } else {
-      paths = paths.slice(0, -1)
+      paths = paths.slice(0, -1);
     }
 
-    return paths
+    return paths;
   },
 
   /**
@@ -79,20 +80,20 @@ export const Path: PathInterface = {
    */
 
   common(path: Path, another: Path): Path {
-    const common: Path = []
+    const common: Path = [];
 
     for (let i = 0; i < path.length && i < another.length; i++) {
-      const av = path[i]
-      const bv = another[i]
+      const av = path[i];
+      const bv = another[i];
 
       if (av !== bv) {
-        break
+        break;
       }
 
-      common.push(av)
+      common.push(av);
     }
 
-    return common
+    return common;
   },
 
   /**
@@ -105,14 +106,14 @@ export const Path: PathInterface = {
    */
 
   compare(path: Path, another: Path): -1 | 0 | 1 {
-    const min = Math.min(path.length, another.length)
+    const min = Math.min(path.length, another.length);
 
     for (let i = 0; i < min; i++) {
-      if (path[i] < another[i]) return -1
-      if (path[i] > another[i]) return 1
+      if (path[i] < another[i]) return -1;
+      if (path[i] > another[i]) return 1;
     }
 
-    return 0
+    return 0;
   },
 
   /**
@@ -120,12 +121,12 @@ export const Path: PathInterface = {
    */
 
   endsAfter(path: Path, another: Path): boolean {
-    const i = path.length - 1
-    const as = path.slice(0, i)
-    const bs = another.slice(0, i)
-    const av = path[i]
-    const bv = another[i]
-    return Path.equals(as, bs) && av > bv
+    const i = path.length - 1;
+    const as = path.slice(0, i);
+    const bs = another.slice(0, i);
+    const av = path[i];
+    const bv = another[i];
+    return Path.equals(as, bs) && av > bv;
   },
 
   /**
@@ -133,10 +134,10 @@ export const Path: PathInterface = {
    */
 
   endsAt(path: Path, another: Path): boolean {
-    const i = path.length
-    const as = path.slice(0, i)
-    const bs = another.slice(0, i)
-    return Path.equals(as, bs)
+    const i = path.length;
+    const as = path.slice(0, i);
+    const bs = another.slice(0, i);
+    return Path.equals(as, bs);
   },
 
   /**
@@ -144,12 +145,12 @@ export const Path: PathInterface = {
    */
 
   endsBefore(path: Path, another: Path): boolean {
-    const i = path.length - 1
-    const as = path.slice(0, i)
-    const bs = another.slice(0, i)
-    const av = path[i]
-    const bv = another[i]
-    return Path.equals(as, bs) && av < bv
+    const i = path.length - 1;
+    const as = path.slice(0, i);
+    const bs = another.slice(0, i);
+    const av = path[i];
+    const bv = another[i];
+    return Path.equals(as, bs) && av < bv;
   },
 
   /**
@@ -159,7 +160,7 @@ export const Path: PathInterface = {
   equals(path: Path, another: Path): boolean {
     return (
       path.length === another.length && path.every((n, i) => n === another[i])
-    )
+    );
   },
 
   /**
@@ -167,7 +168,7 @@ export const Path: PathInterface = {
    */
 
   hasPrevious(path: Path): boolean {
-    return path[path.length - 1] > 0
+    return path[path.length - 1] > 0;
   },
 
   /**
@@ -175,7 +176,7 @@ export const Path: PathInterface = {
    */
 
   isAfter(path: Path, another: Path): boolean {
-    return Path.compare(path, another) === 1
+    return Path.compare(path, another) === 1;
   },
 
   /**
@@ -183,7 +184,7 @@ export const Path: PathInterface = {
    */
 
   isAncestor(path: Path, another: Path): boolean {
-    return path.length < another.length && Path.compare(path, another) === 0
+    return path.length < another.length && Path.compare(path, another) === 0;
   },
 
   /**
@@ -191,7 +192,7 @@ export const Path: PathInterface = {
    */
 
   isBefore(path: Path, another: Path): boolean {
-    return Path.compare(path, another) === -1
+    return Path.compare(path, another) === -1;
   },
 
   /**
@@ -201,7 +202,7 @@ export const Path: PathInterface = {
   isChild(path: Path, another: Path): boolean {
     return (
       path.length === another.length + 1 && Path.compare(path, another) === 0
-    )
+    );
   },
 
   /**
@@ -209,7 +210,7 @@ export const Path: PathInterface = {
    */
 
   isCommon(path: Path, another: Path): boolean {
-    return path.length <= another.length && Path.compare(path, another) === 0
+    return path.length <= another.length && Path.compare(path, another) === 0;
   },
 
   /**
@@ -217,7 +218,7 @@ export const Path: PathInterface = {
    */
 
   isDescendant(path: Path, another: Path): boolean {
-    return path.length > another.length && Path.compare(path, another) === 0
+    return path.length > another.length && Path.compare(path, another) === 0;
   },
 
   /**
@@ -227,7 +228,7 @@ export const Path: PathInterface = {
   isParent(path: Path, another: Path): boolean {
     return (
       path.length + 1 === another.length && Path.compare(path, another) === 0
-    )
+    );
   },
 
   /**
@@ -238,7 +239,7 @@ export const Path: PathInterface = {
     return (
       Array.isArray(value) &&
       (value.length === 0 || typeof value[0] === 'number')
-    )
+    );
   },
 
   /**
@@ -247,14 +248,14 @@ export const Path: PathInterface = {
 
   isSibling(path: Path, another: Path): boolean {
     if (path.length !== another.length) {
-      return false
+      return false;
     }
 
-    const as = path.slice(0, -1)
-    const bs = another.slice(0, -1)
-    const al = path[path.length - 1]
-    const bl = another[another.length - 1]
-    return al !== bl && Path.equals(as, bs)
+    const as = path.slice(0, -1);
+    const bs = another.slice(0, -1);
+    const al = path[path.length - 1];
+    const bl = another[another.length - 1];
+    return al !== bl && Path.equals(as, bs);
   },
 
   /**
@@ -266,18 +267,18 @@ export const Path: PathInterface = {
    */
 
   levels(path: Path, options: PathLevelsOptions = {}): Path[] {
-    const { reverse = false } = options
-    const list: Path[] = []
+    const { reverse = false } = options;
+    const list: Path[] = [];
 
     for (let i = 0; i <= path.length; i++) {
-      list.push(path.slice(0, i))
+      list.push(path.slice(0, i));
     }
 
     if (reverse) {
-      list.reverse()
+      list.reverse();
     }
 
-    return list
+    return list;
   },
 
   /**
@@ -287,12 +288,12 @@ export const Path: PathInterface = {
   next(path: Path): Path {
     if (path.length === 0) {
       throw new Error(
-        `Cannot get the next path of a root path [${path}], because it has no next index.`
-      )
+        `Cannot get the next path of a root path [${path}], because it has no next index.`,
+      );
     }
 
-    const last = path[path.length - 1]
-    return path.slice(0, -1).concat(last + 1)
+    const last = path[path.length - 1];
+    return path.slice(0, -1).concat(last + 1);
   },
 
   /**
@@ -309,9 +310,9 @@ export const Path: PathInterface = {
       case 'merge_node':
       case 'split_node':
       case 'move_node':
-        return true
+        return true;
       default:
-        return false
+        return false;
     }
   },
 
@@ -321,10 +322,10 @@ export const Path: PathInterface = {
 
   parent(path: Path): Path {
     if (path.length === 0) {
-      throw new Error(`Cannot get the parent path of the root path [${path}].`)
+      throw new Error(`Cannot get the parent path of the root path [${path}].`);
     }
 
-    return path.slice(0, -1)
+    return path.slice(0, -1);
   },
 
   /**
@@ -334,19 +335,19 @@ export const Path: PathInterface = {
   previous(path: Path): Path {
     if (path.length === 0) {
       throw new Error(
-        `Cannot get the previous path of a root path [${path}], because it has no previous index.`
-      )
+        `Cannot get the previous path of a root path [${path}], because it has no previous index.`,
+      );
     }
 
-    const last = path[path.length - 1]
+    const last = path[path.length - 1];
 
     if (last <= 0) {
       throw new Error(
-        `Cannot get the previous path of a first child path [${path}] because it would result in a negative index.`
-      )
+        `Cannot get the previous path of a first child path [${path}] because it would result in a negative index.`,
+      );
     }
 
-    return path.slice(0, -1).concat(last - 1)
+    return path.slice(0, -1).concat(last - 1);
   },
 
   /**
@@ -356,11 +357,11 @@ export const Path: PathInterface = {
   relative(path: Path, ancestor: Path): Path {
     if (!Path.isAncestor(ancestor, path) && !Path.equals(path, ancestor)) {
       throw new Error(
-        `Cannot get the relative path of [${path}] inside ancestor [${ancestor}], because it is not above or equal to the path.`
-      )
+        `Cannot get the relative path of [${path}] inside ancestor [${ancestor}], because it is not above or equal to the path.`,
+      );
     }
 
-    return path.slice(ancestor.length)
+    return path.slice(ancestor.length);
   },
 
   /**
@@ -370,105 +371,105 @@ export const Path: PathInterface = {
   transform(
     path: Path | null,
     operation: Operation,
-    options: PathTransformOptions = {}
+    options: PathTransformOptions = {},
   ): Path | null {
-    return produce(path, p => {
-      const { affinity = 'forward' } = options
+    return produce(path, (p) => {
+      const { affinity = 'forward' } = options;
 
       // PERF: Exit early if the operation is guaranteed not to have an effect.
       if (!path || path?.length === 0) {
-        return
+        return;
       }
 
       if (p === null) {
-        return null
+        return null;
       }
 
       switch (operation.type) {
         case 'insert_node': {
-          const { path: op } = operation
+          const { path: op } = operation;
 
           if (
             Path.equals(op, p) ||
             Path.endsBefore(op, p) ||
             Path.isAncestor(op, p)
           ) {
-            p[op.length - 1] += 1
+            p[op.length - 1] += 1;
           }
 
-          break
+          break;
         }
 
         case 'remove_node': {
-          const { path: op } = operation
+          const { path: op } = operation;
 
           if (Path.equals(op, p) || Path.isAncestor(op, p)) {
-            return null
+            return null;
           } else if (Path.endsBefore(op, p)) {
-            p[op.length - 1] -= 1
+            p[op.length - 1] -= 1;
           }
 
-          break
+          break;
         }
 
         case 'merge_node': {
-          const { path: op, position } = operation
+          const { path: op, position } = operation;
 
           if (Path.equals(op, p) || Path.endsBefore(op, p)) {
-            p[op.length - 1] -= 1
+            p[op.length - 1] -= 1;
           } else if (Path.isAncestor(op, p)) {
-            p[op.length - 1] -= 1
-            p[op.length] += position
+            p[op.length - 1] -= 1;
+            p[op.length] += position;
           }
 
-          break
+          break;
         }
 
         case 'split_node': {
-          const { path: op, position } = operation
+          const { path: op, position } = operation;
 
           if (Path.equals(op, p)) {
             if (affinity === 'forward') {
-              p[p.length - 1] += 1
+              p[p.length - 1] += 1;
             } else if (affinity === 'backward') {
               // Nothing, because it still refers to the right path.
             } else {
-              return null
+              return null;
             }
           } else if (Path.endsBefore(op, p)) {
-            p[op.length - 1] += 1
+            p[op.length - 1] += 1;
           } else if (Path.isAncestor(op, p) && path[op.length] >= position) {
-            p[op.length - 1] += 1
-            p[op.length] -= position
+            p[op.length - 1] += 1;
+            p[op.length] -= position;
           }
 
-          break
+          break;
         }
 
         case 'move_node': {
-          const { path: op, newPath: onp } = operation
+          const { path: op, newPath: onp } = operation;
 
           // If the old and new path are the same, it's a no-op.
           if (Path.equals(op, onp)) {
-            return
+            return;
           }
 
           if (Path.isAncestor(op, p) || Path.equals(op, p)) {
-            const copy = onp.slice()
+            const copy = onp.slice();
 
             if (Path.endsBefore(op, onp) && op.length < onp.length) {
-              copy[op.length - 1] -= 1
+              copy[op.length - 1] -= 1;
             }
 
-            return copy.concat(p.slice(op.length))
+            return copy.concat(p.slice(op.length));
           } else if (
             Path.isSibling(op, onp) &&
             (Path.isAncestor(onp, p) || Path.equals(onp, p))
           ) {
             if (Path.endsBefore(op, p)) {
-              p[op.length - 1] -= 1
+              p[op.length - 1] -= 1;
             } else {
-              p[op.length - 1] += 1
+              p[op.length - 1] += 1;
             }
           } else if (
             Path.endsBefore(onp, p) ||
@@ -476,21 +477,21 @@ export const Path: PathInterface = {
             Path.isAncestor(onp, p)
           ) {
             if (Path.endsBefore(op, p)) {
-              p[op.length - 1] -= 1
+              p[op.length - 1] -= 1;
             }
 
-            p[onp.length - 1] += 1
+            p[onp.length - 1] += 1;
           } else if (Path.endsBefore(op, p)) {
             if (Path.equals(onp, p)) {
-              p[onp.length - 1] += 1
+              p[onp.length - 1] += 1;
             }
 
-            p[op.length - 1] -= 1
+            p[op.length - 1] -= 1;
           }
 
-          break
+          break;
         }
       }
-    })
+    });
   },
-}
+};

@@ -244,7 +244,7 @@ const Mention = ({ attributes, children, element }) => {
   );
 };
 
-const initialValue: Descendant[] = [
+const initialValue = [
   {
     type: 'paragraph',
     children: [

@@ -1,17 +1,8 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { createEditor, Editor, Transforms, Text } from 'slate';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Editor, Text, Transforms, createEditor } from 'slate';
 import type { BaseEditor, Descendant } from 'slate';
 import { DefaultEditable as Editable, Slate, withReact } from 'slate-react';
 import type { ReactEditor } from 'slate-react';
-
-type CustomText = { text: string };
-type CustomElement = { type: 'paragraph'; children: CustomText[] };
-
-interface CustomTypes {
-  Editor: BaseEditor & ReactEditor;
-  Element: CustomElement;
-  Text: CustomText;
-}
 
 const saveContent = (content: string, key: string = 'editorContent') => {
   localStorage.setItem(key, content);

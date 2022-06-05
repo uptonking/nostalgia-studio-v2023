@@ -1,17 +1,17 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  Descendant,
-  Editor,
-  Element as SlateElement,
-  Transforms,
-  createEditor,
-} from 'slate';
+import { Descendant, Editor } from 'slate';
 import { Editable, Slate, useSlate, withReact } from 'slate-react';
 
 import { Button, Icon, Toolbar } from '../../components';
-import { isMarkActive, toggleMark, isBlockActive, TEXT_ALIGN_TYPES, toggleBlock } from './utils';
+import {
+  TEXT_ALIGN_TYPES,
+  isBlockActive,
+  isMarkActive,
+  toggleBlock,
+  toggleMark,
+} from './utils';
 
-export const RTEToolbar = () => {
+export const RichToolbar = () => {
   return (
     <Toolbar>
       <MarkButton format='bold' icon='format_bold' />
@@ -45,7 +45,6 @@ export const MarkButton = ({ format, icon }) => {
     </Button>
   );
 };
-
 
 const BlockButton = ({ format, icon }) => {
   const editor = useSlate();

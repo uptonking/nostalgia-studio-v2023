@@ -1,32 +1,28 @@
 import isHotkey from 'is-hotkey';
 import React, { useCallback, useMemo } from 'react';
-import {
-  Descendant,
-  Editor,
-  Element as SlateElement,
-  Transforms,
-  createEditor,
-} from 'slate';
+import { Descendant, createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, Slate, useSlate, withReact } from 'slate-react';
 
-import { Element, Leaf } from './editor-elements';
-import { RTEToolbar } from './toolbar';
+import { RichElement } from './editor-element';
+import { RichLeaf } from './editor-leaf';
+import { RichToolbar } from './toolbar';
 import { HOTKEYS, toggleMark } from './utils';
 
 /**
  * ✨️ slate官方富文本编辑器示例
+ * - https://www.slatejs.org/examples/richtext
  */
 export const SlateRichTextEditor = () => {
-  const renderElement = useCallback((props) => <Element {...props} />, []);
+  const renderElement = useCallback((props) => <RichElement {...props} />, []);
 
-  const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
+  const renderLeaf = useCallback((props) => <RichLeaf {...props} />, []);
 
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
   return (
     <Slate editor={editor} value={initialValue}>
-      <RTEToolbar />
+      <RichToolbar />
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}

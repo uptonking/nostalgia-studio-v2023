@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { createEditor } from 'slate';
+import type { BaseEditor, Descendant } from 'slate';
 import { DefaultEditable as Editable, Slate, withReact } from 'slate-react';
+import type { ReactEditor } from 'slate-react';
 
 const initialValue = [
   {

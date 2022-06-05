@@ -1,10 +1,4 @@
-import {
-  Descendant,
-  Editor,
-  Element as SlateElement,
-  Transforms,
-  createEditor,
-} from 'slate';
+import { Descendant, Editor, Element as SlateElement, Transforms } from 'slate';
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
@@ -17,6 +11,9 @@ export const HOTKEYS = {
   'mod+`': 'code',
 };
 
+/**
+ * 原理是 Transforms.unwrapNodes+setNodes+wrapNodes
+ */
 export const toggleBlock = (editor, format) => {
   const isActive = isBlockActive(
     editor,
@@ -33,6 +30,7 @@ export const toggleBlock = (editor, format) => {
       !TEXT_ALIGN_TYPES.includes(format),
     split: true,
   });
+
   let newProperties: Partial<SlateElement>;
   if (TEXT_ALIGN_TYPES.includes(format)) {
     newProperties = {
@@ -51,6 +49,9 @@ export const toggleBlock = (editor, format) => {
   }
 };
 
+/**
+ * 原理是 Editor.removeMark/addMark
+ */
 export const toggleMark = (editor, format) => {
   const isActive = isMarkActive(editor, format);
 

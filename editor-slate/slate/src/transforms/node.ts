@@ -109,6 +109,9 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
+  /** Unwrap nodes at the specified location.
+   * - If necessary, the parent node is split.
+   * - If no location is specified, use the selection. */
   unwrapNodes: <T extends Node>(
     editor: Editor,
     options?: {
@@ -119,6 +122,10 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
+  /**
+   * Wrap nodes at the specified location in the `element` container.
+   * - If no location is specified, wrap the selection.
+   */
   wrapNodes: <T extends Node>(
     editor: Editor,
     element: Element,
@@ -126,6 +133,10 @@ export interface NodeTransforms {
       at?: Location;
       match?: NodeMatch<T>;
       mode?: MaximizeMode;
+      /**
+       * - indicates that it's okay to split a node in order to wrap the location.
+       * - If split: false, the entire Text node lorem ipsum would be wrapped.
+       */
       split?: boolean;
       voids?: boolean;
     },

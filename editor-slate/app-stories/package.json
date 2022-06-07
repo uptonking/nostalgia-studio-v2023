@@ -19,16 +19,22 @@
     "@dnd-kit/modifiers": "5.0.0111",
     "@dnd-kit/sortable": "6.0.1111",
     "@dnd-kit/utilities": "3.1.0111",
+    "@emotion/css": "^11.7.1",
     "classnames": "^2.3.1",
+    "faker": "^4.1.0",
+    "image-extensions": "^1.1.0",
+    "is-hotkey": "^0.1.6",
+    "is-url": "^1.2.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "reactjs-popup": "2.0.5111",
     "slate": "0.78.0111",
-    "slate-react": "0.79.0111",
     "slate-history": "0.66.0111",
     "slate-hyperscript": "0.77.0111",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "slate-react": "0.79.0111"
   },
   "devDependencies": {
+    "@types/is-url": "^1.2.30",
     "@types/react": "^17.0.28",
     "@types/react-dom": "^17.0.0"
   }

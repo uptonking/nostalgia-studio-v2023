@@ -8,7 +8,7 @@ const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
   // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('A12SlateRichTextEditor');
+  const [currentStory, setCurrentStory] = useState('A23InlineLinkButtonApp');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]
@@ -16,7 +16,7 @@ export function ExamplesApp() {
 
   return (
     <div>
-      <h1>examples for react stories</h1>
+      <h1>examples for slate editor</h1>
       <h2>当前示例: {currentStory}</h2>
       <div style={{ display: 'flex' }}>
         <div

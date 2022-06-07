@@ -57,7 +57,7 @@ const Element = (props) => {
 };
 
 /**
- * ✨️ mention示例要点。
+ * ✨️ mention示例。
  * - 下拉列表小弹框出现的实现：渲染到portal，条件是输入range存在且搜索结果非空
  * - 👀️ 注意此示例at弹框的出现条件与notion不同，此示例需要at后输入字符，而notion在at后立即弹框
  * - 小弹框位置通过range计算得到DOMRect，然后修改style.left/top

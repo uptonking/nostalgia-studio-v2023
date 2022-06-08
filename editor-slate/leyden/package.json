@@ -1,0 +1,20 @@
+{
+  "name": "leyden",
+  "version": "0.32.0111",
+  "description": "React data tables powered by Slate",
+  "main": "src/index.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1build/leyden.git"
+  },
+  "author": "Michael Darr",
+  "license": "MIT",
+  "dependencies": {
+    "slate": "0.78.0111"
+  },
+  "peerDependencies": {}
+}

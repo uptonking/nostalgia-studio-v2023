@@ -1,0 +1,31 @@
+{
+  "name": "leyden-react",
+  "version": "0.32.0111",
+  "description": "Tools for building Leyden tables with React",
+  "main": "src/index.ts",
+  "sideEffects": false,
+  "files": [
+    "dist/"
+  ],
+  "author": "Michael Darr",
+  "license": "MIT",
+  "devDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "slate": "0.78.0111",
+    "slate-react": "0.79.0111",
+    "leyden": "0.32.0111"
+  },
+  "peerDependencies": {
+    "leyden": "0.32.0111",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "slate": "0.78.0111",
+    "slate-react": "0.79.0111"
+  },
+  "umdGlobals": {
+    "react": "React",
+    "leyden": "Leyden",
+    "slate": "Slate"
+  }
+}

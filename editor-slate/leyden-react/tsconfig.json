@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base",
+    "include": ["src/**/*"],
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./lib",
+    },
+    "paths": {
+        "*": ["./src/@types"]
+    },
+    "references": [
+        { "path": "../leyden" }
+    ]
+}

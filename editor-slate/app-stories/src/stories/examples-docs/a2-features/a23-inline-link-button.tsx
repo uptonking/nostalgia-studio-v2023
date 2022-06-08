@@ -16,7 +16,43 @@ import * as SlateReact from 'slate-react';
 import { css } from '@emotion/css';
 
 import { Button, Icon, Toolbar } from '../components';
-import { ButtonElement, LinkElement } from '../types/custom-types';
+import type { ButtonElement, LinkElement } from '../types/custom-types';
+
+const CustomElement = (props) => {
+  const { attributes, children, element } = props;
+  switch (element.type) {
+    case 'link':
+      // 👀 注意link element的children包含text，所以LinkComponent的内层children包含 CustomText
+      return <LinkComponent {...props} />;
+    case 'button':
+      return <EditableButtonComponent {...props} />;
+    default:
+      return <p {...attributes}>{children}</p>;
+  }
+};
+
+const CustomText = (props) => {
+  const { attributes, children, leaf } = props;
+  return (
+    <span
+      // The following is a workaround for a Chromium bug where,
+      // if you have an inline at the end of a block,
+      // clicking the end of a block puts the cursor inside the inline
+      // instead of inside the final {text: ''} node
+      // https://github.com/ianstormtaylor/slate/issues/4704#issuecomment-1006696364
+      className={
+        leaf.text === ''
+          ? css`
+              padding-left: 0.1px;
+            `
+          : null
+      }
+      {...attributes}
+    >
+      {children}
+    </span>
+  );
+};
 
 /**
  * ✨️ 行内链接和按钮示例。
@@ -36,16 +72,20 @@ export const InlineLinkButtonApp = () => {
     // Here we modify the behavior to unit:'offset'.
     // This lets the user step into and out of the inline without stepping over characters.
     // You may wish to customize this further to only use unit:'offset' in specific cases.
+    // unit为offset(按左键)时，光标会在link边缘停一下，再按左就进入link文字内部；
+    // unit为character时，光标会直接进入link文字内部
     if (selection && Range.isCollapsed(selection)) {
       const { nativeEvent } = event;
       if (isKeyHotkey('left', nativeEvent)) {
         event.preventDefault();
         Transforms.move(editor, { unit: 'offset', reverse: true });
+        // Transforms.move(editor, { unit: 'character', reverse: true });
         return;
       }
       if (isKeyHotkey('right', nativeEvent)) {
         event.preventDefault();
-        Transforms.move(editor, { unit: 'offset' });
+        // Transforms.move(editor, { unit: 'offset' });
+        Transforms.move(editor, { unit: 'character' });
         return;
       }
     }
@@ -59,8 +99,8 @@ export const InlineLinkButtonApp = () => {
         <ToggleEditableButtonButton />
       </Toolbar>
       <Editable
-        renderElement={(props) => <Element {...props} />}
-        renderLeaf={(props) => <Text {...props} />}
+        renderElement={(props) => <CustomElement {...props} />}
+        renderLeaf={(props) => <CustomText {...props} />}
         placeholder='Enter some text...'
         onKeyDown={onKeyDown}
       />
@@ -68,6 +108,7 @@ export const InlineLinkButtonApp = () => {
   );
 };
 
+/** 自定义inline元素的插件，返回增强后的editor对象 */
 const withInlines = (editor) => {
   const { insertData, insertText, isInline } = editor;
 
@@ -132,15 +173,7 @@ const unwrapLink = (editor) => {
   });
 };
 
-const unwrapButton = (editor) => {
-  Transforms.unwrapNodes(editor, {
-    match: (n) =>
-      !Editor.isEditor(n) &&
-      SlateElement.isElement(n) &&
-      n['type'] === 'button',
-  });
-};
-
+/** 若是link，则取消link；若不是link，则将选区内元素转换为link */
 const wrapLink = (editor, url: string) => {
   if (isLinkActive(editor)) {
     unwrapLink(editor);
@@ -160,6 +193,15 @@ const wrapLink = (editor, url: string) => {
     Transforms.wrapNodes(editor, link, { split: true });
     Transforms.collapse(editor, { edge: 'end' });
   }
+};
+
+const unwrapButton = (editor) => {
+  Transforms.unwrapNodes(editor, {
+    match: (n) =>
+      !Editor.isEditor(n) &&
+      SlateElement.isElement(n) &&
+      n['type'] === 'button',
+  });
 };
 
 const wrapButton = (editor) => {
@@ -184,6 +226,7 @@ const wrapButton = (editor) => {
 
 // Put this at the start and end of an inline component to work around this Chromium bug:
 // https://bugs.chromium.org/p/chromium/issues/detail?id=1249405
+//  Cannot place selection at start of inline node
 const InlineChromiumBugfix = () => (
   <span
     contentEditable={false}
@@ -196,15 +239,20 @@ const InlineChromiumBugfix = () => (
 );
 
 const LinkComponent = ({ attributes, children, element }) => {
-  const selected = useSelected();
+  // const selected = useSelected();
+  const selected = true;
   return (
     <a
       {...attributes}
       href={element.url}
       className={
+        // 👀 link组件只在光标处于选中或闪烁状态时才会显示背景色
         selected
           ? css`
               box-shadow: 0 0 0 3px #ddd;
+              background-color: #eee;
+              padding: 4px 8px;
+              font-size: 24px;
             `
           : ''
       }
@@ -248,41 +296,7 @@ const EditableButtonComponent = ({ attributes, children }) => {
   );
 };
 
-const Element = (props) => {
-  const { attributes, children, element } = props;
-  switch (element.type) {
-    case 'link':
-      return <LinkComponent {...props} />;
-    case 'button':
-      return <EditableButtonComponent {...props} />;
-    default:
-      return <p {...attributes}>{children}</p>;
-  }
-};
-
-const Text = (props) => {
-  const { attributes, children, leaf } = props;
-  return (
-    <span
-      // The following is a workaround for a Chromium bug where,
-      // if you have an inline at the end of a block,
-      // clicking the end of a block puts the cursor inside the inline
-      // instead of inside the final {text: ''} node
-      // https://github.com/ianstormtaylor/slate/issues/4704#issuecomment-1006696364
-      className={
-        leaf.text === ''
-          ? css`
-              padding-left: 0.1px;
-            `
-          : null
-      }
-      {...attributes}
-    >
-      {children}
-    </span>
-  );
-};
-
+/** 工具条按钮 */
 const AddLinkButton = () => {
   const editor = useSlate();
   return (
@@ -300,6 +314,7 @@ const AddLinkButton = () => {
   );
 };
 
+/** 工具条按钮 */
 const RemoveLinkButton = () => {
   const editor = useSlate();
 
@@ -317,6 +332,7 @@ const RemoveLinkButton = () => {
   );
 };
 
+/** 工具条按钮 */
 const ToggleEditableButtonButton = () => {
   const editor = useSlate();
   return (
@@ -349,7 +365,15 @@ const initialValue = [
         children: [{ text: 'hyperlink' }],
       },
       {
-        text: ', and here is a more unusual inline: an ',
+        text: ', and here is',
+      },
+      {
+        type: 'link',
+        url: 'https://en.wikipedia.org/wiki/Hypertext',
+        children: [{ text: 'AB' }],
+      },
+      {
+        text: 'C, and here is a more unusual inline: an ',
       },
       {
         type: 'button',
@@ -372,6 +396,24 @@ const initialValue = [
         type: 'link',
         url: 'https://twitter.com/JustMissEmma/status/1448679899531726852',
         children: [{ text: 'Finally, here is our favorite dog video.' }],
+      },
+      { text: '' },
+    ],
+  },
+  {
+    type: 'paragraph',
+    children: [
+      {
+        text: 'unit为offset(按左键)时，光标会在link边缘停一下，再按左就进入link文字内部； ',
+      },
+      { text: '' },
+    ],
+  },
+  {
+    type: 'paragraph',
+    children: [
+      {
+        text: 'unit为character时，光标会直接进入link文字内部',
       },
       { text: '' },
     ],

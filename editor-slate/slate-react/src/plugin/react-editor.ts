@@ -39,9 +39,14 @@ import {
  * A React and DOM-specific version of the `Editor` interface.
  */
 export interface ReactEditor extends BaseEditor {
+  /** Insert data from a `DataTransfer` into the editor.
+   * - This is a proxy method to call in this order `insertFragmentData(editor: ReactEditor, data: DataTransfer)` and then `insertTextData(editor: ReactEditor, data: DataTransfer)`. */
   insertData: (data: DataTransfer) => void;
+  /** Insert fragment data from a DataTransfer into the editor. Returns true if some content has been effectively inserted. */
   insertFragmentData: (data: DataTransfer) => boolean;
+  /** Insert text data from a `DataTransfer` into the editor. Returns true if some content has been effectively inserted. */
   insertTextData: (data: DataTransfer) => boolean;
+  /** Sets data from the currently selected fragment on a DataTransfer. */
   setFragmentData: (
     data: DataTransfer,
     originEvent?: 'drag' | 'copy' | 'cut',

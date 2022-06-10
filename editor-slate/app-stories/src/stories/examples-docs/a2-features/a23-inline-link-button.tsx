@@ -2,6 +2,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import isUrl from 'is-url';
 import React, { useMemo } from 'react';
 import {
+  BaseEditor,
   Descendant,
   Editor,
   Range,
@@ -9,16 +10,27 @@ import {
   Transforms,
   createEditor,
 } from 'slate';
-import { withHistory } from 'slate-history';
-import { Editable, useSelected, useSlate, withReact } from 'slate-react';
-import * as SlateReact from 'slate-react';
+import { HistoryEditor, withHistory } from 'slate-history';
+import {
+  DefaultEditable as Editable,
+  ReactEditor,
+  Slate,
+  useFocused,
+  useSelected,
+  useSlate,
+  withReact,
+} from 'slate-react';
 
 import { css } from '@emotion/css';
 
 import { Button, Icon, Toolbar } from '../components';
 import type { ButtonElement, LinkElement } from '../types/custom-types';
 
-const CustomElement = (props) => {
+type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
+type CustomText = { text: string; bold?: true };
+type CustomElement = { type: 'paragraph'; children: CustomText[] };
+
+const EditorElement = (props) => {
   const { attributes, children, element } = props;
   switch (element.type) {
     case 'link':
@@ -31,7 +43,7 @@ const CustomElement = (props) => {
   }
 };
 
-const CustomText = (props) => {
+const EditorText = (props) => {
   const { attributes, children, leaf } = props;
   return (
     <span
@@ -56,6 +68,7 @@ const CustomText = (props) => {
 
 /**
  * ✨️ 行内链接和按钮示例。
+ * - 只能添加和删除link，不能修改link。
  */
 export const InlineLinkButtonApp = () => {
   const editor = useMemo(
@@ -63,6 +76,7 @@ export const InlineLinkButtonApp = () => {
     [],
   );
 
+  /** 👀 只处理键盘左右方向键的事件，特殊处理进入退出inline元素的逻辑 */
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     const { selection } = editor;
 
@@ -92,32 +106,32 @@ export const InlineLinkButtonApp = () => {
   };
 
   return (
-    <SlateReact.Slate editor={editor} value={initialValue}>
+    <Slate editor={editor} value={initialValue}>
       <Toolbar>
         <AddLinkButton />
         <RemoveLinkButton />
         <ToggleEditableButtonButton />
       </Toolbar>
       <Editable
-        renderElement={(props) => <CustomElement {...props} />}
-        renderLeaf={(props) => <CustomText {...props} />}
+        renderElement={(props) => <EditorElement {...props} />}
+        renderLeaf={(props) => <EditorText {...props} />}
         placeholder='Enter some text...'
         onKeyDown={onKeyDown}
       />
-    </SlateReact.Slate>
+    </Slate>
   );
 };
 
 /** 自定义inline元素的插件，返回增强后的editor对象 */
-const withInlines = (editor) => {
+const withInlines = (editor: CustomEditor) => {
   const { insertData, insertText, isInline } = editor;
 
   editor.isInline = (element) =>
-    ['link', 'button'].includes(element.type) || isInline(element);
+    ['link', 'button'].includes(element['type']) || isInline(element);
 
   editor.insertText = (text) => {
     if (text && isUrl(text)) {
-      wrapLink(editor, text);
+      toggleLink(editor, text);
     } else {
       insertText(text);
     }
@@ -127,25 +141,13 @@ const withInlines = (editor) => {
     const text = data.getData('text/plain');
 
     if (text && isUrl(text)) {
-      wrapLink(editor, text);
+      toggleLink(editor, text);
     } else {
       insertData(data);
     }
   };
 
   return editor;
-};
-
-const insertLink = (editor, url) => {
-  if (editor.selection) {
-    wrapLink(editor, url);
-  }
-};
-
-const insertButton = (editor) => {
-  if (editor.selection) {
-    wrapButton(editor);
-  }
 };
 
 const isLinkActive = (editor) => {
@@ -166,6 +168,18 @@ const isButtonActive = (editor) => {
   return !!button;
 };
 
+const insertLink = (editor, url) => {
+  if (editor.selection) {
+    toggleLink(editor, url);
+  }
+};
+
+const insertButton = (editor) => {
+  if (editor.selection) {
+    wrapButton(editor);
+  }
+};
+
 const unwrapLink = (editor) => {
   Transforms.unwrapNodes(editor, {
     match: (n) =>
@@ -173,8 +187,8 @@ const unwrapLink = (editor) => {
   });
 };
 
-/** 若是link，则取消link；若不是link，则将选区内元素转换为link */
-const wrapLink = (editor, url: string) => {
+/** 👉 若是link，则取消link；若不是link，则将选区内元素转换为link */
+const toggleLink = (editor, url: string) => {
   if (isLinkActive(editor)) {
     unwrapLink(editor);
   }

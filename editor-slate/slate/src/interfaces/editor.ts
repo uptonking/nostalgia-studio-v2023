@@ -57,10 +57,12 @@ export type EditorMarks = Omit<Text, 'text'>;
  * by plugins that wish to add their own helpers and implement new behaviors.
  */
 export interface BaseEditor {
+  /** contains the document tree of nodes that make up the editor's content */
   children: Descendant[];
   /** contains the user's current selection, if any. Don't set it directly; use `Transforms.select` */
   selection: Selection;
-  /** contains all of the operations that have been applied since the last "change" was flushed. (Since Slate batches operations up into ticks of the event loop.) */
+  /** contains all of the operations that have been applied since the last "change" was flushed.
+   * (Since Slate batches operations up into ticks of the event loop.) */
   operations: Operation[];
   /**
    * - stores formatting to be applied when the editor inserts text. If marks is null, the formatting will be taken from the current selection.
@@ -108,7 +110,13 @@ export interface BaseEditor {
   insertBreak: () => void;
   insertSoftBreak: () => void;
   insertFragment: (fragment: Node[]) => void;
+  /** Inserts a node at the current selection.
+   * - If the selection is currently expanded, it will be deleted first.
+   * - To atomically insert a node (including at the very beginning or end), use `Transforms.insertNodes`.
+   */
   insertNode: (node: Node) => void;
+  /** Inserts text at the current selection.
+   * - If the selection is currently expanded, it will be deleted first. */
   insertText: (text: string) => void;
 }
 
@@ -301,11 +309,17 @@ export interface EditorInterface {
     editor: Editor,
     options?: EditorNextOptions<T>,
   ) => NodeEntry<T> | undefined;
+  /** Get the node at a location */
   node: (
     editor: Editor,
     at: Location,
     options?: EditorNodeOptions,
   ) => NodeEntry;
+  /**
+   * At any given Location or Span in the editor provided by `at` (default is the current selection),
+   * this method returns a Generator of NodeEntry objects that represent the nodes that include `at`.
+   * At the top of the hierarchy is the Editor object itself.
+   */
   nodes: <T extends Node>(
     editor: Editor,
     options?: EditorNodesOptions<T>,

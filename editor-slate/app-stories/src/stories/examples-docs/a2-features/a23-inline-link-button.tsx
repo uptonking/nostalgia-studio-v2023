@@ -69,6 +69,7 @@ const EditorText = (props) => {
 /**
  * ✨️ 行内链接和按钮示例。
  * - 只能添加和删除link，不能修改link。
+ * - 粘贴的url会自动渲染成link。
  */
 export const InlineLinkButtonApp = () => {
   const editor = useMemo(
@@ -86,7 +87,7 @@ export const InlineLinkButtonApp = () => {
     // Here we modify the behavior to unit:'offset'.
     // This lets the user step into and out of the inline without stepping over characters.
     // You may wish to customize this further to only use unit:'offset' in specific cases.
-    // unit为offset(按左键)时，光标会在link边缘停一下，再按左就进入link文字内部；
+    // unit为offset(按左键)时，光标会在link边缘停一下，再按左才进入link文字内部；
     // unit为character时，光标会直接进入link文字内部
     if (selection && Range.isCollapsed(selection)) {
       const { nativeEvent } = event;
@@ -266,7 +267,7 @@ const LinkComponent = ({ attributes, children, element }) => {
               box-shadow: 0 0 0 3px #ddd;
               background-color: #eee;
               padding: 4px 8px;
-              font-size: 24px;
+              font-size: 20px;
             `
           : ''
       }
@@ -320,10 +321,11 @@ const AddLinkButton = () => {
         event.preventDefault();
         const url = window.prompt('Enter the URL of the link:');
         if (!url) return;
+        console.log(';; enter-link ', url);
         insertLink(editor, url);
       }}
     >
-      <Icon>link</Icon>
+      <Icon>link_add</Icon>
     </Button>
   );
 };
@@ -361,7 +363,7 @@ const ToggleEditableButtonButton = () => {
         }
       }}
     >
-      <Icon>smart_button</Icon>
+      <Icon>button_add</Icon>
     </Button>
   );
 };

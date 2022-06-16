@@ -43,7 +43,7 @@ const EditorElement = (props) => {
   }
 };
 
-const EditorText = (props) => {
+const EditorLeaf = (props) => {
   const { attributes, children, leaf } = props;
   return (
     <span
@@ -115,7 +115,7 @@ export const InlineLinkButtonApp = () => {
       </Toolbar>
       <Editable
         renderElement={(props) => <EditorElement {...props} />}
-        renderLeaf={(props) => <EditorText {...props} />}
+        renderLeaf={(props) => <EditorLeaf {...props} />}
         placeholder='Enter some text...'
         onKeyDown={onKeyDown}
       />

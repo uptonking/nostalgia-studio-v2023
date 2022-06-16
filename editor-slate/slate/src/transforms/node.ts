@@ -581,9 +581,9 @@ export const NodeTransforms: NodeTransforms = {
   },
 
   /**
-   * Set new properties on the nodes at a location.
+   * 💡 Set new properties on the nodes at a location.
+   * - at参数存在默认值，at = editor.selection
    */
-
   setNodes<T extends Node>(
     editor: Editor,
     props: Partial<Node>,

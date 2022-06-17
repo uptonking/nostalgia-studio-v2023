@@ -139,6 +139,8 @@ const Leaf = (props) => {
 
 /**
  * - 示例效果，快捷鍵 ctrl + b 可以将当前文本切换为加粗文本，再次按键不能切回去
+ * - 👀 并没有通过 addMark 实现，而是通过setNodes实现，addMark本质也通过setNodes实现
+ * - 只添加到文本节点，同时要split
  */
 export const SlateReactSimpleApp04CustomFormatting = () => {
   // export const SlateReactSimpleApp = () => {

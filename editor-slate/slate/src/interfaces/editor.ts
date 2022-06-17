@@ -100,6 +100,12 @@ export interface BaseEditor {
   onChange: () => void;
 
   // Overrideable core actions.
+  /**
+   * - Add a custom property to the leaf text nodes in the current selection.
+   * - If the selection is currently collapsed, the marks will be added to the
+   * `editor.marks` property instead, and applied when text is inserted next.
+   * - 具体逻辑在create-editor中实现
+   */
   addMark: (key: string, value: any) => void;
   removeMark: (key: string) => void;
   apply: (operation: Operation) => void;
@@ -247,7 +253,14 @@ export interface EditorInterface {
     editor: Editor,
     options?: EditorAboveOptions<T>,
   ) => NodeEntry<T> | undefined;
+  /**
+   * - Add a custom property to the leaf text nodes in the current selection.
+   * - If the selection is currently collapsed, the marks will be added to the
+   * `editor.marks` property instead, and applied when text is inserted next.
+   * - 具体逻辑在create-editor中实现，本质是执行
+   */
   addMark: (editor: Editor, key: string, value: any) => void;
+  removeMark: (editor: Editor, key: string) => void;
   /** Get the point after a location. If there is no point after the location (e.g. we are at the bottom of the document) returns undefined. */
   after: (
     editor: Editor,
@@ -360,7 +373,6 @@ export interface EditorInterface {
     options?: EditorRangeRefOptions,
   ) => RangeRef;
   rangeRefs: (editor: Editor) => Set<RangeRef>;
-  removeMark: (editor: Editor, key: string) => void;
   setNormalizing: (editor: Editor, isNormalizing: boolean) => void;
   start: (editor: Editor, at: Location) => Point;
   /** Get the text string content of a location. Note: by default the text of void nodes is considered to be an empty string, regardless of content, unless you pass in true for the voids option */
@@ -423,13 +435,6 @@ export const Editor: EditorInterface = {
       }
     }
   },
-
-  /**
-   * Add a custom property to the leaf text nodes in the current selection.
-   *
-   * If the selection is currently collapsed, the marks will be added to the
-   * `editor.marks` property instead, and applied when text is inserted next.
-   */
 
   addMark(editor: Editor, key: string, value: any): void {
     editor.addMark(key, value);

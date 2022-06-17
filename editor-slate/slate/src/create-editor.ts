@@ -13,8 +13,8 @@ import {
   Text,
   Transforms,
 } from './'
-import { DIRTY_PATHS, DIRTY_PATH_KEYS, FLUSHING } from './utils/weak-maps'
-import { TextUnit } from './interfaces/types'
+import { TextUnit } from './interfaces/types';
+import { DIRTY_PATHS, DIRTY_PATH_KEYS, FLUSHING } from './utils/weak-maps';
 
 /**
  * - Create a new Slate `Editor` object.
@@ -32,176 +32,177 @@ export const createEditor = (): Editor => {
 
     apply: (op: Operation) => {
       for (const ref of Editor.pathRefs(editor)) {
-        PathRef.transform(ref, op)
+        PathRef.transform(ref, op);
       }
 
       for (const ref of Editor.pointRefs(editor)) {
-        PointRef.transform(ref, op)
+        PointRef.transform(ref, op);
       }
 
       for (const ref of Editor.rangeRefs(editor)) {
-        RangeRef.transform(ref, op)
+        RangeRef.transform(ref, op);
       }
 
-      const oldDirtyPaths = DIRTY_PATHS.get(editor) || []
-      const oldDirtyPathKeys = DIRTY_PATH_KEYS.get(editor) || new Set()
-      let dirtyPaths: Path[]
-      let dirtyPathKeys: Set<string>
+      const oldDirtyPaths = DIRTY_PATHS.get(editor) || [];
+      const oldDirtyPathKeys = DIRTY_PATH_KEYS.get(editor) || new Set();
+      let dirtyPaths: Path[];
+      let dirtyPathKeys: Set<string>;
 
       const add = (path: Path | null) => {
         if (path) {
-          const key = path.join(',')
+          const key = path.join(',');
 
           if (!dirtyPathKeys.has(key)) {
-            dirtyPathKeys.add(key)
-            dirtyPaths.push(path)
+            dirtyPathKeys.add(key);
+            dirtyPaths.push(path);
           }
         }
-      }
+      };
 
       if (Path.operationCanTransformPath(op)) {
-        dirtyPaths = []
-        dirtyPathKeys = new Set()
+        dirtyPaths = [];
+        dirtyPathKeys = new Set();
         for (const path of oldDirtyPaths) {
-          const newPath = Path.transform(path, op)
-          add(newPath)
+          const newPath = Path.transform(path, op);
+          add(newPath);
         }
       } else {
-        dirtyPaths = oldDirtyPaths
-        dirtyPathKeys = oldDirtyPathKeys
+        dirtyPaths = oldDirtyPaths;
+        dirtyPathKeys = oldDirtyPathKeys;
       }
 
-      const newDirtyPaths = getDirtyPaths(op)
+      const newDirtyPaths = getDirtyPaths(op);
       for (const path of newDirtyPaths) {
-        add(path)
+        add(path);
       }
 
-      DIRTY_PATHS.set(editor, dirtyPaths)
-      DIRTY_PATH_KEYS.set(editor, dirtyPathKeys)
-      Transforms.transform(editor, op)
-      editor.operations.push(op)
-      Editor.normalize(editor)
+      DIRTY_PATHS.set(editor, dirtyPaths);
+      DIRTY_PATH_KEYS.set(editor, dirtyPathKeys);
+      Transforms.transform(editor, op);
+      editor.operations.push(op);
+      Editor.normalize(editor);
 
       // Clear any formats applied to the cursor if the selection changes.
       if (op.type === 'set_selection') {
-        editor.marks = null
+        editor.marks = null;
       }
 
       if (!FLUSHING.get(editor)) {
-        FLUSHING.set(editor, true)
+        FLUSHING.set(editor, true);
 
         Promise.resolve().then(() => {
-          FLUSHING.set(editor, false)
-          editor.onChange()
-          editor.operations = []
-        })
+          FLUSHING.set(editor, false);
+          editor.onChange();
+          editor.operations = [];
+        });
       }
     },
 
+    /** 原理是在文本节点上执行 Transforms.setNodes  */
     addMark: (key: string, value: any) => {
-      const { selection } = editor
+      const { selection } = editor;
 
       if (selection) {
         if (Range.isExpanded(selection)) {
           Transforms.setNodes(
             editor,
             { [key]: value },
-            { match: Text.isText, split: true }
-          )
+            { match: Text.isText, split: true },
+          );
         } else {
           const marks = {
             ...(Editor.marks(editor) || {}),
             [key]: value,
-          }
+          };
 
-          editor.marks = marks
+          editor.marks = marks;
           if (!FLUSHING.get(editor)) {
-            editor.onChange()
+            editor.onChange();
           }
         }
       }
     },
 
     deleteBackward: (unit: TextUnit) => {
-      const { selection } = editor
+      const { selection } = editor;
 
       if (selection && Range.isCollapsed(selection)) {
-        Transforms.delete(editor, { unit, reverse: true })
+        Transforms.delete(editor, { unit, reverse: true });
       }
     },
 
     deleteForward: (unit: TextUnit) => {
-      const { selection } = editor
+      const { selection } = editor;
 
       if (selection && Range.isCollapsed(selection)) {
-        Transforms.delete(editor, { unit })
+        Transforms.delete(editor, { unit });
       }
     },
 
     deleteFragment: (direction?: 'forward' | 'backward') => {
-      const { selection } = editor
+      const { selection } = editor;
 
       if (selection && Range.isExpanded(selection)) {
-        Transforms.delete(editor, { reverse: direction === 'backward' })
+        Transforms.delete(editor, { reverse: direction === 'backward' });
       }
     },
 
     getFragment: () => {
-      const { selection } = editor
+      const { selection } = editor;
 
       if (selection) {
-        return Node.fragment(editor, selection)
+        return Node.fragment(editor, selection);
       }
-      return []
+      return [];
     },
 
     insertBreak: () => {
-      Transforms.splitNodes(editor, { always: true })
+      Transforms.splitNodes(editor, { always: true });
     },
 
     insertSoftBreak: () => {
-      Transforms.splitNodes(editor, { always: true })
+      Transforms.splitNodes(editor, { always: true });
     },
 
     insertFragment: (fragment: Node[]) => {
-      Transforms.insertFragment(editor, fragment)
+      Transforms.insertFragment(editor, fragment);
     },
 
     insertNode: (node: Node) => {
-      Transforms.insertNodes(editor, node)
+      Transforms.insertNodes(editor, node);
     },
 
     insertText: (text: string) => {
-      const { selection, marks } = editor
+      const { selection, marks } = editor;
 
       if (selection) {
         if (marks) {
-          const node = { text, ...marks }
-          Transforms.insertNodes(editor, node)
+          const node = { text, ...marks };
+          Transforms.insertNodes(editor, node);
         } else {
-          Transforms.insertText(editor, text)
+          Transforms.insertText(editor, text);
         }
 
-        editor.marks = null
+        editor.marks = null;
       }
     },
 
     normalizeNode: (entry: NodeEntry) => {
-      const [node, path] = entry
+      const [node, path] = entry;
 
       // There are no core normalizations for text nodes.
       if (Text.isText(node)) {
-        return
+        return;
       }
 
       // Ensure that block and inline nodes have at least one text child.
       if (Element.isElement(node) && node.children.length === 0) {
-        const child = { text: '' }
+        const child = { text: '' };
         Transforms.insertNodes(editor, child, {
           at: path.concat(0),
           voids: true,
-        })
-        return
+        });
+        return;
       }
 
       // Determine whether the node should have block or inline children.
@@ -211,95 +212,99 @@ export const createEditor = (): Editor => {
           (editor.isInline(node) ||
             node.children.length === 0 ||
             Text.isText(node.children[0]) ||
-            editor.isInline(node.children[0]))
+            editor.isInline(node.children[0]));
 
       // Since we'll be applying operations while iterating, keep track of an
       // index that accounts for any added/removed nodes.
-      let n = 0
+      let n = 0;
 
       for (let i = 0; i < node.children.length; i++, n++) {
-        const currentNode = Node.get(editor, path)
-        if (Text.isText(currentNode)) continue
-        const child = node.children[i] as Descendant
-        const prev = currentNode.children[n - 1] as Descendant
-        const isLast = i === node.children.length - 1
+        const currentNode = Node.get(editor, path);
+        if (Text.isText(currentNode)) continue;
+        const child = node.children[i] as Descendant;
+        const prev = currentNode.children[n - 1] as Descendant;
+        const isLast = i === node.children.length - 1;
         const isInlineOrText =
           Text.isText(child) ||
-          (Element.isElement(child) && editor.isInline(child))
+          (Element.isElement(child) && editor.isInline(child));
 
         // Only allow block nodes in the top-level children and parent blocks
         // that only contain block nodes. Similarly, only allow inline nodes in
         // other inline nodes, or parent blocks that only contain inlines and
         // text.
         if (isInlineOrText !== shouldHaveInlines) {
-          Transforms.removeNodes(editor, { at: path.concat(n), voids: true })
-          n--
+          Transforms.removeNodes(editor, { at: path.concat(n), voids: true });
+          n--;
         } else if (Element.isElement(child)) {
           // Ensure that inline nodes are surrounded by text nodes.
           if (editor.isInline(child)) {
             if (prev == null || !Text.isText(prev)) {
-              const newChild = { text: '' }
+              const newChild = { text: '' };
               Transforms.insertNodes(editor, newChild, {
                 at: path.concat(n),
                 voids: true,
-              })
-              n++
+              });
+              n++;
             } else if (isLast) {
-              const newChild = { text: '' }
+              const newChild = { text: '' };
               Transforms.insertNodes(editor, newChild, {
                 at: path.concat(n + 1),
                 voids: true,
-              })
-              n++
+              });
+              n++;
             }
           }
         } else {
           // Merge adjacent text nodes that are empty or match.
           if (prev != null && Text.isText(prev)) {
             if (Text.equals(child, prev, { loose: true })) {
-              Transforms.mergeNodes(editor, { at: path.concat(n), voids: true })
-              n--
+              Transforms.mergeNodes(editor, {
+                at: path.concat(n),
+                voids: true,
+              });
+              n--;
             } else if (prev.text === '') {
               Transforms.removeNodes(editor, {
                 at: path.concat(n - 1),
                 voids: true,
-              })
-              n--
+              });
+              n--;
             } else if (child.text === '') {
               Transforms.removeNodes(editor, {
                 at: path.concat(n),
                 voids: true,
-              })
-              n--
+              });
+              n--;
             }
           }
         }
       }
     },
 
+    /** 原理是在文本节点上执行 Transforms.unsetNodes  */
     removeMark: (key: string) => {
-      const { selection } = editor
+      const { selection } = editor;
 
       if (selection) {
         if (Range.isExpanded(selection)) {
           Transforms.unsetNodes(editor, key, {
             match: Text.isText,
             split: true,
-          })
+          });
         } else {
-          const marks = { ...(Editor.marks(editor) || {}) }
-          delete marks[key]
-          editor.marks = marks
+          const marks = { ...(Editor.marks(editor) || {}) };
+          delete marks[key];
+          editor.marks = marks;
           if (!FLUSHING.get(editor)) {
-            editor.onChange()
+            editor.onChange();
           }
         }
       }
     },
-  }
+  };
 
-  return editor
-}
+  return editor;
+};
 
 /**
  * Get the "dirty" paths generated from an operation.
@@ -310,69 +315,69 @@ const getDirtyPaths = (op: Operation): Path[] => {
     case 'insert_text':
     case 'remove_text':
     case 'set_node': {
-      const { path } = op
-      return Path.levels(path)
+      const { path } = op;
+      return Path.levels(path);
     }
 
     case 'insert_node': {
-      const { node, path } = op
-      const levels = Path.levels(path)
+      const { node, path } = op;
+      const levels = Path.levels(path);
       const descendants = Text.isText(node)
         ? []
-        : Array.from(Node.nodes(node), ([, p]) => path.concat(p))
+        : Array.from(Node.nodes(node), ([, p]) => path.concat(p));
 
-      return [...levels, ...descendants]
+      return [...levels, ...descendants];
     }
 
     case 'merge_node': {
-      const { path } = op
-      const ancestors = Path.ancestors(path)
-      const previousPath = Path.previous(path)
-      return [...ancestors, previousPath]
+      const { path } = op;
+      const ancestors = Path.ancestors(path);
+      const previousPath = Path.previous(path);
+      return [...ancestors, previousPath];
     }
 
     case 'move_node': {
-      const { path, newPath } = op
+      const { path, newPath } = op;
 
       if (Path.equals(path, newPath)) {
-        return []
+        return [];
       }
 
-      const oldAncestors: Path[] = []
-      const newAncestors: Path[] = []
+      const oldAncestors: Path[] = [];
+      const newAncestors: Path[] = [];
 
       for (const ancestor of Path.ancestors(path)) {
-        const p = Path.transform(ancestor, op)
-        oldAncestors.push(p!)
+        const p = Path.transform(ancestor, op);
+        oldAncestors.push(p!);
       }
 
       for (const ancestor of Path.ancestors(newPath)) {
-        const p = Path.transform(ancestor, op)
-        newAncestors.push(p!)
+        const p = Path.transform(ancestor, op);
+        newAncestors.push(p!);
       }
 
-      const newParent = newAncestors[newAncestors.length - 1]
-      const newIndex = newPath[newPath.length - 1]
-      const resultPath = newParent.concat(newIndex)
+      const newParent = newAncestors[newAncestors.length - 1];
+      const newIndex = newPath[newPath.length - 1];
+      const resultPath = newParent.concat(newIndex);
 
-      return [...oldAncestors, ...newAncestors, resultPath]
+      return [...oldAncestors, ...newAncestors, resultPath];
     }
 
     case 'remove_node': {
-      const { path } = op
-      const ancestors = Path.ancestors(path)
-      return [...ancestors]
+      const { path } = op;
+      const ancestors = Path.ancestors(path);
+      return [...ancestors];
     }
 
     case 'split_node': {
-      const { path } = op
-      const levels = Path.levels(path)
-      const nextPath = Path.next(path)
-      return [...levels, nextPath]
+      const { path } = op;
+      const levels = Path.levels(path);
+      const nextPath = Path.next(path);
+      return [...levels, nextPath];
     }
 
     default: {
-      return []
+      return [];
     }
   }
-}
+};

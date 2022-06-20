@@ -12,6 +12,7 @@ import { HOTKEYS, toggleMark } from './utils';
 /**
  * ✨️ slate官方富文本编辑器示例
  * - https://www.slatejs.org/examples/richtext
+ * - 工具条上提供了行内文本操作和块级文本操作
  */
 export const SlateRichTextEditor = () => {
   const renderElement = useCallback((props) => <RichElement {...props} />, []);

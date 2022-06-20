@@ -13,8 +13,8 @@ export const HOTKEYS = {
 
 /**
  * 👉 原理是 Transforms.unwrapNodes+setNodes+ [wrapNodes]
- * - 👀 toggleBlock需要先unwrap再setNodes，toggleMark不需要
- * - setNodes添加的新属性，可以在renderElement中通过element.p1获取
+ * - 👀 toggleBlock部分操作需要先unwrap再setNodes，toggleMark不需要
+ * - setNodes添加的新属性，可以在renderElement中通过element.propertyName获取
  */
 export const toggleBlock = (editor, format) => {
   const isActive = isBlockActive(
@@ -53,7 +53,7 @@ export const toggleBlock = (editor, format) => {
 };
 
 /**
- * 原理是 Editor.removeMark/addMark
+ * 👉 会执行 Editor.removeMark/addMark，底层还是执行 Transforms.setNodes
  * - 👀 toggleBlock需要先unwrap再wrap，toggleMark不需要
  */
 export const toggleMark = (editor, format) => {

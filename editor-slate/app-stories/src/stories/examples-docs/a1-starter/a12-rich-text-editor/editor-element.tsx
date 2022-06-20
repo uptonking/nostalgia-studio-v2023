@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export const RichElement = ({ attributes, children, element }) => {
-  // align属性通过setNodes添加
+  // align属性通过setNodes添加，通过element.align获取
   const style = { textAlign: element.align };
 
   switch (element.type) {

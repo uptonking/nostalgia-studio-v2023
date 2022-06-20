@@ -40,7 +40,6 @@ export const SelectionTransforms: SelectionTransforms = {
   /**
    * Collapse the selection.
    */
-
   collapse(editor: Editor, options: SelectionCollapseOptions = {}): void {
     const { edge = 'anchor' } = options;
     const { selection } = editor;

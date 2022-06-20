@@ -65,8 +65,8 @@ export const SlateReactSimpleApp02EventKeyDown = () => {
 const DefaultElement = (props) => <p {...props.attributes}>{props.children}</p>;
 
 /**
- * - Slate passes attributes that should be rendered on the top-most element of your blocks
  * - Slate will automatically render all of the children of a block for you, and then pass them to you
+ * - Slate passes attributes that should be rendered on the top-most element of your blocks
  * - You must render the children as the lowest leaf in your component.
  */
 const CodeElement = (props) => {
@@ -188,6 +188,7 @@ export const SlateReactSimpleApp04CustomFormatting = () => {
             // When "B" is pressed, bold the text in the selection.
             case 'b': {
               event.preventDefault();
+              // 👀 只作用于text-nodes，注意加粗通过setNodes实现，而没有用addMark
               Transforms.setNodes(
                 editor,
                 // @ts-ignore

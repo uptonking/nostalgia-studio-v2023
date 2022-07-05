@@ -375,7 +375,8 @@ export interface EditorInterface {
   rangeRefs: (editor: Editor) => Set<RangeRef>;
   setNormalizing: (editor: Editor, isNormalizing: boolean) => void;
   start: (editor: Editor, at: Location) => Point;
-  /** Get the text string content of a location. Note: by default the text of void nodes is considered to be an empty string, regardless of content, unless you pass in true for the voids option */
+  /** Get the text string content of a location.
+   * Note: by default text of void nodes is considered to be an empty string, regardless of content, unless you pass in true for the voids option */
   string: (
     editor: Editor,
     at: Location,

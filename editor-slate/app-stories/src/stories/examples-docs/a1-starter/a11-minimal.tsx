@@ -16,6 +16,9 @@ const initialValue = [
 export const SlateMinimalApp = () => {
   const [editor] = useState(() => withReact(createEditor()));
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  editor.selection;
+
   return (
     <Slate editor={editor} value={initialValue as any}>
       <Editable />

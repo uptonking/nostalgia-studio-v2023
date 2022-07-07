@@ -33,6 +33,7 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
+  /** Lift nodes at the specified location upwards in the document tree. If necessary, the parent node is split. If no location is specified, use the selection. */
   liftNodes: <T extends Node>(
     editor: Editor,
     options?: {
@@ -42,6 +43,10 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
+  /** Merge a node at the specified location with the previous node at the same depth.
+   * If no location is specified, use the selection.
+   * Resulting empty container nodes are removed.
+   */
   mergeNodes: <T extends Node>(
     editor: Editor,
     options?: {
@@ -52,6 +57,9 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
+  /** Move the nodes from an origin to a destination.
+   * - A destination must be specified in the options.
+   * - If no origin is specified, move the selection. */
   moveNodes: <T extends Node>(
     editor: Editor,
     options: {
@@ -72,7 +80,11 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
-  /** Set properties of nodes at the specified location. If no location is specified, use the selection. */
+  /** Set properties of nodes at the specified location. If no location is specified, use the selection.
+   * - Property values must not be null.
+   * - Instead, you should use an optional property, e.g. `foo?: string` instead of `foo: string | null`.
+   * - This limitation is due to `null` being used in operations to represent the absence of a property.
+   * */
   setNodes: <T extends Node>(
     editor: Editor,
     props: Partial<T>,
@@ -87,6 +99,7 @@ export interface NodeTransforms {
       merge?: PropsMerge;
     },
   ) => void;
+  /** Split nodes at the specified location. If no location is specified, split the selection. */
   splitNodes: <T extends Node>(
     editor: Editor,
     options?: {
@@ -98,6 +111,10 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
+  /**
+   * Unset properties of nodes at the specified location.
+   * If no location is specified, use the selection.
+   */
   unsetNodes: <T extends Node>(
     editor: Editor,
     props: string | string[],

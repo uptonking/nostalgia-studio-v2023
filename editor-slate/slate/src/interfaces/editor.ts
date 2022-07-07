@@ -257,7 +257,7 @@ export interface EditorInterface {
    * - Add a custom property to the leaf text nodes in the current selection.
    * - If the selection is currently collapsed, the marks will be added to the
    * `editor.marks` property instead, and applied when text is inserted next.
-   * - 具体逻辑在create-editor中实现，本质是执行
+   * - 具体逻辑在create-editor中实现，本质是执行 Transfroms.setNodes
    */
   addMark: (editor: Editor, key: string, value: any) => void;
   removeMark: (editor: Editor, key: string) => void;
@@ -287,7 +287,9 @@ export interface EditorInterface {
   ) => void;
   edges: (editor: Editor, at: Location) => [Point, Point];
   end: (editor: Editor, at: Location) => Point;
+  /** Get the first node at a location. */
   first: (editor: Editor, at: Location) => NodeEntry;
+  /** Get the fragment at a location. */
   fragment: (editor: Editor, at: Location) => Descendant[];
   hasBlocks: (editor: Editor, element: Element) => boolean;
   hasInlines: (editor: Editor, element: Element) => boolean;
@@ -308,16 +310,21 @@ export interface EditorInterface {
   isStart: (editor: Editor, point: Point, at: Location) => boolean;
   isVoid: (editor: Editor, value: any) => value is Element;
   last: (editor: Editor, at: Location) => NodeEntry;
+  /** Get the leaf text node at a location. */
   leaf: (
     editor: Editor,
     at: Location,
     options?: EditorLeafOptions,
   ) => NodeEntry<Text>;
+  /** Iterate through all of the levels at a location. */
   levels: <T extends Node>(
     editor: Editor,
     options?: EditorLevelsOptions<T>,
   ) => Generator<NodeEntry<T>, void, undefined>;
+  /** Get the marks that would be added to text at the current selection. */
   marks: (editor: Editor) => Omit<Text, 'text'> | null;
+  /** Get the matching node in the branch of the document after a location.
+Note: If you are looking for the next Point, and not the next Node, you are probably looking for the method Editor.after */
   next: <T extends Descendant>(
     editor: Editor,
     options?: EditorNextOptions<T>,
@@ -337,7 +344,9 @@ export interface EditorInterface {
     editor: Editor,
     options?: EditorNodesOptions<T>,
   ) => Generator<NodeEntry<T>, void, undefined>;
+  /** Normalize any dirty objects in the editor. */
   normalize: (editor: Editor, options?: EditorNormalizeOptions) => void;
+  /** Get the parent node of a location. */
   parent: (
     editor: Editor,
     at: Location,
@@ -350,6 +359,7 @@ export interface EditorInterface {
     options?: EditorPathRefOptions,
   ) => PathRef;
   pathRefs: (editor: Editor) => Set<PathRef>;
+  /** Get the start or end point of a location. */
   point: (editor: Editor, at: Location, options?: EditorPointOptions) => Point;
   pointRef: (
     editor: Editor,
@@ -357,10 +367,16 @@ export interface EditorInterface {
     options?: EditorPointRefOptions,
   ) => PointRef;
   pointRefs: (editor: Editor) => Set<PointRef>;
+  /** Iterate through all of the positions in the document where a Point can be placed.
+   * The first Point returns is always the starting point followed by the next Point as determined by the unit option.
+   * Note: By default void nodes are treated as a single point and iteration will not happen inside their content unless you pass in true for the voids option, then iteration will occur
+   * */
   positions: (
     editor: Editor,
     options?: EditorPositionsOptions,
   ) => Generator<Point, void, undefined>;
+  /** Get the matching node in the branch of the document before a location.
+Note: If you are looking for the previous Point, and not the previous Node, you are probably looking for the method Editor.before */
   previous: <T extends Node>(
     editor: Editor,
     options?: EditorPreviousOptions<T>,
@@ -382,6 +398,11 @@ export interface EditorInterface {
     at: Location,
     options?: EditorStringOptions,
   ) => string;
+  /** Convert a range into a non-hanging one.
+   * - A "hanging" range is one created by the browser's "triple-click" selection behavior. When triple-clicking a block, the browser selects from the start of that block to the start of the next block. The range thus "hangs over" into the next block.
+   * - If unhangRange is given such a range, it moves the end backwards until it's in a non-empty text node that precedes the hanging block.
+   * - Note that unhangRange is designed for the specific purpose of fixing triple-clicked blocks, and therefore currently has a number of caveats
+   */
   unhangRange: (
     editor: Editor,
     range: Range,
@@ -391,6 +412,7 @@ export interface EditorInterface {
     editor: Editor,
     options?: EditorVoidOptions,
   ) => NodeEntry<Element> | undefined;
+  /** Call a function, deferring normalization until after it completes. */
   withoutNormalizing: (editor: Editor, fn: () => void) => void;
 }
 

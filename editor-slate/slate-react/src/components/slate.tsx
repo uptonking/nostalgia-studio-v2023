@@ -28,6 +28,7 @@ export type SlateProps = {
    */
   value: Descendant[];
   children: React.ReactNode;
+  /** 当编辑器内容不变且选区变化时(如改变点击光标的位置)，也会触发此方法，editor.children会作为参数传入此方法 */
   onChange?: (value: Descendant[]) => void;
 };
 

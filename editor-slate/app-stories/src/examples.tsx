@@ -8,7 +8,8 @@ const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
   // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('A12SlateRichTextEditor');
+  // const [currentStory, setCurrentStory] = useState('A12SlateRichTextEditor');
+  const [currentStory, setCurrentStory] = useState('A13SlateReactSimpleApp');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

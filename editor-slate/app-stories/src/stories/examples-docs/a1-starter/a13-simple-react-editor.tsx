@@ -81,8 +81,8 @@ const CodeElement = (props) => {
  * - 示例效果，快捷鍵 ctrl + alt + ` 可以将当前element切换为code/p，不需要selection为range
  * - 只影响光标所在的paragraph，不影响其他段落
  */
-// export const SlateReactSimpleApp03CustomElement = () => {
-export const SlateReactSimpleApp = () => {
+export const SlateReactSimpleApp03CustomElement = () => {
+  // export const SlateReactSimpleApp = () => {
   const [editor] = useState(() => withReact(createEditor()));
 
   const renderElement = useCallback((props) => {
@@ -139,11 +139,11 @@ const Leaf = (props) => {
 
 /**
  * - 示例效果，快捷鍵 ctrl + b 可以将当前文本切换为加粗文本，再次按键不能切回去
- * - 👀 并没有通过 addMark 实现，而是通过setNodes实现，addMark本质也通过setNodes实现
+ * - 👀 加粗并没有通过 addMark 实现，而是通过setNodes实现，addMark本质也通过setNodes实现
  * - 只添加到文本节点，同时要split
  */
-export const SlateReactSimpleApp04CustomFormatting = () => {
-  // export const SlateReactSimpleApp = () => {
+// export const SlateReactSimpleApp04CustomFormatting = () => {
+export const SlateReactSimpleApp = () => {
   const [editor] = useState(() => withReact(createEditor()));
 
   const renderElement = useCallback((props) => {
@@ -160,7 +160,13 @@ export const SlateReactSimpleApp04CustomFormatting = () => {
   }, []);
 
   return (
-    <Slate editor={editor} value={initialValue as any}>
+    <Slate
+      editor={editor}
+      value={initialValue as any}
+      onChange={(value) => {
+        console.log(';; slate-change ', value);
+      }}
+    >
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}

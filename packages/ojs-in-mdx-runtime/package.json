@@ -34,7 +34,7 @@
     "unist-builder": "^2.0.0"
   },
   "devDependencies": {
-    "@atao60/fse-cli": "^0.0.56",
+    "@atao60/fse-cli": "^0.0.60",
     "fs-extra": "^10.0.0",
     "rehype-katex": "^4.0.0",
     "remark-footnotes": "^3.0.0",

@@ -21,7 +21,7 @@
     "@dnd-kit/utilities": "3.1.0111",
     "@emotion/css": "^11.7.1",
     "classnames": "^2.3.1",
-    "faker": "^4.1.0",
+    "faker": "^5.5.3",
     "image-extensions": "^1.1.0",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.2",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@types/is-url": "^1.2.30",
-    "@types/react": "^17.0.28",
-    "@types/react-dom": "^17.0.0"
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.9"
   }
 }

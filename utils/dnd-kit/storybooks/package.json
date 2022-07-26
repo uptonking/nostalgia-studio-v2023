@@ -23,11 +23,11 @@
     "release:next": "changeset publish --tag next"
   },
   "dependencies": {
-    "@dnd-kit/accessibility":"3.0.0111",
-    "@dnd-kit/core":"5.0.3111",
-    "@dnd-kit/modifiers":"5.0.0111",
-    "@dnd-kit/sortable":"6.0.1111",
-    "@dnd-kit/utilities":"3.1.0111"
+    "@dnd-kit/accessibility": "3.0.0111",
+    "@dnd-kit/core": "5.0.3111",
+    "@dnd-kit/modifiers": "5.0.0111",
+    "@dnd-kit/sortable": "6.0.1111",
+    "@dnd-kit/utilities": "3.1.0111"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^6.3.5",
@@ -36,15 +36,15 @@
     "@storybook/addons": "^6.3.5",
     "@storybook/react": "^6.3.5",
     "@types/classnames": "^2.2.11",
-    "@types/react": "^16.9.43",
-    "@types/react-dom": "^16.9.8",
-    "babel-jest": "^27.0.2",
-    "babel-loader": "^8.2.1",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.9",
+    "babel-jest": "^27.0.5",
+    "babel-loader": "^8.2.2",
     "chromatic": "^5.4.0",
-    "classnames": "^2.2.6",
-    "css-loader": "^2.0.0",
+    "classnames": "^2.3.1",
+    "css-loader": "^6.4.0",
     "cypress": "^9.5.2",
-    "framer-motion": "^3.1.1",
+    "framer-motion": "^6.2.8",
     "lerna": "^3.15.0",
     "postcss": "^8.1.10",
     "postcss-loader": "^4.1.0",
@@ -53,7 +53,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-tiny-virtual-list": "^2.2.0",
-    "style-loader": "^2.0.0",
+    "style-loader": "^3.0.0",
     "tsdx": "^0.14.1"
   },
   "resolutions": {

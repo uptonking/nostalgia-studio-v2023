@@ -16,7 +16,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@atao60/fse-cli": "^0.0.56",
+    "@atao60/fse-cli": "^0.0.60",
     "fs-extra": "^10.0.0",
     "polished": "^4.1.1",
     "style-dictionary": "^3.0.0-rc.8",

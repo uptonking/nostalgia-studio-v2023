@@ -23,7 +23,7 @@ module.exports = merge(commonConfig, {
   // target: process.env.NODE_ENV === 'production' ? 'browserslist' : 'web',
   target: 'web',
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     isEnvReactHotReload && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),
 });

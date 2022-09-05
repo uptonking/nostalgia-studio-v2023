@@ -1,5 +1,6 @@
 import { produce } from 'immer';
-import { Editor, Path, Range, Text } from '..';
+
+import { Editor, Path, Range, Text } from '../../src';
 import { Element, ElementEntry } from './element';
 
 /**

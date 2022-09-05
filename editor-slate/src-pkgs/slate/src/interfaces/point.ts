@@ -1,8 +1,8 @@
 import { produce } from 'immer';
 import { isPlainObject } from 'is-plain-object';
 
+import { ExtendedType, Operation, Path } from '../../src';
 import { TextDirection } from './types';
-import { ExtendedType, Operation, Path } from '..';
 
 export interface BasePoint {
   path: Path;

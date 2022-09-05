@@ -1,18 +1,19 @@
 import { createDraft, finishDraft, isDraft } from 'immer';
+
 import {
-  Node,
-  Editor,
-  Selection,
-  Range,
-  Point,
-  Text,
-  Element,
-  Operation,
-  Descendant,
-  NodeEntry,
-  Path,
   Ancestor,
-} from '..';
+  Descendant,
+  Editor,
+  Element,
+  Node,
+  NodeEntry,
+  Operation,
+  Path,
+  Point,
+  Range,
+  Selection,
+  Text,
+} from '../../src';
 
 export interface GeneralTransforms {
   transform: (editor: Editor, op: Operation) => void;

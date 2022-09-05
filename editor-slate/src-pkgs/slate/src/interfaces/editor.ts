@@ -1,6 +1,22 @@
 import { isPlainObject } from 'is-plain-object';
 
 import {
+  Ancestor,
+  ExtendedType,
+  Location,
+  Node,
+  NodeEntry,
+  Operation,
+  Path,
+  PathRef,
+  Point,
+  PointRef,
+  Range,
+  RangeRef,
+  Span,
+  Text,
+} from '../../src';
+import {
   getCharacterDistance,
   getWordDistance,
   splitByCharacterDistance,
@@ -24,22 +40,6 @@ import {
   TextUnit,
   TextUnitAdjustment,
 } from './types';
-import {
-  Ancestor,
-  ExtendedType,
-  Location,
-  Node,
-  NodeEntry,
-  Operation,
-  Path,
-  PathRef,
-  Point,
-  PointRef,
-  Range,
-  RangeRef,
-  Span,
-  Text,
-} from '..';
 
 export type BaseSelection = Range | null;
 

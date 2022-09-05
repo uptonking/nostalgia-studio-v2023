@@ -1,6 +1,3 @@
-import { NodeMatch, PropsCompare, PropsMerge } from '../interfaces/editor';
-import { PointRef } from '../interfaces/point-ref';
-import { MaximizeMode, RangeMode } from '../interfaces/types';
 import {
   Ancestor,
   Editor,
@@ -13,7 +10,10 @@ import {
   Range,
   Text,
   Transforms,
-} from '..';
+} from '../../src';
+import { NodeMatch, PropsCompare, PropsMerge } from '../interfaces/editor';
+import { PointRef } from '../interfaces/point-ref';
+import { MaximizeMode, RangeMode } from '../interfaces/types';
 
 export interface NodeTransforms {
   /**

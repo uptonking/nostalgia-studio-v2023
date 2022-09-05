@@ -10,9 +10,12 @@
   "author": "jinyaoo <jinyaoo@qq.com>",
   "workspaces": [
     "site/*",
-    "examples/*",
     "packages/*",
+    "examples/*",
+    "editor-prosemirror/*",
+    "editor-prosemirror/src-pkgs/*",
     "editor-slate/*",
+    "editor-slate/src-pkgs/*",
     "utils/*",
     "utils/dnd-kit/packages/*",
     "utils/dnd-kit/playground",

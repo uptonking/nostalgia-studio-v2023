@@ -1,5 +1,6 @@
 import { produce } from 'immer';
-import { Operation } from '..';
+
+import { Operation } from '../../src';
 import { TextDirection } from './types';
 
 /**

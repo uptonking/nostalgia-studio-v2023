@@ -1,4 +1,4 @@
-import { Path, Point, Range } from '..';
+import { Path, Point, Range } from '../../src';
 
 /**
  * The `Location` interface is a union of the ways to refer to a specific

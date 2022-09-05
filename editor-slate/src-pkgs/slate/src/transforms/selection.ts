@@ -1,5 +1,5 @@
+import { Editor, Location, Point, Range, Transforms } from '../../src';
 import { MoveUnit, SelectionEdge } from '../interfaces/types';
-import { Editor, Location, Point, Range, Transforms } from '..';
 
 export interface SelectionCollapseOptions {
   edge?: SelectionEdge;

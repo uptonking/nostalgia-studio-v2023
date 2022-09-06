@@ -1,0 +1,1 @@
+export { SlateRichTextEditor } from './editor';

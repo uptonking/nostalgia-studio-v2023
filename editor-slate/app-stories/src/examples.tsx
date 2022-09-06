@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 
 import * as stories from './stories/examples-docs';
 
-// import * as stories from './stories/dnd-kit';
-
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
-  // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
+  const [currentStory, setCurrentStory] = useState(storiesNames[0]);
   // const [currentStory, setCurrentStory] = useState('A12SlateRichTextEditor');
-  const [currentStory, setCurrentStory] = useState('A13SlateReactSimpleApp');
+  // const [currentStory, setCurrentStory] = useState('A13SlateReactSimpleApp');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]
@@ -17,15 +15,13 @@ export function ExamplesApp() {
 
   return (
     <div>
-      <h1>examples for slate editor</h1>
+      <h1>examples for prosemirror editor</h1>
       <h2>当前示例: {currentStory}</h2>
       <div style={{ display: 'flex' }}>
         <div
           style={{
             width: 200,
             // padding: '8px',
-            // 如果设置overflowX为hidden，窄屏幕上这个toc菜单会全部隐藏
-            // overflowX: 'hidden',
             backgroundColor: 'beige',
           }}
           className='idLeftContainer'

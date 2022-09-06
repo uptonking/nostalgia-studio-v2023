@@ -1,0 +1,39 @@
+{
+  "name": "prosemirror-collab",
+  "version": "1.3.0111",
+  "description": "Collaborative editing for ProseMirror",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    "import": "./src/index.ts"
+  },
+  "sideEffects": false,
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Marijn Haverbeke",
+      "email": "marijnh@gmail.com",
+      "web": "http://marijnhaverbeke.nl"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/prosemirror/prosemirror-collab.git"
+  },
+  "dependencies": {
+    "prosemirror-state": "1.4.1111"
+  },
+  "devDependencies": {
+    "@prosemirror/buildhelper": "^0.1.5",
+    "prosemirror-history": "^1.0.0",
+    "prosemirror-model": "^1.0.0",
+    "prosemirror-test-builder": "^1.0.0",
+    "prosemirror-transform": "^1.0.0"
+  },
+  "scripts": {
+    "test": "pm-runtests",
+    "prepare1": "pm-buildhelper src/collab.ts"
+  }
+}

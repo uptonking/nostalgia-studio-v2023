@@ -1,0 +1,49 @@
+{
+  "name": "prosemirror-example-setup",
+  "version": "1.2.1111",
+  "description": "An example for how to set up a ProseMirror editor",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./dist/index.cjs"
+    },
+    "./style/style.css": "./style/style.css"
+  },
+  "sideEffects": [
+    "./style/style.css"
+  ],
+  "style": "style/style.css",
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "Marijn Haverbeke",
+      "email": "marijnh@gmail.com",
+      "web": "http://marijnhaverbeke.nl"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/prosemirror/prosemirror-example-setup.git"
+  },
+  "dependencies": {
+    "prosemirror-state": "1.4.1111",
+    "prosemirror-inputrules": "1.2.0111",
+    "prosemirror-schema-list": "1.2.1111",
+    "prosemirror-keymap": "1.2.0111",
+    "prosemirror-history": "1.3.0111",
+    "prosemirror-commands": "1.3.0111",
+    "prosemirror-menu": "1.2.1111",
+    "prosemirror-dropcursor": "1.6.0111",
+    "prosemirror-gapcursor": "1.3.1111"
+  },
+  "devDependencies": {
+    "@prosemirror/buildhelper": "^0.1.5"
+  },
+  "scripts": {
+    "prepare1": "pm-buildhelper src/index.ts"
+  }
+}

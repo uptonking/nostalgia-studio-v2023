@@ -8,7 +8,7 @@
     "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
     "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
     "build:types": "",
-    "demo": "cross-env APP_ENV=reactfresh webpack serve --hot --config webpack/webpack.config.demo.js",
+    "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.js",
     "start": "npm run demo",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
@@ -21,7 +21,7 @@
     "@dnd-kit/utilities": "3.1.0111",
     "@emotion/css": "^11.7.1",
     "classnames": "^2.3.1",
-    "faker": "^5.5.3",
+    "@faker-js/faker": "^7.5.0",
     "image-extensions": "^1.1.0",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.2",

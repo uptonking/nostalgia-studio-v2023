@@ -5,7 +5,10 @@ import * as stories from './stories/examples-docs';
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
-  const [currentStory, setCurrentStory] = useState(storiesNames[0] || '');
+  // const [currentStory, setCurrentStory] = useState(storiesNames[0] || '');
+  const [currentStory, setCurrentStory] = useState(
+    storiesNames[storiesNames.length - 1] || '',
+  );
   // const [currentStory, setCurrentStory] = useState('A12SlateRichTextEditor');
   // const [currentStory, setCurrentStory] = useState('A13SlateReactSimpleApp');
 

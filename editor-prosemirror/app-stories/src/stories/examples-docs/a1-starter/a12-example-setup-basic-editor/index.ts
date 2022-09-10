@@ -1,0 +1,1 @@
+export { PMExampleSetupBasicEditor } from './editor';

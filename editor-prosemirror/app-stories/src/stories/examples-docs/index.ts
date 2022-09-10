@@ -1,5 +1,5 @@
 export { PMMinimalApp as A11PMMinimalApp } from './a1-starter/a11-minimal';
-// export { SlateRichTextEditor as A12SlateRichTextEditor } from './a1-starter/a12-rich-text-editor/editor';
+export { PMExampleSetupBasicEditor as A12PMExampleSetupBasicEditor } from './a1-starter/a12-example-setup-basic-editor';
 // export { SlateReactSimpleApp as A13SlateReactSimpleApp } from './a1-starter/a13-simple-react-editor';
 // export { SlateCommandsApp as A14SlateCommandsApp } from './a1-starter/a14-commands';
 // export { MentionApp as A21MentionApp } from './a2-features/a21-mention';

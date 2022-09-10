@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 
+import { PMExampleSetupBasicEditor } from './stories/examples-docs/a1-starter/a12-example-setup-basic-editor/editor';
+
 export function App() {
   return (
     <div>
@@ -15,6 +17,7 @@ export function App() {
       </div>
       <div>
         <hr />
+        <PMExampleSetupBasicEditor />
       </div>
     </div>
   );

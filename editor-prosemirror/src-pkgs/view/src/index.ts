@@ -62,9 +62,11 @@ export const __parseFromClipboard = parseFromClipboard;
 /// @internal
 export const __endComposition = endComposition;
 
-/// An editor view manages the DOM structure that represents an
-/// editable document. Its state and behavior are determined by its
-/// [props](#view.DirectEditorProps).
+/**
+ * An editor view manages the DOM structure that represents an
+ * editable document. Its state and behavior are determined by its
+ * [props](#view.DirectEditorProps).
+ */
 export class EditorView {
   private _props: DirectEditorProps;
   private directPlugins: readonly Plugin[];
@@ -122,9 +124,9 @@ export class EditorView {
       (place && (place as { mount: HTMLElement }).mount) ||
       document.createElement('div');
     if (place) {
-      if ((place as DOMNode).appendChild)
+      if ((place as DOMNode).appendChild) {
         (place as DOMNode).appendChild(this.dom);
-      else if (typeof place == 'function') place(this.dom);
+      } else if (typeof place == 'function') place(this.dom);
       else if ((place as { mount: HTMLElement }).mount) this.mounted = true;
     }
 
@@ -147,11 +149,11 @@ export class EditorView {
     this.updatePluginViews();
   }
 
-  /// An editable DOM node containing the document. (You probably
-  /// should not directly interfere with its content.)
+  /** An editable DOM node containing the document. (You probably
+   * should not directly interfere with its content.) */
   readonly dom: HTMLElement;
 
-  /// Indicates whether the editor is currently [editable](#view.EditorProps.editable).
+  /** Indicates whether the editor is currently [editable](#view.EditorProps.editable). */
   editable: boolean;
 
   /// When editor content is being dragged, this object contains

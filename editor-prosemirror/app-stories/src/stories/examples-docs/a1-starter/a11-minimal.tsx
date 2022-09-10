@@ -16,6 +16,9 @@ const initialValue = [
   },
 ];
 
+/**
+ * ✨ 最小编辑器示例，不支持回车换行
+ */
 export const PMMinimalApp = () => {
   const editorContainer = useRef<HTMLDivElement>();
   const view = useRef<EditorView>(null);

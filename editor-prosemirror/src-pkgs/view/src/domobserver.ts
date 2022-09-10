@@ -1,8 +1,18 @@
 import {Selection} from "prosemirror-state"
-import * as browser from "./browser"
-import {domIndex, isEquivalentPosition, selectionCollapsed, DOMSelection} from "./dom"
-import {hasFocusAndSelection, selectionToDOM, selectionFromDOM} from "./selection"
-import {EditorView} from "./index"
+
+import * as browser from './browser';
+import {
+  DOMSelection,
+  domIndex,
+  isEquivalentPosition,
+  selectionCollapsed,
+} from './dom';
+import { EditorView } from './index';
+import {
+  hasFocusAndSelection,
+  selectionFromDOM,
+  selectionToDOM,
+} from './selection';
 
 const observeOptions = {
   childList: true,

@@ -1,5 +1,7 @@
 # prosemirror-view
 
+> 主要负责处理着用户与编辑器的交互行为，更新state以及state渲染到DOM。
+
 [ [**WEBSITE**](https://prosemirror.net) | [**ISSUES**](https://github.com/prosemirror/prosemirror/issues) | [**FORUM**](https://discuss.prosemirror.net) | [**GITTER**](https://gitter.im/ProseMirror/prosemirror) | [**CHANGELOG**](https://github.com/ProseMirror/prosemirror-view/blob/master/CHANGELOG.md) ]
 
 This is a [core module](https://prosemirror.net/docs/ref/#view) of [ProseMirror](https://prosemirror.net).
@@ -22,7 +24,7 @@ discussion and support requests, and the
 [Github bug tracker](https://github.com/prosemirror/prosemirror/issues)
 is the place to report issues.
 
-We aim to be an inclusive, welcoming community. To make that explicit,
+We aim to be an inclusive, welcoming community. To make that explicit, 
 we have a [code of
 conduct](http://contributor-covenant.org/version/1/1/0/) that applies
 to communication around the project.

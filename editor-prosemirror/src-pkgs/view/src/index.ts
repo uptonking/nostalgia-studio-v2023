@@ -156,19 +156,21 @@ export class EditorView {
   /** Indicates whether the editor is currently [editable](#view.EditorProps.editable). */
   editable: boolean;
 
-  /// When editor content is being dragged, this object contains
-  /// information about the dragged slice and whether it is being
-  /// copied or moved. At any other time, it is null.
+  /** When editor content is being dragged, this object contains
+  * information about the dragged slice and whether it is being
+  * copied or moved. At any other time, it is null.
+  */
   dragging: null | { slice: Slice; move: boolean } = null;
 
-  /// Holds `true` when a
-  /// [composition](https://w3c.github.io/uievents/#events-compositionevents)
-  /// is active.
+  /** Holds `true` when a
+  * [composition](https://w3c.github.io/uievents/#events-compositionevents)
+  * is active.
+  */
   get composing() {
     return this.input.composing;
   }
 
-  /// The view's current [props](#view.EditorProps).
+  /** The view's current [props](#view.EditorProps). */
   get props() {
     if (this._props.state != this.state) {
       let prev = this._props;
@@ -179,11 +181,12 @@ export class EditorView {
     return this._props;
   }
 
-  /// Update the view's props. Will immediately cause an update to
-  /// the DOM.
+  /** Update the view's props. Will immediately cause an update to the DOM.
+   */
   update(props: DirectEditorProps) {
-    if (props.handleDOMEvents != this._props.handleDOMEvents)
+    if (props.handleDOMEvents != this._props.handleDOMEvents) {
       ensureListeners(this);
+    }
     this._props = props;
     if (props.plugins) {
       props.plugins.forEach(checkStateComponent);
@@ -192,9 +195,10 @@ export class EditorView {
     this.updateStateInner(props.state, true);
   }
 
-  /// Update the view by updating existing props object with the object
-  /// given as argument. Equivalent to `view.update(Object.assign({},
-  /// view.props, props))`.
+  /** Update the view by updating existing props object with the object
+   * given as argument. Equivalent to `view.update(Object.assign({},
+   * view.props, props))`.
+   */
   setProps(props: Partial<DirectEditorProps>) {
     let updated = {} as DirectEditorProps;
     for (let name in this._props)
@@ -204,16 +208,17 @@ export class EditorView {
     this.update(updated);
   }
 
-  /// Update the editor's `state` prop, without touching any of the
-  /// other props.
+  /** Update the editor's `state` prop, without touching any of the
+   * other props.
+   */
   updateState(state: EditorState) {
     this.updateStateInner(state, this.state.plugins != state.plugins);
   }
 
   private updateStateInner(state: EditorState, reconfigured: boolean) {
-    let prev = this.state,
-      redraw = false,
-      updateSel = false;
+    let prev = this.state;
+    let redraw = false;
+    let updateSel = false;
     // When stored marks are added, stop composition, so that they can
     // be displayed.
     if (state.storedMarks && this.composing) {
@@ -232,8 +237,8 @@ export class EditorView {
 
     this.editable = getEditable(this);
     updateCursorWrapper(this);
-    let innerDeco = viewDecorations(this),
-      outerDeco = computeDocDeco(this);
+    let innerDeco = viewDecorations(this);
+    let outerDeco = computeDocDeco(this);
 
     let scroll = reconfigured
       ? 'reset'
@@ -271,6 +276,8 @@ export class EditorView {
         let chromeKludge = browser.chrome
           ? (this.trackWrites = this.domSelection().focusNode)
           : null;
+
+        // 👉🏻 docView.update()实际执行更新视图
         if (
           redraw ||
           !this.docView.update(state.doc, outerDeco, innerDeco, this)
@@ -369,12 +376,13 @@ export class EditorView {
     }
   }
 
-  /// Goes over the values of a prop, first those provided directly,
-  /// then those from plugins given to the view, then from plugins in
-  /// the state (in order), and calls `f` every time a non-undefined
-  /// value is found. When `f` returns a truthy value, that is
-  /// immediately returned. When `f` isn't provided, it is treated as
-  /// the identity function (the prop value is returned directly).
+  /** Goes over the values of a prop, first those provided directly,
+   * then those from plugins given to the view, then from plugins in
+   * the state (in order), and calls `f` every time a non-undefined
+   * value is found. When `f` returns a truthy value, that is
+   * immediately returned. When `f` isn't provided, it is treated as
+   * the identity function (the prop value is returned directly).
+   */
   someProp<PropName extends keyof EditorProps, Result>(
     propName: PropName,
     f: (value: NonNullable<EditorProps[PropName]>) => Result,
@@ -404,7 +412,7 @@ export class EditorView {
       }
   }
 
-  /// Query whether the view has focus.
+  /** Query whether the view has focus. */
   hasFocus() {
     // Work around IE not handling focus correctly if resize handles are shown.
     // If the cursor is inside an element with resize handles, activeElement
@@ -424,7 +432,7 @@ export class EditorView {
     return this.root.activeElement == this.dom;
   }
 
-  /// Focus the editor.
+  /** Focus the editor. */
   focus() {
     this.domObserver.stop();
     if (this.editable) focusPreventScroll(this.dom);
@@ -432,10 +440,11 @@ export class EditorView {
     this.domObserver.start();
   }
 
-  /// Get the document root in which the editor exists. This will
-  /// usually be the top-level `document`, but might be a [shadow
-  /// DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM)
-  /// root if the editor is inside one.
+  /** Get the document root in which the editor exists. This will
+   * usually be the top-level `document`, but might be a [shadow
+   * DOM](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Shadow_DOM)
+   * root if the editor is inside one.
+   */
   get root(): Document | ShadowRoot {
     let cached = this._root;
     if (cached == null)
@@ -457,13 +466,14 @@ export class EditorView {
     return cached || document;
   }
 
-  /// Given a pair of viewport coordinates, return the document
-  /// position that corresponds to them. May return null if the given
-  /// coordinates aren't inside of the editor. When an object is
-  /// returned, its `pos` property is the position nearest to the
-  /// coordinates, and its `inside` property holds the position of the
-  /// inner node that the position falls inside of, or -1 if it is at
-  /// the top level, not in any node.
+  /** Given a pair of viewport coordinates, return the document
+   * position that corresponds to them. May return null if the given
+   * coordinates aren't inside of the editor. When an object is
+   * returned, its `pos` property is the position nearest to the
+   * coordinates, and its `inside` property holds the position of the
+   * inner node that the position falls inside of, or -1 if it is at
+   * the top level, not in any node.
+   */
   posAtCoords(coords: {
     left: number;
     top: number;
@@ -471,12 +481,13 @@ export class EditorView {
     return posAtCoords(this, coords);
   }
 
-  /// Returns the viewport rectangle at a given document position.
-  /// `left` and `right` will be the same number, as this returns a
-  /// flat cursor-ish rectangle. If the position is between two things
-  /// that aren't directly adjacent, `side` determines which element
-  /// is used. When < 0, the element before the position is used,
-  /// otherwise the element after.
+  /** Returns the viewport rectangle at a given document position.
+   * `left` and `right` will be the same number, as this returns a
+   * flat cursor-ish rectangle. If the position is between two things
+   * that aren't directly adjacent, `side` determines which element
+   * is used. When < 0, the element before the position is used,
+   * otherwise the element after.
+   */
   coordsAtPos(
     pos: number,
     side = 1,
@@ -484,51 +495,55 @@ export class EditorView {
     return coordsAtPos(this, pos, side);
   }
 
-  /// Find the DOM position that corresponds to the given document
-  /// position. When `side` is negative, find the position as close as
-  /// possible to the content before the position. When positive,
-  /// prefer positions close to the content after the position. When
-  /// zero, prefer as shallow a position as possible.
-  ///
-  /// Note that you should **not** mutate the editor's internal DOM,
-  /// only inspect it (and even that is usually not necessary).
+  /** Find the DOM position that corresponds to the given document
+   * position. When `side` is negative, find the position as close as
+   * possible to the content before the position. When positive,
+   * prefer positions close to the content after the position. When
+   * zero, prefer as shallow a position as possible.
+   *
+   * Note that you should **not** mutate the editor's internal DOM,
+   * only inspect it (and even that is usually not necessary).
+   */
   domAtPos(pos: number, side = 0): { node: DOMNode; offset: number } {
     return this.docView.domFromPos(pos, side);
   }
 
-  /// Find the DOM node that represents the document node after the
-  /// given position. May return `null` when the position doesn't point
-  /// in front of a node or if the node is inside an opaque node view.
-  ///
-  /// This is intended to be able to call things like
-  /// `getBoundingClientRect` on that DOM node. Do **not** mutate the
-  /// editor DOM directly, or add styling this way, since that will be
-  /// immediately overriden by the editor as it redraws the node.
+  /** Find the DOM node that represents the document node after the
+   * given position. May return `null` when the position doesn't point
+   * in front of a node or if the node is inside an opaque node view.
+   *
+   * This is intended to be able to call things like
+   * `getBoundingClientRect` on that DOM node. Do **not** mutate the
+   * editor DOM directly, or add styling this way, since that will be
+   * immediately overriden by the editor as it redraws the node.
+   */
   nodeDOM(pos: number): DOMNode | null {
     let desc = this.docView.descAt(pos);
     return desc ? (desc as NodeViewDesc).nodeDOM : null;
   }
 
-  /// Find the document position that corresponds to a given DOM
-  /// position. (Whenever possible, it is preferable to inspect the
-  /// document structure directly, rather than poking around in the
-  /// DOM, but sometimes—for example when interpreting an event
-  /// target—you don't have a choice.)
-  ///
-  /// The `bias` parameter can be used to influence which side of a DOM
-  /// node to use when the position is inside a leaf node.
+  /** Find the document position that corresponds to a given DOM
+   * position. (Whenever possible, it is preferable to inspect the
+   * document structure directly, rather than poking around in the
+   * DOM, but sometimes—for example when interpreting an event
+   * target—you don't have a choice.)
+   *
+   * The `bias` parameter can be used to influence which side of a DOM
+   * node to use when the position is inside a leaf node.
+   */
   posAtDOM(node: DOMNode, offset: number, bias = -1): number {
     let pos = this.docView.posFromDOM(node, offset, bias);
     if (pos == null) throw new RangeError('DOM position not inside the editor');
     return pos;
   }
 
-  /// Find out whether the selection is at the end of a textblock when
-  /// moving in a given direction. When, for example, given `"left"`,
-  /// it will return true if moving left from the current cursor
-  /// position would leave that position's parent textblock. Will apply
-  /// to the view's current state by default, but it is possible to
-  /// pass a different state.
+  /** Find out whether the selection is at the end of a textblock when
+   * moving in a given direction. When, for example, given `"left"`,
+   * it will return true if moving left from the current cursor
+   * position would leave that position's parent textblock. Will apply
+   * to the view's current state by default, but it is possible to
+   * pass a different state.
+   */
   endOfTextblock(
     dir: 'up' | 'down' | 'left' | 'right' | 'forward' | 'backward',
     state?: EditorState,
@@ -536,8 +551,9 @@ export class EditorView {
     return endOfTextblock(this, state || this.state, dir);
   }
 
-  /// Removes the editor from the DOM and destroys all [node
-  /// views](#view.NodeView).
+  /** Removes the editor from the DOM and destroys all [node
+   * views](#view.NodeView).
+   */
   destroy() {
     if (!this.docView) return;
     destroyInput(this);
@@ -552,25 +568,27 @@ export class EditorView {
     (this as any).docView = null;
   }
 
-  /// This is true when the view has been
-  /// [destroyed](#view.EditorView.destroy) (and thus should not be
-  /// used anymore).
+  /** This is true when the view has been
+   * [destroyed](#view.EditorView.destroy) (and thus should not be
+   * used anymore).
+   */
   get isDestroyed() {
     return this.docView == null;
   }
 
-  /// Used for testing.
+  /** Used for testing. */
   dispatchEvent(event: Event) {
     return dispatchEvent(this, event);
   }
 
-  /// Dispatch a transaction. Will call
-  /// [`dispatchTransaction`](#view.DirectEditorProps.dispatchTransaction)
-  /// when given, and otherwise defaults to applying the transaction to
-  /// the current state and calling
-  /// [`updateState`](#view.EditorView.updateState) with the result.
-  /// This method is bound to the view instance, so that it can be
-  /// easily passed around.
+  /** Dispatch a transaction. Will call
+   * [`dispatchTransaction`](#view.DirectEditorProps.dispatchTransaction)
+   * when given, and otherwise defaults to applying the transaction to
+   * the current state and calling
+   * [`updateState`](#view.EditorView.updateState) with the result.
+   * This method is bound to the view instance, so that it can be
+   * easily passed around.
+   */
   dispatch(tr: Transaction) {
     let dispatchTransaction = this._props.dispatchTransaction;
     if (dispatchTransaction) dispatchTransaction.call(this, tr);
@@ -672,8 +690,9 @@ function checkStateComponent(plugin: Plugin) {
     );
 }
 
-/// The type of function [provided](#view.ViewProps.nodeViews) to
-/// create [node views](#view.NodeView).
+/** The type of function [provided](#view.ViewProps.nodeViews) to
+ * create [node views](#view.NodeView).
+ */
 export type NodeViewConstructor = (
   node: Node,
   view: EditorView,
@@ -682,8 +701,9 @@ export type NodeViewConstructor = (
   innerDecorations: DecorationSource,
 ) => NodeView;
 
-/// The function types [used](#view.ViewProps.markViews) to create
-/// mark views.
+/** The function types [used](#view.ViewProps.markViews) to create
+ * mark views.
+ */
 export type MarkViewConstructor = (
   mark: Mark,
   view: EditorView,
@@ -694,38 +714,41 @@ type NodeViewSet = {
   [name: string]: NodeViewConstructor | MarkViewConstructor;
 };
 
-/// Helper type that maps event names to event object types, but
-/// includes events that TypeScript's HTMLElementEventMap doesn't know
-/// about.
+/** Helper type that maps event names to event object types, but
+ * includes events that TypeScript's HTMLElementEventMap doesn't know
+ * about.
+ */
 export interface DOMEventMap extends HTMLElementEventMap {
   [event: string]: any;
 }
 
-/// Props are configuration values that can be passed to an editor view
-/// or included in a plugin. This interface lists the supported props.
-///
-/// The various event-handling functions may all return `true` to
-/// indicate that they handled the given event. The view will then take
-/// care to call `preventDefault` on the event, except with
-/// `handleDOMEvents`, where the handler itself is responsible for that.
-///
-/// How a prop is resolved depends on the prop. Handler functions are
-/// called one at a time, starting with the base props and then
-/// searching through the plugins (in order of appearance) until one of
-/// them returns true. For some props, the first plugin that yields a
-/// value gets precedence.
-///
-/// The optional type parameter refers to the type of `this` in prop
-/// functions, and is used to pass in the plugin type when defining a
-/// [plugin](#state.Plugin).
+/** Props are configuration values that can be passed to an editor view
+ * or included in a plugin. This interface lists the supported props.
+ *
+ * The various event-handling functions may all return `true` to
+ * indicate that they handled the given event. The view will then take
+ * care to call `preventDefault` on the event, except with
+ * `handleDOMEvents`, where the handler itself is responsible for that.
+ *
+ * How a prop is resolved depends on the prop. Handler functions are
+ * called one at a time, starting with the base props and then
+ * searching through the plugins (in order of appearance) until one of
+ * them returns true. For some props, the first plugin that yields a
+ * value gets precedence.
+ *
+ * The optional type parameter refers to the type of `this` in prop
+ * functions, and is used to pass in the plugin type when defining a
+ * [plugin](#state.Plugin).
+ */
 export interface EditorProps<P = any> {
-  /// Can be an object mapping DOM event type names to functions that
-  /// handle them. Such functions will be called before any handling
-  /// ProseMirror does of events fired on the editable DOM element.
-  /// Contrary to the other event handling props, when returning true
-  /// from such a function, you are responsible for calling
-  /// `preventDefault` yourself (or not, if you want to allow the
-  /// default behavior).
+  /** Can be an object mapping DOM event type names to functions that
+   * handle them. Such functions will be called before any handling
+   * ProseMirror does of events fired on the editable DOM element.
+   * Contrary to the other event handling props, when returning true
+   * from such a function, you are responsible for calling
+   * `preventDefault` yourself (or not, if you want to allow the
+   * default behavior).
+   */
   handleDOMEvents?: {
     [event in keyof DOMEventMap]?: (
       this: P,
@@ -734,7 +757,7 @@ export interface EditorProps<P = any> {
     ) => boolean | void;
   };
 
-  /// Called when the editor receives a `keydown` event.
+  /** Called when the editor receives a `keydown` event. */
   handleKeyDown?: (
     this: P,
     view: EditorView,
@@ -748,9 +771,10 @@ export interface EditorProps<P = any> {
     event: KeyboardEvent,
   ) => boolean | void;
 
-  /// Whenever the user directly input text, this handler is called
-  /// before the input is applied. If it returns `true`, the default
-  /// behavior of actually inserting the text is suppressed.
+  /** Whenever the user directly input text, this handler is called
+   * before the input is applied. If it returns `true`, the default
+   * behavior of actually inserting the text is suppressed.
+   */
   handleTextInput?: (
     this: P,
     view: EditorView,
@@ -759,8 +783,9 @@ export interface EditorProps<P = any> {
     text: string,
   ) => boolean | void;
 
-  /// Called for each node around a click, from the inside out. The
-  /// `direct` flag will be true for the inner node.
+  /** Called for each node around a click, from the inside out. The
+   * `direct` flag will be true for the inner node.
+   */
   handleClickOn?: (
     this: P,
     view: EditorView,
@@ -771,8 +796,9 @@ export interface EditorProps<P = any> {
     direct: boolean,
   ) => boolean | void;
 
-  /// Called when the editor is clicked, after `handleClickOn` handlers
-  /// have been called.
+  /** Called when the editor is clicked, after `handleClickOn` handlers
+   * have been called.
+   */
   handleClick?: (
     this: P,
     view: EditorView,
@@ -780,7 +806,7 @@ export interface EditorProps<P = any> {
     event: MouseEvent,
   ) => boolean | void;
 
-  /// Called for each node around a double click.
+  /** Called for each node around a double click. */
   handleDoubleClickOn?: (
     this: P,
     view: EditorView,
@@ -818,9 +844,10 @@ export interface EditorProps<P = any> {
     event: MouseEvent,
   ) => boolean | void;
 
-  /// Can be used to override the behavior of pasting. `slice` is the
-  /// pasted content parsed by the editor, but you can directly access
-  /// the event to get at the raw content.
+  /** Can be used to override the behavior of pasting. `slice` is the
+   * pasted content parsed by the editor, but you can directly access
+   * the event to get at the raw content.
+   */
   handlePaste?: (
     this: P,
     view: EditorView,
@@ -828,9 +855,10 @@ export interface EditorProps<P = any> {
     slice: Slice,
   ) => boolean | void;
 
-  /// Called when something is dropped on the editor. `moved` will be
-  /// true if this drop moves from the current selection (which should
-  /// thus be deleted).
+  /** Called when something is dropped on the editor. `moved` will be
+   * true if this drop moves from the current selection (which should
+   * thus be deleted).
+   */
   handleDrop?: (
     this: P,
     view: EditorView,
@@ -839,14 +867,16 @@ export interface EditorProps<P = any> {
     moved: boolean,
   ) => boolean | void;
 
-  /// Called when the view, after updating its state, tries to scroll
-  /// the selection into view. A handler function may return false to
-  /// indicate that it did not handle the scrolling and further
-  /// handlers or the default behavior should be tried.
+  /** Called when the view, after updating its state, tries to scroll
+   * the selection into view. A handler function may return false to
+   * indicate that it did not handle the scrolling and further
+   * handlers or the default behavior should be tried.
+   */
   handleScrollToSelection?: (this: P, view: EditorView) => boolean;
 
-  /// Can be used to override the way a selection is created when
-  /// reading a DOM selection between the given anchor and head.
+  /** Can be used to override the way a selection is created when
+   * reading a DOM selection between the given anchor and head.
+   */
   createSelectionBetween?: (
     this: P,
     view: EditorView,
@@ -854,32 +884,37 @@ export interface EditorProps<P = any> {
     head: ResolvedPos,
   ) => Selection | null;
 
-  /// The [parser](#model.DOMParser) to use when reading editor changes
-  /// from the DOM. Defaults to calling
-  /// [`DOMParser.fromSchema`](#model.DOMParser^fromSchema) on the
-  /// editor's schema.
+  /** The [parser](#model.DOMParser) to use when reading editor changes
+   * from the DOM. Defaults to calling
+   * [`DOMParser.fromSchema`](#model.DOMParser^fromSchema) on the
+   * editor's schema.
+   */
   domParser?: DOMParser;
 
-  /// Can be used to transform pasted HTML text, _before_ it is parsed,
-  /// for example to clean it up.
+  /** Can be used to transform pasted HTML text, _before_ it is parsed,
+   * for example to clean it up.
+   */
   transformPastedHTML?: (this: P, html: string) => string;
 
-  /// The [parser](#model.DOMParser) to use when reading content from
-  /// the clipboard. When not given, the value of the
-  /// [`domParser`](#view.EditorProps.domParser) prop is used.
+  /** The [parser](#model.DOMParser) to use when reading content from
+   * the clipboard. When not given, the value of the
+   * [`domParser`](#view.EditorProps.domParser) prop is used.
+   */
   clipboardParser?: DOMParser;
 
-  /// Transform pasted plain text. The `plain` flag will be true when
-  /// the text is pasted as plain text.
+  /** Transform pasted plain text. The `plain` flag will be true when
+   * the text is pasted as plain text.
+   */
   transformPastedText?: (this: P, text: string, plain: boolean) => string;
 
-  /// A function to parse text from the clipboard into a document
-  /// slice. Called after
-  /// [`transformPastedText`](#view.EditorProps.transformPastedText).
-  /// The default behavior is to split the text into lines, wrap them
-  /// in `<p>` tags, and call
-  /// [`clipboardParser`](#view.EditorProps.clipboardParser) on it.
-  /// The `plain` flag will be true when the text is pasted as plain text.
+  /** A function to parse text from the clipboard into a document
+   * slice. Called after
+   * [`transformPastedText`](#view.EditorProps.transformPastedText).
+   * The default behavior is to split the text into lines, wrap them
+   * in `<p>` tags, and call
+   * [`clipboardParser`](#view.EditorProps.clipboardParser) on it.
+   * The `plain` flag will be true when the text is pasted as plain text.
+   */
   clipboardTextParser?: (
     this: P,
     text: string,
@@ -887,40 +922,43 @@ export interface EditorProps<P = any> {
     plain: boolean,
   ) => Slice;
 
-  /// Can be used to transform pasted or dragged-and-dropped content
-  /// before it is applied to the document.
+  /** Can be used to transform pasted or dragged-and-dropped content
+   * before it is applied to the document.
+   */
   transformPasted?: (this: P, slice: Slice) => Slice;
 
-  /// Allows you to pass custom rendering and behavior logic for
-  /// nodes. Should map node names to constructor functions that
-  /// produce a [`NodeView`](#view.NodeView) object implementing the
-  /// node's display behavior. The third argument `getPos` is a
-  /// function that can be called to get the node's current position,
-  /// which can be useful when creating transactions to update it.
-  ///
-  /// `decorations` is an array of node or inline decorations that are
-  /// active around the node. They are automatically drawn in the
-  /// normal way, and you will usually just want to ignore this, but
-  /// they can also be used as a way to provide context information to
-  /// the node view without adding it to the document itself.
-  ///
-  /// `innerDecorations` holds the decorations for the node's content.
-  /// You can safely ignore this if your view has no content or a
-  /// `contentDOM` property, since the editor will draw the decorations
-  /// on the content. But if you, for example, want to create a nested
-  /// editor with the content, it may make sense to provide it with the
-  /// inner decorations.
-  ///
-  /// (For backwards compatibility reasons, [mark
-  /// views](#view.ViewProps.markViews) can also be included in this
-  /// object.)
+  /** Allows you to pass custom rendering and behavior logic for
+   * nodes. Should map node names to constructor functions that
+   * produce a [`NodeView`](#view.NodeView) object implementing the
+   * node's display behavior. The third argument `getPos` is a
+   * function that can be called to get the node's current position,
+   * which can be useful when creating transactions to update it.
+   *
+   * `decorations` is an array of node or inline decorations that are
+   * active around the node. They are automatically drawn in the
+   * normal way, and you will usually just want to ignore this, but
+   * they can also be used as a way to provide context information to
+   * the node view without adding it to the document itself.
+   *
+   * `innerDecorations` holds the decorations for the node's content.
+   * You can safely ignore this if your view has no content or a
+   * `contentDOM` property, since the editor will draw the decorations
+   * on the content. But if you, for example, want to create a nested
+   * editor with the content, it may make sense to provide it with the
+   * inner decorations.
+   *
+   * (For backwards compatibility reasons, [mark
+   * views](#view.ViewProps.markViews) can also be included in this
+   * object.)
+   */
   nodeViews?: { [node: string]: NodeViewConstructor };
 
-  /// Pass custom mark rendering functions. Note that these cannot
-  /// provide the kind of dynamic behavior that [node
-  /// views](#view.NodeView) can—they just provide custom rendering
-  /// logic. The third argument indicates whether the mark's content
-  /// is inline.
+  /** Pass custom mark rendering functions. Note that these cannot
+   * provide the kind of dynamic behavior that [node
+   * views](#view.NodeView) can—they just provide custom rendering
+   * logic. The third argument indicates whether the mark's content
+   * is inline.
+   */
   markViews?: { [mark: string]: MarkViewConstructor };
 
   /// The DOM serializer to use when putting content onto the
@@ -938,64 +976,72 @@ export interface EditorProps<P = any> {
   /// selected range.
   clipboardTextSerializer?: (this: P, content: Slice) => string;
 
-  /// A set of [document decorations](#view.Decoration) to show in the
-  /// view.
+  /** A set of [document decorations](#view.Decoration) to show in the
+   * view.
+   */
   decorations?: (
     this: P,
     state: EditorState,
   ) => DecorationSource | null | undefined;
 
-  /// When this returns false, the content of the view is not directly
-  /// editable.
+  /** When this returns false, the content of the view is not directly
+   * editable.
+   */
   editable?: (this: P, state: EditorState) => boolean;
 
-  /// Control the DOM attributes of the editable element. May be either
-  /// an object or a function going from an editor state to an object.
-  /// By default, the element will get a class `"ProseMirror"`, and
-  /// will have its `contentEditable` attribute determined by the
-  /// [`editable` prop](#view.EditorProps.editable). Additional classes
-  /// provided here will be added to the class. For other attributes,
-  /// the value provided first (as in
-  /// [`someProp`](#view.EditorView.someProp)) will be used.
+  /** Control the DOM attributes of the editable element. May be either
+   * an object or a function going from an editor state to an object.
+   * By default, the element will get a class `"ProseMirror"`, and
+   * will have its `contentEditable` attribute determined by the
+   * [`editable` prop](#view.EditorProps.editable). Additional classes
+   * provided here will be added to the class. For other attributes,
+   * the value provided first (as in
+   * [`someProp`](#view.EditorView.someProp)) will be used.
+   */
   attributes?:
     | { [name: string]: string }
     | ((state: EditorState) => { [name: string]: string });
 
-  /// Determines the distance (in pixels) between the cursor and the
-  /// end of the visible viewport at which point, when scrolling the
-  /// cursor into view, scrolling takes place. Defaults to 0.
+  /** Determines the distance (in pixels) between the cursor and the
+   * end of the visible viewport at which point, when scrolling the
+   * cursor into view, scrolling takes place. Defaults to 0.
+   */
   scrollThreshold?:
     | number
     | { top: number; right: number; bottom: number; left: number };
 
-  /// Determines the extra space (in pixels) that is left above or
-  /// below the cursor when it is scrolled into view. Defaults to 5.
+  /** Determines the extra space (in pixels) that is left above or
+   * below the cursor when it is scrolled into view. Defaults to 5.
+   */
   scrollMargin?:
     | number
     | { top: number; right: number; bottom: number; left: number };
 }
 
-/// The props object given directly to the editor view supports some
-/// fields that can't be used in plugins:
+/** The props object given directly to the editor view supports some
+ * fields that can't be used in plugins:
+ */
 export interface DirectEditorProps extends EditorProps {
-  /// The current state of the editor.
+  /** The current state of the editor. */
   state: EditorState;
 
-  /// A set of plugins to use in the view, applying their [plugin
-  /// view](#state.PluginSpec.view) and
-  /// [props](#state.PluginSpec.props). Passing plugins with a state
-  /// component (a [state field](#state.PluginSpec.state) field or a
-  /// [transaction](#state.PluginSpec.filterTransaction) filter or
-  /// appender) will result in an error, since such plugins must be
-  /// present in the state to work.
+  /** A set of plugins to use in the view, applying their [plugin
+   * view](#state.PluginSpec.view) and
+   * [props](#state.PluginSpec.props). Passing plugins with a state
+   * component (a [state field](#state.PluginSpec.state) field or a
+   * [transaction](#state.PluginSpec.filterTransaction) filter or
+   * appender) will result in an error, since such plugins must be
+   * present in the state to work.
+   */
   plugins?: readonly Plugin[];
 
-  /// The callback over which to send transactions (state updates)
-  /// produced by the view. If you specify this, you probably want to
-  /// make sure this ends up calling the view's
-  /// [`updateState`](#view.EditorView.updateState) method with a new
-  /// state that has the transaction
-  /// [applied](#state.EditorState.apply). The callback will be bound to have
-  /// the view instance as its `this` binding.
+  /** The callback over which to send transactions (state updates)
+   * produced by the view. If you specify this, you probably want to
+   * make sure this ends up calling the view's
+   * [`updateState`](#view.EditorView.updateState) method with a new
+   * state that has the transaction
+   * [applied](#state.EditorState.apply). The callback will be bound to have
+   * the view instance as its `this` binding.
+   */
   dispatchTransaction?: (tr: Transaction) => void;
 }

@@ -14,13 +14,16 @@ import {
 } from './selection';
 import { ViewDesc } from './viewdesc';
 
-// A collection of DOM events that occur within the editor, and callback functions
-// to invoke when the event fires.
+/** A collection of DOM events that occur within the editor, and callback functions
+ * to invoke when the event fires.
+ */
 const handlers: { [event: string]: (view: EditorView, event: Event) => void } =
   {};
+/** 上面handlers对象的属性都会被拷贝到这个对象editHandlers */
 const editHandlers: {
   [event: string]: (view: EditorView, event: Event) => void;
 } = {};
+
 const passiveHandlers: Record<string, boolean> = {
   touchstart: true,
   touchmove: true,
@@ -176,6 +179,9 @@ editHandlers.keyup = (view, event) => {
   if ((event as KeyboardEvent).keyCode == 16) view.input.shiftKey = false;
 };
 
+/**  Since `keypress` event has been deprecated, you should use `beforeinput` or `keydown` instead.
+ * - https://developer.mozilla.org/en-US/docs/Web/API/Element/keypress_event
+ */
 editHandlers.keypress = (view, _event) => {
   let event = _event as KeyboardEvent;
   if (
@@ -183,8 +189,9 @@ editHandlers.keypress = (view, _event) => {
     !event.charCode ||
     (event.ctrlKey && !event.altKey) ||
     (browser.mac && event.metaKey)
-  )
+  ) {
     return;
+  }
 
   if (view.someProp('handleKeyPress', (f) => f(view, event))) {
     event.preventDefault();
@@ -192,14 +199,17 @@ editHandlers.keypress = (view, _event) => {
   }
 
   let sel = view.state.selection;
+  // 判断当前selection是否是TextSelection或者光标的起始和中止位置是否相同（为了判断选中了内容，选中了内容需要进行删除处理）
   if (!(sel instanceof TextSelection) || !sel.$from.sameParent(sel.$to)) {
     let text = String.fromCharCode(event.charCode);
     if (
       !view.someProp('handleTextInput', (f) =>
         f(view, sel.$from.pos, sel.$to.pos, text),
       )
-    )
+    ) {
+      // 👉🏻 简单的输入事件会执行一个insertText的操作去修改state
       view.dispatch(view.state.tr.insertText(text).scrollIntoView());
+    }
     event.preventDefault();
   }
 };

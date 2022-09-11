@@ -1,12 +1,13 @@
 import {compareDeep} from "./comparedeep"
 import {Attrs, MarkType, Schema} from "./schema"
 
-/// A mark is a piece of information that can be attached to a node,
-/// such as it being emphasized, in code font, or a link. It has a
-/// type and optionally a set of attributes that provide further
-/// information (such as the target of the link). Marks are created
-/// through a `Schema`, which controls which types exist and which
-/// attributes they have.
+/** A mark is a piece of information that can be attached to a node,
+* such as it being emphasized, in code font, or a link. It has a
+* type and optionally a set of attributes that provide further
+* information (such as the target of the link). Marks are created
+* through a `Schema`, which controls which types exist and which
+* attributes they have.
+*/
 export class Mark {
   /// @internal
   constructor(

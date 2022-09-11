@@ -1,8 +1,9 @@
-import {Fragment, Slice, Node, Schema} from "prosemirror-model"
-import {Step, StepResult} from "./step"
-import {StepMap, Mappable} from "./map"
+import { Fragment, Node, Schema, Slice } from 'prosemirror-model';
 
-/// Update an attribute in a specific node.
+import { Mappable, StepMap } from './map';
+import { Step, StepResult } from './step';
+
+/** Update an attribute in a specific node. */
 export class AttrStep extends Step {
   /// Construct an attribute step.
   constructor(
@@ -11,43 +12,59 @@ export class AttrStep extends Step {
     /// The attribute to set.
     readonly attr: string,
     // The attribute's new value.
-    readonly value: any
+    readonly value: any,
   ) {
-    super()
+    super();
   }
 
   apply(doc: Node) {
-    let node = doc.nodeAt(this.pos)
-    if (!node) return StepResult.fail("No node at attribute step's position")
-    let attrs = Object.create(null)
-    for (let name in node.attrs) attrs[name] = node.attrs[name]
-    attrs[this.attr] = this.value
-    let updated = node.type.create(attrs, null, node.marks)
-    return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1))
+    let node = doc.nodeAt(this.pos);
+    if (!node) return StepResult.fail("No node at attribute step's position");
+    let attrs = Object.create(null);
+    for (let name in node.attrs) attrs[name] = node.attrs[name];
+    attrs[this.attr] = this.value;
+    let updated = node.type.create(attrs, null, node.marks);
+    return StepResult.fromReplace(
+      doc,
+      this.pos,
+      this.pos + 1,
+      new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1),
+    );
   }
 
   getMap() {
-    return StepMap.empty
+    return StepMap.empty;
   }
 
   invert(doc: Node) {
-    return new AttrStep(this.pos, this.attr, doc.nodeAt(this.pos)!.attrs[this.attr])
+    return new AttrStep(
+      this.pos,
+      this.attr,
+      doc.nodeAt(this.pos)!.attrs[this.attr],
+    );
   }
 
   map(mapping: Mappable) {
-    let pos = mapping.mapResult(this.pos, 1)
-    return pos.deletedAfter ? null : new AttrStep(pos.pos, this.attr, this.value)
+    let pos = mapping.mapResult(this.pos, 1);
+    return pos.deletedAfter
+      ? null
+      : new AttrStep(pos.pos, this.attr, this.value);
   }
 
   toJSON(): any {
-    return {stepType: "attr", pos: this.pos, attr: this.attr, value: this.value}
+    return {
+      stepType: 'attr',
+      pos: this.pos,
+      attr: this.attr,
+      value: this.value,
+    };
   }
 
   static fromJSON(schema: Schema, json: any) {
-    if (typeof json.pos != "number" || typeof json.attr != "string")
-      throw new RangeError("Invalid input for AttrStep.fromJSON")
-    return new AttrStep(json.pos, json.attr, json.value)
+    if (typeof json.pos != 'number' || typeof json.attr != 'string')
+      throw new RangeError('Invalid input for AttrStep.fromJSON');
+    return new AttrStep(json.pos, json.attr, json.value);
   }
 }
 
-Step.jsonID("attr", AttrStep)
+Step.jsonID('attr', AttrStep);

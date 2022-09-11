@@ -1,6 +1,7 @@
-import {Fragment, Slice, Node, Mark, Schema} from "prosemirror-model"
-import {Step, StepResult} from "./step"
+import {Fragment, Mark, Node, Schema, Slice} from "prosemirror-model"
+
 import {Mappable} from "./map"
+import {Step, StepResult} from "./step"
 
 function mapFragment(fragment: Fragment, f: (child: Node, parent: Node, i: number) => Node, parent: Node): Fragment {
   let mapped = []
@@ -13,7 +14,7 @@ function mapFragment(fragment: Fragment, f: (child: Node, parent: Node, i: numbe
   return Fragment.fromArray(mapped)
 }
 
-/// Add a mark to all inline content between two positions.
+/** Add a mark to all inline content between two positions. */
 export class AddMarkStep extends Step {
   /// Create a mark step.
   constructor(

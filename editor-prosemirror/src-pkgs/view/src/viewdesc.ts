@@ -159,6 +159,7 @@ export class ViewDesc {
   ) {
     return false;
   }
+
   matchesHack(nodeName: string) {
     return false;
   }
@@ -792,6 +793,7 @@ class CompositionViewDesc extends ViewDesc {
  * a fixed nesting order, for simplicity and predictability, so in
  * some cases they will be split more often than would appear
  * necessary.
+ * - Mark 在 state 中是作为 node 的一个属性，而在 ViewDesc 中，他则是作为一个高层级的节点，他可以包括其他节点（包括自己本身）,所以他在 state 和 docView 中的结构是不一致的。
  */
 class MarkViewDesc extends ViewDesc {
   constructor(
@@ -883,15 +885,16 @@ export class NodeViewDesc extends ViewDesc {
     if (contentDOM) this.updateChildren(view, pos);
   }
 
-  // By default, a node is rendered using the `toDOM` method from the
-  // node type spec. But client code can use the `nodeViews` spec to
-  // supply a custom node view, which can influence various aspects of
-  // the way the node works.
-  //
-  // (Using subclassing for this was intentionally decided against,
-  // since it'd require exposing a whole slew of finicky
-  // implementation details to the user code that they probably will
-  // never need.)
+  /** By default, a node is rendered using the `toDOM` method from the
+   * node type spec. But client code can use the `nodeViews` spec to
+   * supply a custom node view, which can influence various aspects of
+   * the way the node works.
+   *
+   * (Using subclassing for this was intentionally decided against,
+   * since it'd require exposing a whole slew of finicky
+   * implementation details to the user code that they probably will
+   * never need.)
+   */
   static create(
     parent: ViewDesc | undefined,
     node: Node,
@@ -1026,24 +1029,27 @@ export class NodeViewDesc extends ViewDesc {
     return this.node.isLeaf ? 0 : 1;
   }
 
-  // Syncs `this.children` to match `this.node.content` and the local
-  // decorations, possibly introducing nesting for marks. Then, in a
-  // separate step, syncs the DOM inside `this.contentDOM` to
-  // `this.children`.
+  /** Syncs `this.children` to match `this.node.content` and the local
+   * decorations, possibly introducing nesting for marks. Then, in a
+   * separate step, syncs the DOM inside `this.contentDOM` to
+   * `this.children`.
+   */
   updateChildren(view: EditorView, pos: number) {
-    let inline = this.node.inlineContent,
-      off = pos;
+    let inline = this.node.inlineContent;
+    let off = pos;
     let composition = view.composing
       ? this.localCompositionInfo(view, pos)
       : null;
     let localComposition =
       composition && composition.pos > -1 ? composition : null;
     let compositionInChild = composition && composition.pos < 0;
+    // 根据 docView 创建一个 updater，主要服务于更新过程（代表当前的节点更新树，拥有子节点的子节点会创建自己的 updater）
     let updater = new ViewTreeUpdater(
       this,
       localComposition && localComposition.node,
       view,
     );
+    // 根据 doc 和 decorations 的信息顺序遍历更新，根据匹配到的 node 和 deco 的分别调用 onNode 以及 onDeco 方法更新
     iterDeco(
       this.node,
       this.innerDeco,
@@ -1061,12 +1067,13 @@ export class NodeViewDesc extends ViewDesc {
         updater.placeWidget(widget, view, off);
       },
       (child, outerDeco, innerDeco, i) => {
-        // Make sure the wrapping mark descs match the node's marks.
+        // 用来更新mark。Make sure the wrapping mark descs match the node's marks.
         updater.syncToMarks(child.marks, inline, view);
         // Try several strategies for drawing this node
         let compIndex;
         if (updater.findNodeMatch(child, outerDeco, innerDeco, i)) {
-          // Found precise match with existing node view
+          /// Found precise match with existing node view
+          // 在 updater 中寻找是否有 viewDesc 的 node 等于当前 node
         } else if (
           compositionInChild &&
           view.state.selection.from > off &&
@@ -1079,23 +1086,27 @@ export class NodeViewDesc extends ViewDesc {
           updater.updateNextNode(child, outerDeco, innerDeco, view, i)
         ) {
           // Could update an existing node to reflect this node
+          // 若 updater 的 children 中当前位置是 NodeViewDesc 类型
         } else {
-          // Add it as a new view
+          // Add it as a new view; 在updater的children中当前索引的位置直接插入新创建的 viewDesc
           updater.addNode(child, outerDeco, innerDeco, view, off);
         }
         off += child.nodeSize;
       },
     );
+
     // Drop all remaining descs after the current position.
     updater.syncToMarks([], inline, view);
     if (this.node.isTextblock) updater.addTextblockHacks();
     updater.destroyRest();
 
     // Sync the DOM if anything changed
+    // 若updater中需要更新，则进入dom层面的操作，并进行子节点的渲染（根据实际的 dom 以及更新后的 descs）
     if (updater.changed || this.dirty == CONTENT_DIRTY) {
       // May have to protect focused DOM from being changed if a composition is active
       if (localComposition)
         this.protectLocalComposition(view, localComposition);
+      // 继续处理children更新
       renderDescs(this.contentDOM!, this.children, view);
       if (browser.ios) iosHacks(this.dom as HTMLElement);
     }
@@ -1165,16 +1176,23 @@ export class NodeViewDesc extends ViewDesc {
     );
   }
 
-  // If this desc must be updated to match the given node decoration,
-  // do so and return true.
+  /** If this desc must be updated to match the given node decoration,
+   * do so and return true.
+   * - 若 update 返回 false，增视为需要重建节点，否则视为成功更新。
+   * - 若这一步为 customNodeView，我们则可以干预这个过程
+   */
   update(
     node: Node,
     outerDeco: readonly Decoration[],
     innerDeco: DecorationSource,
     view: EditorView,
   ) {
-    if (this.dirty == NODE_DIRTY || !node.sameMarkup(this.node)) return false;
+    if (this.dirty == NODE_DIRTY || !node.sameMarkup(this.node)) {
+      // 判断当前节点的数据是否发生变化，如果发生变化，返回 false
+      return false;
+    }
     this.updateInner(node, outerDeco, innerDeco, view);
+    // 返回 true 的情况，所有节点都能匹配到不需要重建
     return true;
   }
 
@@ -1187,7 +1205,9 @@ export class NodeViewDesc extends ViewDesc {
     this.updateOuterDeco(outerDeco);
     this.node = node;
     this.innerDeco = innerDeco;
-    if (this.contentDOM) this.updateChildren(view, this.posAtStart);
+    if (this.contentDOM) {
+      this.updateChildren(view, this.posAtStart);
+    }
     this.dirty = NOT_DIRTY;
   }
 
@@ -1460,6 +1480,7 @@ class CustomNodeViewDesc extends NodeViewDesc {
 /** Sync the content of the given DOM node with the nodes associated
  * with the given array of view descs, recursing into mark descs
  * because this should sync the subtree for a whole node at a time.
+ * - 此时的操作以 update 后的 viewDescs（此时即为 docView.children）的数据为准，调整当前视图中 dom 展示的节点，不会有位置的调整，不匹配就销毁，不存在就重建
  */
 function renderDescs(
   parentDOM: HTMLElement,
@@ -1677,11 +1698,13 @@ class ViewTreeUpdater {
     this.destroyBetween(this.index, this.top.children.length);
   }
 
-  // Sync the current stack of mark descs with the given array of
-  // marks, reusing existing mark descs when possible.
+  /** Sync the current stack of mark descs with the given array of
+   * marks, reusing existing mark descs when possible.
+   * - 用来更新mark
+   */
   syncToMarks(marks: readonly Mark[], inline: boolean, view: EditorView) {
-    let keep = 0,
-      depth = this.stack.length >> 1;
+    let keep = 0;
+    let depth = this.stack.length >> 1;
     let maxKeep = Math.min(depth, marks.length);
     while (
       keep < maxKeep &&
@@ -1690,8 +1713,9 @@ class ViewTreeUpdater {
         : (this.stack[(keep + 1) << 1] as ViewDesc)
       ).matchesMark(marks[keep]) &&
       marks[keep].type.spec.spanning !== false
-    )
+    ) {
       keep++;
+    }
 
     while (keep < depth) {
       this.destroyRest();
@@ -1735,16 +1759,20 @@ class ViewTreeUpdater {
     }
   }
 
-  // Try to find a node desc matching the given data. Skip over it and
-  // return true when successful.
+  /** Try to find a node desc matching the given data.
+   * - Skip over it and return true when successful.
+   * - 寻找是否有 viewDesc 的 node 等于当前 node（最多匹配当前位置的后四位，不匹配最后一位。至于为什么最多只匹配后四位？可能是出于性能考虑吧，作者没有明确说这一点）
+   * - 如何确定是同一个节点？主要就是判断是内存地址，节点属性，decorations，自元素是否是一致的。
+   */
   findNodeMatch(
     node: Node,
     outerDeco: readonly Decoration[],
     innerDeco: DecorationSource,
     index: number,
   ): boolean {
-    let found = -1,
-      targetDesc;
+    let found = -1;
+    let targetDesc: ViewDesc;
+    // matchesNode()方法会比较
     if (
       index >= this.preMatch.index &&
       (targetDesc = this.preMatch.matches[index - this.preMatch.index])
@@ -1774,6 +1802,7 @@ class ViewTreeUpdater {
     return true;
   }
 
+  /** */
   updateNodeAt(
     node: Node,
     outerDeco: readonly Decoration[],
@@ -1806,8 +1835,9 @@ class ViewTreeUpdater {
     }
   }
 
-  // Try to update the next node, if any, to the given data. Checks
-  // pre-matches to avoid overwriting nodes that could still be used.
+  /** Try to update the next node, if any, to the given data. Checks
+   * pre-matches to avoid overwriting nodes that could still be used.
+   */
   updateNextNode(
     node: Node,
     outerDeco: readonly Decoration[],
@@ -1818,6 +1848,7 @@ class ViewTreeUpdater {
     for (let i = this.index; i < this.top.children.length; i++) {
       let next = this.top.children[i];
       if (next instanceof NodeViewDesc) {
+        // 若在 updater 的 preMatched 中存在且索引 preMatch 加上 preMatchOffset 等于当前 node 再 docView.children 中 index，尝试更新节点
         let preMatch = this.preMatch.matched.get(next);
         if (preMatch != null && preMatch != index) return false;
         let nextDOM = next.dom;
@@ -1850,7 +1881,7 @@ class ViewTreeUpdater {
     return false;
   }
 
-  // Insert the node as a newly created node desc.
+  /** Insert the node as a newly created node desc. */
   addNode(
     node: Node,
     outerDeco: readonly Decoration[],
@@ -1939,6 +1970,7 @@ class ViewTreeUpdater {
  * for other nodes. Returns the fragment index of the first node that
  * is part of the sequence of matched nodes at the end of the
  * fragment.
+ * - 从后往前匹配，保存相同的 desc（preMatched）和最后一个匹配的 desc 的 offset（preMatchedOffset）。
  */
 function preMatch(
   frag: Fragment,

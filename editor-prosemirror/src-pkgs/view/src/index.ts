@@ -17,7 +17,7 @@ import {
 
 import {
   scrollRectIntoView,
-  posAtCoords,
+  posAtCoords as posAtCoordsUtil,
   coordsAtPos,
   endOfTextblock,
   storeScrollPos,
@@ -70,10 +70,11 @@ export const __endComposition = endComposition;
 export class EditorView {
   private _props: DirectEditorProps;
   private directPlugins: readonly Plugin[];
+  /** */
   private _root: Document | ShadowRoot | null = null;
   /// @internal
   focused = false;
-  /// Kludge used to work around a Chrome bug @internal
+  /** Kludge used to work around a Chrome bug @internal */
   trackWrites: DOMNode | null = null;
   private mounted = false;
   /// @internal
@@ -97,14 +98,16 @@ export class EditorView {
   /// @internal
   requiresGeckoHackNode: boolean = false;
 
-  /// The view's current [state](#state.EditorState).
+  /** The view's current [state](#state.EditorState). */
   public state: EditorState;
 
-  /// Create a view. `place` may be a DOM node that the editor should
-  /// be appended to, a function that will place it into the document,
-  /// or an object whose `mount` property holds the node to use as the
-  /// document container. If it is `null`, the editor will not be
-  /// added to the document.
+  /** Create a view. `place` may be a DOM node that the editor should
+   * be appended to, a function that will place it into the document,
+   * or an object whose `mount` property holds the node to use as the
+   * document container. If it is `null`, the editor will not be
+   * added to the document.
+   * - place用来确定`this.dom`的值
+   */
   constructor(
     place:
       | null
@@ -123,11 +126,15 @@ export class EditorView {
     this.dom =
       (place && (place as { mount: HTMLElement }).mount) ||
       document.createElement('div');
+
     if (place) {
       if ((place as DOMNode).appendChild) {
         (place as DOMNode).appendChild(this.dom);
-      } else if (typeof place == 'function') place(this.dom);
-      else if ((place as { mount: HTMLElement }).mount) this.mounted = true;
+      } else if (typeof place == 'function') {
+        place(this.dom);
+      } else if ((place as { mount: HTMLElement }).mount) {
+        this.mounted = true;
+      }
     }
 
     this.editable = getEditable(this);
@@ -157,15 +164,15 @@ export class EditorView {
   editable: boolean;
 
   /** When editor content is being dragged, this object contains
-  * information about the dragged slice and whether it is being
-  * copied or moved. At any other time, it is null.
-  */
+   * information about the dragged slice and whether it is being
+   * copied or moved. At any other time, it is null.
+   */
   dragging: null | { slice: Slice; move: boolean } = null;
 
   /** Holds `true` when a
-  * [composition](https://w3c.github.io/uievents/#events-compositionevents)
-  * is active.
-  */
+   * [composition](https://w3c.github.io/uievents/#events-compositionevents)
+   * is active.
+   */
   get composing() {
     return this.input.composing;
   }
@@ -390,6 +397,7 @@ export class EditorView {
   someProp<PropName extends keyof EditorProps>(
     propName: PropName,
   ): NonNullable<EditorProps[PropName]> | undefined;
+
   someProp<PropName extends keyof EditorProps, Result>(
     propName: PropName,
     f?: (value: NonNullable<EditorProps[PropName]>) => Result,
@@ -447,7 +455,7 @@ export class EditorView {
    */
   get root(): Document | ShadowRoot {
     let cached = this._root;
-    if (cached == null)
+    if (cached == null) {
       for (
         let search = this.dom.parentNode;
         search;
@@ -457,13 +465,17 @@ export class EditorView {
           search.nodeType == 9 ||
           (search.nodeType == 11 && (search as any).host)
         ) {
-          if (!(search as any).getSelection)
+          /// 9-Node.DOCUMENT_NODE; 11-Node.DOCUMENT_FRAGMENT_NODE
+
+          if (!(search as any).getSelection) {
             Object.getPrototypeOf(search).getSelection = () =>
               (search as DOMNode).ownerDocument!.getSelection();
+          }
           return (this._root = search as Document | ShadowRoot);
         }
       }
-    return cached || document;
+    }
+    return cached || window.document;
   }
 
   /** Given a pair of viewport coordinates, return the document
@@ -478,7 +490,7 @@ export class EditorView {
     left: number;
     top: number;
   }): { pos: number; inside: number } | null {
-    return posAtCoords(this, coords);
+    return posAtCoordsUtil(this, coords);
   }
 
   /** Returns the viewport rectangle at a given document position.
@@ -590,9 +602,12 @@ export class EditorView {
    * easily passed around.
    */
   dispatch(tr: Transaction) {
-    let dispatchTransaction = this._props.dispatchTransaction;
-    if (dispatchTransaction) dispatchTransaction.call(this, tr);
-    else this.updateState(this.state.apply(tr));
+    const dispatchTransaction = this._props.dispatchTransaction;
+    if (dispatchTransaction) {
+      dispatchTransaction.call(this, tr);
+    } else {
+      this.updateState(this.state.apply(tr));
+    }
   }
 
   /// @internal
@@ -785,6 +800,7 @@ export interface EditorProps<P = any> {
 
   /** Called for each node around a click, from the inside out. The
    * `direct` flag will be true for the inner node.
+   * - 先执行clickOn逻辑，再执行click逻辑
    */
   handleClickOn?: (
     this: P,
@@ -817,7 +833,7 @@ export interface EditorProps<P = any> {
     direct: boolean,
   ) => boolean | void;
 
-  /// Called when the editor is double-clicked, after `handleDoubleClickOn`.
+  /** Called when the editor is double-clicked, after `handleDoubleClickOn`. */
   handleDoubleClick?: (
     this: P,
     view: EditorView,
@@ -836,7 +852,7 @@ export interface EditorProps<P = any> {
     direct: boolean,
   ) => boolean | void;
 
-  /// Called when the editor is triple-clicked, after `handleTripleClickOn`.
+  /** Called when the editor is triple-clicked, after `handleTripleClickOn`. */
   handleTripleClick?: (
     this: P,
     view: EditorView,

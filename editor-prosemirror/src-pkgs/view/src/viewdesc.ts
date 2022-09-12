@@ -324,10 +324,13 @@ export class ViewDesc {
       if (cur == this) return desc;
   }
 
+  /** 从dom节点往外层找，找到 */
   posFromDOM(dom: DOMNode, offset: number, bias: number) {
-    for (let scan: DOMNode | null = dom; scan; scan = scan.parentNode) {
-      let desc = this.getDesc(scan);
-      if (desc) return desc.localPosFromDOM(dom, offset, bias);
+    for (let curr: DOMNode | null = dom; curr; curr = curr.parentNode) {
+      const desc = this.getDesc(curr);
+      if (desc) {
+        return desc.localPosFromDOM(dom, offset, bias);
+      }
     }
     return -1;
   }

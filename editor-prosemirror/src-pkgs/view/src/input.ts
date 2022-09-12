@@ -14,21 +14,23 @@ import {
 } from './selection';
 import { ViewDesc } from './viewdesc';
 
+type EventHandlerMap = {
+  [event: string]: (view: EditorView, event: Event) => void;
+};
+
+const editHandlers: EventHandlerMap = {};
 /** A collection of DOM events that occur within the editor, and callback functions
  * to invoke when the event fires.
+ * - 上面`editHandlers`映射表的key都会被拷贝到这个映射表handlers
  */
-const handlers: { [event: string]: (view: EditorView, event: Event) => void } =
-  {};
-/** 上面handlers对象的属性都会被拷贝到这个对象editHandlers */
-const editHandlers: {
-  [event: string]: (view: EditorView, event: Event) => void;
-} = {};
+const handlers: EventHandlerMap = {};
 
 const passiveHandlers: Record<string, boolean> = {
   touchstart: true,
   touchmove: true,
 };
 
+/** 在EditorView中保存输入相关状态 */
 export class InputState {
   shiftKey = false;
   mouseDown: MouseDown | null = null;
@@ -52,6 +54,9 @@ export class InputState {
   hideSelectionGuard: (() => void) | null = null;
 }
 
+/**
+ * 遍历handlers映射表，注册所有key代表的event到编辑器view.dom，然后 ensureListeners
+ */
 export function initInput(view: EditorView) {
   for (let event in handlers) {
     let handler = handlers[event];
@@ -62,16 +67,20 @@ export function initInput(view: EditorView) {
           eventBelongsToView(view, event) &&
           !runCustomHandler(view, event) &&
           (view.editable || !(event.type in editHandlers))
-        )
+        ) {
           handler(view, event);
+        }
       }),
       passiveHandlers[event] ? { passive: true } : undefined,
     );
   }
+
   // On Safari, for reasons beyond my understanding, adding an input
   // event handler makes an issue where the composition vanishes when
   // you press enter go away.
-  if (browser.safari) view.dom.addEventListener('input', () => null);
+  if (browser.safari) {
+    view.dom.addEventListener('input', () => null);
+  }
 
   ensureListeners(view);
 }
@@ -83,24 +92,29 @@ function setSelectionOrigin(view: EditorView, origin: string) {
 
 export function destroyInput(view: EditorView) {
   view.domObserver.stop();
-  for (let type in view.input.eventHandlers)
+  for (let type in view.input.eventHandlers) {
     view.dom.removeEventListener(type, view.input.eventHandlers[type]);
+  }
   clearTimeout(view.input.composingTimeout);
   clearTimeout(view.input.lastIOSEnterFallbackTimeout);
 }
 
+/** 依次遍历并执行作为直接props提供的、作为plugin的props提供的事件处理函数 */
 export function ensureListeners(view: EditorView) {
   view.someProp('handleDOMEvents', (currentHandlers) => {
-    for (let type in currentHandlers)
-      if (!view.input.eventHandlers[type])
+    for (let type in currentHandlers) {
+      if (!view.input.eventHandlers[type]) {
         view.dom.addEventListener(
           type,
           (view.input.eventHandlers[type] = (event) =>
             runCustomHandler(view, event)),
         );
+      }
+    }
   });
 }
 
+/** 遍历并执行`event.type`类型的事件处理函数 */
 function runCustomHandler(view: EditorView, event: Event) {
   return view.someProp('handleDOMEvents', (handlers) => {
     let handler = handlers[event.type];
@@ -115,23 +129,28 @@ function eventBelongsToView(view: EditorView, event: Event) {
     let node = event.target as DOMNode;
     node != view.dom;
     node = node.parentNode!
-  )
+  ) {
     if (
       !node ||
       node.nodeType == 11 ||
       (node.pmViewDesc && node.pmViewDesc.stopEvent(event))
-    )
+      // 11代表Node.DOCUMENT_FRAGMENT_NODE，A DocumentFragment node.
+    ) {
       return false;
+    }
+  }
   return true;
 }
 
+/** 在返回值非空时，触发执行handlers映射表中对应的事件处理函数 */
 export function dispatchEvent(view: EditorView, event: Event) {
   if (
     !runCustomHandler(view, event) &&
     handlers[event.type] &&
     (view.editable || !(event.type in editHandlers))
-  )
+  ) {
     handlers[event.type](view, event);
+  }
 }
 
 editHandlers.keydown = (view: EditorView, _event: Event) => {
@@ -214,13 +233,15 @@ editHandlers.keypress = (view, _event) => {
   }
 };
 
+/** 返回鼠标事件的event.clientX/Y */
 function eventCoords(event: MouseEvent) {
   return { left: event.clientX, top: event.clientY };
 }
 
+/** 若本次点击位置的clientX/Y在上次点击位置的上下左右10px之内，则认为是near */
 function isNear(event: MouseEvent, click: { x: number; y: number }) {
-  let dx = click.x - event.clientX,
-    dy = click.y - event.clientY;
+  const dx = click.x - event.clientX;
+  const dy = click.y - event.clientY;
   return dx * dx + dy * dy < 100;
 }
 
@@ -303,6 +324,7 @@ function selectClickedNode(view: EditorView, inside: number) {
   }
 }
 
+/** 此方法会在MouseDown类的构造函数中注册，依次执行props中的handleClick，若返回true就结束 */
 function handleSingleClick(
   view: EditorView,
   pos: number,
@@ -388,50 +410,14 @@ const selectNodeModifier: keyof MouseEvent = browser.mac
   ? 'metaKey'
   : 'ctrlKey';
 
-handlers.mousedown = (view, _event) => {
-  let event = _event as MouseEvent;
-  view.input.shiftKey = event.shiftKey;
-  let flushed = forceDOMFlush(view);
-  let now = Date.now(),
-    type = 'singleClick';
-  if (
-    now - view.input.lastClick.time < 500 &&
-    isNear(event, view.input.lastClick) &&
-    !event[selectNodeModifier]
-  ) {
-    if (view.input.lastClick.type == 'singleClick') type = 'doubleClick';
-    else if (view.input.lastClick.type == 'doubleClick') type = 'tripleClick';
-  }
-  view.input.lastClick = {
-    time: now,
-    x: event.clientX,
-    y: event.clientY,
-    type,
-  };
-
-  let pos = view.posAtCoords(eventCoords(event));
-  if (!pos) return;
-
-  if (type == 'singleClick') {
-    if (view.input.mouseDown) view.input.mouseDown.done();
-    view.input.mouseDown = new MouseDown(view, pos, event, !!flushed);
-  } else if (
-    (type == 'doubleClick' ? handleDoubleClick : handleTripleClick)(
-      view,
-      pos.pos,
-      pos.inside,
-      event,
-    )
-  ) {
-    event.preventDefault();
-  } else {
-    setSelectionOrigin(view, 'pointer');
-  }
-};
-
+/** 鼠标相关事件的管理器，
+ * - 构造函数中会初始化鼠标事件相关数据，触发domObserver.start()
+ * - 会在页面顶层document上注册mouseup/move事件，mouseup中包含单击的事件处理逻辑
+ */
 class MouseDown {
   startDoc: Node;
   selectNode: boolean;
+  /** 初始值是event.shiftKey */
   allowDefault: boolean;
   delayedSelectionSync = false;
   mightDrag: {
@@ -452,7 +438,11 @@ class MouseDown {
     this.selectNode = !!event[selectNodeModifier];
     this.allowDefault = event.shiftKey;
 
-    let targetNode: Node, targetPos;
+    this.up = this.up.bind(this);
+    this.move = this.move.bind(this);
+
+    let targetNode: Node;
+    let targetPos: number;
     if (pos.inside > -1) {
       targetNode = view.state.doc.nodeAt(pos.inside)!;
       targetPos = pos.inside;
@@ -474,7 +464,7 @@ class MouseDown {
       (selection instanceof NodeSelection &&
         selection.from <= targetPos &&
         selection.to > targetPos)
-    )
+    ) {
       this.mightDrag = {
         node: targetNode,
         pos: targetPos,
@@ -485,6 +475,7 @@ class MouseDown {
           !this.target.hasAttribute('contentEditable')
         ),
       };
+    }
 
     if (
       this.target &&
@@ -493,47 +484,51 @@ class MouseDown {
     ) {
       this.view.domObserver.stop();
       if (this.mightDrag.addAttr) this.target.draggable = true;
-      if (this.mightDrag.setUneditable)
+      if (this.mightDrag.setUneditable) {
         setTimeout(() => {
-          if (this.view.input.mouseDown == this)
+          if (this.view.input.mouseDown == this) {
             this.target!.setAttribute('contentEditable', 'false');
+          }
         }, 20);
+      }
       this.view.domObserver.start();
     }
 
-    view.root.addEventListener(
-      'mouseup',
-      (this.up = this.up.bind(this) as any),
-    );
-    view.root.addEventListener(
-      'mousemove',
-      (this.move = this.move.bind(this) as any),
-    );
+    view.root.addEventListener('mouseup', this.up);
+    view.root.addEventListener('mousemove', this.move);
     setSelectionOrigin(view, 'pointer');
   }
 
+  /** 清除eventListeners-up/move-drag，延迟执行selectionToDOM */
   done() {
     this.view.root.removeEventListener('mouseup', this.up as any);
     this.view.root.removeEventListener('mousemove', this.move as any);
     if (this.mightDrag && this.target) {
       this.view.domObserver.stop();
-      if (this.mightDrag.addAttr) this.target.removeAttribute('draggable');
-      if (this.mightDrag.setUneditable)
+      if (this.mightDrag.addAttr) {
+        this.target.removeAttribute('draggable');
+      }
+      if (this.mightDrag.setUneditable) {
         this.target.removeAttribute('contentEditable');
+      }
       this.view.domObserver.start();
     }
-    if (this.delayedSelectionSync) setTimeout(() => selectionToDOM(this.view));
+    if (this.delayedSelectionSync) {
+      setTimeout(() => selectionToDOM(this.view));
+    }
     this.view.input.mouseDown = null;
   }
 
+  /** 在鼠标松开时，更新相关状态 */
   up(event: MouseEvent) {
     this.done();
 
     if (!this.view.dom.contains(event.target as HTMLElement)) return;
 
     let pos: { pos: number; inside: number } | null = this.pos;
-    if (this.view.state.doc != this.startDoc)
+    if (this.view.state.doc != this.startDoc) {
       pos = this.view.posAtCoords(eventCoords(event));
+    }
 
     this.updateAllowDefault(event);
     if (this.allowDefault || !pos) {
@@ -578,15 +573,66 @@ class MouseDown {
     if (event.buttons == 0) this.done();
   }
 
+  /** 只有本次点击位置的clientX/Y比上次大于4px才执行 this.allowDefault = true */
   updateAllowDefault(event: MouseEvent) {
     if (
       !this.allowDefault &&
       (Math.abs(this.event.x - event.clientX) > 4 ||
         Math.abs(this.event.y - event.clientY) > 4)
-    )
+    ) {
       this.allowDefault = true;
+    }
   }
 }
+
+/**
+ * - 包含双击、三击的判断逻辑
+ * - 鼠标点击事件的执行在mouseup事件处理函数，而不在这里的mousedown函数
+ */
+handlers.mousedown = (view, _event) => {
+  let event = _event as MouseEvent;
+  view.input.shiftKey = event.shiftKey;
+  let flushed = forceDOMFlush(view);
+  let now = Date.now();
+  let type: 'singleClick' | 'doubleClick' | 'tripleClick' = 'singleClick';
+
+  if (
+    now - view.input.lastClick.time < 500 &&
+    isNear(event, view.input.lastClick) &&
+    !event[selectNodeModifier]
+  ) {
+    if (view.input.lastClick.type == 'singleClick') type = 'doubleClick';
+    else if (view.input.lastClick.type == 'doubleClick') type = 'tripleClick';
+  }
+
+  view.input.lastClick = {
+    time: now,
+    x: event.clientX,
+    y: event.clientY,
+    type,
+  };
+
+  let pos = view.posAtCoords(eventCoords(event));
+  if (!pos) return;
+
+  if (type == 'singleClick') {
+    if (view.input.mouseDown) {
+      view.input.mouseDown.done();
+    }
+    view.input.mouseDown = new MouseDown(view, pos, event, !!flushed);
+  } else if (
+    (type == 'doubleClick' ? handleDoubleClick : handleTripleClick)(
+      view,
+      pos.pos,
+      pos.inside,
+      event,
+    )
+  ) {
+    event.preventDefault();
+  } else {
+    setSelectionOrigin(view, 'pointer');
+  }
+};
 
 handlers.touchstart = (view) => {
   view.input.lastTouch = Date.now();
@@ -623,7 +669,7 @@ function inOrNearComposition(view: EditorView, event: Event) {
   return false;
 }
 
-// Drop active composition after 5 seconds of inactivity on Android
+/** Drop active composition after 5 seconds of inactivity on Android */
 const timeoutComposition = browser.android ? 5000 : -1;
 
 editHandlers.compositionstart = editHandlers.compositionupdate = (view) => {
@@ -711,17 +757,25 @@ function timestampFromCustomEvent() {
 }
 
 /// @internal
+/**
+ * - 执行 domObserver.forceFlush();
+ * - 执行 view.updateState()
+ */
 export function endComposition(view: EditorView, forceUpdate = false) {
   if (browser.android && view.domObserver.flushingSoon >= 0) return;
   view.domObserver.forceFlush();
   clearComposition(view);
+
   if (forceUpdate || (view.docView && view.docView.dirty)) {
     let sel = selectionFromDOM(view);
-    if (sel && !sel.eq(view.state.selection))
+    if (sel && !sel.eq(view.state.selection)) {
       view.dispatch(view.state.tr.setSelection(sel));
-    else view.updateState(view.state);
+    } else {
+      view.updateState(view.state);
+    }
     return true;
   }
+
   return false;
 }
 
@@ -747,9 +801,10 @@ function captureCopy(view: EditorView, dom: HTMLElement) {
   }, 50);
 }
 
-// This is very crude, but unfortunately both these browsers _pretend_
-// that they have a clipboard API—all the objects and methods are
-// there, they just don't work, and they are hard to test.
+/** This is very crude, but unfortunately both these browsers _pretend_
+ * that they have a clipboard API—all the objects and methods are
+ * there, they just don't work, and they are hard to test.
+ */
 const brokenClipboardAPI =
   (browser.ie && browser.ie_version < 15) ||
   (browser.ios && browser.webkit_version < 604);
@@ -1006,15 +1061,16 @@ handlers.blur = (view, _event) => {
     if (
       event.relatedTarget &&
       view.dom.contains(event.relatedTarget as HTMLElement)
-    )
+    ) {
       view.domObserver.currentSelection.clear();
+    }
     view.focused = false;
   }
 };
 
 handlers.beforeinput = (view, _event: Event) => {
   let event = _event as InputEvent;
-  // We should probably do more with beforeinput events, but support
+  // We should probably do more with `beforeinput` events, but support
   // is so spotty that I'm still waiting to see where they are going.
 
   // Very specific hack to deal with backspace sometimes failing on

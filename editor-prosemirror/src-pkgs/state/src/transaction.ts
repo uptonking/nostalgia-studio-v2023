@@ -30,6 +30,8 @@ const UPDATED_SEL = 1,
  * create an updated state. Use
  * [`EditorState.tr`](#state.EditorState.tr) to create an instance.
  *
+ * - Transaction除了处理文档改动之外，还管理selection、当前使用标记集合、还有时间戳等等
+ *
  * Transactions track changes to the document (they are a subclass of
  * [`Transform`](#transform.Transform)), but also other state changes,
  * like selection updates and adjustments of the set of [stored

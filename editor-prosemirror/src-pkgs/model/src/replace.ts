@@ -23,22 +23,27 @@ ReplaceError.prototype.name = "ReplaceError"
  * both side are ‘open’ (cut through).
  */
 export class Slice {
-  /// Create a slice. When specifying a non-zero open depth, you must
-  /// make sure that there are nodes of at least that depth at the
-  /// appropriate side of the fragment—i.e. if the fragment is an
-  /// empty paragraph node, `openStart` and `openEnd` can't be greater
-  /// than 1.
-  ///
-  /// It is not necessary for the content of open nodes to conform to
-  /// the schema's content constraints, though it should be a valid
-  /// start/end/middle for such a node, depending on which sides are
-  /// open.
+  /** Create a slice. When specifying a non-zero open depth, you must
+   * make sure that there are nodes of at least that depth at the
+   * appropriate side of the fragment—i.e. if the fragment is an
+   * empty paragraph node, `openStart` and `openEnd` can't be greater
+   * than 1.
+   *
+   * It is not necessary for the content of open nodes to conform to
+   * the schema's content constraints, though it should be a valid
+   * start/end/middle for such a node, depending on which sides are
+   * open.
+   */
   constructor(
-    /// The slice's content.
+    /** The slice's content. */
     readonly content: Fragment,
-    /// The open depth at the start of the fragment.
+    /** The open depth at the start of the fragment.
+     * - 用来表示多少个标签被补在了切片之前
+     */
     readonly openStart: number,
-    /// The open depth at the end.
+    /** The open depth at the end.
+     * - 用来表示多少个标签被补在了切片之后
+     */
     readonly openEnd: number,
   ) {}
 

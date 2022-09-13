@@ -17,43 +17,50 @@ const stepsByID: {
  * [`Step.jsonID`](#transform.Step^jsonID).
  */
 export abstract class Step {
-  /// Applies this step to the given document, returning a result
-  /// object that either indicates failure, if the step can not be
-  /// applied to this document, or indicates success by containing a
-  /// transformed document.
+  /** Applies this step to the given document, returning a result
+   * object that either indicates failure, if the step can not be
+   * applied to this document, or indicates success by containing a
+   * transformed document.
+   */
   abstract apply(doc: Node): StepResult;
 
-  /// Get the step map that represents the changes made by this step,
-  /// and which can be used to transform between positions in the old
-  /// and the new document.
+  /** Get the step map that represents the changes made by this step,
+   * and which can be used to transform between positions in the old
+   * and the new document.
+   */
   getMap(): StepMap {
     return StepMap.empty;
   }
 
-  /// Create an inverted version of this step. Needs the document as it
-  /// was before the step as argument.
+  /** Create an inverted version of this step. Needs the document as it
+   * was before the step as argument.
+   */
   abstract invert(doc: Node): Step;
 
-  /// Map this step through a mappable thing, returning either a
-  /// version of that step with its positions adjusted, or `null` if
-  /// the step was entirely deleted by the mapping.
+  /** Map this step through a mappable thing, returning either a
+   * version of that step with its positions adjusted, or `null` if
+   * the step was entirely deleted by the mapping.
+   */
   abstract map(mapping: Mappable): Step | null;
 
-  /// Try to merge this step with another one, to be applied directly
-  /// after it. Returns the merged step when possible, null if the
-  /// steps can't be merged.
+  /** Try to merge this step with another one, to be applied directly
+   * after it. Returns the merged step when possible, null if the
+   * steps can't be merged.
+   */
   merge(other: Step): Step | null {
     return null;
   }
 
-  /// Create a JSON-serializeable representation of this step. When
-  /// defining this for a custom subclass, make sure the result object
-  /// includes the step type's [JSON id](#transform.Step^jsonID) under
-  /// the `stepType` property.
+  /** Create a JSON-serializeable representation of this step. When
+   * defining this for a custom subclass, make sure the result object
+   * includes the step type's [JSON id](#transform.Step^jsonID) under
+   * the `stepType` property.
+   */
   abstract toJSON(): any;
 
-  /// Deserialize a step from its JSON representation. Will call
-  /// through to the step class' own implementation of this method.
+  /** Deserialize a step from its JSON representation. Will call
+   * through to the step class' own implementation of this method.
+   */
   static fromJSON(schema: Schema, json: any): Step {
     if (!json || !json.stepType)
       throw new RangeError('Invalid input for Step.fromJSON');
@@ -62,16 +69,18 @@ export abstract class Step {
     return type.fromJSON(schema, json);
   }
 
-  /// To be able to serialize steps to JSON, each step needs a string
-  /// ID to attach to its JSON representation. Use this method to
-  /// register an ID for your step classes. Try to pick something
-  /// that's unlikely to clash with steps from other modules.
+  /** To be able to serialize steps to JSON, each step needs a string
+   * ID to attach to its JSON representation. Use this method to
+   * register an ID for your step classes. Try to pick something
+   * that's unlikely to clash with steps from other modules.
+   */
   static jsonID(
     id: string,
     stepClass: { fromJSON(schema: Schema, json: any): Step },
   ) {
-    if (id in stepsByID)
+    if (id in stepsByID) {
       throw new RangeError('Duplicate use of step JSON ID ' + id);
+    }
     stepsByID[id] = stepClass;
     (stepClass as any).prototype.jsonID = id;
     return stepClass;
@@ -84,9 +93,9 @@ export abstract class Step {
 export class StepResult {
   /// @internal
   constructor(
-    /// The transformed document, if successful.
+    /** The transformed document, if successful. */
     readonly doc: Node | null,
-    /// The failure message, if unsuccessful.
+    /** The failure message, if unsuccessful. 用来指示这个Step是否应用成功  */
     readonly failed: string | null,
   ) {}
 

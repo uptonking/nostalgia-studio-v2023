@@ -180,15 +180,17 @@ export class EditorView {
   /** The view's current [props](#view.EditorProps). */
   get props() {
     if (this._props.state != this.state) {
-      let prev = this._props;
+      const prev = this._props;
       this._props = {} as any;
-      for (let name in prev) (this._props as any)[name] = (prev as any)[name];
+      for (const name in prev) (this._props as any)[name] = (prev as any)[name];
       this._props.state = this.state;
     }
+
     return this._props;
   }
 
   /** Update the view's props. Will immediately cause an update to the DOM.
+   * - 在最后会执行 updateStateInner()
    */
   update(props: DirectEditorProps) {
     if (props.handleDOMEvents != this._props.handleDOMEvents) {
@@ -205,6 +207,7 @@ export class EditorView {
   /** Update the view by updating existing props object with the object
    * given as argument. Equivalent to `view.update(Object.assign({},
    * view.props, props))`.
+   * - 用来部分更新DirectEditorProps
    */
   setProps(props: Partial<DirectEditorProps>) {
     let updated = {} as DirectEditorProps;
@@ -215,26 +218,28 @@ export class EditorView {
     this.update(updated);
   }
 
-  /** Update the editor's `state` prop, without touching any of the
-   * other props.
+  /** Update the editor's `state` prop, without touching any of the other props.
+   * - 直接执行 updateStateInner()，只更新state
    */
   updateState(state: EditorState) {
     this.updateStateInner(state, this.state.plugins != state.plugins);
   }
 
+  /** 输入新的editorState，更新editorView；用户做了什么操作这部分由DOMObserver去处理并应用到state上
+   * - 会调用`docView.update`更新视图
+   */
   private updateStateInner(state: EditorState, reconfigured: boolean) {
-    let prev = this.state;
+    const prev = this.state;
     let redraw = false;
     let updateSel = false;
-    // When stored marks are added, stop composition, so that they can
-    // be displayed.
+    // if stored marks are added, stop composition, so that they can be displayed.
     if (state.storedMarks && this.composing) {
       clearComposition(this);
       updateSel = true;
     }
     this.state = state;
     if (reconfigured) {
-      let nodeViews = buildNodeViews(this);
+      const nodeViews = buildNodeViews(this);
       if (changedNodeViews(nodeViews, this.nodeViews)) {
         this.nodeViews = nodeViews;
         redraw = true;
@@ -244,18 +249,20 @@ export class EditorView {
 
     this.editable = getEditable(this);
     updateCursorWrapper(this);
-    let innerDeco = viewDecorations(this);
-    let outerDeco = computeDocDeco(this);
+    const innerDeco = viewDecorations(this);
+    const outerDeco = computeDocDeco(this);
 
-    let scroll = reconfigured
+    const scroll = reconfigured
       ? 'reset'
       : (state as any).scrollToSelection > (prev as any).scrollToSelection
       ? 'to selection'
       : 'preserve';
-    let updateDoc =
+    const updateDoc =
       redraw || !this.docView.matchesNode(state.doc, outerDeco, innerDeco);
-    if (updateDoc || !state.selection.eq(prev.selection)) updateSel = true;
-    let oldScrollPos =
+    if (updateDoc || !state.selection.eq(prev.selection)) {
+      updateSel = true;
+    }
+    const oldScrollPos =
       scroll == 'preserve' &&
       updateSel &&
       this.dom.style.overflowAnchor == null &&
@@ -280,11 +287,11 @@ export class EditorView {
         // Chrome sometimes starts misreporting the selection, so this
         // tracks that and forces a selection reset when our update
         // did write to the node.
-        let chromeKludge = browser.chrome
+        const chromeKludge = browser.chrome
           ? (this.trackWrites = this.domSelection().focusNode)
           : null;
 
-        // 👉🏻 docView.update()实际执行更新视图
+        // 👇🏻 docView.update()实际执行更新视图
         if (
           redraw ||
           !this.docView.update(state.doc, outerDeco, innerDeco, this)
@@ -389,6 +396,8 @@ export class EditorView {
    * value is found. When `f` returns a truthy value, that is
    * immediately returned. When `f` isn't provided, it is treated as
    * the identity function (the prop value is returned directly).
+   * - EditorView自身的DirectEditorProps中的属性，以及Plugin集合提供的EditorProps中的属性有重合的地方，到底依据哪个来决定视图的行为呢？
+   * - someProp方法，可以按次序（先EditorView然后依次注册的Plugin集合）以一定的逻辑（不同属性逻辑不同）遍历Props集合，来决定视图的行为
    */
   someProp<PropName extends keyof EditorProps, Result>(
     propName: PropName,
@@ -659,6 +668,7 @@ function updateCursorWrapper(view: EditorView) {
   }
 }
 
+/** 任意一个插件都可以决定编辑器是否处于允许编辑状态 */
 function getEditable(view: EditorView) {
   return !view.someProp('editable', (value) => value(view.state) === false);
 }

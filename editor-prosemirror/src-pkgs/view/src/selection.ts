@@ -11,24 +11,27 @@ import {
 import { EditorView } from './index';
 import { NodeViewDesc } from './viewdesc';
 
+/**
+ *
+ */
 export function selectionFromDOM(
   view: EditorView,
   origin: string | null = null,
 ) {
-  let domSel = view.domSelection(),
-    doc = view.state.doc;
+  const domSel = view.domSelection();
+  const doc = view.state.doc;
   if (!domSel.focusNode) return null;
-  let nearestDesc = view.docView.nearestDesc(domSel.focusNode),
-    inWidget = nearestDesc && nearestDesc.size == 0;
-  let head = view.docView.posFromDOM(domSel.focusNode, domSel.focusOffset, 1);
+  let nearestDesc = view.docView.nearestDesc(domSel.focusNode);
+  const inWidget = nearestDesc && nearestDesc.size == 0;
+  const head = view.docView.posFromDOM(domSel.focusNode, domSel.focusOffset, 1);
   if (head < 0) return null;
-  let $head = doc.resolve(head),
-    $anchor,
-    selection;
+  const $head = doc.resolve(head);
+  let $anchor: ResolvedPos;
+  let selection: NodeSelection | Selection;
   if (selectionCollapsed(domSel)) {
     $anchor = $head;
     while (nearestDesc && !nearestDesc.node) nearestDesc = nearestDesc.parent;
-    let nearestDescNode = (nearestDesc as NodeViewDesc).node;
+    const nearestDescNode = (nearestDesc as NodeViewDesc).node;
     if (
       nearestDesc &&
       nearestDescNode.isAtom &&
@@ -39,11 +42,12 @@ export function selectionFromDOM(
         isOnEdge(domSel.focusNode, domSel.focusOffset, nearestDesc.dom)
       )
     ) {
-      let pos = nearestDesc.posBefore;
+      const pos = nearestDesc.posBefore;
       selection = new NodeSelection(head == pos ? $head : doc.resolve(pos));
     }
   } else {
-    let anchor = view.docView.posFromDOM(
+    // /when selection is not collapsed
+    const anchor = view.docView.posFromDOM(
       domSel.anchorNode!,
       domSel.anchorOffset,
       1,
@@ -53,13 +57,14 @@ export function selectionFromDOM(
   }
 
   if (!selection) {
-    let bias =
+    const bias =
       origin == 'pointer' ||
       (view.state.selection.head < $head.pos && !inWidget)
         ? 1
         : -1;
     selection = selectionBetween(view, $anchor, $head, bias);
   }
+
   return selection;
 }
 
@@ -71,8 +76,11 @@ function editorOwnsSelection(view: EditorView) {
         document.activeElement.contains(view.dom);
 }
 
+/**
+ *
+ */
 export function selectionToDOM(view: EditorView, force = false) {
-  let sel = view.state.selection;
+  const sel = view.state.selection;
   console.log('selectionToDOM', sel.visible, sel);
 
   syncNodeSelection(view, sel);
@@ -80,7 +88,7 @@ export function selectionToDOM(view: EditorView, force = false) {
   if (!editorOwnsSelection(view)) return;
 
   // The delayed drag selection causes issues with Cell Selections
-  // in Safari. And the drag selection delay is to workarond issues
+  // in Safari. And the drag selection delay is to workaround issues
   // which only present in Chrome.
   if (
     !force &&
@@ -88,8 +96,8 @@ export function selectionToDOM(view: EditorView, force = false) {
     view.input.mouseDown.allowDefault &&
     browser.chrome
   ) {
-    let domSel = view.domSelection(),
-      curSel = view.domObserver.currentSelection;
+    const domSel = view.domSelection();
+    const curSel = view.domObserver.currentSelection;
     if (
       domSel.anchorNode &&
       curSel.anchorNode &&
@@ -111,9 +119,9 @@ export function selectionToDOM(view: EditorView, force = false) {
   if (view.cursorWrapper) {
     selectCursorWrapper(view);
   } else {
-    let { anchor, head } = sel,
-      resetEditableFrom,
-      resetEditableTo;
+    const { anchor, head } = sel;
+    let resetEditableFrom;
+    let resetEditableTo;
     if (brokenSelectBetweenUneditable && !(sel instanceof TextSelection)) {
       if (!sel.$from.parent.inlineContent)
         resetEditableFrom = temporarilyEditableNear(view, sel.from);
@@ -138,23 +146,26 @@ export function selectionToDOM(view: EditorView, force = false) {
   view.domObserver.connectSelection();
 }
 
-// Kludge to work around Webkit not allowing a selection to start/end
-// between non-editable block nodes. We briefly make something
-// editable, set the selection, then set it uneditable again.
-
+/** Kludge to work around Webkit not allowing a selection to start/end
+ * between non-editable block nodes. We briefly make something
+ * editable, set the selection, then set it uneditable again.
+ */
 const brokenSelectBetweenUneditable =
   browser.safari || (browser.chrome && browser.chrome_version < 63);
 
 function temporarilyEditableNear(view: EditorView, pos: number) {
-  let { node, offset } = view.docView.domFromPos(pos, 0);
-  let after = offset < node.childNodes.length ? node.childNodes[offset] : null;
-  let before = offset ? node.childNodes[offset - 1] : null;
+  const { node, offset } = view.docView.domFromPos(pos, 0);
+  const after =
+    offset < node.childNodes.length ? node.childNodes[offset] : null;
+  const before = offset ? node.childNodes[offset - 1] : null;
   if (
     browser.safari &&
     after &&
     (after as HTMLElement).contentEditable == 'false'
-  )
+  ) {
     return setEditable(after as HTMLElement);
+  }
+
   if (
     (!after || (after as HTMLElement).contentEditable == 'false') &&
     (!before || (before as HTMLElement).contentEditable == 'false')
@@ -182,11 +193,11 @@ function resetEditable(element: HTMLElement) {
 }
 
 function removeClassOnSelectionChange(view: EditorView) {
-  let doc = view.dom.ownerDocument;
+  const doc = view.dom.ownerDocument;
   doc.removeEventListener('selectionchange', view.input.hideSelectionGuard!);
-  let domSel = view.domSelection();
-  let node = domSel.anchorNode,
-    offset = domSel.anchorOffset;
+  const domSel = view.domSelection();
+  const node = domSel.anchorNode;
+  const offset = domSel.anchorOffset;
   doc.addEventListener(
     'selectionchange',
     (view.input.hideSelectionGuard = () => {
@@ -205,12 +216,15 @@ function removeClassOnSelectionChange(view: EditorView) {
 }
 
 function selectCursorWrapper(view: EditorView) {
-  let domSel = view.domSelection(),
-    range = document.createRange();
-  let node = view.cursorWrapper!.dom,
-    img = node.nodeName == 'IMG';
-  if (img) range.setEnd(node.parentNode!, domIndex(node) + 1);
-  else range.setEnd(node, 0);
+  const domSel = view.domSelection();
+  const range = document.createRange();
+  const node = view.cursorWrapper!.dom;
+  const img = node.nodeName == 'IMG';
+  if (img) {
+    range.setEnd(node.parentNode!, domIndex(node) + 1);
+  } else {
+    range.setEnd(node, 0);
+  }
   range.collapse(false);
   domSel.removeAllRanges();
   domSel.addRange(range);
@@ -232,7 +246,7 @@ function selectCursorWrapper(view: EditorView) {
 
 export function syncNodeSelection(view: EditorView, sel: Selection) {
   if (sel instanceof NodeSelection) {
-    let desc = view.docView.descAt(sel.from);
+    const desc = view.docView.descAt(sel.from);
     if (desc != view.lastSelectedViewDesc) {
       clearNodeSelection(view);
       if (desc) (desc as NodeViewDesc).selectNode();
@@ -246,8 +260,9 @@ export function syncNodeSelection(view: EditorView, sel: Selection) {
 // Clear all DOM statefulness of the last node selection.
 function clearNodeSelection(view: EditorView) {
   if (view.lastSelectedViewDesc) {
-    if (view.lastSelectedViewDesc.parent)
+    if (view.lastSelectedViewDesc.parent) {
       (view.lastSelectedViewDesc as NodeViewDesc).deselectNode();
+    }
     view.lastSelectedViewDesc = undefined;
   }
 }
@@ -270,7 +285,7 @@ export function hasFocusAndSelection(view: EditorView) {
 }
 
 export function hasSelection(view: EditorView) {
-  let sel = view.domSelection();
+  const sel = view.domSelection();
   if (!sel.anchorNode) return false;
   try {
     // Firefox will raise 'permission denied' errors when accessing
@@ -278,13 +293,13 @@ export function hasSelection(view: EditorView) {
     // element.
     return (
       view.dom.contains(
-        sel.anchorNode.nodeType == 3
+        sel.anchorNode.nodeType === 3
           ? sel.anchorNode.parentNode
           : sel.anchorNode,
       ) &&
       (view.editable ||
         view.dom.contains(
-          sel.focusNode!.nodeType == 3
+          sel.focusNode!.nodeType === 3
             ? sel.focusNode!.parentNode
             : sel.focusNode,
         ))
@@ -295,8 +310,8 @@ export function hasSelection(view: EditorView) {
 }
 
 export function anchorInRightPlace(view: EditorView) {
-  let anchorDOM = view.docView.domFromPos(view.state.selection.anchor, 0);
-  let domSel = view.domSelection();
+  const anchorDOM = view.docView.domFromPos(view.state.selection.anchor, 0);
+  const domSel = view.domSelection();
   return isEquivalentPosition(
     anchorDOM.node,
     anchorDOM.offset,

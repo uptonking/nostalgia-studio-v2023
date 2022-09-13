@@ -15,16 +15,17 @@ export class ResolvedPos {
   /** The number of levels the parent node is from the root. If this
    * position points directly into the root node, it is 0. If it
    * points into a top-level paragraph, 1, and so on.
+   * - 非文本节点才有深度；如果是文本节点的话ResolvedPos.depth表示的是其父节点（block类型）的深度。
    */
   depth: number;
 
   /// @internal
   constructor(
-    /// The position that was resolved.
+    /** The position that was resolved. */
     readonly pos: number,
     /// @internal
     readonly path: any[],
-    /// The offset this position has into its parent node.
+    /** The offset this position has into its parent node. 在父节点中的偏移 */
     readonly parentOffset: number,
   ) {
     this.depth = path.length / 3 - 1;
@@ -40,6 +41,7 @@ export class ResolvedPos {
   /** The parent node that the position points into. Note that even if
    * a position points into a text node, that node is not considered
    * the parent—text nodes are ‘flat’ in this model, and have no content.
+   * - 直接调用 this.node()
    */
   get parent() {
     return this.node(this.depth);
@@ -51,7 +53,7 @@ export class ResolvedPos {
   }
 
   /** The ancestor node at the given level. `p.node(p.depth)` is the
-   * same as `p.parent`.
+   * same as `p.parent`. 返回其父节点
    */
   node(depth?: number | null): Node {
     return this.path[this.resolveDepth(depth) * 3];
@@ -60,13 +62,15 @@ export class ResolvedPos {
   /** The index into the ancestor at the given level. If this points
    * at the 3rd node in the 2nd paragraph on the top level, for
    * example, `p.index(0)` is 1 and `p.index(1)` is 2.
+   * - 返回当前节点在父节点中的索引，从0开始
    */
   index(depth?: number | null): number {
     return this.path[this.resolveDepth(depth) * 3 + 1];
   }
 
-  /// The index pointing after this position into the ancestor at the
-  /// given level.
+  /** The index pointing after this position into the ancestor at the given level.
+   * - 返回下一个兄弟节点的索引，（注意：下一个兄弟节点不一定存在，ResolvedPos.indexAfter()更像是ResolvedPos.index()+1）
+   */
   indexAfter(depth?: number | null): number {
     depth = this.resolveDepth(depth);
     return (
@@ -74,16 +78,16 @@ export class ResolvedPos {
     );
   }
 
-  /** The (absolute) position at the start of the node at the given
-   * level.
+  /** The (absolute) position at the start of the node at the given level.
+   * - 返回父节点内容的开始位置
    */
   start(depth?: number | null): number {
     depth = this.resolveDepth(depth);
     return depth == 0 ? 0 : this.path[depth * 3 - 1] + 1;
   }
 
-  /** The (absolute) position at the end of the node at the given
-   * level.
+  /** The (absolute) position at the end of the node at the given level.
+   * - 返回父节点的内容的结束位置
    */
   end(depth?: number | null): number {
     depth = this.resolveDepth(depth);
@@ -93,6 +97,7 @@ export class ResolvedPos {
   /** The (absolute) position directly before the wrapping node at the
    * given level, or, when `depth` is `this.depth + 1`, the original
    * position.
+   * - 等于ResolvedPos.start()-1
    */
   before(depth?: number | null): number {
     depth = this.resolveDepth(depth);
@@ -103,6 +108,7 @@ export class ResolvedPos {
 
   /** The (absolute) position directly after the wrapping node at the
    * given level, or the original position when `depth` is `this.depth + 1`.
+   * - 等于ResolvedPos.end()+1
    */
   after(depth?: number | null): number {
     depth = this.resolveDepth(depth);
@@ -116,6 +122,7 @@ export class ResolvedPos {
   /** When this position points into a text node, this returns the
    * distance between the position and the start of the text node.
    * Will be zero for positions that point between nodes.
+   * - 返回当前位置在文本节点中的偏移
    */
   get textOffset(): number {
     return this.pos - this.path[this.path.length - 1];
@@ -124,6 +131,7 @@ export class ResolvedPos {
   /** Get the node directly after the position, if any. If the position
    * points into a text node, only the part of that node after the
    * position is returned.
+   * - 返回当前位置之后的文本节点的切片。
    */
   get nodeAfter(): Node | null {
     let parent = this.parent,
@@ -137,6 +145,7 @@ export class ResolvedPos {
   /** Get the node directly before the position, if any. If the
    * position points into a text node, only the part of that node
    * before the position is returned.
+   * - 返回当前位置之前的文本节点的切片
    */
   get nodeBefore(): Node | null {
     let index = this.index(this.depth);
@@ -160,6 +169,7 @@ export class ResolvedPos {
    * marks' [`inclusive`](#model.MarkSpec.inclusive) property. If the
    * position is at the start of a non-empty node, the marks of the
    * node after it (if any) are returned.
+   * - 返回当前文本节点上应用的标记集合。
    */
   marks(): readonly Mark[] {
     let parent = this.parent,
@@ -200,6 +210,7 @@ export class ResolvedPos {
    * deletion. Will return `null` if this position is at the end of
    * its parent node or its parent node isn't a textblock (in which
    * case no marks should be preserved).
+   * - 返回从此位置，到另外一个位置的范围内的标记集合。
    */
   marksAcross($end: ResolvedPos): readonly Mark[] | null {
     let after = this.parent.maybeChild(this.index());
@@ -218,6 +229,7 @@ export class ResolvedPos {
 
   /** The depth up to which this position and the given (non-resolved)
    * position share the same parent nodes.
+   * - 返回当前位置与另外一个位置的共有深度（多少共同的父节点）
    */
   sharedDepth(pos: number): number {
     for (let depth = this.depth; depth > 0; depth--)

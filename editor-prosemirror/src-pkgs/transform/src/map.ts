@@ -2,18 +2,20 @@
  * Such objects conform to this interface.
  */
 export interface Mappable {
-  /// Map a position through this object. When given, `assoc` (should
-  /// be -1 or 1, defaults to 1) determines with which side the
-  /// position is associated, which determines in which direction to
-  /// move when a chunk of content is inserted at the mapped position.
+  /** Map a position through this object. When given, `assoc` (should
+   * be -1 or 1, defaults to 1) determines with which side the
+   * position is associated, which determines in which direction to
+   * move when a chunk of content is inserted at the mapped position.
+   */
   map: (pos: number, assoc?: number) => number;
 
-  /// Map a position, and return an object containing additional
-  /// information about the mapping. The result's `deleted` field tells
-  /// you whether the position was deleted (completely enclosed in a
-  /// replaced range) during the mapping. When content on only one side
-  /// is deleted, the position itself is only considered deleted when
-  /// `assoc` points in the direction of the deleted content.
+  /** Map a position, and return an object containing additional
+   * information about the mapping. The result's `deleted` field tells
+   * you whether the position was deleted (completely enclosed in a
+   * replaced range) during the mapping. When content on only one side
+   * is deleted, the position itself is only considered deleted when
+   * `assoc` points in the direction of the deleted content.
+   */
   mapResult: (pos: number, assoc?: number) => MapResult;
 }
 
@@ -87,6 +89,7 @@ export class MapResult {
  * can be used to find the correspondence between positions in the
  * pre-step version of a document and the same position in the
  * post-step version.
+ * - 这个StepMap记住了文档改动的位置信息，主要包括：改动的开始位置、改动前的大小、改动后的大小
  */
 export class StepMap implements Mappable {
   /// Create a position map. The modifications to the document are
@@ -222,22 +225,24 @@ export class StepMap implements Mappable {
  * steps are inverted versions of earlier steps. (This comes up when
  * ‘[rebasing](/docs/guide/#transform.rebasing)’ steps for
  * collaboration or history management.)
+ * - 多个StepMap还可以组合起来，用一个Mapping类型来管理
  */
 export class Mapping implements Mappable {
   /// Create a new mapping with the given position maps.
   constructor(
-    /// The step maps in this mapping.
+    /** The step maps in this mapping. */
     readonly maps: StepMap[] = [],
     /// @internal
     public mirror?: number[],
-    /// The starting position in the `maps` array, used when `map` or
-    /// `mapResult` is called.
+    /** The starting position in the `maps` array, used when `map` or
+     * `mapResult` is called.
+     */
     public from = 0,
-    /// The end position in the `maps` array.
+    /** The end position in the `maps` array. */
     public to = maps.length,
   ) {}
 
-  /// Create a mapping that maps only through a part of this one.
+  /** Create a mapping that maps only through a part of this one. */
   slice(from = 0, to = this.maps.length) {
     return new Mapping(this.maps, this.mirror, from, to);
   }
@@ -252,16 +257,18 @@ export class Mapping implements Mappable {
     );
   }
 
-  /// Add a step map to the end of this mapping. If `mirrors` is
-  /// given, it should be the index of the step map that is the mirror
-  /// image of this one.
+  /** Add a step map to the end of this mapping. If `mirrors` is
+   * given, it should be the index of the step map that is the mirror
+   * image of this one.
+   */
   appendMap(map: StepMap, mirrors?: number) {
     this.to = this.maps.push(map);
     if (mirrors != null) this.setMirror(this.maps.length - 1, mirrors);
   }
 
-  /// Add all the step maps in a given mapping to this one (preserving
-  /// mirroring information).
+  /** Add all the step maps in a given mapping to this one (preserving
+   * mirroring information).
+   */
   appendMapping(mapping: Mapping) {
     for (
       let i = 0, startSize = this.maps.length;
@@ -307,14 +314,14 @@ export class Mapping implements Mappable {
     }
   }
 
-  /// Create an inverted version of this mapping.
+  /** Create an inverted version of this mapping. */
   invert() {
     let inverse = new Mapping();
     inverse.appendMappingInverted(this);
     return inverse;
   }
 
-  /// Map a position through this mapping.
+  /** Map a position through this mapping. */
   map(pos: number, assoc = 1) {
     if (this.mirror) return this._map(pos, assoc, true) as number;
     for (let i = this.from; i < this.to; i++)
@@ -322,8 +329,9 @@ export class Mapping implements Mappable {
     return pos;
   }
 
-  /// Map a position through this mapping, returning a mapping
-  /// result.
+  /** Map a position through this mapping, returning a mapping
+   * result.
+   */
   mapResult(pos: number, assoc = 1) {
     return this._map(pos, assoc, false) as MapResult;
   }

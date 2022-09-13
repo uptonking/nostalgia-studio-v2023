@@ -17,14 +17,12 @@ import { ViewDesc } from './viewdesc';
 type EventHandlerMap = {
   [event: string]: (view: EditorView, event: Event) => void;
 };
-
 const editHandlers: EventHandlerMap = {};
 /** A collection of DOM events that occur within the editor, and callback functions
  * to invoke when the event fires.
  * - 上面`editHandlers`映射表的key都会被拷贝到这个映射表handlers
  */
 const handlers: EventHandlerMap = {};
-
 const passiveHandlers: Record<string, boolean> = {
   touchstart: true,
   touchmove: true,
@@ -58,8 +56,8 @@ export class InputState {
  * 遍历handlers映射表，注册所有key代表的event到编辑器view.dom，然后 ensureListeners
  */
 export function initInput(view: EditorView) {
-  for (let event in handlers) {
-    let handler = handlers[event];
+  for (const event in handlers) {
+    const handler = handlers[event];
     view.dom.addEventListener(
       event,
       (view.input.eventHandlers[event] = (event: Event) => {
@@ -83,11 +81,6 @@ export function initInput(view: EditorView) {
   }
 
   ensureListeners(view);
-}
-
-function setSelectionOrigin(view: EditorView, origin: string) {
-  view.input.lastSelectionOrigin = origin;
-  view.input.lastSelectionTime = Date.now();
 }
 
 export function destroyInput(view: EditorView) {
@@ -142,7 +135,7 @@ function eventBelongsToView(view: EditorView, event: Event) {
   return true;
 }
 
-/** 在返回值非空时，触发执行handlers映射表中对应的事件处理函数 */
+/** 在执行自定义e.type事件函数返回值不是true时，触发执行handlers映射表中e.type事件处理函数 */
 export function dispatchEvent(view: EditorView, event: Event) {
   if (
     !runCustomHandler(view, event) &&
@@ -153,9 +146,47 @@ export function dispatchEvent(view: EditorView, event: Event) {
   }
 }
 
+/**
+ * - `beforeinput`目前的逻辑非常少，大多数输入相关的逻辑在`keypress`事件
+ * We should probably do more with `beforeinput` events, but support
+ * is so spotty that I'm still waiting to see where they are going.
+ */
+handlers.beforeinput = (view, _event: Event) => {
+  const event = _event as InputEvent;
+
+  // Very specific hack to deal with backspace sometimes failing on
+  // Chrome Android when after an uneditable node.
+  if (
+    browser.chrome &&
+    browser.android &&
+    event.inputType == 'deleteContentBackward'
+  ) {
+    view.domObserver.flushSoon();
+    const { domChangeCount } = view.input;
+    setTimeout(() => {
+      if (view.input.domChangeCount != domChangeCount) return; // Event already had some effect
+      // This bug tends to close the virtual keyboard, so we refocus
+      view.dom.blur();
+      view.focus();
+      if (
+        view.someProp('handleKeyDown', (f) => f(view, keyEvent(8, 'Backspace')))
+      ) {
+        return;
+      }
+      const { $cursor } = view.state.selection as TextSelection;
+      // Crude approximation of backspace behavior when no command handled it
+      if ($cursor && $cursor.pos > 0) {
+        view.dispatch(
+          view.state.tr.delete($cursor.pos - 1, $cursor.pos).scrollIntoView(),
+        );
+      }
+    }, 50);
+  }
+};
+
 editHandlers.keydown = (view: EditorView, _event: Event) => {
   let event = _event as KeyboardEvent;
-  view.input.shiftKey = event.keyCode == 16 || event.shiftKey;
+  view.input.shiftKey = event.keyCode === 16 || event.shiftKey;
   if (inOrNearComposition(view, event)) return;
   view.input.lastKeyCode = event.keyCode;
   view.input.lastKeyCodeTime = Date.now();
@@ -163,7 +194,7 @@ editHandlers.keydown = (view: EditorView, _event: Event) => {
   // to be part of a confused sequence of composition events fired,
   // and handling them eagerly tends to corrupt the input.
   if (browser.android && browser.chrome && event.keyCode == 13) return;
-  if (event.keyCode != 229) view.domObserver.forceFlush();
+  if (event.keyCode !== 229) view.domObserver.forceFlush();
 
   // On iOS, if we preventDefault enter key presses, the virtual
   // keyboard gets confused. So the hack here is to set a flag that
@@ -171,12 +202,12 @@ editHandlers.keydown = (view: EditorView, _event: Event) => {
   // be replaced by whatever the Enter key handlers do.
   if (
     browser.ios &&
-    event.keyCode == 13 &&
+    event.keyCode === 13 &&
     !event.ctrlKey &&
     !event.altKey &&
     !event.metaKey
   ) {
-    let now = Date.now();
+    const now = Date.now();
     view.input.lastIOSEnter = now;
     view.input.lastIOSEnterFallbackTimeout = window.setTimeout(() => {
       if (view.input.lastIOSEnter == now) {
@@ -195,14 +226,17 @@ editHandlers.keydown = (view: EditorView, _event: Event) => {
 };
 
 editHandlers.keyup = (view, event) => {
-  if ((event as KeyboardEvent).keyCode == 16) view.input.shiftKey = false;
+  if ((event as KeyboardEvent).keyCode == 16) {
+    view.input.shiftKey = false;
+  }
 };
 
-/**  Since `keypress` event has been deprecated, you should use `beforeinput` or `keydown` instead.
+/**  常用的输入相关逻辑暂时都在`keypress`，而不在`beforeinput`，待迁移
+ * - Since `keypress` event has been deprecated, you should use `beforeinput` or `keydown` instead.
  * - https://developer.mozilla.org/en-US/docs/Web/API/Element/keypress_event
  */
 editHandlers.keypress = (view, _event) => {
-  let event = _event as KeyboardEvent;
+  const event = _event as KeyboardEvent;
   if (
     inOrNearComposition(view, event) ||
     !event.charCode ||
@@ -217,10 +251,10 @@ editHandlers.keypress = (view, _event) => {
     return;
   }
 
-  let sel = view.state.selection;
-  // 判断当前selection是否是TextSelection或者光标的起始和中止位置是否相同（为了判断选中了内容，选中了内容需要进行删除处理）
+  const sel = view.state.selection;
   if (!(sel instanceof TextSelection) || !sel.$from.sameParent(sel.$to)) {
-    let text = String.fromCharCode(event.charCode);
+    /// 若当前selection不是TextSelection或光标的起始和终止节点不同（选中了内容则需要进行删除处理）
+    const text = String.fromCharCode(event.charCode);
     if (
       !view.someProp('handleTextInput', (f) =>
         f(view, sel.$from.pos, sel.$to.pos, text),
@@ -254,6 +288,7 @@ function runHandlerOnContext(
 ) {
   if (inside == -1) return false;
   let $pos = view.state.doc.resolve(inside);
+
   for (let i = $pos.depth + 1; i > 0; i--) {
     if (
       view.someProp(propName, (f) =>
@@ -261,53 +296,65 @@ function runHandlerOnContext(
           ? f(view, pos, $pos.nodeAfter!, $pos.before(i), event, true)
           : f(view, pos, $pos.node(i), $pos.before(i), event, false),
       )
-    )
+    ) {
       return true;
+    }
   }
+
   return false;
 }
 
+function setSelectionOrigin(view: EditorView, origin: string) {
+  view.input.lastSelectionOrigin = origin;
+  view.input.lastSelectionTime = Date.now();
+}
+
+/** 通过 `tr = view.state.tr.setSelection` + `view.dispatch(tr)` 两步实现 */
 function updateSelection(
   view: EditorView,
   selection: Selection,
   origin: string,
 ) {
   if (!view.focused) view.focus();
-  let tr = view.state.tr.setSelection(selection);
+  const tr = view.state.tr.setSelection(selection);
   if (origin == 'pointer') tr.setMeta('pointer', true);
   view.dispatch(tr);
 }
 
 function selectClickedLeaf(view: EditorView, inside: number) {
   if (inside == -1) return false;
-  let $pos = view.state.doc.resolve(inside),
-    node = $pos.nodeAfter;
+  const $pos = view.state.doc.resolve(inside);
+  const node = $pos.nodeAfter;
+
   if (node && node.isAtom && NodeSelection.isSelectable(node)) {
     updateSelection(view, new NodeSelection($pos), 'pointer');
     return true;
   }
+
   return false;
 }
 
 function selectClickedNode(view: EditorView, inside: number) {
   if (inside == -1) return false;
-  let sel = view.state.selection,
-    selectedNode,
-    selectAt;
+  const sel = view.state.selection;
+  let selectedNode: Node;
+  let selectAt: number;
   if (sel instanceof NodeSelection) selectedNode = sel.node;
 
-  let $pos = view.state.doc.resolve(inside);
+  const $pos = view.state.doc.resolve(inside);
   for (let i = $pos.depth + 1; i > 0; i--) {
-    let node = i > $pos.depth ? $pos.nodeAfter! : $pos.node(i);
+    const node = i > $pos.depth ? $pos.nodeAfter! : $pos.node(i);
     if (NodeSelection.isSelectable(node)) {
       if (
         selectedNode &&
         sel.$from.depth > 0 &&
         i >= sel.$from.depth &&
         $pos.before(sel.$from.depth + 1) == sel.$from.pos
-      )
+      ) {
         selectAt = $pos.before(sel.$from.depth);
-      else selectAt = $pos.before(i);
+      } else {
+        selectAt = $pos.before(i);
+      }
       break;
     }
   }
@@ -402,10 +449,12 @@ function defaultTripleClick(
   }
 }
 
+/** 直接调用 `endComposition()` */
 function forceDOMFlush(view: EditorView) {
   return endComposition(view);
 }
 
+/** 根据操作系统返回字符串 `metaKey` 或 `ctrlKey` */
 const selectNodeModifier: keyof MouseEvent = browser.mac
   ? 'metaKey'
   : 'ctrlKey';
@@ -663,9 +712,10 @@ function inOrNearComposition(view: EditorView, event: Event) {
     browser.safari &&
     Math.abs(event.timeStamp - view.input.compositionEndedAt) < 500
   ) {
-    view.input.compositionEndedAt = -2e8;
+    view.input.compositionEndedAt = -2e8; // 2e3 > 2000
     return true;
   }
+
   return false;
 }
 
@@ -675,8 +725,8 @@ const timeoutComposition = browser.android ? 5000 : -1;
 editHandlers.compositionstart = editHandlers.compositionupdate = (view) => {
   if (!view.composing) {
     view.domObserver.flush();
-    let { state } = view,
-      $pos = state.selection.$from;
+    const { state } = view;
+    const $pos = state.selection.$from;
     if (
       state.selection.empty &&
       (state.storedMarks ||
@@ -700,13 +750,13 @@ editHandlers.compositionstart = editHandlers.compositionupdate = (view) => {
         !$pos.textOffset &&
         $pos.nodeBefore!.marks.length
       ) {
-        let sel = view.domSelection();
+        const sel = view.domSelection();
         for (
           let node = sel.focusNode, offset = sel.focusOffset;
           node && node.nodeType == 1 && offset != 0;
 
         ) {
-          let before =
+          const before =
             offset < 0 ? node.lastChild : node.childNodes[offset - 1];
           if (!before) break;
           if (before.nodeType == 3) {
@@ -721,6 +771,7 @@ editHandlers.compositionstart = editHandlers.compositionupdate = (view) => {
     }
     view.input.composing = true;
   }
+
   scheduleComposeEnd(view, timeoutComposition);
 };
 
@@ -734,11 +785,12 @@ editHandlers.compositionend = (view, event) => {
 
 function scheduleComposeEnd(view: EditorView, delay: number) {
   clearTimeout(view.input.composingTimeout);
-  if (delay > -1)
+  if (delay > -1) {
     view.input.composingTimeout = window.setTimeout(
       () => endComposition(view),
       delay,
     );
+  }
 }
 
 export function clearComposition(view: EditorView) {
@@ -746,14 +798,9 @@ export function clearComposition(view: EditorView) {
     view.input.composing = false;
     view.input.compositionEndedAt = timestampFromCustomEvent();
   }
-  while (view.input.compositionNodes.length > 0)
+  while (view.input.compositionNodes.length > 0) {
     view.input.compositionNodes.pop()!.markParentsDirty();
-}
-
-function timestampFromCustomEvent() {
-  let event = document.createEvent('Event');
-  event.initEvent('event', true, true);
-  return event.timeStamp;
+  }
 }
 
 /// @internal
@@ -767,7 +814,7 @@ export function endComposition(view: EditorView, forceUpdate = false) {
   clearComposition(view);
 
   if (forceUpdate || (view.docView && view.docView.dirty)) {
-    let sel = selectionFromDOM(view);
+    const sel = selectionFromDOM(view);
     if (sel && !sel.eq(view.state.selection)) {
       view.dispatch(view.state.tr.setSelection(sel));
     } else {
@@ -779,15 +826,21 @@ export function endComposition(view: EditorView, forceUpdate = false) {
   return false;
 }
 
+function timestampFromCustomEvent() {
+  const event = document.createEvent('Event');
+  event.initEvent('event', true, true);
+  return event.timeStamp;
+}
+
 function captureCopy(view: EditorView, dom: HTMLElement) {
   // The extra wrapper is somehow necessary on IE/Edge to prevent the
   // content from being mangled when it is put onto the clipboard
   if (!view.dom.parentNode) return;
-  let wrap = view.dom.parentNode.appendChild(document.createElement('div'));
+  const wrap = view.dom.parentNode.appendChild(document.createElement('div'));
   wrap.appendChild(dom);
   wrap.style.cssText = 'position: fixed; left: -10000px; top: 10px';
-  let sel = getSelection()!,
-    range = document.createRange();
+  const sel = getSelection()!;
+  const range = document.createRange();
   range.selectNodeContents(dom);
   // Done because IE will fire a selectionchange moving the selection
   // to its start when removeAllRanges is called and the editor still
@@ -827,13 +880,14 @@ handlers.copy = editHandlers.cut = (view, _event) => {
   } else {
     captureCopy(view, dom);
   }
-  if (cut)
+  if (cut) {
     view.dispatch(
       view.state.tr
         .deleteSelection()
         .scrollIntoView()
         .setMeta('uiEvent', 'cut'),
     );
+  }
 };
 
 function sliceSingleNode(slice: Slice) {
@@ -869,57 +923,65 @@ function doPaste(
   html: string | null,
   event: ClipboardEvent,
 ) {
-  let slice = parseFromClipboard(
+  const slice = parseFromClipboard(
     view,
     text,
     html,
     view.input.shiftKey,
     view.state.selection.$from,
   );
-  if (view.someProp('handlePaste', (f) => f(view, event, slice || Slice.empty)))
+  if (
+    view.someProp('handlePaste', (f) => f(view, event, slice || Slice.empty))
+  ) {
     return true;
+  }
   if (!slice) return false;
 
-  let singleNode = sliceSingleNode(slice);
-  let tr = singleNode
+  const singleNode = sliceSingleNode(slice);
+  const tr = singleNode
     ? view.state.tr.replaceSelectionWith(singleNode, view.input.shiftKey)
     : view.state.tr.replaceSelection(slice);
   view.dispatch(
     tr.scrollIntoView().setMeta('paste', true).setMeta('uiEvent', 'paste'),
   );
+
   return true;
 }
 
 editHandlers.paste = (view, _event) => {
-  let event = _event as ClipboardEvent;
+  const event = _event as ClipboardEvent;
   // Handling paste from JavaScript during composition is very poorly
   // handled by browsers, so as a dodgy but preferable kludge, we just
   // let the browser do its native thing there, except on Android,
   // where the editor is almost always composing.
   if (view.composing && !browser.android) return;
-  let data = brokenClipboardAPI ? null : event.clipboardData;
+  const data = brokenClipboardAPI ? null : event.clipboardData;
   if (
     data &&
     doPaste(view, data.getData('text/plain'), data.getData('text/html'), event)
-  )
+  ) {
     event.preventDefault();
-  else capturePaste(view, event);
+  } else {
+    capturePaste(view, event);
+  }
 };
 
+/** 简单的class，只定义了2个属性slice/move */
 class Dragging {
   constructor(readonly slice: Slice, readonly move: boolean) {}
 }
 
+/** 根据操作系统返回字符串 `altKey` 或 `ctrlKey` */
 const dragCopyModifier: keyof DragEvent = browser.mac ? 'altKey' : 'ctrlKey';
 
 handlers.dragstart = (view, _event) => {
-  let event = _event as DragEvent;
-  let mouseDown = view.input.mouseDown;
+  const event = _event as DragEvent;
+  const mouseDown = view.input.mouseDown;
   if (mouseDown) mouseDown.done();
   if (!event.dataTransfer) return;
 
-  let sel = view.state.selection;
-  let pos = sel.empty ? null : view.posAtCoords(eventCoords(event));
+  const sel = view.state.selection;
+  const pos = sel.empty ? null : view.posAtCoords(eventCoords(event));
   if (
     pos &&
     pos.pos >= sel.from &&
@@ -933,7 +995,7 @@ handlers.dragstart = (view, _event) => {
       ),
     );
   } else if (event.target && (event.target as HTMLElement).nodeType == 1) {
-    let desc = view.docView.nearestDesc(event.target as HTMLElement, true);
+    const desc = view.docView.nearestDesc(event.target as HTMLElement, true);
     if (desc && desc.node!.type.spec.draggable && desc != view.docView)
       view.dispatch(
         view.state.tr.setSelection(
@@ -941,7 +1003,7 @@ handlers.dragstart = (view, _event) => {
         ),
       );
   }
-  let slice = view.state.selection.content(),
+  const slice = view.state.selection.content(),
     { dom, text } = serializeForClipboard(view, slice);
   event.dataTransfer.clearData();
   event.dataTransfer.setData(
@@ -955,7 +1017,7 @@ handlers.dragstart = (view, _event) => {
 };
 
 handlers.dragend = (view) => {
-  let dragging = view.dragging;
+  const dragging = view.dragging;
   window.setTimeout(() => {
     if (view.dragging == dragging) view.dragging = null;
   }, 50);
@@ -964,15 +1026,15 @@ handlers.dragend = (view) => {
 editHandlers.dragover = editHandlers.dragenter = (_, e) => e.preventDefault();
 
 editHandlers.drop = (view, _event) => {
-  let event = _event as DragEvent;
-  let dragging = view.dragging;
+  const event = _event as DragEvent;
+  const dragging = view.dragging;
   view.dragging = null;
 
   if (!event.dataTransfer) return;
 
-  let eventPos = view.posAtCoords(eventCoords(event));
+  const eventPos = view.posAtCoords(eventCoords(event));
   if (!eventPos) return;
-  let $mouse = view.state.doc.resolve(eventPos.pos);
+  const $mouse = view.state.doc.resolve(eventPos.pos);
   let slice = dragging && dragging.slice;
   if (slice) {
     view.someProp('transformPasted', (f) => {
@@ -987,7 +1049,7 @@ editHandlers.drop = (view, _event) => {
       $mouse,
     );
   }
-  let move = !!(dragging && !event[dragCopyModifier]);
+  const move = !!(dragging && !event[dragCopyModifier]);
   if (
     view.someProp('handleDrop', (f) =>
       f(view, event, slice || Slice.empty, move),
@@ -1004,18 +1066,21 @@ editHandlers.drop = (view, _event) => {
     : $mouse.pos;
   if (insertPos == null) insertPos = $mouse.pos;
 
-  let tr = view.state.tr;
+  const tr = view.state.tr;
   if (move) tr.deleteSelection();
 
-  let pos = tr.mapping.map(insertPos);
-  let isNode =
+  const pos = tr.mapping.map(insertPos);
+  const isNode =
     slice.openStart == 0 && slice.openEnd == 0 && slice.content.childCount == 1;
-  let beforeInsert = tr.doc;
-  if (isNode) tr.replaceRangeWith(pos, pos, slice.content.firstChild!);
-  else tr.replaceRange(pos, pos, slice);
+  const beforeInsert = tr.doc;
+  if (isNode) {
+    tr.replaceRangeWith(pos, pos, slice.content.firstChild!);
+  } else {
+    tr.replaceRange(pos, pos, slice);
+  }
   if (tr.doc.eq(beforeInsert)) return;
 
-  let $pos = tr.doc.resolve(pos);
+  const $pos = tr.doc.resolve(pos);
   if (
     isNode &&
     NodeSelection.isSelectable(slice.content.firstChild!) &&
@@ -1046,14 +1111,15 @@ handlers.focus = (view) => {
         view.docView &&
         view.hasFocus() &&
         !view.domObserver.currentSelection.eq(view.domSelection())
-      )
+      ) {
         selectionToDOM(view);
+      }
     }, 20);
   }
 };
 
 handlers.blur = (view, _event) => {
-  let event = _event as FocusEvent;
+  const event = _event as FocusEvent;
   if (view.focused) {
     view.domObserver.stop();
     view.dom.classList.remove('ProseMirror-focused');
@@ -1068,38 +1134,5 @@ handlers.blur = (view, _event) => {
   }
 };
 
-handlers.beforeinput = (view, _event: Event) => {
-  let event = _event as InputEvent;
-  // We should probably do more with `beforeinput` events, but support
-  // is so spotty that I'm still waiting to see where they are going.
-
-  // Very specific hack to deal with backspace sometimes failing on
-  // Chrome Android when after an uneditable node.
-  if (
-    browser.chrome &&
-    browser.android &&
-    event.inputType == 'deleteContentBackward'
-  ) {
-    view.domObserver.flushSoon();
-    let { domChangeCount } = view.input;
-    setTimeout(() => {
-      if (view.input.domChangeCount != domChangeCount) return; // Event already had some effect
-      // This bug tends to close the virtual keyboard, so we refocus
-      view.dom.blur();
-      view.focus();
-      if (
-        view.someProp('handleKeyDown', (f) => f(view, keyEvent(8, 'Backspace')))
-      )
-        return;
-      let { $cursor } = view.state.selection as TextSelection;
-      // Crude approximation of backspace behavior when no command handled it
-      if ($cursor && $cursor.pos > 0)
-        view.dispatch(
-          view.state.tr.delete($cursor.pos - 1, $cursor.pos).scrollIntoView(),
-        );
-    }, 50);
-  }
-};
-
 // Make sure all handlers get registered
-for (let prop in editHandlers) handlers[prop] = editHandlers[prop];
+for (const prop in editHandlers) handlers[prop] = editHandlers[prop];

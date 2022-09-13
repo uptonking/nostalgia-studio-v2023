@@ -237,13 +237,13 @@ export class EditorState {
     return newInstance;
   }
 
-  /** Create a new state. */
+  /** Create a new state. 创建实例后，把插件加载到状态集合中 */
   static create(config: EditorStateConfig) {
-    let $config = new Configuration(
+    const $config = new Configuration(
       config.doc ? config.doc.type.schema : config.schema!,
       config.plugins,
     );
-    let instance = new EditorState($config);
+    const instance = new EditorState($config);
     for (let i = 0; i < $config.fields.length; i++)
       (instance as any)[$config.fields[i].name] = $config.fields[i].init(
         config,
@@ -257,17 +257,17 @@ export class EditorState {
    * plugins are kept unchanged. Those that no longer exist are
    * dropped, and those that are new are initialized using their
    * [`init`](#state.StateField.init) method, passing in the new
-   * configuration object..
+   * configuration object.
    */
   reconfigure(config: {
     /// New set of active plugins.
     plugins?: readonly Plugin[];
   }) {
-    let $config = new Configuration(this.schema, config.plugins);
-    let fields = $config.fields,
-      instance = new EditorState($config);
+    const $config = new Configuration(this.schema, config.plugins);
+    const fields = $config.fields;
+    const instance = new EditorState($config);
     for (let i = 0; i < fields.length; i++) {
-      let name = fields[i].name;
+      const name = fields[i].name;
       (instance as any)[name] = this.hasOwnProperty(name)
         ? (this as any)[name]
         : fields[i].init(config, instance);

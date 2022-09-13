@@ -112,12 +112,15 @@ export class Plugin<PluginState = any> {
  * [`state`](#state.PluginSpec.state) property) of this type, which
  * describes the state it wants to keep. Functions provided here are
  * always called with the plugin instance as their `this` binding.
+ * - 每个插件都向总状态贡献一份⁠StateField的实例，所以主状态其实包含StateField的集合
  */
 export interface StateField<T> {
   /** Initialize the value of the field. `config` will be the object
    * passed to [`EditorState.create`](#state.EditorState^create). Note
    * that `instance` is a half-initialized state instance, and will
    * not have values for plugin fields initialized after this one.
+   * - 参数config对象就是从传给EditorState.create做参数的那个对象扩展出来的，出了包含最初传入EditorState.create的那些属性以外，还包括所有插件（包括内置的插件）
+   * - 所有插件看到的是一样的config，这个config对象包含了所有其他插件
    */
   init: (config: EditorStateConfig, instance: EditorState) => T;
 

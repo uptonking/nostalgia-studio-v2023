@@ -123,20 +123,30 @@ const NOT_DIRTY = 0,
 
 /** Superclass for the various kinds of descriptions. Defines their
  * basic structure and shared methods.
+ * - 可以把ViewDesc理解为VirtualDOM，通过ViewDesc来保持文档模型和DOM之间的同步
  * - 在内部描述视图的抽象，可看作是dom与编辑器state的中间层，相当于是vdom
  * - ViewDesc会挂载到相应的 dom 的 pmViewDesc 属性上，并保存相应的 dom 和 node
  * - viewDesc主要提供了匹配节点，获取索引，状态标记等等方法，帮助 prosemirror 更好地处理 state 与 dom 的状态同步
+ * - 像是一个双向链表。
  */
 export class ViewDesc {
+  /** 如果一个视图描述节点需要更新时，它会为自己设置一个dirty属性，表示需要更新。  */
   dirty = NOT_DIRTY;
   node!: Node | null;
 
   constructor(
+    /** 父指针 */
     public parent: ViewDesc | undefined,
+    /** 子指针 */
     public children: ViewDesc[],
+    /** 该ViewDesc所对应的DOM节点，含有一个pmViewDesc属性，指向该ViewDesc本身 */
     public dom: DOMNode,
-    // This is the node that holds the child views. It may be null for
-    // descs that don't have children.
+    /** This is the node that holds the child views. It may be null for
+     * descs that don't have children.
+     * - contentDOM用于指定在何处插入子ViewDesc。contentDOM和dom可以是同一个DOM节点
+     * - 对于文档的叶子节点，contentDOM为空
+     * - contentDOM就是在创建文档节点schema定义中toDOM属性中的0（空洞）所在位置
+     */
     public contentDOM: HTMLElement | null,
   ) {
     // An expando property on the DOM node provides a link back to its
@@ -293,8 +303,9 @@ export class ViewDesc {
     return (atEnd == null ? bias > 0 : atEnd) ? this.posAtEnd : this.posAtStart;
   }
 
-  // Scan up the dom finding the first desc that is a descendant of
-  // this one.
+  /** Scan up the dom finding the first desc that is a descendant of
+   * this one.
+   */
   nearestDesc(dom: DOMNode, onlyNodes: boolean = false) {
     for (
       let first = true, cur: DOMNode | null = dom;
@@ -335,8 +346,9 @@ export class ViewDesc {
     return -1;
   }
 
-  // Find the desc for the node after the given pos, if any. (When a
-  // parent node overrode rendering, there might not be one.)
+  /** Find the desc for the node after the given pos, if any. (When a
+   * parent node overrode rendering, there might not be one.)
+   */
   descAt(pos: number): ViewDesc | undefined {
     for (let i = 0, offset = 0; i < this.children.length; i++) {
       let child = this.children[i],
@@ -797,6 +809,8 @@ class CompositionViewDesc extends ViewDesc {
  * some cases they will be split more often than would appear
  * necessary.
  * - Mark 在 state 中是作为 node 的一个属性，而在 ViewDesc 中，他则是作为一个高层级的节点，他可以包括其他节点（包括自己本身）,所以他在 state 和 docView 中的结构是不一致的。
+ * - 在文档模型中，Mark集合是TextNode（或者其他inline内容）的属性，不参与到树形结构的构成，
+ * - 但是在ViewDesc中，由于是要和DOM树同步，所以MarkViewDesc参与树形结构的构成。
  */
 class MarkViewDesc extends ViewDesc {
   constructor(
@@ -1424,9 +1438,10 @@ class CustomNodeViewDesc extends NodeViewDesc {
     );
   }
 
-  // A custom `update` method gets to decide whether the update goes
-  // through. If it does, and there's a `contentDOM` node, our logic
-  // updates the children.
+  /** A custom `update` method gets to decide whether the update goes
+   * through. If it does, and there's a `contentDOM` node, our logic
+   * updates the children.
+   */
   update(
     node: Node,
     outerDeco: readonly Decoration[],
@@ -1661,6 +1676,7 @@ function rm(dom: DOMNode) {
 
 /** Helper class for incrementally updating a tree of mark descs and
  * the widget and node descs inside of them.
+ * - 采用深度遍历的方式来将视图描述同步到文档节点树
  */
 class ViewTreeUpdater {
   // Index into `this.top`'s child array, represents the current
@@ -1703,7 +1719,9 @@ class ViewTreeUpdater {
 
   /** Sync the current stack of mark descs with the given array of
    * marks, reusing existing mark descs when possible.
-   * - 用来更新mark
+   * - 用来更新mark，将视图标记描述对应到文档节点的标记。
+   * - 通过一个栈结构来实现
+   * - 深度遍历从叶子节点往上遍历，完成一个层级就调用renderDescs()来更新相应的DOM。
    */
   syncToMarks(marks: readonly Mark[], inline: boolean, view: EditorView) {
     let keep = 0;

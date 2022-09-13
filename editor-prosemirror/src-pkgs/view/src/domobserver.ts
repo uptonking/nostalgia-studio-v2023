@@ -25,6 +25,7 @@ const observeOptions = {
 // IE11 has very broken mutation observers, so we also listen to DOMCharacterDataModified
 const useCharData = browser.ie && browser.ie_version <= 11;
 
+/** 简化了浏览器Selection对象的属性  */
 class SelectionState {
   anchorNode: Node | null = null;
   anchorOffset: number = 0;

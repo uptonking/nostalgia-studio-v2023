@@ -276,6 +276,8 @@ export class Node {
 
   /** Resolve the given position in the document, returning an
    * [object](#model.ResolvedPos) with information about its context.
+   * - 在state.doc级别调用resolve(pos)，可以获取全局的位置信息；
+   * - 如果只是在某个子节点调用resolve(pos)，那么resolve所获得的信息就是相对这个子节点而言的。
    */
   resolve(pos: number) {
     return ResolvedPos.resolveCached(this, pos);

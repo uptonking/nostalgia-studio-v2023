@@ -12,6 +12,8 @@ const classesById = Object.create(null);
 /** Superclass for editor selections. Every selection type should
  * extend this. Should not be instantiated directly.
  * - 由于contenteditable对光标位置的处理不尽如人意，所以绝大多数的编辑器都会维护自己的选区信息，用于抹平浏览器原生处理带来的问题
+ * - 一个Selection可以包含若干个范围（SelectionRange），但至少包含一个。
+ * - 一个Selection由基点anchor和头部head构成，一个SelectionRange由起始位置$from和结束为止$to构成
  */
 export abstract class Selection {
   /// Initialize a selection with the head and anchor and ranges. If no
@@ -77,11 +79,14 @@ export abstract class Selection {
 
   /** Map this selection through a [mappable](#transform.Mappable)
    * thing. `doc` should be the new document to which we are mapping.
+   * - 可以更新selection的范围，可以在文档被修改后保持selection范围的有效性
    */
   abstract map(doc: Node, mapping: Mappable): Selection;
 
-  /** Get the content of this selection as a slice. */
-  content() {
+  /** Get the content of this selection as a slice.
+   * - 返回的slice是从doc级别开始算起的，其openStart等于doc.selection.$from.depth, 其openEnd等于doc.selection.$to.depth。
+   */
+  content(): Slice {
     return this.$from.doc.slice(this.from, this.to, true);
   }
 
@@ -122,7 +127,7 @@ export abstract class Selection {
 
   /** Replace the selection with the given node, appending the changes
    * to the given transaction.
-  * - 最终会执行 tr.replaceRangeWith()
+   * - 最终会执行 tr.replaceRangeWith()
    */
   replaceWith(tr: Transaction, node: Node) {
     let mapFrom = tr.steps.length,
@@ -260,6 +265,7 @@ export abstract class Selection {
    * track and restore old selections.) The default implementation of
    * this method just converts the selection to a text selection and
    * returns the bookmark for that.
+   * - 返回一个SelectionBookmark对象。这是一种与文档无关的选段表示方式，可以用于历史记录中。
    */
   getBookmark(): SelectionBookmark {
     return TextSelection.between(this.$anchor, this.$head).getBookmark();

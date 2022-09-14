@@ -12,13 +12,13 @@ import { EditorView } from './index';
 import { NodeViewDesc } from './viewdesc';
 
 /**
- *
+ * 根据浏览器默认选区对象，计算并返回prosemirror对应的Selection对象
  */
 export function selectionFromDOM(
   view: EditorView,
   origin: string | null = null,
 ) {
-  const domSel = view.domSelection();
+  const domSel = view.domSelection(); // 浏览器默认选区对象
   const doc = view.state.doc;
   if (!domSel.focusNode) return null;
   let nearestDesc = view.docView.nearestDesc(domSel.focusNode);
@@ -46,7 +46,7 @@ export function selectionFromDOM(
       selection = new NodeSelection(head == pos ? $head : doc.resolve(pos));
     }
   } else {
-    // /when selection is not collapsed
+    /// when selection is not collapsed
     const anchor = view.docView.posFromDOM(
       domSel.anchorNode!,
       domSel.anchorOffset,
@@ -77,7 +77,7 @@ function editorOwnsSelection(view: EditorView) {
 }
 
 /**
- *
+ * editorSelection应用到dom
  */
 export function selectionToDOM(view: EditorView, force = false) {
   const sel = view.state.selection;
@@ -175,6 +175,7 @@ function temporarilyEditableNear(view: EditorView, pos: number) {
   }
 }
 
+/** 直接设置 `element.contentEditable = 'true';` */
 function setEditable(element: HTMLElement) {
   element.contentEditable = 'true';
   if (browser.safari && element.draggable) {
@@ -184,6 +185,7 @@ function setEditable(element: HTMLElement) {
   return element;
 }
 
+/** 直接设置 `element.contentEditable = 'false';` */
 function resetEditable(element: HTMLElement) {
   element.contentEditable = 'false';
   if ((element as any).wasDraggable) {
@@ -244,6 +246,7 @@ function selectCursorWrapper(view: EditorView) {
   }
 }
 
+/** 将NodeSelection同步到vdom */
 export function syncNodeSelection(view: EditorView, sel: Selection) {
   if (sel instanceof NodeSelection) {
     const desc = view.docView.descAt(sel.from);
@@ -257,7 +260,7 @@ export function syncNodeSelection(view: EditorView, sel: Selection) {
   }
 }
 
-// Clear all DOM statefulness of the last node selection.
+/** Clear all DOM statefulness of the last node selection. */
 function clearNodeSelection(view: EditorView) {
   if (view.lastSelectedViewDesc) {
     if (view.lastSelectedViewDesc.parent) {

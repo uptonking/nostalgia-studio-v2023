@@ -14,7 +14,7 @@ import {
   selectionToDOM,
 } from './selection';
 
-const observeOptions = {
+const observeOptions: MutationObserverInit = {
   childList: true,
   characterData: true,
   characterDataOldValue: true,
@@ -22,7 +22,8 @@ const observeOptions = {
   attributeOldValue: true,
   subtree: true,
 };
-// IE11 has very broken mutation observers, so we also listen to DOMCharacterDataModified
+
+/** 只针对ie场景。 IE11 has very broken mutation observers, so we also listen to DOMCharacterDataModified */
 const useCharData = browser.ie && browser.ie_version <= 11;
 
 /** 简化了浏览器Selection对象的属性  */
@@ -53,21 +54,27 @@ class SelectionState {
   }
 }
 
-/**
+/**  基于`MutationObserver`实现将用户交互的变更转换为编辑器数据模型的变更
  * - 对prosemirror来说，视图的更新面向的不是用户做了什么操作，而是面向 state。
  * - 用户做了什么操作这部分由 DOMObserver 去处理并应用到 state 上，视图显示的状态与 state 强相关，抹平了处理用户行为的复杂性
  * - 但同样会带来一些问题，如对用户的行为无法感知导致的节点不能复用的问题等。
  */
 export class DOMObserver {
-  queue: MutationRecord[] = [];
-  flushingSoon = -1;
+  /** 全局MutationObserver对象，监听范围是`editorView.dom` */
   observer: MutationObserver | null = null;
+  /** 存放MutationObserver回调函数参数中的变更项目 */
+  queue: MutationRecord[] = [];
+  /** 简化了浏览器Selection对象的属性 */
   currentSelection = new SelectionState();
+  /** 存放延迟执行flush()方法的setTimeout的返回值，setTimeout的返回值一定是正整数 */
+  flushingSoon = -1;
   onCharData: ((e: Event) => void) | null = null;
+  /** 默认false */
   suppressingSelectionUpdates = false;
 
   constructor(
     readonly view: EditorView,
+    /** 传入的处理函数是 readDOMChange */
     readonly handleDOMChange: (
       from: number,
       to: number,
@@ -78,8 +85,10 @@ export class DOMObserver {
     this.observer =
       window.MutationObserver &&
       new window.MutationObserver((mutations) => {
-        for (let i = 0; i < mutations.length; i++)
+        for (let i = 0; i < mutations.length; i++) {
           this.queue.push(mutations[i]);
+        }
+
         // IE11 will sometimes (on backspacing out a single character
         // text node after a BR node) call the observer callback
         // before actually updating the DOM, which will cause
@@ -93,11 +102,15 @@ export class DOMObserver {
               (m.type == 'characterData' &&
                 m.oldValue!.length > m.target.nodeValue!.length),
           )
-        )
+        ) {
           this.flushSoon();
-        else this.flush();
+        } else {
+          this.flush();
+        }
       });
+
     if (useCharData) {
+      // 针对ie
       this.onCharData = (e) => {
         this.queue.push({
           target: e.target as Node,
@@ -107,55 +120,46 @@ export class DOMObserver {
         this.flushSoon();
       };
     }
+
     this.onSelectionChange = this.onSelectionChange.bind(this);
   }
 
-  flushSoon() {
-    if (this.flushingSoon < 0)
-      this.flushingSoon = window.setTimeout(() => {
-        this.flushingSoon = -1;
-        this.flush();
-      }, 20);
-  }
-
-  forceFlush() {
-    if (this.flushingSoon > -1) {
-      window.clearTimeout(this.flushingSoon);
-      this.flushingSoon = -1;
-      this.flush();
-    }
-  }
-
+  /** 开始监听 this.observer.observe(this.view.dom)，注册selectionchange事件  */
   start() {
     if (this.observer) {
       this.observer.takeRecords();
       this.observer.observe(this.view.dom, observeOptions);
     }
-    if (this.onCharData)
+    if (this.onCharData) {
+      /// 针对ie
       this.view.dom.addEventListener(
         'DOMCharacterDataModified',
         this.onCharData,
       );
+    }
     this.connectSelection();
   }
 
+  /** 移除 this.observer.disconnect()，移除selectionchange  */
   stop() {
     if (this.observer) {
-      let take = this.observer.takeRecords();
+      const take = this.observer.takeRecords();
       if (take.length) {
         for (let i = 0; i < take.length; i++) this.queue.push(take[i]);
         window.setTimeout(() => this.flush(), 20);
       }
       this.observer.disconnect();
     }
-    if (this.onCharData)
+    if (this.onCharData) {
       this.view.dom.removeEventListener(
         'DOMCharacterDataModified',
         this.onCharData,
       );
+    }
     this.disconnectSelection();
   }
 
+  /** 注册 selectionchange 事件  */
   connectSelection() {
     this.view.dom.ownerDocument.addEventListener(
       'selectionchange',
@@ -163,6 +167,7 @@ export class DOMObserver {
     );
   }
 
+  /** 移除 selectionchange 事件  */
   disconnectSelection() {
     this.view.dom.ownerDocument.removeEventListener(
       'selectionchange',
@@ -175,12 +180,12 @@ export class DOMObserver {
     setTimeout(() => (this.suppressingSelectionUpdates = false), 50);
   }
 
+  /** 会被注册到页面顶级document对象，最终会执行`this.flush()`  */
   onSelectionChange() {
     if (!hasFocusAndSelection(this.view)) return;
-    if (this.suppressingSelectionUpdates) return selectionToDOM(this.view);
+    if (this.suppressingSelectionUpdates) return selectionToDOM(this.view); // 默认false
     // Deletions on IE11 fire their events in the wrong order, giving
-    // us a selection change event before the DOM changes are
-    // reported.
+    // us a selection change event before the DOM changes are reported.
     if (
       browser.ie &&
       browser.ie_version <= 11 &&
@@ -199,6 +204,7 @@ export class DOMObserver {
       )
         return this.flushSoon();
     }
+
     this.flush();
   }
 
@@ -208,8 +214,8 @@ export class DOMObserver {
 
   ignoreSelectionChange(sel: DOMSelection) {
     if (sel.rangeCount == 0) return true;
-    let container = sel.getRangeAt(0).commonAncestorContainer;
-    let desc = this.view.docView.nearestDesc(container);
+    const container = sel.getRangeAt(0).commonAncestorContainer;
+    const desc = this.view.docView.nearestDesc(container);
     if (
       desc &&
       desc.ignoreMutation({
@@ -222,29 +228,129 @@ export class DOMObserver {
     }
   }
 
+  /**
+   * 处理 childList、attributes、characterData 三种类型的变更
+   * @param mut 一条变更记录
+   * @param added 用来记录mutation增加的节点，是传过来的闭包
+   */
+  registerMutation(mut: MutationRecord, added: Node[]) {
+    // Ignore mutations inside nodes that were already noted as inserted
+    if (added.indexOf(mut.target) > -1) return null;
+    const desc = this.view.docView.nearestDesc(mut.target);
+    if (
+      mut.type === 'attributes' &&
+      (desc == this.view.docView ||
+        mut.attributeName == 'contenteditable' ||
+        // Firefox sometimes fires spurious events for null/empty styles
+        (mut.attributeName == 'style' &&
+          !mut.oldValue &&
+          !(mut.target as HTMLElement).getAttribute('style')))
+    ) {
+      return null;
+    }
+    if (!desc || desc.ignoreMutation(mut)) return null;
+
+    if (mut.type == 'childList') {
+      for (let i = 0; i < mut.addedNodes.length; i++) {
+        added.push(mut.addedNodes[i]);
+      }
+      if (
+        desc.contentDOM &&
+        desc.contentDOM != desc.dom &&
+        !desc.contentDOM.contains(mut.target)
+      ) {
+        return { from: desc.posBefore, to: desc.posAfter };
+      }
+      let prev = mut.previousSibling;
+      let next = mut.nextSibling;
+      if (browser.ie && browser.ie_version <= 11 && mut.addedNodes.length) {
+        // IE11 gives us incorrect next/prev siblings for some
+        // insertions, so if there are added nodes, recompute those
+        for (let i = 0; i < mut.addedNodes.length; i++) {
+          let { previousSibling, nextSibling } = mut.addedNodes[i];
+          if (
+            !previousSibling ||
+            Array.prototype.indexOf.call(mut.addedNodes, previousSibling) < 0
+          )
+            prev = previousSibling;
+          if (
+            !nextSibling ||
+            Array.prototype.indexOf.call(mut.addedNodes, nextSibling) < 0
+          )
+            next = nextSibling;
+        }
+      }
+
+      const fromOffset =
+        prev && prev.parentNode == mut.target ? domIndex(prev) + 1 : 0;
+      const from = desc.localPosFromDOM(mut.target, fromOffset, -1);
+      const toOffset =
+        next && next.parentNode == mut.target
+          ? domIndex(next)
+          : mut.target.childNodes.length;
+      const to = desc.localPosFromDOM(mut.target, toOffset, 1);
+      return { from, to };
+    } else if (mut.type == 'attributes') {
+      return {
+        from: desc.posAtStart - desc.border,
+        to: desc.posAtEnd + desc.border,
+      };
+    } else {
+      // "characterData"
+      return {
+        from: desc.posAtStart,
+        to: desc.posAtEnd,
+        // An event was generated for a text change that didn't change
+        // any text. Mark the dom change to fall back to assuming the
+        // selection was typed over with an identical value if it can't
+        // find another change.
+        typeOver: mut.target.nodeValue == mut.oldValue,
+      };
+    }
+  }
+
+  flushSoon() {
+    if (this.flushingSoon < 0)
+      this.flushingSoon = window.setTimeout(() => {
+        this.flushingSoon = -1;
+        this.flush();
+      }, 20);
+  }
+
+  forceFlush() {
+    if (this.flushingSoon > -1) {
+      window.clearTimeout(this.flushingSoon);
+      this.flushingSoon = -1;
+      this.flush();
+    }
+  }
+
+  /** selectionchange事件会执行本方法，会执行handleDOMChange即readDOMChange */
   flush() {
-    let { view } = this;
+    const { view } = this;
     if (!view.docView || this.flushingSoon > -1) return;
     let mutations = this.observer ? this.observer.takeRecords() : [];
     if (this.queue.length) {
       mutations = this.queue.concat(mutations);
       this.queue.length = 0;
     }
-
-    let sel = view.domSelection();
-    let newSel =
+    // 获取浏览器原生的Selection对象
+    const sel = view.domSelection();
+    const hasNewSel =
       !this.suppressingSelectionUpdates &&
       !this.currentSelection.eq(sel) &&
       hasFocusAndSelection(view) &&
       !this.ignoreSelectionChange(sel);
+    console.log(';;sel-chg ', hasNewSel, mutations.length, mutations);
 
-    let from = -1,
-      to = -1,
-      typeOver = false,
-      added: Node[] = [];
+    let from = -1;
+    let to = -1;
+    let typeOver = false;
+    const added: Node[] = [];
     if (view.editable) {
+      // 遍历mutations，确定本次变更对应的编辑器数据模型中的范围
       for (let i = 0; i < mutations.length; i++) {
-        let result = this.registerMutation(mutations[i], added);
+        const result = this.registerMutation(mutations[i], added);
         if (result) {
           from = from < 0 ? result.from : Math.min(result.from, from);
           to = to < 0 ? result.to : Math.max(result.to, to);
@@ -269,105 +375,36 @@ export class DOMObserver {
     // the state
     if (
       from < 0 &&
-      newSel &&
+      hasNewSel &&
       view.input.lastFocus > Date.now() - 200 &&
       view.input.lastTouch < Date.now() - 300 &&
       selectionCollapsed(sel) &&
       (readSel = selectionFromDOM(view)) &&
       readSel.eq(Selection.near(view.state.doc.resolve(0), 1))
     ) {
+      // /若选区在pm-doc的开头
       view.input.lastFocus = 0;
       selectionToDOM(view);
       this.currentSelection.set(sel);
       view.scrollToSelection();
-    } else if (from > -1 || newSel) {
+    } else if (from > -1 || hasNewSel) {
       if (from > -1) {
         view.docView.markDirty(from, to);
         checkCSS(view);
       }
       this.handleDOMChange(from, to, typeOver, added);
-      if (view.docView && view.docView.dirty) view.updateState(view.state);
-      else if (!this.currentSelection.eq(sel)) selectionToDOM(view);
-      this.currentSelection.set(sel);
-    }
-  }
-
-  registerMutation(mut: MutationRecord, added: Node[]) {
-    // Ignore mutations inside nodes that were already noted as inserted
-    if (added.indexOf(mut.target) > -1) return null;
-    let desc = this.view.docView.nearestDesc(mut.target);
-    if (
-      mut.type == 'attributes' &&
-      (desc == this.view.docView ||
-        mut.attributeName == 'contenteditable' ||
-        // Firefox sometimes fires spurious events for null/empty styles
-        (mut.attributeName == 'style' &&
-          !mut.oldValue &&
-          !(mut.target as HTMLElement).getAttribute('style')))
-    )
-      return null;
-    if (!desc || desc.ignoreMutation(mut)) return null;
-
-    if (mut.type == 'childList') {
-      for (let i = 0; i < mut.addedNodes.length; i++)
-        added.push(mut.addedNodes[i]);
-      if (
-        desc.contentDOM &&
-        desc.contentDOM != desc.dom &&
-        !desc.contentDOM.contains(mut.target)
-      )
-        return { from: desc.posBefore, to: desc.posAfter };
-      let prev = mut.previousSibling,
-        next = mut.nextSibling;
-      if (browser.ie && browser.ie_version <= 11 && mut.addedNodes.length) {
-        // IE11 gives us incorrect next/prev siblings for some
-        // insertions, so if there are added nodes, recompute those
-        for (let i = 0; i < mut.addedNodes.length; i++) {
-          let { previousSibling, nextSibling } = mut.addedNodes[i];
-          if (
-            !previousSibling ||
-            Array.prototype.indexOf.call(mut.addedNodes, previousSibling) < 0
-          )
-            prev = previousSibling;
-          if (
-            !nextSibling ||
-            Array.prototype.indexOf.call(mut.addedNodes, nextSibling) < 0
-          )
-            next = nextSibling;
-        }
+      if (view.docView && view.docView.dirty) {
+        view.updateState(view.state);
+      } else if (!this.currentSelection.eq(sel)) {
+        selectionToDOM(view);
       }
-      let fromOffset =
-        prev && prev.parentNode == mut.target ? domIndex(prev) + 1 : 0;
-      let from = desc.localPosFromDOM(mut.target, fromOffset, -1);
-      let toOffset =
-        next && next.parentNode == mut.target
-          ? domIndex(next)
-          : mut.target.childNodes.length;
-      let to = desc.localPosFromDOM(mut.target, toOffset, 1);
-      return { from, to };
-    } else if (mut.type == 'attributes') {
-      return {
-        from: desc.posAtStart - desc.border,
-        to: desc.posAtEnd + desc.border,
-      };
-    } else {
-      // "characterData"
-      return {
-        from: desc.posAtStart,
-        to: desc.posAtEnd,
-        // An event was generated for a text change that didn't change
-        // any text. Mark the dom change to fall back to assuming the
-        // selection was typed over with an identical value if it can't
-        // find another change.
-        typeOver: mut.target.nodeValue == mut.oldValue,
-      };
+      this.currentSelection.set(sel);
     }
   }
 }
 
-let cssChecked: WeakMap<EditorView, null> = new WeakMap();
+const cssChecked: WeakMap<EditorView, null> = new WeakMap();
 let cssCheckWarned: boolean = false;
-
 function checkCSS(view: EditorView) {
   if (cssChecked.has(view)) return;
   cssChecked.set(view, null);
@@ -379,7 +416,8 @@ function checkCSS(view: EditorView) {
     view.requiresGeckoHackNode = browser.gecko;
     if (cssCheckWarned) return;
     console['warn'](
-      "ProseMirror expects the CSS white-space property to be set, preferably to 'pre-wrap'. It is recommended to load style/prosemirror.css from the prosemirror-view package.",
+      `ProseMirror expects the CSS white-space property to be set, preferably to 'pre-wrap'.
+      It is recommended to load style/prosemirror.css from the prosemirror-view package.`,
     );
     cssCheckWarned = true;
   }

@@ -68,15 +68,18 @@ export const __endComposition = endComposition;
  * [props](#view.DirectEditorProps).
  */
 export class EditorView {
+  /**  */
   private _props: DirectEditorProps;
+  /**  */
   private directPlugins: readonly Plugin[];
-  /** */
+  private prevDirectPlugins: readonly Plugin[] = [];
+  /**  */
   private _root: Document | ShadowRoot | null = null;
+  private mounted = false;
   /// @internal
   focused = false;
   /** Kludge used to work around a Chrome bug @internal */
   trackWrites: DOMNode | null = null;
-  private mounted = false;
   /// @internal
   markCursor: readonly Mark[] | null = null;
   /// @internal
@@ -85,13 +88,12 @@ export class EditorView {
   nodeViews: NodeViewSet;
   /// @internal
   lastSelectedViewDesc: ViewDesc | undefined = undefined;
-  /// @internal
+  /** @internal a view desc for the top-level document node  */
   docView: NodeViewDesc;
-  /// @internal
+  /** @internal  */
   input = new InputState();
-  private prevDirectPlugins: readonly Plugin[] = [];
   private pluginViews: PluginView[] = [];
-  /// @internal
+  /** @internal   */
   domObserver!: DOMObserver;
   /// Holds `true` when a hack node is needed in Firefox to prevent the
   /// [space is eaten issue](https://github.com/ProseMirror/prosemirror/issues/651)
@@ -106,7 +108,8 @@ export class EditorView {
    * or an object whose `mount` property holds the node to use as the
    * document container. If it is `null`, the editor will not be
    * added to the document.
-   * - place用来确定`this.dom`的值
+   * - place.appendChild(this.dom)
+   * - 创建全局单例的DOMObserver对象
    */
   constructor(
     place:
@@ -126,7 +129,6 @@ export class EditorView {
     this.dom =
       (place && (place as { mount: HTMLElement }).mount) ||
       document.createElement('div');
-
     if (place) {
       if ((place as DOMNode).appendChild) {
         (place as DOMNode).appendChild(this.dom);
@@ -136,6 +138,7 @@ export class EditorView {
         this.mounted = true;
       }
     }
+    this.dom.classList.add('idEditViewDom');
 
     this.editable = getEditable(this);
     updateCursorWrapper(this);
@@ -157,7 +160,9 @@ export class EditorView {
   }
 
   /** An editable DOM node containing the document. (You probably
-   * should not directly interfere with its content.) */
+   * should not directly interfere with its content.)
+   * - editor最外层自动创建的div，默认会挂载到EditorView参数place.appendChild(this.dom)
+   */
   readonly dom: HTMLElement;
 
   /** Indicates whether the editor is currently [editable](#view.EditorProps.editable). */
@@ -361,11 +366,13 @@ export class EditorView {
     }
   }
 
+  /** 遍历this.pluginViews，调用 view.destroy() */
   private destroyPluginViews() {
-    let view;
+    let view: PluginView | undefined;
     while ((view = this.pluginViews.pop())) if (view.destroy) view.destroy();
   }
 
+  /** 重新创建或直接更新 this.pluginViews */
   private updatePluginViews(prevState?: EditorState) {
     if (
       !prevState ||
@@ -375,7 +382,7 @@ export class EditorView {
       this.prevDirectPlugins = this.directPlugins;
       this.destroyPluginViews();
       for (let i = 0; i < this.directPlugins.length; i++) {
-        let plugin = this.directPlugins[i];
+        const plugin = this.directPlugins[i];
         if (plugin.spec.view) this.pluginViews.push(plugin.spec.view(this));
       }
       for (let i = 0; i < this.state.plugins.length; i++) {
@@ -384,7 +391,7 @@ export class EditorView {
       }
     } else {
       for (let i = 0; i < this.pluginViews.length; i++) {
-        let pluginView = this.pluginViews[i];
+        const pluginView = this.pluginViews[i];
         if (pluginView.update) pluginView.update(this, prevState);
       }
     }
@@ -609,6 +616,7 @@ export class EditorView {
    * [`updateState`](#view.EditorView.updateState) with the result.
    * This method is bound to the view instance, so that it can be
    * easily passed around.
+   * - 若提供了dispatchTransaction则执行，否则会执行view.updateState
    */
   dispatch(tr: Transaction) {
     const dispatchTransaction = this._props.dispatchTransaction;
@@ -619,7 +627,7 @@ export class EditorView {
     }
   }
 
-  /// @internal
+  /** @internal 一般是 document.getSelection() 的返回值  */
   domSelection(): DOMSelection {
     return (this.root as Document).getSelection()!;
   }
@@ -652,7 +660,7 @@ function computeDocDeco(view: EditorView) {
 
 function updateCursorWrapper(view: EditorView) {
   if (view.markCursor) {
-    let dom = document.createElement('img');
+    const dom = document.createElement('img');
     dom.className = 'ProseMirror-separator';
     dom.setAttribute('mark-placeholder', 'true');
     dom.setAttribute('alt', '');
@@ -668,25 +676,28 @@ function updateCursorWrapper(view: EditorView) {
   }
 }
 
-/** 任意一个插件都可以决定编辑器是否处于允许编辑状态 */
+/** 任意一个插件都可以通过editable属性决定编辑器是否处于允许编辑状态 */
 function getEditable(view: EditorView) {
   return !view.someProp('editable', (value) => value(view.state) === false);
 }
 
 function selectionContextChanged(sel1: Selection, sel2: Selection) {
-  let depth = Math.min(
+  const depth = Math.min(
     sel1.$anchor.sharedDepth(sel1.head),
     sel2.$anchor.sharedDepth(sel2.head),
   );
   return sel1.$anchor.start(depth) != sel2.$anchor.start(depth);
 }
 
+/** 收集直接提供或通过plugins提供的nodeViews、markViews */
 function buildNodeViews(view: EditorView) {
-  let result: NodeViewSet = Object.create(null);
+  const result: NodeViewSet = Object.create(null);
   function add(obj: NodeViewSet) {
-    for (let prop in obj)
-      if (!Object.prototype.hasOwnProperty.call(result, prop))
+    for (const prop in obj) {
+      if (!Object.prototype.hasOwnProperty.call(result, prop)) {
         result[prop] = obj[prop];
+      }
+    }
   }
   view.someProp('nodeViews', add);
   view.someProp('markViews', add);
@@ -694,9 +705,9 @@ function buildNodeViews(view: EditorView) {
 }
 
 function changedNodeViews(a: NodeViewSet, b: NodeViewSet) {
-  let nA = 0,
-    nB = 0;
-  for (let prop in a) {
+  let nA = 0;
+  let nB = 0;
+  for (const prop in a) {
     if (a[prop] != b[prop]) return true;
     nA++;
   }
@@ -709,10 +720,11 @@ function checkStateComponent(plugin: Plugin) {
     plugin.spec.state ||
     plugin.spec.filterTransaction ||
     plugin.spec.appendTransaction
-  )
+  ) {
     throw new RangeError(
       'Plugins passed directly to the view must not have a state component',
     );
+  }
 }
 
 /** The type of function [provided](#view.ViewProps.nodeViews) to
@@ -789,7 +801,7 @@ export interface EditorProps<P = any> {
     event: KeyboardEvent,
   ) => boolean | void;
 
-  /// Handler for `keypress` events.
+  /** Handler for `keypress` events. */
   handleKeyPress?: (
     this: P,
     view: EditorView,
@@ -953,6 +965,11 @@ export interface EditorProps<P = any> {
    */
   transformPasted?: (this: P, slice: Slice) => Slice;
 
+  /** Can be used to transform copied or cut content before it is
+   * serialized to the clipboard.
+   */
+  transformCopied?: (this: P, slice: Slice) => Slice;
+
   /** Allows you to pass custom rendering and behavior logic for
    * nodes. Should map node names to constructor functions that
    * produce a [`NodeView`](#view.NodeView) object implementing the
@@ -987,19 +1004,21 @@ export interface EditorProps<P = any> {
    */
   markViews?: { [mark: string]: MarkViewConstructor };
 
-  /// The DOM serializer to use when putting content onto the
-  /// clipboard. If not given, the result of
-  /// [`DOMSerializer.fromSchema`](#model.DOMSerializer^fromSchema)
-  /// will be used. This object will only have its
-  /// [`serializeFragment`](#model.DOMSerializer.serializeFragment)
-  /// method called, and you may provide an alternative object type
-  /// implementing a compatible method.
+  /** The DOM serializer to use when putting content onto the
+   * clipboard. If not given, the result of
+   * [`DOMSerializer.fromSchema`](#model.DOMSerializer^fromSchema)
+   * will be used. This object will only have its
+   * [`serializeFragment`](#model.DOMSerializer.serializeFragment)
+   * method called, and you may provide an alternative object type
+   * implementing a compatible method.
+   */
   clipboardSerializer?: DOMSerializer;
 
-  /// A function that will be called to get the text for the current
-  /// selection when copying text to the clipboard. By default, the
-  /// editor will use [`textBetween`](#model.Node.textBetween) on the
-  /// selected range.
+  /** A function that will be called to get the text for the current
+   * selection when copying text to the clipboard. By default, the
+   * editor will use [`textBetween`](#model.Node.textBetween) on the
+   * selected range.
+   */
   clipboardTextSerializer?: (this: P, content: Slice) => string;
 
   /** A set of [document decorations](#view.Decoration) to show in the
@@ -1046,6 +1065,7 @@ export interface EditorProps<P = any> {
 
 /** The props object given directly to the editor view supports some
  * fields that can't be used in plugins:
+ * - 比`EditorProps`多了3个成员：state、plugins、dispatchTransaction
  */
 export interface DirectEditorProps extends EditorProps {
   /** The current state of the editor. */

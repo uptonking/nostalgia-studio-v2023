@@ -84,10 +84,11 @@ export function scrollRectIntoView(
   }
 }
 
-// Store the scroll position of the editor's parent nodes, along with
-// the top position of an element near the top of the editor, which
-// will be used to make sure the visible viewport remains stable even
-// when the size of the content above changes.
+/** Store the scroll position of the editor's parent nodes, along with
+ * the top position of an element near the top of the editor, which
+ * will be used to make sure the visible viewport remains stable even
+ * when the size of the content above changes.
+ */
 export function storeScrollPos(view: EditorView): {
   refDOM: HTMLElement;
   refTop: number;
@@ -129,8 +130,9 @@ function scrollStack(
   return stack;
 }
 
-// Reset the scroll position of the editor's parent nodes to that what
-// it was before, when storeScrollPos was called.
+/** Reset the scroll position of the editor's parent nodes to that what
+ * it was before, when storeScrollPos was called.
+ */
 export function resetScrollPos({
   refDOM,
   refTop,
@@ -156,8 +158,9 @@ function restoreScrollStack(
 }
 
 let preventScrollSupported: false | null | { preventScroll: boolean } = null;
-// Feature-detects support for .focus({preventScroll: true}), and uses
-// a fallback kludge when not supported.
+/** Feature-detects support for .focus({preventScroll: true}), and uses
+ * a fallback kludge when not supported.
+ */
 export function focusPreventScroll(dom: HTMLElement) {
   if ((dom as any).setActive) return (dom as any).setActive(); // in IE
   if (preventScrollSupported) return dom.focus(preventScrollSupported);
@@ -478,8 +481,9 @@ function singleRect(target: HTMLElement | Range, bias: number): DOMRect {
 
 const BIDI = /[\u0590-\u05f4\u0600-\u06ff\u0700-\u08ac]/;
 
-// Given a position in the document model, get a bounding box of the
-// character at that position, relative to the window.
+/** Given a position in the document model, get a bounding box of the
+ * character at that position, relative to the window.
+ */
 export function coordsAtPos(view: EditorView, pos: number, side: number): Rect {
   let { node, offset, atom } = view.docView.domFromPos(pos, side < 0 ? -1 : 1);
 
@@ -624,8 +628,9 @@ function withFlushedState<T>(
   }
 }
 
-// Whether vertical position motion in a given direction
-// from a position would leave a text block.
+/** Whether vertical position motion in a given direction
+ * from a position would leave a text block.
+ */
 function endOfTextblockVertical(
   view: EditorView,
   state: EditorState,

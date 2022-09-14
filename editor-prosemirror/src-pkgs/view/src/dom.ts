@@ -17,9 +17,10 @@ export const parentNode = function (node: Node) {
 
 let reusedRange: Range | null = null;
 
-// Note that this will always return the same range, because DOM range
-// objects are every expensive, and keep slowing down subsequent DOM
-// updates, for some reason.
+/** Note that this will always return the same range, because DOM range
+ * objects are every expensive, and keep slowing down subsequent DOM
+ * updates, for some reason.
+ */
 export const textRange = function (node: Text, from?: number, to?: number) {
   let range = reusedRange || (reusedRange = document.createRange());
   range.setEnd(node, to == null ? node.nodeValue!.length : to);
@@ -27,9 +28,10 @@ export const textRange = function (node: Text, from?: number, to?: number) {
   return range;
 };
 
-// Scans forward and backward through DOM positions equivalent to the
-// given one to see if the two are in the same place (i.e. after a
-// text node vs at the end of that text node)
+/** Scans forward and backward through DOM positions equivalent to the
+ * given one to see if the two are in the same place (i.e. after a
+ * text node vs at the end of that text node)
+ */
 export const isEquivalentPosition = function (
   node: Node,
   off: number,
@@ -111,14 +113,16 @@ function hasBlockDesc(dom: Node) {
  * - Work around Chrome issue https://bugs.chromium.org/p/chromium/issues/detail?id=447523
  */
 export const selectionCollapsed = function (domSel: Selection) {
+  /** 根据浏览器选区判断 */
   let collapsed = domSel.isCollapsed;
   if (
     collapsed &&
     browser.chrome &&
     domSel.rangeCount &&
     !domSel.getRangeAt(0).collapsed
-  )
+  ) {
     collapsed = false;
+  }
   return collapsed;
 };
 

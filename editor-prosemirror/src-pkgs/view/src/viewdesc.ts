@@ -37,84 +37,79 @@ declare global {
  * Objects returned as node views must conform to this interface.
  */
 export interface NodeView {
-  /// The outer DOM node that represents the document node.
+  /** The outer DOM node that represents the document node. */
   dom: DOMNode;
 
-  /// The DOM node that should hold the node's content. Only meaningful
-  /// if the node view also defines a `dom` property and if its node
-  /// type is not a leaf node type. When this is present, ProseMirror
-  /// will take care of rendering the node's children into it. When it
-  /// is not present, the node view itself is responsible for rendering
-  /// (or deciding not to render) its child nodes.
+  /** The DOM node that should hold the node's content. Only meaningful
+   * if the node view also defines a `dom` property and if its node
+   * type is not a leaf node type. When this is present, ProseMirror
+   * will take care of rendering the node's children into it. When it
+   * is not present, the node view itself is responsible for rendering
+   * (or deciding not to render) its child nodes.
+   */
   contentDOM?: HTMLElement | null;
 
-  /// When given, this will be called when the view is updating itself.
-  /// It will be given a node (possibly of a different type), an array
-  /// of active decorations around the node (which are automatically
-  /// drawn, and the node view may ignore if it isn't interested in
-  /// them), and a [decoration source](#view.DecorationSource) that
-  /// represents any decorations that apply to the content of the node
-  /// (which again may be ignored). It should return true if it was
-  /// able to update to that node, and false otherwise. If the node
-  /// view has a `contentDOM` property (or no `dom` property), updating
-  /// its child nodes will be handled by ProseMirror.
+  /** When given, this will be called when the view is updating itself.
+   * It will be given a node (possibly of a different type), an array
+   * of active decorations around the node (which are automatically
+   * drawn, and the node view may ignore if it isn't interested in
+   * them), and a [decoration source](#view.DecorationSource) that
+   * represents any decorations that apply to the content of the node
+   * (which again may be ignored). It should return true if it was
+   * able to update to that node, and false otherwise. If the node
+   * view has a `contentDOM` property (or no `dom` property), updating
+   * its child nodes will be handled by ProseMirror.
+   */
   update?: (
     node: Node,
     decorations: readonly Decoration[],
     innerDecorations: DecorationSource,
   ) => boolean;
 
-  /// Can be used to override the way the node's selected status (as a
-  /// node selection) is displayed.
+  /** Can be used to override the way the node's selected status (as a
+   * node selection) is displayed.
+   */
   selectNode?: () => void;
 
-  /// When defining a `selectNode` method, you should also provide a
-  /// `deselectNode` method to remove the effect again.
+  /** When defining a `selectNode` method, you should also provide a
+   * `deselectNode` method to remove the effect again.
+   */
   deselectNode?: () => void;
 
-  /// This will be called to handle setting the selection inside the
-  /// node. The `anchor` and `head` positions are relative to the start
-  /// of the node. By default, a DOM selection will be created between
-  /// the DOM positions corresponding to those positions, but if you
-  /// override it you can do something else.
+  /** This will be called to handle setting the selection inside the
+   * node. The `anchor` and `head` positions are relative to the start
+   * of the node. By default, a DOM selection will be created between
+   * the DOM positions corresponding to those positions, but if you
+   * override it you can do something else.
+   */
   setSelection?: (
     anchor: number,
     head: number,
     root: Document | ShadowRoot,
   ) => void;
 
-  /// Can be used to prevent the editor view from trying to handle some
-  /// or all DOM events that bubble up from the node view. Events for
-  /// which this returns true are not handled by the editor.
+  /** Can be used to prevent the editor view from trying to handle some
+   * or all DOM events that bubble up from the node view. Events for
+   * which this returns true are not handled by the editor.
+   */
   stopEvent?: (event: Event) => boolean;
 
-  /// Called when a DOM
-  /// [mutation](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
-  /// or a selection change happens within the view. When the change is
-  /// a selection change, the record will have a `type` property of
-  /// `"selection"` (which doesn't occur for native mutation records).
-  /// Return false if the editor should re-read the selection or
-  /// re-parse the range around the mutation, true if it can safely be
-  /// ignored.
+  /** Called when a DOM
+   * [mutation](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver)
+   * or a selection change happens within the view. When the change is
+   * a selection change, the record will have a `type` property of
+   * `"selection"` (which doesn't occur for native mutation records).
+   * Return false if the editor should re-read the selection or
+   * re-parse the range around the mutation, true if it can safely be
+   * ignored.
+   */
   ignoreMutation?: (mutation: MutationRecord) => boolean;
 
-  /// Called when the node view is removed from the editor or the whole
-  /// editor is destroyed. (Not available for marks.)
+  /** Called when the node view is removed from the editor or the whole
+   * editor is destroyed. (Not available for marks.)
+   */
   destroy?: () => void;
 }
-
-// View descriptions are data structures that describe the DOM that is
-// used to represent the editor's content. They are used for:
-//
-// - Incremental redrawing when the document changes
-//
-// - Figuring out what part of the document a given DOM position
-//   corresponds to
-//
-// - Wiring in custom implementations of the editing interface for a
-//   given node
-//
-// They form a doubly-linked mutable tree, starting at `view.docView`.
 
 const NOT_DIRTY = 0,
   CHILD_DIRTY = 1,
@@ -127,10 +122,19 @@ const NOT_DIRTY = 0,
  * - 在内部描述视图的抽象，可看作是dom与编辑器state的中间层，相当于是vdom
  * - ViewDesc会挂载到相应的 dom 的 pmViewDesc 属性上，并保存相应的 dom 和 node
  * - viewDesc主要提供了匹配节点，获取索引，状态标记等等方法，帮助 prosemirror 更好地处理 state 与 dom 的状态同步
- * - 像是一个双向链表。
+ *
+ * View descriptions are data structures that describe the DOM that is
+ * used to represent the editor's content. They are used for:
+ *
+ * - Incremental redrawing when the document changes
+ * - Figuring out what part of the document a given DOM position
+ *   corresponds to
+ * - Wiring in custom implementations of the editing interface for a
+ *   given node
+ * - They form a doubly-linked mutable tree, starting at `view.docView`.
  */
 export class ViewDesc {
-  /** 如果一个视图描述节点需要更新时，它会为自己设置一个dirty属性，表示需要更新。  */
+  /** 默认值0即无需更新；如果需要更新时，它会为自己设置一个dirty属性值  */
   dirty = NOT_DIRTY;
   node!: Node | null;
 
@@ -149,13 +153,11 @@ export class ViewDesc {
      */
     public contentDOM: HTMLElement | null,
   ) {
-    // An expando property on the DOM node provides a link back to its
-    // description.
+    // expando property on the DOM node provides a link back to its description.
     dom.pmViewDesc = this;
   }
 
-  // Used to check whether a given description corresponds to a
-  // widget/mark/node.
+  /** Used to check whether a given description corresponds to a widget/mark/node. */
   matchesWidget(widget: Decoration) {
     return false;
   }
@@ -174,29 +176,31 @@ export class ViewDesc {
     return false;
   }
 
-  // When parsing in-editor content (in domchange.js), we allow
-  // descriptions to determine the parse rules that should be used to
-  // parse them.
+  /** When parsing in-editor content (in domchange.js), we allow
+   * descriptions to determine the parse rules that should be used to
+   * parse them.
+   */
   parseRule(): ParseRule | null {
     return null;
   }
 
-  // Used by the editor's event handler to ignore events that come
-  // from certain descs.
+  /** Used by the editor's event handler to ignore events that come
+   * from certain descs.
+   */
   stopEvent(event: Event) {
     return false;
   }
 
-  // The size of the content represented by this desc.
+  /** The size of the content represented by this desc. */
   get size() {
     let size = 0;
-    for (let i = 0; i < this.children.length; i++)
+    for (let i = 0; i < this.children.length; i++) {
       size += this.children[i].size;
+    }
     return size;
   }
 
-  // For block nodes, this represents the space taken up by their
-  // start/end tokens.
+  /** For block nodes, this represents the space taken up by their start/end tokens. */
   get border() {
     return 0;
   }
@@ -239,7 +243,8 @@ export class ViewDesc {
       this.contentDOM.contains(dom.nodeType == 1 ? dom : dom.parentNode)
     ) {
       if (bias < 0) {
-        let domBefore, desc: ViewDesc | undefined;
+        let domBefore: ChildNode;
+        let desc: ViewDesc | undefined;
         if (dom == this.contentDOM) {
           domBefore = dom.childNodes[offset - 1];
         } else {
@@ -303,8 +308,7 @@ export class ViewDesc {
     return (atEnd == null ? bias > 0 : atEnd) ? this.posAtEnd : this.posAtStart;
   }
 
-  /** Scan up the dom finding the first desc that is a descendant of
-   * this one.
+  /** Scan up the dom finding the first desc that is a descendant of this one.
    */
   nearestDesc(dom: DOMNode, onlyNodes: boolean = false) {
     for (
@@ -312,8 +316,8 @@ export class ViewDesc {
       cur;
       cur = cur.parentNode
     ) {
-      let desc = this.getDesc(cur),
-        nodeDOM;
+      const desc = this.getDesc(cur);
+      let nodeDOM: DOMNode;
       if (desc && (!onlyNodes || desc.node)) {
         // If dom is outside of this desc's nodeDOM, don't count it.
         if (
@@ -322,17 +326,22 @@ export class ViewDesc {
           !(nodeDOM.nodeType == 1
             ? nodeDOM.contains(dom.nodeType == 1 ? dom : dom.parentNode)
             : nodeDOM == dom)
-        )
+        ) {
           first = false;
-        else return desc;
+        } else {
+          return desc;
+        }
       }
     }
   }
 
+  /** 从参数对应的viewDesc一直向parent方向查找，找到相等的viewDesc */
   getDesc(dom: DOMNode) {
-    let desc = dom.pmViewDesc;
-    for (let cur: ViewDesc | undefined = desc; cur; cur = cur.parent)
-      if (cur == this) return desc;
+    const desc = dom.pmViewDesc;
+    for (let curr: ViewDesc | undefined = desc; curr; curr = curr.parent) {
+      if (curr == this) return desc;
+    }
+    return undefined;
   }
 
   /** 从dom节点往外层找，找到 */
@@ -425,8 +434,7 @@ export class ViewDesc {
     }
   }
 
-  // Used to find a DOM range in a single parent for a given changed
-  // range.
+  /** Used to find a DOM range in a single parent for a given changed range. */
   parseRange(
     from: number,
     to: number,
@@ -514,11 +522,12 @@ export class ViewDesc {
     return node.childNodes[offset];
   }
 
-  // View descs are responsible for setting any selection that falls
-  // entirely inside of them, so that custom implementations can do
-  // custom things with the selection. Note that this falls apart when
-  // a selection starts in such a node and ends in another, in which
-  // case we just use whatever domFromPos produces as a best effort.
+  /** View descs are responsible for setting any selection that falls
+   * entirely inside of them, so that custom implementations can do
+   * custom things with the selection. Note that this falls apart when
+   * a selection starts in such a node and ends in another, in which
+   * case we just use whatever domFromPos produces as a best effort.
+   */
   setSelection(
     anchor: number,
     head: number,
@@ -526,8 +535,8 @@ export class ViewDesc {
     force = false,
   ): void {
     // If the selection falls entirely in a child, give it to that child
-    let from = Math.min(anchor, head),
-      to = Math.max(anchor, head);
+    let from = Math.min(anchor, head);
+    let to = Math.max(anchor, head);
     for (let i = 0, offset = 0; i < this.children.length; i++) {
       let child = this.children[i],
         end = offset + child.size;
@@ -656,17 +665,18 @@ export class ViewDesc {
     );
   }
 
-  // Remove a subtree of the element tree that has been touched
-  // by a DOM change, so that the next update will redraw it.
+  /** Remove a subtree of the element tree that has been touched
+   * by a DOM change, so that the next update will redraw it.
+   */
   markDirty(from: number, to: number) {
     for (let offset = 0, i = 0; i < this.children.length; i++) {
-      let child = this.children[i],
-        end = offset + child.size;
+      const child = this.children[i];
+      const end = offset + child.size;
       if (
         offset == end ? from <= end && to >= offset : from < end && to > offset
       ) {
-        let startInside = offset + child.border,
-          endInside = end - child.border;
+        const startInside = offset + child.border;
+        const endInside = end - child.border;
         if (from >= startInside && to <= endInside) {
           this.dirty =
             from == offset || to == end ? CONTENT_DIRTY : CHILD_DIRTY;
@@ -674,9 +684,11 @@ export class ViewDesc {
             from == startInside &&
             to == endInside &&
             (child.contentLost || child.dom.parentNode != this.contentDOM)
-          )
+          ) {
             child.dirty = NODE_DIRTY;
-          else child.markDirty(from - startInside, to - startInside);
+          } else {
+            child.markDirty(from - startInside, to - startInside);
+          }
           return;
         } else {
           child.dirty =
@@ -689,6 +701,7 @@ export class ViewDesc {
       }
       offset = end;
     }
+
     this.dirty = CONTENT_DIRTY;
   }
 
@@ -1669,7 +1682,7 @@ function sameOuterDeco(a: readonly Decoration[], b: readonly Decoration[]) {
 
 /** Remove a DOM node and return its next sibling. */
 function rm(dom: DOMNode) {
-  let next = dom.nextSibling;
+  const next = dom.nextSibling;
   dom.parentNode!.removeChild(dom);
   return next;
 }
@@ -1679,13 +1692,12 @@ function rm(dom: DOMNode) {
  * - 采用深度遍历的方式来将视图描述同步到文档节点树
  */
 class ViewTreeUpdater {
-  // Index into `this.top`'s child array, represents the current
-  // update position.
+  /** Index into `this.top`'s child array, represents the current update position.
+   */
   index = 0;
-  // When entering a mark, the current top and index are pushed
-  // onto this.
+  /** When entering a mark, the current top and index are pushed onto this. */
   stack: (ViewDesc | number)[] = [];
-  // Tracks whether anything was changed
+  /** Tracks whether anything was changed */
   changed = false;
   preMatch: {
     index: number;
@@ -1703,8 +1715,9 @@ class ViewTreeUpdater {
     this.preMatch = preMatch(top.node.content, top);
   }
 
-  // Destroy and remove the children between the given indices in
-  // `this.top`.
+  /** Destroy and remove the children between the given indices in
+   * `this.top`.
+   */
   destroyBetween(start: number, end: number) {
     if (start == end) return;
     for (let i = start; i < end; i++) this.top.children[i].destroy();
@@ -1712,7 +1725,7 @@ class ViewTreeUpdater {
     this.changed = true;
   }
 
-  // Destroy all remaining children in `this.top`.
+  /** Destroy all remaining children in `this.top`. */
   destroyRest() {
     this.destroyBetween(this.index, this.top.children.length);
   }
@@ -1832,9 +1845,12 @@ class ViewTreeUpdater {
     view: EditorView,
   ) {
     let child = this.top.children[index] as NodeViewDesc;
-    if (child.dirty == NODE_DIRTY && child.dom == child.contentDOM)
+    if (child.dirty == NODE_DIRTY && child.dom == child.contentDOM) {
       child.dirty = CONTENT_DIRTY;
-    if (!child.update(node, outerDeco, innerDeco, view)) return false;
+    }
+    if (!child.update(node, outerDeco, innerDeco, view)) {
+      return false;
+    }
     this.destroyBetween(this.index, index);
     this.index++;
     return true;
@@ -1842,16 +1858,19 @@ class ViewTreeUpdater {
 
   findIndexWithChild(domNode: DOMNode) {
     for (;;) {
-      let parent = domNode.parentNode;
+      const parent = domNode.parentNode;
       if (!parent) return -1;
+
       if (parent == this.top.contentDOM) {
-        let desc = domNode.pmViewDesc;
-        if (desc)
+        const desc = domNode.pmViewDesc;
+        if (desc) {
           for (let i = this.index; i < this.top.children.length; i++) {
             if (this.top.children[i] == desc) return i;
           }
+        }
         return -1;
       }
+
       domNode = parent;
     }
   }
@@ -1937,8 +1956,7 @@ class ViewTreeUpdater {
     }
   }
 
-  // Make sure a textblock looks and behaves correctly in
-  // contentEditable.
+  /** Make sure a textblock looks and behaves correctly in contentEditable. */
   addTextblockHacks() {
     let lastChild = this.top.children[this.index - 1],
       parent = this.top;
@@ -2041,10 +2059,11 @@ function compareSide(a: Decoration, b: Decoration) {
   return (a.type as WidgetType).side - (b.type as WidgetType).side;
 }
 
-// This function abstracts iterating over the nodes and decorations in
-// a fragment. Calls `onNode` for each node, with its local and child
-// decorations. Splits text nodes when there is a decoration starting
-// or ending inside of them. Calls `onWidget` for each widget.
+/** This function abstracts iterating over the nodes and decorations in
+ * a fragment. Calls `onNode` for each node, with its local and child
+ * decorations. Splits text nodes when there is a decoration starting
+ * or ending inside of them. Calls `onWidget` for each widget.
+ */
 function iterDeco(
   parent: Node,
   deco: DecorationSource,

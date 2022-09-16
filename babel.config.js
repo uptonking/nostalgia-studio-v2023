@@ -21,6 +21,7 @@ module.exports = function (api) {
   console.log(';;process.env.APP_ENV, ', process.env.APP_ENV);
   console.log(';;isEnvReact, ', isEnvReact);
 
+  /** 需要根据具体的react-like环境单独配置 */
   let babelPresetReactConfig = {};
   if (isEnvReactLike) {
     babelPresetReactConfig = {
@@ -40,8 +41,8 @@ module.exports = function (api) {
     //     fileName: true,
     //   },
     // ],
-    ['@babel/plugin-proposal-class-properties', { loose: false }],
-    '@babel/proposal-object-rest-spread',
+    // ['@babel/plugin-proposal-class-properties', { loose: false }],
+    // '@babel/proposal-object-rest-spread',
     isEnvReactHotReload && 'react-refresh/babel',
   ].filter(Boolean);
 
@@ -58,12 +59,13 @@ module.exports = function (api) {
     [
       '@babel/preset-env',
       {
-        // modules: env === 'esm' ? false : 'auto',
-        modules: configModule(),
-        targets: 'defaults',
+        modules: env === 'esm' ? false : 'auto',
+        // modules: configModule(),
+        // targets: 'defaults',
         // targets: '> 0.25%, not dead',
         useBuiltIns: 'usage',
-        corejs: { version: 3, proposals: true },
+        corejs: { version: '3.24', proposals: true },
+        shippedProposals: true,
         debug: false,
       },
     ],

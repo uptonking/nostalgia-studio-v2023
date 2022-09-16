@@ -16,15 +16,17 @@ const classesById = Object.create(null);
  * - 一个Selection由基点anchor和头部head构成，一个SelectionRange由起始位置$from和结束为止$to构成
  */
 export abstract class Selection {
-  /// Initialize a selection with the head and anchor and ranges. If no
-  /// ranges are given, constructs a single range across `$anchor` and
-  /// `$head`.
+  /** Initialize a selection with the head and anchor and ranges. If no
+   * ranges are given, constructs a single range across `$anchor` and `$head`.
+   */
   constructor(
-    /// The resolved anchor of the selection (the side that stays in
-    /// place when the selection is modified).
+    /** The resolved anchor of the selection (the side that stays in
+     * place when the selection is modified).
+     */
     readonly $anchor: ResolvedPos,
-    /// The resolved head of the selection (the side that moves when
-    /// the selection is modified).
+    /** The resolved head of the selection (the side that moves when
+     * the selection is modified).
+     */
     readonly $head: ResolvedPos,
     ranges?: readonly SelectionRange[],
   ) {
@@ -68,7 +70,7 @@ export abstract class Selection {
 
   /** Indicates whether the selection contains any content. */
   get empty(): boolean {
-    let ranges = this.ranges;
+    const ranges = this.ranges;
     for (let i = 0; i < ranges.length; i++)
       if (ranges[i].$from.pos != ranges[i].$to.pos) return false;
     return true;
@@ -104,10 +106,10 @@ export abstract class Selection {
       lastNode = lastNode!.lastChild;
     }
 
-    let mapFrom = tr.steps.length,
+    const mapFrom = tr.steps.length,
       ranges = this.ranges;
     for (let i = 0; i < ranges.length; i++) {
-      let { $from, $to } = ranges[i],
+      const { $from, $to } = ranges[i],
         mapping = tr.mapping.slice(mapFrom);
       tr.replaceRange(
         mapping.map($from.pos),
@@ -130,12 +132,12 @@ export abstract class Selection {
    * - 最终会执行 tr.replaceRangeWith()
    */
   replaceWith(tr: Transaction, node: Node) {
-    let mapFrom = tr.steps.length,
+    const mapFrom = tr.steps.length,
       ranges = this.ranges;
     for (let i = 0; i < ranges.length; i++) {
-      let { $from, $to } = ranges[i],
+      const { $from, $to } = ranges[i],
         mapping = tr.mapping.slice(mapFrom);
-      let from = mapping.map($from.pos),
+      const from = mapping.map($from.pos),
         to = mapping.map($to.pos);
       if (i) {
         tr.deleteRange(from, to);
@@ -164,7 +166,7 @@ export abstract class Selection {
     dir: number,
     textOnly: boolean = false,
   ): Selection | null {
-    let inner = $pos.parent.inlineContent
+    const inner = $pos.parent.inlineContent
       ? new TextSelection($pos)
       : findSelectionIn(
           $pos.node(0),
@@ -177,7 +179,7 @@ export abstract class Selection {
     if (inner) return inner;
 
     for (let depth = $pos.depth - 1; depth >= 0; depth--) {
-      let found =
+      const found =
         dir < 0
           ? findSelectionIn(
               $pos.node(0),
@@ -214,8 +216,7 @@ export abstract class Selection {
 
   /** Find the cursor or leaf node selection closest to the start of
    * the given document. Will return an
-   * [`AllSelection`](#state.AllSelection) if no valid position
-   * exists.
+   * [`AllSelection`](#state.AllSelection) if no valid position exists.
    */
   static atStart(doc: Node): Selection {
     return findSelectionIn(doc, doc, 0, 0, 1) || new AllSelection(doc);
@@ -237,7 +238,7 @@ export abstract class Selection {
   static fromJSON(doc: Node, json: any): Selection {
     if (!json || !json.type)
       throw new RangeError('Invalid input for Selection.fromJSON');
-    let cls = classesById[json.type];
+    const cls = classesById[json.type];
     if (!cls) throw new RangeError(`No selection type ${json.type} defined`);
     return cls.fromJSON(doc, json);
   }
@@ -275,10 +276,10 @@ export abstract class Selection {
    * browser, the selected range should be visible to the user.
    * Defaults to `true`.
    */
-  visible!: boolean;
+  // visible!: boolean;
+  visible: boolean = true;
 }
-
-Selection.prototype.visible = true;
+// Selection.prototype.visible = true;
 
 /** A lightweight, document-independent representation of a selection.
  * You can define a custom bookmark type for a custom selection class
@@ -300,9 +301,9 @@ export interface SelectionBookmark {
 export class SelectionRange {
   /// Create a range.
   constructor(
-    /// The lower bound of the range.
+    /** The lower bound of the range. */
     readonly $from: ResolvedPos,
-    /// The upper bound of the range.
+    /** The upper bound of the range. */
     readonly $to: ResolvedPos,
   ) {}
 }
@@ -340,9 +341,9 @@ export class TextSelection extends Selection {
   }
 
   map(doc: Node, mapping: Mappable): Selection {
-    let $head = doc.resolve(mapping.map(this.head));
+    const $head = doc.resolve(mapping.map(this.head));
     if (!$head.parent.inlineContent) return Selection.near($head);
-    let $anchor = doc.resolve(mapping.map(this.anchor));
+    const $anchor = doc.resolve(mapping.map(this.anchor));
     return new TextSelection(
       $anchor.parent.inlineContent ? $anchor : $head,
       $head,
@@ -352,7 +353,7 @@ export class TextSelection extends Selection {
   replace(tr: Transaction, content = Slice.empty) {
     super.replace(tr, content);
     if (content == Slice.empty) {
-      let marks = this.$from.marksAcross(this.$to);
+      const marks = this.$from.marksAcross(this.$to);
       if (marks) tr.ensureMarks(marks);
     }
   }
@@ -382,7 +383,7 @@ export class TextSelection extends Selection {
 
   /** Create a text selection from non-resolved positions. */
   static create(doc: Node, anchor: number, head = anchor) {
-    let $anchor = doc.resolve(anchor);
+    const $anchor = doc.resolve(anchor);
     return new this($anchor, head == anchor ? $anchor : doc.resolve(head));
   }
 
@@ -398,17 +399,17 @@ export class TextSelection extends Selection {
     $head: ResolvedPos,
     bias?: number,
   ): Selection {
-    let dPos = $anchor.pos - $head.pos;
+    const dPos = $anchor.pos - $head.pos;
     if (!bias || dPos) bias = dPos >= 0 ? 1 : -1;
     if (!$head.parent.inlineContent) {
-      let found =
+      const found =
         Selection.findFrom($head, bias, true) ||
         Selection.findFrom($head, -bias, true);
       if (found) $head = found.$head;
       else return Selection.near($head, bias);
     }
     if (!$anchor.parent.inlineContent) {
-      if (dPos == 0) {
+      if (dPos === 0) {
         $anchor = $head;
       } else {
         $anchor = (Selection.findFrom($anchor, -bias, true) ||
@@ -416,6 +417,7 @@ export class TextSelection extends Selection {
         if ($anchor.pos < $head.pos != dPos < 0) $anchor = $head;
       }
     }
+
     return new TextSelection($anchor, $head);
   }
 }
@@ -443,11 +445,11 @@ class TextBookmark {
  * `from`, and `head` equals `to`..
  */
 export class NodeSelection extends Selection {
-  /// Create a node selection. Does not verify the validity of its
-  /// argument.
+  /** Create a node selection. Does not verify the validity of its argument.
+   */
   constructor($pos: ResolvedPos) {
-    let node = $pos.nodeAfter!;
-    let $end = $pos.node(0).resolve($pos.pos + node.nodeSize);
+    const node = $pos.nodeAfter!;
+    const $end = $pos.node(0).resolve($pos.pos + node.nodeSize);
     super($pos, $end);
     this.node = node;
   }
@@ -456,8 +458,8 @@ export class NodeSelection extends Selection {
   node: Node;
 
   map(doc: Node, mapping: Mappable): Selection {
-    let { deleted, pos } = mapping.mapResult(this.anchor);
-    let $pos = doc.resolve(pos);
+    const { deleted, pos } = mapping.mapResult(this.anchor);
+    const $pos = doc.resolve(pos);
     if (deleted) return Selection.near($pos);
     return new NodeSelection($pos);
   }
@@ -494,20 +496,21 @@ export class NodeSelection extends Selection {
   static isSelectable(node: Node) {
     return !node.isText && node.type.spec.selectable !== false;
   }
-}
 
-NodeSelection.prototype.visible = false;
+  visible: boolean = true;
+}
+// NodeSelection.prototype.visible = false;
 
 Selection.jsonID('node', NodeSelection);
 
 class NodeBookmark {
   constructor(readonly anchor: number) {}
   map(mapping: Mappable) {
-    let { deleted, pos } = mapping.mapResult(this.anchor);
+    const { deleted, pos } = mapping.mapResult(this.anchor);
     return deleted ? new TextBookmark(pos, pos) : new NodeBookmark(pos);
   }
   resolve(doc: Node) {
-    let $pos = doc.resolve(this.anchor),
+    const $pos = doc.resolve(this.anchor),
       node = $pos.nodeAfter;
     if (node && NodeSelection.isSelectable(node))
       return new NodeSelection($pos);
@@ -529,7 +532,7 @@ export class AllSelection extends Selection {
   replace(tr: Transaction, content = Slice.empty) {
     if (content == Slice.empty) {
       tr.delete(0, tr.doc.content.size);
-      let sel = Selection.atStart(tr.doc);
+      const sel = Selection.atStart(tr.doc);
       if (!sel.eq(tr.selection)) tr.setSelection(sel);
     } else {
       super.replace(tr, content);
@@ -589,9 +592,9 @@ function findSelectionIn(
     dir > 0 ? i < node.childCount : i >= 0;
     i += dir
   ) {
-    let child = node.child(i);
+    const child = node.child(i);
     if (!child.isAtom) {
-      let inner = findSelectionIn(
+      const inner = findSelectionIn(
         doc,
         child,
         pos + dir,
@@ -613,13 +616,13 @@ function selectionToInsertionEnd(
   startLen: number,
   bias: number,
 ) {
-  let last = tr.steps.length - 1;
+  const last = tr.steps.length - 1;
   if (last < startLen) return;
-  let step = tr.steps[last];
+  const step = tr.steps[last];
   if (!(step instanceof ReplaceStep || step instanceof ReplaceAroundStep))
     return;
-  let map = tr.mapping.maps[last],
-    end: number | undefined;
+  const map = tr.mapping.maps[last];
+  let end: number | undefined;
   map.forEach((_from, _to, _newFrom, newTo) => {
     if (end == null) end = newTo;
   });

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "target": "es5",
+    "target": "ES2018",
     "allowJs": false,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
@@ -44,20 +44,27 @@
       "prosemirror-model": ["editor-prosemirror/src-pkgs/model/src/"],
       "prosemirror-transform": ["editor-prosemirror/src-pkgs/transform/src/"],
       "prosemirror-inputrules": ["editor-prosemirror/src-pkgs/inputrules/src/"],
-      "prosemirror-schema-basic": ["editor-prosemirror/src-pkgs/schema-basic/src/"],
-      "prosemirror-schema-list": ["editor-prosemirror/src-pkgs/schema-list/src/"],
+      "prosemirror-schema-basic": [
+        "editor-prosemirror/src-pkgs/schema-basic/src/"
+      ],
+      "prosemirror-schema-list": [
+        "editor-prosemirror/src-pkgs/schema-list/src/"
+      ],
       "prosemirror-commands": ["editor-prosemirror/src-pkgs/commands/src/"],
       "prosemirror-keymap": ["editor-prosemirror/src-pkgs/keymap/src/"],
       "prosemirror-history": ["editor-prosemirror/src-pkgs/history/src/"],
       "prosemirror-collab": ["editor-prosemirror/src-pkgs/collab/src/"],
-      "prosemirror-example-setup": ["editor-prosemirror/src-pkgs/example-setup/src/"],
+      "prosemirror-example-setup": [
+        "editor-prosemirror/src-pkgs/example-setup/src/"
+      ],
       "prosemirror-menu": ["editor-prosemirror/src-pkgs/menu/src/"],
       "prosemirror-dropcursor": ["editor-prosemirror/src-pkgs/dropcursor/src/"],
       "prosemirror-gapcursor": ["editor-prosemirror/src-pkgs/gapcursor/src/"],
       "prosemirror-tables": ["editor-prosemirror/src-pkgs/tables/src/"],
       "prosemirror-markdown": ["editor-prosemirror/src-pkgs/markdown/src/"],
-      "prosemirror-test-builder": ["editor-prosemirror/src-pkgs/test-builder/src/"],
-
+      "prosemirror-test-builder": [
+        "editor-prosemirror/src-pkgs/test-builder/src/"
+      ]
     }
   },
   "files": ["typings.d.ts"]

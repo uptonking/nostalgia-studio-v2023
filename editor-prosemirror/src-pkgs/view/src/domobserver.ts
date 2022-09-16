@@ -127,11 +127,11 @@ export class DOMObserver {
   /** 开始监听 this.observer.observe(this.view.dom)，注册selectionchange事件  */
   start() {
     if (this.observer) {
-      this.observer.takeRecords();
+      this.observer.takeRecords(); // 丢弃未被处理的变更条目
       this.observer.observe(this.view.dom, observeOptions);
     }
     if (this.onCharData) {
-      /// 针对ie
+      // /针对ie
       this.view.dom.addEventListener(
         'DOMCharacterDataModified',
         this.onCharData,
@@ -159,7 +159,7 @@ export class DOMObserver {
     this.disconnectSelection();
   }
 
-  /** 注册 selectionchange 事件  */
+  /** 注册 selectionchange 事件，一般是到页面顶级document元素  */
   connectSelection() {
     this.view.dom.ownerDocument.addEventListener(
       'selectionchange',
@@ -341,10 +341,15 @@ export class DOMObserver {
       !this.currentSelection.eq(sel) &&
       hasFocusAndSelection(view) &&
       !this.ignoreSelectionChange(sel);
-    console.log(';;sel-chg ', hasNewSel, mutations.length, mutations);
+    // console.log(';;sel-chg ', hasNewSel, mutations.length, mutations);
 
     let from = -1;
     let to = -1;
+    /** An event was generated for a text change that didn't change
+     * any text. Mark the dom change to fall back to assuming the
+     * selection was typed over with an identical value if it can't
+     * find another change.
+     */
     let typeOver = false;
     const added: Node[] = [];
     if (view.editable) {
@@ -392,6 +397,7 @@ export class DOMObserver {
         view.docView.markDirty(from, to);
         checkCSS(view);
       }
+      // console.log(';; sel-chg-readDOMChg ', from, to, typeOver, added);
       this.handleDOMChange(from, to, typeOver, added);
       if (view.docView && view.docView.dirty) {
         view.updateState(view.state);

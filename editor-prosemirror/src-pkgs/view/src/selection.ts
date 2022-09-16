@@ -30,7 +30,9 @@ export function selectionFromDOM(
   let selection: NodeSelection | Selection;
   if (selectionCollapsed(domSel)) {
     $anchor = $head;
-    while (nearestDesc && !nearestDesc.node) nearestDesc = nearestDesc.parent;
+    while (nearestDesc && !nearestDesc.node) {
+      nearestDesc = nearestDesc.parent;
+    }
     const nearestDescNode = (nearestDesc as NodeViewDesc).node;
     if (
       nearestDesc &&
@@ -42,11 +44,12 @@ export function selectionFromDOM(
         isOnEdge(domSel.focusNode, domSel.focusOffset, nearestDesc.dom)
       )
     ) {
+      // /这里只处理 NodeSelection
       const pos = nearestDesc.posBefore;
       selection = new NodeSelection(head == pos ? $head : doc.resolve(pos));
     }
   } else {
-    /// when selection is not collapsed
+    // /when selection is not collapsed
     const anchor = view.docView.posFromDOM(
       domSel.anchorNode!,
       domSel.anchorOffset,
@@ -57,6 +60,7 @@ export function selectionFromDOM(
   }
 
   if (!selection) {
+    // 对于单光标，bias是1
     const bias =
       origin == 'pointer' ||
       (view.state.selection.head < $head.pos && !inWidget)
@@ -81,7 +85,7 @@ function editorOwnsSelection(view: EditorView) {
  */
 export function selectionToDOM(view: EditorView, force = false) {
   const sel = view.state.selection;
-  console.log('selectionToDOM', sel.visible, sel);
+  // console.log('selectionToDOM', sel.visible, sel);
 
   syncNodeSelection(view, sel);
 
@@ -133,7 +137,7 @@ export function selectionToDOM(view: EditorView, force = false) {
       if (resetEditableFrom) resetEditable(resetEditableFrom);
       if (resetEditableTo) resetEditable(resetEditableTo);
     }
-    console.trace('sel2dom-添加hideSel', sel.visible, sel);
+    // console.trace('sel2dom-添加hideSel', sel.visible, sel);
     if (sel.visible) {
       view.dom.classList.remove('ProseMirror-hideselection');
     } else {
@@ -276,10 +280,14 @@ export function selectionBetween(
   $head: ResolvedPos,
   bias?: number,
 ) {
-  return (
-    view.someProp('createSelectionBetween', (f) => f(view, $anchor, $head)) ||
-    TextSelection.between($anchor, $head, bias)
+  let sel = view.someProp('createSelectionBetween', (f) =>
+    f(view, $anchor, $head),
   );
+  if (!sel) {
+    sel = TextSelection.between($anchor, $head, bias);
+  }
+  // console.log(';; selectionBetween ', sel['visible'], sel);
+  return sel;
 }
 
 export function hasFocusAndSelection(view: EditorView) {

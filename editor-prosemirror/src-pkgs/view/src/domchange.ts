@@ -35,7 +35,9 @@ export function readDOMChange(
       view.input.lastSelectionTime > Date.now() - 50
         ? view.input.lastSelectionOrigin
         : null;
+    // console.log(';; readDOMChange1 ', origin);
     const newSel = selectionFromDOM(view, origin);
+    // console.log(';; readDOMChange2 ', origin, newSel['visible'], newSel);
     if (newSel && !view.state.selection.eq(newSel)) {
       const tr = view.state.tr.setSelection(newSel);
       if (origin === 'pointer') tr.setMeta('pointer', true);

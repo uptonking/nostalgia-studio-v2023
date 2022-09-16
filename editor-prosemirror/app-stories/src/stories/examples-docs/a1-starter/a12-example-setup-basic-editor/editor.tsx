@@ -1,6 +1,3 @@
-import './editor-examples.css';
-
-// import { applyDevTools } from 'prosemirror-dev-tools';
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { exampleSetup } from 'prosemirror-example-setup';
 import { DOMParser, Schema } from 'prosemirror-model';
@@ -9,7 +6,8 @@ import { addListNodes } from 'prosemirror-schema-list';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
-// import { StyledContainer } from '../../editor-examples.styles';
+
+import { StyledContainer } from '../../editor-examples.styles';
 
 /**
  * ✨ 官方编辑器示例，基于 prosemirror-example-setup 。
@@ -40,8 +38,8 @@ export const PMExampleSetupBasicEditor = () => {
   }, []);
 
   return (
-    <>
-      <h3> prosemirror-example-setup demo</h3>
+    <StyledContainer>
+      <h3> prosemirror-example-setup basic editor</h3>
       <div ref={editorContainer} id='editor' />
       {/* 👇🏻 剩下的全是默认隐藏的编辑器初始数据 */}
       <div style={{ display: 'none' }} id='contentForEgSetupBasic'>
@@ -68,6 +66,6 @@ export const PMExampleSetupBasicEditor = () => {
           numbered list.
         </p>
       </div>
-    </>
+    </StyledContainer>
   );
 };

@@ -85,7 +85,7 @@ export function initInput(view: EditorView) {
 
 export function destroyInput(view: EditorView) {
   view.domObserver.stop();
-  for (let type in view.input.eventHandlers) {
+  for (const type in view.input.eventHandlers) {
     view.dom.removeEventListener(type, view.input.eventHandlers[type]);
   }
   clearTimeout(view.input.composingTimeout);
@@ -95,7 +95,7 @@ export function destroyInput(view: EditorView) {
 /** 依次遍历并执行作为直接props提供的、作为plugin的props提供的事件处理函数 */
 export function ensureListeners(view: EditorView) {
   view.someProp('handleDOMEvents', (currentHandlers) => {
-    for (let type in currentHandlers) {
+    for (const type in currentHandlers) {
       if (!view.input.eventHandlers[type]) {
         view.dom.addEventListener(
           type,
@@ -110,7 +110,7 @@ export function ensureListeners(view: EditorView) {
 /** 遍历并执行`event.type`类型的事件处理函数 */
 function runCustomHandler(view: EditorView, event: Event) {
   return view.someProp('handleDOMEvents', (handlers) => {
-    let handler = handlers[event.type];
+    const handler = handlers[event.type];
     return handler ? handler(view, event) || event.defaultPrevented : false;
   });
 }
@@ -159,12 +159,12 @@ handlers.beforeinput = (view, _event: Event) => {
   if (
     browser.chrome &&
     browser.android &&
-    event.inputType == 'deleteContentBackward'
+    event.inputType === 'deleteContentBackward'
   ) {
     view.domObserver.flushSoon();
     const { domChangeCount } = view.input;
     setTimeout(() => {
-      if (view.input.domChangeCount != domChangeCount) return; // Event already had some effect
+      if (view.input.domChangeCount !== domChangeCount) return; // Event already had some effect
       // This bug tends to close the virtual keyboard, so we refocus
       view.dom.blur();
       view.focus();
@@ -185,7 +185,7 @@ handlers.beforeinput = (view, _event: Event) => {
 };
 
 editHandlers.keydown = (view: EditorView, _event: Event) => {
-  let event = _event as KeyboardEvent;
+  const event = _event as KeyboardEvent;
   view.input.shiftKey = event.keyCode === 16 || event.shiftKey;
   if (inOrNearComposition(view, event)) return;
   view.input.lastKeyCode = event.keyCode;
@@ -226,12 +226,13 @@ editHandlers.keydown = (view: EditorView, _event: Event) => {
 };
 
 editHandlers.keyup = (view, event) => {
-  if ((event as KeyboardEvent).keyCode == 16) {
+  if ((event as KeyboardEvent).keyCode === 16) {
     view.input.shiftKey = false;
   }
 };
 
-/**  常用的输入相关逻辑暂时都在`keypress`，而不在`beforeinput`，待迁移
+/**  💡 拦截用户输入相关逻辑暂时都在`keypress`，而不在`beforeinput`，待迁移
+ * - 普通字符输入的逻辑在MutationObserver，而不在这里，这里只处理先跨node选取内容再输入替换的场景
  * - Since `keypress` event has been deprecated, you should use `beforeinput` or `keydown` instead.
  * - https://developer.mozilla.org/en-US/docs/Web/API/Element/keypress_event
  */
@@ -252,9 +253,17 @@ editHandlers.keypress = (view, _event) => {
   }
 
   const sel = view.state.selection;
+  // console.log(
+  //   ';; keypress-sel ',
+  //   sel instanceof TextSelection,
+  //   sel.$from.sameParent(sel.$to),
+  // );
+
   if (!(sel instanceof TextSelection) || !sel.$from.sameParent(sel.$to)) {
-    /// 若当前selection不是TextSelection或光标的起始和终止节点不同（选中了内容则需要进行删除处理）
+    // /若当前selection不是TextSelection或光标的起始和终止节点不同（选中了内容则需要进行删除处理）
     const text = String.fromCharCode(event.charCode);
+    // console.log(';; keypress-sel ', text, sel);
+
     if (
       !view.someProp('handleTextInput', (f) =>
         f(view, sel.$from.pos, sel.$to.pos, text),
@@ -287,7 +296,7 @@ function runHandlerOnContext(
   event: MouseEvent,
 ) {
   if (inside == -1) return false;
-  let $pos = view.state.doc.resolve(inside);
+  const $pos = view.state.doc.resolve(inside);
 
   for (let i = $pos.depth + 1; i > 0; i--) {
     if (
@@ -419,7 +428,7 @@ function defaultTripleClick(
   event: MouseEvent,
 ) {
   if (event.button != 0) return false;
-  let doc = view.state.doc;
+  const doc = view.state.doc;
   if (inside == -1) {
     if (doc.inlineContent) {
       updateSelection(
@@ -432,10 +441,10 @@ function defaultTripleClick(
     return false;
   }
 
-  let $pos = doc.resolve(inside);
+  const $pos = doc.resolve(inside);
   for (let i = $pos.depth + 1; i > 0; i--) {
-    let node = i > $pos.depth ? $pos.nodeAfter! : $pos.node(i);
-    let nodePos = $pos.before(i);
+    const node = i > $pos.depth ? $pos.nodeAfter! : $pos.node(i);
+    const nodePos = $pos.before(i);
     if (node.inlineContent)
       updateSelection(
         view,
@@ -496,7 +505,7 @@ class MouseDown {
       targetNode = view.state.doc.nodeAt(pos.inside)!;
       targetPos = pos.inside;
     } else {
-      let $pos = view.state.doc.resolve(pos.pos);
+      const $pos = view.state.doc.resolve(pos.pos);
       targetNode = $pos.parent;
       targetPos = $pos.depth ? $pos.before() : 0;
     }
@@ -505,7 +514,7 @@ class MouseDown {
     const targetDesc = target ? view.docView.nearestDesc(target, true) : null;
     this.target = targetDesc ? (targetDesc.dom as HTMLElement) : null;
 
-    let { selection } = view.state;
+    const { selection } = view.state;
     if (
       (event.button == 0 &&
         targetNode.type.spec.draggable &&
@@ -639,10 +648,10 @@ class MouseDown {
  * - 鼠标点击事件的执行在mouseup事件处理函数，而不在这里的mousedown函数
  */
 handlers.mousedown = (view, _event) => {
-  let event = _event as MouseEvent;
+  const event = _event as MouseEvent;
   view.input.shiftKey = event.shiftKey;
-  let flushed = forceDOMFlush(view);
-  let now = Date.now();
+  const flushed = forceDOMFlush(view);
+  const now = Date.now();
   let type: 'singleClick' | 'doubleClick' | 'tripleClick' = 'singleClick';
 
   if (
@@ -661,7 +670,7 @@ handlers.mousedown = (view, _event) => {
     type,
   };
 
-  let pos = view.posAtCoords(eventCoords(event));
+  const pos = view.posAtCoords(eventCoords(event));
   if (!pos) return;
 
   if (type == 'singleClick') {
@@ -722,6 +731,9 @@ function inOrNearComposition(view: EditorView, event: Event) {
 /** Drop active composition after 5 seconds of inactivity on Android */
 const timeoutComposition = browser.android ? 5000 : -1;
 
+/**
+ * - 设置 view.input.composing = true
+ */
 editHandlers.compositionstart = editHandlers.compositionupdate = (view) => {
   if (!view.composing) {
     view.domObserver.flush();
@@ -783,6 +795,7 @@ editHandlers.compositionend = (view, event) => {
   }
 };
 
+/** 通过setTimeout执行 endComposition */
 function scheduleComposeEnd(view: EditorView, delay: number) {
   clearTimeout(view.input.composingTimeout);
   if (delay > -1) {
@@ -803,7 +816,6 @@ export function clearComposition(view: EditorView) {
   }
 }
 
-/// @internal
 /**
  * - 执行 domObserver.forceFlush();
  * - 执行 view.updateState()
@@ -863,15 +875,15 @@ const brokenClipboardAPI =
   (browser.ios && browser.webkit_version < 604);
 
 handlers.copy = editHandlers.cut = (view, _event) => {
-  let event = _event as ClipboardEvent;
-  let sel = view.state.selection,
-    cut = event.type == 'cut';
+  const event = _event as ClipboardEvent;
+  const sel = view.state.selection;
+  const cut = event.type == 'cut';
   if (sel.empty) return;
 
   // IE and Edge's clipboard interface is completely broken
-  let data = brokenClipboardAPI ? null : event.clipboardData;
-  let slice = sel.content(),
-    { dom, text } = serializeForClipboard(view, slice);
+  const data = brokenClipboardAPI ? null : event.clipboardData;
+  const slice = sel.content();
+  const { dom, text } = serializeForClipboard(view, slice);
   if (data) {
     event.preventDefault();
     data.clearData();
@@ -900,9 +912,9 @@ function sliceSingleNode(slice: Slice) {
 
 function capturePaste(view: EditorView, event: ClipboardEvent) {
   if (!view.dom.parentNode) return;
-  let plainText =
+  const plainText =
     view.input.shiftKey || view.state.selection.$from.parent.type.spec.code;
-  let target = view.dom.parentNode.appendChild(
+  const target = view.dom.parentNode.appendChild(
     document.createElement(plainText ? 'textarea' : 'div'),
   );
   if (!plainText) target.contentEditable = 'true';
@@ -1003,8 +1015,8 @@ handlers.dragstart = (view, _event) => {
         ),
       );
   }
-  const slice = view.state.selection.content(),
-    { dom, text } = serializeForClipboard(view, slice);
+  const slice = view.state.selection.content();
+  const { dom, text } = serializeForClipboard(view, slice);
   event.dataTransfer.clearData();
   event.dataTransfer.setData(
     brokenClipboardAPI ? 'Text' : 'text/html',

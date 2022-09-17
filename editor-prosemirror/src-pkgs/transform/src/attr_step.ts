@@ -18,12 +18,12 @@ export class AttrStep extends Step {
   }
 
   apply(doc: Node) {
-    let node = doc.nodeAt(this.pos);
+    const node = doc.nodeAt(this.pos);
     if (!node) return StepResult.fail("No node at attribute step's position");
-    let attrs = Object.create(null);
-    for (let name in node.attrs) attrs[name] = node.attrs[name];
+    const attrs = Object.create(null);
+    for (const name in node.attrs) attrs[name] = node.attrs[name];
     attrs[this.attr] = this.value;
-    let updated = node.type.create(attrs, null, node.marks);
+    const updated = node.type.create(attrs, null, node.marks);
     return StepResult.fromReplace(
       doc,
       this.pos,
@@ -45,7 +45,7 @@ export class AttrStep extends Step {
   }
 
   map(mapping: Mappable) {
-    let pos = mapping.mapResult(this.pos, 1);
+    const pos = mapping.mapResult(this.pos, 1);
     return pos.deletedAfter
       ? null
       : new AttrStep(pos.pos, this.attr, this.value);
@@ -61,7 +61,7 @@ export class AttrStep extends Step {
   }
 
   static fromJSON(schema: Schema, json: any) {
-    if (typeof json.pos != 'number' || typeof json.attr != 'string')
+    if (typeof json.pos !== 'number' || typeof json.attr !== 'string')
       throw new RangeError('Invalid input for AttrStep.fromJSON');
     return new AttrStep(json.pos, json.attr, json.value);
   }

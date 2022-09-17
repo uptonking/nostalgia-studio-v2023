@@ -57,14 +57,14 @@ export class DOMSerializer {
   ) {
     if (!target) target = doc(options).createDocumentFragment();
 
-    let top = target!,
-      active: [Mark, HTMLElement | DocumentFragment][] = [];
+    let top = target!;
+      const active: [Mark, HTMLElement | DocumentFragment][] = [];
     fragment.forEach((node) => {
       if (active.length || node.marks.length) {
-        let keep = 0,
-          rendered = 0;
+        let keep = 0;
+          let rendered = 0;
         while (keep < active.length && rendered < node.marks.length) {
-          let next = node.marks[rendered];
+          const next = node.marks[rendered];
           if (!this.marks[next.type.name]) {
             rendered++;
             continue;
@@ -76,8 +76,8 @@ export class DOMSerializer {
         }
         while (keep < active.length) top = active.pop()![1];
         while (rendered < node.marks.length) {
-          let add = node.marks[rendered++];
-          let markDOM = this.serializeMark(add, node.isInline, options);
+          const add = node.marks[rendered++];
+          const markDOM = this.serializeMark(add, node.isInline, options);
           if (markDOM) {
             active.push([add, top]);
             top.appendChild(markDOM.dom);
@@ -93,7 +93,7 @@ export class DOMSerializer {
 
   /// @internal
   serializeNodeInner(node: Node, options: { document?: Document }) {
-    let { dom, contentDOM } = DOMSerializer.renderSpec(
+    const { dom, contentDOM } = DOMSerializer.renderSpec(
       doc(options),
       this.nodes[node.type.name](node),
     );
@@ -113,7 +113,7 @@ export class DOMSerializer {
   serializeNode(node: Node, options: { document?: Document } = {}) {
     let dom = this.serializeNodeInner(node, options);
     for (let i = node.marks.length - 1; i >= 0; i--) {
-      let wrap = this.serializeMark(node.marks[i], node.isInline, options);
+      const wrap = this.serializeMark(node.marks[i], node.isInline, options);
       if (wrap) {
         (wrap.contentDOM || wrap.dom).appendChild(dom);
         dom = wrap.dom;
@@ -128,7 +128,7 @@ export class DOMSerializer {
     inline: boolean,
     options: { document?: Document } = {},
   ) {
-    let toDOM = this.marks[mark.type.name];
+    const toDOM = this.marks[mark.type.name];
     return toDOM && DOMSerializer.renderSpec(doc(options), toDOM(mark, inline));
   }
 
@@ -143,34 +143,34 @@ export class DOMSerializer {
     dom: DOMNode;
     contentDOM?: HTMLElement;
   } {
-    if (typeof structure == 'string')
+    if (typeof structure === 'string')
       return { dom: doc.createTextNode(structure) };
     if ((structure as DOMNode).nodeType != null)
       return { dom: structure as DOMNode };
     if ((structure as any).dom && (structure as any).dom.nodeType != null)
       return structure as { dom: DOMNode; contentDOM?: HTMLElement };
-    let tagName = (structure as [string])[0],
-      space = tagName.indexOf(' ');
+    let tagName = (structure as [string])[0];
+      const space = tagName.indexOf(' ');
     if (space > 0) {
       xmlNS = tagName.slice(0, space);
       tagName = tagName.slice(space + 1);
     }
     let contentDOM: HTMLElement | undefined;
-    let dom = (
+    const dom = (
       xmlNS ? doc.createElementNS(xmlNS, tagName) : doc.createElement(tagName)
     ) as HTMLElement;
-    let attrs = (structure as any)[1],
-      start = 1;
+    const attrs = (structure as any)[1];
+      let start = 1;
     if (
       attrs &&
-      typeof attrs == 'object' &&
+      typeof attrs === 'object' &&
       attrs.nodeType == null &&
       !Array.isArray(attrs)
     ) {
       start = 2;
-      for (let name in attrs)
+      for (const name in attrs)
         if (attrs[name] != null) {
-          let space = name.indexOf(' ');
+          const space = name.indexOf(' ');
           if (space > 0)
             dom.setAttributeNS(
               name.slice(0, space),
@@ -181,7 +181,7 @@ export class DOMSerializer {
         }
     }
     for (let i = start; i < (structure as readonly any[]).length; i++) {
-      let child = (structure as any)[i] as DOMOutputSpec | 0;
+      const child = (structure as any)[i] as DOMOutputSpec | 0;
       if (child === 0) {
         if (i < (structure as readonly any[]).length - 1 || i > start)
           throw new RangeError(
@@ -189,7 +189,7 @@ export class DOMSerializer {
           );
         return { dom, contentDOM: dom };
       } else {
-        let { dom: inner, contentDOM: innerContent } = DOMSerializer.renderSpec(
+        const { dom: inner, contentDOM: innerContent } = DOMSerializer.renderSpec(
           doc,
           child,
           xmlNS,
@@ -219,7 +219,7 @@ export class DOMSerializer {
   /// Gather the serializers in a schema's node specs into an object.
   /// This can be useful as a base to build a custom serializer from.
   static nodesFromSchema(schema: Schema) {
-    let result = gatherToDOM(schema.nodes);
+    const result = gatherToDOM(schema.nodes);
     if (!result.text) result.text = (node) => node.text;
     return result as { [node: string]: (node: Node) => DOMOutputSpec };
   }
@@ -233,11 +233,11 @@ export class DOMSerializer {
 }
 
 function gatherToDOM(obj: { [node: string]: NodeType | MarkType }) {
-  let result: {
+  const result: {
     [node: string]: (value: any, inline: boolean) => DOMOutputSpec;
   } = {};
-  for (let name in obj) {
-    let toDOM = obj[name].spec.toDOM;
+  for (const name in obj) {
+    const toDOM = obj[name].spec.toDOM;
     if (toDOM) result[name] = toDOM;
   }
   return result;

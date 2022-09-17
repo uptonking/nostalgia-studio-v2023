@@ -5,7 +5,7 @@ import ist from "ist"
 function get(expr: string) { return ContentMatch.parse(expr, schema.nodes) }
 
 function match(expr: string, types: string) {
-  let m = get(expr), ts = types ? types.split(" ").map(t => schema.nodes[t]) : []
+  let m = get(expr); const ts = types ? types.split(" ").map(t => schema.nodes[t]) : []
   for (let i = 0; m && i < ts.length; i++) m = m.matchType(ts[i])!
   return m && m.validEnd
 }
@@ -14,15 +14,15 @@ function valid(expr: string, types: string) { ist(match(expr, types)) }
 function invalid(expr: string, types: string) { ist(!match(expr, types)) }
 
 function fill(expr: string, before: Node, after: Node, result: Node | null) {
-  let filled = get(expr).matchFragment(before.content)!.fillBefore(after.content, true)
+  const filled = get(expr).matchFragment(before.content)!.fillBefore(after.content, true)
   if (result) ist(filled, result.content, eq)
   else ist(!filled)
 }
 
 function fill3(expr: string, before: Node, mid: Node, after: Node, left: Node | null, right?: Node) {
-  let content = get(expr)
-  let a = content.matchFragment(before.content)!.fillBefore(mid.content)
-  let b = a && content.matchFragment(before.content.append(a).append(mid.content))!.fillBefore(after.content, true)
+  const content = get(expr)
+  const a = content.matchFragment(before.content)!.fillBefore(mid.content)
+  const b = a && content.matchFragment(before.content.append(a).append(mid.content))!.fillBefore(after.content, true)
   if (left) {
     ist(a, left.content, eq)
     ist(b, right!.content, eq)

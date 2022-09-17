@@ -34,7 +34,7 @@ import {
 export let TransformError = class extends Error {};
 
 TransformError = function TransformError(this: any, message: string) {
-  let err = Error.call(this, message);
+  const err = Error.call(this, message);
   (err as any).__proto__ = TransformError.prototype;
   return err;
 } as any;
@@ -73,7 +73,7 @@ export class Transform {
    * error when the step fails.
    */
   step(step: Step) {
-    let result = this.maybeStep(step);
+    const result = this.maybeStep(step);
     if (result.failed) throw new TransformError(result.failed);
     return this;
   }
@@ -82,7 +82,7 @@ export class Transform {
    * fails. Returns the step result.
    */
   maybeStep(step: Step) {
-    let result = step.apply(this.doc);
+    const result = step.apply(this.doc);
     if (!result.failed) this.addStep(step, result.doc!);
     return result;
   }
@@ -106,7 +106,7 @@ export class Transform {
    * given `slice`.
    */
   replace(from: number, to = from, slice = Slice.empty): this {
-    let step = replaceStep(this.doc, from, to, slice);
+    const step = replaceStep(this.doc, from, to, slice);
     if (step) {
       this.step(step);
     }
@@ -252,7 +252,7 @@ export class Transform {
    */
   removeNodeMark(pos: number, mark: Mark | MarkType): this {
     if (!(mark instanceof Mark)) {
-      let node = this.doc.nodeAt(pos);
+      const node = this.doc.nodeAt(pos);
       if (!node) throw new RangeError('No node at position ' + pos);
       mark = mark.isInSet(node.marks)!;
       if (!mark) return this;

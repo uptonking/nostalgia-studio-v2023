@@ -15,16 +15,16 @@ const serializer = DOMSerializer.fromSchema(schema)
 describe("DOMParser", () => {
   describe("parse", () => {
     function domFrom(html: string, document_ = document) {
-      let dom = document_.createElement("div")
+      const dom = document_.createElement("div")
       dom.innerHTML = html
       return dom
     }
 
     function test(doc: PMNode, html: string, document_ = document) {
       return () => {
-        let derivedDOM = document_.createElement("div"), schema = doc.type.schema
+        const derivedDOM = document_.createElement("div"); const schema = doc.type.schema
         derivedDOM.appendChild(DOMSerializer.fromSchema(schema).serializeFragment(doc.content, {document: document_}))
-        let declaredDOM = domFrom(html, document_)
+        const declaredDOM = domFrom(html, document_)
 
         ist(derivedDOM.innerHTML, declaredDOM.innerHTML)
         ist(DOMParser.fromSchema(schema).parse(derivedDOM), doc, eq)
@@ -88,20 +88,20 @@ describe("DOMParser", () => {
             "<p>\u00a0 \u00a0hello\u00a0</p>"))
 
     it("can parse marks on block nodes", () => {
-      let commentSchema = new Schema({
-        nodes: schema.spec.nodes.update("doc", Object.assign({marks: "comment"}, schema.spec.nodes.get("doc"))),
+      const commentSchema = new Schema({
+        nodes: schema.spec.nodes.update("doc", {marks: "comment", ...schema.spec.nodes.get("doc")}),
         marks: schema.spec.marks.update("comment", {
           parseDOM: [{tag: "div.comment"}],
           toDOM() { return ["div", {class: "comment"}, 0] }
         })
       })
-      let b = builders(commentSchema) as any
+      const b = builders(commentSchema) as any
       test(b.doc(b.paragraph("one"), b.comment(b.paragraph("two"), b.paragraph(b.strong("three"))), b.paragraph("four")),
            "<p>one</p><div class=\"comment\"><p>two</p><p><strong>three</strong></p></div><p>four</p>")()
     })
 
     it("parses unique, non-exclusive, same-typed marks", () => {
-      let commentSchema = new Schema({
+      const commentSchema = new Schema({
         nodes: schema.spec.nodes,
         marks: schema.spec.marks.update("comment", {
           attrs: { id: { default: null }},
@@ -113,7 +113,7 @@ describe("DOMParser", () => {
           toDOM(mark: Mark) { return ["span", {class: "comment", "data-id": mark.attrs.id }, 0] }
         })
       })
-      let b = builders(commentSchema)
+      const b = builders(commentSchema)
       test(b.schema.nodes.doc.createAndFill(undefined, [
         b.schema.nodes.paragraph.createAndFill(undefined, [
           b.schema.text('double comment', [
@@ -126,7 +126,7 @@ describe("DOMParser", () => {
     })
 
     it("serializes non-spanning marks correctly", () => {
-      let markSchema = new Schema({
+      const markSchema = new Schema({
         nodes: schema.spec.nodes,
         marks: schema.spec.marks.update("test", {
           parseDOM: [{tag: "test"}],
@@ -134,13 +134,13 @@ describe("DOMParser", () => {
           spanning: false
         })
       })
-      let b = builders(markSchema) as any
+      const b = builders(markSchema) as any
       test(b.doc(b.paragraph(b.test("a", b.image({src: "x"}), "b"))),
            "<p><test>a</test><test><img src=\"x\"></test><test>b</test></p>")()
     })
 
     it("serializes an element and an attribute with XML namespace", () => {
-      let xmlnsSchema = new Schema({
+      const xmlnsSchema = new Schema({
         nodes: {
           doc: { content: "svg*" }, text: {},
           "svg": {
@@ -151,11 +151,11 @@ describe("DOMParser", () => {
         },
       })
 
-      let b = builders(xmlnsSchema) as any
-      let d = b.doc(b.svg())
+      const b = builders(xmlnsSchema) as any
+      const d = b.doc(b.svg())
       test(d, "<svg><use href=\"#svg-id\"></use></svg>", xmlDocument)()
 
-      let dom = xmlDocument.createElement('div')
+      const dom = xmlDocument.createElement('div')
       dom.appendChild(DOMSerializer.fromSchema(xmlnsSchema).serializeFragment(d.content, {document: xmlDocument}))
       ist(dom.querySelector('svg').namespaceURI, 'http://www.w3.org/2000/svg')
       ist(dom.querySelector('use').namespaceURI, 'http://www.w3.org/2000/svg')
@@ -164,7 +164,7 @@ describe("DOMParser", () => {
 
     function recover(html: string, doc: PMNode, options?: ParseOptions) {
       return () => {
-        let dom = document.createElement("div")
+        const dom = document.createElement("div")
         dom.innerHTML = html
         ist(parser.parse(dom, options), doc, eq)
       }
@@ -275,9 +275,9 @@ describe("DOMParser", () => {
 
     function parse(html: string, options: ParseOptions, doc: PMNode) {
       return () => {
-        let dom = document.createElement("div")
+        const dom = document.createElement("div")
         dom.innerHTML = html
-        let result = parser.parse(dom, options)
+        const result = parser.parse(dom, options)
         ist(result, doc, eq)
       }
     }
@@ -286,7 +286,7 @@ describe("DOMParser", () => {
        parse("<li>wow</li><li>such</li>", {topNode: schema.nodes.bullet_list.createAndFill()!},
              ul(li(p("wow")), li(p("such")))))
 
-    let item = schema.nodes.list_item.createAndFill()!
+    const item = schema.nodes.list_item.createAndFill()!
     it("accepts the topMatch option",
        parse("<ul><li>x</li></ul>", {topNode: item, topMatch: item.contentMatchAt(1)!},
              li(ul(li(p("x"))))))
@@ -301,10 +301,10 @@ describe("DOMParser", () => {
 
     function open(html: string, nodes: (string | PMNode)[], openStart: number, openEnd: number, options?: ParseOptions) {
       return () => {
-        let dom = document.createElement("div")
+        const dom = document.createElement("div")
         dom.innerHTML = html
-        let result = parser.parseSlice(dom, options)
-        ist(result, new Slice(Fragment.from(nodes.map(n => typeof n == "string" ? schema.text(n) : n)), openStart, openEnd), eq)
+        const result = parser.parseSlice(dom, options)
+        ist(result, new Slice(Fragment.from(nodes.map(n => typeof n === "string" ? schema.text(n) : n)), openStart, openEnd), eq)
       }
     }
 
@@ -347,7 +347,7 @@ describe("DOMParser", () => {
        open("<b> </b>", [p(strong(" ")).child(0)], 0, 0, {preserveWhitespace: true}))
 
     it("can parse nested mark with same type but different attrs", () => {
-      let markSchema = new Schema({
+      const markSchema = new Schema({
         nodes: schema.spec.nodes,
         marks: schema.spec.marks.update("s", {
           attrs: {
@@ -366,8 +366,8 @@ describe("DOMParser", () => {
           }]
         })
       })
-      let b = builders(markSchema)
-      let dom = document.createElement("div")
+      const b = builders(markSchema)
+      const dom = document.createElement("div")
       dom.innerHTML = "<p style='text-decoration: line-through;'>o<s style='text-decoration: line-through;'>o</s>o</p>"
       let result = DOMParser.fromSchema(markSchema).parseSlice(dom)
       ist(result, new Slice(Fragment.from(
@@ -397,9 +397,9 @@ describe("DOMParser", () => {
 
     function find(html: string, doc: PMNode) {
       return () => {
-        let dom = document.createElement("div")
+        const dom = document.createElement("div")
         dom.innerHTML = html
-        let tag = dom.querySelector("var"), prev = tag.previousSibling!, next = tag.nextSibling, pos
+        const tag = dom.querySelector("var"); const prev = tag.previousSibling!; const next = tag.nextSibling; let pos
         if (prev && next && prev.nodeType == 3 && next.nodeType == 3) {
           pos = {node: prev, offset: prev.nodeValue.length}
           prev.nodeValue += next.nodeValue
@@ -408,7 +408,7 @@ describe("DOMParser", () => {
           pos = {node: tag.parentNode, offset: Array.prototype.indexOf.call(tag.parentNode.childNodes, tag)}
         }
         tag.parentNode.removeChild(tag)
-        let result = parser.parse(dom, {
+        const result = parser.parse(dom, {
           findPositions: [pos]
         })
         ist(result, doc, eq)
@@ -444,7 +444,7 @@ describe("DOMParser", () => {
        find("<p>hi</p><var></var>",
             doc(p("hi"), "<a>")))
 
-    let quoteSchema = new Schema({nodes: schema.spec.nodes, marks: schema.spec.marks, topNode: "blockquote"})
+    const quoteSchema = new Schema({nodes: schema.spec.nodes, marks: schema.spec.marks, topNode: "blockquote"})
 
     it("uses a custom top node when parsing",
        test(quoteSchema.node("blockquote", null, quoteSchema.node("paragraph", null, quoteSchema.text("hello"))),
@@ -484,7 +484,7 @@ describe("DOMParser", () => {
     })
 
     it("uses the passed context", () => {
-      let cxDoc = doc(blockquote("<a>", hr()))
+      const cxDoc = doc(blockquote("<a>", hr()))
       ist(contextParser("doc//blockquote/").parse(domFrom("<blockquote><foo></foo></blockquote>"), {
         topNode: blockquote(),
         context: cxDoc.resolve((cxDoc as any).tag.a)
@@ -492,26 +492,26 @@ describe("DOMParser", () => {
     })
 
     it("uses the passed context when parsing a slice", () => {
-      let cxDoc = doc(blockquote("<a>", hr()))
+      const cxDoc = doc(blockquote("<a>", hr()))
       ist(contextParser("doc//blockquote/").parseSlice(domFrom("<foo></foo>"), {
         context: cxDoc.resolve((cxDoc as any).tag.a)
       }), new Slice(blockquote(hr()).content, 0, 0), eq)
     })
 
     it("can close parent nodes from a rule", () => {
-      let closeParser = new DOMParser(schema, [{tag: "br", closeParent: true} as ParseRule]
+      const closeParser = new DOMParser(schema, [{tag: "br", closeParent: true} as ParseRule]
                                                 .concat(DOMParser.schemaRules(schema)))
       ist(closeParser.parse(domFrom("<p>one<br>two</p>")), doc(p("one"), p("two")), eq)
     })
 
     it("supports non-consuming node rules", () => {
-      let parser = new DOMParser(schema, [{tag: "ol", consuming: false, node: "blockquote"} as ParseRule]
+      const parser = new DOMParser(schema, [{tag: "ol", consuming: false, node: "blockquote"} as ParseRule]
                                  .concat(DOMParser.schemaRules(schema)))
       ist(parser.parse(domFrom("<ol><p>one</p></ol>")), doc(blockquote(ol(li(p("one"))))), eq)
     })
 
     it("supports non-consuming style rules", () => {
-      let parser = new DOMParser(schema, [{style: "font-weight", consuming: false, mark: "em"} as ParseRule]
+      const parser = new DOMParser(schema, [{style: "font-weight", consuming: false, mark: "em"} as ParseRule]
                                  .concat(DOMParser.schemaRules(schema)))
       ist(parser.parse(domFrom("<p><span style='font-weight: 800'>one</span></p>")), doc(p(em(strong("one")))), eq)
     })
@@ -523,7 +523,7 @@ describe("DOMParser", () => {
 
   describe("schemaRules", () => {
     it("defaults to schema order", () => {
-      let schema = new Schema({
+      const schema = new Schema({
         marks: {em: {parseDOM: [{tag: "i"}, {tag: "em"}]}},
         nodes: {doc: {content: "inline*"},
                 text: {group: "inline"},
@@ -534,7 +534,7 @@ describe("DOMParser", () => {
     })
 
     it("understands priority", () => {
-      let schema = new Schema({
+      const schema = new Schema({
         marks: {em: {parseDOM: [{tag: "i", priority: 40}, {tag: "em", priority: 70}]}},
         nodes: {doc: {content: "inline*"},
                 text: {group: "inline"},
@@ -545,7 +545,7 @@ describe("DOMParser", () => {
     })
 
     function nsParse(doc: Node, namespace?: string) {
-      let schema = new Schema({
+      const schema = new Schema({
         nodes: {doc: {content: "h*"}, text: {},
                 h: {parseDOM: [{tag: "h", namespace}]}}
       })
@@ -553,45 +553,45 @@ describe("DOMParser", () => {
     }
 
     it("includes nodes when namespace is correct", () => {
-      let doc = xmlDocument.createElement("doc")
-      let h = xmlDocument.createElementNS("urn:ns", "h")
+      const doc = xmlDocument.createElement("doc")
+      const h = xmlDocument.createElementNS("urn:ns", "h")
       doc.appendChild(h)
       ist(nsParse(doc, "urn:ns").childCount, 1)
     })
 
     it("excludes nodes when namespace is wrong", () => {
-      let doc = xmlDocument.createElement("doc")
-      let h = xmlDocument.createElementNS("urn:nt", "h")
+      const doc = xmlDocument.createElement("doc")
+      const h = xmlDocument.createElementNS("urn:nt", "h")
       doc.appendChild(h)
       ist(nsParse(doc, "urn:ns").childCount, 0)
     })
 
     it("excludes nodes when namespace is absent", () => {
-      let doc = xmlDocument.createElement("doc")
+      const doc = xmlDocument.createElement("doc")
       // in HTML documents, createElement gives namespace
       // 'http://www.w3.org/1999/xhtml' so use createElementNS
-      let h = xmlDocument.createElementNS(null, "h")
+      const h = xmlDocument.createElementNS(null, "h")
       doc.appendChild(h)
       ist(nsParse(doc, "urn:ns").childCount, 0)
     })
 
     it("excludes nodes when namespace is wrong and xhtml", () => {
-      let doc = xmlDocument.createElement("doc")
-      let h = xmlDocument.createElementNS("urn:nt", "h")
+      const doc = xmlDocument.createElement("doc")
+      const h = xmlDocument.createElementNS("urn:nt", "h")
       doc.appendChild(h)
       ist(nsParse(doc, "http://www.w3.org/1999/xhtml").childCount, 0)
     })
 
     it("excludes nodes when namespace is wrong and empty", () => {
-      let doc = xmlDocument.createElement("doc")
-      let h = xmlDocument.createElementNS("urn:nt", "h")
+      const doc = xmlDocument.createElement("doc")
+      const h = xmlDocument.createElementNS("urn:nt", "h")
       doc.appendChild(h)
       ist(nsParse(doc, "").childCount, 0)
     })
 
     it("includes nodes when namespace is correct and empty", () => {
-      let doc = xmlDocument.createElement("doc")
-      let h = xmlDocument.createElementNS(null, "h")
+      const doc = xmlDocument.createElement("doc")
+      const h = xmlDocument.createElementNS(null, "h")
       doc.appendChild(h)
       ist(nsParse(doc).childCount, 1)
     })
@@ -599,7 +599,7 @@ describe("DOMParser", () => {
 })
 
 describe("DOMSerializer", () => {
-  let noEm = new DOMSerializer(serializer.nodes, Object.assign({}, serializer.marks, {em: null}))
+  const noEm = new DOMSerializer(serializer.nodes, ({ ...serializer.marks, em: null}))
 
   it("can omit a mark", () => {
     ist((noEm.serializeNode(p("foo", em("bar"), strong("baz")), {document}) as HTMLElement).innerHTML,
@@ -612,10 +612,8 @@ describe("DOMSerializer", () => {
   })
 
   it("can render marks with complex structure", () => {
-    let deepEm = new DOMSerializer(serializer.nodes, Object.assign({}, serializer.marks, {
-      em() { return ["em", ["i", {"data-emphasis": true}, 0]] }
-    }))
-    let node = deepEm.serializeNode(p(strong("foo", code("bar"), em(code("baz"))), em("quux"), "xyz"), {document})
+    const deepEm = new DOMSerializer(serializer.nodes, ({ ...serializer.marks, em() { return ["em", ["i", {"data-emphasis": true}, 0]] }}))
+    const node = deepEm.serializeNode(p(strong("foo", code("bar"), em(code("baz"))), em("quux"), "xyz"), {document})
     ist((node as HTMLElement).innerHTML,
         "<strong>foo<code>bar</code></strong><em><i data-emphasis=\"true\"><strong><code>baz</code></strong>quux</i></em>xyz")
   })

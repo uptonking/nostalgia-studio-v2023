@@ -2,7 +2,7 @@ import ist from "ist"
 import {Fragment, Schema, Node} from "prosemirror-model"
 import {schema, eq, doc, blockquote, p, li, ul, em, strong, code, a, br, hr, img} from "prosemirror-test-builder"
 
-let customSchema = new Schema({
+const customSchema = new Schema({
   nodes: {
     doc: {content: "paragraph+"},
     paragraph: {content: "(text|contact)*"},
@@ -70,7 +70,7 @@ describe("Node", () => {
       doc.nodesBetween((doc as any).tag.a, (doc as any).tag.b, (node, pos) => {
         if (i == nodes.length)
           throw new Error("More nodes iterated than listed (" + node.type.name + ")")
-        let compare = node.isText ? node.text! : node.type.name
+        const compare = node.isText ? node.text! : node.type.name
         if (compare != nodes[i++])
           throw new Error("Expected " + JSON.stringify(nodes[i - 1]) + ", got " + JSON.stringify(compare))
         if (!node.isText && doc.nodeAt(pos) != node)
@@ -193,8 +193,8 @@ describe("Node", () => {
 
   describe("leafText", () => {
     it("should custom the textContent of a leaf node", () => {
-      let contact = customSchema.nodes.contact.createChecked({ name: "Bob", email: "bob@example.com" })
-      let paragraph = customSchema.nodes.paragraph.createChecked({}, [customSchema.text('Hello '), contact])
+      const contact = customSchema.nodes.contact.createChecked({ name: "Bob", email: "bob@example.com" })
+      const paragraph = customSchema.nodes.paragraph.createChecked({}, [customSchema.text('Hello '), contact])
 
       ist(contact.textContent, "Bob <bob@example.com>")
       ist(paragraph.textContent, "Hello Bob <bob@example.com>")

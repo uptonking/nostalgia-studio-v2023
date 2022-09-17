@@ -11,12 +11,12 @@ function flatten(
   children: ChildSpec[],
   f: (node: Node) => Node
 ): {nodes: Node[], tag: Tags} {
-  let result = [], pos = 0, tag = noTag
+  const result = []; let pos = 0; let tag = noTag
 
   for (let i = 0; i < children.length; i++) {
-    let child = children[i]
-    if (typeof child == "string") {
-      let re = /<(\w+)>/g, m, at = 0, out = ""
+    const child = children[i]
+    if (typeof child === "string") {
+      const re = /<(\w+)>/g; let m; let at = 0; let out = ""
       while (m = re.exec(child)) {
         out += child.slice(at, m.index)
         pos += m.index - at
@@ -30,17 +30,17 @@ function flatten(
     } else {
       if ((child as any).tag && (child as any).tag != (Node.prototype as any).tag) {
         if (tag == noTag) tag = Object.create(null)
-        for (let id in (child as any).tag)
+        for (const id in (child as any).tag)
           tag[id] = (child as any).tag[id] + ((child as any).flat || (child as any).isText ? 0 : 1) + pos
       }
       if ((child as any).flat) {
         for (let j = 0; j < (child as any).flat.length; j++) {
-          let node = f((child as any).flat[j])
+          const node = f((child as any).flat[j])
           pos += node.nodeSize
           result.push(node)
         }
       } else {
-        let node = f(child as Node)
+        const node = f(child as Node)
         pos += node.nodeSize
         result.push(node)
       }
@@ -52,16 +52,16 @@ function flatten(
 function id<T>(x: T): T { return x }
 
 function takeAttrs(attrs: Attrs | null, args: [a?: Attrs | ChildSpec, ...b: ChildSpec[]]) {
-  let a0 = args[0]
-  if (!args.length || (a0 && (typeof a0 == "string" || a0 instanceof Node || a0.flat)))
+  const a0 = args[0]
+  if (!args.length || (a0 && (typeof a0 === "string" || a0 instanceof Node || a0.flat)))
     return attrs
 
   args.shift()
   if (!attrs) return a0 as Attrs
   if (!a0) return attrs
-  let result: Attrs = {}
-  for (let prop in attrs) (result as any)[prop] = attrs[prop]
-  for (let prop in a0 as Attrs) (result as any)[prop] = (a0 as Attrs)[prop]
+  const result: Attrs = {}
+  for (const prop in attrs) (result as any)[prop] = attrs[prop]
+  for (const prop in a0 as Attrs) (result as any)[prop] = (a0 as Attrs)[prop]
   return result
 }
 
@@ -80,10 +80,10 @@ type Builders<S extends Schema> = {
 
 /// Create a builder function for nodes with content.
 function block(type: NodeType, attrs: Attrs | null = null): NodeBuilder {
-  let result = function(...args: any[]) {
-    let myAttrs = takeAttrs(attrs, args)
-    let {nodes, tag} = flatten(type.schema, args as ChildSpec[], id)
-    let node = type.create(myAttrs, nodes)
+  const result = function(...args: any[]) {
+    const myAttrs = takeAttrs(attrs, args)
+    const {nodes, tag} = flatten(type.schema, args as ChildSpec[], id)
+    const node = type.create(myAttrs, nodes)
     if (tag != noTag) (node as any).tag = tag
     return node
   }
@@ -94,9 +94,9 @@ function block(type: NodeType, attrs: Attrs | null = null): NodeBuilder {
 // Create a builder function for marks.
 function mark(type: MarkType, attrs: Attrs | null): MarkBuilder {
   return function(...args) {
-    let mark = type.create(takeAttrs(attrs, args))
-    let {nodes, tag} = flatten(type.schema, args as ChildSpec[], n => {
-      let newMarks = mark.addToSet(n.marks)
+    const mark = type.create(takeAttrs(attrs, args))
+    const {nodes, tag} = flatten(type.schema, args as ChildSpec[], n => {
+      const newMarks = mark.addToSet(n.marks)
       return newMarks.length > n.marks.length ? n.mark(newMarks) : n
     })
     return {flat: nodes, tag}
@@ -104,12 +104,12 @@ function mark(type: MarkType, attrs: Attrs | null): MarkBuilder {
 }
 
 export function builders<Nodes extends string = any, Marks extends string = any>(schema: Schema<Nodes, Marks>, names?: {[name: string]: Attrs}) {
-  let result = {schema}
-  for (let name in schema.nodes) (result as any)[name] = block(schema.nodes[name], {})
-  for (let name in schema.marks) (result as any)[name] = mark(schema.marks[name], {})
+  const result = {schema}
+  for (const name in schema.nodes) (result as any)[name] = block(schema.nodes[name], {})
+  for (const name in schema.marks) (result as any)[name] = mark(schema.marks[name], {})
 
-  if (names) for (let name in names) {
-    let value = names[name], typeName = value.nodeType || value.markType || name, type
+  if (names) for (const name in names) {
+    const value = names[name]; const typeName = value.nodeType || value.markType || name; let type
     if (type = schema.nodes[typeName]) (result as any)[name] = block(type, value)
     else if (type = schema.marks[typeName]) (result as any)[name] = mark(type, value)
   }

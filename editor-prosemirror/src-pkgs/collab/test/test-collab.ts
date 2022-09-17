@@ -18,20 +18,20 @@ class DummyServer {
 
   constructor(doc?: Node, n = 2) {
     for (let i = 0; i < n; i++) {
-      let plugin = collab()
+      const plugin = collab()
       this.plugins.push(plugin)
       this.states.push(EditorState.create({doc, schema, plugins: [histPlugin, plugin]}))
     }
   }
 
   sync(n: number) {
-    let state = this.states[n], version = this.plugins[n].getState(state).version
+    const state = this.states[n]; const version = this.plugins[n].getState(state).version
     if (version != this.steps.length)
       this.states[n] = state.apply(receiveTransaction(state, this.steps.slice(version), this.clientIDs.slice(version)))
   }
 
   send(n: number) {
-    let sendable = sendableSteps(this.states[n])
+    const sendable = sendableSteps(this.states[n])
     if (sendable && sendable.version == this.steps.length) {
       this.steps = this.steps.concat(sendable.steps)
       for (let i = 0; i < sendable.steps.length; i++) this.clientIDs.push(sendable.clientID as number)
@@ -63,7 +63,7 @@ class DummyServer {
   }
 
   conv(d: Node | string) {
-    if (typeof d == "string") d = doc(p(d))
+    if (typeof d === "string") d = doc(p(d))
     this.states.forEach(state => ist(state.doc, d, eq))
   }
 
@@ -81,7 +81,7 @@ function sel(near: number) {
 
 describe("collab", () => {
   it("converges for simple changes", () => {
-    let s = new DummyServer
+    const s = new DummyServer
     s.type(0, "hi")
     s.type(1, "ok", 3)
     s.type(0, "!", 5)
@@ -90,7 +90,7 @@ describe("collab", () => {
   })
 
   it("converges for multiple local changes", () => {
-    let s = new DummyServer
+    const s = new DummyServer
     s.type(0, "hi")
     s.delay(0, () => {
       s.type(0, "A")
@@ -102,7 +102,7 @@ describe("collab", () => {
   })
 
   it("converges with three peers", () => {
-    let s = new DummyServer(undefined, 3)
+    const s = new DummyServer(undefined, 3)
     s.type(0, "A")
     s.type(1, "U")
     s.type(2, "X")
@@ -113,7 +113,7 @@ describe("collab", () => {
   })
 
   it("converges with three peers with multiple steps", () => {
-    let s = new DummyServer(undefined, 3)
+    const s = new DummyServer(undefined, 3)
     s.type(0, "A")
     s.delay(1, () => {
       s.type(1, "U")
@@ -126,7 +126,7 @@ describe("collab", () => {
   })
 
   it("supports undo", () => {
-    let s = new DummyServer
+    const s = new DummyServer
     s.type(0, "A")
     s.type(1, "B")
     s.type(0, "C")
@@ -138,7 +138,7 @@ describe("collab", () => {
   })
 
   it("supports redo", () => {
-    let s = new DummyServer
+    const s = new DummyServer
     s.type(0, "A")
     s.type(1, "B")
     s.type(0, "C")
@@ -150,7 +150,7 @@ describe("collab", () => {
   })
 
   it("supports deep undo", () => {
-    let s = new DummyServer(doc(p("hello"), p("bye")))
+    const s = new DummyServer(doc(p("hello"), p("bye")))
     s.update(0, sel(6))
     s.update(1, sel(11))
     s.type(0, "!")
@@ -180,7 +180,7 @@ describe("collab", () => {
   })
 
   it("support undo with clashing events", () => {
-    let s = new DummyServer(doc(p("hello")))
+    const s = new DummyServer(doc(p("hello")))
     s.update(0, sel(6))
     s.type(0, "A")
     s.delay(0, () => {
@@ -197,7 +197,7 @@ describe("collab", () => {
   })
 
   it("handles conflicting steps", () => {
-    let s = new DummyServer(doc(p("abcde")))
+    const s = new DummyServer(doc(p("abcde")))
     s.delay(0, () => {
       s.update(0, s => s.tr.delete(3, 4))
       s.type(0, "x")
@@ -209,7 +209,7 @@ describe("collab", () => {
   })
 
   it("can undo simultaneous typing", () => {
-    let s = new DummyServer(doc(p("A"), p("B")))
+    const s = new DummyServer(doc(p("A"), p("B")))
     s.update(0, sel(2))
     s.update(1, sel(5))
     s.delay(0, () => {

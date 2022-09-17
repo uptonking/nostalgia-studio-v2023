@@ -186,14 +186,14 @@ export class DOMParser {
     // Only normalize list elements when lists in the schema can't directly contain themselves
     this.normalizeLists = !this.tags.some((r) => {
       if (!/^(ul|ol)\b/.test(r.tag!) || !r.node) return false;
-      let node = schema.nodes[r.node];
+      const node = schema.nodes[r.node];
       return node.contentMatch.matchType(node);
     });
   }
 
   /// Parse a document from the content of a DOM node.
   parse(dom: DOMNode, options: ParseOptions = {}): Node {
-    let context = new ParseContext(this, options, false);
+    const context = new ParseContext(this, options, false);
     context.addAll(dom, options.from, options.to);
     return context.finish() as Node;
   }
@@ -205,7 +205,7 @@ export class DOMParser {
   /// the schema constraints aren't applied to the start of nodes to
   /// the left of the input and the end of nodes at the end.
   parseSlice(dom: DOMNode, options: ParseOptions = {}) {
-    let context = new ParseContext(this, options, true);
+    const context = new ParseContext(this, options, true);
     context.addAll(dom, options.from, options.to);
     return Slice.maxOpen(context.finish() as Fragment);
   }
@@ -217,7 +217,7 @@ export class DOMParser {
       i < this.tags.length;
       i++
     ) {
-      let rule = this.tags[i];
+      const rule = this.tags[i];
       if (
         matches(dom, rule.tag!) &&
         (rule.namespace === undefined ||
@@ -225,7 +225,7 @@ export class DOMParser {
         (!rule.context || context.matchesContext(rule.context))
       ) {
         if (rule.getAttrs) {
-          let result = rule.getAttrs(dom as HTMLElement);
+          const result = rule.getAttrs(dom as HTMLElement);
           if (result === false) continue;
           rule.attrs = result || undefined;
         }
@@ -246,8 +246,8 @@ export class DOMParser {
       i < this.styles.length;
       i++
     ) {
-      let rule = this.styles[i],
-        style = rule.style!;
+      const rule = this.styles[i];
+        const style = rule.style!;
       if (
         style.indexOf(prop) != 0 ||
         (rule.context && !context.matchesContext(rule.context)) ||
@@ -260,7 +260,7 @@ export class DOMParser {
       )
         continue;
       if (rule.getAttrs) {
-        let result = rule.getAttrs(value);
+        const result = rule.getAttrs(value);
         if (result === false) continue;
         rule.attrs = result || undefined;
       }
@@ -270,28 +270,28 @@ export class DOMParser {
 
   /// @internal
   static schemaRules(schema: Schema) {
-    let result: ParseRule[] = [];
+    const result: ParseRule[] = [];
     function insert(rule: ParseRule) {
-      let priority = rule.priority == null ? 50 : rule.priority,
-        i = 0;
+      const priority = rule.priority == null ? 50 : rule.priority;
+        let i = 0;
       for (; i < result.length; i++) {
-        let next = result[i],
-          nextPriority = next.priority == null ? 50 : next.priority;
+        const next = result[i];
+          const nextPriority = next.priority == null ? 50 : next.priority;
         if (nextPriority < priority) break;
       }
       result.splice(i, 0, rule);
     }
 
-    for (let name in schema.marks) {
-      let rules = schema.marks[name].spec.parseDOM;
+    for (const name in schema.marks) {
+      const rules = schema.marks[name].spec.parseDOM;
       if (rules)
         rules.forEach((rule) => {
           insert((rule = copy(rule)));
           rule.mark = name;
         });
     }
-    for (let name in schema.nodes) {
-      let rules = schema.nodes[name].spec.parseDOM;
+    for (const name in schema.nodes) {
+      const rules = schema.nodes[name].spec.parseDOM;
       if (rules)
         rules.forEach((rule) => {
           insert((rule = copy(rule)));
@@ -362,9 +362,9 @@ const ignoreTags: { [tagName: string]: boolean } = {
 const listTags: { [tagName: string]: boolean } = { ol: true, ul: true };
 
 // Using a bitfield for node context options
-const OPT_PRESERVE_WS = 1,
-  OPT_PRESERVE_WS_FULL = 2,
-  OPT_OPEN_LEFT = 4;
+const OPT_PRESERVE_WS = 1;
+  const OPT_PRESERVE_WS_FULL = 2;
+  const OPT_OPEN_LEFT = 4;
 
 function wsOptionsFor(
   type: NodeType | null,
@@ -407,12 +407,12 @@ class NodeContext {
   findWrapping(node: Node) {
     if (!this.match) {
       if (!this.type) return [];
-      let fill = this.type.contentMatch.fillBefore(Fragment.from(node));
+      const fill = this.type.contentMatch.fillBefore(Fragment.from(node));
       if (fill) {
         this.match = this.type.contentMatch.matchFragment(fill)!;
       } else {
-        let start = this.type.contentMatch,
-          wrap;
+        const start = this.type.contentMatch;
+          let wrap;
         if ((wrap = start.findWrapping(node.type))) {
           this.match = start;
           return wrap;
@@ -427,10 +427,10 @@ class NodeContext {
   finish(openEnd?: boolean): Node | Fragment {
     if (!(this.options & OPT_PRESERVE_WS)) {
       // Strip trailing whitespace
-      let last = this.content[this.content.length - 1],
-        m;
+      const last = this.content[this.content.length - 1];
+        let m;
       if (last && last.isText && (m = /[ \t\r\n\u000c]+$/.exec(last.text!))) {
-        let text = last as TextNode;
+        const text = last as TextNode;
         if (last.text!.length == m[0].length) this.content.pop();
         else
           this.content[this.content.length - 1] = text.withText(
@@ -453,7 +453,7 @@ class NodeContext {
 
   applyPending(nextType: NodeType) {
     for (let i = 0, pending = this.pendingMarks; i < pending.length; i++) {
-      let mark = pending[i];
+      const mark = pending[i];
       if (
         (this.type
           ? this.type.allowsMarkType(mark.type)
@@ -489,9 +489,9 @@ class ParseContext {
     readonly options: ParseOptions,
     readonly isOpen: boolean,
   ) {
-    let topNode = options.topNode,
-      topContext: NodeContext;
-    let topOptions =
+    const topNode = options.topNode;
+      let topContext: NodeContext;
+    const topOptions =
       wsOptionsFor(null, options.preserveWhitespace, 0) |
       (isOpen ? OPT_OPEN_LEFT : 0);
     if (topNode)
@@ -540,9 +540,9 @@ class ParseContext {
     if (dom.nodeType == 3) {
       this.addTextNode(dom as Text);
     } else if (dom.nodeType == 1) {
-      let style = (dom as HTMLElement).getAttribute('style');
-      let marks = style ? this.readStyles(parseStyles(style)) : null,
-        top = this.top;
+      const style = (dom as HTMLElement).getAttribute('style');
+      const marks = style ? this.readStyles(parseStyles(style)) : null;
+        const top = this.top;
       if (marks != null)
         for (let i = 0; i < marks.length; i++) this.addPendingMark(marks[i]);
       this.addElement(dom as HTMLElement);
@@ -554,7 +554,7 @@ class ParseContext {
 
   addTextNode(dom: Text) {
     let value = dom.nodeValue!;
-    let top = this.top;
+    const top = this.top;
     if (
       top.options & OPT_PRESERVE_WS_FULL ||
       top.inlineContext(dom) ||
@@ -569,8 +569,8 @@ class ParseContext {
           /^[ \t\r\n\u000c]/.test(value) &&
           this.open == this.nodes.length - 1
         ) {
-          let nodeBefore = top.content[top.content.length - 1];
-          let domNodeBefore = dom.previousSibling;
+          const nodeBefore = top.content[top.content.length - 1];
+          const domNodeBefore = dom.previousSibling;
           if (
             !nodeBefore ||
             (domNodeBefore && domNodeBefore.nodeName == 'BR') ||
@@ -593,11 +593,11 @@ class ParseContext {
   // Try to find a handler for the given tag and use that to parse. If
   // none is found, the element's content nodes are added directly.
   addElement(dom: HTMLElement, matchAfter?: ParseRule) {
-    let name = dom.nodeName.toLowerCase(),
-      ruleID;
+    const name = dom.nodeName.toLowerCase();
+      let ruleID;
     if (listTags.hasOwnProperty(name) && this.parser.normalizeLists)
       normalizeList(dom);
-    let rule =
+    const rule =
       (this.options.ruleFromNode && this.options.ruleFromNode(dom)) ||
       (ruleID = this.parser.matchTag(dom, this, matchAfter));
     if (rule ? rule.ignore : ignoreTags.hasOwnProperty(name)) {
@@ -607,9 +607,9 @@ class ParseContext {
       if (rule && rule.closeParent) this.open = Math.max(0, this.open - 1);
       else if (rule && (rule.skip as any).nodeType)
         dom = rule.skip as any as HTMLElement;
-      let sync,
-        top = this.top,
-        oldNeedsBlock = this.needsBlock;
+      let sync;
+        const top = this.top;
+        const oldNeedsBlock = this.needsBlock;
       if (blockTags.hasOwnProperty(name)) {
         sync = true;
         if (!top.type) this.needsBlock = true;
@@ -651,8 +651,8 @@ class ParseContext {
   readStyles(styles: readonly string[]) {
     let marks = Mark.none;
     style: for (let i = 0; i < styles.length; i += 2) {
-      for (let after = undefined; ; ) {
-        let rule = this.parser.matchStyle(
+      for (let after; ; ) {
+        const rule = this.parser.matchStyle(
           styles[i],
           styles[i + 1],
           this,
@@ -678,7 +678,7 @@ class ParseContext {
     rule: ParseRule,
     continueAfter?: ParseRule,
   ) {
-    let sync, nodeType, mark;
+    let sync; let nodeType; let mark;
     if (rule.node) {
       nodeType = this.parser.schema.nodes[rule.node];
       if (!nodeType.isLeaf) {
@@ -691,11 +691,11 @@ class ParseContext {
         this.leafFallback(dom);
       }
     } else {
-      let markType = this.parser.schema.marks[rule.mark!];
+      const markType = this.parser.schema.marks[rule.mark!];
       mark = markType.create(rule.attrs);
       this.addPendingMark(mark);
     }
-    let startIn = this.top;
+    const startIn = this.top;
 
     if (nodeType && nodeType.isLeaf) {
       this.findInside(dom);
@@ -708,9 +708,9 @@ class ParseContext {
         .forEach((node) => this.insertNode(node));
     } else {
       let contentDOM = dom;
-      if (typeof rule.contentElement == 'string')
+      if (typeof rule.contentElement === 'string')
         contentDOM = dom.querySelector(rule.contentElement)!;
-      else if (typeof rule.contentElement == 'function')
+      else if (typeof rule.contentElement === 'function')
         contentDOM = rule.contentElement(dom);
       else if (rule.contentElement) contentDOM = rule.contentElement;
       this.findAround(dom, contentDOM, true);
@@ -741,10 +741,10 @@ class ParseContext {
   // context. May add intermediate wrappers and/or leave non-solid
   // nodes that we're in.
   findPlace(node: Node) {
-    let route, sync: NodeContext | undefined;
+    let route; let sync: NodeContext | undefined;
     for (let depth = this.open; depth >= 0; depth--) {
-      let cx = this.nodes[depth];
-      let found = cx.findWrapping(node);
+      const cx = this.nodes[depth];
+      const found = cx.findWrapping(node);
       if (found && (!route || route.length > found.length)) {
         route = found;
         sync = cx;
@@ -762,12 +762,12 @@ class ParseContext {
   // Try to insert the given node, adjusting the context when needed.
   insertNode(node: Node) {
     if (node.isInline && this.needsBlock && !this.top.type) {
-      let block = this.textblockFromContext();
+      const block = this.textblockFromContext();
       if (block) this.enterInner(block);
     }
     if (this.findPlace(node)) {
       this.closeExtra();
-      let top = this.top;
+      const top = this.top;
       top.applyPending(node.type);
       if (top.match) top.match = top.match.matchType(node.type);
       let marks = top.activeMarks;
@@ -783,7 +783,7 @@ class ParseContext {
   // Try to start a node of the given type, adjusting the context when
   // necessary.
   enter(type: NodeType, attrs: Attrs | null, preserveWS?: boolean | 'full') {
-    let ok = this.findPlace(type.create(attrs));
+    const ok = this.findPlace(type.create(attrs));
     if (ok) this.enterInner(type, attrs, true, preserveWS);
     return ok;
   }
@@ -796,7 +796,7 @@ class ParseContext {
     preserveWS?: boolean | 'full',
   ) {
     this.closeExtra();
-    let top = this.top;
+    const top = this.top;
     top.applyPending(type);
     top.match = top.match && top.match.matchType(type);
     let options = wsOptionsFor(type, preserveWS, top.options);
@@ -846,7 +846,7 @@ class ParseContext {
     this.closeExtra();
     let pos = 0;
     for (let i = this.open; i >= 0; i--) {
-      let content = this.nodes[i].content;
+      const content = this.nodes[i].content;
       for (let j = content.length - 1; j >= 0; j--) pos += content[j].nodeSize;
       if (i) pos++;
     }
@@ -881,7 +881,7 @@ class ParseContext {
           parent.nodeType == 1 &&
           parent.contains(this.find[i].node)
         ) {
-          let pos = content.compareDocumentPosition(this.find[i].node);
+          const pos = content.compareDocumentPosition(this.find[i].node);
           if (pos & (before ? 2 : 4)) this.find[i].pos = this.currentPos;
         }
       }
@@ -902,21 +902,21 @@ class ParseContext {
     if (context.indexOf('|') > -1)
       return context.split(/\s*\|\s*/).some(this.matchesContext, this);
 
-    let parts = context.split('/');
-    let option = this.options.context;
-    let useRoot =
+    const parts = context.split('/');
+    const option = this.options.context;
+    const useRoot =
       !this.isOpen && (!option || option.parent.type == this.nodes[0].type);
-    let minDepth = -(option ? option.depth + 1 : 0) + (useRoot ? 0 : 1);
-    let match = (i: number, depth: number) => {
+    const minDepth = -(option ? option.depth + 1 : 0) + (useRoot ? 0 : 1);
+    const match = (i: number, depth: number) => {
       for (; i >= 0; i--) {
-        let part = parts[i];
+        const part = parts[i];
         if (part == '') {
           if (i == parts.length - 1 || i == 0) continue;
           for (; depth >= minDepth; depth--)
             if (match(i - 1, depth)) return true;
           return false;
         } else {
-          let next =
+          const next =
             depth > 0 || (depth == 0 && useRoot)
               ? this.nodes[depth].type
               : option && depth >= minDepth
@@ -933,35 +933,35 @@ class ParseContext {
   }
 
   textblockFromContext() {
-    let $context = this.options.context;
+    const $context = this.options.context;
     if ($context)
       for (let d = $context.depth; d >= 0; d--) {
-        let deflt = $context
+        const deflt = $context
           .node(d)
           .contentMatchAt($context.indexAfter(d)).defaultType;
         if (deflt && deflt.isTextblock && deflt.defaultAttrs) return deflt;
       }
-    for (let name in this.parser.schema.nodes) {
-      let type = this.parser.schema.nodes[name];
+    for (const name in this.parser.schema.nodes) {
+      const type = this.parser.schema.nodes[name];
       if (type.isTextblock && type.defaultAttrs) return type;
     }
   }
 
   addPendingMark(mark: Mark) {
-    let found = findSameMarkInSet(mark, this.top.pendingMarks);
+    const found = findSameMarkInSet(mark, this.top.pendingMarks);
     if (found) this.top.stashMarks.push(found);
     this.top.pendingMarks = mark.addToSet(this.top.pendingMarks);
   }
 
   removePendingMark(mark: Mark, upto: NodeContext) {
     for (let depth = this.open; depth >= 0; depth--) {
-      let level = this.nodes[depth];
-      let found = level.pendingMarks.lastIndexOf(mark);
+      const level = this.nodes[depth];
+      const found = level.pendingMarks.lastIndexOf(mark);
       if (found > -1) {
         level.pendingMarks = mark.removeFromSet(level.pendingMarks);
       } else {
         level.activeMarks = mark.removeFromSet(level.activeMarks);
-        let stashMark = level.popFromStashMark(mark);
+        const stashMark = level.popFromStashMark(mark);
         if (
           stashMark &&
           level.type &&
@@ -983,7 +983,7 @@ function normalizeList(dom: DOMNode) {
     child;
     child = child.nextSibling
   ) {
-    let name = child.nodeType == 1 ? child.nodeName.toLowerCase() : null;
+    const name = child.nodeType == 1 ? child.nodeName.toLowerCase() : null;
     if (name && listTags.hasOwnProperty(name) && prevItem) {
       prevItem.appendChild(child);
       child = prevItem;
@@ -1007,16 +1007,16 @@ function matches(dom: any, selector: string): boolean {
 
 // Tokenize a style attribute into property/value pairs.
 function parseStyles(style: string): string[] {
-  let re = /\s*([\w-]+)\s*:\s*([^;]+)/g,
-    m,
-    result = [];
+  const re = /\s*([\w-]+)\s*:\s*([^;]+)/g;
+    let m;
+    const result = [];
   while ((m = re.exec(style))) result.push(m[1], m[2].trim());
   return result;
 }
 
 function copy(obj: { [prop: string]: any }) {
-  let copy: { [prop: string]: any } = {};
-  for (let prop in obj) copy[prop] = obj[prop];
+  const copy: { [prop: string]: any } = {};
+  for (const prop in obj) copy[prop] = obj[prop];
   return copy;
 }
 
@@ -1024,15 +1024,15 @@ function copy(obj: { [prop: string]: any }) {
 // Checks whether it would be reasonable to apply a given mark type to
 // a given node, by looking at the way the mark occurs in the schema.
 function markMayApply(markType: MarkType, nodeType: NodeType) {
-  let nodes = nodeType.schema.nodes;
-  for (let name in nodes) {
-    let parent = nodes[name];
+  const nodes = nodeType.schema.nodes;
+  for (const name in nodes) {
+    const parent = nodes[name];
     if (!parent.allowsMarkType(markType)) continue;
-    let seen: ContentMatch[] = [],
-      scan = (match: ContentMatch) => {
+    const seen: ContentMatch[] = [];
+      const scan = (match: ContentMatch) => {
         seen.push(match);
         for (let i = 0; i < match.edgeCount; i++) {
-          let { type, next } = match.edge(i);
+          const { type, next } = match.edge(i);
           if (type == nodeType) return true;
           if (seen.indexOf(next) < 0 && scan(next)) return true;
         }

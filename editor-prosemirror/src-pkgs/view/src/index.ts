@@ -32,7 +32,7 @@ import {
   ensureListeners,
   clearComposition,
   InputState,
-} from './input';
+ endComposition } from './input';
 import {
   selectionToDOM,
   anchorInRightPlace,
@@ -54,7 +54,6 @@ export { type NodeView } from './viewdesc';
 
 // Exported for testing
 import { serializeForClipboard, parseFromClipboard } from './clipboard';
-import { endComposition } from './input';
 /// @internal
 export const __serializeForClipboard = serializeForClipboard;
 /// @internal
@@ -132,7 +131,7 @@ export class EditorView {
     if (place) {
       if ((place as DOMNode).appendChild) {
         (place as DOMNode).appendChild(this.dom);
-      } else if (typeof place == 'function') {
+      } else if (typeof place === 'function') {
         place(this.dom);
       } else if ((place as { mount: HTMLElement }).mount) {
         this.mounted = true;
@@ -215,11 +214,14 @@ export class EditorView {
    * - 用来部分更新DirectEditorProps
    */
   setProps(props: Partial<DirectEditorProps>) {
-    let updated = {} as DirectEditorProps;
-    for (let name in this._props)
+    const updated = {} as DirectEditorProps;
+    for (const name in this._props) {
       (updated as any)[name] = (this._props as any)[name];
+    }
     updated.state = this.state;
-    for (let name in props) (updated as any)[name] = (props as any)[name];
+    for (const name in props) {
+      (updated as any)[name] = (props as any)[name];
+    }
     this.update(updated);
   }
 
@@ -335,9 +337,9 @@ export class EditorView {
 
     this.updatePluginViews(prev);
 
-    if (scroll == 'reset') {
+    if (scroll === 'reset') {
       this.dom.scrollTop = 0;
-    } else if (scroll == 'to selection') {
+    } else if (scroll === 'to selection') {
       this.scrollToSelection();
     } else if (oldScrollPos) {
       resetScrollPos(oldScrollPos);
@@ -346,11 +348,11 @@ export class EditorView {
 
   /// @internal
   scrollToSelection() {
-    let startDOM = this.domSelection().focusNode!;
+    const startDOM = this.domSelection().focusNode!;
     if (this.someProp('handleScrollToSelection', (f) => f(this))) {
       // Handled
     } else if (this.state.selection instanceof NodeSelection) {
-      let target = this.docView.domAfterPos(this.state.selection.from);
+      const target = this.docView.domAfterPos(this.state.selection.from);
       if (target.nodeType == 1)
         scrollRectIntoView(
           this,
@@ -386,7 +388,7 @@ export class EditorView {
         if (plugin.spec.view) this.pluginViews.push(plugin.spec.view(this));
       }
       for (let i = 0; i < this.state.plugins.length; i++) {
-        let plugin = this.state.plugins[i];
+        const plugin = this.state.plugins[i];
         if (plugin.spec.view) this.pluginViews.push(plugin.spec.view(this));
       }
     } else {
@@ -418,22 +420,25 @@ export class EditorView {
     propName: PropName,
     f?: (value: NonNullable<EditorProps[PropName]>) => Result,
   ): Result | undefined {
-    let prop = this._props && this._props[propName],
-      value;
-    if (prop != null && (value = f ? f(prop as any) : prop))
+    const prop = this._props && this._props[propName];
+    let value;
+    if (prop != null && (value = f ? f(prop as any) : prop)) {
       return value as any;
-    for (let i = 0; i < this.directPlugins.length; i++) {
-      let prop = this.directPlugins[i].props[propName];
-      if (prop != null && (value = f ? f(prop as any) : prop))
-        return value as any;
     }
-    let plugins = this.state.plugins;
-    if (plugins)
+    for (let i = 0; i < this.directPlugins.length; i++) {
+      const prop = this.directPlugins[i].props[propName];
+      if (prop != null && (value = f ? f(prop as any) : prop)) {
+        return value as any;
+      }
+    }
+    const plugins = this.state.plugins;
+    if (plugins) {
       for (let i = 0; i < plugins.length; i++) {
-        let prop = plugins[i].props[propName];
+        const prop = plugins[i].props[propName];
         if (prop != null && (value = f ? f(prop as any) : prop))
           return value as any;
       }
+    }
   }
 
   /** Query whether the view has focus. */
@@ -470,7 +475,7 @@ export class EditorView {
    * root if the editor is inside one.
    */
   get root(): Document | ShadowRoot {
-    let cached = this._root;
+    const cached = this._root;
     if (cached == null) {
       for (
         let search = this.dom.parentNode;
@@ -546,7 +551,7 @@ export class EditorView {
    * immediately overriden by the editor as it redraws the node.
    */
   nodeDOM(pos: number): DOMNode | null {
-    let desc = this.docView.descAt(pos);
+    const desc = this.docView.descAt(pos);
     return desc ? (desc as NodeViewDesc).nodeDOM : null;
   }
 
@@ -560,7 +565,7 @@ export class EditorView {
    * node to use when the position is inside a leaf node.
    */
   posAtDOM(node: DOMNode, offset: number, bias = -1): number {
-    let pos = this.docView.posFromDOM(node, offset, bias);
+    const pos = this.docView.posFromDOM(node, offset, bias);
     if (pos == null) throw new RangeError('DOM position not inside the editor');
     return pos;
   }
@@ -596,9 +601,8 @@ export class EditorView {
     (this as any).docView = null;
   }
 
-  /** This is true when the view has been
-   * [destroyed](#view.EditorView.destroy) (and thus should not be
-   * used anymore).
+  /** This is true when the view has been [destroyed](#view.EditorView.destroy)
+   * (and thus should not be used anymore).
    */
   get isDestroyed() {
     return this.docView == null;
@@ -627,22 +631,22 @@ export class EditorView {
     }
   }
 
-  /** @internal 一般是 document.getSelection() 的返回值  */
+  /** @internal 一般是 `window.document.getSelection()` 的返回值  */
   domSelection(): DOMSelection {
     return (this.root as Document).getSelection()!;
   }
 }
 
 function computeDocDeco(view: EditorView) {
-  let attrs = Object.create(null);
+  const attrs = Object.create(null);
   attrs.class = 'ProseMirror';
   attrs.contenteditable = String(view.editable);
   attrs.translate = 'no';
 
   view.someProp('attributes', (value) => {
-    if (typeof value == 'function') value = value(view.state);
+    if (typeof value === 'function') value = value(view.state);
     if (value)
-      for (let attr in value) {
+      for (const attr in value) {
         if (attr == 'class') attrs.class += ' ' + value[attr];
         if (attr == 'style') {
           attrs.style = (attrs.style ? attrs.style + ';' : '') + value[attr];
@@ -650,8 +654,9 @@ function computeDocDeco(view: EditorView) {
           !attrs[attr] &&
           attr != 'contenteditable' &&
           attr != 'nodeName'
-        )
+        ) {
           attrs[attr] = String(value[attr]);
+        }
       }
   });
 
@@ -694,7 +699,7 @@ function buildNodeViews(view: EditorView) {
   const result: NodeViewSet = Object.create(null);
   function add(obj: NodeViewSet) {
     for (const prop in obj) {
-      if (!Object.prototype.hasOwnProperty.call(result, prop)) {
+      if (!Object.hasOwn(result, prop)) {
         result[prop] = obj[prop];
       }
     }
@@ -711,7 +716,7 @@ function changedNodeViews(a: NodeViewSet, b: NodeViewSet) {
     if (a[prop] != b[prop]) return true;
     nA++;
   }
-  for (let _ in b) nB++;
+  for (const _ in b) nB++;
   return nA != nB;
 }
 

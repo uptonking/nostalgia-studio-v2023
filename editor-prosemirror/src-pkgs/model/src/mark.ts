@@ -23,9 +23,9 @@ export class Mark {
   /// [exclusive](#model.MarkSpec.excludes) with this mark are present,
   /// those are replaced by this one.
   addToSet(set: readonly Mark[]): readonly Mark[] {
-    let copy, placed = false
+    let copy; let placed = false
     for (let i = 0; i < set.length; i++) {
-      let other = set[i]
+      const other = set[i]
       if (this.eq(other)) return set
       if (this.type.excludes(other.type)) {
         if (!copy) copy = set.slice(0, i)
@@ -70,8 +70,8 @@ export class Mark {
 
   /// Convert this mark to a JSON-serializeable representation.
   toJSON(): any {
-    let obj: any = {type: this.type.name}
-    for (let _ in this.attrs) {
+    const obj: any = {type: this.type.name}
+    for (const _ in this.attrs) {
       obj.attrs = this.attrs
       break
     }
@@ -81,7 +81,7 @@ export class Mark {
   /// Deserialize a mark from JSON.
   static fromJSON(schema: Schema, json: any) {
     if (!json) throw new RangeError("Invalid input for Mark.fromJSON")
-    let type = schema.marks[json.type]
+    const type = schema.marks[json.type]
     if (!type) throw new RangeError(`There is no mark type ${json.type} in this schema`)
     return type.create(json.attrs)
   }
@@ -100,7 +100,7 @@ export class Mark {
   static setFrom(marks?: Mark | readonly Mark[] | null): readonly Mark[] {
     if (!marks || Array.isArray(marks) && marks.length == 0) return Mark.none
     if (marks instanceof Mark) return [marks]
-    let copy = marks.slice()
+    const copy = marks.slice()
     copy.sort((a, b) => a.type.rank - b.type.rank)
     return copy
   }

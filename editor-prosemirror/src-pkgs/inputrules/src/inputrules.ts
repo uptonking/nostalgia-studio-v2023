@@ -30,7 +30,7 @@ export class InputRule {
     handler: string | ((state: EditorState, match: RegExpMatchArray, start: number, end: number) => Transaction | null)
   ) {
     this.match = match
-    this.handler = typeof handler == "string" ? stringHandler(handler) : handler
+    this.handler = typeof handler === "string" ? stringHandler(handler) : handler
   }
 }
 
@@ -38,10 +38,10 @@ function stringHandler(string: string) {
   return function(state: EditorState, match: RegExpMatchArray, start: number, end: number) {
     let insert = string
     if (match[1]) {
-      let offset = match[0].lastIndexOf(match[1])
+      const offset = match[0].lastIndexOf(match[1])
       insert += match[0].slice(offset + match[1].length)
       start += offset
-      let cutOff = start - end
+      const cutOff = start - end
       if (cutOff > 0) {
         insert = match[0].slice(offset - cutOff, offset) + insert
         start = end
@@ -57,11 +57,11 @@ const MAX_MATCH = 500
 /// input that matches any of the given rules to trigger the rule's
 /// action.
 export function inputRules({rules}: {rules: readonly InputRule[]}) {
-  let plugin: Plugin<{transform: Transaction, from: number, to: number, text: string} | null> = new Plugin({
+  const plugin: Plugin<{transform: Transaction, from: number, to: number, text: string} | null> = new Plugin({
     state: {
       init() { return null },
       apply(this: typeof plugin, tr, prev) {
-        let stored = tr.getMeta(this)
+        const stored = tr.getMeta(this)
         if (stored) return stored
         return tr.selectionSet || tr.docChanged ? null : prev
       }
@@ -74,7 +74,7 @@ export function inputRules({rules}: {rules: readonly InputRule[]}) {
       handleDOMEvents: {
         compositionend: (view) => {
           setTimeout(() => {
-            let {$cursor} = view.state.selection as TextSelection
+            const {$cursor} = view.state.selection as TextSelection
             if ($cursor) run(view, $cursor.pos, $cursor.pos, "", rules, plugin)
           })
         }
@@ -88,13 +88,13 @@ export function inputRules({rules}: {rules: readonly InputRule[]}) {
 
 function run(view: EditorView, from: number, to: number, text: string, rules: readonly InputRule[], plugin: Plugin) {
   if (view.composing) return false
-  let state = view.state, $from = state.doc.resolve(from)
+  const state = view.state; const $from = state.doc.resolve(from)
   if ($from.parent.type.spec.code) return false
-  let textBefore = $from.parent.textBetween(Math.max(0, $from.parentOffset - MAX_MATCH), $from.parentOffset,
+  const textBefore = $from.parent.textBetween(Math.max(0, $from.parentOffset - MAX_MATCH), $from.parentOffset,
                                             null, "\ufffc") + text
   for (let i = 0; i < rules.length; i++) {
-    let match = rules[i].match.exec(textBefore)
-    let tr = match && rules[i].handler(state, match, from - (match[0].length - text.length), to)
+    const match = rules[i].match.exec(textBefore)
+    const tr = match && rules[i].handler(state, match, from - (match[0].length - text.length), to)
     if (!tr) continue
     view.dispatch(tr.setMeta(plugin, {transform: tr, from, to, text}))
     return true
@@ -105,16 +105,16 @@ function run(view: EditorView, from: number, to: number, text: string, rules: re
 /// This is a command that will undo an input rule, if applying such a
 /// rule was the last thing that the user did.
 export const undoInputRule: Command = (state, dispatch) => {
-  let plugins = state.plugins
+  const plugins = state.plugins
   for (let i = 0; i < plugins.length; i++) {
-    let plugin = plugins[i], undoable
+    const plugin = plugins[i]; let undoable
     if ((plugin.spec as any).isInputRules && (undoable = plugin.getState(state))) {
       if (dispatch) {
-        let tr = state.tr, toUndo = undoable.transform
+        const tr = state.tr; const toUndo = undoable.transform
         for (let j = toUndo.steps.length - 1; j >= 0; j--)
           tr.step(toUndo.steps[j].invert(toUndo.docs[j]))
         if (undoable.text) {
-          let marks = tr.doc.resolve(undoable.from).marks()
+          const marks = tr.doc.resolve(undoable.from).marks()
           tr.replaceWith(undoable.from, undoable.to, state.schema.text(undoable.text, marks))
         } else {
           tr.delete(undoable.from, undoable.to)

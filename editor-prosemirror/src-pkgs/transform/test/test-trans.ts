@@ -46,24 +46,24 @@ describe("Transform", () => {
            doc(p("hi ", em("this")), blockquote(p(em("is"))), p(em("a docu"), "ment"), p("!"))))
 
     it("does not remove non-excluded marks of the same type", () => {
-      let schema = new Schema({
+      const schema = new Schema({
         nodes: {doc: {content: "text*"},
                 text: {}},
         marks: {comment: {excludes: "", attrs: {id: {}}}}
       })
-      let tr = new Transform(schema.node("doc", null, schema.text("hi", [schema.mark("comment", {id: 10})])))
+      const tr = new Transform(schema.node("doc", null, schema.text("hi", [schema.mark("comment", {id: 10})])))
       tr.addMark(0, 2, schema.mark("comment", {id: 20}))
       ist(tr.doc.firstChild!.marks.length, 2)
     })
 
     it("can remove multiple excluded marks", () => {
-      let schema = new Schema({
+      const schema = new Schema({
         nodes: {doc: {content: "text*"},
                 text: {}},
         marks: {big: {excludes: "small1 small2"},
                 small1: {}, small2: {}}
       })
-      let tr = new Transform(schema.node("doc", null, schema.text("hi", [schema.mark("small1"), schema.mark("small2")])))
+      const tr = new Transform(schema.node("doc", null, schema.text("hi", [schema.mark("small1"), schema.mark("small2")])))
       ist(tr.doc.firstChild!.marks.length, 2)
       tr.addMark(0, 2, schema.mark("big"))
       ist(tr.doc.firstChild!.marks.length, 1)
@@ -112,12 +112,12 @@ describe("Transform", () => {
            doc(p("<a>hello, this is much markup"))))
 
     it("can remove more than one mark of the same type from a block", () => {
-      let schema = new Schema({
+      const schema = new Schema({
          nodes: {doc: {content: "text*"},
                text: {}},
          marks: {comment: {excludes: "", attrs: {id: {}}}}
       })
-      let tr = new Transform(schema.node("doc", null, schema.text("hi", [schema.mark("comment", {id: 1}), schema.mark("comment", {id: 2})])))
+      const tr = new Transform(schema.node("doc", null, schema.text("hi", [schema.mark("comment", {id: 1}), schema.mark("comment", {id: 2})])))
       ist(tr.doc.firstChild!.marks.length, 2)
       tr.removeMark(0, 2, schema.marks["comment"])
       ist(tr.doc.firstChild!.marks.length, 0)
@@ -275,7 +275,7 @@ describe("Transform", () => {
 
   describe("lift", () => {
     function lift(doc: Node, expect: Node) {
-      let range = doc.resolve(tag(doc, "a")).blockRange(doc.resolve(tag(doc, "b") || tag(doc, "a")))
+      const range = doc.resolve(tag(doc, "a")).blockRange(doc.resolve(tag(doc, "b") || tag(doc, "a")))
       testTransform(new Transform(doc).lift(range!, liftTarget(range!)!), expect)
     }
 
@@ -318,7 +318,7 @@ describe("Transform", () => {
 
   describe("wrap", () => {
     function wrap(doc: Node, expect: Node, type: string, attrs?: Attrs) {
-      let range = doc.resolve(tag(doc, "a")).blockRange(doc.resolve(tag(doc, "b") || tag(doc, "a")))
+      const range = doc.resolve(tag(doc, "a")).blockRange(doc.resolve(tag(doc, "b") || tag(doc, "a")))
       testTransform(new Transform(doc).wrap(range!, findWrapping(range!, schema.nodes[type], attrs)!), expect)
     }
 
@@ -380,8 +380,8 @@ describe("Transform", () => {
             "heading", {level: 1}))
 
     it("works after another step", () => {
-      let d = doc(p("f<x>oob<y>ar"), p("baz<a>"))
-      let tr = new Transform(d).delete((d as any).tag.x, (d as any).tag.y), pos = tr.mapping.map((d as any).tag.a)
+      const d = doc(p("f<x>oob<y>ar"), p("baz<a>"))
+      const tr = new Transform(d).delete((d as any).tag.x, (d as any).tag.y); const pos = tr.mapping.map((d as any).tag.a)
       tr.setBlockType(pos, pos, schema.nodes.heading, {level: 1})
       testTransform(tr, doc(p("f<x><y>ar"), h1("baz<a>")))
     })
@@ -410,7 +410,7 @@ describe("Transform", () => {
 
   describe("replace", () => {
     function repl(doc: Node, source: Node | Slice | null, expect: Node) {
-      let slice = !source ? Slice.empty : source instanceof Slice ? source
+      const slice = !source ? Slice.empty : source instanceof Slice ? source
         : source.slice((source as any).tag.a, (source as any).tag.b)
       testTransform(new Transform(doc).replace(tag(doc, "a"), tag(doc, "b") || tag(doc, "a"), slice), expect)
     }
@@ -601,13 +601,13 @@ describe("Transform", () => {
             doc(p("hi"))))
 
     // A schema that allows marks on top-level block nodes
-    let ms = new Schema({
-      nodes: schema.spec.nodes.update("doc", Object.assign({}, schema.spec.nodes.get("doc"), {marks: "_"})),
+    const ms = new Schema({
+      nodes: schema.spec.nodes.update("doc", { ...schema.spec.nodes.get("doc"), marks: "_"}),
       marks: schema.spec.marks
     })
 
     it("preserves marks on block nodes", () => {
-      let tr = new Transform(ms.node("doc", null, [
+      const tr = new Transform(ms.node("doc", null, [
         ms.node("paragraph", null, [ms.text("hey")], [ms.mark("em")]),
         ms.node("paragraph", null, [ms.text("ok")], [ms.mark("strong")])
       ]))
@@ -616,7 +616,7 @@ describe("Transform", () => {
     })
 
     it("preserves marks on open slice block nodes", () => {
-      let tr = new Transform(ms.node("doc", null, [ms.node("paragraph", null, [ms.text("a")])]))
+      const tr = new Transform(ms.node("doc", null, [ms.node("paragraph", null, [ms.text("a")])]))
       tr.replace(3, 3, ms.node("doc", null, [
         ms.node("paragraph", null, [ms.text("b")], [ms.mark("em")])
       ]).slice(1, 3))
@@ -625,56 +625,56 @@ describe("Transform", () => {
     })
 
     // A schema that enforces a heading and a body at the top level
-    let hbSchema = new Schema({
+    const hbSchema = new Schema({
       nodes: schema.spec.nodes.append({
-        doc: Object.assign({}, schema.spec.nodes.get("doc"), {content: "heading body"}),
+        doc: { ...schema.spec.nodes.get("doc"), content: "heading body"},
         body: {content: "block+"}
       })
     })
-    let hb = builders(hbSchema, {
+    const hb = builders(hbSchema, {
       p: {nodeType: "paragraph"},
       b: {nodeType: "body"},
       h: {nodeType: "heading", level: 1},
     }) as any
 
     it("can unwrap a paragraph when replacing into a strict schema", () => {
-      let tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.p("Content"))))
+      const tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.p("Content"))))
       tr.replace(0, tr.doc.content.size, tr.doc.slice(7, 16))
       ist(tr.doc, hb.doc(hb.h("Content"), hb.b(hb.p())), eq)
     })
 
     it("can unwrap a body after a placed node", () => {
-      let tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.p("Content"))))
+      const tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.p("Content"))))
       tr.replace(7, 7, tr.doc.slice(0, tr.doc.content.size))
       ist(tr.doc, hb.doc(hb.h("Head"), hb.b(hb.h("Head"), hb.p("Content"), hb.p("Content"))), eq)
     })
 
     it("can wrap a paragraph in a body, even when it's not the first node", () => {
-      let tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.p("One"), hb.p("Two"))))
+      const tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.p("One"), hb.p("Two"))))
       tr.replace(0, tr.doc.content.size, tr.doc.slice(8, 16))
       ist(tr.doc, hb.doc(hb.h("One"), hb.b(hb.p("Two"))), eq)
     })
 
     it("can split a fragment and place its children in different parents", () => {
-      let tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.h("One"), hb.p("Two"))))
+      const tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.h("One"), hb.p("Two"))))
       tr.replace(0, tr.doc.content.size, tr.doc.slice(7, 17))
       ist(tr.doc, hb.doc(hb.h("One"), hb.b(hb.p("Two"))), eq)
     })
 
     it("will insert filler nodes before a node when necessary", () => {
-      let tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.p("One"))))
+      const tr = new Transform(hb.doc(hb.h("Head"), hb.b(hb.p("One"))))
       tr.replace(0, tr.doc.content.size, tr.doc.slice(6, tr.doc.content.size))
       ist(tr.doc, hb.doc(hb.h(), hb.b(hb.p("One"))), eq)
     })
 
     it("doesn't fail when moving text would solve an unsatisfied content constraint", () => {
-      let s = new Schema({
+      const s = new Schema({
         nodes: schema.spec.nodes.append({
           title: {content: "text*"},
           doc: {content: "title? block*"}
         })
       })
-      let tr = new Transform(s.node("doc", null, s.node("title", null, s.text("hi"))))
+      const tr = new Transform(s.node("doc", null, s.node("title", null, s.text("hi"))))
       tr.replace(1, 1, s.node("bullet_list", null, [
         s.node("list_item", null, s.node("paragraph", null, s.text("one"))),
         s.node("list_item", null, s.node("paragraph", null, s.text("two")))
@@ -683,13 +683,13 @@ describe("Transform", () => {
     })
 
     it("doesn't fail when pasting a half-open slice with a title and a code block into an empty title", () => {
-      let s = new Schema({
+      const s = new Schema({
         nodes: schema.spec.nodes.append({
           title: {content: "text*"},
           doc: {content: "title? block*"}
         })
       })
-      let tr = new Transform(s.node("doc", null, [s.node("title", null, [])]))
+      const tr = new Transform(s.node("doc", null, [s.node("title", null, [])]))
       tr.replace(1, 1, s.node("doc", null, [
         s.node("title", null, s.text("title")),
         s.node("code_block", null, s.text("two")),
@@ -698,13 +698,13 @@ describe("Transform", () => {
     })
 
     it("doesn't fail when pasting a half-open slice with a heading and a code block into an empty title", () => {
-      let s = new Schema({
+      const s = new Schema({
         nodes: schema.spec.nodes.append({
           title: {content: "text*"},
           doc: {content: "title? block*"}
         })
       })
-      let tr = new Transform(s.node("doc", null, [s.node("title")]))
+      const tr = new Transform(s.node("doc", null, [s.node("title")]))
       tr.replace(1, 1, s.node("doc", null, [
         s.node("heading", {level: 1}, [s.text("heading")]),
         s.node("code_block", null, [s.text("code")]),
@@ -713,7 +713,7 @@ describe("Transform", () => {
     })
 
     it("can handle replacing in nodes with fixed content", () => {
-      let s = new Schema({
+      const s = new Schema({
         nodes: {
           doc: {content: "block+"},
           a: {content: "inline*"},
@@ -723,17 +723,17 @@ describe("Transform", () => {
         }
       })
 
-      let doc = s.node("doc", null, [
+      const doc = s.node("doc", null, [
         s.node("block", null, [s.node("a", null, [s.text("aa")]), s.node("b", null, [s.text("bb")])])
       ])
-      let from = 3, to = doc.content.size
+      const from = 3; const to = doc.content.size
       ist(new Transform(doc).replace(from, to, doc.slice(from, to)).doc, doc, eq)
     })
   })
 
   describe("replaceRange", () => {
     function repl(doc: Node, source: Node, expect: Node) {
-      let slice = !source ? Slice.empty : source instanceof Slice ? source
+      const slice = !source ? Slice.empty : source instanceof Slice ? source
         : source.slice((source as any).tag.a, (source as any).tag.b, true)
       testTransform(new Transform(doc).replaceRange(tag(doc, "a"), tag(doc, "b") || tag(doc, "a"), slice), expect)
     }

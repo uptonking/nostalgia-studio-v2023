@@ -47,8 +47,8 @@ export class ReplaceStep extends Step {
   }
 
   map(mapping: Mappable) {
-    let from = mapping.mapResult(this.from, 1),
-      to = mapping.mapResult(this.to, -1);
+    const from = mapping.mapResult(this.from, 1);
+      const to = mapping.mapResult(this.to, -1);
     if (from.deletedAcross && to.deletedAcross) return null;
     return new ReplaceStep(from.pos, Math.max(from.pos, to.pos), this.slice);
   }
@@ -62,7 +62,7 @@ export class ReplaceStep extends Step {
       !this.slice.openEnd &&
       !other.slice.openStart
     ) {
-      let slice =
+      const slice =
         this.slice.size + other.slice.size == 0
           ? Slice.empty
           : new Slice(
@@ -81,7 +81,7 @@ export class ReplaceStep extends Step {
       !this.slice.openStart &&
       !other.slice.openEnd
     ) {
-      let slice =
+      const slice =
         this.slice.size + other.slice.size == 0
           ? Slice.empty
           : new Slice(
@@ -96,7 +96,7 @@ export class ReplaceStep extends Step {
   }
 
   toJSON(): any {
-    let json: any = { stepType: 'replace', from: this.from, to: this.to };
+    const json: any = { stepType: 'replace', from: this.from, to: this.to };
     if (this.slice.size) json.slice = this.slice.toJSON();
     if (this.structure) json.structure = true;
     return json;
@@ -104,7 +104,7 @@ export class ReplaceStep extends Step {
 
   /// @internal
   static fromJSON(schema: Schema, json: any) {
-    if (typeof json.from != 'number' || typeof json.to != 'number')
+    if (typeof json.from !== 'number' || typeof json.to !== 'number')
       throw new RangeError('Invalid input for ReplaceStep.fromJSON');
     return new ReplaceStep(
       json.from,
@@ -154,10 +154,10 @@ export class ReplaceAroundStep extends Step {
     )
       return StepResult.fail('Structure gap-replace would overwrite content');
 
-    let gap = doc.slice(this.gapFrom, this.gapTo);
+    const gap = doc.slice(this.gapFrom, this.gapTo);
     if (gap.openStart || gap.openEnd)
       return StepResult.fail('Gap is not a flat range');
-    let inserted = this.slice.insertAt(this.insert, gap.content);
+    const inserted = this.slice.insertAt(this.insert, gap.content);
     if (!inserted) return StepResult.fail('Content does not fit in gap');
     return StepResult.fromReplace(doc, this.from, this.to, inserted);
   }
@@ -174,7 +174,7 @@ export class ReplaceAroundStep extends Step {
   }
 
   invert(doc: Node) {
-    let gap = this.gapTo - this.gapFrom;
+    const gap = this.gapTo - this.gapFrom;
     return new ReplaceAroundStep(
       this.from,
       this.from + this.slice.size + gap,
@@ -189,10 +189,10 @@ export class ReplaceAroundStep extends Step {
   }
 
   map(mapping: Mappable) {
-    let from = mapping.mapResult(this.from, 1),
-      to = mapping.mapResult(this.to, -1);
-    let gapFrom = mapping.map(this.gapFrom, -1),
-      gapTo = mapping.map(this.gapTo, 1);
+    const from = mapping.mapResult(this.from, 1);
+      const to = mapping.mapResult(this.to, -1);
+    const gapFrom = mapping.map(this.gapFrom, -1);
+      const gapTo = mapping.map(this.gapTo, 1);
     if (
       (from.deletedAcross && to.deletedAcross) ||
       gapFrom < from.pos ||
@@ -211,7 +211,7 @@ export class ReplaceAroundStep extends Step {
   }
 
   toJSON(): any {
-    let json: any = {
+    const json: any = {
       stepType: 'replaceAround',
       from: this.from,
       to: this.to,
@@ -227,11 +227,11 @@ export class ReplaceAroundStep extends Step {
   /// @internal
   static fromJSON(schema: Schema, json: any) {
     if (
-      typeof json.from != 'number' ||
-      typeof json.to != 'number' ||
-      typeof json.gapFrom != 'number' ||
-      typeof json.gapTo != 'number' ||
-      typeof json.insert != 'number'
+      typeof json.from !== 'number' ||
+      typeof json.to !== 'number' ||
+      typeof json.gapFrom !== 'number' ||
+      typeof json.gapTo !== 'number' ||
+      typeof json.insert !== 'number'
     )
       throw new RangeError('Invalid input for ReplaceAroundStep.fromJSON');
     return new ReplaceAroundStep(
@@ -249,9 +249,9 @@ export class ReplaceAroundStep extends Step {
 Step.jsonID('replaceAround', ReplaceAroundStep);
 
 function contentBetween(doc: Node, from: number, to: number) {
-  let $from = doc.resolve(from),
-    dist = to - from,
-    depth = $from.depth;
+  const $from = doc.resolve(from);
+    let dist = to - from;
+    let depth = $from.depth;
   while (
     dist > 0 &&
     depth > 0 &&

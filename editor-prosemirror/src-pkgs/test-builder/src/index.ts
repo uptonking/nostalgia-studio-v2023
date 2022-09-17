@@ -10,7 +10,7 @@ export const schema = new Schema({
   marks: bSchema.spec.marks
 })
 
-let b = builders(schema, {
+const b = builders(schema, {
   p: {nodeType: "paragraph"},
   pre: {nodeType: "code_block"},
   h1: {nodeType: "heading", level: 1},

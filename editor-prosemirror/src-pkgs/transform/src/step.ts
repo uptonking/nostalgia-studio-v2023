@@ -64,7 +64,7 @@ export abstract class Step {
   static fromJSON(schema: Schema, json: any): Step {
     if (!json || !json.stepType)
       throw new RangeError('Invalid input for Step.fromJSON');
-    let type = stepsByID[json.stepType];
+    const type = stepsByID[json.stepType];
     if (!type) throw new RangeError(`No step type ${json.stepType} defined`);
     return type.fromJSON(schema, json);
   }

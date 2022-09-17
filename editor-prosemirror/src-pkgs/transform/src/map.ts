@@ -42,10 +42,10 @@ function recoverOffset(value: number) {
   return (value - (value & lower16)) / factor16;
 }
 
-const DEL_BEFORE = 1,
-  DEL_AFTER = 2,
-  DEL_ACROSS = 4,
-  DEL_SIDE = 8;
+const DEL_BEFORE = 1;
+  const DEL_AFTER = 2;
+  const DEL_ACROSS = 4;
+  const DEL_SIDE = 8;
 
 /// An object representing a mapped position with extra
 /// information.
@@ -106,8 +106,8 @@ export class StepMap implements Mappable {
 
   /// @internal
   recover(value: number) {
-    let diff = 0,
-      index = recoverIndex(value);
+    let diff = 0;
+      const index = recoverIndex(value);
     if (!this.inverted)
       for (let i = 0; i < index; i++)
         diff += this.ranges[i * 3 + 2] - this.ranges[i * 3 + 1];
@@ -124,26 +124,26 @@ export class StepMap implements Mappable {
 
   /// @internal
   _map(pos: number, assoc: number, simple: boolean) {
-    let diff = 0,
-      oldIndex = this.inverted ? 2 : 1,
-      newIndex = this.inverted ? 1 : 2;
+    let diff = 0;
+      const oldIndex = this.inverted ? 2 : 1;
+      const newIndex = this.inverted ? 1 : 2;
     for (let i = 0; i < this.ranges.length; i += 3) {
-      let start = this.ranges[i] - (this.inverted ? diff : 0);
+      const start = this.ranges[i] - (this.inverted ? diff : 0);
       if (start > pos) break;
-      let oldSize = this.ranges[i + oldIndex],
-        newSize = this.ranges[i + newIndex],
-        end = start + oldSize;
+      const oldSize = this.ranges[i + oldIndex];
+        const newSize = this.ranges[i + newIndex];
+        const end = start + oldSize;
       if (pos <= end) {
-        let side = !oldSize
+        const side = !oldSize
           ? assoc
           : pos == start
           ? -1
           : pos == end
           ? 1
           : assoc;
-        let result = start + diff + (side < 0 ? 0 : newSize);
+        const result = start + diff + (side < 0 ? 0 : newSize);
         if (simple) return result;
-        let recover =
+        const recover =
           pos == (assoc < 0 ? start : end)
             ? null
             : makeRecover(i / 3, pos - start);
@@ -159,15 +159,15 @@ export class StepMap implements Mappable {
 
   /// @internal
   touches(pos: number, recover: number) {
-    let diff = 0,
-      index = recoverIndex(recover);
-    let oldIndex = this.inverted ? 2 : 1,
-      newIndex = this.inverted ? 1 : 2;
+    let diff = 0;
+      const index = recoverIndex(recover);
+    const oldIndex = this.inverted ? 2 : 1;
+      const newIndex = this.inverted ? 1 : 2;
     for (let i = 0; i < this.ranges.length; i += 3) {
-      let start = this.ranges[i] - (this.inverted ? diff : 0);
+      const start = this.ranges[i] - (this.inverted ? diff : 0);
       if (start > pos) break;
-      let oldSize = this.ranges[i + oldIndex],
-        end = start + oldSize;
+      const oldSize = this.ranges[i + oldIndex];
+        const end = start + oldSize;
       if (pos <= end && i == index * 3) return true;
       diff += this.ranges[i + newIndex] - oldSize;
     }
@@ -184,14 +184,14 @@ export class StepMap implements Mappable {
       newEnd: number,
     ) => void,
   ) {
-    let oldIndex = this.inverted ? 2 : 1,
-      newIndex = this.inverted ? 1 : 2;
+    const oldIndex = this.inverted ? 2 : 1;
+      const newIndex = this.inverted ? 1 : 2;
     for (let i = 0, diff = 0; i < this.ranges.length; i += 3) {
-      let start = this.ranges[i],
-        oldStart = start - (this.inverted ? diff : 0),
-        newStart = start + (this.inverted ? 0 : diff);
-      let oldSize = this.ranges[i + oldIndex],
-        newSize = this.ranges[i + newIndex];
+      const start = this.ranges[i];
+        const oldStart = start - (this.inverted ? diff : 0);
+        const newStart = start + (this.inverted ? 0 : diff);
+      const oldSize = this.ranges[i + oldIndex];
+        const newSize = this.ranges[i + newIndex];
       f(oldStart, oldStart + oldSize, newStart, newStart + newSize);
       diff += newSize - oldSize;
     }
@@ -275,7 +275,7 @@ export class Mapping implements Mappable {
       i < mapping.maps.length;
       i++
     ) {
-      let mirr = mapping.getMirror(i);
+      const mirr = mapping.getMirror(i);
       this.appendMap(
         mapping.maps[i],
         mirr != null && mirr < i ? startSize + mirr : undefined,
@@ -306,7 +306,7 @@ export class Mapping implements Mappable {
       i >= 0;
       i--
     ) {
-      let mirr = mapping.getMirror(i);
+      const mirr = mapping.getMirror(i);
       this.appendMap(
         mapping.maps[i].invert(),
         mirr != null && mirr > i ? totalSize - mirr - 1 : undefined,
@@ -316,7 +316,7 @@ export class Mapping implements Mappable {
 
   /** Create an inverted version of this mapping. */
   invert() {
-    let inverse = new Mapping();
+    const inverse = new Mapping();
     inverse.appendMappingInverted(this);
     return inverse;
   }
@@ -341,10 +341,10 @@ export class Mapping implements Mappable {
     let delInfo = 0;
 
     for (let i = this.from; i < this.to; i++) {
-      let map = this.maps[i],
-        result = map.mapResult(pos, assoc);
+      const map = this.maps[i];
+        const result = map.mapResult(pos, assoc);
       if (result.recover != null) {
-        let corr = this.getMirror(i);
+        const corr = this.getMirror(i);
         if (corr != null && corr > i && corr < this.to) {
           i = corr;
           pos = this.maps[corr].recover(result.recover);

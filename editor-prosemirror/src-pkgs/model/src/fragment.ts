@@ -42,14 +42,14 @@ export class Fragment {
     parent?: Node,
   ) {
     for (let i = 0, pos = 0; pos < to; i++) {
-      let child = this.content[i],
-        end = pos + child.nodeSize;
+      const child = this.content[i];
+        const end = pos + child.nodeSize;
       if (
         end > from &&
         f(child, nodeStart + pos, parent || null, i) !== false &&
         child.content.size
       ) {
-        let start = pos + 1;
+        const start = pos + 1;
         child.nodesBetween(
           Math.max(0, from - start),
           Math.min(child.content.size, to - start),
@@ -80,8 +80,8 @@ export class Fragment {
     blockSeparator?: string | null,
     leafText?: string | null | ((leafNode: Node) => string),
   ) {
-    let text = '',
-      separated = true;
+    let text = '';
+      let separated = true;
     this.nodesBetween(
       from,
       to,
@@ -112,10 +112,10 @@ export class Fragment {
   append(other: Fragment) {
     if (!other.size) return this;
     if (!this.size) return other;
-    let last = this.lastChild!,
-      first = other.firstChild!,
-      content = this.content.slice(),
-      i = 0;
+    const last = this.lastChild!;
+      const first = other.firstChild!;
+      const content = this.content.slice();
+      let i = 0;
     if (last.isText && last.sameMarkup(first)) {
       content[content.length - 1] = (last as TextNode).withText(
         last.text! + first.text!,
@@ -129,12 +129,12 @@ export class Fragment {
   /** Cut out the sub-fragment between the two given positions. */
   cut(from: number, to = this.size) {
     if (from == 0 && to == this.size) return this;
-    let result = [],
-      size = 0;
+    const result = [];
+      let size = 0;
     if (to > from)
       for (let i = 0, pos = 0; pos < to; i++) {
-        let child = this.content[i],
-          end = pos + child.nodeSize;
+        let child = this.content[i];
+          const end = pos + child.nodeSize;
         if (end > from) {
           if (pos < from || end > to) {
             if (child.isText)
@@ -167,10 +167,10 @@ export class Fragment {
    * replaced by the given node.
    */
   replaceChild(index: number, node: Node) {
-    let current = this.content[index];
+    const current = this.content[index];
     if (current == node) return this;
-    let copy = this.content.slice();
-    let size = this.size + node.nodeSize - current.nodeSize;
+    const copy = this.content.slice();
+    const size = this.size + node.nodeSize - current.nodeSize;
     copy[index] = node;
     return new Fragment(copy, size);
   }
@@ -216,7 +216,7 @@ export class Fragment {
    * index is out of range.
    */
   child(index: number) {
-    let found = this.content[index];
+    const found = this.content[index];
     if (!found)
       throw new RangeError('Index ' + index + ' out of range for ' + this);
     return found;
@@ -232,7 +232,7 @@ export class Fragment {
    */
   forEach(f: (node: Node, offset: number, index: number) => void) {
     for (let i = 0, p = 0; i < this.content.length; i++) {
-      let child = this.content[i];
+      const child = this.content[i];
       f(child, p, i);
       p += child.nodeSize;
     }
@@ -264,8 +264,8 @@ export class Fragment {
     if (pos > this.size || pos < 0)
       throw new RangeError(`Position ${pos} outside of fragment (${this})`);
     for (let i = 0, curPos = 0; ; i++) {
-      let cur = this.child(i),
-        end = curPos + cur.nodeSize;
+      const cur = this.child(i);
+        const end = curPos + cur.nodeSize;
       if (end >= pos) {
         if (end == pos || round > 0) return retIndex(i + 1, end);
         return retIndex(i, curPos);
@@ -302,10 +302,10 @@ export class Fragment {
    */
   static fromArray(array: readonly Node[]) {
     if (!array.length) return Fragment.empty;
-    let joined: Node[] | undefined,
-      size = 0;
+    let joined: Node[] | undefined;
+      let size = 0;
     for (let i = 0; i < array.length; i++) {
-      let node = array[i];
+      const node = array[i];
       size += node.nodeSize;
       if (i && node.isText && array[i - 1].sameMarkup(node)) {
         if (!joined) joined = array.slice(0, i);

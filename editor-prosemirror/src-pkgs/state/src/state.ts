@@ -153,7 +153,7 @@ export class EditorState {
   filterTransaction(tr: Transaction, ignore = -1) {
     for (let i = 0; i < this.config.plugins.length; i++)
       if (i != ignore) {
-        let plugin = this.config.plugins[i];
+        const plugin = this.config.plugins[i];
         if (
           plugin.spec.filterTransaction &&
           !plugin.spec.filterTransaction.call(plugin, tr, this)
@@ -176,7 +176,7 @@ export class EditorState {
     if (!this.filterTransaction(rootTr))
       return { state: this, transactions: [] };
 
-    let trs = [rootTr];
+    const trs = [rootTr];
     let newState = this.applyInner(rootTr);
     let seen = null;
     // This loop repeatedly gives plugins a chance to respond to
@@ -186,11 +186,11 @@ export class EditorState {
     outer: for (;;) {
       let haveNew = false;
       for (let i = 0; i < this.config.plugins.length; i++) {
-        let plugin = this.config.plugins[i];
+        const plugin = this.config.plugins[i];
         if (plugin.spec.appendTransaction) {
-          let n = seen ? seen[i].n : 0,
-            oldState = seen ? seen[i].state : this;
-          let tr =
+          const n = seen ? seen[i].n : 0;
+            const oldState = seen ? seen[i].state : this;
+          const tr =
             n < trs.length &&
             plugin.spec.appendTransaction.call(
               plugin,
@@ -224,10 +224,10 @@ export class EditorState {
   applyInner(tr: Transaction) {
     if (!tr.before.eq(this.doc))
       throw new RangeError('Applying a mismatched transaction');
-    let newInstance = new EditorState(this.config),
-      fields = this.config.fields;
+    const newInstance = new EditorState(this.config);
+      const fields = this.config.fields;
     for (let i = 0; i < fields.length; i++) {
-      let field = fields[i];
+      const field = fields[i];
       (newInstance as any)[field.name] = field.apply(
         tr,
         (this as any)[field.name],
@@ -283,20 +283,20 @@ export class EditorState {
    * way `JSON.stringify` calls `toString` methods.
    */
   toJSON(pluginFields?: { [propName: string]: Plugin }): any {
-    let result: any = {
+    const result: any = {
       doc: this.doc.toJSON(),
       selection: this.selection.toJSON(),
     };
     if (this.storedMarks)
       result.storedMarks = this.storedMarks.map((m) => m.toJSON());
-    if (pluginFields && typeof pluginFields == 'object')
-      for (let prop in pluginFields) {
+    if (pluginFields && typeof pluginFields === 'object')
+      for (const prop in pluginFields) {
         if (prop == 'doc' || prop == 'selection')
           throw new RangeError(
             'The JSON fields `doc` and `selection` are reserved',
           );
-        let plugin = pluginFields[prop],
-          state = plugin.spec.state;
+        const plugin = pluginFields[prop];
+          const state = plugin.spec.state;
         if (state && state.toJSON)
           result[prop] = state.toJSON.call(plugin, (this as any)[plugin.key]);
       }
@@ -322,8 +322,8 @@ export class EditorState {
     if (!json) throw new RangeError('Invalid input for EditorState.fromJSON');
     if (!config.schema)
       throw new RangeError("Required config field 'schema' missing");
-    let $config = new Configuration(config.schema, config.plugins);
-    let instance = new EditorState($config);
+    const $config = new Configuration(config.schema, config.plugins);
+    const instance = new EditorState($config);
     $config.fields.forEach((field) => {
       if (field.name == 'doc') {
         instance.doc = Node.fromJSON(config.schema, json.doc);
@@ -336,14 +336,14 @@ export class EditorState {
           );
       } else {
         if (pluginFields)
-          for (let prop in pluginFields) {
-            let plugin = pluginFields[prop],
-              state = plugin.spec.state;
+          for (const prop in pluginFields) {
+            const plugin = pluginFields[prop];
+              const state = plugin.spec.state;
             if (
               plugin.key == field.name &&
               state &&
               state.fromJSON &&
-              Object.prototype.hasOwnProperty.call(json, prop)
+              Object.hasOwn(json, prop)
             ) {
               // This field belongs to a plugin mapped to a JSON field, read it from there.
               (instance as any)[field.name] = state.fromJSON.call(

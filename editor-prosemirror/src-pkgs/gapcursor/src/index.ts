@@ -52,15 +52,15 @@ function arrow(axis: 'vert' | 'horiz', dir: number): Command {
   const dirStr =
     axis == 'vert' ? (dir > 0 ? 'down' : 'up') : dir > 0 ? 'right' : 'left';
   return function (state, dispatch, view) {
-    let sel = state.selection;
-    let $start = dir > 0 ? sel.$to : sel.$from,
-      mustMove = sel.empty;
+    const sel = state.selection;
+    let $start = dir > 0 ? sel.$to : sel.$from;
+      let mustMove = sel.empty;
     if (sel instanceof TextSelection) {
       if (!view!.endOfTextblock(dirStr) || $start.depth == 0) return false;
       mustMove = false;
       $start = state.doc.resolve(dir > 0 ? $start.after() : $start.before());
     }
-    let $found = GapCursor.findGapCursorFrom($start, dir, mustMove);
+    const $found = GapCursor.findGapCursorFrom($start, dir, mustMove);
     if (!$found) return false;
     if (dispatch) dispatch(state.tr.setSelection(new GapCursor($found)));
     return true;
@@ -69,9 +69,9 @@ function arrow(axis: 'vert' | 'horiz', dir: number): Command {
 
 function handleClick(view: EditorView, pos: number, event: MouseEvent) {
   if (!view || !view.editable) return false;
-  let $pos = view.state.doc.resolve(pos);
+  const $pos = view.state.doc.resolve(pos);
   if (!GapCursor.valid($pos)) return false;
-  let clickPos = view.posAtCoords({ left: event.clientX, top: event.clientY });
+  const clickPos = view.posAtCoords({ left: event.clientX, top: event.clientY });
   if (
     clickPos &&
     clickPos.inside > -1 &&
@@ -93,8 +93,8 @@ function beforeinput(view: EditorView, event: InputEvent) {
   )
     return false;
 
-  let { $from } = view.state.selection;
-  let insert = $from.parent
+  const { $from } = view.state.selection;
+  const insert = $from.parent
     .contentMatchAt($from.index())
     .findWrapping(view.state.schema.nodes.text);
   if (!insert) return false;
@@ -102,7 +102,7 @@ function beforeinput(view: EditorView, event: InputEvent) {
   let frag = Fragment.empty;
   for (let i = insert.length - 1; i >= 0; i--)
     frag = Fragment.from(insert[i].createAndFill(null, frag));
-  let tr = view.state.tr.replace($from.pos, $from.pos, new Slice(frag, 0, 0));
+  const tr = view.state.tr.replace($from.pos, $from.pos, new Slice(frag, 0, 0));
   tr.setSelection(TextSelection.near(tr.doc.resolve($from.pos + 1)));
   view.dispatch(tr);
   return false;
@@ -110,7 +110,7 @@ function beforeinput(view: EditorView, event: InputEvent) {
 
 function drawGapCursor(state: EditorState) {
   if (!(state.selection instanceof GapCursor)) return null;
-  let node = document.createElement('div');
+  const node = document.createElement('div');
   node.className = 'ProseMirror-gapcursor';
   return DecorationSet.create(state.doc, [
     Decoration.widget(state.selection.head, node, { key: 'gapcursor' }),

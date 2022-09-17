@@ -1,8 +1,8 @@
 import {Schema, NodeSpec, MarkSpec, DOMOutputSpec} from "prosemirror-model"
 
-const pDOM: DOMOutputSpec = ["p", 0], blockquoteDOM: DOMOutputSpec = ["blockquote", 0],
-      hrDOM: DOMOutputSpec = ["hr"], preDOM: DOMOutputSpec = ["pre", ["code", 0]],
-      brDOM: DOMOutputSpec = ["br"]
+const pDOM: DOMOutputSpec = ["p", 0]; const blockquoteDOM: DOMOutputSpec = ["blockquote", 0];
+      const hrDOM: DOMOutputSpec = ["hr"]; const preDOM: DOMOutputSpec = ["pre", ["code", 0]];
+      const brDOM: DOMOutputSpec = ["br"]
 
 /// [Specs](#model.NodeSpec) for the nodes defined in this schema.
 export const nodes = {
@@ -90,7 +90,7 @@ export const nodes = {
         alt: dom.getAttribute("alt")
       }
     }}],
-    toDOM(node) { let {src, alt, title} = node.attrs; return ["img", {src, alt, title}] }
+    toDOM(node) { const {src, alt, title} = node.attrs; return ["img", {src, alt, title}] }
   } as NodeSpec,
 
   /// A hard line break, represented in the DOM as `<br>`.
@@ -103,7 +103,7 @@ export const nodes = {
   } as NodeSpec
 }
 
-const emDOM: DOMOutputSpec = ["em", 0], strongDOM: DOMOutputSpec = ["strong", 0], codeDOM: DOMOutputSpec = ["code", 0]
+const emDOM: DOMOutputSpec = ["em", 0]; const strongDOM: DOMOutputSpec = ["strong", 0]; const codeDOM: DOMOutputSpec = ["code", 0]
 
 /// [Specs](#model.MarkSpec) for the marks in the schema.
 export const marks = {
@@ -119,7 +119,7 @@ export const marks = {
     parseDOM: [{tag: "a[href]", getAttrs(dom: HTMLElement) {
       return {href: dom.getAttribute("href"), title: dom.getAttribute("title")}
     }}],
-    toDOM(node) { let {href, title} = node.attrs; return ["a", {href, title}, 0] }
+    toDOM(node) { const {href, title} = node.attrs; return ["a", {href, title}, 0] }
   } as MarkSpec,
 
   /// An emphasis mark. Rendered as an `<em>` element. Has parse rules

@@ -134,11 +134,11 @@ export class ResolvedPos {
    * - 返回当前位置之后的文本节点的切片。
    */
   get nodeAfter(): Node | null {
-    let parent = this.parent,
-      index = this.index(this.depth);
+    const parent = this.parent;
+      const index = this.index(this.depth);
     if (index == parent.childCount) return null;
-    let dOff = this.pos - this.path[this.path.length - 1],
-      child = parent.child(index);
+    const dOff = this.pos - this.path[this.path.length - 1];
+      const child = parent.child(index);
     return dOff ? parent.child(index).cut(dOff) : child;
   }
 
@@ -148,8 +148,8 @@ export class ResolvedPos {
    * - 返回当前位置之前的文本节点的切片
    */
   get nodeBefore(): Node | null {
-    let index = this.index(this.depth);
-    let dOff = this.pos - this.path[this.path.length - 1];
+    const index = this.index(this.depth);
+    const dOff = this.pos - this.path[this.path.length - 1];
     if (dOff) return this.parent.child(index).cut(0, dOff);
     return index == 0 ? null : this.parent.child(index - 1);
   }
@@ -159,8 +159,8 @@ export class ResolvedPos {
    */
   posAtIndex(index: number, depth?: number | null): number {
     depth = this.resolveDepth(depth);
-    let node = this.path[depth * 3],
-      pos = depth == 0 ? 0 : this.path[depth * 3 - 1] + 1;
+    const node = this.path[depth * 3];
+      let pos = depth == 0 ? 0 : this.path[depth * 3 - 1] + 1;
     for (let i = 0; i < index; i++) pos += node.child(i).nodeSize;
     return pos;
   }
@@ -172,8 +172,8 @@ export class ResolvedPos {
    * - 返回当前文本节点上应用的标记集合。
    */
   marks(): readonly Mark[] {
-    let parent = this.parent,
-      index = this.index();
+    const parent = this.parent;
+      const index = this.index();
 
     // In an empty parent, return the empty array
     if (parent.content.size == 0) return Mark.none;
@@ -181,12 +181,12 @@ export class ResolvedPos {
     // When inside a text node, just return the text node's marks
     if (this.textOffset) return parent.child(index).marks;
 
-    let main = parent.maybeChild(index - 1),
-      other = parent.maybeChild(index);
+    let main = parent.maybeChild(index - 1);
+      let other = parent.maybeChild(index);
     // If the `after` flag is true of there is no node before, make
     // the node after this position the main reference.
     if (!main) {
-      let tmp = main;
+      const tmp = main;
       main = other;
       other = tmp;
     }
@@ -194,7 +194,7 @@ export class ResolvedPos {
     // Use all marks in the main node, except those that have
     // `inclusive` set to false and are not present in the other node.
     let marks = main!.marks;
-    for (var i = 0; i < marks.length; i++)
+    for (let i = 0; i < marks.length; i++)
       if (
         marks[i].type.spec.inclusive === false &&
         (!other || !marks[i].isInSet(other.marks))
@@ -213,12 +213,12 @@ export class ResolvedPos {
    * - 返回从此位置，到另外一个位置的范围内的标记集合。
    */
   marksAcross($end: ResolvedPos): readonly Mark[] | null {
-    let after = this.parent.maybeChild(this.index());
+    const after = this.parent.maybeChild(this.index());
     if (!after || !after.isInline) return null;
 
-    let marks = after.marks,
-      next = $end.parent.maybeChild($end.index());
-    for (var i = 0; i < marks.length; i++)
+    let marks = after.marks;
+      const next = $end.parent.maybeChild($end.index());
+    for (let i = 0; i < marks.length; i++)
       if (
         marks[i].type.spec.inclusive === false &&
         (!next || !marks[i].isInSet(next.marks))
@@ -290,12 +290,12 @@ export class ResolvedPos {
   static resolve(doc: Node, pos: number): ResolvedPos {
     if (!(pos >= 0 && pos <= doc.content.size))
       throw new RangeError('Position ' + pos + ' out of range');
-    let path = [];
-    let start = 0,
-      parentOffset = pos;
+    const path = [];
+    let start = 0;
+      let parentOffset = pos;
     for (let node = doc; ; ) {
-      let { index, offset } = node.content.findIndex(parentOffset);
-      let rem = parentOffset - offset;
+      const { index, offset } = node.content.findIndex(parentOffset);
+      const rem = parentOffset - offset;
       path.push(node, index, start + offset);
       if (!rem) break;
       node = node.child(index);
@@ -309,10 +309,10 @@ export class ResolvedPos {
   /// @internal
   static resolveCached(doc: Node, pos: number): ResolvedPos {
     for (let i = 0; i < resolveCache.length; i++) {
-      let cached = resolveCache[i];
+      const cached = resolveCache[i];
       if (cached.pos == pos && cached.doc == doc) return cached;
     }
-    let result = (resolveCache[resolveCachePos] = ResolvedPos.resolve(
+    const result = (resolveCache[resolveCachePos] = ResolvedPos.resolve(
       doc,
       pos,
     ));
@@ -321,9 +321,9 @@ export class ResolvedPos {
   }
 }
 
-let resolveCache: ResolvedPos[] = [];
+const resolveCache: ResolvedPos[] = [];
 let resolveCachePos = 0;
-let resolveCacheSize = 12;
+const resolveCacheSize = 12;
 
 /** Represents a flat range of content, i.e. one that starts and
  * ends in the same node.

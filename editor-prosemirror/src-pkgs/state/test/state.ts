@@ -4,9 +4,9 @@ import {Node, Schema} from "prosemirror-model"
 // Wrapper object to make writing state tests easier.
 
 export function selFor(doc: Node) {
-  let a = (doc as any).tag.a
+  const a = (doc as any).tag.a
   if (a != null) {
-    let $a = doc.resolve(a)
+    const $a = doc.resolve(a)
     if ($a.parent.inlineContent)
       return new TextSelection($a, (doc as any).tag.b != null ? doc.resolve((doc as any).tag.b) : undefined)
     else return new NodeSelection($a)
@@ -38,12 +38,12 @@ export class TestState {
   }
 
   textSel(anchor: number, head?: number) {
-    let sel = TextSelection.create(this.state.doc, anchor, head)
+    const sel = TextSelection.create(this.state.doc, anchor, head)
     this.state = this.state.apply(this.state.tr.setSelection(sel))
   }
 
   nodeSel(pos: number) {
-    let sel = NodeSelection.create(this.state.doc, pos)
+    const sel = NodeSelection.create(this.state.doc, pos)
     this.state = this.state.apply(this.state.tr.setSelection(sel))
   }
 

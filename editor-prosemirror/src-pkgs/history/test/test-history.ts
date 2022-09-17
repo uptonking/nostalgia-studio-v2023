@@ -5,10 +5,10 @@ import {ReplaceStep} from "prosemirror-transform"
 import ist from "ist"
 import {history, closeHistory, undo, redo, undoDepth, redoDepth} from "prosemirror-history"
 
-let plugin = history()
+const plugin = history()
 
 function mkState(doc?: Node, config?: any) {
-  let plugins = [config ? history(config) : plugin]
+  const plugins = [config ? history(config) : plugin]
   if (config && config.preserveItems) plugins.push(new Plugin({historyPreserveItems: true} as any))
   return EditorState.create({schema, plugins: plugins.concat(config && config.plugins || []), doc})
 }
@@ -167,7 +167,7 @@ describe("history", () => {
     state = state.apply(state.tr.setSelection(TextSelection.create(state.doc, 1)))
     state = type(state, "top")
     for (let i = 0; i < 6; i++) {
-      let re = i % 2
+      const re = i % 2
       for (let j = 0; j < 4; j++) state = command(state, re ? redo : undo)
       ist(state.doc, re ? doc(p("top"), p("zero one two three")) : doc(p()), eq)
     }
@@ -209,9 +209,9 @@ describe("history", () => {
     state = type(state, "hi")
     state = state.apply(closeHistory(state.tr))
     state = state.apply(state.tr.setSelection(TextSelection.create(state.doc, 1, 3)))
-    let selection = state.selection
+    const selection = state.selection
     state = state.apply(state.tr.replaceWith(selection.from, selection.to, schema.text("hello")))
-    let selection2 = state.selection
+    const selection2 = state.selection
     state = command(state, undo)
     ist(state.selection.eq(selection))
     state = command(state, redo)
@@ -258,7 +258,7 @@ describe("history", () => {
   })
 
   it("all functions gracefully handle EditorStates without history", () => {
-    let state = EditorState.create({schema})
+    const state = EditorState.create({schema})
     ist(undoDepth(state), 0)
     ist(redoDepth(state), 0)
     ist(undo(state), false)
@@ -307,7 +307,7 @@ describe("history", () => {
   it("includes transactions appended to undo in the redo history", () => {
     let state = mkState(doc(p("x")), {plugins: [new Plugin({
       appendTransaction: (trs, _old, state) => {
-        let add = trs[0].getMeta("add")
+        const add = trs[0].getMeta("add")
         if (add) return state.tr.insert(1, schema.text(add))
       }
     })]})
@@ -324,7 +324,7 @@ describe("history", () => {
   it("doesn't close the history on appended transactions", () => {
     let state = mkState(doc(p("x")), {plugins: [new Plugin({
       appendTransaction: (trs, _old, state) => {
-        let add = trs[0].getMeta("add")
+        const add = trs[0].getMeta("add")
         if (add) return state.tr.insert(1, schema.text(add))
       }
     })]})
@@ -352,11 +352,11 @@ describe("history", () => {
     // base -
     //       \
     //        - right
-    let rightStep = new ReplaceStep(5, 5, new Slice(Fragment.from(schema.text(" right")), 0, 0))
+    const rightStep = new ReplaceStep(5, 5, new Slice(Fragment.from(schema.text(" right")), 0, 0))
     state = state.apply(state.tr.step(rightStep))
     ist(state.doc, doc(p("base right")), eq)
     ist(undoDepth(state), 2)
-    let leftStep = new ReplaceStep(1, 1, new Slice(Fragment.from(schema.text("left ")), 0, 0))
+    const leftStep = new ReplaceStep(1, 1, new Slice(Fragment.from(schema.text("left ")), 0, 0))
 
     // Receive remote step and rebase local unconfirmed step
     //
@@ -389,7 +389,7 @@ describe("history", () => {
     let state = mkState(doc(p("123456789ABCD")))
     state = state.apply(state.tr.setSelection(TextSelection.create(state.doc, 6, 13)))
     state = state.apply(state.tr.delete(6, 13))
-    let rebase = state.tr.insert(6, schema.text("6789ABC")).insert(14, schema.text("E")).delete(6, 13)
+    const rebase = state.tr.insert(6, schema.text("6789ABC")).insert(14, schema.text("E")).delete(6, 13)
         .setMeta("rebased", 1).setMeta("addToHistory", false)
     rebase.mapping.setMirror(0, 2)
     state = state.apply(rebase)

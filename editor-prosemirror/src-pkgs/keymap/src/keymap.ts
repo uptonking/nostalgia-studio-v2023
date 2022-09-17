@@ -2,14 +2,14 @@ import {base, keyName} from "w3c-keyname"
 import {Plugin, Command} from "prosemirror-state"
 import {EditorView} from "prosemirror-view"
 
-const mac = typeof navigator != "undefined" ? /Mac|iP(hone|[oa]d)/.test(navigator.platform) : false
+const mac = typeof navigator !== "undefined" ? /Mac|iP(hone|[oa]d)/.test(navigator.platform) : false
 
 function normalizeKeyName(name: string) {
-  let parts = name.split(/-(?!$)/), result = parts[parts.length - 1]
+  const parts = name.split(/-(?!$)/); let result = parts[parts.length - 1]
   if (result == "Space") result = " "
-  let alt, ctrl, shift, meta
+  let alt; let ctrl; let shift; let meta
   for (let i = 0; i < parts.length - 1; i++) {
-    let mod = parts[i]
+    const mod = parts[i]
     if (/^(cmd|meta|m)$/i.test(mod)) meta = true
     else if (/^a(lt)?$/i.test(mod)) alt = true
     else if (/^(c|ctrl|control)$/i.test(mod)) ctrl = true
@@ -25,8 +25,8 @@ function normalizeKeyName(name: string) {
 }
 
 function normalize(map: {[key: string]: Command}) {
-  let copy: {[key: string]: Command} = Object.create(null)
-  for (let prop in map) copy[normalizeKeyName(prop)] = map[prop]
+  const copy: {[key: string]: Command} = Object.create(null)
+  for (const prop in map) copy[normalizeKeyName(prop)] = map[prop]
   return copy
 }
 
@@ -75,10 +75,10 @@ export function keymap(bindings: {[key: string]: Command}): Plugin {
 /// [`keymap`](#keymap.keymap)), return a [keydown
 /// handler](#view.EditorProps.handleKeyDown) that handles them.
 export function keydownHandler(bindings: {[key: string]: Command}): (view: EditorView, event: KeyboardEvent) => boolean {
-  let map = normalize(bindings)
+  const map = normalize(bindings)
   return function(view, event) {
-    let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
-    let direct = map[modifiers(name, event, !isChar)]
+    const name = keyName(event); const isChar = name.length == 1 && name != " "; let baseName
+    const direct = map[modifiers(name, event, !isChar)]
     if (direct && direct(view.state, view.dispatch, view)) return true
     if (isChar && (event.shiftKey || event.altKey || event.metaKey || name.charCodeAt(0) > 127) &&
         (baseName = base[event.keyCode]) && baseName != name) {
@@ -86,12 +86,12 @@ export function keydownHandler(bindings: {[key: string]: Command}): (view: Edito
       // active or the character produced isn't ASCII, and our table
       // produces a different name from the the keyCode. See #668,
       // #1060
-      let fromCode = map[modifiers(baseName, event, true)]
+      const fromCode = map[modifiers(baseName, event, true)]
       if (fromCode && fromCode(view.state, view.dispatch, view)) return true
     } else if (isChar && event.shiftKey) {
       // Otherwise, if shift is active, also try the binding with the
       // Shift- prefix enabled. See #997
-      let withShift = map[modifiers(name, event, true)]
+      const withShift = map[modifiers(name, event, true)]
       if (withShift && withShift(view.state, view.dispatch, view)) return true
     }
     return false

@@ -22,11 +22,11 @@ export class ContentMatch {
 
   /// @internal
   static parse(string: string, nodeTypes: {readonly [name: string]: NodeType}): ContentMatch {
-    let stream = new TokenStream(string, nodeTypes)
+    const stream = new TokenStream(string, nodeTypes)
     if (stream.next == null) return ContentMatch.empty
-    let expr = parseExpr(stream)
+    const expr = parseExpr(stream)
     if (stream.next) stream.err("Unexpected trailing text")
-    let match = dfa(nfa(expr))
+    const match = dfa(nfa(expr))
     checkForDeadEnds(match, stream)
     return match
   }
@@ -57,7 +57,7 @@ export class ContentMatch {
   /// be generated.
   get defaultType(): NodeType | null {
     for (let i = 0; i < this.next.length; i++) {
-      let {type} = this.next[i]
+      const {type} = this.next[i]
       if (!(type.isText || type.hasRequiredAttrs())) return type
     }
     return null
@@ -78,17 +78,17 @@ export class ContentMatch {
   /// return a fragment if the resulting match goes to the end of the
   /// content expression.
   fillBefore(after: Fragment, toEnd = false, startIndex = 0): Fragment | null {
-    let seen: ContentMatch[] = [this]
+    const seen: ContentMatch[] = [this]
     function search(match: ContentMatch, types: readonly NodeType[]): Fragment | null {
-      let finished = match.matchFragment(after, startIndex)
+      const finished = match.matchFragment(after, startIndex)
       if (finished && (!toEnd || finished.validEnd))
         return Fragment.from(types.map(tp => tp.createAndFill()!))
 
       for (let i = 0; i < match.next.length; i++) {
-        let {type, next} = match.next[i]
+        const {type, next} = match.next[i]
         if (!(type.isText || type.hasRequiredAttrs()) && seen.indexOf(next) == -1) {
           seen.push(next)
-          let found = search(next, types.concat(type))
+          const found = search(next, types.concat(type))
           if (found) return found
         }
       }
@@ -105,7 +105,7 @@ export class ContentMatch {
   findWrapping(target: NodeType): readonly NodeType[] | null {
     for (let i = 0; i < this.wrapCache.length; i += 2)
       if (this.wrapCache[i] == target) return this.wrapCache[i + 1] as (readonly NodeType[] | null)
-    let computed = this.computeWrapping(target)
+    const computed = this.computeWrapping(target)
     this.wrapCache.push(target, computed)
     return computed
   }
@@ -113,17 +113,17 @@ export class ContentMatch {
   /// @internal
   computeWrapping(target: NodeType): readonly NodeType[] | null {
     type Active = {match: ContentMatch, type: NodeType | null, via: Active | null}
-    let seen = Object.create(null), active: Active[] = [{match: this, type: null, via: null}]
+    const seen = Object.create(null); const active: Active[] = [{match: this, type: null, via: null}]
     while (active.length) {
-      let current = active.shift()!, match = current.match
+      const current = active.shift()!; const match = current.match
       if (match.matchType(target)) {
-        let result: NodeType[] = []
+        const result: NodeType[] = []
         for (let obj: Active = current; obj.type; obj = obj.via!)
           result.push(obj.type)
         return result.reverse()
       }
       for (let i = 0; i < match.next.length; i++) {
-        let {type, next} = match.next[i]
+        const {type, next} = match.next[i]
         if (!type.isLeaf && !type.hasRequiredAttrs() && !(type.name in seen) && (!current.type || next.validEnd)) {
           active.push({match: type.contentMatch, type, via: current})
           seen[type.name] = true
@@ -148,7 +148,7 @@ export class ContentMatch {
 
   /// @internal
   toString() {
-    let seen: ContentMatch[] = []
+    const seen: ContentMatch[] = []
     function scan(m: ContentMatch) {
       seen.push(m)
       for (let i = 0; i < m.next.length; i++)
@@ -198,14 +198,14 @@ type Expr =
   {type: "name", value: NodeType}
 
 function parseExpr(stream: TokenStream): Expr {
-  let exprs = []
+  const exprs = []
   do { exprs.push(parseExprSeq(stream)) }
   while (stream.eat("|"))
   return exprs.length == 1 ? exprs[0] : {type: "choice", exprs}
 }
 
 function parseExprSeq(stream: TokenStream): Expr {
-  let exprs = []
+  const exprs = []
   do { exprs.push(parseExprSubscript(stream)) }
   while (stream.next && stream.next != ")" && stream.next != "|")
   return exprs.length == 1 ? exprs[0] : {type: "seq", exprs}
@@ -229,13 +229,13 @@ function parseExprSubscript(stream: TokenStream): Expr {
 
 function parseNum(stream: TokenStream) {
   if (/\D/.test(stream.next)) stream.err("Expected number, got '" + stream.next + "'")
-  let result = Number(stream.next)
+  const result = Number(stream.next)
   stream.pos++
   return result
 }
 
 function parseExprRange(stream: TokenStream, expr: Expr): Expr {
-  let min = parseNum(stream), max = min
+  const min = parseNum(stream); let max = min
   if (stream.eat(",")) {
     if (stream.next != "}") max = parseNum(stream)
     else max = -1
@@ -245,11 +245,11 @@ function parseExprRange(stream: TokenStream, expr: Expr): Expr {
 }
 
 function resolveName(stream: TokenStream, name: string): readonly NodeType[] {
-  let types = stream.nodeTypes, type = types[name]
+  const types = stream.nodeTypes; const type = types[name]
   if (type) return [type]
-  let result = []
-  for (let typeName in types) {
-    let type = types[typeName]
+  const result = []
+  for (const typeName in types) {
+    const type = types[typeName]
     if (type.groups.indexOf(name) > -1) result.push(type)
   }
   if (result.length == 0) stream.err("No node type or group '" + name + "' found")
@@ -258,11 +258,11 @@ function resolveName(stream: TokenStream, name: string): readonly NodeType[] {
 
 function parseExprAtom(stream: TokenStream): Expr {
   if (stream.eat("(")) {
-    let expr = parseExpr(stream)
+    const expr = parseExpr(stream)
     if (!stream.eat(")")) stream.err("Missing closing paren")
     return expr
   } else if (!/\W/.test(stream.next)) {
-    let exprs = resolveName(stream, stream.next).map(type => {
+    const exprs = resolveName(stream, stream.next).map(type => {
       if (stream.inline == null) stream.inline = type.isInline
       else if (stream.inline != type.isInline) stream.err("Mixing inline and block content")
       return {type: "name", value: type} as Expr
@@ -289,13 +289,13 @@ type Edge = {term: NodeType | undefined, to: number | undefined}
 /// significant, in that it is used to contruct filler content when
 /// necessary.
 function nfa(expr: Expr): Edge[][] {
-  let nfa: Edge[][] = [[]]
+  const nfa: Edge[][] = [[]]
   connect(compile(expr, 0), node())
   return nfa
 
   function node() { return nfa.push([]) - 1 }
   function edge(from: number, to?: number, term?: NodeType) {
-    let edge = {term, to}
+    const edge = {term, to}
     nfa[from].push(edge)
     return edge
   }
@@ -308,17 +308,17 @@ function nfa(expr: Expr): Edge[][] {
       return expr.exprs.reduce((out, expr) => out.concat(compile(expr, from)), [] as Edge[])
     } else if (expr.type == "seq") {
       for (let i = 0;; i++) {
-        let next = compile(expr.exprs[i], from)
+        const next = compile(expr.exprs[i], from)
         if (i == expr.exprs.length - 1) return next
         connect(next, from = node())
       }
     } else if (expr.type == "star") {
-      let loop = node()
+      const loop = node()
       edge(from, loop)
       connect(compile(expr.expr, loop), loop)
       return [edge(loop)]
     } else if (expr.type == "plus") {
-      let loop = node()
+      const loop = node()
       connect(compile(expr.expr, from), loop)
       connect(compile(expr.expr, loop), loop)
       return [edge(loop)]
@@ -327,7 +327,7 @@ function nfa(expr: Expr): Edge[][] {
     } else if (expr.type == "range") {
       let cur = from
       for (let i = 0; i < expr.min; i++) {
-        let next = node()
+        const next = node()
         connect(compile(expr.expr, cur), next)
         cur = next
       }
@@ -335,7 +335,7 @@ function nfa(expr: Expr): Edge[][] {
         connect(compile(expr.expr, cur), cur)
       } else {
         for (let i = expr.min; i < expr.max; i++) {
-          let next = node()
+          const next = node()
           edge(cur, next)
           connect(compile(expr.expr, cur), next)
           cur = next
@@ -356,16 +356,16 @@ function cmp(a: number, b: number) { return b - a }
 // nodes with only a single null-out-edge, since they may lead to
 // needless duplicated nodes.
 function nullFrom(nfa: Edge[][], node: number): readonly number[] {
-  let result: number[] = []
+  const result: number[] = []
   scan(node)
   return result.sort(cmp)
 
   function scan(node: number): void {
-    let edges = nfa[node]
+    const edges = nfa[node]
     if (edges.length == 1 && !edges[0].term) return scan(edges[0].to!)
     result.push(node)
     for (let i = 0; i < edges.length; i++) {
-      let {term, to} = edges[i]
+      const {term, to} = edges[i]
       if (!term && result.indexOf(to!) == -1) scan(to!)
     }
   }
@@ -375,11 +375,11 @@ function nullFrom(nfa: Edge[][], node: number): readonly number[] {
 // of state objects (`ContentMatch` instances) with transitions
 // between them.
 function dfa(nfa: Edge[][]): ContentMatch {
-  let labeled = Object.create(null)
+  const labeled = Object.create(null)
   return explore(nullFrom(nfa, 0))
 
   function explore(states: readonly number[]) {
-    let out: [NodeType, number[]][] = []
+    const out: [NodeType, number[]][] = []
     states.forEach(node => {
       nfa[node].forEach(({term, to}) => {
         if (!term) return
@@ -391,9 +391,9 @@ function dfa(nfa: Edge[][]): ContentMatch {
         })
       })
     })
-    let state = labeled[states.join(",")] = new ContentMatch(states.indexOf(nfa.length - 1) > -1)
+    const state = labeled[states.join(",")] = new ContentMatch(states.indexOf(nfa.length - 1) > -1)
     for (let i = 0; i < out.length; i++) {
-      let states = out[i][1].sort(cmp)
+      const states = out[i][1].sort(cmp)
       state.next.push({type: out[i][0], next: labeled[states.join(",")] || explore(states)})
     }
     return state
@@ -402,9 +402,9 @@ function dfa(nfa: Edge[][]): ContentMatch {
 
 function checkForDeadEnds(match: ContentMatch, stream: TokenStream) {
   for (let i = 0, work = [match]; i < work.length; i++) {
-    let state = work[i], dead = !state.validEnd, nodes = []
+    const state = work[i]; let dead = !state.validEnd; const nodes = []
     for (let j = 0; j < state.next.length; j++) {
-      let {type, next} = state.next[j]
+      const {type, next} = state.next[j]
       nodes.push(type.name)
       if (dead && !(type.isText || type.hasRequiredAttrs())) dead = false
       if (work.indexOf(next) == -1) work.push(next)

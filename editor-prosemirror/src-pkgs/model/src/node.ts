@@ -214,12 +214,12 @@ export class Node {
   slice(from: number, to: number = this.content.size, includeParents = false) {
     if (from == to) return Slice.empty;
 
-    let $from = this.resolve(from),
-      $to = this.resolve(to);
-    let depth = includeParents ? 0 : $from.sharedDepth(to);
-    let start = $from.start(depth),
-      node = $from.node(depth);
-    let content = node.content.cut($from.pos - start, $to.pos - start);
+    const $from = this.resolve(from);
+      const $to = this.resolve(to);
+    const depth = includeParents ? 0 : $from.sharedDepth(to);
+    const start = $from.start(depth);
+      const node = $from.node(depth);
+    const content = node.content.cut($from.pos - start, $to.pos - start);
     return new Slice(content, $from.depth - depth, $to.depth - depth);
   }
 
@@ -237,7 +237,7 @@ export class Node {
   /** Find the node directly after the given position. */
   nodeAt(pos: number): Node | null {
     for (let node: Node | null = this; ; ) {
-      let { index, offset } = node.content.findIndex(pos);
+      const { index, offset } = node.content.findIndex(pos);
       node = node.maybeChild(index);
       if (!node) return null;
       if (offset == pos || node.isText) return node;
@@ -254,7 +254,7 @@ export class Node {
     index: number;
     offset: number;
   } {
-    let { index, offset } = this.content.findIndex(pos);
+    const { index, offset } = this.content.findIndex(pos);
     return { node: this.content.maybeChild(index), index, offset };
   }
 
@@ -268,9 +268,9 @@ export class Node {
     offset: number;
   } {
     if (pos == 0) return { node: null, index: 0, offset: 0 };
-    let { index, offset } = this.content.findIndex(pos);
+    const { index, offset } = this.content.findIndex(pos);
     if (offset < pos) return { node: this.content.child(index), index, offset };
-    let node = this.content.child(index - 1);
+    const node = this.content.child(index - 1);
     return { node, index: index - 1, offset: offset - node.nodeSize };
   }
 
@@ -355,9 +355,9 @@ export class Node {
     return wrapMarks(this.marks, name);
   }
 
-  /** Get the content match in this node at the given index.*/
+  /** Get the content match in this node at the given index. */
   contentMatchAt(index: number) {
-    let match = this.type.contentMatch.matchFragment(this.content, 0, index);
+    const match = this.type.contentMatch.matchFragment(this.content, 0, index);
     if (!match)
       throw new Error('Called contentMatchAt on a node with invalid content');
     return match;
@@ -376,8 +376,8 @@ export class Node {
     start = 0,
     end = replacement.childCount,
   ) {
-    let one = this.contentMatchAt(from).matchFragment(replacement, start, end);
-    let two = one && one.matchFragment(this.content, to);
+    const one = this.contentMatchAt(from).matchFragment(replacement, start, end);
+    const two = one && one.matchFragment(this.content, to);
     if (!two || !two.validEnd) return false;
     for (let i = start; i < end; i++)
       if (!this.type.allowsMarks(replacement.child(i).marks)) return false;
@@ -394,8 +394,8 @@ export class Node {
     marks?: readonly Mark[],
   ) {
     if (marks && !this.type.allowsMarks(marks)) return false;
-    let start = this.contentMatchAt(from).matchType(type);
-    let end = start && start.matchFragment(this.content, to);
+    const start = this.contentMatchAt(from).matchType(type);
+    const end = start && start.matchFragment(this.content, to);
     return end ? end.validEnd : false;
   }
 
@@ -429,8 +429,8 @@ export class Node {
 
   /** Return a JSON-serializeable representation of this node. */
   toJSON(): any {
-    let obj: any = { type: this.type.name };
-    for (let _ in this.attrs) {
+    const obj: any = { type: this.type.name };
+    for (const _ in this.attrs) {
       obj.attrs = this.attrs;
       break;
     }
@@ -449,11 +449,11 @@ export class Node {
       marks = json.marks.map(schema.markFromJSON);
     }
     if (json.type == 'text') {
-      if (typeof json.text != 'string')
+      if (typeof json.text !== 'string')
         throw new RangeError('Invalid text node in JSON');
       return schema.text(json.text, marks);
     }
-    let content = Fragment.fromJSON(schema, json.content);
+    const content = Fragment.fromJSON(schema, json.content);
     return schema.nodeType(json.type).create(json.attrs, content, marks);
   }
 }
@@ -516,7 +516,7 @@ export class TextNode extends Node {
   }
 
   toJSON() {
-    let base = super.toJSON();
+    const base = super.toJSON();
     base.text = this.text;
     return base;
   }

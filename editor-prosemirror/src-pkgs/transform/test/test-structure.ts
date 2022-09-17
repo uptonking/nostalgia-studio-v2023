@@ -74,7 +74,7 @@ describe("canSplit", () => {
   it("can't at the end of the document", no(97))
 
   it("doesn't return true when the split-off content doesn't fit in the given node type", () => {
-    let s = new Schema({nodes: schema.spec.nodes.addBefore("heading", "title", {content: "text*"})
+    const s = new Schema({nodes: schema.spec.nodes.addBefore("heading", "title", {content: "text*"})
                         .addToEnd("chapter", {content: "title scene+"})
                         .addToEnd("scene", {content: "para+"})
                         .update("doc", {content: "chapter+"})})
@@ -87,10 +87,10 @@ describe("canSplit", () => {
 
 describe("liftTarget", () => {
   function yes(pos: number) {
-    return () => { let r = range(pos); ist(r && liftTarget(r)) }
+    return () => { const r = range(pos); ist(r && liftTarget(r)) }
   }
   function no(pos: number) {
-    return () => { let r = range(pos); ist(!(r && liftTarget(r))) }
+    return () => { const r = range(pos); ist(!(r && liftTarget(r))) }
   }
 
   it("can't at the start of the doc", no(0))
@@ -103,10 +103,10 @@ describe("liftTarget", () => {
 
 describe("findWrapping", () => {
   function yes(pos: number, end: number, type: string) {
-    return () => { let r = range(pos, end); ist(r && findWrapping(r, schema.nodes[type])) }
+    return () => { const r = range(pos, end); ist(r && findWrapping(r, schema.nodes[type])) }
   }
   function no(pos: number, end: number, type: string) {
-    return () => { let r = range(pos, end); ist(!r || !findWrapping(r, schema.nodes[type])) }
+    return () => { const r = range(pos, end); ist(!r || !findWrapping(r, schema.nodes[type])) }
   }
 
   it("can wrap the whole doc in a section", yes(0, 92, "sect"))
@@ -121,8 +121,8 @@ describe("Transform", () => {
   describe("replace", () => {
     function repl(doc: Node, from: number, to: number, content: Node | null, openStart: number, openEnd: number, result: Node) {
       return () => {
-        let slice = content ? new Slice(content.content, openStart, openEnd) : Slice.empty
-        let tr = new Transform(doc).replace(from, to, slice)
+        const slice = content ? new Slice(content.content, openStart, openEnd) : Slice.empty
+        const tr = new Transform(doc).replace(from, to, slice)
         ist(tr.doc, result, eq)
       }
     }

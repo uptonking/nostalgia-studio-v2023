@@ -10,7 +10,7 @@ const _p2 = {node: _blk.node.child(0), start: 6, end: 10}
 describe("Node", () => {
   describe("resolve", () => {
     it("should reflect the document structure", () => {
-      let expected: {[pos: number]: any} = {
+      const expected: {[pos: number]: any} = {
         0: [_doc, 0, null, _p1.node],
         1: [_doc, _p1, 0, null, "ab"],
         2: [_doc, _p1, 1, "a", "b"],
@@ -27,7 +27,7 @@ describe("Node", () => {
       }
 
       for (let pos = 0; pos <= testDoc.content.size; pos++) {
-        let $pos = testDoc.resolve(pos), exp = expected[pos]
+        const $pos = testDoc.resolve(pos); const exp = expected[pos]
         ist($pos.depth, exp.length - 4)
         for (let i = 0; i < exp.length - 3; i++) {
           ist($pos.node(i).eq(exp[i].node))
@@ -39,16 +39,16 @@ describe("Node", () => {
           }
         }
         ist($pos.parentOffset, exp[exp.length - 3])
-        let before = $pos.nodeBefore!, eBefore = exp[exp.length - 2]
-        ist(typeof eBefore == "string" ? before.textContent : before, eBefore)
-        let after = $pos.nodeAfter!, eAfter = exp[exp.length - 1]
-        ist(typeof eAfter == "string" ? after.textContent : after, eAfter)
+        const before = $pos.nodeBefore!; const eBefore = exp[exp.length - 2]
+        ist(typeof eBefore === "string" ? before.textContent : before, eBefore)
+        const after = $pos.nodeAfter!; const eAfter = exp[exp.length - 1]
+        ist(typeof eAfter === "string" ? after.textContent : after, eAfter)
       }
     })
 
     it("has a working posAtIndex method", () => {
-      let d = doc(blockquote(p("one"), blockquote(p("two ", em("three")), p("four"))))
-      let pThree = d.resolve(12) // Start of em("three")
+      const d = doc(blockquote(p("one"), blockquote(p("two ", em("three")), p("four"))))
+      const pThree = d.resolve(12) // Start of em("three")
       ist(pThree.posAtIndex(0), 8)
       ist(pThree.posAtIndex(1), 12)
       ist(pThree.posAtIndex(2), 17)

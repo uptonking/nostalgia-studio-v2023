@@ -5,8 +5,8 @@ import ist from "ist"
 const fakeView = {state: {}, dispatch: () => {}}
 
 function dispatch(map: Plugin, key: string, props?: {[name: string]: any}) {
-  let event: any = {}
-  if (props) for (let prop in props) event[prop] = props[prop]
+  const event: any = {}
+  if (props) for (const prop in props) event[prop] = props[prop]
   event.key = key
   ;(map.props.handleKeyDown as any)(fakeView as any, event)
 }
@@ -19,15 +19,15 @@ function counter() {
 
 describe("keymap", () => {
   it("calls the correct handler", () => {
-    let a = counter(), b = counter()
+    const a = counter(); const b = counter()
     dispatch(keymap({KeyA: a, KeyB: b}), "KeyA")
     ist(a.count, 1)
     ist(b.count, 0)
   })
 
   it("distinguishes between modifiers", () => {
-    let s = counter(), c_s = counter(), s_c_s = counter(), a_s = counter()
-    let map = keymap({"Space": s, "Control-Space": c_s, "s-c-Space": s_c_s, "alt-Space": a_s})
+    const s = counter(); const c_s = counter(); const s_c_s = counter(); const a_s = counter()
+    const map = keymap({"Space": s, "Control-Space": c_s, "s-c-Space": s_c_s, "alt-Space": a_s})
     dispatch(map, " ", {ctrlKey: true})
     dispatch(map, " ", {ctrlKey: true, shiftKey: true})
     ist(s.count, 0)
@@ -46,7 +46,7 @@ describe("keymap", () => {
   })
 
   it("tries both shifted key and base with shift modifier", () => {
-    let percent = counter(), shift5 = counter()
+    const percent = counter(); const shift5 = counter()
     dispatch(keymap({"%": percent}), "%", {shiftKey: true, keyCode: 53})
     ist(percent.count, 1)
     dispatch(keymap({"Shift-5": shift5}), "%", {shiftKey: true, keyCode: 53})
@@ -54,13 +54,13 @@ describe("keymap", () => {
   })
 
   it("tries keyCode when modifier active", () => {
-    let count = counter()
+    const count = counter()
     dispatch(keymap({"Shift-Alt-3": count}), "×", {shiftKey: true, altKey: true, keyCode: 51})
     ist(count.count, 1)
   })
 
   it("tries keyCode for non-ASCII characters", () => {
-    let count = counter()
+    const count = counter()
     dispatch(keymap({"Mod-s": count}), "ы", {ctrlKey: true, keyCode: 83})
     ist(count.count, 1)
   })

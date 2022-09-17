@@ -47,7 +47,7 @@ describe("Fragment", () => {
 
   describe("findDiffEnd", () => {
     function end(a: Node, b: Node) {
-      let found = a.content.findDiffEnd(b.content)
+      const found = a.content.findDiffEnd(b.content)
       ist(found && found.a, (a as any).tag.a)
     }
 

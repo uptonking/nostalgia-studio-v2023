@@ -6,14 +6,14 @@ import {AddMarkStep, RemoveMarkStep} from "./mark_step"
 import {ReplaceStep} from "./replace_step"
 
 export function addMark(tr: Transform, from: number, to: number, mark: Mark) {
-  let removed: Step[] = [], added: Step[] = []
-  let removing: RemoveMarkStep | undefined, adding: AddMarkStep | undefined
+  const removed: Step[] = []; const added: Step[] = []
+  let removing: RemoveMarkStep | undefined; let adding: AddMarkStep | undefined
   tr.doc.nodesBetween(from, to, (node, pos, parent) => {
     if (!node.isInline) return
-    let marks = node.marks
+    const marks = node.marks
     if (!mark.isInSet(marks) && parent!.type.allowsMarkType(mark.type)) {
-      let start = Math.max(pos, from), end = Math.min(pos + node.nodeSize, to)
-      let newSet = mark.addToSet(marks)
+      const start = Math.max(pos, from); const end = Math.min(pos + node.nodeSize, to)
+      const newSet = mark.addToSet(marks)
 
       for (let i = 0; i < marks.length; i++) {
         if (!marks[i].isInSet(newSet)) {
@@ -36,15 +36,15 @@ export function addMark(tr: Transform, from: number, to: number, mark: Mark) {
 }
 
 export function removeMark(tr: Transform, from: number, to: number, mark?: Mark | MarkType | null) {
-  let matched: {style: Mark, from: number, to: number, step: number}[] = [], step = 0
+  const matched: {style: Mark, from: number, to: number, step: number}[] = []; let step = 0
   tr.doc.nodesBetween(from, to, (node, pos) => {
     if (!node.isInline) return
     step++
     let toRemove = null
     if (mark instanceof MarkType) {
-      let set = node.marks, found
+      let set = node.marks; let found
       while (found = mark.isInSet(set)) {
-        ;(toRemove || (toRemove = [])).push(found)
+        (toRemove || (toRemove = [])).push(found)
         set = found.removeFromSet(set)
       }
     } else if (mark) {
@@ -53,11 +53,11 @@ export function removeMark(tr: Transform, from: number, to: number, mark?: Mark 
       toRemove = node.marks
     }
     if (toRemove && toRemove.length) {
-      let end = Math.min(pos + node.nodeSize, to)
+      const end = Math.min(pos + node.nodeSize, to)
       for (let i = 0; i < toRemove.length; i++) {
-        let style = toRemove[i], found
+        const style = toRemove[i]; let found
         for (let j = 0; j < matched.length; j++) {
-          let m = matched[j]
+          const m = matched[j]
           if (m.step == step - 1 && style.eq(matched[j].style)) found = m
         }
         if (found) {
@@ -73,11 +73,11 @@ export function removeMark(tr: Transform, from: number, to: number, mark?: Mark 
 }
 
 export function clearIncompatible(tr: Transform, pos: number, parentType: NodeType, match = parentType.contentMatch) {
-  let node = tr.doc.nodeAt(pos)!
-  let delSteps: Step[] = [], cur = pos + 1
+  const node = tr.doc.nodeAt(pos)!
+  const delSteps: Step[] = []; let cur = pos + 1
   for (let i = 0; i < node.childCount; i++) {
-    let child = node.child(i), end = cur + child.nodeSize
-    let allowed = match.matchType(child.type)
+    const child = node.child(i); const end = cur + child.nodeSize
+    const allowed = match.matchType(child.type)
     if (!allowed) {
       delSteps.push(new ReplaceStep(cur, end, Slice.empty))
     } else {
@@ -88,7 +88,7 @@ export function clearIncompatible(tr: Transform, pos: number, parentType: NodeTy
     cur = end
   }
   if (!match.validEnd) {
-    let fill = match.fillBefore(Fragment.empty, true)
+    const fill = match.fillBefore(Fragment.empty, true)
     tr.replace(cur, cur, new Slice(fill!, 0, 0))
   }
   for (let i = delSteps.length - 1; i >= 0; i--) tr.step(delSteps[i])

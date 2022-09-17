@@ -11,8 +11,8 @@ export function blockQuoteRule(nodeType: NodeType) {
 /// Given a list node type, returns an input rule that turns a number
 /// followed by a dot at the start of a textblock into an ordered list.
 export function orderedListRule(nodeType: NodeType) {
-  return wrappingInputRule(/^(\d+)\.\s$/, nodeType, match => ({order: +match[1]}),
-                           (match, node) => node.childCount + node.attrs.order == +match[1])
+  return wrappingInputRule(/^(\d+)\.\s$/, nodeType, match => ({order: Number(match[1])}),
+                           (match, node) => node.childCount + node.attrs.order == Number(match[1]))
 }
 
 /// Given a list node type, returns an input rule that turns a bullet
@@ -40,7 +40,7 @@ export function headingRule(nodeType: NodeType, maxLevel: number) {
 /// A set of input rules for creating the basic block quotes, lists,
 /// code blocks, and heading.
 export function buildInputRules(schema: Schema) {
-  let rules = smartQuotes.concat(ellipsis, emDash), type
+  const rules = smartQuotes.concat(ellipsis, emDash); let type
   if (type = schema.nodes.blockquote) rules.push(blockQuoteRule(type))
   if (type = schema.nodes.ordered_list) rules.push(orderedListRule(type))
   if (type = schema.nodes.bullet_list) rules.push(bulletListRule(type))

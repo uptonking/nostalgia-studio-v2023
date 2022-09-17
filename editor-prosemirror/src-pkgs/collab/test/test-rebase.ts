@@ -6,10 +6,10 @@ import ist from "ist"
 import {rebaseSteps} from "prosemirror-collab"
 
 function runRebase(transforms: readonly Transform[], expected: Node) {
-  let start = transforms[0].before, full = new Transform(start)
+  const start = transforms[0].before; const full = new Transform(start)
   transforms.forEach(transform => {
-    let rebased = new Transform(transform.doc)
-    let start = transform.steps.length + full.steps.length
+    const rebased = new Transform(transform.doc)
+    const start = transform.steps.length + full.steps.length
     rebaseSteps(transform.steps.map((s, i) => ({step: s, inverted: s.invert(transform.docs[i]), origin: transform})),
                 full.steps, rebased)
     for (let i = start; i < rebased.steps.length; i++) full.step(rebased.steps[i])
@@ -17,10 +17,10 @@ function runRebase(transforms: readonly Transform[], expected: Node) {
 
   ist(full.doc, expected, eq)
 
-  for (let tag in (start as any).tag) {
-    let mapped = full.mapping.mapResult((start as any).tag[tag])
+  for (const tag in (start as any).tag) {
+    const mapped = full.mapping.mapResult((start as any).tag[tag])
 
-    let exp = (expected as any).tag[tag]
+    const exp = (expected as any).tag[tag]
     if (mapped.deleted) {
       if (exp) throw new Error("Tag " + tag + " was unexpectedly deleted")
     } else {
@@ -32,9 +32,9 @@ function runRebase(transforms: readonly Transform[], expected: Node) {
 
 function permute<T>(array: readonly T[]): readonly (readonly T[])[] {
   if (array.length < 2) return [array]
-  let result = []
+  const result = []
   for (let i = 0; i < array.length; i++) {
-    let others = permute(array.slice(0, i).concat(array.slice(i + 1)))
+    const others = permute(array.slice(0, i).concat(array.slice(i + 1)))
     for (let j = 0; j < others.length; j++)
       result.push([array[i]].concat(others[j]))
   }
@@ -42,12 +42,12 @@ function permute<T>(array: readonly T[]): readonly (readonly T[])[] {
 }
 
 function rebase(doc: Node, ...clients: (((tr: Transform) => Transform) | Node)[]) {
-  let expected = clients.pop() as Node
+  const expected = clients.pop() as Node
   runRebase((clients as ((tr: Transform) => Transform)[]).map(cl => cl(new Transform(doc))), expected)
 }
 
 function rebase$(doc: Node, ...clients: (((tr: Transform) => Transform) | Node)[]) {
-  let expected = clients.pop() as Node
+  const expected = clients.pop() as Node
   permute((clients as ((tr: Transform) => Transform)[]).map(cl => cl(new Transform(doc))))
     .forEach(transforms => runRebase(transforms, expected))
 }
@@ -57,7 +57,7 @@ function type(tr: Transform, pos: number, text: string) {
 }
 
 function wrap(tr: Transform, pos: number, type: string) {
-  let $pos = tr.doc.resolve(pos)
+  const $pos = tr.doc.resolve(pos)
   return tr.wrap($pos.blockRange($pos)!, [{type: schema.nodes[type]}])
 }
 

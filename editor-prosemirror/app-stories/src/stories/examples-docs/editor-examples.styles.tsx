@@ -338,13 +338,13 @@ export const StyledContainer = styled('div')`
     margin-bottom: 23px;
   }
 
-  .ProseMirror p:first-child,
-  .ProseMirror h1:first-child,
-  .ProseMirror h2:first-child,
-  .ProseMirror h3:first-child,
-  .ProseMirror h4:first-child,
-  .ProseMirror h5:first-child,
-  .ProseMirror h6:first-child {
+  .ProseMirror p:first-of-type,
+  .ProseMirror h1:first-of-type,
+  .ProseMirror h2:first-of-type,
+  .ProseMirror h3:first-of-type,
+  .ProseMirror h4:first-of-type,
+  .ProseMirror h5:first-of-type,
+  .ProseMirror h6:first-of-type {
     margin-top: 10px;
   }
 

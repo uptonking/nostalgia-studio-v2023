@@ -14,6 +14,7 @@ const classesById = Object.create(null);
  * - 由于contenteditable对光标位置的处理不尽如人意，所以绝大多数的编辑器都会维护自己的选区信息，用于抹平浏览器原生处理带来的问题
  * - 一个Selection可以包含若干个范围（SelectionRange），但至少包含一个。
  * - 一个Selection由基点anchor和头部head构成，一个SelectionRange由起始位置$from和结束为止$to构成
+* - 子类包括 TextSelection, NodeSelection, AllSelection, GapCursor
  */
 export abstract class Selection {
   /** Initialize a selection with the head and anchor and ranges. If no
@@ -99,18 +100,18 @@ export abstract class Selection {
     // Put the new selection at the position after the inserted
     // content. When that ended in an inline node, search backwards,
     // to get the position after that node. If not, search forward.
-    let lastNode = content.content.lastChild,
-      lastParent = null;
+    let lastNode = content.content.lastChild;
+      let lastParent = null;
     for (let i = 0; i < content.openEnd; i++) {
       lastParent = lastNode!;
       lastNode = lastNode!.lastChild;
     }
 
-    const mapFrom = tr.steps.length,
-      ranges = this.ranges;
+    const mapFrom = tr.steps.length;
+      const ranges = this.ranges;
     for (let i = 0; i < ranges.length; i++) {
-      const { $from, $to } = ranges[i],
-        mapping = tr.mapping.slice(mapFrom);
+      const { $from, $to } = ranges[i];
+        const mapping = tr.mapping.slice(mapFrom);
       tr.replaceRange(
         mapping.map($from.pos),
         mapping.map($to.pos),
@@ -132,13 +133,13 @@ export abstract class Selection {
    * - 最终会执行 tr.replaceRangeWith()
    */
   replaceWith(tr: Transaction, node: Node) {
-    const mapFrom = tr.steps.length,
-      ranges = this.ranges;
+    const mapFrom = tr.steps.length;
+      const ranges = this.ranges;
     for (let i = 0; i < ranges.length; i++) {
-      const { $from, $to } = ranges[i],
-        mapping = tr.mapping.slice(mapFrom);
-      const from = mapping.map($from.pos),
-        to = mapping.map($to.pos);
+      const { $from, $to } = ranges[i];
+        const mapping = tr.mapping.slice(mapFrom);
+      const from = mapping.map($from.pos);
+        const to = mapping.map($to.pos);
       if (i) {
         tr.deleteRange(from, to);
       } else {
@@ -322,8 +323,8 @@ function checkTextSelection($pos: ResolvedPos) {
 
 /** A text selection represents a classical editor selection, with a
  * head (the moving side) and anchor (immobile side), both of which
- * point into textblock nodes. It can be empty (a regular cursor
- * position).
+ * point into textblock nodes.
+* - 👉🏻 It can be empty (a regular cursor position).
  */
 export class TextSelection extends Selection {
   /// Construct a text selection between the given points.
@@ -376,7 +377,7 @@ export class TextSelection extends Selection {
 
   /// @internal
   static fromJSON(doc: Node, json: any) {
-    if (typeof json.anchor != 'number' || typeof json.head != 'number')
+    if (typeof json.anchor !== 'number' || typeof json.head !== 'number')
       throw new RangeError('Invalid input for TextSelection.fromJSON');
     return new TextSelection(doc.resolve(json.anchor), doc.resolve(json.head));
   }
@@ -482,7 +483,7 @@ export class NodeSelection extends Selection {
 
   /// @internal
   static fromJSON(doc: Node, json: any) {
-    if (typeof json.anchor != 'number')
+    if (typeof json.anchor !== 'number')
       throw new RangeError('Invalid input for NodeSelection.fromJSON');
     return new NodeSelection(doc.resolve(json.anchor));
   }
@@ -510,8 +511,8 @@ class NodeBookmark {
     return deleted ? new TextBookmark(pos, pos) : new NodeBookmark(pos);
   }
   resolve(doc: Node) {
-    const $pos = doc.resolve(this.anchor),
-      node = $pos.nodeAfter;
+    const $pos = doc.resolve(this.anchor);
+      const node = $pos.nodeAfter;
     if (node && NodeSelection.isSelectable(node))
       return new NodeSelection($pos);
     return Selection.near($pos);

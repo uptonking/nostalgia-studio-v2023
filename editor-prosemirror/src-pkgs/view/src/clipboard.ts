@@ -26,7 +26,7 @@ export function serializeForClipboard(view: EditorView, slice: Slice) {
   ) {
     openStart--;
     openEnd--;
-    let node = content.firstChild!;
+    const node = content.firstChild!;
     context.push(
       node.type.name,
       node.attrs != node.type.defaultAttrs ? node.attrs : null,
@@ -34,23 +34,23 @@ export function serializeForClipboard(view: EditorView, slice: Slice) {
     content = node.content;
   }
 
-  let serializer =
+  const serializer =
     view.someProp('clipboardSerializer') ||
     DOMSerializer.fromSchema(view.state.schema);
-  let doc = detachedDoc(),
-    wrap = doc.createElement('div');
+  const doc = detachedDoc();
+  const wrap = doc.createElement('div');
   wrap.appendChild(serializer.serializeFragment(content, { document: doc }));
 
-  let firstChild = wrap.firstChild,
-    needsWrap,
-    wrappers = 0;
+  let firstChild = wrap.firstChild;
+  let needsWrap;
+  let wrappers = 0;
   while (
     firstChild &&
     firstChild.nodeType == 1 &&
     (needsWrap = wrapMap[firstChild.nodeName.toLowerCase()])
   ) {
     for (let i = needsWrap.length - 1; i >= 0; i--) {
-      let wrapper = doc.createElement(needsWrap[i]);
+      const wrapper = doc.createElement(needsWrap[i]);
       while (wrap.firstChild) wrapper.appendChild(wrap.firstChild);
       wrap.appendChild(wrapper);
       wrappers++;
@@ -66,7 +66,7 @@ export function serializeForClipboard(view: EditorView, slice: Slice) {
       } ${JSON.stringify(context)}`,
     );
 
-  let text =
+  const text =
     view.someProp('clipboardTextSerializer', (f) => f(slice)) ||
     slice.content.textBetween(0, slice.content.size, '\n\n');
 
@@ -81,11 +81,11 @@ export function parseFromClipboard(
   plainText: boolean,
   $context: ResolvedPos,
 ) {
-  let inCode = $context.parent.type.spec.code;
+  const inCode = $context.parent.type.spec.code;
   let dom: HTMLElement | undefined;
   let slice: Slice | undefined;
   if (!html && !text) return null;
-  let asText = text && (plainText || inCode || !html);
+  const asText = text && (plainText || inCode || !html);
   if (asText) {
     view.someProp('transformPastedText', (f) => {
       text = f(text, inCode || plainText);
@@ -98,18 +98,18 @@ export function parseFromClipboard(
             0,
           )
         : Slice.empty;
-    let parsed = view.someProp('clipboardTextParser', (f) =>
+    const parsed = view.someProp('clipboardTextParser', (f) =>
       f(text, $context, plainText),
     );
     if (parsed) {
       slice = parsed;
     } else {
-      let marks = $context.marks();
-      let { schema } = view.state,
-        serializer = DOMSerializer.fromSchema(schema);
+      const marks = $context.marks();
+      const { schema } = view.state;
+      const serializer = DOMSerializer.fromSchema(schema);
       dom = document.createElement('div');
       text.split(/(?:\r\n?|\n)+/).forEach((block) => {
-        let p = dom!.appendChild(document.createElement('p'));
+        const p = dom!.appendChild(document.createElement('p'));
         if (block)
           p.appendChild(serializer.serializeNode(schema.text(block, marks)));
       });
@@ -122,18 +122,18 @@ export function parseFromClipboard(
     if (browser.webkit) restoreReplacedSpaces(dom);
   }
 
-  let contextNode = dom && dom.querySelector('[data-pm-slice]');
-  let sliceData =
+  const contextNode = dom && dom.querySelector('[data-pm-slice]');
+  const sliceData =
     contextNode &&
     /^(\d+) (\d+)(?: -(\d+))? (.*)/.exec(
       contextNode.getAttribute('data-pm-slice') || '',
     );
   if (sliceData && sliceData[3])
-    for (let i = +sliceData[3]; i > 0 && dom!.firstChild; i--)
+    for (let i = Number(sliceData[3]); i > 0 && dom!.firstChild; i--)
       dom = dom!.firstChild as HTMLElement;
 
   if (!slice) {
-    let parser =
+    const parser =
       view.someProp('clipboardParser') ||
       view.someProp('domParser') ||
       DOMParser.fromSchema(view.state.schema);
@@ -154,15 +154,15 @@ export function parseFromClipboard(
   }
   if (sliceData) {
     slice = addContext(
-      closeSlice(slice, +sliceData[1], +sliceData[2]),
+      closeSlice(slice, Number(sliceData[1]), Number(sliceData[2])),
       sliceData[4],
     );
   } else {
     // HTML wasn't created by ProseMirror. Make sure top-level siblings are coherent
     slice = Slice.maxOpen(normalizeSiblings(slice.content, $context), true);
     if (slice.openStart || slice.openEnd) {
-      let openStart = 0,
-        openEnd = 0;
+      let openStart = 0;
+      let openEnd = 0;
       for (
         let node = slice.content.firstChild;
         openStart < slice.openStart && !node!.type.spec.isolating;
@@ -198,14 +198,14 @@ const inlineParents =
 function normalizeSiblings(fragment: Fragment, $context: ResolvedPos) {
   if (fragment.childCount < 2) return fragment;
   for (let d = $context.depth; d >= 0; d--) {
-    let parent = $context.node(d);
+    const parent = $context.node(d);
     let match = parent.contentMatchAt($context.index(d));
-    let lastWrap: readonly NodeType[] | undefined,
-      result: Node[] | null = [];
+    let lastWrap: readonly NodeType[] | undefined;
+    let result: Node[] | null = [];
     fragment.forEach((node) => {
       if (!result) return;
-      let wrap = match.findWrapping(node.type),
-        inLast;
+      const wrap = match.findWrapping(node.type);
+      let inLast;
       if (!wrap) return (result = null);
       if (
         (inLast =
@@ -220,7 +220,7 @@ function normalizeSiblings(fragment: Fragment, $context: ResolvedPos) {
             result[result.length - 1],
             lastWrap!.length,
           );
-        let wrapped = withWrappers(node, wrap);
+        const wrapped = withWrappers(node, wrap);
         result.push(wrapped);
         match = match.matchType(wrapped.type)!;
         lastWrap = wrap;
@@ -252,7 +252,7 @@ function addToSibling(
     depth < lastWrap.length &&
     wrap[depth] == lastWrap[depth]
   ) {
-    let inner = addToSibling(
+    const inner = addToSibling(
       wrap,
       lastWrap,
       node,
@@ -263,7 +263,7 @@ function addToSibling(
       return sibling.copy(
         sibling.content.replaceChild(sibling.childCount - 1, inner),
       );
-    let match = sibling.contentMatchAt(sibling.childCount);
+    const match = sibling.contentMatchAt(sibling.childCount);
     if (match.matchType(depth == wrap.length - 1 ? node.type : wrap[depth + 1]))
       return sibling.copy(
         sibling.content.append(
@@ -275,11 +275,11 @@ function addToSibling(
 
 function closeRight(node: Node, depth: number) {
   if (depth == 0) return node;
-  let fragment = node.content.replaceChild(
+  const fragment = node.content.replaceChild(
     node.childCount - 1,
     closeRight(node.lastChild!, depth - 1),
   );
-  let fill = node
+  const fill = node
     .contentMatchAt(node.childCount)
     .fillBefore(Fragment.empty, true)!;
   return node.copy(fragment.append(fill));
@@ -293,8 +293,8 @@ function closeRange(
   depth: number,
   openEnd: number,
 ) {
-  let node = side < 0 ? fragment.firstChild! : fragment.lastChild!,
-    inner = node.content;
+  const node = side < 0 ? fragment.firstChild! : fragment.lastChild!;
+  let inner = node.content;
   if (depth < to - 1)
     inner = closeRange(inner, side, from, to, depth + 1, openEnd);
   if (depth >= from)
@@ -363,11 +363,11 @@ function detachedDoc() {
 }
 
 function readHTML(html: string) {
-  let metas = /^(\s*<meta [^>]*>)*/.exec(html);
+  const metas = /^(\s*<meta [^>]*>)*/.exec(html);
   if (metas) html = html.slice(metas[0].length);
   let elt = detachedDoc().createElement('div');
-  let firstTag = /<([a-z][^>\s]+)/i.exec(html),
-    wrap;
+  const firstTag = /<([a-z][^>\s]+)/i.exec(html);
+  let wrap;
   if ((wrap = firstTag && wrapMap[firstTag[1].toLowerCase()]))
     html =
       wrap.map((n) => '<' + n + '>').join('') +
@@ -390,13 +390,13 @@ function readHTML(html: string) {
  * Apple-converted-space on Safari) back to regular spaces.
  */
 function restoreReplacedSpaces(dom: HTMLElement) {
-  let nodes = dom.querySelectorAll(
+  const nodes = dom.querySelectorAll(
     browser.chrome
       ? 'span:not([class]):not([style])'
       : 'span.Apple-converted-space',
   );
   for (let i = 0; i < nodes.length; i++) {
-    let node = nodes[i];
+    const node = nodes[i];
     if (
       node.childNodes.length == 1 &&
       node.textContent == '\u00a0' &&
@@ -408,8 +408,8 @@ function restoreReplacedSpaces(dom: HTMLElement) {
 
 function addContext(slice: Slice, context: string) {
   if (!slice.size) return slice;
-  let schema = slice.content.firstChild!.type.schema,
-    array;
+  const schema = slice.content.firstChild!.type.schema;
+  let array;
   try {
     array = JSON.parse(context);
   } catch (e) {
@@ -417,7 +417,7 @@ function addContext(slice: Slice, context: string) {
   }
   let { content, openStart, openEnd } = slice;
   for (let i = array.length - 2; i >= 0; i -= 2) {
-    let type = schema.nodes[array[i]];
+    const type = schema.nodes[array[i]];
     if (!type || type.hasRequiredAttrs()) break;
     content = Fragment.from(type.create(array[i + 1], content));
     openStart++;

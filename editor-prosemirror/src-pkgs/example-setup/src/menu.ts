@@ -9,9 +9,9 @@ import {TextField, openPrompt} from "./prompt"
 // Helpers to create specific types of items
 
 function canInsert(state: EditorState, nodeType: NodeType) {
-  let $from = state.selection.$from
+  const $from = state.selection.$from
   for (let d = $from.depth; d >= 0; d--) {
-    let index = $from.index(d)
+    const index = $from.index(d)
     if ($from.node(d).canReplaceWith(index, index, nodeType)) return true
   }
   return false
@@ -23,7 +23,7 @@ function insertImageItem(nodeType: NodeType) {
     label: "Image",
     enable(state) { return canInsert(state, nodeType) },
     run(state, _, view) {
-      let {from, to} = state.selection, attrs = null
+      const {from, to} = state.selection; let attrs = null
       if (state.selection instanceof NodeSelection && state.selection.node.type == nodeType)
         attrs = state.selection.node.attrs
       openPrompt({
@@ -44,11 +44,11 @@ function insertImageItem(nodeType: NodeType) {
 }
 
 function cmdItem(cmd: Command, options: Partial<MenuItemSpec>) {
-  let passedOptions: MenuItemSpec = {
+  const passedOptions: MenuItemSpec = {
     label: options.title as string | undefined,
     run: cmd
   }
-  for (let prop in options) (passedOptions as any)[prop] = (options as any)[prop]
+  for (const prop in options) (passedOptions as any)[prop] = (options as any)[prop]
   if (!options.enable && !options.select)
     passedOptions[options.enable ? "enable" : "select"] = state => cmd(state)
 
@@ -56,16 +56,16 @@ function cmdItem(cmd: Command, options: Partial<MenuItemSpec>) {
 }
 
 function markActive(state: EditorState, type: MarkType) {
-  let {from, $from, to, empty} = state.selection
+  const {from, $from, to, empty} = state.selection
   if (empty) return !!type.isInSet(state.storedMarks || $from.marks())
   else return state.doc.rangeHasMark(from, to, type)
 }
 
 function markItem(markType: MarkType, options: Partial<MenuItemSpec>) {
-  let passedOptions: Partial<MenuItemSpec> = {
+  const passedOptions: Partial<MenuItemSpec> = {
     active(state) { return markActive(state, markType) }
   }
-  for (let prop in options) (passedOptions as any)[prop] = (options as any)[prop]
+  for (const prop in options) (passedOptions as any)[prop] = (options as any)[prop]
   return cmdItem(toggleMark(markType), passedOptions)
 }
 
@@ -170,7 +170,7 @@ type MenuItemResult = {
 /// Given a schema, look for default mark and node types in it and
 /// return an object with relevant menu items relating to those marks.
 export function buildMenuItems(schema: Schema): MenuItemResult {
-  let r: MenuItemResult = {} as any
+  const r: MenuItemResult = {} as any
   let mark: MarkType | undefined
   if (mark = schema.marks.strong)
     r.toggleStrong = markItem(mark, {title: "Toggle strong style", icon: icons.strong})
@@ -217,7 +217,7 @@ export function buildMenuItems(schema: Schema): MenuItemResult {
         attrs: {level: i}
       })
   if (node = schema.nodes.horizontal_rule) {
-    let hr = node
+    const hr = node
     r.insertHorizontalRule = new MenuItem({
       title: "Insert horizontal rule",
       label: "Horizontal rule",
@@ -226,7 +226,7 @@ export function buildMenuItems(schema: Schema): MenuItemResult {
     })
   }
 
-  let cut = <T>(arr: T[]) => arr.filter(x => x) as NonNullable<T>[]
+  const cut = <T>(arr: T[]) => arr.filter(x => x) as NonNullable<T>[]
   r.insertMenu = new Dropdown(cut([r.insertImage, r.insertHorizontalRule]), {label: "Insert"})
   r.typeMenu = new Dropdown(cut([r.makeParagraph, r.makeCodeBlock, r.makeHead1 && new DropdownSubmenu(cut([
     r.makeHead1, r.makeHead2, r.makeHead3, r.makeHead4, r.makeHead5, r.makeHead6

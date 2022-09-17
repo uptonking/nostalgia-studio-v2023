@@ -26,11 +26,11 @@ import {
 } from '../src/';
 
 describe('CellSelection', () => {
-  let t = doc(
+  const t = doc(
     table(
-      tr(/* 2*/ cEmpty, /* 6*/ cEmpty, /*10*/ cEmpty),
-      tr(/*16*/ cEmpty, /*20*/ cEmpty, /*24*/ cEmpty),
-      tr(/*30*/ cEmpty, /*34*/ cEmpty, /*36*/ cEmpty),
+      tr(/* 2 */ cEmpty, /* 6 */ cEmpty, /* 10 */ cEmpty),
+      tr(/* 16 */ cEmpty, /* 20 */ cEmpty, /* 24 */ cEmpty),
+      tr(/* 30 */ cEmpty, /* 34 */ cEmpty, /* 36 */ cEmpty),
     ),
   );
 
@@ -142,16 +142,16 @@ describe('CellSelection.content', () => {
 });
 
 describe('normalizeSelection', () => {
-  let t = doc(
+  const t = doc(
     table(
-      tr(/* 2*/ c11, /* 7*/ c11, /*12*/ c11),
-      tr(/*19*/ c11, /*24*/ c11, /*29*/ c11),
-      tr(/*36*/ c11, /*41*/ c11, /*46*/ c11),
+      tr(/* 2 */ c11, /* 7 */ c11, /* 12 */ c11),
+      tr(/* 19 */ c11, /* 24 */ c11, /* 29 */ c11),
+      tr(/* 36 */ c11, /* 41 */ c11, /* 46 */ c11),
     ),
   );
 
   function normalize(selection, { allowTableNodeSelection = false } = {}) {
-    let state = EditorState.create({
+    const state = EditorState.create({
       doc: t,
       selection,
       plugins: [tableEditing({ allowTableNodeSelection })],

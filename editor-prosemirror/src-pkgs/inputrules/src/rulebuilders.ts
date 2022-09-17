@@ -24,12 +24,12 @@ export function wrappingInputRule(
   joinPredicate?: (match: RegExpMatchArray, node: Node) => boolean
 ) {
   return new InputRule(regexp, (state, match, start, end) => {
-    let attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs
-    let tr = state.tr.delete(start, end)
-    let $start = tr.doc.resolve(start), range = $start.blockRange(), wrapping = range && findWrapping(range, nodeType, attrs)
+    const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs
+    const tr = state.tr.delete(start, end)
+    const $start = tr.doc.resolve(start); const range = $start.blockRange(); const wrapping = range && findWrapping(range, nodeType, attrs)
     if (!wrapping) return null
     tr.wrap(range!, wrapping)
-    let before = tr.doc.resolve(start - 1).nodeBefore
+    const before = tr.doc.resolve(start - 1).nodeBefore
     if (before && before.type == nodeType && canJoin(tr.doc, start - 1) &&
         (!joinPredicate || joinPredicate(match, before)))
       tr.join(start - 1)
@@ -49,8 +49,8 @@ export function textblockTypeInputRule(
   getAttrs: Attrs | null | ((match: RegExpMatchArray) => Attrs | null) = null
 ) {
   return new InputRule(regexp, (state, match, start, end) => {
-    let $start = state.doc.resolve(start)
-    let attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs
+    const $start = state.doc.resolve(start)
+    const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs
     if (!$start.node(-1).canReplaceWith($start.index(-1), $start.indexAfter(-1), nodeType)) return null
     return state.tr
       .delete(start, end)

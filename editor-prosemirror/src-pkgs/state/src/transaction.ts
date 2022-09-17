@@ -22,9 +22,9 @@ export type Command = (
   view?: EditorView,
 ) => boolean;
 
-const UPDATED_SEL = 1,
-  UPDATED_MARKS = 2,
-  UPDATED_SCROLL = 4;
+const UPDATED_SEL = 1;
+  const UPDATED_MARKS = 2;
+  const UPDATED_SCROLL = 4;
 
 /** An editor state transaction, which can be applied to a state to
  * create an updated state. Use
@@ -169,7 +169,7 @@ export class Transaction extends Transform {
    * place where it is inserted.
    */
   replaceSelectionWith(node: Node, inheritMarks = true): this {
-    let selection = this.selection;
+    const selection = this.selection;
     if (inheritMarks)
       node = node.mark(
         this.storedMarks ||
@@ -192,7 +192,7 @@ export class Transaction extends Transform {
    * - 在当前位置插入或者选中位置插入，插入的逻辑就是替换当前选中的内容，还有一些处理就是继承插入位置的 mark 属性，插入后选区的位置处理等
    */
   insertText(text: string, from?: number, to?: number): this {
-    let schema = this.doc.type.schema;
+    const schema = this.doc.type.schema;
     if (from == null) {
       if (!text) return this.deleteSelection();
       // 👉🏻 替换选区内容，最终会执行 tr.replaceRangeWith()
@@ -203,7 +203,7 @@ export class Transaction extends Transform {
       if (!text) return this.deleteRange(from, to);
       let marks = this.storedMarks;
       if (!marks) {
-        let $from = this.doc.resolve(from);
+        const $from = this.doc.resolve(from);
         marks =
           to == from ? $from.marks() : $from.marksAcross(this.doc.resolve(to));
       }
@@ -220,20 +220,20 @@ export class Transaction extends Transform {
    * name or by plugin.
    */
   setMeta(key: string | Plugin | PluginKey, value: any): this {
-    this.meta[typeof key == 'string' ? key : key.key] = value;
+    this.meta[typeof key === 'string' ? key : key.key] = value;
     return this;
   }
 
   /** Retrieve a metadata property for a given name or plugin. */
   getMeta(key: string | Plugin | PluginKey) {
-    return this.meta[typeof key == 'string' ? key : key.key];
+    return this.meta[typeof key === 'string' ? key : key.key];
   }
 
   /** Returns true if this transaction doesn't contain any metadata,
    * and can thus safely be extended.
    */
   get isGeneric() {
-    for (let _ in this.meta) return false;
+    for (const _ in this.meta) return false;
     return true;
   }
 

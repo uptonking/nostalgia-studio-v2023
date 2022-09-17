@@ -337,9 +337,9 @@ function parseBetween(view: EditorView, from_: number, to_: number) {
     to,
   } = view.docView.parseRange(from_, to_);
 
-  let domSel = view.domSelection();
+  const domSel = view.domSelection();
   let find: { node: DOMNode; offset: number; pos?: number }[] | undefined;
-  let anchor = domSel.anchorNode;
+  const anchor = domSel.anchorNode;
   if (
     anchor &&
     view.dom.contains(anchor.nodeType == 1 ? anchor : anchor.parentNode)
@@ -352,8 +352,8 @@ function parseBetween(view: EditorView, from_: number, to_: number) {
   // the deleted content with a random BR node (issues #799, #831)
   if (browser.chrome && view.input.lastKeyCode === 8) {
     for (let off = toOffset; off > fromOffset; off--) {
-      let node = parent.childNodes[off - 1],
-        desc = node.pmViewDesc;
+      const node = parent.childNodes[off - 1];
+        const desc = node.pmViewDesc;
       if (node.nodeName == 'BR' && !desc) {
         toOffset = off;
         break;
@@ -361,13 +361,13 @@ function parseBetween(view: EditorView, from_: number, to_: number) {
       if (!desc || desc.size) break;
     }
   }
-  let startDoc = view.state.doc;
-  let parser =
+  const startDoc = view.state.doc;
+  const parser =
     view.someProp('domParser') || DOMParser.fromSchema(view.state.schema);
-  let $from = startDoc.resolve(from);
+  const $from = startDoc.resolve(from);
 
-  let sel = null,
-    doc = parser.parse(parent, {
+  let sel = null;
+    const doc = parser.parse(parent, {
       topNode: $from.parent,
       topMatch: $from.parent.contentMatchAt($from.index()),
       topOpen: true,
@@ -379,8 +379,8 @@ function parseBetween(view: EditorView, from_: number, to_: number) {
       context: $from,
     });
   if (find && find[0].pos != null) {
-    let anchor = find[0].pos,
-      head = find[1] && find[1].pos;
+    const anchor = find[0].pos;
+      let head = find[1] && find[1].pos;
     if (head == null) head = anchor;
     sel = { anchor: anchor + from, head: head + from };
   }
@@ -388,7 +388,7 @@ function parseBetween(view: EditorView, from_: number, to_: number) {
 }
 
 function ruleFromNode(dom: DOMNode): ParseRule | null {
-  let desc = dom.pmViewDesc;
+  const desc = dom.pmViewDesc;
   if (desc) {
     return desc.parseRule();
   } else if (dom.nodeName == 'BR' && dom.parentNode) {
@@ -396,7 +396,7 @@ function ruleFromNode(dom: DOMNode): ParseRule | null {
     // directly in the list node (?!) if you delete the last
     // character in a list item or table cell (#708, #862)
     if (browser.safari && /^(ul|ol)$/i.test(dom.parentNode.nodeName)) {
-      let skip = document.createElement('div');
+      const skip = document.createElement('div');
       skip.appendChild(document.createElement('li'));
       return { skip } as any;
     } else if (
@@ -433,13 +433,13 @@ function resolveSelection(
  * removing or adding a single mark type.
  */
 function isMarkChange(cur: Fragment, prev: Fragment) {
-  let curMarks = cur.firstChild!.marks,
-    prevMarks = prev.firstChild!.marks;
-  let added = curMarks,
-    removed = prevMarks,
-    type,
-    mark: Mark | undefined,
-    update;
+  const curMarks = cur.firstChild!.marks;
+    const prevMarks = prev.firstChild!.marks;
+  let added = curMarks;
+    let removed = prevMarks;
+    let type;
+    let mark: Mark | undefined;
+    let update;
   for (let i = 0; i < prevMarks.length; i++)
     added = prevMarks[i].removeFromSet(added);
   for (let i = 0; i < curMarks.length; i++)
@@ -455,7 +455,7 @@ function isMarkChange(cur: Fragment, prev: Fragment) {
   } else {
     return null;
   }
-  let updated = [];
+  const updated = [];
   for (let i = 0; i < prev.childCount; i++) updated.push(update(prev.child(i)));
   if (Fragment.from(updated).eq(cur)) return { mark, type };
 }
@@ -476,14 +476,14 @@ function looksLikeJoin(
   )
     return false;
 
-  let $start = old.resolve(start);
+  const $start = old.resolve(start);
   // Start must be at the end of a block
   if (
     $start.parentOffset < $start.parent.content.size ||
     !$start.parent.isTextblock
   )
     return false;
-  let $next = old.resolve(skipClosingAndOpening($start, true, true));
+  const $next = old.resolve(skipClosingAndOpening($start, true, true));
   // The next textblock must start before end and end near it
   if (
     !$next.parent.isTextblock ||
@@ -503,8 +503,8 @@ function skipClosingAndOpening(
   fromEnd: boolean,
   mayOpen: boolean,
 ) {
-  let depth = $pos.depth,
-    end = fromEnd ? $pos.end() : $pos.pos;
+  let depth = $pos.depth;
+    let end = fromEnd ? $pos.end() : $pos.pos;
   while (
     depth > 0 &&
     (fromEnd || $pos.indexAfter(depth) == $pos.node(depth).childCount)
@@ -534,17 +534,17 @@ function findDiff(
   if (start == null) return null;
   let { a: endA, b: endB } = a.findDiffEnd(b, pos + a.size, pos + b.size)!;
   if (preferredSide == 'end') {
-    let adjust = Math.max(0, start - Math.min(endA, endB));
+    const adjust = Math.max(0, start - Math.min(endA, endB));
     preferredPos -= endA + adjust - start;
   }
   if (endA < start && a.size < b.size) {
-    let move =
+    const move =
       preferredPos <= start && preferredPos >= endA ? start - preferredPos : 0;
     start -= move;
     endB = start + (endB - endA);
     endA = start;
   } else if (endB < start) {
-    let move =
+    const move =
       preferredPos <= start && preferredPos >= endB ? start - preferredPos : 0;
     start -= move;
     endA = start + (endA - endB);

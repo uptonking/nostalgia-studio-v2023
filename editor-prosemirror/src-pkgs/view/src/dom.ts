@@ -4,14 +4,14 @@ export type DOMNode = InstanceType<typeof window.Node>;
 export type DOMSelection = InstanceType<typeof window.Selection>;
 
 export const domIndex = function (node: Node) {
-  for (var index = 0; ; index++) {
+  for (let index = 0; ; index++) {
     node = node.previousSibling!;
     if (!node) return index;
   }
 };
 
 export const parentNode = function (node: Node) {
-  let parent = (node as HTMLSlotElement).assignedSlot || node.parentNode;
+  const parent = (node as HTMLSlotElement).assignedSlot || node.parentNode;
   return parent && parent.nodeType == 11 ? (parent as ShadowRoot).host : parent;
 };
 
@@ -22,7 +22,7 @@ let reusedRange: Range | null = null;
  * updates, for some reason.
  */
 export const textRange = function (node: Text, from?: number, to?: number) {
-  let range = reusedRange || (reusedRange = document.createRange());
+  const range = reusedRange || (reusedRange = document.createRange());
   range.setEnd(node, to == null ? node.nodeValue!.length : to);
   range.setStart(node, from || 0);
   return range;
@@ -57,7 +57,7 @@ function scanFor(
   for (;;) {
     if (node == targetNode && off == targetOff) return true;
     if (off == (dir < 0 ? 0 : nodeSize(node))) {
-      let parent = node.parentNode;
+      const parent = node.parentNode;
       if (
         !parent ||
         parent.nodeType != 1 ||
@@ -89,7 +89,7 @@ export function isOnEdge(node: Node, offset: number, parent: Node) {
 
   ) {
     if (node == parent) return true;
-    let index = domIndex(node);
+    const index = domIndex(node);
     node = node.parentNode!;
     if (!node) return false;
     atStart = atStart && index == 0;

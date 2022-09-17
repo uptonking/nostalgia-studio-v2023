@@ -7,8 +7,8 @@ import {renderGrouped, MenuElement} from "./menu"
 const prefix = "ProseMirror-menubar"
 
 function isIOS() {
-  if (typeof navigator == "undefined") return false
-  let agent = navigator.userAgent
+  if (typeof navigator === "undefined") return false
+  const agent = navigator.userAgent
   return !/Edge\/\d/.test(agent) && /AppleWebKit/.test(agent) && /Mobile\/\w+/.test(agent)
 }
 
@@ -51,16 +51,16 @@ class MenuBarView {
       editorView.dom.parentNode.replaceChild(this.wrapper, editorView.dom)
     this.wrapper.appendChild(editorView.dom)
 
-    let {dom, update} = renderGrouped(this.editorView, this.options.content)
+    const {dom, update} = renderGrouped(this.editorView, this.options.content)
     this.contentUpdate = update
     this.menu.appendChild(dom)
     this.update()
 
     if (options.floating && !isIOS()) {
       this.updateFloat()
-      let potentialScrollers = getAllWrapping(this.wrapper)
+      const potentialScrollers = getAllWrapping(this.wrapper)
       this.scrollHandler = (e: Event) => {
-        let root = this.editorView.root
+        const root = this.editorView.root
         if (!((root as Document).body || root).contains(this.wrapper))
           potentialScrollers.forEach(el => el.removeEventListener("scroll", this.scrollHandler!))
         else
@@ -88,21 +88,21 @@ class MenuBarView {
   }
 
   updateScrollCursor() {
-    let selection = (this.editorView.root as Document).getSelection()!
+    const selection = (this.editorView.root as Document).getSelection()!
     if (!selection.focusNode) return
-    let rects = selection.getRangeAt(0).getClientRects()
-    let selRect = rects[selectionIsInverted(selection) ? 0 : rects.length - 1]
+    const rects = selection.getRangeAt(0).getClientRects()
+    const selRect = rects[selectionIsInverted(selection) ? 0 : rects.length - 1]
     if (!selRect) return
-    let menuRect = this.menu.getBoundingClientRect()
+    const menuRect = this.menu.getBoundingClientRect()
     if (selRect.top < menuRect.bottom && selRect.bottom > menuRect.top) {
-      let scrollable = findWrappingScrollable(this.wrapper)
+      const scrollable = findWrappingScrollable(this.wrapper)
       if (scrollable) scrollable.scrollTop -= (menuRect.bottom - selRect.top)
     }
   }
 
   updateFloat(scrollAncestor?: HTMLElement) {
-    let parent = this.wrapper, editorRect = parent.getBoundingClientRect(),
-        top = scrollAncestor ? Math.max(0, scrollAncestor.getBoundingClientRect().top) : 0
+    const parent = this.wrapper; const editorRect = parent.getBoundingClientRect();
+        const top = scrollAncestor ? Math.max(0, scrollAncestor.getBoundingClientRect().top) : 0
 
     if (this.floating) {
       if (editorRect.top >= top || editorRect.bottom < this.menu.offsetHeight + 10) {
@@ -112,7 +112,7 @@ class MenuBarView {
         this.spacer!.parentNode!.removeChild(this.spacer!)
         this.spacer = null
       } else {
-        let border = (parent.offsetWidth - parent.clientWidth) / 2
+        const border = (parent.offsetWidth - parent.clientWidth) / 2
         this.menu.style.left = (editorRect.left + border) + "px"
         this.menu.style.display = (editorRect.top > window.innerHeight ? "none" : "")
         if (scrollAncestor) this.menu.style.top = top + "px"
@@ -120,7 +120,7 @@ class MenuBarView {
     } else {
       if (editorRect.top < top && editorRect.bottom >= this.menu.offsetHeight + 10) {
         this.floating = true
-        let menuRect = this.menu.getBoundingClientRect()
+        const menuRect = this.menu.getBoundingClientRect()
         this.menu.style.left = menuRect.left + "px"
         this.menu.style.width = menuRect.width + "px"
         if (scrollAncestor) this.menu.style.top = top + "px"
@@ -149,7 +149,7 @@ function findWrappingScrollable(node: Node) {
 }
 
 function getAllWrapping(node: Node) {
-  let res: (Node | Window)[] = [window]
+  const res: (Node | Window)[] = [window]
   for (let cur = node.parentNode; cur; cur = cur.parentNode)
     res.push(cur)
   return res

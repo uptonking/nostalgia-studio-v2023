@@ -47,14 +47,14 @@ export class Slice {
     readonly openEnd: number,
   ) {}
 
-  /** The size this slice would add when inserted into a document.*/
+  /** The size this slice would add when inserted into a document. */
   get size(): number {
     return this.content.size - this.openStart - this.openEnd;
   }
 
   /// @internal
   insertAt(pos: number, fragment: Fragment) {
-    let content = insertInto(this.content, pos + this.openStart, fragment);
+    const content = insertInto(this.content, pos + this.openStart, fragment);
     return content && new Slice(content, this.openStart, this.openEnd);
   }
 
@@ -84,7 +84,7 @@ export class Slice {
   /** Convert a slice to a JSON-serializable representation. */
   toJSON(): any {
     if (!this.content.size) return null;
-    let json: any = { content: this.content.toJSON() };
+    const json: any = { content: this.content.toJSON() };
     if (this.openStart > 0) json.openStart = this.openStart;
     if (this.openEnd > 0) json.openEnd = this.openEnd;
     return json;
@@ -93,9 +93,9 @@ export class Slice {
   /** Deserialize a slice from its JSON representation. */
   static fromJSON(schema: Schema, json: any): Slice {
     if (!json) return Slice.empty;
-    let openStart = json.openStart || 0,
-      openEnd = json.openEnd || 0;
-    if (typeof openStart != 'number' || typeof openEnd != 'number')
+    const openStart = json.openStart || 0;
+      const openEnd = json.openEnd || 0;
+    if (typeof openStart !== 'number' || typeof openEnd !== 'number')
       throw new RangeError('Invalid input for Slice.fromJSON');
     return new Slice(
       Fragment.fromJSON(schema, json.content),
@@ -108,8 +108,8 @@ export class Slice {
    * open value on both side of the fragment.
    */
   static maxOpen(fragment: Fragment, openIsolating = true) {
-    let openStart = 0,
-      openEnd = 0;
+    let openStart = 0;
+      let openEnd = 0;
     for (
       let n = fragment.firstChild;
       n && !n.isLeaf && (openIsolating || !n.type.spec.isolating);
@@ -130,9 +130,9 @@ export class Slice {
 }
 
 function removeRange(content: Fragment, from: number, to: number): Fragment {
-  let { index, offset } = content.findIndex(from),
-    child = content.maybeChild(index);
-  let { index: indexTo, offset: offsetTo } = content.findIndex(to);
+  const { index, offset } = content.findIndex(from);
+    const child = content.maybeChild(index);
+  const { index: indexTo, offset: offsetTo } = content.findIndex(to);
   if (offset == from || child!.isText) {
     if (offsetTo != to && !content.child(indexTo).isText)
       throw new RangeError('Removing non-flat range');
@@ -153,13 +153,13 @@ function insertInto(
   insert: Fragment,
   parent?: Node,
 ): Fragment | null {
-  let { index, offset } = content.findIndex(dist),
-    child = content.maybeChild(index);
+  const { index, offset } = content.findIndex(dist);
+    const child = content.maybeChild(index);
   if (offset == dist || child!.isText) {
     if (parent && !parent.canReplace(index, index, insert)) return null;
     return content.cut(0, dist).append(insert).append(content.cut(dist));
   }
-  let inner = insertInto(child!.content, dist - offset - 1, insert);
+  const inner = insertInto(child!.content, dist - offset - 1, insert);
   return inner && content.replaceChild(index, child!.copy(inner));
 }
 
@@ -181,10 +181,10 @@ function replaceOuter(
   slice: Slice,
   depth: number,
 ): Node {
-  let index = $from.index(depth),
-    node = $from.node(depth);
+  const index = $from.index(depth);
+    const node = $from.node(depth);
   if (index == $to.index(depth) && depth < $from.depth - slice.openStart) {
-    let inner = replaceOuter($from, $to, slice, depth + 1);
+    const inner = replaceOuter($from, $to, slice, depth + 1);
     return node.copy(node.content.replaceChild(index, inner));
   } else if (!slice.content.size) {
     return close(node, replaceTwoWay($from, $to, depth));
@@ -195,8 +195,8 @@ function replaceOuter(
     $to.depth == depth
   ) {
     // Simple, flat case
-    let parent = $from.parent,
-      content = parent.content;
+    const parent = $from.parent;
+      const content = parent.content;
     return close(
       parent,
       content
@@ -205,7 +205,7 @@ function replaceOuter(
         .append(content.cut($to.parentOffset)),
     );
   } else {
-    let { start, end } = prepareSliceForReplace(slice, $from);
+    const { start, end } = prepareSliceForReplace(slice, $from);
     return close(node, replaceThreeWay($from, start, end, $to, depth));
   }
 }
@@ -218,13 +218,13 @@ function checkJoin(main: Node, sub: Node) {
 }
 
 function joinable($before: ResolvedPos, $after: ResolvedPos, depth: number) {
-  let node = $before.node(depth);
+  const node = $before.node(depth);
   checkJoin(node, $after.node(depth));
   return node;
 }
 
 function addNode(child: Node, target: Node[]) {
-  let last = target.length - 1;
+  const last = target.length - 1;
   if (last >= 0 && child.isText && child.sameMarkup(target[last]))
     target[last] = (child as TextNode).withText(
       target[last].text! + child.text!,
@@ -238,9 +238,9 @@ function addRange(
   depth: number,
   target: Node[],
 ) {
-  let node = ($end || $start)!.node(depth);
-  let startIndex = 0,
-    endIndex = $end ? $end.index(depth) : node.childCount;
+  const node = ($end || $start)!.node(depth);
+  let startIndex = 0;
+    const endIndex = $end ? $end.index(depth) : node.childCount;
   if ($start) {
     startIndex = $start.index(depth);
     if ($start.depth > depth) {
@@ -267,10 +267,10 @@ function replaceThreeWay(
   $to: ResolvedPos,
   depth: number,
 ) {
-  let openStart = $from.depth > depth && joinable($from, $start, depth + 1);
-  let openEnd = $to.depth > depth && joinable($end, $to, depth + 1);
+  const openStart = $from.depth > depth && joinable($from, $start, depth + 1);
+  const openEnd = $to.depth > depth && joinable($end, $to, depth + 1);
 
-  let content: Node[] = [];
+  const content: Node[] = [];
   addRange(null, $from, depth, content);
   if (openStart && openEnd && $start.index(depth) == $end.index(depth)) {
     checkJoin(openStart, openEnd);
@@ -293,10 +293,10 @@ function replaceThreeWay(
 }
 
 function replaceTwoWay($from: ResolvedPos, $to: ResolvedPos, depth: number) {
-  let content: Node[] = [];
+  const content: Node[] = [];
   addRange(null, $from, depth, content);
   if ($from.depth > depth) {
-    let type = joinable($from, $to, depth + 1);
+    const type = joinable($from, $to, depth + 1);
     addNode(close(type, replaceTwoWay($from, $to, depth + 1)), content);
   }
   addRange($to, null, depth, content);
@@ -304,8 +304,8 @@ function replaceTwoWay($from: ResolvedPos, $to: ResolvedPos, depth: number) {
 }
 
 function prepareSliceForReplace(slice: Slice, $along: ResolvedPos) {
-  let extra = $along.depth - slice.openStart,
-    parent = $along.node(extra);
+  const extra = $along.depth - slice.openStart;
+    const parent = $along.node(extra);
   let node = parent.copy(slice.content);
   for (let i = extra - 1; i >= 0; i--)
     node = $along.node(i).copy(Fragment.from(node));

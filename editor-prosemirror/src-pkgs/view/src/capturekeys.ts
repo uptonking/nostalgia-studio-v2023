@@ -12,9 +12,9 @@ import { EditorView } from './index';
 import { selectionToDOM } from './selection';
 
 function moveSelectionBlock(state: EditorState, dir: number) {
-  let { $anchor, $head } = state.selection;
-  let $side = dir > 0 ? $anchor.max($head) : $anchor.min($head);
-  let $start = !$side.parent.inlineContent
+  const { $anchor, $head } = state.selection;
+  const $side = dir > 0 ? $anchor.max($head) : $anchor.min($head);
+  const $start = !$side.parent.inlineContent
     ? $side
     : $side.depth
     ? state.doc.resolve(dir > 0 ? $side.after() : $side.before())
@@ -28,24 +28,24 @@ function apply(view: EditorView, sel: Selection) {
 }
 
 function selectHorizontally(view: EditorView, dir: number, mods: string) {
-  let sel = view.state.selection;
+  const sel = view.state.selection;
   if (sel instanceof TextSelection) {
     if (!sel.empty || mods.indexOf('s') > -1) {
       return false;
     } else if (view.endOfTextblock(dir > 0 ? 'right' : 'left')) {
-      let next = moveSelectionBlock(view.state, dir);
+      const next = moveSelectionBlock(view.state, dir);
       if (next && next instanceof NodeSelection) return apply(view, next);
       return false;
     } else if (!(browser.mac && mods.indexOf('m') > -1)) {
-      let $head = sel.$head,
-        node = $head.textOffset
+      const $head = sel.$head;
+        const node = $head.textOffset
           ? null
           : dir < 0
           ? $head.nodeBefore
-          : $head.nodeAfter,
-        desc;
+          : $head.nodeAfter;
+        let desc;
       if (!node || node.isText) return false;
-      let nodePos = dir < 0 ? $head.pos - node.nodeSize : $head.pos;
+      const nodePos = dir < 0 ? $head.pos - node.nodeSize : $head.pos;
       if (
         !(
           node.isAtom ||
@@ -77,7 +77,7 @@ function selectHorizontally(view: EditorView, dir: number, mods: string) {
   } else if (sel instanceof NodeSelection && sel.node.isInline) {
     return apply(view, new TextSelection(dir > 0 ? sel.$to : sel.$from));
   } else {
-    let next = moveSelectionBlock(view.state, dir);
+    const next = moveSelectionBlock(view.state, dir);
     if (next) return apply(view, next);
     return false;
   }
@@ -88,20 +88,20 @@ function nodeLen(node: Node) {
 }
 
 function isIgnorable(dom: Node) {
-  let desc = dom.pmViewDesc;
+  const desc = dom.pmViewDesc;
   return desc && desc.size == 0 && (dom.nextSibling || dom.nodeName != 'BR');
 }
 
 // Make sure the cursor isn't directly after one or more ignored
 // nodes, which will confuse the browser's cursor motion logic.
 function skipIgnoredNodesLeft(view: EditorView) {
-  let sel = view.domSelection();
-  let node = sel.focusNode!,
-    offset = sel.focusOffset;
+  const sel = view.domSelection();
+  let node = sel.focusNode!;
+    let offset = sel.focusOffset;
   if (!node) return;
-  let moveNode,
-    moveOffset: number | undefined,
-    force = false;
+  let moveNode;
+    let moveOffset: number | undefined;
+    let force = false;
   // Gecko will do odd things when the selection is directly in front
   // of a non-editable node, so in that case, move it into the next
   // node if possible. Issue prosemirror/prosemirror#832.
@@ -117,7 +117,7 @@ function skipIgnoredNodesLeft(view: EditorView) {
       if (node.nodeType != 1) {
         break;
       } else {
-        let before = node.childNodes[offset - 1];
+        const before = node.childNodes[offset - 1];
         if (isIgnorable(before)) {
           moveNode = node;
           moveOffset = --offset;
@@ -152,16 +152,16 @@ function skipIgnoredNodesLeft(view: EditorView) {
 // Make sure the cursor isn't directly before one or more ignored
 // nodes.
 function skipIgnoredNodesRight(view: EditorView) {
-  let sel = view.domSelection();
-  let node = sel.focusNode!,
-    offset = sel.focusOffset;
+  const sel = view.domSelection();
+  let node = sel.focusNode!;
+    let offset = sel.focusOffset;
   if (!node) return;
   let len = nodeLen(node);
-  let moveNode, moveOffset: number | undefined;
+  let moveNode; let moveOffset: number | undefined;
   for (;;) {
     if (offset < len) {
       if (node.nodeType != 1) break;
-      let after = node.childNodes[offset];
+      const after = node.childNodes[offset];
       if (isIgnorable(after)) {
         moveNode = node;
         moveOffset = ++offset;
@@ -201,7 +201,7 @@ function setSelFocus(
   offset: number,
 ) {
   if (selectionCollapsed(sel)) {
-    let range = document.createRange();
+    const range = document.createRange();
     range.setEnd(node, offset);
     range.setStart(node, offset);
     sel.removeAllRanges();
@@ -210,7 +210,7 @@ function setSelFocus(
     sel.extend(node, offset);
   }
   view.domObserver.setCurSelection();
-  let { state } = view;
+  const { state } = view;
   // If no state update ends up happening, reset the selection.
   setTimeout(() => {
     if (view.state == state) selectionToDOM(view);
@@ -232,12 +232,12 @@ function selectVertically(view: EditorView, dir: number, mods: string) {
     !$from.parent.inlineContent ||
     view.endOfTextblock(dir < 0 ? 'up' : 'down')
   ) {
-    let next = moveSelectionBlock(view.state, dir);
+    const next = moveSelectionBlock(view.state, dir);
     if (next && next instanceof NodeSelection) return apply(view, next);
   }
   if (!$from.parent.inlineContent) {
-    let side = dir < 0 ? $from : $to;
-    let beyond =
+    const side = dir < 0 ? $from : $to;
+    const beyond =
       sel instanceof AllSelection
         ? Selection.near(side, dir)
         : Selection.findFrom(side, dir);
@@ -248,14 +248,14 @@ function selectVertically(view: EditorView, dir: number, mods: string) {
 
 function stopNativeHorizontalDelete(view: EditorView, dir: number) {
   if (!(view.state.selection instanceof TextSelection)) return true;
-  let { $head, $anchor, empty } = view.state.selection;
+  const { $head, $anchor, empty } = view.state.selection;
   if (!$head.sameParent($anchor)) return true;
   if (!empty) return false;
   if (view.endOfTextblock(dir > 0 ? 'forward' : 'backward')) return true;
-  let nextNode =
+  const nextNode =
     !$head.textOffset && (dir < 0 ? $head.nodeBefore : $head.nodeAfter);
   if (nextNode && !nextNode.isText) {
-    let tr = view.state.tr;
+    const tr = view.state.tr;
     if (dir < 0) tr.delete($head.pos - nextNode.nodeSize, $head.pos);
     else tr.delete($head.pos, $head.pos + nextNode.nodeSize);
     view.dispatch(tr);
@@ -278,7 +278,7 @@ function switchEditable(view: EditorView, node: HTMLElement, state: string) {
 function safariDownArrowBug(view: EditorView) {
   if (!browser.safari || view.state.selection.$head.parentOffset > 0)
     return false;
-  let { focusNode, focusOffset } = view.domSelection();
+  const { focusNode, focusOffset } = view.domSelection();
   if (
     focusNode &&
     focusNode.nodeType == 1 &&
@@ -286,7 +286,7 @@ function safariDownArrowBug(view: EditorView) {
     focusNode.firstChild &&
     (focusNode.firstChild as HTMLElement).contentEditable == 'false'
   ) {
-    let child = focusNode.firstChild as HTMLElement;
+    const child = focusNode.firstChild as HTMLElement;
     switchEditable(view, child, 'true');
     setTimeout(() => switchEditable(view, child, 'false'), 20);
   }
@@ -309,8 +309,8 @@ function getMods(event: KeyboardEvent) {
 }
 
 export function captureKeyDown(view: EditorView, event: KeyboardEvent) {
-  let code = event.keyCode,
-    mods = getMods(event);
+  const code = event.keyCode;
+    const mods = getMods(event);
   if (code == 8 || (browser.mac && code == 72 && mods == 'c')) {
     // Backspace, Ctrl-h on Mac
     return stopNativeHorizontalDelete(view, -1) || skipIgnoredNodesLeft(view);

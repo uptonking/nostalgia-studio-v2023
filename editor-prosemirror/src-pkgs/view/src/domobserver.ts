@@ -66,7 +66,7 @@ export class DOMObserver {
   queue: MutationRecord[] = [];
   /** 简化了浏览器Selection对象的属性 */
   currentSelection = new SelectionState();
-  /** 存放延迟执行flush()方法的setTimeout的返回值，setTimeout的返回值一定是正整数 */
+  /** 存放延迟执行flush()方法的setTimeout的返回值， setTimeout 的返回值一定是正整数 */
   flushingSoon = -1;
   onCharData: ((e: Event) => void) | null = null;
   /** 默认false */
@@ -145,7 +145,9 @@ export class DOMObserver {
     if (this.observer) {
       const take = this.observer.takeRecords();
       if (take.length) {
-        for (let i = 0; i < take.length; i++) this.queue.push(take[i]);
+        for (let i = 0; i < take.length; i++) {
+          this.queue.push(take[i]);
+        }
         window.setTimeout(() => this.flush(), 20);
       }
       this.observer.disconnect();
@@ -191,7 +193,7 @@ export class DOMObserver {
       browser.ie_version <= 11 &&
       !this.view.state.selection.empty
     ) {
-      let sel = this.view.domSelection();
+      const sel = this.view.domSelection();
       // Selection.isCollapsed isn't reliable on IE
       if (
         sel.focusNode &&
@@ -267,7 +269,7 @@ export class DOMObserver {
         // IE11 gives us incorrect next/prev siblings for some
         // insertions, so if there are added nodes, recompute those
         for (let i = 0; i < mut.addedNodes.length; i++) {
-          let { previousSibling, nextSibling } = mut.addedNodes[i];
+          const { previousSibling, nextSibling } = mut.addedNodes[i];
           if (
             !previousSibling ||
             Array.prototype.indexOf.call(mut.addedNodes, previousSibling) < 0
@@ -309,6 +311,7 @@ export class DOMObserver {
     }
   }
 
+  /** 通过setTimeout执行 this.flush() */
   flushSoon() {
     if (this.flushingSoon < 0)
       this.flushingSoon = window.setTimeout(() => {
@@ -317,6 +320,7 @@ export class DOMObserver {
       }, 20);
   }
 
+  /** 立即执行 this.flush(); */
   forceFlush() {
     if (this.flushingSoon > -1) {
       window.clearTimeout(this.flushingSoon);
@@ -325,7 +329,7 @@ export class DOMObserver {
     }
   }
 
-  /** selectionchange事件会执行本方法，会执行handleDOMChange即readDOMChange */
+  /** selectionchange事件会执行本方法，里面会执行handleDOMChange即readDOMChange */
   flush() {
     const { view } = this;
     if (!view.docView || this.flushingSoon > -1) return;
@@ -341,7 +345,7 @@ export class DOMObserver {
       !this.currentSelection.eq(sel) &&
       hasFocusAndSelection(view) &&
       !this.ignoreSelectionChange(sel);
-    // console.log(';;sel-chg ', hasNewSel, mutations.length, mutations);
+    // console.log(';;sel-chg/hasNewSel ', hasNewSel, mutations.length);
 
     let from = -1;
     let to = -1;
@@ -365,10 +369,10 @@ export class DOMObserver {
     }
 
     if (browser.gecko && added.length > 1) {
-      let brs = added.filter((n) => n.nodeName == 'BR');
+      const brs = added.filter((n) => n.nodeName == 'BR');
       if (brs.length == 2) {
-        let a = brs[0] as HTMLElement,
-          b = brs[1] as HTMLElement;
+        const a = brs[0] as HTMLElement;
+        const b = brs[1] as HTMLElement;
         if (a.parentNode && a.parentNode.parentNode == b.parentNode) b.remove();
         else a.remove();
       }

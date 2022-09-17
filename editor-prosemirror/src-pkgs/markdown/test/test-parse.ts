@@ -200,7 +200,7 @@ describe("markdown", () => {
   })
 
   it("escapes extra characters from options", () => {
-    let markdownSerializer = new MarkdownSerializer(defaultMarkdownSerializer.nodes,
+    const markdownSerializer = new MarkdownSerializer(defaultMarkdownSerializer.nodes,
                                                     defaultMarkdownSerializer.marks,
                                                     {escapeExtraCharacters: /[\|!]/g})
     ist(markdownSerializer.serialize(doc(p("foo|bar!"))), "foo\\|bar\\!")

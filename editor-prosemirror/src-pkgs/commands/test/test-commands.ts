@@ -13,9 +13,9 @@ function t(node: Node): {[name: string]: number} {
 }
 
 function selFor(doc: Node) {
-  let a = t(doc).a
+  const a = t(doc).a
   if (a != null) {
-    let $a = doc.resolve(a)
+    const $a = doc.resolve(a)
     if ($a.parent.inlineContent) return new TextSelection($a, t(doc).b != null ? doc.resolve(t(doc).b) : undefined)
     else return new NodeSelection($a)
   }
@@ -82,7 +82,7 @@ describe("joinBackward", () => {
      apply(doc(p("<a>foo")), joinBackward, null))
 
   it("can join single-textblock-child nodes", () => {
-    let s = new Schema({
+    const s = new Schema({
       nodes: {
         text: {inline: true},
         doc: {content: "block+"},
@@ -90,7 +90,7 @@ describe("joinBackward", () => {
         para: {content: "text*"}
       }
     })
-    let doc = s.node("doc", null, [
+    const doc = s.node("doc", null, [
       s.node("block", null, [s.node("para", null, [s.text("a")])]),
       s.node("block", null, [s.node("para", null, [s.text("b")])])
     ])
@@ -273,7 +273,7 @@ describe("lift", () => {
 })
 
 describe("wrapIn", () => {
-  let wrap = wrapIn(schema.nodes.blockquote)
+  const wrap = wrapIn(schema.nodes.blockquote)
 
   it("can wrap a paragraph", () =>
      apply(doc(p("fo<a>o")), wrap, doc(blockquote(p("foo")))))
@@ -347,13 +347,13 @@ describe("splitBlock", () => {
            ])))
 
   it("prefers textblocks", () => {
-    let s = new Schema({nodes: {
+    const s = new Schema({nodes: {
       text: {},
       para: {content: "text*", toDOM() { return ["p", 0] }},
       section: {content: "para+", toDOM() { return ["section", 0] }},
       doc: {content: "para* section*"}
     }})
-    let doc = s.node("doc", null, [s.node("para", null, [s.text("hello")])])
+    const doc = s.node("doc", null, [s.node("para", null, [s.text("hello")])])
     ;(doc as any).tag = {a: 3}
     apply(doc, splitBlock,
           s.node("doc", null, [s.node("para", null, [s.text("he")]),
@@ -409,9 +409,9 @@ describe("createParagraphNear", () => {
 })
 
 describe("setBlockType", () => {
-  let setHeading = setBlockType(schema.nodes.heading, {level: 1})
-  let setPara = setBlockType(schema.nodes.paragraph)
-  let setCode = setBlockType(schema.nodes.code_block)
+  const setHeading = setBlockType(schema.nodes.heading, {level: 1})
+  const setPara = setBlockType(schema.nodes.paragraph)
+  const setCode = setBlockType(schema.nodes.code_block)
 
   it("can change the type of a paragraph", () =>
      apply(doc(p("fo<a>o")), setHeading, doc(h1("foo"))))
@@ -491,7 +491,7 @@ describe("autoJoin", () => {
 })
 
 describe("toggleMark", () => {
-  let toggleEm = toggleMark(schema.marks.em), toggleStrong = toggleMark(schema.marks.strong)
+  const toggleEm = toggleMark(schema.marks.em); const toggleStrong = toggleMark(schema.marks.strong)
 
   it("can add a mark", () => {
     apply(doc(p("one <a>two<b>")), toggleEm,

@@ -6,7 +6,7 @@ import {undoInputRule} from "prosemirror-inputrules"
 import {Command} from "prosemirror-state"
 import {Schema} from "prosemirror-model"
 
-const mac = typeof navigator != "undefined" ? /Mac|iP(hone|[oa]d)/.test(navigator.platform) : false
+const mac = typeof navigator !== "undefined" ? /Mac|iP(hone|[oa]d)/.test(navigator.platform) : false
 
 /// Inspect the given schema looking for marks and nodes from the
 /// basic schema, and if found, add key bindings related to them.
@@ -36,10 +36,10 @@ const mac = typeof navigator != "undefined" ? /Mac|iP(hone|[oa]d)/.test(navigato
 /// argument, which maps key names (say `"Mod-B"` to either `false`, to
 /// remove the binding, or a new key name string.
 export function buildKeymap(schema: Schema, mapKeys?: {[key: string]: false | string}) {
-  let keys: {[key: string]: Command} = {}, type
+  const keys: {[key: string]: Command} = {}; let type
   function bind(key: string, cmd: Command) {
     if (mapKeys) {
-      let mapped = mapKeys[key]
+      const mapped = mapKeys[key]
       if (mapped === false) return
       if (mapped) key = mapped
     }
@@ -74,7 +74,7 @@ export function buildKeymap(schema: Schema, mapKeys?: {[key: string]: false | st
   if (type = schema.nodes.blockquote)
     bind("Ctrl->", wrapIn(type))
   if (type = schema.nodes.hard_break) {
-    let br = type, cmd = chainCommands(exitCode, (state, dispatch) => {
+    const br = type; const cmd = chainCommands(exitCode, (state, dispatch) => {
       if (dispatch) dispatch(state.tr.replaceSelectionWith(br.create()).scrollIntoView())
       return true
     })
@@ -94,7 +94,7 @@ export function buildKeymap(schema: Schema, mapKeys?: {[key: string]: false | st
   if (type = schema.nodes.heading)
     for (let i = 1; i <= 6; i++) bind("Shift-Ctrl-" + i, setBlockType(type, {level: i}))
   if (type = schema.nodes.horizontal_rule) {
-    let hr = type
+    const hr = type
     bind("Mod-_", (state, dispatch) => {
       if (dispatch) dispatch(state.tr.replaceSelectionWith(hr.create()).scrollIntoView())
       return true

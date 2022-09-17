@@ -2,12 +2,12 @@ import {Mark, Schema, Node} from "prosemirror-model"
 import {schema, doc, p, em, a} from "prosemirror-test-builder"
 import ist from "ist"
 
-let em_ = schema.mark("em")
-let strong = schema.mark("strong")
-let link = (href: string, title?: string) => schema.mark("link", {href, title})
-let code = schema.mark("code")
+const em_ = schema.mark("em")
+const strong = schema.mark("strong")
+const link = (href: string, title?: string) => schema.mark("link", {href, title})
+const code = schema.mark("code")
 
-let customSchema = new Schema({
+const customSchema = new Schema({
   nodes: {doc: {content: "paragraph+"}, paragraph: {content: "text*"}, text: {}},
   marks: {
     remark: {attrs: {id: {}}, excludes: "", inclusive: false},
@@ -15,10 +15,10 @@ let customSchema = new Schema({
     strong: {excludes: "em-group"},
     em: {group: "em-group"}
   }
-}), custom = customSchema.marks
-let remark1 = custom.remark.create({id: 1}), remark2 = custom.remark.create({id: 2}),
-    user1 = custom.user.create({id: 1}), user2 = custom.user.create({id: 2}),
-    customEm = custom.em.create(), customStrong = custom.strong.create()
+}); const custom = customSchema.marks
+const remark1 = custom.remark.create({id: 1}); const remark2 = custom.remark.create({id: 2});
+    const user1 = custom.user.create({id: 1}); const user2 = custom.user.create({id: 2});
+    const customEm = custom.em.create(); const customStrong = custom.strong.create()
 
 describe("Mark", () => {
   describe("sameSet", () => {
@@ -142,7 +142,7 @@ describe("Mark", () => {
     it("notices that attributes differ", () =>
        isAt(doc(p(a("li<a>nk"))), link("http://baz"), false))
 
-    let customDoc = customSchema.node("doc", null, [
+    const customDoc = customSchema.node("doc", null, [
       customSchema.node("paragraph", null, [ // pos 1
         customSchema.text("one", [remark1, customStrong]), customSchema.text("two")
       ]),

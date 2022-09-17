@@ -46,7 +46,7 @@ class DropCursorView {
     this.class = options.class;
 
     this.handlers = ['dragover', 'dragend', 'drop', 'dragleave'].map((name) => {
-      let handler = (e: Event) => {
+      const handler = (e: Event) => {
         (this as any)[name](e);
       };
       editorView.dom.addEventListener(name, handler);
@@ -80,13 +80,13 @@ class DropCursorView {
   }
 
   updateOverlay() {
-    let $pos = this.editorView.state.doc.resolve(this.cursorPos!),
-      rect;
+    const $pos = this.editorView.state.doc.resolve(this.cursorPos!);
+      let rect;
     if (!$pos.parent.inlineContent) {
-      let before = $pos.nodeBefore,
-        after = $pos.nodeAfter;
+      const before = $pos.nodeBefore;
+        const after = $pos.nodeAfter;
       if (before || after) {
-        let nodeRect = (
+        const nodeRect = (
           this.editorView.nodeDOM(
             this.cursorPos! - (before ? before.nodeSize : 0),
           ) as HTMLElement
@@ -108,7 +108,7 @@ class DropCursorView {
       }
     }
     if (!rect) {
-      let coords = this.editorView.coordsAtPos(this.cursorPos!);
+      const coords = this.editorView.coordsAtPos(this.cursorPos!);
       rect = {
         left: coords.left - this.width / 2,
         right: coords.left + this.width / 2,
@@ -117,7 +117,7 @@ class DropCursorView {
       };
     }
 
-    let parent = this.editorView.dom.offsetParent!;
+    const parent = this.editorView.dom.offsetParent!;
     if (!this.element) {
       this.element = parent.appendChild(document.createElement('div'));
       if (this.class) this.element.className = this.class;
@@ -125,7 +125,7 @@ class DropCursorView {
         'position: absolute; z-index: 50; pointer-events: none; background-color: ' +
         this.color;
     }
-    let parentLeft, parentTop;
+    let parentLeft; let parentTop;
     if (
       !parent ||
       (parent == document.body && getComputedStyle(parent).position == 'static')
@@ -133,7 +133,7 @@ class DropCursorView {
       parentLeft = -pageXOffset;
       parentTop = -pageYOffset;
     } else {
-      let rect = parent.getBoundingClientRect();
+      const rect = parent.getBoundingClientRect();
       parentLeft = rect.left - parent.scrollLeft;
       parentTop = rect.top - parent.scrollTop;
     }
@@ -150,16 +150,16 @@ class DropCursorView {
 
   dragover(event: DragEvent) {
     if (!this.editorView.editable) return;
-    let pos = this.editorView.posAtCoords({
+    const pos = this.editorView.posAtCoords({
       left: event.clientX,
       top: event.clientY,
     });
 
-    let node =
+    const node =
       pos && pos.inside >= 0 && this.editorView.state.doc.nodeAt(pos.inside);
-    let disableDropCursor = node && node.type.spec.disableDropCursor;
-    let disabled =
-      typeof disableDropCursor == 'function'
+    const disableDropCursor = node && node.type.spec.disableDropCursor;
+    const disabled =
+      typeof disableDropCursor === 'function'
         ? disableDropCursor(this.editorView, pos, event)
         : disableDropCursor;
 

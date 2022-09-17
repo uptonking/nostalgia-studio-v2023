@@ -58,7 +58,7 @@ export function exampleSetup(options: {
   /// Can be used to override the menu content.
   menuContent?: MenuItem[][];
 }) {
-  let plugins = [
+  const plugins = [
     buildInputRules(options.schema),
     keymap(buildKeymap(options.schema, options.mapKeys)),
     keymap(baseKeymap),

@@ -5,7 +5,7 @@ import ist from "ist"
 describe("Node", () => {
   describe("slice", () => {
     function t(doc: Node, expect: Node, openStart: number, openEnd: number) {
-      let slice = doc.slice((doc as any).tag.a || 0, (doc as any).tag.b)
+      const slice = doc.slice((doc as any).tag.a || 0, (doc as any).tag.b)
       ist(slice.content.eq(expect.content))
       ist(slice.openStart, openStart)
       ist(slice.openEnd, openEnd)
@@ -76,8 +76,8 @@ describe("Node", () => {
          blockquote(p("bar"), ul(li(p("a")), li(p("b")))), 1, 2))
 
     it("can include parents", () => {
-      let d = doc(blockquote(p("fo<a>o"), p("bar<b>")))
-      let slice = d.slice((d as any).tag.a, (d as any).tag.b, true)
+      const d = doc(blockquote(p("fo<a>o"), p("bar<b>")))
+      const slice = d.slice((d as any).tag.a, (d as any).tag.b, true)
       ist(slice.toString(), '<blockquote(paragraph("o"), paragraph("bar"))>(2,2)')
     })
   })

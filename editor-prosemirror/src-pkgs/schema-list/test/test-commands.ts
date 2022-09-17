@@ -5,9 +5,9 @@ import {wrapInList, splitListItem, liftListItem, sinkListItem} from "prosemirror
 import {Node} from "prosemirror-model"
 
 function selFor(doc: Node) {
-  let a = (doc as any).tag.a, b = (doc as any).tag.b
+  const a = (doc as any).tag.a; const b = (doc as any).tag.b
   if (a != null) {
-    let $a = doc.resolve(a)
+    const $a = doc.resolve(a)
     if ($a.parent.inlineContent) return new TextSelection($a, b != null ? doc.resolve(b) : undefined)
     else return new NodeSelection($a)
   }
@@ -22,8 +22,8 @@ function apply(doc: Node, command: Command, result: Node | null) {
 }
 
 describe("wrapInList", () => {
-  let wrap = wrapInList(schema.nodes.bullet_list)
-  let wrapo = wrapInList(schema.nodes.ordered_list)
+  const wrap = wrapInList(schema.nodes.bullet_list)
+  const wrapo = wrapInList(schema.nodes.ordered_list)
 
   it("can wrap a paragraph", () =>
      apply(doc(p("<a>foo")), wrap, doc(ul(li(p("foo"))))))
@@ -54,7 +54,7 @@ describe("wrapInList", () => {
 })
 
 describe("splitListItem", () => {
-  let split = splitListItem(schema.nodes.list_item)
+  const split = splitListItem(schema.nodes.list_item)
 
   it("has no effect outside of a list", () =>
      apply(doc(p("foo<a>bar")), split, null))
@@ -86,7 +86,7 @@ describe("splitListItem", () => {
 })
 
 describe("liftListItem", () => {
-  let lift = liftListItem(schema.nodes.list_item)
+  const lift = liftListItem(schema.nodes.list_item)
 
   it("can lift from a nested list", () =>
      apply(doc(ul(li(p("hello"), ul(li(p("o<a><b>ne")), li(p("two")))))), lift,
@@ -122,7 +122,7 @@ describe("liftListItem", () => {
 })
 
 describe("sinkListItem", () => {
-  let sink = sinkListItem(schema.nodes.list_item)
+  const sink = sinkListItem(schema.nodes.list_item)
 
   it("can wrap a simple item in a list", () =>
      apply(doc(ul(li(p("one")), li(p("t<a><b>wo")), li(p("three")))), sink,

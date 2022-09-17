@@ -12,7 +12,7 @@ module.exports = {
       jsx: true,
       impliedStrict: true,
     },
-    ecmaVersion: 2020,
+    ecmaVersion: 2022,
     sourceType: 'module',
   },
   settings: {
@@ -24,7 +24,7 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint'],
+  plugins: ['import', 'react', 'react-hooks', '@typescript-eslint'],
   // ESLint extends configurations recursively
   extends: [
     'alloy',
@@ -34,7 +34,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-  // 自定义规则，可以覆盖掉extends的配置,0-off,1-warn,2-error
+  // 自定义规则，可以覆盖掉extends的配置, 0-off, 1-warn, 2-error
   rules: {
     'no-param-reassign': 1,
     'no-invalid-this': 0,
@@ -67,6 +67,7 @@ module.exports = {
     'max-depth': 1,
     'accessor-pairs': 0,
     'import/order': 0,
+    'import/no-duplicates': 1,
     'react/no-find-dom-node': 1,
     'react/no-deprecated': 1,
     'react/no-did-update-set-state': 1,
@@ -93,10 +94,9 @@ module.exports = {
     '@typescript-eslint/no-invalid-this': 0,
     '@typescript-eslint/no-var-requires': 1,
     '@typescript-eslint/no-require-imports': 1,
-    '@typescript-eslint/no-duplicate-imports': 1,
     '@typescript-eslint/no-invalid-void-type': 1,
     '@typescript-eslint/no-inferrable-types': 0,
-    '@typescript-eslint/no-parameter-properties': 1,
+    '@typescript-eslint/parameter-properties': 1,
     '@typescript-eslint/ban-types': 1,
     '@typescript-eslint/ban-ts-comment': 1,
     '@typescript-eslint/prefer-for-of': 0,
@@ -104,7 +104,6 @@ module.exports = {
     '@typescript-eslint/prefer-function-type': 0,
     '@typescript-eslint/consistent-type-assertions': 0,
     '@typescript-eslint/method-signature-style': 0,
-    '@typescript-eslint/interface-name-prefix': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/explicit-member-accessibility': 0,
     '@typescript-eslint/member-ordering': 0,

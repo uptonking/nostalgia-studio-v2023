@@ -5,7 +5,7 @@ import ist from "ist"
 describe("Node", () => {
   describe("replace", () => {
     function rpl(doc: Node, insert: Node | null, expected: Node) {
-      let slice = insert ? insert.slice((insert as any).tag.a, (insert as any).tag.b) : Slice.empty
+      const slice = insert ? insert.slice((insert as any).tag.a, (insert as any).tag.b) : Slice.empty
       ist(doc.replace((doc as any).tag.a, (doc as any).tag.b, slice), expected, eq)
     }
 
@@ -86,7 +86,7 @@ describe("Node", () => {
            doc(h1("baz"))))
 
     function bad(doc: Node, insert: Node | null, pattern: string) {
-      let slice = insert ? insert.slice((insert as any).tag.a, (insert as any).tag.b) : Slice.empty
+      const slice = insert ? insert.slice((insert as any).tag.a, (insert as any).tag.b) : Slice.empty
       ist.throws(() => doc.replace((doc as any).tag.a, (doc as any).tag.b, slice), new RegExp(pattern, "i"))
     }
 

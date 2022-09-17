@@ -74,7 +74,7 @@ function bindProps(
   self: any,
   target: { [prop: string]: any },
 ) {
-  for (let prop in obj) {
+  for (const prop in obj) {
     let val = obj[prop];
     if (val instanceof Function) val = val.bind(self);
     else if (prop == 'handleDOMEvents') val = bindProps(val, self, {});

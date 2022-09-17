@@ -16,9 +16,9 @@ export type Attrs = { readonly [attr: string]: any };
  * attributes.
  */
 function defaultAttrs(attrs: Attrs) {
-  let defaults = Object.create(null);
-  for (let attrName in attrs) {
-    let attr = attrs[attrName];
+  const defaults = Object.create(null);
+  for (const attrName in attrs) {
+    const attr = attrs[attrName];
     if (!attr.hasDefault) return null;
     defaults[attrName] = attr.default;
   }
@@ -26,11 +26,11 @@ function defaultAttrs(attrs: Attrs) {
 }
 
 function computeAttrs(attrs: Attrs, value: Attrs | null) {
-  let built = Object.create(null);
-  for (let name in attrs) {
+  const built = Object.create(null);
+  for (const name in attrs) {
     let given = value && value[name];
     if (given === undefined) {
-      let attr = attrs[name];
+      const attr = attrs[name];
       if (attr.hasDefault) given = attr.default;
       else throw new RangeError('No value supplied for attribute ' + name);
     }
@@ -40,8 +40,8 @@ function computeAttrs(attrs: Attrs, value: Attrs | null) {
 }
 
 function initAttrs(attrs?: { [name: string]: AttributeSpec }) {
-  let result: { [name: string]: Attribute } = Object.create(null);
-  if (attrs) for (let name in attrs) result[name] = new Attribute(attrs[name]);
+  const result: { [name: string]: Attribute } = Object.create(null);
+  if (attrs) for (const name in attrs) result[name] = new Attribute(attrs[name]);
   return result;
 }
 
@@ -122,7 +122,7 @@ export class NodeType {
 
   /// Tells you whether this node type has any required attributes.
   hasRequiredAttrs() {
-    for (let n in this.attrs) if (this.attrs[n].isRequired) return true;
+    for (const n in this.attrs) if (this.attrs[n].isRequired) return true;
     return false;
   }
 
@@ -191,12 +191,12 @@ export class NodeType {
     attrs = this.computeAttrs(attrs);
     content = Fragment.from(content);
     if (content.size) {
-      let before = this.contentMatch.fillBefore(content);
+      const before = this.contentMatch.fillBefore(content);
       if (!before) return null;
       content = before.append(content);
     }
-    let matched = this.contentMatch.matchFragment(content);
-    let after = matched && matched.fillBefore(Fragment.empty, true);
+    const matched = this.contentMatch.matchFragment(content);
+    const after = matched && matched.fillBefore(Fragment.empty, true);
     if (!after) return null;
     return new Node(
       this,
@@ -209,7 +209,7 @@ export class NodeType {
   /// Returns true if the given fragment is valid content for this node
   /// type with the given attributes.
   validContent(content: Fragment) {
-    let result = this.contentMatch.matchFragment(content);
+    const result = this.contentMatch.matchFragment(content);
     if (!result || !result.validEnd) return false;
     for (let i = 0; i < content.childCount; i++)
       if (!this.allowsMarks(content.child(i).marks)) return false;
@@ -260,18 +260,18 @@ export class NodeType {
     nodes: OrderedMap<NodeSpec>,
     schema: Schema<Nodes>,
   ): { readonly [name in Nodes]: NodeType } {
-    let result = Object.create(null);
+    const result = Object.create(null);
     nodes.forEach(
       (name, spec) => (result[name] = new NodeType(name, schema, spec)),
     );
 
-    let topType = schema.spec.topNode || 'doc';
+    const topType = schema.spec.topNode || 'doc';
     if (!result[topType])
       throw new RangeError(
         "Schema is missing its top node type ('" + topType + "')",
       );
     if (!result.text) throw new RangeError("Every schema needs a 'text' type");
-    for (let _ in result.text.attrs)
+    for (const _ in result.text.attrs)
       throw new RangeError('The text node type should not have attributes');
 
     return result;
@@ -284,7 +284,7 @@ class Attribute {
   default: any;
 
   constructor(options: AttributeSpec) {
-    this.hasDefault = Object.prototype.hasOwnProperty.call(options, 'default');
+    this.hasDefault = Object.hasOwn(options, 'default');
     this.default = options.default;
   }
 
@@ -321,7 +321,7 @@ export class MarkType {
   ) {
     this.attrs = initAttrs(spec.attrs);
     (this as any).excluded = null;
-    let defaults = defaultAttrs(this.attrs);
+    const defaults = defaultAttrs(this.attrs);
     this.instance = defaults ? new Mark(this, defaults) : null;
   }
 
@@ -335,8 +335,8 @@ export class MarkType {
 
   /// @internal
   static compile(marks: OrderedMap<MarkSpec>, schema: Schema) {
-    let result = Object.create(null),
-      rank = 0;
+    const result = Object.create(null);
+      let rank = 0;
     marks.forEach(
       (name, spec) => (result[name] = new MarkType(name, rank++, schema, spec)),
     );
@@ -346,7 +346,7 @@ export class MarkType {
   /// When there is a mark of this type in the given set, a new set
   /// without it is returned. Otherwise, the input set is returned.
   removeFromSet(set: readonly Mark[]): readonly Mark[] {
-    for (var i = 0; i < set.length; i++)
+    for (let i = 0; i < set.length; i++)
       if (set[i].type == this) {
         set = set.slice(0, i).concat(set.slice(i + 1));
         i--;
@@ -632,13 +632,13 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
     this.nodes = NodeType.compile(this.spec.nodes, this);
     this.marks = MarkType.compile(this.spec.marks, this);
 
-    let contentExprCache = Object.create(null);
-    for (let prop in this.nodes) {
+    const contentExprCache = Object.create(null);
+    for (const prop in this.nodes) {
       if (prop in this.marks)
         throw new RangeError(prop + ' can not be both a node and a mark');
-      let type = this.nodes[prop],
-        contentExpr = type.spec.content || '',
-        markExpr = type.spec.marks;
+      const type = this.nodes[prop];
+        const contentExpr = type.spec.content || '';
+        const markExpr = type.spec.marks;
       type.contentMatch =
         contentExprCache[contentExpr] ||
         (contentExprCache[contentExpr] = ContentMatch.parse(
@@ -655,9 +655,9 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
           ? []
           : null;
     }
-    for (let prop in this.marks) {
-      let type = this.marks[prop],
-        excl = type.spec.excludes;
+    for (const prop in this.marks) {
+      const type = this.marks[prop];
+        const excl = type.spec.excludes;
       type.excluded =
         excl == null
           ? [type]
@@ -694,7 +694,7 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
     content?: Fragment | Node | readonly Node[],
     marks?: readonly Mark[],
   ) {
-    if (typeof type == 'string') type = this.nodeType(type);
+    if (typeof type === 'string') type = this.nodeType(type);
     else if (!(type instanceof NodeType))
       throw new RangeError('Invalid node type: ' + type);
     else if (type.schema != this)
@@ -709,13 +709,13 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
    * allowed.
    */
   text(text: string, marks?: readonly Mark[] | null): Node {
-    let type = this.nodes.text;
+    const type = this.nodes.text;
     return new TextNode(type, type.defaultAttrs, text, Mark.setFrom(marks));
   }
 
   /** Create a mark with the given type and attributes. */
   mark(type: string | MarkType, attrs?: Attrs | null) {
-    if (typeof type == 'string') type = this.marks[type];
+    if (typeof type === 'string') type = this.marks[type];
     return type.create(attrs);
   }
 
@@ -735,23 +735,23 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
 
   /// @internal
   nodeType(name: string) {
-    let found = this.nodes[name];
+    const found = this.nodes[name];
     if (!found) throw new RangeError('Unknown node type: ' + name);
     return found;
   }
 }
 
 function gatherMarks(schema: Schema, marks: readonly string[]) {
-  let found = [];
+  const found = [];
   for (let i = 0; i < marks.length; i++) {
-    let name = marks[i],
-      mark = schema.marks[name],
-      ok = mark;
+    const name = marks[i];
+      const mark = schema.marks[name];
+      let ok = mark;
     if (mark) {
       found.push(mark);
     } else {
-      for (let prop in schema.marks) {
-        let mark = schema.marks[prop];
+      for (const prop in schema.marks) {
+        const mark = schema.marks[prop];
         if (
           name == '_' ||
           (mark.spec.group && mark.spec.group.split(' ').indexOf(name) > -1)

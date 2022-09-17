@@ -59,7 +59,7 @@ export const schema = new Schema({
       group: "block",
       attrs: {order: {default: 1}, tight: {default: false}},
       parseDOM: [{tag: "ol", getAttrs(dom) {
-        return {order: (dom as HTMLElement).hasAttribute("start") ? +(dom as HTMLElement).getAttribute("start")! : 1,
+        return {order: (dom as HTMLElement).hasAttribute("start") ? Number((dom as HTMLElement).getAttribute("start")!) : 1,
                 tight: (dom as HTMLElement).hasAttribute("data-tight")}
       }}],
       toDOM(node) {

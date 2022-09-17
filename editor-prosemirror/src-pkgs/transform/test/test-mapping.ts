@@ -2,16 +2,16 @@ import ist from "ist"
 import {Mapping, StepMap} from "prosemirror-transform"
 
 function testMapping(mapping: Mapping, ...cases: [number, number, number?, boolean?][]) {
-  let inverted = mapping.invert()
+  const inverted = mapping.invert()
   for (let i = 0; i < cases.length; i++) {
-    let [from, to, bias = 1, lossy] = cases[i]
+    const [from, to, bias = 1, lossy] = cases[i]
     ist(mapping.map(from, bias), to)
     if (!lossy) ist(inverted.map(to, bias), from)
   }
 }
 
 function testDel(mapping: Mapping, pos: number, side: number, flags: string) {
-  let r = mapping.mapResult(pos, side), found = ""
+  const r = mapping.mapResult(pos, side); let found = ""
   if (r.deleted) found += "d"
   if (r.deletedBefore) found += "b"
   if (r.deletedAfter) found += "a"
@@ -20,10 +20,10 @@ function testDel(mapping: Mapping, pos: number, side: number, flags: string) {
 }
 
 function mk(...args: (number[] | {[from: number]: number})[]) {
-  let mapping = new Mapping
+  const mapping = new Mapping
   args.forEach(arg => {
     if (Array.isArray(arg)) mapping.appendMap(new StepMap(arg))
-    else for (let from in arg) mapping.setMirror(+from, arg[from])
+    else for (const from in arg) mapping.setMirror(Number(from), arg[from])
   })
   return mapping
 }

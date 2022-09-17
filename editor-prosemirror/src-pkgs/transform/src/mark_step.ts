@@ -4,7 +4,7 @@ import {Mappable} from "./map"
 import {Step, StepResult} from "./step"
 
 function mapFragment(fragment: Fragment, f: (child: Node, parent: Node, i: number) => Node, parent: Node): Fragment {
-  let mapped = []
+  const mapped = []
   for (let i = 0; i < fragment.childCount; i++) {
     let child = fragment.child(i)
     if (child.content.size) child = child.copy(mapFragment(child.content, f, child))
@@ -29,9 +29,9 @@ export class AddMarkStep extends Step {
   }
 
   apply(doc: Node) {
-    let oldSlice = doc.slice(this.from, this.to), $from = doc.resolve(this.from)
-    let parent = $from.node($from.sharedDepth(this.to))
-    let slice = new Slice(mapFragment(oldSlice.content, (node, parent) => {
+    const oldSlice = doc.slice(this.from, this.to); const $from = doc.resolve(this.from)
+    const parent = $from.node($from.sharedDepth(this.to))
+    const slice = new Slice(mapFragment(oldSlice.content, (node, parent) => {
       if (!node.isAtom || !parent.type.allowsMarkType(this.mark.type)) return node
       return node.mark(this.mark.addToSet(node.marks))
     }, parent), oldSlice.openStart, oldSlice.openEnd)
@@ -43,7 +43,7 @@ export class AddMarkStep extends Step {
   }
 
   map(mapping: Mappable): Step | null {
-    let from = mapping.mapResult(this.from, 1), to = mapping.mapResult(this.to, -1)
+    const from = mapping.mapResult(this.from, 1); const to = mapping.mapResult(this.to, -1)
     if (from.deleted && to.deleted || from.pos >= to.pos) return null
     return new AddMarkStep(from.pos, to.pos, this.mark)
   }
@@ -64,7 +64,7 @@ export class AddMarkStep extends Step {
 
   /// @internal
   static fromJSON(schema: Schema, json: any) {
-    if (typeof json.from != "number" || typeof json.to != "number")
+    if (typeof json.from !== "number" || typeof json.to !== "number")
       throw new RangeError("Invalid input for AddMarkStep.fromJSON")
     return new AddMarkStep(json.from, json.to, schema.markFromJSON(json.mark))
   }
@@ -87,8 +87,8 @@ export class RemoveMarkStep extends Step {
   }
 
   apply(doc: Node) {
-    let oldSlice = doc.slice(this.from, this.to)
-    let slice = new Slice(mapFragment(oldSlice.content, node => {
+    const oldSlice = doc.slice(this.from, this.to)
+    const slice = new Slice(mapFragment(oldSlice.content, node => {
       return node.mark(this.mark.removeFromSet(node.marks))
     }, doc), oldSlice.openStart, oldSlice.openEnd)
     return StepResult.fromReplace(doc, this.from, this.to, slice)
@@ -99,7 +99,7 @@ export class RemoveMarkStep extends Step {
   }
 
   map(mapping: Mappable): Step | null {
-    let from = mapping.mapResult(this.from, 1), to = mapping.mapResult(this.to, -1)
+    const from = mapping.mapResult(this.from, 1); const to = mapping.mapResult(this.to, -1)
     if (from.deleted && to.deleted || from.pos >= to.pos) return null
     return new RemoveMarkStep(from.pos, to.pos, this.mark)
   }
@@ -120,7 +120,7 @@ export class RemoveMarkStep extends Step {
 
   /// @internal
   static fromJSON(schema: Schema, json: any) {
-    if (typeof json.from != "number" || typeof json.to != "number")
+    if (typeof json.from !== "number" || typeof json.to !== "number")
       throw new RangeError("Invalid input for RemoveMarkStep.fromJSON")
     return new RemoveMarkStep(json.from, json.to, schema.markFromJSON(json.mark))
   }
@@ -141,16 +141,16 @@ export class AddNodeMarkStep extends Step {
   }
 
   apply(doc: Node) {
-    let node = doc.nodeAt(this.pos)
+    const node = doc.nodeAt(this.pos)
     if (!node) return StepResult.fail("No node at mark step's position")
-    let updated = node.type.create(node.attrs, null, this.mark.addToSet(node.marks))
+    const updated = node.type.create(node.attrs, null, this.mark.addToSet(node.marks))
     return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1))
   }
 
   invert(doc: Node): Step {
-    let node = doc.nodeAt(this.pos)
+    const node = doc.nodeAt(this.pos)
     if (node) {
-      let newSet = this.mark.addToSet(node.marks)
+      const newSet = this.mark.addToSet(node.marks)
       if (newSet.length == node.marks.length) {
         for (let i = 0; i < node.marks.length; i++)
           if (!node.marks[i].isInSet(newSet))
@@ -162,7 +162,7 @@ export class AddNodeMarkStep extends Step {
   }
 
   map(mapping: Mappable): Step | null {
-    let pos = mapping.mapResult(this.pos, 1)
+    const pos = mapping.mapResult(this.pos, 1)
     return pos.deletedAfter ? null : new AddNodeMarkStep(pos.pos, this.mark)
   }
 
@@ -172,7 +172,7 @@ export class AddNodeMarkStep extends Step {
 
   /// @internal
   static fromJSON(schema: Schema, json: any) {
-    if (typeof json.pos != "number")
+    if (typeof json.pos !== "number")
       throw new RangeError("Invalid input for AddNodeMarkStep.fromJSON")
     return new AddNodeMarkStep(json.pos, schema.markFromJSON(json.mark))
   }
@@ -193,20 +193,20 @@ export class RemoveNodeMarkStep extends Step {
   }
 
   apply(doc: Node) {
-    let node = doc.nodeAt(this.pos)
+    const node = doc.nodeAt(this.pos)
     if (!node) return StepResult.fail("No node at mark step's position")
-    let updated = node.type.create(node.attrs, null, this.mark.removeFromSet(node.marks))
+    const updated = node.type.create(node.attrs, null, this.mark.removeFromSet(node.marks))
     return StepResult.fromReplace(doc, this.pos, this.pos + 1, new Slice(Fragment.from(updated), 0, node.isLeaf ? 0 : 1))
   }
 
   invert(doc: Node): Step {
-    let node = doc.nodeAt(this.pos)
+    const node = doc.nodeAt(this.pos)
     if (!node || !this.mark.isInSet(node.marks)) return this
     return new AddNodeMarkStep(this.pos, this.mark)
   }
 
   map(mapping: Mappable): Step | null {
-    let pos = mapping.mapResult(this.pos, 1)
+    const pos = mapping.mapResult(this.pos, 1)
     return pos.deletedAfter ? null : new RemoveNodeMarkStep(pos.pos, this.mark)
   }
 
@@ -216,7 +216,7 @@ export class RemoveNodeMarkStep extends Step {
 
   /// @internal
   static fromJSON(schema: Schema, json: any) {
-    if (typeof json.pos != "number")
+    if (typeof json.pos !== "number")
       throw new RangeError("Invalid input for RemoveNodeMarkStep.fromJSON")
     return new RemoveNodeMarkStep(json.pos, schema.markFromJSON(json.mark))
   }

@@ -24,9 +24,9 @@ export function rebaseSteps(
 ) {
   for (let i = steps.length - 1; i >= 0; i--) transform.step(steps[i].inverted);
   for (let i = 0; i < over.length; i++) transform.step(over[i]);
-  let result = [];
+  const result = [];
   for (let i = 0, mapFrom = steps.length; i < steps.length; i++) {
-    let mapped = steps[i].step.map(transform.mapping.slice(mapFrom));
+    const mapped = steps[i].step.map(transform.mapping.slice(mapFrom));
     mapFrom--;
     if (mapped && !transform.maybeStep(mapped).failed) {
       transform.mapping.setMirror(mapFrom, transform.steps.length - 1);
@@ -61,7 +61,7 @@ class CollabState {
 }
 
 function unconfirmedFrom(transform: Transform) {
-  let result = [];
+  const result = [];
   for (let i = 0; i < transform.steps.length; i++)
     result.push(
       new Rebaseable(
@@ -88,7 +88,7 @@ type CollabConfig = {
 /// Creates a plugin that enables the collaborative editing framework
 /// for the editor.
 export function collab(config: CollabConfig = {}): Plugin {
-  let conf: Required<CollabConfig> = {
+  const conf: Required<CollabConfig> = {
     version: config.version || 0,
     clientID:
       config.clientID == null
@@ -102,7 +102,7 @@ export function collab(config: CollabConfig = {}): Plugin {
     state: {
       init: () => new CollabState(conf.version, []),
       apply(tr, collab) {
-        let newState = tr.getMeta(collabKey);
+        const newState = tr.getMeta(collabKey);
         if (newState) return newState;
         if (tr.docChanged)
           return new CollabState(
@@ -143,9 +143,9 @@ export function receiveTransaction(
   // Will recognize its own changes, and confirm unconfirmed steps as
   // appropriate. Remaining unconfirmed steps will be rebased over
   // remote steps.
-  let collabState = collabKey.getState(state);
-  let version = collabState.version + steps.length;
-  let ourID: string | number = (collabKey.get(state)!.spec as any).config
+  const collabState = collabKey.getState(state);
+  const version = collabState.version + steps.length;
+  const ourID: string | number = (collabKey.get(state)!.spec as any).config
     .clientID;
 
   // Find out which prefix of the steps originated with us
@@ -158,8 +158,8 @@ export function receiveTransaction(
   if (!steps.length)
     return state.tr.setMeta(collabKey, new CollabState(version, unconfirmed));
 
-  let nUnconfirmed = unconfirmed.length;
-  let tr = state.tr;
+  const nUnconfirmed = unconfirmed.length;
+  const tr = state.tr;
   if (nUnconfirmed) {
     unconfirmed = rebaseSteps(unconfirmed, steps, tr);
   } else {
@@ -167,7 +167,7 @@ export function receiveTransaction(
     unconfirmed = [];
   }
 
-  let newCollabState = new CollabState(version, unconfirmed);
+  const newCollabState = new CollabState(version, unconfirmed);
   if (
     options &&
     options.mapSelectionBackward &&
@@ -203,7 +203,7 @@ export function sendableSteps(state: EditorState): {
   clientID: number | string;
   origins: readonly Transaction[];
 } | null {
-  let collabState = collabKey.getState(state) as CollabState;
+  const collabState = collabKey.getState(state) as CollabState;
   if (collabState.unconfirmed.length == 0) return null;
   return {
     version: collabState.version,

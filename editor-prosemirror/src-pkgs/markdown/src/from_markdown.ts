@@ -35,28 +35,28 @@ class MarkdownParseState {
   // using the current marks as styling.
   addText(text: string) {
     if (!text) return
-    let top = this.top(), nodes = top.content, last = nodes[nodes.length - 1]
-    let node = this.schema.text(text, top.marks), merged
+    const top = this.top(); const nodes = top.content; const last = nodes[nodes.length - 1]
+    const node = this.schema.text(text, top.marks); let merged
     if (last && (merged = maybeMerge(last, node))) nodes[nodes.length - 1] = merged
     else nodes.push(node)
   }
 
   // Adds the given mark to the set of active marks.
   openMark(mark: Mark) {
-    let top = this.top()
+    const top = this.top()
     top.marks = mark.addToSet(top.marks)
   }
 
   // Removes the given mark from the set of active marks.
   closeMark(mark: MarkType) {
-    let top = this.top()
+    const top = this.top()
     top.marks = mark.removeFromSet(top.marks)
   }
 
   parseTokens(toks: Token[]) {
     for (let i = 0; i < toks.length; i++) {
-      let tok = toks[i]
-      let handler = this.tokenHandlers[tok.type]
+      const tok = toks[i]
+      const handler = this.tokenHandlers[tok.type]
       if (!handler)
         throw new Error("Token type `" + tok.type + "` not supported by Markdown parser")
       handler(this, tok, toks, i)
@@ -65,8 +65,8 @@ class MarkdownParseState {
 
   // Add a node at the current position.
   addNode(type: NodeType, attrs: Attrs | null, content?: readonly Node[]) {
-    let top = this.top()
-    let node = type.createAndFill(attrs, content, top ? top.marks : [])
+    const top = this.top()
+    const node = type.createAndFill(attrs, content, top ? top.marks : [])
     if (!node) return null
     this.push(node)
     return node
@@ -79,7 +79,7 @@ class MarkdownParseState {
 
   // Close and return the node that is currently on top of the stack.
   closeNode() {
-    let info = this.stack.pop()!
+    const info = this.stack.pop()!
     return this.addNode(info.type, info.attrs, info.content)
   }
 }
@@ -104,12 +104,12 @@ function withoutTrailingNewline(str: string) {
 function noOp() {}
 
 function tokenHandlers(schema: Schema, tokens: {[token: string]: ParseSpec}) {
-  let handlers: {[token: string]: (stat: MarkdownParseState, token: Token, tokens: Token[], i: number) => void} =
+  const handlers: {[token: string]: (stat: MarkdownParseState, token: Token, tokens: Token[], i: number) => void} =
     Object.create(null)
-  for (let type in tokens) {
-    let spec = tokens[type]
+  for (const type in tokens) {
+    const spec = tokens[type]
     if (spec.block) {
-      let nodeType = schema.nodeType(spec.block)
+      const nodeType = schema.nodeType(spec.block)
       if (noCloseToken(spec, type)) {
         handlers[type] = (state, tok, tokens, i) => {
           state.openNode(nodeType, attrs(spec, tok, tokens, i))
@@ -121,10 +121,10 @@ function tokenHandlers(schema: Schema, tokens: {[token: string]: ParseSpec}) {
         handlers[type + "_close"] = state => state.closeNode()
       }
     } else if (spec.node) {
-      let nodeType = schema.nodeType(spec.node)
+      const nodeType = schema.nodeType(spec.node)
       handlers[type] = (state, tok, tokens, i) => state.addNode(nodeType, attrs(spec, tok, tokens, i))
     } else if (spec.mark) {
-      let markType = schema.marks[spec.mark]
+      const markType = schema.marks[spec.mark]
       if (noCloseToken(spec, type)) {
         handlers[type] = (state, tok, tokens, i) => {
           state.openMark(markType.create(attrs(spec, tok, tokens, i)))
@@ -225,7 +225,7 @@ export class MarkdownParser {
   /// and create a ProseMirror document as prescribed by this parser's
   /// rules.
   parse(text: string) {
-    let state = new MarkdownParseState(this.schema, this.tokenHandlers), doc
+    const state = new MarkdownParseState(this.schema, this.tokenHandlers); let doc
     state.parseTokens(this.tokenizer.parse(text, {}))
     do { doc = state.closeNode() } while (state.stack.length)
     return doc || this.schema.topNodeType.createAndFill()
@@ -246,10 +246,10 @@ export const defaultMarkdownParser = new MarkdownParser(schema, markdownit("comm
   list_item: {block: "list_item"},
   bullet_list: {block: "bullet_list", getAttrs: (_, tokens, i) => ({tight: listIsTight(tokens, i)})},
   ordered_list: {block: "ordered_list", getAttrs: (tok, tokens, i) => ({
-    order: +tok.attrGet("start") || 1,
+    order: Number(tok.attrGet("start")) || 1,
     tight: listIsTight(tokens, i)
   })},
-  heading: {block: "heading", getAttrs: tok => ({level: +tok.tag.slice(1)})},
+  heading: {block: "heading", getAttrs: tok => ({level: Number(tok.tag.slice(1))})},
   code_block: {block: "code_block", noCloseToken: true},
   fence: {block: "code_block", getAttrs: tok => ({params: tok.info || ""}), noCloseToken: true},
   hr: {node: "horizontal_rule"},

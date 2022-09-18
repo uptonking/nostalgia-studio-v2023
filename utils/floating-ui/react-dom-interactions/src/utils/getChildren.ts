@@ -1,12 +1,12 @@
-import type {FloatingTreeType, ReferenceType} from '../types';
+import type { FloatingTreeType, ReferenceType } from '../types';
 
 export function getChildren<RT extends ReferenceType = ReferenceType>(
   tree: FloatingTreeType<RT>,
-  id: string | undefined
+  id: string | undefined,
 ) {
   let allChildren =
     tree?.nodesRef.current.filter(
-      (node) => node.parentId === id && node.context?.open
+      (node) => node.parentId === id && node.context?.open,
     ) ?? [];
   let currentChildren = allChildren;
 
@@ -14,8 +14,8 @@ export function getChildren<RT extends ReferenceType = ReferenceType>(
     currentChildren =
       tree?.nodesRef.current.filter((node) =>
         currentChildren?.some(
-          (n) => node.parentId === n.id && node.context?.open
-        )
+          (n) => node.parentId === n.id && node.context?.open,
+        ),
       ) ?? [];
 
     allChildren = allChildren.concat(currentChildren);

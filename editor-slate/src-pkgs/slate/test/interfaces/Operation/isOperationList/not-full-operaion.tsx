@@ -1,4 +1,4 @@
-import { Operation } from 'slate'
+import { Operation } from 'slate';
 
 export const input = [
   {
@@ -10,8 +10,8 @@ export const input = [
   {
     text: '',
   },
-]
-export const test = value => {
-  return Operation.isOperationList(value)
-}
-export const output = false
+];
+export const test = (value) => {
+  return Operation.isOperationList(value);
+};
+export const output = false;

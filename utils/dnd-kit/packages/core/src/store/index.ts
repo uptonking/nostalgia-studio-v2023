@@ -1,10 +1,10 @@
-export {Action} from './actions';
+export { Action } from './actions';
 export {
   PublicContext,
   InternalContext,
   defaultInternalContext,
 } from './context';
-export {reducer, getInitialState} from './reducer';
+export { reducer, getInitialState } from './reducer';
 export type {
   Active,
   Data,

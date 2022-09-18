@@ -1,8 +1,8 @@
-import {useMemo, useRef} from 'react';
+import { useMemo, useRef } from 'react';
 
 export function useLazyMemo<T>(
   callback: (prevValue: T | undefined) => T,
-  dependencies: any[]
+  dependencies: any[],
 ) {
   const valueRef = useRef<T>();
 
@@ -14,6 +14,6 @@ export function useLazyMemo<T>(
       return newValue;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [...dependencies]
+    [...dependencies],
   );
 }

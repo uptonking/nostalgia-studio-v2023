@@ -1,7 +1,7 @@
-import type {ReferenceElement, FloatingElement} from './types';
-import {getBoundingClientRect} from './utils/getBoundingClientRect';
-import {getOverflowAncestors} from './utils/getOverflowAncestors';
-import {isElement} from './utils/is';
+import type { ReferenceElement, FloatingElement } from './types';
+import { getBoundingClientRect } from './utils/getBoundingClientRect';
+import { getOverflowAncestors } from './utils/getOverflowAncestors';
+import { isElement } from './utils/is';
 
 export interface Options {
   /**
@@ -40,7 +40,7 @@ export function autoUpdate(
   reference: ReferenceElement,
   floating: FloatingElement,
   update: () => void,
-  options: Partial<Options> = {}
+  options: Partial<Options> = {},
 ) {
   const {
     ancestorScroll: _ancestorScroll = true,
@@ -62,7 +62,7 @@ export function autoUpdate(
 
   ancestors.forEach((ancestor) => {
     ancestorScroll &&
-      ancestor.addEventListener('scroll', update, {passive: true});
+      ancestor.addEventListener('scroll', update, { passive: true });
     ancestorResize && ancestor.addEventListener('resize', update);
   });
 

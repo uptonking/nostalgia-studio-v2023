@@ -1,12 +1,12 @@
-import type {Placement, Middleware} from '../types';
-import {getOppositePlacement} from '../utils/getOppositePlacement';
-import {getSide} from '../utils/getSide';
+import type { Placement, Middleware } from '../types';
+import { getOppositePlacement } from '../utils/getOppositePlacement';
+import { getSide } from '../utils/getSide';
 import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import {getAlignmentSides} from '../utils/getAlignmentSides';
-import {getExpandedPlacements} from '../utils/getExpandedPlacements';
+import { getAlignmentSides } from '../utils/getAlignmentSides';
+import { getExpandedPlacements } from '../utils/getExpandedPlacements';
 
 export interface Options {
   /**
@@ -43,7 +43,7 @@ export interface Options {
  * @see https://floating-ui.com/docs/flip
  */
 export const flip = (
-  options: Partial<Options & DetectOverflowOptions> = {}
+  options: Partial<Options & DetectOverflowOptions> = {},
 ): Middleware => ({
   name: 'flip',
   options,
@@ -79,7 +79,7 @@ export const flip = (
 
     const overflow = await detectOverflow(
       middlewareArguments,
-      detectOverflowOptions
+      detectOverflowOptions,
     );
 
     const overflows = [];
@@ -90,15 +90,15 @@ export const flip = (
     }
 
     if (checkCrossAxis) {
-      const {main, cross} = getAlignmentSides(
+      const { main, cross } = getAlignmentSides(
         placement,
         rects,
-        await platform.isRTL?.(elements.floating)
+        await platform.isRTL?.(elements.floating),
       );
       overflows.push(overflow[main], overflow[cross]);
     }
 
-    overflowsData = [...overflowsData, {placement, overflows}];
+    overflowsData = [...overflowsData, { placement, overflows }];
 
     // One or more sides is overflowing
     if (!overflows.every((side) => side <= 0)) {
@@ -129,7 +129,7 @@ export const flip = (
                   d.overflows
                     .filter((overflow) => overflow > 0)
                     .reduce((acc, overflow) => acc + overflow, 0),
-                ] as const
+                ] as const,
             )
             .sort((a, b) => a[1] - b[1])[0]?.[0].placement;
           if (placement) {

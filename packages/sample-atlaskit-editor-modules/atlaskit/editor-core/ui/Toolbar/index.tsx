@@ -1,5 +1,5 @@
 import { ToolbarWithSizeDetector } from './ToolbarWithSizeDetector';
-export { ToolbarWithSizeDetector }
+export { ToolbarWithSizeDetector };
 export default ToolbarWithSizeDetector;
 
 export { Toolbar } from './Toolbar';

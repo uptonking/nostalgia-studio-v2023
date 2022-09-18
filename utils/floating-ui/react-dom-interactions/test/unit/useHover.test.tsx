@@ -1,24 +1,30 @@
-import {useState} from 'react';
-import {cleanup, fireEvent, render, screen, act} from '@testing-library/react';
-import {useHover, useInteractions, useFloating} from '../../src';
-import type {Props} from '../../src/hooks/useHover';
+import { useState } from 'react';
+import {
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+  act,
+} from '@testing-library/react';
+import { useHover, useInteractions, useFloating } from '../../src';
+import type { Props } from '../../src/hooks/useHover';
 
 jest.useFakeTimers();
 
 function App(props: Props) {
   const [open, setOpen] = useState(false);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useHover(context, props),
   ]);
 
   return (
     <>
-      <button {...getReferenceProps({ref: reference})} />
-      {open && <div role="tooltip" {...getFloatingProps({ref: floating})} />}
+      <button {...getReferenceProps({ ref: reference })} />
+      {open && <div role='tooltip' {...getFloatingProps({ ref: floating })} />}
     </>
   );
 }
@@ -64,7 +70,7 @@ describe('delay', () => {
   });
 
   test('open', async () => {
-    render(<App delay={{open: 500}} />);
+    render(<App delay={{ open: 500 }} />);
 
     fireEvent.mouseEnter(screen.getByRole('button'));
 
@@ -84,7 +90,7 @@ describe('delay', () => {
   });
 
   test('close', async () => {
-    render(<App delay={{close: 500}} />);
+    render(<App delay={{ close: 500 }} />);
 
     fireEvent.mouseEnter(screen.getByRole('button'));
     fireEvent.mouseLeave(screen.getByRole('button'));

@@ -1,4 +1,4 @@
-export {DndMonitorContext, useDndMonitor} from './useDndMonitor';
+export { DndMonitorContext, useDndMonitor } from './useDndMonitor';
 export type {
   Arguments as DndMonitorArguments,
   DndMonitorState,

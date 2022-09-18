@@ -1,8 +1,8 @@
-import type {Coordinates, DistanceMeasurement} from '../../types';
+import type { Coordinates, DistanceMeasurement } from '../../types';
 
 export function hasExceededDistance(
   delta: Coordinates,
-  measurement: DistanceMeasurement
+  measurement: DistanceMeasurement,
 ): boolean {
   const dx = Math.abs(delta.x);
   const dy = Math.abs(delta.y);

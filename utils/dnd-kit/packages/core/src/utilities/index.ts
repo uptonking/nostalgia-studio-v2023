@@ -27,7 +27,7 @@ export {
   getRectDelta,
 } from './rect';
 
-export {noop} from './other';
+export { noop } from './other';
 
 export {
   getScrollableAncestors,

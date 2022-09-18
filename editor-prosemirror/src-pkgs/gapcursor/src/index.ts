@@ -12,6 +12,8 @@ import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import { GapCursor } from './gapcursor';
 
 /**
+ * - This is a plugin that adds a type of selection for focusing places that
+ * don't allow regular selection (such as positions that have a leaf block node, table, or the end of the document both before and after them)
  * - Create a gap cursor plugin. When enabled, this will capture clicks
  * near and arrow-key-motion past places that don't have a normally
  * selectable position nearby, and create a gap cursor selection for them.
@@ -54,7 +56,7 @@ function arrow(axis: 'vert' | 'horiz', dir: number): Command {
   return function (state, dispatch, view) {
     const sel = state.selection;
     let $start = dir > 0 ? sel.$to : sel.$from;
-      let mustMove = sel.empty;
+    let mustMove = sel.empty;
     if (sel instanceof TextSelection) {
       if (!view!.endOfTextblock(dirStr) || $start.depth == 0) return false;
       mustMove = false;
@@ -71,7 +73,10 @@ function handleClick(view: EditorView, pos: number, event: MouseEvent) {
   if (!view || !view.editable) return false;
   const $pos = view.state.doc.resolve(pos);
   if (!GapCursor.valid($pos)) return false;
-  const clickPos = view.posAtCoords({ left: event.clientX, top: event.clientY });
+  const clickPos = view.posAtCoords({
+    left: event.clientX,
+    top: event.clientY,
+  });
   if (
     clickPos &&
     clickPos.inside > -1 &&

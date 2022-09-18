@@ -1,15 +1,15 @@
 import * as React from 'react';
-import type {ElementProps} from './types';
+import type { ElementProps } from './types';
 
 function mergeProps(
   userProps: React.HTMLProps<Element> | undefined,
   propsList: Array<ElementProps | void>,
-  elementKey: 'reference' | 'floating' | 'item'
+  elementKey: 'reference' | 'floating' | 'item',
 ): any {
   const fnsMap: Record<string, Array<(...args: unknown[]) => void>> = {};
 
   return {
-    ...(elementKey === 'floating' && {tabIndex: -1}),
+    ...(elementKey === 'floating' && { tabIndex: -1 }),
     ...userProps,
     ...propsList
       .map((value) => (value ? value[elementKey] : null))
@@ -43,7 +43,7 @@ function mergeProps(
 }
 
 export const useInteractions = (
-  propsList: Array<ElementProps | void> = []
+  propsList: Array<ElementProps | void> = [],
 ) => ({
   getReferenceProps: (userProps?: React.HTMLProps<Element>) =>
     mergeProps(userProps, propsList, 'reference'),

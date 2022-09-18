@@ -1,11 +1,11 @@
-import type {Middleware, MiddlewareArguments} from '../types';
+import type { Middleware, MiddlewareArguments } from '../types';
 import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import {getSide} from '../utils/getSide';
-import {getAlignment} from '../utils/getAlignment';
-import {max} from '../utils/math';
+import { getSide } from '../utils/getSide';
+import { getAlignment } from '../utils/getAlignment';
+import { max } from '../utils/math';
 
 export interface Options {
   /**
@@ -17,7 +17,7 @@ export interface Options {
     args: MiddlewareArguments & {
       availableWidth: number;
       availableHeight: number;
-    }
+    },
   ): void;
 }
 
@@ -28,17 +28,17 @@ export interface Options {
  * @see https://floating-ui.com/docs/size
  */
 export const size = (
-  options: Partial<Options & DetectOverflowOptions> = {}
+  options: Partial<Options & DetectOverflowOptions> = {},
 ): Middleware => ({
   name: 'size',
   options,
   async fn(middlewareArguments) {
-    const {placement, rects, platform, elements} = middlewareArguments;
-    const {apply, ...detectOverflowOptions} = options;
+    const { placement, rects, platform, elements } = middlewareArguments;
+    const { apply, ...detectOverflowOptions } = options;
 
     const overflow = await detectOverflow(
       middlewareArguments,
-      detectOverflowOptions
+      detectOverflowOptions,
     );
     const side = getSide(placement);
     const alignment = getAlignment(placement);

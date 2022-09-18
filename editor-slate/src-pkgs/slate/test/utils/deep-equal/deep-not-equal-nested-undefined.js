@@ -1,4 +1,4 @@
-import { isDeepEqual } from '../../../src/utils/deep-equal'
+import { isDeepEqual } from '../../../src/utils/deep-equal';
 
 export const input = {
   objectA: {
@@ -12,10 +12,10 @@ export const input = {
     bold: true,
     italic: { origin: 'inherited', value: true },
   },
-}
+};
 
 export const test = ({ objectA, objectB }) => {
-  return isDeepEqual(objectA, objectB)
-}
+  return isDeepEqual(objectA, objectB);
+};
 
-export const output = false
+export const output = false;

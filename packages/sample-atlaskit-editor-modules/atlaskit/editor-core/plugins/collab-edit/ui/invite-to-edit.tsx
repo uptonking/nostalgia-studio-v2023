@@ -15,33 +15,34 @@ export interface InviteToEditButtonProps {
   title: string;
 }
 
-export const InviteToEditButton: React.FunctionComponent<InviteToEditButtonProps> =
-  (props) => {
-    const { Component, onClick, selected, title } = props;
+export const InviteToEditButton: React.FunctionComponent<
+  InviteToEditButtonProps
+> = (props) => {
+  const { Component, onClick, selected, title } = props;
 
-    const iconBefore = React.useMemo(
-      () => <InviteTeamIcon label={title} />,
-      [title],
-    );
+  const iconBefore = React.useMemo(
+    () => <InviteTeamIcon label={title} />,
+    [title],
+  );
 
-    if (!Component && !onClick) {
-      return null;
-    }
+  if (!Component && !onClick) {
+    return null;
+  }
 
-    const Wrapper = Component ? Component : ID;
+  const Wrapper = Component ? Component : ID;
 
-    return (
-      <InviteTeamWrapper>
-        <Wrapper>
-          <ToolbarButton
-            className='invite-to-edit'
-            onClick={onClick}
-            selected={selected}
-            title={title}
-            titlePosition='bottom'
-            iconBefore={iconBefore}
-          />
-        </Wrapper>
-      </InviteTeamWrapper>
-    );
-  };
+  return (
+    <InviteTeamWrapper>
+      <Wrapper>
+        <ToolbarButton
+          className='invite-to-edit'
+          onClick={onClick}
+          selected={selected}
+          title={title}
+          titlePosition='bottom'
+          iconBefore={iconBefore}
+        />
+      </Wrapper>
+    </InviteTeamWrapper>
+  );
+};

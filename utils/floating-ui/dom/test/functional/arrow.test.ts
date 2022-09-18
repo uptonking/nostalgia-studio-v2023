@@ -1,6 +1,6 @@
-import {test, expect} from '@playwright/test';
-import {allPlacements} from '../visual/utils/allPlacements';
-import {click} from './utils/click';
+import { test, expect } from '@playwright/test';
+import { allPlacements } from '../visual/utils/allPlacements';
+import { click } from './utils/click';
 
 allPlacements.forEach((placement) => {
   test(`arrow should be centered to the reference ${placement}`, async ({
@@ -11,7 +11,7 @@ allPlacements.forEach((placement) => {
     await click(page, `[data-testid="placement-${placement}"]`);
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${placement}.png`
+      `${placement}.png`,
     );
   });
 });
@@ -25,18 +25,18 @@ allPlacements.forEach((placement) => {
 
     await page.evaluate(() => {
       const target = document.querySelector(
-        `input[type="range"]`
+        `input[type="range"]`,
       ) as HTMLInputElement;
 
       if (target) {
         target.value = '50';
       }
 
-      (window as any).__HANDLE_SIZE_CHANGE__({target});
+      (window as any).__HANDLE_SIZE_CHANGE__({ target });
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${placement}-no-overflow.png`
+      `${placement}-no-overflow.png`,
     );
   });
 });

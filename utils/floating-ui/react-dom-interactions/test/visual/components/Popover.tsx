@@ -20,7 +20,7 @@ import {
   FloatingPortal,
   FloatingFocusManager,
 } from '@floating-ui/react-dom-interactions';
-import {Controls} from '../utils/Controls';
+import { Controls } from '../utils/Controls';
 
 export const Main = () => {
   const [modal, setModal] = useState(true);
@@ -29,10 +29,10 @@ export const Main = () => {
     <>
       <h1>Popover</h1>
       <p>A floating element that displays rich content.</p>
-      <div className="container">
+      <div className='container'>
         <Popover
           modal={modal}
-          render={({labelId, descriptionId, close}) => (
+          render={({ labelId, descriptionId, close }) => (
             <>
               <h2 id={labelId}>A label/title</h2>
               <p id={descriptionId}>A description/paragraph</p>
@@ -48,13 +48,13 @@ export const Main = () => {
       <Controls>
         <button
           onClick={() => setModal(true)}
-          style={{background: modal ? 'black' : ''}}
+          style={{ background: modal ? 'black' : '' }}
         >
           true
         </button>
         <button
           onClick={() => setModal(false)}
-          style={{background: !modal ? 'black' : ''}}
+          style={{ background: !modal ? 'black' : '' }}
         >
           false
         </button>
@@ -73,10 +73,10 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export function Popover({children, render, placement, modal = true}: Props) {
+export function Popover({ children, render, placement, modal = true }: Props) {
   const [open, setOpen] = useState(false);
 
-  const {x, y, reference, floating, strategy, refs, update, context} =
+  const { x, y, reference, floating, strategy, refs, update, context } =
     useFloating({
       open,
       onOpenChange: setOpen,
@@ -88,7 +88,7 @@ export function Popover({children, render, placement, modal = true}: Props) {
   const labelId = `${id}-label`;
   const descriptionId = `${id}-description`;
 
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useClick(context),
     useRole(context),
     useDismiss(context),
@@ -105,7 +105,7 @@ export function Popover({children, render, placement, modal = true}: Props) {
   return (
     <>
       {isValidElement(children) &&
-        cloneElement(children, getReferenceProps({ref: reference}))}
+        cloneElement(children, getReferenceProps({ ref: reference }))}
       <Wrapper>
         {open && (
           <FloatingFocusManager

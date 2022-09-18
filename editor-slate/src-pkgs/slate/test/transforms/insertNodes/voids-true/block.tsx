@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { Transforms } from 'slate'
-import { jsx } from '../../..'
+import { Transforms } from 'slate';
+import { jsx } from '../../..';
 
 export const input = (
   <editor>
@@ -9,13 +9,13 @@ export const input = (
       <cursor />
     </block>
   </editor>
-)
-export const run = editor => {
+);
+export const run = (editor) => {
   Transforms.insertNodes(editor, <text>two</text>, {
     at: [0, 1],
     voids: true,
-  })
-}
+  });
+};
 export const output = (
   <editor>
     <block void>
@@ -24,4 +24,4 @@ export const output = (
       two
     </block>
   </editor>
-)
+);

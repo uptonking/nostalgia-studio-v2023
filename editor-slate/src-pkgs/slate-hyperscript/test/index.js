@@ -1,20 +1,20 @@
-import assert from 'assert'
-import { resolve } from 'path'
-import { fixtures } from '../../../support/fixtures'
+import assert from 'assert';
+import { resolve } from 'path';
+import { fixtures } from '../../../support/fixtures';
 
 describe('slate-hyperscript', () => {
   fixtures(resolve(__dirname, 'fixtures'), ({ module }) => {
-    const { input, output } = module
-    let actual = {}
+    const { input, output } = module;
+    let actual = {};
 
     if (Array.isArray(output)) {
-      actual = input
+      actual = input;
     } else {
       for (const key in output) {
-        actual[key] = input[key]
+        actual[key] = input[key];
       }
     }
 
-    assert.deepEqual(actual, output)
-  })
-})
+    assert.deepEqual(actual, output);
+  });
+});

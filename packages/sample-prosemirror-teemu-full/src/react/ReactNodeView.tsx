@@ -180,8 +180,6 @@ export class ReactNodeView<P = ReactComponentProps, A extends Attrs = {}>
     }
   };
 
-
-
   update(node: PMNode, _decorations: Decoration[]) {
     if (!this.dom) return false;
     // Sometimes it might happen that the current transaction transforms/splits a node

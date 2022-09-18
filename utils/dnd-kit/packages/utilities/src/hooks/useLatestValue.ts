@@ -1,10 +1,10 @@
-import {useRef} from 'react';
+import { useRef } from 'react';
 
-import {useIsomorphicLayoutEffect} from './useIsomorphicLayoutEffect';
+import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 
 export function useLatestValue<T extends any>(
   value: T,
-  dependencies = [value]
+  dependencies = [value],
 ) {
   const valueRef = useRef<T>(value);
 

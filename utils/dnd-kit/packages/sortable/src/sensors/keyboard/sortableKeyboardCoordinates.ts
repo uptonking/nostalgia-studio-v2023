@@ -25,7 +25,7 @@ export const sortableKeyboardCoordinates: KeyboardCoordinateGetter = (
       over,
       scrollableAncestors,
     },
-  }
+  },
 ) => {
   if (directions.includes(event.code)) {
     event.preventDefault();
@@ -92,7 +92,7 @@ export const sortableKeyboardCoordinates: KeyboardCoordinateGetter = (
       if (newNode && newRect) {
         const newScrollAncestors = getScrollableAncestors(newNode);
         const hasDifferentScrollAncestors = newScrollAncestors.some(
-          (element, index) => scrollableAncestors[index] !== element
+          (element, index) => scrollableAncestors[index] !== element,
         );
         const offset = hasDifferentScrollAncestors
           ? {

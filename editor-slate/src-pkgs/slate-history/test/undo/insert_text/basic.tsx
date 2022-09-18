@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { jsx } from '../..'
-import { cloneDeep } from 'lodash'
+import { jsx } from '../..';
+import { cloneDeep } from 'lodash';
 
-export const run = editor => {
-  editor.insertText('text')
-}
+export const run = (editor) => {
+  editor.insertText('text');
+};
 export const input = (
   <editor>
     <block>
@@ -12,5 +12,5 @@ export const input = (
       <cursor />
     </block>
   </editor>
-)
-export const output = cloneDeep(input)
+);
+export const output = cloneDeep(input);

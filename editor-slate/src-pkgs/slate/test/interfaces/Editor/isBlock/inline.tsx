@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { Editor } from 'slate'
-import { jsx } from '../../..'
+import { Editor } from 'slate';
+import { jsx } from '../../..';
 
 export const input = (
   <editor>
@@ -8,9 +8,9 @@ export const input = (
       one<inline>two</inline>three
     </block>
   </editor>
-)
-export const test = editor => {
-  const inline = editor.children[0].children[1]
-  return Editor.isBlock(editor, inline)
-}
-export const output = false
+);
+export const test = (editor) => {
+  const inline = editor.children[0].children[1];
+  return Editor.isBlock(editor, inline);
+};
+export const output = false;

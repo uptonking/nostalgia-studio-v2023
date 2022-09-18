@@ -1,8 +1,8 @@
 import path from 'path';
-import {babel} from '@rollup/plugin-babel';
-import {nodeResolve} from '@rollup/plugin-node-resolve';
+import { babel } from '@rollup/plugin-babel';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import {terser} from 'rollup-plugin-terser';
+import { terser } from 'rollup-plugin-terser';
 
 const input = path.join(__dirname, 'src/index.ts');
 
@@ -53,11 +53,11 @@ const bundles = [
   },
 ];
 
-export default bundles.map(({input, output}) => ({
+export default bundles.map(({ input, output }) => ({
   input,
   output,
   plugins: [
-    nodeResolve({extensions: ['.ts']}),
+    nodeResolve({ extensions: ['.ts'] }),
     replace({
       __DEV__:
         output.file.includes('.browser.') || output.file.includes('.umd.')

@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { Editor } from 'slate'
-import { jsx } from '../../../..'
+import { Editor } from 'slate';
+import { jsx } from '../../../..';
 
 export const input = (
   <editor>
@@ -11,12 +11,12 @@ export const input = (
       <block a>two</block>
     </block>
   </editor>
-)
-export const test = editor => {
+);
+export const test = (editor) => {
   return Array.from(
-    Editor.nodes(editor, { at: [], match: n => n.a, mode: 'all' })
-  )
-}
+    Editor.nodes(editor, { at: [], match: (n) => n.a, mode: 'all' }),
+  );
+};
 export const output = [
   [
     <block a>
@@ -32,4 +32,4 @@ export const output = [
     [1],
   ],
   [<block a>two</block>, [1, 0]],
-]
+];

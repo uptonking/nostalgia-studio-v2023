@@ -1,0 +1,39 @@
+{
+  "name": "orderedmap",
+  "version": "2.0.1111",
+  "description": "Persistent ordered mapping from strings",
+  "type": "module",
+  "main": "index.ts",
+  "types": "index.ts",
+  "module": "index.ts",
+  "exports": {
+    "import": "./index.ts",
+    "require": "./index.ts"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marijnh/orderedmap.git"
+  },
+  "keywords": [
+    "persistent",
+    "map"
+  ],
+  "author": "Marijn Haverbeke <marijnh@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marijnh/orderedmap/issues"
+  },
+  "homepage": "https://github.com/marijnh/orderedmap#readme",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "prepare1": "npm run build"
+  },
+  "devDependencies": {
+    "rollup": "^1.26.3"
+  }
+}

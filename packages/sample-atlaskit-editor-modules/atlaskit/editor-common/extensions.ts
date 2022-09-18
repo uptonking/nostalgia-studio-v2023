@@ -9,15 +9,14 @@ export {
   getQuickInsertItemsFromModule,
   getNodeRenderer,
   getContextualToolbarItemsFromModule,
-  resolveImport, // getCustomFieldResolver,
-} from // getFieldSerializer,
-// getFieldDeserializer,
-// isFieldset,
-// isTabGroup,
-// isExpand,
-// isDateRange,
-// buildMenuItem,
-'./extensions/index';
+  resolveImport, // getCustomFieldResolver, // getFieldSerializer,
+  // getFieldDeserializer,
+  // isFieldset,
+  // isTabGroup,
+  // isExpand,
+  // isDateRange,
+  // buildMenuItem,
+} from './extensions/index';
 export type {
   ExtensionAutoConvertHandler,
   Extension,

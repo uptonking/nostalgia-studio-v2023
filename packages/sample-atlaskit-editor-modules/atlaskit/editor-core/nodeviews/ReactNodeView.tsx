@@ -111,7 +111,6 @@ export default class ReactNodeView<P = ReactComponentProps>
 
     trackingEnabled && startMeasure(`🦉${this.node.type.name}::ReactNodeView`);
 
-
     this.renderReactComponent(() =>
       this.render(this.reactComponentProps, this.handleRef),
     );

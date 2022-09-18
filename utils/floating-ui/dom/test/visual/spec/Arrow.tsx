@@ -1,9 +1,9 @@
-import type {Placement} from '@floating-ui/core';
-import {useFloating, arrow} from '@floating-ui/react-dom';
-import {allPlacements} from '../utils/allPlacements';
-import {useState, useLayoutEffect, useRef} from 'react';
-import {Controls} from '../utils/Controls';
-import {useSize} from '../utils/useSize';
+import type { Placement } from '@floating-ui/core';
+import { useFloating, arrow } from '@floating-ui/react-dom';
+import { allPlacements } from '../utils/allPlacements';
+import { useState, useLayoutEffect, useRef } from 'react';
+import { Controls } from '../utils/Controls';
+import { useSize } from '../utils/useSize';
 
 export function Arrow() {
   const [placement, setPlacement] = useState<Placement>('bottom');
@@ -16,17 +16,17 @@ export function Arrow() {
     strategy,
     update,
     placement: resultantPlacement,
-    middlewareData: {arrow: {x: arrowX, y: arrowY} = {}},
+    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
   } = useFloating({
     placement,
-    middleware: [arrow({element: arrowRef})],
+    middleware: [arrow({ element: arrowRef })],
   });
 
   const [size, handleSizeChange] = useSize(150);
 
   useLayoutEffect(update, [update, size]);
 
-  const oppositeSidesMap: {[key: string]: string} = {
+  const oppositeSidesMap: { [key: string]: string } = {
     top: 'bottom',
     left: 'right',
     right: 'left',
@@ -39,13 +39,13 @@ export function Arrow() {
     <>
       <h1>Arrow</h1>
       <p></p>
-      <div className="container">
-        <div ref={reference} className="reference">
+      <div className='container'>
+        <div ref={reference} className='reference'>
           Reference
         </div>
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? '',
@@ -57,7 +57,7 @@ export function Arrow() {
           Floating
           <div
             ref={arrowRef}
-            className="arrow"
+            className='arrow'
             style={{
               position: 'absolute',
               top: arrowY ?? '',
@@ -71,12 +71,12 @@ export function Arrow() {
       </div>
 
       <Controls>
-        <label htmlFor="size">Size</label>
+        <label htmlFor='size'>Size</label>
         <input
-          id="size"
-          type="range"
-          min="1"
-          max="200"
+          id='size'
+          type='range'
+          min='1'
+          max='200'
           value={size}
           onChange={handleSizeChange}
         />

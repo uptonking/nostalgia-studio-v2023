@@ -15,7 +15,7 @@ export const fixTablesKey = new PluginKey('fix-tables');
 // duplicate work on each transaction.
 function changedDescendants(old, cur, offset, f) {
   const oldSize = old.childCount;
-    const curSize = cur.childCount;
+  const curSize = cur.childCount;
   outer: for (let i = 0, j = 0; i < curSize; i++) {
     const child = cur.child(i);
     for (let scan = j, e = Math.min(oldSize, i + 3); scan < e; scan++) {
@@ -41,10 +41,10 @@ function changedDescendants(old, cur, offset, f) {
 // document.
 export function fixTables(state, oldState) {
   let tr;
-    const check = (node, pos) => {
-      if (node.type.spec.tableRole == 'table')
-        tr = fixTable(state, node, pos, tr);
-    };
+  const check = (node, pos) => {
+    if (node.type.spec.tableRole == 'table')
+      tr = fixTable(state, node, pos, tr);
+  };
   if (!oldState) state.doc.descendants(check);
   else if (oldState.doc != state.doc)
     changedDescendants(oldState.doc, state.doc, 0, check);
@@ -92,7 +92,8 @@ export function fixTable(state, table, tablePos, tr) {
       );
     }
   }
-  let first; let last;
+  let first;
+  let last;
   for (let i = 0; i < mustAdd.length; i++)
     if (mustAdd[i]) {
       if (first == null) first = i;

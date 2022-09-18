@@ -1,10 +1,10 @@
-import type {MutableRefObject} from 'react';
+import type { MutableRefObject } from 'react';
 
-import type {Coordinates, ClientRect, UniqueIdentifier} from '../types';
-import type {Collision} from '../utilities/algorithms';
-import type {SyntheticListeners} from '../hooks/utilities';
-import type {Actions} from './actions';
-import type {DroppableContainersMap} from './constructors';
+import type { Coordinates, ClientRect, UniqueIdentifier } from '../types';
+import type { Collision } from '../utilities/algorithms';
+import type { SyntheticListeners } from '../hooks/utilities';
+import type { Actions } from './actions';
+import type { DroppableContainersMap } from './constructors';
 
 export interface DraggableElement {
   node: DraggableNode;

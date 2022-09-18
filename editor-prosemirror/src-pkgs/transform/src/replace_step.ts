@@ -48,7 +48,7 @@ export class ReplaceStep extends Step {
 
   map(mapping: Mappable) {
     const from = mapping.mapResult(this.from, 1);
-      const to = mapping.mapResult(this.to, -1);
+    const to = mapping.mapResult(this.to, -1);
     if (from.deletedAcross && to.deletedAcross) return null;
     return new ReplaceStep(from.pos, Math.max(from.pos, to.pos), this.slice);
   }
@@ -190,9 +190,9 @@ export class ReplaceAroundStep extends Step {
 
   map(mapping: Mappable) {
     const from = mapping.mapResult(this.from, 1);
-      const to = mapping.mapResult(this.to, -1);
+    const to = mapping.mapResult(this.to, -1);
     const gapFrom = mapping.map(this.gapFrom, -1);
-      const gapTo = mapping.map(this.gapTo, 1);
+    const gapTo = mapping.map(this.gapTo, 1);
     if (
       (from.deletedAcross && to.deletedAcross) ||
       gapFrom < from.pos ||
@@ -250,8 +250,8 @@ Step.jsonID('replaceAround', ReplaceAroundStep);
 
 function contentBetween(doc: Node, from: number, to: number) {
   const $from = doc.resolve(from);
-    let dist = to - from;
-    let depth = $from.depth;
+  let dist = to - from;
+  let depth = $from.depth;
   while (
     dist > 0 &&
     depth > 0 &&

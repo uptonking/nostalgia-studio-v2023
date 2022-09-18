@@ -1,8 +1,8 @@
-import {Strategy} from '@floating-ui/core';
-import {useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useState} from 'react';
-import {Controls} from '../utils/Controls';
-import {useScroll} from '../utils/useScroll';
+import { Strategy } from '@floating-ui/core';
+import { useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useState } from 'react';
+import { Controls } from '../utils/Controls';
+import { useScroll } from '../utils/useScroll';
 
 type Node =
   | 'referenceScrollParent'
@@ -20,17 +20,17 @@ const STRATEGIES: Strategy[] = ['absolute', 'fixed'];
 export function Scroll() {
   const [strategyState, setStrategyState] = useState<Strategy>('absolute');
   const [node, setNode] = useState<Node>('referenceScrollParent');
-  const {x, y, reference, floating, update, refs} = useFloating({
+  const { x, y, reference, floating, update, refs } = useFloating({
     strategy: strategyState,
   });
-  const {scrollRef, indicator} = useScroll({refs, update});
+  const { scrollRef, indicator } = useScroll({ refs, update });
 
   useLayoutEffect(update, [update, node]);
 
   const referenceJsx = (
     <div
       ref={reference}
-      className="reference"
+      className='reference'
       style={
         node === 'floatingScrollParent'
           ? {
@@ -46,7 +46,7 @@ export function Scroll() {
   const floatingJsx = (
     <div
       ref={floating}
-      className="floating"
+      className='floating'
       style={{
         position: strategyState,
         top: y ?? '',
@@ -64,7 +64,7 @@ export function Scroll() {
         The floating element should be positioned correctly when a certain node
         has been scrolled.
       </p>
-      <div className="container">
+      <div className='container'>
         {[
           'referenceScrollParent',
           'floatingScrollParent',
@@ -72,11 +72,11 @@ export function Scroll() {
         ].includes(node) ? (
           <>
             <div
-              className="scroll"
+              className='scroll'
               ref={scrollRef}
               style={{
                 position: ['sameScrollParent', 'floatingScrollParent'].includes(
-                  node
+                  node,
                 )
                   ? 'relative'
                   : undefined,
@@ -127,7 +127,7 @@ export function Scroll() {
           </button>
         ))}
       </Controls>
-      {node === 'body' && <div style={{width: 1, height: 1500}} />}
+      {node === 'body' && <div style={{ width: 1, height: 1500 }} />}
     </>
   );
 }

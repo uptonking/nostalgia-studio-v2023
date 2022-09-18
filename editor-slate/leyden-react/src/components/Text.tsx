@@ -5,31 +5,18 @@ import { RenderLeafProps } from 'slate-react';
 import { TextRenderers } from '../utils/types';
 
 export interface Text extends RenderLeafProps {
-    textRenderers?: TextRenderers;
+  textRenderers?: TextRenderers;
 }
 
-export const Text: FC<Text> = ({
-    children,
-    text,
-    textRenderers,
-    ...props
-}) => {
-    if (LeydenText.isText(text) && textRenderers) {
-        const TextFC = textRenderers[text.type];
-        return (
-            <TextFC
-                {...props}
-                leaf={text}
-                text={text}
-            >
-                {children}
-            </TextFC>
-        );
-    }
-
+export const Text: FC<Text> = ({ children, text, textRenderers, ...props }) => {
+  if (LeydenText.isText(text) && textRenderers) {
+    const TextFC = textRenderers[text.type];
     return (
-        <span {...props.attributes}>
-            {children}
-        </span>
+      <TextFC {...props} leaf={text} text={text}>
+        {children}
+      </TextFC>
     );
+  }
+
+  return <span {...props.attributes}>{children}</span>;
 };

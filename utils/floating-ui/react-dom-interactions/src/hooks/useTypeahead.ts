@@ -1,9 +1,9 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {activeElement} from '../utils/activeElement';
-import {getDocument} from '../utils/getDocument';
-import {stopEvent} from '../utils/stopEvent';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { activeElement } from '../utils/activeElement';
+import { getDocument } from '../utils/getDocument';
+import { stopEvent } from '../utils/stopEvent';
 
 export interface Props {
   listRef: React.MutableRefObject<Array<string | null>>;
@@ -14,7 +14,7 @@ export interface Props {
     | null
     | ((
         list: Array<string | null>,
-        typedString: string
+        typedString: string,
       ) => string | null | undefined);
   resetMs?: number;
   ignoreKeys?: Array<string>;
@@ -27,7 +27,7 @@ export interface Props {
  * @see https://floating-ui.com/docs/useTypeahead
  */
 export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
-  {open, dataRef}: FloatingContext<RT>,
+  { open, dataRef }: FloatingContext<RT>,
   {
     listRef,
     activeIndex,
@@ -38,14 +38,14 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
     ignoreKeys = [],
     selectedIndex = null,
   }: Props = {
-    listRef: {current: []},
+    listRef: { current: [] },
     activeIndex: null,
-  }
+  },
 ): ElementProps => {
   const timeoutIdRef = React.useRef<any>();
   const stringRef = React.useRef('');
   const prevIndexRef = React.useRef<number | null>(
-    selectedIndex ?? activeIndex ?? -1
+    selectedIndex ?? activeIndex ?? -1,
   );
   const matchIndexRef = React.useRef<number | null>(null);
 
@@ -67,7 +67,7 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
   function onKeyDown(event: React.KeyboardEvent) {
     if (
       !event.currentTarget.contains(
-        activeElement(getDocument(event.currentTarget as HTMLElement))
+        activeElement(getDocument(event.currentTarget as HTMLElement)),
       )
     ) {
       return;
@@ -106,7 +106,7 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
     const allowRapidSuccessionOfFirstLetter = listContent.every((text) =>
       text
         ? text[0]?.toLocaleLowerCase() !== text[1]?.toLocaleLowerCase()
-        : true
+        : true,
     );
 
     // Allows the user to cycle through items that start with the same letter
@@ -134,7 +134,7 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
     const str = findMatch
       ? findMatch(orderedList, stringRef.current)
       : orderedList.find(
-          (text) => text?.toLocaleLowerCase().indexOf(stringRef.current) === 0
+          (text) => text?.toLocaleLowerCase().indexOf(stringRef.current) === 0,
         );
 
     const index = str ? listContent.indexOf(str) : -1;
@@ -150,7 +150,7 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
   }
 
   return {
-    reference: {onKeyDown},
-    floating: {onKeyDown},
+    reference: { onKeyDown },
+    floating: { onKeyDown },
   };
 };

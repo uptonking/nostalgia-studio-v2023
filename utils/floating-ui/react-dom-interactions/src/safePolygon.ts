@@ -1,7 +1,7 @@
-import type {Side} from '@floating-ui/core';
-import type {FloatingContext, FloatingTreeType, ReferenceType} from './types';
-import {isElement} from './utils/is';
-import {getChildren} from './utils/getChildren';
+import type { Side } from '@floating-ui/core';
+import type { FloatingContext, FloatingTreeType, ReferenceType } from './types';
+import { isElement } from './utils/is';
+import { getChildren } from './utils/getChildren';
 
 type Point = [number, number];
 type Polygon = Point[];
@@ -60,7 +60,7 @@ export function safePolygon<RT extends ReferenceType = ReferenceType>({
         return;
       }
 
-      const {clientX, clientY} = event;
+      const { clientX, clientY } = event;
       const target =
         'composedPath' in event
           ? event.composedPath()[0]
@@ -80,7 +80,7 @@ export function safePolygon<RT extends ReferenceType = ReferenceType>({
       // If any nested child is open, abort.
       if (
         tree &&
-        getChildren(tree, nodeId).some(({context}) => context?.open)
+        getChildren(tree, nodeId).some(({ context }) => context?.open)
       ) {
         return;
       }

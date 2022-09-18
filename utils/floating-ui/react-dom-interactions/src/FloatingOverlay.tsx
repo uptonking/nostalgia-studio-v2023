@@ -4,7 +4,7 @@ import useLayoutEffect from 'use-isomorphic-layout-effect';
 const identifier = 'data-floating-ui-scroll-lock';
 
 interface NavigatorUAData {
-  brands: Array<{brand: string; version: string}>;
+  brands: Array<{ brand: string; version: string }>;
   mobile: boolean;
   platform: string;
 }
@@ -30,8 +30,8 @@ export function getPlatform(): string {
  */
 export const FloatingOverlay = React.forwardRef<
   HTMLDivElement,
-  React.HTMLProps<HTMLDivElement> & {lockScroll?: boolean}
->(function FloatingOverlay({lockScroll = false, ...rest}, ref) {
+  React.HTMLProps<HTMLDivElement> & { lockScroll?: boolean }
+>(function FloatingOverlay({ lockScroll = false, ...rest }, ref) {
   useLayoutEffect(() => {
     if (!lockScroll) {
       return;

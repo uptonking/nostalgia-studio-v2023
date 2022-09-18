@@ -1,5 +1,5 @@
-export {SortableContext} from './components';
-export type {SortableContextProps} from './components';
+export { SortableContext } from './components';
+export type { SortableContextProps } from './components';
 export {
   useSortable,
   defaultAnimateLayoutChanges,
@@ -16,6 +16,6 @@ export {
   rectSwappingStrategy,
   verticalListSortingStrategy,
 } from './strategies';
-export {sortableKeyboardCoordinates} from './sensors';
-export {arrayMove, arraySwap} from './utilities';
-export type {SortingStrategy} from './types';
+export { sortableKeyboardCoordinates } from './sensors';
+export { arrayMove, arraySwap } from './utilities';
+export type { SortingStrategy } from './types';

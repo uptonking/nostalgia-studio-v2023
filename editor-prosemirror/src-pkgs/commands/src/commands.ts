@@ -29,20 +29,21 @@ import {
   replaceStep,
 } from 'prosemirror-transform';
 
-/// Delete the selection, if there is one.
+/** Delete the selection, if there is one. */
 export const deleteSelection: Command = (state, dispatch) => {
   if (state.selection.empty) return false;
   if (dispatch) dispatch(state.tr.deleteSelection().scrollIntoView());
   return true;
 };
 
-/// If the selection is empty and at the start of a textblock, try to
-/// reduce the distance between that block and the one before it—if
-/// there's a block directly before it that can be joined, join them.
-/// If not, try to move the selected block closer to the next one in
-/// the document structure by lifting it out of its parent or moving it
-/// into a parent of the previous block. Will use the view for accurate
-/// (bidi-aware) start-of-textblock detection if given.
+/** If the selection is empty and at the start of a textblock, try to
+ * reduce the distance between that block and the one before it—if
+ * there's a block directly before it that can be joined, join them.
+ * If not, try to move the selected block closer to the next one in
+ * the document structure by lifting it out of its parent or moving it
+ * into a parent of the previous block. Will use the view for accurate
+ * (bidi-aware) start-of-textblock detection if given.
+ */
 export const joinBackward: Command = (state, dispatch, view) => {
   const { $cursor } = state.selection as TextSelection;
   if (
@@ -124,12 +125,13 @@ function textblockAt(node: Node, side: 'start' | 'end', only = false) {
   return false;
 }
 
-/// When the selection is empty and at the start of a textblock, select
-/// the node before that textblock, if possible. This is intended to be
-/// bound to keys like backspace, after
-/// [`joinBackward`](#commands.joinBackward) or other deleting
-/// commands, as a fall-back behavior when the schema doesn't allow
-/// deletion at the selected point.
+/** When the selection is empty and at the start of a textblock, select
+ * the node before that textblock, if possible. This is intended to be
+ * bound to keys like backspace, after
+ * [`joinBackward`](#commands.joinBackward) or other deleting
+ * commands, as a fall-back behavior when the schema doesn't allow
+ * deletion at the selected point.
+ */
 export const selectNodeBackward: Command = (state, dispatch, view) => {
   const { $head, empty } = state.selection;
   let $cut: ResolvedPos | null = $head;
@@ -162,11 +164,12 @@ function findCutBefore($pos: ResolvedPos): ResolvedPos | null {
   return null;
 }
 
-/// If the selection is empty and the cursor is at the end of a
-/// textblock, try to reduce or remove the boundary between that block
-/// and the one after it, either by joining them or by moving the other
-/// block closer to this one in the tree structure. Will use the view
-/// for accurate start-of-textblock detection if given.
+/** If the selection is empty and the cursor is at the end of a
+ * textblock, try to reduce or remove the boundary between that block
+ * and the one after it, either by joining them or by moving the other
+ * block closer to this one in the tree structure. Will use the view
+ * for accurate start-of-textblock detection if given.
+ */
 export const joinForward: Command = (state, dispatch, view) => {
   const { $cursor } = state.selection as TextSelection;
   if (
@@ -228,12 +231,13 @@ export const joinForward: Command = (state, dispatch, view) => {
   return false;
 };
 
-/// When the selection is empty and at the end of a textblock, select
-/// the node coming after that textblock, if possible. This is intended
-/// to be bound to keys like delete, after
-/// [`joinForward`](#commands.joinForward) and similar deleting
-/// commands, to provide a fall-back behavior when the schema doesn't
-/// allow deletion at the selected point.
+/** When the selection is empty and at the end of a textblock, select
+ * the node coming after that textblock, if possible. This is intended
+ * to be bound to keys like delete, after
+ * [`joinForward`](#commands.joinForward) and similar deleting
+ * commands, to provide a fall-back behavior when the schema doesn't
+ * allow deletion at the selected point.
+ */
 export const selectNodeForward: Command = (state, dispatch, view) => {
   const { $head, empty } = state.selection;
   let $cut: ResolvedPos | null = $head;
@@ -269,9 +273,10 @@ function findCutAfter($pos: ResolvedPos) {
   return null;
 }
 
-/// Join the selected block or, if there is a text selection, the
-/// closest ancestor block of the selection that can be joined, with
-/// the sibling above it.
+/** Join the selected block or, if there is a text selection, the
+ * closest ancestor block of the selection that can be joined, with
+ * the sibling above it.
+ */
 export const joinUp: Command = (state, dispatch) => {
   const sel = state.selection;
   const nodeSel = sel instanceof NodeSelection;
@@ -301,8 +306,9 @@ export const joinUp: Command = (state, dispatch) => {
   return true;
 };
 
-/// Join the selected block, or the closest ancestor of the selection
-/// that can be joined, with the sibling after it.
+/** Join the selected block, or the closest ancestor of the selection
+ * that can be joined, with the sibling after it.
+ */
 export const joinDown: Command = (state, dispatch) => {
   const sel = state.selection;
   let point;
@@ -317,8 +323,9 @@ export const joinDown: Command = (state, dispatch) => {
   return true;
 };
 
-/// Lift the selected block, or the closest ancestor block of the
-/// selection that can be lifted, out of its parent node.
+/** Lift the selected block, or the closest ancestor block of the
+ * selection that can be lifted, out of its parent node.
+ */
 export const lift: Command = (state, dispatch) => {
   const { $from, $to } = state.selection;
   const range = $from.blockRange($to);
@@ -328,9 +335,10 @@ export const lift: Command = (state, dispatch) => {
   return true;
 };
 
-/// If the selection is in a node whose type has a truthy
-/// [`code`](#model.NodeSpec.code) property in its spec, replace the
-/// selection with a newline character.
+/** If the selection is in a node whose type has a truthy
+ * [`code`](#model.NodeSpec.code) property in its spec, replace the
+ * selection with a newline character.
+ */
 export const newlineInCode: Command = (state, dispatch) => {
   const { $head, $anchor } = state.selection;
   if (!$head.parent.type.spec.code || !$head.sameParent($anchor)) return false;
@@ -346,9 +354,10 @@ function defaultBlockAt(match: ContentMatch) {
   return null;
 }
 
-/// When the selection is in a node with a truthy
-/// [`code`](#model.NodeSpec.code) property in its spec, create a
-/// default block after the code block, and move the cursor there.
+/** When the selection is in a node with a truthy
+ * [`code`](#model.NodeSpec.code) property in its spec, create a
+ * default block after the code block, and move the cursor there.
+ */
 export const exitCode: Command = (state, dispatch) => {
   const { $head, $anchor } = state.selection;
   if (!$head.parent.type.spec.code || !$head.sameParent($anchor)) return false;
@@ -365,8 +374,9 @@ export const exitCode: Command = (state, dispatch) => {
   return true;
 };
 
-/// If a block node is selected, create an empty paragraph before (if
-/// it is its parent's first child) or after it.
+/** If a block node is selected, create an empty paragraph before (if
+ * it is its parent's first child) or after it.
+ */
 export const createParagraphNear: Command = (state, dispatch) => {
   const sel = state.selection;
   const { $from, $to } = sel;
@@ -389,8 +399,9 @@ export const createParagraphNear: Command = (state, dispatch) => {
   return true;
 };
 
-/// If the cursor is in an empty textblock that can be lifted, lift the
-/// block.
+/** If the cursor is in an empty textblock that can be lifted, lift the
+ * block.
+ */
 export const liftEmptyBlock: Command = (state, dispatch) => {
   const { $cursor } = state.selection as TextSelection;
   if (!$cursor || $cursor.parent.content.size) return false;
@@ -408,16 +419,21 @@ export const liftEmptyBlock: Command = (state, dispatch) => {
   return true;
 };
 
-/// Split the parent block of the selection. If the selection is a text
-/// selection, also delete its content.
+/** Split the parent block of the selection. If the selection is a text
+ * selection, also delete its content.
+ */
 export const splitBlock: Command = (state, dispatch) => {
   const { $from, $to } = state.selection;
   if (
     state.selection instanceof NodeSelection &&
     state.selection.node.isBlock
   ) {
-    if (!$from.parentOffset || !canSplit(state.doc, $from.pos)) return false;
-    if (dispatch) dispatch(state.tr.split($from.pos).scrollIntoView());
+    if (!$from.parentOffset || !canSplit(state.doc, $from.pos)) {
+      return false;
+    }
+    if (dispatch) {
+      dispatch(state.tr.split($from.pos).scrollIntoView());
+    }
     return true;
   }
 
@@ -429,8 +445,9 @@ export const splitBlock: Command = (state, dispatch) => {
     if (
       state.selection instanceof TextSelection ||
       state.selection instanceof AllSelection
-    )
+    ) {
       tr.deleteSelection();
+    }
     const deflt =
       $from.depth == 0
         ? null
@@ -460,8 +477,9 @@ export const splitBlock: Command = (state, dispatch) => {
           $from
             .node(-1)
             .canReplaceWith($first.index(), $first.index() + 1, deflt)
-        )
+        ) {
           tr.setNodeMarkup(tr.mapping.map($from.before()), deflt);
+        }
       }
     }
     dispatch(tr.scrollIntoView());
@@ -469,8 +487,9 @@ export const splitBlock: Command = (state, dispatch) => {
   return true;
 };
 
-/// Acts like [`splitBlock`](#commands.splitBlock), but without
-/// resetting the set of active marks at the cursor.
+/** Acts like [`splitBlock`](#commands.splitBlock), but without
+ * resetting the set of active marks at the cursor.
+ */
 export const splitBlockKeepMarks: Command = (state, dispatch) => {
   return splitBlock(
     state,
@@ -485,8 +504,9 @@ export const splitBlockKeepMarks: Command = (state, dispatch) => {
   );
 };
 
-/// Move the selection to the node wrapping the current selection, if
-/// any. (Will not select the document node.)
+/** Move the selection to the node wrapping the current selection, if
+ * any. (Will not select the document node.)
+ */
 export const selectParentNode: Command = (state, dispatch) => {
   const { $from, to } = state.selection;
   let pos;
@@ -498,7 +518,7 @@ export const selectParentNode: Command = (state, dispatch) => {
   return true;
 };
 
-/// Select the whole document.
+/** Select the whole document. */
 export const selectAll: Command = (state, dispatch) => {
   if (dispatch) dispatch(state.tr.setSelection(new AllSelection(state.doc)));
   return true;
@@ -656,16 +676,17 @@ function selectTextblockSide(side: number): Command {
   };
 }
 
-/// Moves the cursor to the start of current text block.
+/** Moves the cursor to the start of current text block. */
 export const selectTextblockStart = selectTextblockSide(-1);
 
-/// Moves the cursor to the end of current text block.
+/** Moves the cursor to the end of current text block. */
 export const selectTextblockEnd = selectTextblockSide(1);
 
 // Parameterized commands
 
-/// Wrap the selection in a node of the given type with the given
-/// attributes.
+/** Wrap the selection in a node of the given type with the given
+ * attributes.
+ */
 export function wrapIn(
   nodeType: NodeType,
   attrs: Attrs | null = null,
@@ -680,8 +701,9 @@ export function wrapIn(
   };
 }
 
-/// Returns a command that tries to set the selected textblocks to the
-/// given node type with the given attributes.
+/** Returns a command that tries to set the selected textblocks to the
+ * given node type with the given attributes.
+ */
 export function setBlockType(
   nodeType: NodeType,
   attrs: Attrs | null = null,
@@ -729,13 +751,14 @@ function markApplies(
   return false;
 }
 
-/// Create a command function that toggles the given mark with the
-/// given attributes. Will return `false` when the current selection
-/// doesn't support that mark. This will remove the mark if any marks
-/// of that type exist in the selection, or add it otherwise. If the
-/// selection is empty, this applies to the [stored
-/// marks](#state.EditorState.storedMarks) instead of a range of the
-/// document.
+/** Create a command function that toggles the given mark with the
+ * given attributes. Will return `false` when the current selection
+ * doesn't support that mark. This will remove the mark if any marks
+ * of that type exist in the selection, or add it otherwise. If the
+ * selection is empty, this applies to the [stored
+ * marks](#state.EditorState.storedMarks) instead of a range of the
+ * document.
+ */
 export function toggleMark(
   markType: MarkType,
   attrs: Attrs | null = null,
@@ -830,12 +853,13 @@ function wrapDispatchForJoin(
   };
 }
 
-/// Wrap a command so that, when it produces a transform that causes
-/// two joinable nodes to end up next to each other, those are joined.
-/// Nodes are considered joinable when they are of the same type and
-/// when the `isJoinable` predicate returns true for them or, if an
-/// array of strings was passed, if their node type name is in that
-/// array.
+/** Wrap a command so that, when it produces a transform that causes
+ * two joinable nodes to end up next to each other, those are joined.
+ * Nodes are considered joinable when they are of the same type and
+ * when the `isJoinable` predicate returns true for them or, if an
+ * array of strings was passed, if their node type name is in that
+ * array.
+ */
 export function autoJoin(
   command: Command,
   isJoinable: ((before: Node, after: Node) => boolean) | readonly string[],
@@ -847,16 +871,21 @@ export function autoJoin(
     command(state, dispatch && wrapDispatchForJoin(dispatch, canJoin), view);
 }
 
-/// Combine a number of command functions into a single function (which
-/// calls them one by one until one returns true).
+/** Combine a number of command functions into a single function (which
+ * calls them one by one until one returns true).
+ */
 export function chainCommands(...commands: readonly Command[]): Command {
   return function (state, dispatch, view) {
-    for (let i = 0; i < commands.length; i++)
-      if (commands[i](state, dispatch, view)) return true;
+    for (let i = 0; i < commands.length; i++) {
+      if (commands[i](state, dispatch, view)) {
+        return true;
+      }
+    }
     return false;
   };
 }
 
+/** 依次执行 deleteSelection > joinBackward > selectNodeBackward */
 const backspace = chainCommands(
   deleteSelection,
   joinBackward,
@@ -864,16 +893,17 @@ const backspace = chainCommands(
 );
 const del = chainCommands(deleteSelection, joinForward, selectNodeForward);
 
-/// A basic keymap containing bindings not specific to any schema.
-/// Binds the following keys (when multiple commands are listed, they
-/// are chained with [`chainCommands`](#commands.chainCommands)):
-///
-/// * **Enter** to `newlineInCode`, `createParagraphNear`, `liftEmptyBlock`, `splitBlock`
-/// * **Mod-Enter** to `exitCode`
-/// * **Backspace** and **Mod-Backspace** to `deleteSelection`, `joinBackward`, `selectNodeBackward`
-/// * **Delete** and **Mod-Delete** to `deleteSelection`, `joinForward`, `selectNodeForward`
-/// * **Mod-Delete** to `deleteSelection`, `joinForward`, `selectNodeForward`
-/// * **Mod-a** to `selectAll`
+/** A basic keymap containing bindings not specific to any schema.
+ * Binds the following keys (when multiple commands are listed, they
+ * are chained with [`chainCommands`](#commands.chainCommands)):
+ *
+ * * **Enter** to `newlineInCode`, `createParagraphNear`, `liftEmptyBlock`, `splitBlock`
+ * * **Mod-Enter** to `exitCode`
+ * * **Backspace** and **Mod-Backspace** to `deleteSelection`, `joinBackward`, `selectNodeBackward`
+ * * **Delete** and **Mod-Delete** to `deleteSelection`, `joinForward`, `selectNodeForward`
+ * * **Mod-Delete** to `deleteSelection`, `joinForward`, `selectNodeForward`
+ * * **Mod-a** to `selectAll`
+ */
 export const pcBaseKeymap: { [key: string]: Command } = {
   Enter: chainCommands(
     newlineInCode,
@@ -890,10 +920,11 @@ export const pcBaseKeymap: { [key: string]: Command } = {
   'Mod-a': selectAll,
 };
 
-/// A copy of `pcBaseKeymap` that also binds **Ctrl-h** like Backspace,
-/// **Ctrl-d** like Delete, **Alt-Backspace** like Ctrl-Backspace, and
-/// **Ctrl-Alt-Backspace**, **Alt-Delete**, and **Alt-d** like
-/// Ctrl-Delete.
+/** A copy of `pcBaseKeymap` that also binds **Ctrl-h** like Backspace,
+ * **Ctrl-d** like Delete, **Alt-Backspace** like Ctrl-Backspace, and
+ * **Ctrl-Alt-Backspace**, **Alt-Delete**, and **Alt-d** like
+ * Ctrl-Delete.
+ */
 export const macBaseKeymap: { [key: string]: Command } = {
   'Ctrl-h': pcBaseKeymap['Backspace'],
   'Alt-Backspace': pcBaseKeymap['Mod-Backspace'],
@@ -904,7 +935,9 @@ export const macBaseKeymap: { [key: string]: Command } = {
   'Ctrl-a': selectTextblockStart,
   'Ctrl-e': selectTextblockEnd,
 };
-for (const key in pcBaseKeymap) (macBaseKeymap as any)[key] = pcBaseKeymap[key];
+for (const key in pcBaseKeymap) {
+  (macBaseKeymap as any)[key] = pcBaseKeymap[key];
+}
 
 const mac =
   typeof navigator !== 'undefined'
@@ -915,9 +948,10 @@ const mac =
       os.platform() === 'darwin'
     : false;
 
-/// Depending on the detected platform, this will hold
-/// [`pcBasekeymap`](#commands.pcBaseKeymap) or
-/// [`macBaseKeymap`](#commands.macBaseKeymap).
+/** Depending on the detected platform, this will hold
+ * [`pcBasekeymap`](#commands.pcBaseKeymap) or
+ * [`macBaseKeymap`](#commands.macBaseKeymap).
+ */
 export const baseKeymap: { [key: string]: Command } = mac
   ? macBaseKeymap
   : pcBaseKeymap;

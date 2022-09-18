@@ -1,14 +1,14 @@
-import type {Coordinates, ClientRect} from '../../types';
-import {distanceBetween} from '../coordinates';
+import type { Coordinates, ClientRect } from '../../types';
+import { distanceBetween } from '../coordinates';
 
-import type {CollisionDescriptor, CollisionDetection} from './types';
-import {cornersOfRectangle, sortCollisionsAsc} from './helpers';
+import type { CollisionDescriptor, CollisionDetection } from './types';
+import { cornersOfRectangle, sortCollisionsAsc } from './helpers';
 
 /**
  * Check if a given point is contained within a bounding rectangle
  */
 function isPointWithinRect(point: Coordinates, rect: ClientRect): boolean {
-  const {top, left, bottom, right} = rect;
+  const { top, left, bottom, right } = rect;
 
   return (
     top <= point.y && point.y <= bottom && left <= point.x && point.x <= right
@@ -30,7 +30,7 @@ export const pointerWithin: CollisionDetection = ({
   const collisions: CollisionDescriptor[] = [];
 
   for (const droppableContainer of droppableContainers) {
-    const {id} = droppableContainer;
+    const { id } = droppableContainer;
     const rect = droppableRects.get(id);
 
     if (rect && isPointWithinRect(pointerCoordinates, rect)) {
@@ -47,7 +47,7 @@ export const pointerWithin: CollisionDetection = ({
 
       collisions.push({
         id,
-        data: {droppableContainer, value: effectiveDistance},
+        data: { droppableContainer, value: effectiveDistance },
       });
     }
   }

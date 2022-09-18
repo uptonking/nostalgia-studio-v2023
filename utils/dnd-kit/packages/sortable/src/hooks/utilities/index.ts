@@ -1,1 +1,1 @@
-export {useDerivedTransform} from './useDerivedTransform';
+export { useDerivedTransform } from './useDerivedTransform';

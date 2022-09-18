@@ -1,6 +1,6 @@
-import {useEffect, useLayoutEffect} from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
-import {canUseDOM} from '../execution-context';
+import { canUseDOM } from '../execution-context';
 
 /**
  * A hook that resolves to useEffect on the server and useLayoutEffect on the client

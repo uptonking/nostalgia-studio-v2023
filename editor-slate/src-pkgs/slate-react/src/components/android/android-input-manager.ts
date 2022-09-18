@@ -1,17 +1,17 @@
-import { ReactEditor } from '../../plugin/react-editor'
-import { Editor, Range, Transforms, Text } from 'slate'
+import { ReactEditor } from '../../plugin/react-editor';
+import { Editor, Range, Transforms, Text } from 'slate';
 import {
   IS_ON_COMPOSITION_END,
   EDITOR_ON_COMPOSITION_TEXT,
-} from '../../utils/weak-maps'
+} from '../../utils/weak-maps';
 
-import { DOMNode } from '../../utils/dom'
+import { DOMNode } from '../../utils/dom';
 
 import {
   normalizeTextInsertionRange,
   combineInsertedText,
   TextInsertion,
-} from './diff-text'
+} from './diff-text';
 import {
   gatherMutationData,
   isDeletion,
@@ -19,10 +19,10 @@ import {
   isRemoveLeafNodes,
   isReplaceExpandedSelection,
   isTextInsertion,
-} from './mutation-detection'
+} from './mutation-detection';
 
 // Replace with `const debug = console.log` to debug
-const debug = (...message: any[]) => {}
+const debug = (...message: any[]) => {};
 
 /**
  * Based loosely on:
@@ -50,8 +50,8 @@ const debug = (...message: any[]) => {}
 
 export class AndroidInputManager {
   constructor(private editor: ReactEditor, private restoreDOM: () => void) {
-    this.editor = editor
-    this.restoreDOM = restoreDOM
+    this.editor = editor;
+    this.restoreDOM = restoreDOM;
   }
 
   /**
@@ -61,18 +61,18 @@ export class AndroidInputManager {
    */
 
   flush = (mutations: MutationRecord[]) => {
-    debug('flush')
+    debug('flush');
 
     try {
-      this.reconcileMutations(mutations)
+      this.reconcileMutations(mutations);
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.error(err)
+      console.error(err);
 
       // Failed to reconcile mutations, restore DOM to its previous state
-      this.restoreDOM()
+      this.restoreDOM();
     }
-  }
+  };
 
   /**
    * Reconcile a batch of mutations
@@ -81,33 +81,33 @@ export class AndroidInputManager {
    */
 
   private reconcileMutations = (mutations: MutationRecord[]) => {
-    const mutationData = gatherMutationData(this.editor, mutations)
-    const { insertedText, removedNodes } = mutationData
+    const mutationData = gatherMutationData(this.editor, mutations);
+    const { insertedText, removedNodes } = mutationData;
 
-    debug('processMutations', mutations, mutationData)
+    debug('processMutations', mutations, mutationData);
 
     if (isReplaceExpandedSelection(this.editor, mutationData)) {
-      const text = combineInsertedText(insertedText)
-      this.replaceExpandedSelection(text)
+      const text = combineInsertedText(insertedText);
+      this.replaceExpandedSelection(text);
     } else if (isLineBreak(this.editor, mutationData)) {
-      this.insertBreak()
+      this.insertBreak();
     } else if (isRemoveLeafNodes(this.editor, mutationData)) {
-      this.removeLeafNodes(removedNodes)
+      this.removeLeafNodes(removedNodes);
     } else if (isDeletion(this.editor, mutationData)) {
-      this.deleteBackward()
+      this.deleteBackward();
     } else if (isTextInsertion(this.editor, mutationData)) {
-      this.insertText(insertedText)
+      this.insertText(insertedText);
     }
-  }
+  };
 
   /**
    * Apply text diff
    */
 
   private insertText = (insertedText: TextInsertion[]) => {
-    debug('insertText')
+    debug('insertText');
 
-    const { selection } = this.editor
+    const { selection } = this.editor;
 
     // If it is in composing or after `onCompositionend`, set `EDITOR_ON_COMPOSITION_TEXT` and return.
     // Text will be inserted on compositionend event.
@@ -115,32 +115,32 @@ export class AndroidInputManager {
       ReactEditor.isComposing(this.editor) ||
       IS_ON_COMPOSITION_END.get(this.editor)
     ) {
-      EDITOR_ON_COMPOSITION_TEXT.set(this.editor, insertedText)
-      IS_ON_COMPOSITION_END.set(this.editor, false)
-      return
+      EDITOR_ON_COMPOSITION_TEXT.set(this.editor, insertedText);
+      IS_ON_COMPOSITION_END.set(this.editor, false);
+      return;
     }
 
     // Insert the batched text diffs
-    insertedText.forEach(insertion => {
-      const text = insertion.text.insertText
-      const at = normalizeTextInsertionRange(this.editor, selection, insertion)
-      Transforms.setSelection(this.editor, at)
-      Editor.insertText(this.editor, text)
-    })
-  }
+    insertedText.forEach((insertion) => {
+      const text = insertion.text.insertText;
+      const at = normalizeTextInsertionRange(this.editor, selection, insertion);
+      Transforms.setSelection(this.editor, at);
+      Editor.insertText(this.editor, text);
+    });
+  };
 
   /**
    * Handle line breaks
    */
 
   private insertBreak = () => {
-    debug('insertBreak')
+    debug('insertBreak');
 
-    const { selection } = this.editor
+    const { selection } = this.editor;
 
-    Editor.insertBreak(this.editor)
+    Editor.insertBreak(this.editor);
 
-    this.restoreDOM()
+    this.restoreDOM();
 
     if (selection) {
       // Compat: Move selection to the newly inserted block if it has not moved
@@ -149,58 +149,58 @@ export class AndroidInputManager {
           this.editor.selection &&
           Range.equals(selection, this.editor.selection)
         ) {
-          Transforms.move(this.editor)
+          Transforms.move(this.editor);
         }
-      }, 100)
+      }, 100);
     }
-  }
+  };
 
   /**
    * Handle expanded selection being deleted or replaced by text
    */
 
   private replaceExpandedSelection = (text: string) => {
-    debug('replaceExpandedSelection')
+    debug('replaceExpandedSelection');
 
     // Delete expanded selection
-    Editor.deleteFragment(this.editor)
+    Editor.deleteFragment(this.editor);
 
     if (text.length) {
       // Selection was replaced by text, insert the entire text diff
-      Editor.insertText(this.editor, text)
+      Editor.insertText(this.editor, text);
     }
 
-    this.restoreDOM()
-  }
+    this.restoreDOM();
+  };
 
   /**
    * Handle `backspace` that merges blocks
    */
 
   private deleteBackward = () => {
-    debug('deleteBackward')
+    debug('deleteBackward');
 
-    Editor.deleteBackward(this.editor)
-    ReactEditor.focus(this.editor)
+    Editor.deleteBackward(this.editor);
+    ReactEditor.focus(this.editor);
 
-    this.restoreDOM()
-  }
+    this.restoreDOM();
+  };
 
   /**
    * Handle mutations that remove specific leaves
    */
   private removeLeafNodes = (nodes: DOMNode[]) => {
     for (const node of nodes) {
-      const slateNode = ReactEditor.toSlateNode(this.editor, node)
+      const slateNode = ReactEditor.toSlateNode(this.editor, node);
 
       if (slateNode) {
-        const path = ReactEditor.findPath(this.editor, slateNode)
+        const path = ReactEditor.findPath(this.editor, slateNode);
 
-        Transforms.delete(this.editor, { at: path })
-        this.restoreDOM()
+        Transforms.delete(this.editor, { at: path });
+        this.restoreDOM();
       }
     }
-  }
+  };
 }
 
-export default AndroidInputManager
+export default AndroidInputManager;

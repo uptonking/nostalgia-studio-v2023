@@ -12,19 +12,19 @@ export const Content = ({
 }: Props) => (
   <div>
     <a
-      href=""
-      onClick={e => {
+      href=''
+      onClick={(e) => {
         e.preventDefault();
         close();
       }}
-      title="Close"
-      className="modal-close"
+      title='Close'
+      className='modal-close'
     >
       Close
     </a>
-    <div className="modal-title">
+    <div className='modal-title'>
       <h2>{title} </h2>
     </div>
-    <div className="modal-content">{children}</div>
+    <div className='modal-content'>{children}</div>
   </div>
 );

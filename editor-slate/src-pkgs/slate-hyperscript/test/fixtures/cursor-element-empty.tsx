@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'slate-hyperscript'
+import { jsx } from 'slate-hyperscript';
 
 export const input = (
   <editor>
@@ -7,7 +7,7 @@ export const input = (
       <cursor />
     </element>
   </editor>
-)
+);
 export const output = {
   children: [
     {
@@ -28,4 +28,4 @@ export const output = {
       offset: 0,
     },
   },
-}
+};

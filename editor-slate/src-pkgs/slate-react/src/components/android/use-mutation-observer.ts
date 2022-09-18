@@ -1,27 +1,27 @@
-import { RefObject, useEffect, useState } from 'react'
-import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect'
+import { RefObject, useEffect, useState } from 'react';
+import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect';
 
 export function useMutationObserver(
   node: RefObject<HTMLElement>,
   callback: MutationCallback,
-  options: MutationObserverInit
+  options: MutationObserverInit,
 ) {
-  const [mutationObserver] = useState(() => new MutationObserver(callback))
+  const [mutationObserver] = useState(() => new MutationObserver(callback));
 
   useIsomorphicLayoutEffect(() => {
     // Disconnect mutation observer during render phase
-    mutationObserver.disconnect()
-  })
+    mutationObserver.disconnect();
+  });
 
   useEffect(() => {
     if (!node.current) {
-      throw new Error('Failed to attach MutationObserver, `node` is undefined')
+      throw new Error('Failed to attach MutationObserver, `node` is undefined');
     }
 
     // Attach mutation observer after render phase has finished
-    mutationObserver.observe(node.current, options)
+    mutationObserver.observe(node.current, options);
 
     // Clean up after effect
-    return mutationObserver.disconnect.bind(mutationObserver)
-  })
+    return mutationObserver.disconnect.bind(mutationObserver);
+  });
 }

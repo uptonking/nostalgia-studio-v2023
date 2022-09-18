@@ -1,15 +1,15 @@
-import {fireEvent, render, screen, cleanup} from '@testing-library/react';
-import {useState} from 'react';
-import {useClick, useFloating, useInteractions} from '../../src';
-import type {Props} from '../../src/hooks/useClick';
+import { fireEvent, render, screen, cleanup } from '@testing-library/react';
+import { useState } from 'react';
+import { useClick, useFloating, useInteractions } from '../../src';
+import type { Props } from '../../src/hooks/useClick';
 
-function App({button = true, ...props}: Props & {button?: boolean}) {
+function App({ button = true, ...props }: Props & { button?: boolean }) {
   const [open, setOpen] = useState(false);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useClick(context, props),
   ]);
 
@@ -17,8 +17,8 @@ function App({button = true, ...props}: Props & {button?: boolean}) {
 
   return (
     <>
-      <Tag {...getReferenceProps({ref: reference})} data-testid="reference" />
-      {open && <div role="tooltip" {...getFloatingProps({ref: floating})} />}
+      <Tag {...getReferenceProps({ ref: reference })} data-testid='reference' />
+      {open && <div role='tooltip' {...getFloatingProps({ ref: floating })} />}
     </>
   );
 }
@@ -125,7 +125,7 @@ describe('non-buttons', () => {
     render(<App button={false} />);
 
     const button = screen.getByTestId('reference');
-    fireEvent.keyDown(button, {key: 'Enter'});
+    fireEvent.keyDown(button, { key: 'Enter' });
 
     expect(screen.queryByRole('tooltip')).toBeInTheDocument();
     cleanup();
@@ -135,7 +135,7 @@ describe('non-buttons', () => {
     render(<App button={false} />);
 
     const button = screen.getByTestId('reference');
-    fireEvent.keyUp(button, {key: ' '});
+    fireEvent.keyUp(button, { key: ' ' });
 
     expect(screen.queryByRole('tooltip')).toBeInTheDocument();
     cleanup();

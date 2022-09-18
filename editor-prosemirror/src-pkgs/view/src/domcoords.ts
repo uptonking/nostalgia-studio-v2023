@@ -40,7 +40,7 @@ export function scrollRectIntoView(
   startDOM: Node,
 ) {
   const scrollThreshold = view.someProp('scrollThreshold') || 0;
-    const scrollMargin = view.someProp('scrollMargin') || 5;
+  const scrollMargin = view.someProp('scrollMargin') || 5;
   const doc = view.dom.ownerDocument;
   for (
     let parent: Node | null = startDOM || view.dom;
@@ -53,7 +53,7 @@ export function scrollRectIntoView(
     const atTop = elt == doc.body;
     const bounding = atTop ? windowRect(doc) : clientRect(elt as HTMLElement);
     let moveX = 0;
-      let moveY = 0;
+    let moveY = 0;
     if (rect.top < bounding.top + getSide(scrollThreshold, 'top'))
       moveY = -(bounding.top - rect.top + getSide(scrollMargin, 'top'));
     else if (rect.bottom > bounding.bottom - getSide(scrollThreshold, 'bottom'))
@@ -67,11 +67,11 @@ export function scrollRectIntoView(
         doc.defaultView!.scrollBy(moveX, moveY);
       } else {
         const startX = elt.scrollLeft;
-          const startY = elt.scrollTop;
+        const startY = elt.scrollTop;
         if (moveY) elt.scrollTop += moveY;
         if (moveX) elt.scrollLeft += moveX;
         const dX = elt.scrollLeft - startX;
-          const dY = elt.scrollTop - startY;
+        const dY = elt.scrollTop - startY;
         rect = {
           left: rect.left - dX,
           top: rect.top - dY,
@@ -95,8 +95,9 @@ export function storeScrollPos(view: EditorView): {
   stack: { dom: HTMLElement; top: number; left: number }[];
 } {
   const rect = view.dom.getBoundingClientRect();
-    const startY = Math.max(0, rect.top);
-  let refDOM: HTMLElement; let refTop: number;
+  const startY = Math.max(0, rect.top);
+  let refDOM: HTMLElement;
+  let refTop: number;
   for (
     let x = (rect.left + rect.right) / 2, y = startY + 1;
     y < Math.min(innerHeight, rect.bottom);
@@ -118,7 +119,7 @@ function scrollStack(
   dom: Node,
 ): { dom: HTMLElement; top: number; left: number }[] {
   const stack = [];
-    const doc = dom.ownerDocument;
+  const doc = dom.ownerDocument;
   for (let cur: Node | null = dom; cur; cur = parentNode(cur)) {
     stack.push({
       dom: cur as HTMLElement,
@@ -187,11 +188,11 @@ function findOffsetInNode(
   coords: { top: number; left: number },
 ): { node: Node; offset: number } {
   let closest;
-    let dxClosest = 2e8;
-    let coordsClosest: { left: number; top: number } | undefined;
-    let offset = 0;
+  let dxClosest = 2e8;
+  let coordsClosest: { left: number; top: number } | undefined;
+  let offset = 0;
   let rowBot = coords.top;
-    let rowTop = coords.top;
+  let rowTop = coords.top;
   for (
     let child = node.firstChild, childIndex = 0;
     child;
@@ -289,7 +290,7 @@ function posFromElement(
   coords: { top: number; left: number },
 ) {
   const { node, offset } = findOffsetInNode(elt, coords);
-    let bias = -1;
+  let bias = -1;
   if (node.nodeType == 1 && !node.firstChild) {
     const rect = (node as HTMLElement).getBoundingClientRect();
     bias =
@@ -485,7 +486,10 @@ const BIDI = /[\u0590-\u05f4\u0600-\u06ff\u0700-\u08ac]/;
  * character at that position, relative to the window.
  */
 export function coordsAtPos(view: EditorView, pos: number, side: number): Rect {
-  const { node, offset, atom } = view.docView.domFromPos(pos, side < 0 ? -1 : 1);
+  const { node, offset, atom } = view.docView.domFromPos(
+    pos,
+    side < 0 ? -1 : 1,
+  );
 
   const supportEmptyRange = browser.webkit || browser.gecko;
   if (node.nodeType == 3) {
@@ -522,8 +526,8 @@ export function coordsAtPos(view: EditorView, pos: number, side: number): Rect {
       return rect;
     } else {
       let from = offset;
-        let to = offset;
-        let takeSide = side < 0 ? 1 : -1;
+      let to = offset;
+      let takeSide = side < 0 ? 1 : -1;
       if (side < 0 && !offset) {
         to++;
         takeSide = -1;
@@ -617,7 +621,7 @@ function withFlushedState<T>(
   f: () => T,
 ): T {
   const viewState = view.state;
-    const active = view.root.activeElement as HTMLElement;
+  const active = view.root.activeElement as HTMLElement;
   if (viewState != state) view.updateState(state);
   if (active != view.dom) view.focus();
   try {
@@ -685,8 +689,8 @@ function endOfTextblockHorizontal(
   const { $head } = state.selection;
   if (!$head.parent.isTextblock) return false;
   const offset = $head.parentOffset;
-    const atStart = !offset;
-    const atEnd = offset == $head.parent.content.size;
+  const atStart = !offset;
+  const atEnd = offset == $head.parent.content.size;
   const sel = view.domSelection();
   // If the textblock is all LTR, or the browser doesn't support
   // Selection.modify (Edge), fall back to a primitive approach
@@ -700,8 +704,8 @@ function endOfTextblockHorizontal(
     // textblock (or doesn't move it at all, when at the start/end of
     // the document).
     const oldRange = sel.getRangeAt(0);
-      const oldNode = sel.focusNode;
-      const oldOff = sel.focusOffset;
+    const oldNode = sel.focusNode;
+    const oldOff = sel.focusOffset;
     const oldBidiLevel = (sel as any).caretBidiLevel; // Only for Firefox
     (sel as any).modify('move', dir, 'character');
     const parentDOM = $head.depth

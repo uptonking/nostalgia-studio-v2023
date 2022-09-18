@@ -1,6 +1,6 @@
-import {getNodeName} from './getNodeName';
-import {getParentNode} from './getParentNode';
-import {getWindow} from './window';
+import { getNodeName } from './getNodeName';
+import { getParentNode } from './getParentNode';
+import { getWindow } from './window';
 import {
   isContainingBlock,
   isHTMLElement,

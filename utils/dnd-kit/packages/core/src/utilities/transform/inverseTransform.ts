@@ -1,9 +1,9 @@
-import type {ClientRect} from '../../types';
+import type { ClientRect } from '../../types';
 
 export function inverseTransform(
   rect: ClientRect,
   transform: string,
-  transformOrigin: string
+  transformOrigin: string,
 ): ClientRect {
   let ta, sx, sy, dx, dy;
 

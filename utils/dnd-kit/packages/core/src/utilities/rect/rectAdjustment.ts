@@ -1,4 +1,4 @@
-import type {Coordinates, ClientRect} from '../../types';
+import type { Coordinates, ClientRect } from '../../types';
 
 export function createRectAdjustmentFn(modifier: number) {
   return function adjustClientRect(
@@ -13,7 +13,7 @@ export function createRectAdjustmentFn(modifier: number) {
         left: acc.left + modifier * adjustment.x,
         right: acc.right + modifier * adjustment.x,
       }),
-      {...rect}
+      { ...rect },
     );
   };
 }

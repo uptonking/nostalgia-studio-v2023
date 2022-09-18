@@ -1,5 +1,5 @@
-import {StrictMode} from 'react';
-import {createRoot} from 'react-dom/client';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import {
   BrowserRouter,
   Link,
@@ -9,20 +9,20 @@ import {
   useLocation,
 } from 'react-router-dom';
 import './index.css';
-import {Main as Tooltip} from './components/Tooltip';
-import {Main as Popover} from './components/Popover';
-import {Main as Menu} from './components/Menu';
+import { Main as Tooltip } from './components/Tooltip';
+import { Main as Popover } from './components/Popover';
+import { Main as Menu } from './components/Menu';
 
-import {New} from './utils/New';
+import { New } from './utils/New';
 
 const ROUTES = [
-  {path: 'tooltip', component: Tooltip},
-  {path: 'popover', component: Popover},
-  {path: 'menu', component: Menu},
+  { path: 'tooltip', component: Tooltip },
+  { path: 'popover', component: Popover },
+  { path: 'menu', component: Menu },
 ];
 
 function App() {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <div>
@@ -39,20 +39,20 @@ function App() {
         <Outlet />
       </main>
       <nav>
-        <div className="nav-top">
-          <Link to="/" className="home-button">
+        <div className='nav-top'>
+          <Link to='/' className='home-button'>
             Tests
           </Link>
-          <Link to="/new" className="new-button">
+          <Link to='/new' className='new-button'>
             New
           </Link>
         </div>
         <ul>
-          {ROUTES.map(({path}) => (
+          {ROUTES.map(({ path }) => (
             <Link
               key={path}
               to={`/${path}`}
-              className="nav-link"
+              className='nav-link'
               style={{
                 color: pathname === `/${path}` ? 'black' : '',
                 fontWeight: pathname === `/${path}` ? 'bold' : '',
@@ -71,13 +71,13 @@ createRoot(document.getElementById('root') as HTMLElement).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />}>
-          <Route path="/new" element={<New />} />
-          {ROUTES.map(({path, component: Component}) => (
+        <Route path='/' element={<App />}>
+          <Route path='/new' element={<New />} />
+          {ROUTES.map(({ path, component: Component }) => (
             <Route key={path} path={path} element={<Component />} />
           ))}
         </Route>
       </Routes>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

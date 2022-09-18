@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {getDelay} from './hooks/useHover';
-import type {FloatingContext} from './types';
-import {useLatestRef} from './utils/useLatestRef';
+import { getDelay } from './hooks/useHover';
+import type { FloatingContext } from './types';
+import { useLatestRef } from './utils/useLatestRef';
 
-type Delay = number | Partial<{open: number; close: number}>;
+type Delay = number | Partial<{ open: number; close: number }>;
 
 interface GroupState {
   delay: Delay;
@@ -51,14 +51,14 @@ export const FloatingDelayGroup = ({
   });
 
   const setCurrentId = React.useCallback((currentId: any) => {
-    setState((state) => ({...state, currentId}));
+    setState((state) => ({ ...state, currentId }));
   }, []);
 
   return (
     <FloatingDelayGroupContext.Provider
       value={React.useMemo(
-        () => ({...state, setState, setCurrentId}),
-        [state, setState, setCurrentId]
+        () => ({ ...state, setState, setCurrentId }),
+        [state, setState, setCurrentId],
       )}
     >
       {children}
@@ -71,17 +71,17 @@ interface UseGroupOptions {
 }
 
 export const useDelayGroup = (
-  {open, onOpenChange}: FloatingContext,
-  {id}: UseGroupOptions
+  { open, onOpenChange }: FloatingContext,
+  { id }: UseGroupOptions,
 ) => {
-  const {currentId, initialDelay, setState} = useDelayGroupContext();
+  const { currentId, initialDelay, setState } = useDelayGroupContext();
   const onOpenChangeRef = useLatestRef(onOpenChange);
 
   React.useEffect(() => {
     if (currentId && onOpenChangeRef.current) {
       setState((state) => ({
         ...state,
-        delay: {open: 1, close: getDelay(initialDelay, 'close')},
+        delay: { open: 1, close: getDelay(initialDelay, 'close') },
       }));
 
       if (currentId !== id) {
@@ -93,7 +93,7 @@ export const useDelayGroup = (
   React.useEffect(() => {
     if (!open && currentId === id && onOpenChangeRef.current) {
       onOpenChangeRef.current(false);
-      setState((state) => ({...state, delay: initialDelay, currentId: null}));
+      setState((state) => ({ ...state, delay: initialDelay, currentId: null }));
     }
   }, [open, setState, currentId, id, onOpenChangeRef, initialDelay]);
 };

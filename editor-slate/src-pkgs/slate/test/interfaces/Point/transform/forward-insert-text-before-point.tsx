@@ -1,11 +1,11 @@
-import { Point } from 'slate'
+import { Point } from 'slate';
 
 export const input = {
   path: [0, 0],
   offset: 1,
-}
+};
 
-export const test = value => {
+export const test = (value) => {
   return Point.transform(
     value,
     {
@@ -15,10 +15,10 @@ export const test = value => {
       offset: 0,
       properties: {},
     },
-    { affinity: 'forward' }
-  )
-}
+    { affinity: 'forward' },
+  );
+};
 export const output = {
   path: [0, 0],
   offset: 2,
-}
+};

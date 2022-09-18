@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {
   createEditor,
   NodeEntry,
@@ -6,8 +6,8 @@ import {
   Range,
   Element,
   Transforms,
-} from 'slate'
-import { create, act, ReactTestRenderer } from 'react-test-renderer'
+} from 'slate';
+import { create, act, ReactTestRenderer } from 'react-test-renderer';
 import {
   Slate,
   withReact,
@@ -16,54 +16,54 @@ import {
   RenderLeafProps,
   DefaultElement,
   DefaultLeaf,
-} from '../src'
+} from '../src';
 
 const createNodeMock = () => ({
   ownerDocument: global.document,
   getRootNode: () => global.document,
-})
+});
 
 describe('slate-react', () => {
   describe('Editable', () => {
     describe('decorate', () => {
       it('should be called on all nodes in document', () => {
-        const editor = withReact(createEditor())
-        const value = [{ type: 'block', children: [{ text: '' }] }]
+        const editor = withReact(createEditor());
+        const value = [{ type: 'block', children: [{ text: '' }] }];
 
-        const decorate = jest.fn<Range[], [NodeEntry]>(entry => [])
+        const decorate = jest.fn<Range[], [NodeEntry]>((entry) => []);
 
-        let el: ReactTestRenderer
+        let el: ReactTestRenderer;
 
         act(() => {
           el = create(
             <Slate editor={editor} value={value} onChange={() => {}}>
               <DefaultEditable decorate={decorate} />
             </Slate>,
-            { createNodeMock }
-          )
-        })
+            { createNodeMock },
+          );
+        });
 
-        expect(decorate).toHaveBeenCalledTimes(3)
-      })
+        expect(decorate).toHaveBeenCalledTimes(3);
+      });
 
       it('should rerender the part of the tree that received an updated decoration', () => {
-        const editor = withReact(createEditor())
+        const editor = withReact(createEditor());
 
         const value = [
           { type: 'block', children: [{ text: '' }] },
           { type: 'block', children: [{ text: '' }] },
-        ]
+        ];
 
         // initial render does not return
-        const decorate = jest.fn<Range[], [NodeEntry]>(() => [])
+        const decorate = jest.fn<Range[], [NodeEntry]>(() => []);
 
         const renderElement = jest.fn<JSX.Element, [RenderElementProps]>(
-          DefaultElement
-        )
+          DefaultElement,
+        );
 
-        const onChange = jest.fn<void, []>()
+        const onChange = jest.fn<void, []>();
 
-        let el: ReactTestRenderer
+        let el: ReactTestRenderer;
 
         act(() => {
           el = create(
@@ -73,15 +73,15 @@ describe('slate-react', () => {
                 renderElement={renderElement}
               />
             </Slate>,
-            { createNodeMock }
-          )
-        })
+            { createNodeMock },
+          );
+        });
 
-        expect(renderElement).toHaveBeenCalledTimes(2)
+        expect(renderElement).toHaveBeenCalledTimes(2);
 
         decorate.mockImplementation(([node]) => {
           if (node !== value[0].children[0]) {
-            return []
+            return [];
           }
 
           return [
@@ -89,8 +89,8 @@ describe('slate-react', () => {
               anchor: { path: [0, 0], offset: 0 },
               focus: { path: [0, 0], offset: 0 },
             },
-          ]
-        })
+          ];
+        });
 
         act(() => {
           el.update(
@@ -99,15 +99,15 @@ describe('slate-react', () => {
                 decorate={decorate}
                 renderElement={renderElement}
               />
-            </Slate>
-          )
-        })
+            </Slate>,
+          );
+        });
 
-        expect(renderElement).toHaveBeenCalledTimes(3)
-      })
+        expect(renderElement).toHaveBeenCalledTimes(3);
+      });
 
       it('should pass the intersecting part of decorations to nested elements', () => {
-        const editor = withReact(createEditor())
+        const editor = withReact(createEditor());
 
         const value = [
           {
@@ -118,11 +118,11 @@ describe('slate-react', () => {
               { type: 'block', children: [{ text: 'baz', highlight: false }] },
             ],
           },
-        ]
+        ];
 
         const decorate = jest.fn<Range[], [NodeEntry]>(([node]) => {
           if (node !== value[0]) {
-            return []
+            return [];
           }
           return [
             {
@@ -130,24 +130,24 @@ describe('slate-react', () => {
               focus: { path: [0, 2, 0], offset: 2 },
               highlight: true,
             },
-          ]
-        })
+          ];
+        });
 
-        const renderLeaf = jest.fn<JSX.Element, [RenderLeafProps]>(DefaultLeaf)
-        const onChange = jest.fn<void, []>()
-        let el: ReactTestRenderer
+        const renderLeaf = jest.fn<JSX.Element, [RenderLeafProps]>(DefaultLeaf);
+        const onChange = jest.fn<void, []>();
+        let el: ReactTestRenderer;
 
         act(() => {
           el = create(
             <Slate editor={editor} value={value} onChange={onChange}>
               <DefaultEditable decorate={decorate} renderLeaf={renderLeaf} />
             </Slate>,
-            { createNodeMock }
-          )
-        })
+            { createNodeMock },
+          );
+        });
 
         // 4 renders, for foo,b,ar,ba,z
-        expect(renderLeaf).toHaveBeenCalledTimes(5)
+        expect(renderLeaf).toHaveBeenCalledTimes(5);
         expect(renderLeaf.mock.calls).toEqual(
           expect.arrayContaining([
             [
@@ -175,76 +175,76 @@ describe('slate-react', () => {
                 leaf: { highlight: false, text: 'z' },
               }),
             ],
-          ])
-        )
-      })
-    })
+          ]),
+        );
+      });
+    });
 
     describe('NODE_TO_KEY logic', () => {
       it('should not unmount the node that gets split on a split_node operation', async () => {
-        const editor = withReact(createEditor())
-        const value = [{ type: 'block', children: [{ text: 'test' }] }]
-        const mounts = jest.fn<void, [Element]>()
+        const editor = withReact(createEditor());
+        const value = [{ type: 'block', children: [{ text: 'test' }] }];
+        const mounts = jest.fn<void, [Element]>();
 
-        let el: ReactTestRenderer
+        let el: ReactTestRenderer;
 
         act(() => {
           el = create(
             <Slate editor={editor} value={value} onChange={() => {}}>
               <DefaultEditable
                 renderElement={({ element, children }) => {
-                  React.useEffect(() => mounts(element), [])
+                  React.useEffect(() => mounts(element), []);
 
-                  return children
+                  return children;
                 }}
               />
             </Slate>,
-            { createNodeMock }
-          )
-        })
+            { createNodeMock },
+          );
+        });
 
         // slate updates at next tick, so we need this to be async
         await act(async () =>
-          Transforms.splitNodes(editor, { at: { path: [0, 0], offset: 2 } })
-        )
+          Transforms.splitNodes(editor, { at: { path: [0, 0], offset: 2 } }),
+        );
 
         // 2 renders, one for the main element and one for the split element
-        expect(mounts).toHaveBeenCalledTimes(2)
-      })
+        expect(mounts).toHaveBeenCalledTimes(2);
+      });
 
       it('should not unmount the node that gets merged into on a merge_node operation', async () => {
-        const editor = withReact(createEditor())
+        const editor = withReact(createEditor());
         const value = [
           { type: 'block', children: [{ text: 'te' }] },
           { type: 'block', children: [{ text: 'st' }] },
-        ]
-        const mounts = jest.fn<void, [Element]>()
+        ];
+        const mounts = jest.fn<void, [Element]>();
 
-        let el: ReactTestRenderer
+        let el: ReactTestRenderer;
 
         act(() => {
           el = create(
             <Slate editor={editor} value={value} onChange={() => {}}>
               <DefaultEditable
                 renderElement={({ element, children }) => {
-                  React.useEffect(() => mounts(element), [])
+                  React.useEffect(() => mounts(element), []);
 
-                  return children
+                  return children;
                 }}
               />
             </Slate>,
-            { createNodeMock }
-          )
-        })
+            { createNodeMock },
+          );
+        });
 
         // slate updates at next tick, so we need this to be async
         await act(async () =>
-          Transforms.mergeNodes(editor, { at: { path: [0, 0], offset: 0 } })
-        )
+          Transforms.mergeNodes(editor, { at: { path: [0, 0], offset: 0 } }),
+        );
 
         // only 2 renders for the initial render
-        expect(mounts).toHaveBeenCalledTimes(2)
-      })
-    })
-  })
-})
+        expect(mounts).toHaveBeenCalledTimes(2);
+      });
+    });
+  });
+});

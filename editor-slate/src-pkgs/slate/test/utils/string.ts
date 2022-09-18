@@ -1,9 +1,9 @@
-import assert from 'assert'
+import assert from 'assert';
 import {
   codepointsIteratorRTL,
   getCharacterDistance,
   getWordDistance,
-} from '../../src/utils/string'
+} from '../../src/utils/string';
 
 const codepoints = [
   ['a', 1],
@@ -24,7 +24,7 @@ const codepoints = [
   ['🇨🇳🎌', 4, 2],
   ['🏴🏳️', 2, 3],
   ['🇷🇺🚩', 4, 2],
-] as const
+] as const;
 
 const zwjSequences = [
   ['👁‍🗨', 5],
@@ -34,7 +34,7 @@ const zwjSequences = [
   ['🙋‍♂️', 5],
   ['🕵️‍♀️', 6],
   ['👨🏿‍🦳', 7],
-] as const
+] as const;
 
 const regionalIndicatorSequences = [
   '🇧🇪',
@@ -47,7 +47,7 @@ const regionalIndicatorSequences = [
   '🇧🇲',
   '🇧🇳',
   '🇧🇴',
-]
+];
 
 const keycapSequences = [
   '#️⃣',
@@ -62,13 +62,13 @@ const keycapSequences = [
   '7️⃣',
   '8️⃣',
   '9️⃣',
-]
+];
 
 const tagSequences = [
   ['🏴󠁧󠁢󠁥󠁮󠁧󠁿', 14],
   ['🏴󠁧󠁢󠁳󠁣󠁴󠁿', 14],
   ['🏴󠁧󠁢󠁷󠁬󠁳󠁿', 14],
-] as const
+] as const;
 
 // Sample strings from https://www.unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakTest.html#samples
 // In some strings, explicit Unicode code points are used to prevent accidental normalization.
@@ -97,68 +97,68 @@ const sampleStrings = {
   '22': ['a\u200d', '🛑'],
   '23': ['✁\u200d✁'],
   '24': ['a\u200d', '✁'],
-}
+};
 
-const dirs = ['ltr', 'rtl']
+const dirs = ['ltr', 'rtl'];
 
-dirs.forEach(dir => {
-  const isRTL = dir === 'rtl'
+dirs.forEach((dir) => {
+  const isRTL = dir === 'rtl';
 
   describe(`getCharacterDistance - ${dir}`, () => {
     codepoints.forEach(([str, ltrDist, rtlDist]) => {
-      const dist = isRTL && rtlDist != null ? rtlDist : ltrDist
+      const dist = isRTL && rtlDist != null ? rtlDist : ltrDist;
 
       it(str, () => {
-        assert.strictEqual(getCharacterDistance(str + str, isRTL), dist)
-      })
-    })
+        assert.strictEqual(getCharacterDistance(str + str, isRTL), dist);
+      });
+    });
 
     zwjSequences.forEach(([str, dist]) => {
       it(str, () => {
-        assert.strictEqual(getCharacterDistance(str + str, isRTL), dist)
-      })
-    })
+        assert.strictEqual(getCharacterDistance(str + str, isRTL), dist);
+      });
+    });
 
-    regionalIndicatorSequences.forEach(str => {
+    regionalIndicatorSequences.forEach((str) => {
       it(str, () => {
-        assert.strictEqual(getCharacterDistance(str + str, isRTL), 4)
-      })
-    })
+        assert.strictEqual(getCharacterDistance(str + str, isRTL), 4);
+      });
+    });
 
-    keycapSequences.forEach(str => {
+    keycapSequences.forEach((str) => {
       it(str, () => {
-        assert.strictEqual(getCharacterDistance(str + str, isRTL), 3)
-      })
-    })
+        assert.strictEqual(getCharacterDistance(str + str, isRTL), 3);
+      });
+    });
 
     tagSequences.forEach(([str, dist]) => {
       it(str, () => {
-        assert.strictEqual(getCharacterDistance(str + str, isRTL), dist)
-      })
-    })
+        assert.strictEqual(getCharacterDistance(str + str, isRTL), dist);
+      });
+    });
 
     Object.entries(sampleStrings).forEach(([label, strs]) => {
       for (let i = 0; i < strs.length; i++) {
-        let str = ''
+        let str = '';
         if (isRTL) {
-          str = strs.slice(0, i + 1).join('')
+          str = strs.slice(0, i + 1).join('');
         } else {
-          str = strs.slice(i).join('')
+          str = strs.slice(i).join('');
         }
         it(`Sample string ${label}, boundary ${isRTL ? i : i + 1}`, () => {
-          assert.strictEqual(getCharacterDistance(str, isRTL), strs[i].length)
-        })
+          assert.strictEqual(getCharacterDistance(str, isRTL), strs[i].length);
+        });
       }
-    })
-  })
-})
+    });
+  });
+});
 
 const ltrCases = [
   ['hello foobarbaz', 5],
   ['🏴󠁧󠁢󠁥󠁮󠁧󠁿🏴󠁧󠁢󠁳󠁣󠁴󠁿 🏴󠁧󠁢󠁷󠁬󠁳󠁿', 28],
   ["Don't do this", 5],
   ["I'm ok", 3],
-] as const
+] as const;
 
 const rtlCases = [
   ['hello foobarbaz', 9],
@@ -167,39 +167,39 @@ const rtlCases = [
   ["Don't do this", 4],
   ["I'm", 3],
   ['Tags 🏴󠁧󠁢󠁥󠁮󠁧󠁿🏴󠁧󠁢󠁳󠁣󠁴󠁿', 28],
-] as const
+] as const;
 
 describe(`getWordDistance - ltr`, () => {
   ltrCases.forEach(([str, dist]) => {
     it(str, () => {
-      assert.strictEqual(getWordDistance(str), dist)
-    })
-  })
-})
+      assert.strictEqual(getWordDistance(str), dist);
+    });
+  });
+});
 
 describe(`getWordDistance - rtl`, () => {
   rtlCases.forEach(([str, dist]) => {
     it(str, () => {
-      assert.strictEqual(getWordDistance(str, true), dist)
-    })
-  })
-})
+      assert.strictEqual(getWordDistance(str, true), dist);
+    });
+  });
+});
 
 const cases = [
   ...[...codepoints, ...zwjSequences, ...tagSequences, ...rtlCases].map(
-    ([str]) => str
+    ([str]) => str,
   ),
   ...keycapSequences,
   ...regionalIndicatorSequences,
-]
+];
 
 describe('codepointsIteratorRTL', () => {
-  cases.forEach(str => {
+  cases.forEach((str) => {
     it(str, () => {
-      const arr1 = [...codepointsIteratorRTL(str)]
-      const arr2 = Array.from(str).reverse()
+      const arr1 = [...codepointsIteratorRTL(str)];
+      const arr2 = Array.from(str).reverse();
 
-      assert.deepStrictEqual(arr1, arr2)
-    })
-  })
-})
+      assert.deepStrictEqual(arr1, arr2);
+    });
+  });
+});

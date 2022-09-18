@@ -1,33 +1,33 @@
-import {getWindow} from '@dnd-kit/utilities';
+import { getWindow } from '@dnd-kit/utilities';
 
-import type {ClientRect} from '../../types';
-import {inverseTransform} from '../transform';
+import type { ClientRect } from '../../types';
+import { inverseTransform } from '../transform';
 
 interface Options {
   ignoreTransform?: boolean;
 }
 
-const defaultOptions: Options = {ignoreTransform: false};
+const defaultOptions: Options = { ignoreTransform: false };
 
 /**
  * Returns the bounding client rect of an element relative to the viewport.
  */
 export function getClientRect(
   element: Element,
-  options: Options = defaultOptions
+  options: Options = defaultOptions,
 ) {
   let rect: ClientRect = element.getBoundingClientRect();
 
   if (options.ignoreTransform) {
-    const {getComputedStyle} = getWindow(element);
-    const {transform, transformOrigin} = getComputedStyle(element);
+    const { getComputedStyle } = getWindow(element);
+    const { transform, transformOrigin } = getComputedStyle(element);
 
     if (transform) {
       rect = inverseTransform(rect, transform, transformOrigin);
     }
   }
 
-  const {top, left, width, height, bottom, right} = rect;
+  const { top, left, width, height, bottom, right } = rect;
 
   return {
     top,
@@ -48,5 +48,5 @@ export function getClientRect(
  *
  */
 export function getTransformAgnosticClientRect(element: Element): ClientRect {
-  return getClientRect(element, {ignoreTransform: true});
+  return getClientRect(element, { ignoreTransform: true });
 }

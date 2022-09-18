@@ -64,7 +64,8 @@
       "prosemirror-markdown": ["editor-prosemirror/src-pkgs/markdown/src/"],
       "prosemirror-test-builder": [
         "editor-prosemirror/src-pkgs/test-builder/src/"
-      ]
+      ],
+      "orderedmap": ["editor-prosemirror/src-pkgs/orderedmap/"]
     }
   },
   "files": ["typings.d.ts"]

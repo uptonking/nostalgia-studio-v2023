@@ -23,36 +23,37 @@ export interface BlockInsertElementBrowserProps {
   togglePlusMenuVisibility(): void;
 }
 
-export const BlockInsertElementBrowser: React.FC<BlockInsertElementBrowserProps> =
-  (props) => {
-    return (
-      <>
-        {props.open && (
-          <Popup
-            target={props.plusButtonRef}
-            fitHeight={500}
-            fitWidth={350}
-            offset={[0, 3]}
-            mountTo={props.popupsMountPoint}
-            boundariesElement={props.popupsBoundariesElement}
-            scrollableElement={props.popupsScrollableElement}
-          >
-            <InsertMenu
-              editorView={props.editorView}
-              dropdownItems={props.items}
-              onInsert={props.onInsert}
-              toggleVisiblity={props.togglePlusMenuVisibility}
-            />
-          </Popup>
-        )}
-        <DropDownButton
-          handleRef={props.onRef}
-          selected={props.open}
-          disabled={props.disabled}
-          onClick={props.onClick}
-          spacing={props.spacing}
-          label={props.label}
-        />
-      </>
-    );
-  };
+export const BlockInsertElementBrowser: React.FC<
+  BlockInsertElementBrowserProps
+> = (props) => {
+  return (
+    <>
+      {props.open && (
+        <Popup
+          target={props.plusButtonRef}
+          fitHeight={500}
+          fitWidth={350}
+          offset={[0, 3]}
+          mountTo={props.popupsMountPoint}
+          boundariesElement={props.popupsBoundariesElement}
+          scrollableElement={props.popupsScrollableElement}
+        >
+          <InsertMenu
+            editorView={props.editorView}
+            dropdownItems={props.items}
+            onInsert={props.onInsert}
+            toggleVisiblity={props.togglePlusMenuVisibility}
+          />
+        </Popup>
+      )}
+      <DropDownButton
+        handleRef={props.onRef}
+        selected={props.open}
+        disabled={props.disabled}
+        onClick={props.onClick}
+        spacing={props.spacing}
+        label={props.label}
+      />
+    </>
+  );
+};

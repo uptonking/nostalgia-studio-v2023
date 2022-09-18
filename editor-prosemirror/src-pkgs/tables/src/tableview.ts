@@ -34,9 +34,9 @@ export function updateColumns(
   overrideValue,
 ) {
   let totalWidth = 0;
-    let fixedWidth = true;
+  let fixedWidth = true;
   let nextDOM = colgroup.firstChild;
-    const row = node.firstChild;
+  const row = node.firstChild;
   for (let i = 0, col = 0; i < row.childCount; i++) {
     const { colspan, colwidth } = row.child(i).attrs;
     for (let j = 0; j < colspan; j++, col++) {

@@ -1,12 +1,12 @@
-import type {ClientRectObject, VirtualElement} from '@floating-ui/core';
-import {isElement, isHTMLElement, isLayoutViewport} from './is';
-import {round} from './math';
-import {getWindow} from './window';
+import type { ClientRectObject, VirtualElement } from '@floating-ui/core';
+import { isElement, isHTMLElement, isLayoutViewport } from './is';
+import { round } from './math';
+import { getWindow } from './window';
 
 export function getBoundingClientRect(
   element: Element | VirtualElement,
   includeScale = false,
-  isFixedStrategy = false
+  isFixedStrategy = false,
 ): ClientRectObject {
   const clientRect = element.getBoundingClientRect();
 

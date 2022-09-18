@@ -1,7 +1,7 @@
 /** @jsx jsx  */
-import { Node } from 'slate'
-import { jsx } from 'slate-hyperscript'
-import { cloneDeep } from 'lodash'
+import { Node } from 'slate';
+import { jsx } from 'slate-hyperscript';
+import { cloneDeep } from 'lodash';
 
 export const input = (
   <editor>
@@ -9,8 +9,8 @@ export const input = (
       <text />
     </element>
   </editor>
-)
-export const test = value => {
-  return Node.ancestor(value, [0])
-}
-export const output = cloneDeep(input.children[0])
+);
+export const test = (value) => {
+  return Node.ancestor(value, [0]);
+};
+export const output = cloneDeep(input.children[0]);

@@ -1,4 +1,4 @@
-import type {SortingStrategy} from '../types';
+import type { SortingStrategy } from '../types';
 
 export const rectSwappingStrategy: SortingStrategy = ({
   activeIndex,

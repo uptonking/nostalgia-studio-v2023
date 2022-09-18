@@ -1,13 +1,13 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
-import {useFloatingParentNodeId, useFloatingTree} from '../FloatingTree';
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {getDocument} from '../utils/getDocument';
-import {activeElement} from '../utils/activeElement';
-import {isHTMLElement} from '../utils/is';
-import {stopEvent} from '../utils/stopEvent';
-import {useLatestRef} from '../utils/useLatestRef';
-import {usePrevious} from '../utils/usePrevious';
+import { useFloatingParentNodeId, useFloatingTree } from '../FloatingTree';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { getDocument } from '../utils/getDocument';
+import { activeElement } from '../utils/activeElement';
+import { isHTMLElement } from '../utils/is';
+import { stopEvent } from '../utils/stopEvent';
+import { useLatestRef } from '../utils/useLatestRef';
+import { usePrevious } from '../utils/usePrevious';
 
 const ARROW_UP = 'ArrowUp';
 const ARROW_DOWN = 'ArrowDown';
@@ -16,7 +16,7 @@ const ARROW_RIGHT = 'ArrowRight';
 
 function isIndexOutOfBounds(
   listRef: React.MutableRefObject<Array<HTMLElement | null>>,
-  index: number
+  index: number,
 ) {
   return index < 0 || index >= listRef.current.length;
 }
@@ -31,7 +31,7 @@ function findNonDisabledIndex(
     startingIndex?: number;
     decrement?: boolean;
     disabledIndices?: Array<number>;
-  } = {}
+  } = {},
 ): number {
   const list = listRef.current;
 
@@ -54,7 +54,7 @@ function findNonDisabledIndex(
 function doSwitch(
   orientation: Props['orientation'],
   vertical: boolean,
-  horizontal: boolean
+  horizontal: boolean,
 ) {
   switch (orientation) {
     case 'vertical':
@@ -75,7 +75,7 @@ function isMainOrientationKey(key: string, orientation: Props['orientation']) {
 function isMainOrientationToEndKey(
   key: string,
   orientation: Props['orientation'],
-  rtl: boolean
+  rtl: boolean,
 ) {
   const vertical = key === ARROW_DOWN;
   const horizontal = rtl ? key === ARROW_LEFT : key === ARROW_RIGHT;
@@ -90,7 +90,7 @@ function isMainOrientationToEndKey(
 function isCrossOrientationOpenKey(
   key: string,
   orientation: Props['orientation'],
-  rtl: boolean
+  rtl: boolean,
 ) {
   const vertical = rtl ? key === ARROW_LEFT : key === ARROW_RIGHT;
   const horizontal = key === ARROW_DOWN;
@@ -100,7 +100,7 @@ function isCrossOrientationOpenKey(
 function isCrossOrientationCloseKey(
   key: string,
   orientation: Props['orientation'],
-  rtl: boolean
+  rtl: boolean,
 ) {
   const vertical = rtl ? key === ARROW_RIGHT : key === ARROW_LEFT;
   const horizontal = key === ARROW_UP;
@@ -109,14 +109,14 @@ function isCrossOrientationCloseKey(
 
 function getMinIndex(
   listRef: Props['listRef'],
-  disabledIndices: Array<number> | undefined
+  disabledIndices: Array<number> | undefined,
 ) {
-  return findNonDisabledIndex(listRef, {disabledIndices});
+  return findNonDisabledIndex(listRef, { disabledIndices });
 }
 
 function getMaxIndex(
   listRef: Props['listRef'],
-  disabledIndices: Array<number> | undefined
+  disabledIndices: Array<number> | undefined,
 ) {
   return findNonDisabledIndex(listRef, {
     decrement: true,
@@ -149,7 +149,7 @@ export interface Props {
  * @see https://floating-ui.com/docs/useListNavigation
  */
 export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
-  {open, onOpenChange, refs}: FloatingContext<RT>,
+  { open, onOpenChange, refs }: FloatingContext<RT>,
   {
     listRef,
     activeIndex,
@@ -167,10 +167,10 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
     disabledIndices = openOnArrowKeyDown ? undefined : [],
     orientation = 'vertical',
   }: Props = {
-    listRef: {current: []},
+    listRef: { current: [] },
     activeIndex: null,
     onNavigate: () => {},
-  }
+  },
 ): ElementProps => {
   if (__DEV__) {
     if (allowEscape) {
@@ -179,7 +179,7 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
           [
             'Floating UI: `useListNavigation` looping must be enabled to allow',
             'escaping.',
-          ].join(' ')
+          ].join(' '),
         );
       }
 
@@ -188,7 +188,7 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
           [
             'Floating UI: `useListNavigation` must be virtual to allow',
             'escaping.',
-          ].join(' ')
+          ].join(' '),
         );
       }
     }
@@ -212,7 +212,7 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
   const focusItem = React.useCallback(
     (
       listRef: React.MutableRefObject<Array<HTMLElement | null>>,
-      indexRef: React.MutableRefObject<number>
+      indexRef: React.MutableRefObject<number>,
     ) => {
       // `pointerDown` clicks occur before `focus`, so the button will steal the
       // focus unless we wait a frame.
@@ -220,11 +220,11 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
         if (virtual) {
           setActiveId(listRef.current[indexRef.current]?.id);
         } else {
-          listRef.current[indexRef.current]?.focus({preventScroll: true});
+          listRef.current[indexRef.current]?.focus({ preventScroll: true });
         }
       });
     },
-    [virtual]
+    [virtual],
   );
 
   // Sync `selectedIndex` to be the `activeIndex` upon opening the floating
@@ -346,14 +346,14 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
 
     if (!open && previousOpen) {
       const parentFloating = tree?.nodesRef.current.find(
-        (node) => node.id === parentId
+        (node) => node.id === parentId,
       )?.context?.refs.floating.current;
 
       if (
         parentFloating &&
         !parentFloating.contains(activeElement(getDocument(parentFloating)))
       ) {
-        parentFloating.focus({preventScroll: true});
+        parentFloating.focus({ preventScroll: true });
       }
     }
   }, [enabled, open, previousOpen, tree, parentId]);
@@ -402,7 +402,7 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
         indexRef.current = isMainOrientationToEndKey(
           event.key,
           orientation,
-          rtl
+          rtl,
         )
           ? minIndex
           : maxIndex;
@@ -427,7 +427,7 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
             findNonDisabledIndex(listRef, {
               startingIndex: currentIndex,
               disabledIndices,
-            })
+            }),
           );
         }
       } else {
@@ -449,7 +449,7 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
               startingIndex: currentIndex,
               decrement: true,
               disabledIndices,
-            })
+            }),
           );
         }
       }
@@ -536,15 +536,16 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
       },
     },
     item: {
-      onFocus({currentTarget}) {
+      onFocus({ currentTarget }) {
         const index = listRef.current.indexOf(currentTarget);
         if (index !== -1) {
           onNavigate(index);
         }
       },
-      onClick: ({currentTarget}) => currentTarget.focus({preventScroll: true}), // Safari
+      onClick: ({ currentTarget }) =>
+        currentTarget.focus({ preventScroll: true }), // Safari
       ...(focusItemOnHover && {
-        onMouseMove({currentTarget}) {
+        onMouseMove({ currentTarget }) {
           const target = currentTarget as HTMLButtonElement | null;
           if (target) {
             const index = listRef.current.indexOf(target);
@@ -560,7 +561,7 @@ export const useListNavigation = <RT extends ReferenceType = ReferenceType>(
 
             onNavigateRef.current(null);
             if (!virtual) {
-              refs.floating.current?.focus({preventScroll: true});
+              refs.floating.current?.focus({ preventScroll: true });
             }
           }
         },

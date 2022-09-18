@@ -41,7 +41,8 @@ function computeAttrs(attrs: Attrs, value: Attrs | null) {
 
 function initAttrs(attrs?: { [name: string]: AttributeSpec }) {
   const result: { [name: string]: Attribute } = Object.create(null);
-  if (attrs) for (const name in attrs) result[name] = new Attribute(attrs[name]);
+  if (attrs)
+    for (const name in attrs) result[name] = new Attribute(attrs[name]);
   return result;
 }
 
@@ -113,7 +114,8 @@ export class NodeType {
 
   /// The set of marks allowed in this node. `null` means all marks
   /// are allowed.
-  markSet: readonly MarkType[] | null = null;
+  // markSet: readonly MarkType[] | null = null;
+  markSet: MarkType[] | null = null;
 
   /// The node type's [whitespace](#model.NodeSpec.whitespace) option.
   get whitespace(): 'pre' | 'normal' {
@@ -138,12 +140,13 @@ export class NodeType {
     else return computeAttrs(this.attrs, attrs);
   }
 
-  /// Create a `Node` of this type. The given attributes are
-  /// checked and defaulted (you can pass `null` to use the type's
-  /// defaults entirely, if no required attributes exist). `content`
-  /// may be a `Fragment`, a node, an array of nodes, or
-  /// `null`. Similarly `marks` may be `null` to default to the empty
-  /// set of marks.
+  /** Create a `Node` of this type. The given attributes are
+   * checked and defaulted (you can pass `null` to use the type's
+   * defaults entirely, if no required attributes exist). `content`
+   * may be a `Fragment`, a node, an array of nodes, or
+   * `null`. Similarly `marks` may be `null` to default to the empty
+   * set of marks.
+   */
   create(
     attrs: Attrs | null = null,
     content?: Fragment | Node | readonly Node[] | null,
@@ -271,6 +274,7 @@ export class NodeType {
         "Schema is missing its top node type ('" + topType + "')",
       );
     if (!result.text) throw new RangeError("Every schema needs a 'text' type");
+    // eslint-disable-next-line no-unreachable-loop
     for (const _ in result.text.attrs)
       throw new RangeError('The text node type should not have attributes');
 
@@ -336,7 +340,7 @@ export class MarkType {
   /// @internal
   static compile(marks: OrderedMap<MarkSpec>, schema: Schema) {
     const result = Object.create(null);
-      let rank = 0;
+    let rank = 0;
     marks.forEach(
       (name, spec) => (result[name] = new MarkType(name, rank++, schema, spec)),
     );
@@ -633,12 +637,14 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
     this.marks = MarkType.compile(this.spec.marks, this);
 
     const contentExprCache = Object.create(null);
+    // eslint-disable-next-line guard-for-in
     for (const prop in this.nodes) {
-      if (prop in this.marks)
+      if (prop in this.marks) {
         throw new RangeError(prop + ' can not be both a node and a mark');
+      }
       const type = this.nodes[prop];
-        const contentExpr = type.spec.content || '';
-        const markExpr = type.spec.marks;
+      const contentExpr = type.spec.content || '';
+      const markExpr = type.spec.marks;
       type.contentMatch =
         contentExprCache[contentExpr] ||
         (contentExprCache[contentExpr] = ContentMatch.parse(
@@ -647,17 +653,17 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
         ));
       (type as any).inlineContent = type.contentMatch.inlineContent;
       type.markSet =
-        markExpr == '_'
+        markExpr === '_'
           ? null
           : markExpr
           ? gatherMarks(this, markExpr.split(' '))
-          : markExpr == '' || !type.inlineContent
+          : markExpr === '' || !type.inlineContent
           ? []
           : null;
     }
     for (const prop in this.marks) {
       const type = this.marks[prop];
-        const excl = type.spec.excludes;
+      const excl = type.spec.excludes;
       type.excluded =
         excl == null
           ? [type]
@@ -742,11 +748,11 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
 }
 
 function gatherMarks(schema: Schema, marks: readonly string[]) {
-  const found = [];
+  const found = [] as MarkType[];
   for (let i = 0; i < marks.length; i++) {
     const name = marks[i];
-      const mark = schema.marks[name];
-      let ok = mark;
+    const mark = schema.marks[name];
+    let ok = mark;
     if (mark) {
       found.push(mark);
     } else {
@@ -755,8 +761,9 @@ function gatherMarks(schema: Schema, marks: readonly string[]) {
         if (
           name == '_' ||
           (mark.spec.group && mark.spec.group.split(' ').indexOf(name) > -1)
-        )
+        ) {
           found.push((ok = mark));
+        }
       }
     }
     if (!ok) throw new SyntaxError("Unknown mark type: '" + marks[i] + "'");

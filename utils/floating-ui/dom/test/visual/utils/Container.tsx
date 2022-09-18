@@ -1,6 +1,6 @@
-import {useLayoutEffect, useState} from 'react';
-import {Controls} from './Controls';
-import {positions} from './positions';
+import { useLayoutEffect, useState } from 'react';
+import { Controls } from './Controls';
+import { positions } from './positions';
 
 type Props = {
   children?: React.ReactNode;
@@ -8,7 +8,7 @@ type Props = {
 };
 
 const getStyleForPosition = (position: string) => {
-  switch(position){
+  switch (position) {
     case 'top-left':
       return {};
     case 'top':
@@ -30,18 +30,21 @@ const getStyleForPosition = (position: string) => {
   }
 };
 
-export function Container({children, update}: Props) {
+export function Container({ children, update }: Props) {
   const [position, setPosition] = useState<string>('center');
   useLayoutEffect(update, [update, position]);
 
   return (
     <>
-      <div className='container' style={{
-        position: 'relative',
-        overflow: 'scroll',
-        placeItems: 'initial',
-        ...getStyleForPosition(position)
-      }}>
+      <div
+        className='container'
+        style={{
+          position: 'relative',
+          overflow: 'scroll',
+          placeItems: 'initial',
+          ...getStyleForPosition(position),
+        }}
+      >
         {children}
       </div>
       <h3>Reference position</h3>

@@ -32,7 +32,7 @@ computePosition(
       height: 0,
     }),
   },
-  document.body
+  document.body,
 ).then();
 
 computePosition(
@@ -49,7 +49,7 @@ computePosition(
     }),
     contextElement: document.body,
   },
-  document.body
+  document.body,
 ).then();
 
 computePosition(
@@ -61,7 +61,7 @@ computePosition(
     // @ts-expect-error
     contextElement: '',
   },
-  document.body
+  document.body,
 ).then();
 
 computePosition(document.body, document.body, {
@@ -86,75 +86,77 @@ computePosition(document.body, document.body, {
     offset(),
     hide(),
     size(),
-    arrow({element: document.body}),
+    arrow({ element: document.body }),
   ],
 }).then();
 
 // @ts-expect-error
 arrow();
 
-arrow({element: document.body, padding: 5});
+arrow({ element: document.body, padding: 5 });
 
 // @ts-expect-error
-arrow({element: 'test'});
+arrow({ element: 'test' });
 shift({
   // @ts-expect-error
   boundary: '',
 });
-shift({boundary: document.body});
-shift({boundary: [document.body]});
-shift({boundary: 'clippingAncestors'});
-shift({limiter: limitShift()});
-shift({limiter: limitShift({offset: 5})});
-shift({limiter: limitShift({offset: {mainAxis: 5}})});
-shift({limiter: limitShift({offset: {crossAxis: 5}})});
-shift({limiter: limitShift({offset: {mainAxis: 5, crossAxis: 5}})});
-shift({limiter: limitShift({offset: () => 5})});
-shift({limiter: limitShift({offset: () => ({mainAxis: 5})})});
-shift({limiter: limitShift({offset: () => ({crossAxis: 5})})});
-shift({limiter: limitShift({offset: () => ({mainAxis: 5, crossAxis: 5})})});
+shift({ boundary: document.body });
+shift({ boundary: [document.body] });
+shift({ boundary: 'clippingAncestors' });
+shift({ limiter: limitShift() });
+shift({ limiter: limitShift({ offset: 5 }) });
+shift({ limiter: limitShift({ offset: { mainAxis: 5 } }) });
+shift({ limiter: limitShift({ offset: { crossAxis: 5 } }) });
+shift({ limiter: limitShift({ offset: { mainAxis: 5, crossAxis: 5 } }) });
+shift({ limiter: limitShift({ offset: () => 5 }) });
+shift({ limiter: limitShift({ offset: () => ({ mainAxis: 5 }) }) });
+shift({ limiter: limitShift({ offset: () => ({ crossAxis: 5 }) }) });
+shift({
+  limiter: limitShift({ offset: () => ({ mainAxis: 5, crossAxis: 5 }) }),
+});
 // @ts-expect-error
-shift({limiter: 'test'});
+shift({ limiter: 'test' });
 
 flip({
   // @ts-expect-error
   boundary: '',
 });
-flip({boundary: document.body});
-flip({boundary: [document.body]});
-flip({boundary: 'clippingAncestors'});
+flip({ boundary: document.body });
+flip({ boundary: [document.body] });
+flip({ boundary: 'clippingAncestors' });
 size({
   // @ts-expect-error
   boundary: '',
 });
-size({boundary: document.body});
-size({boundary: [document.body]});
-size({boundary: 'clippingAncestors'});
+size({ boundary: document.body });
+size({ boundary: [document.body] });
+size({ boundary: 'clippingAncestors' });
 autoPlacement({
   // @ts-expect-error
   boundary: '',
 });
-size({boundary: document.body});
-size({boundary: [document.body]});
-size({boundary: 'clippingAncestors'});
+size({ boundary: document.body });
+size({ boundary: [document.body] });
+size({ boundary: 'clippingAncestors' });
 
 offset();
 offset(5);
-offset({mainAxis: 5});
-offset({crossAxis: 5});
-offset({mainAxis: 5, crossAxis: 5});
+offset({ mainAxis: 5 });
+offset({ crossAxis: 5 });
+offset({ mainAxis: 5, crossAxis: 5 });
 offset(() => 5);
-offset(() => ({mainAxis: 5}));
-offset(() => ({crossAxis: 5}));
-offset(() => ({mainAxis: 5, crossAxis: 5}));
+offset(() => ({ mainAxis: 5 }));
+offset(() => ({ crossAxis: 5 }));
+offset(() => ({ mainAxis: 5, crossAxis: 5 }));
 // @ts-expect-error
 offset(() => 'test');
 // @ts-expect-error
 offset('test');
 // @ts-expect-error
-offset({mainAxis: 'test'});
+offset({ mainAxis: 'test' });
 // @ts-expect-error
-offset({crossAxis: 'test'});
+offset({ crossAxis: 'test' });
 
 // @ts-expect-error
 detectOverflow();
@@ -169,7 +171,7 @@ const middlewareWithoutName: Middleware = {
 const middleware: Middleware = {
   name: 'test',
   fn(args) {
-    const {elements} = args;
+    const { elements } = args;
     // @ts-expect-error
     elements.floating.$$unknown$$;
     // @ts-expect-error

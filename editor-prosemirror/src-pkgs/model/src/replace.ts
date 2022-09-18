@@ -94,7 +94,7 @@ export class Slice {
   static fromJSON(schema: Schema, json: any): Slice {
     if (!json) return Slice.empty;
     const openStart = json.openStart || 0;
-      const openEnd = json.openEnd || 0;
+    const openEnd = json.openEnd || 0;
     if (typeof openStart !== 'number' || typeof openEnd !== 'number')
       throw new RangeError('Invalid input for Slice.fromJSON');
     return new Slice(
@@ -109,19 +109,25 @@ export class Slice {
    */
   static maxOpen(fragment: Fragment, openIsolating = true) {
     let openStart = 0;
-      let openEnd = 0;
+    let openEnd = 0;
     for (
       let n = fragment.firstChild;
+      // eslint-disable-next-line no-unmodified-loop-condition
       n && !n.isLeaf && (openIsolating || !n.type.spec.isolating);
       n = n.firstChild
-    )
+    ) {
       openStart++;
+    }
+
     for (
       let n = fragment.lastChild;
+      // eslint-disable-next-line no-unmodified-loop-condition
       n && !n.isLeaf && (openIsolating || !n.type.spec.isolating);
       n = n.lastChild
-    )
+    ) {
       openEnd++;
+    }
+
     return new Slice(fragment, openStart, openEnd);
   }
 
@@ -131,7 +137,7 @@ export class Slice {
 
 function removeRange(content: Fragment, from: number, to: number): Fragment {
   const { index, offset } = content.findIndex(from);
-    const child = content.maybeChild(index);
+  const child = content.maybeChild(index);
   const { index: indexTo, offset: offsetTo } = content.findIndex(to);
   if (offset == from || child!.isText) {
     if (offsetTo != to && !content.child(indexTo).isText)
@@ -154,7 +160,7 @@ function insertInto(
   parent?: Node,
 ): Fragment | null {
   const { index, offset } = content.findIndex(dist);
-    const child = content.maybeChild(index);
+  const child = content.maybeChild(index);
   if (offset == dist || child!.isText) {
     if (parent && !parent.canReplace(index, index, insert)) return null;
     return content.cut(0, dist).append(insert).append(content.cut(dist));
@@ -182,7 +188,7 @@ function replaceOuter(
   depth: number,
 ): Node {
   const index = $from.index(depth);
-    const node = $from.node(depth);
+  const node = $from.node(depth);
   if (index == $to.index(depth) && depth < $from.depth - slice.openStart) {
     const inner = replaceOuter($from, $to, slice, depth + 1);
     return node.copy(node.content.replaceChild(index, inner));
@@ -196,7 +202,7 @@ function replaceOuter(
   ) {
     // Simple, flat case
     const parent = $from.parent;
-      const content = parent.content;
+    const content = parent.content;
     return close(
       parent,
       content
@@ -240,7 +246,7 @@ function addRange(
 ) {
   const node = ($end || $start)!.node(depth);
   let startIndex = 0;
-    const endIndex = $end ? $end.index(depth) : node.childCount;
+  const endIndex = $end ? $end.index(depth) : node.childCount;
   if ($start) {
     startIndex = $start.index(depth);
     if ($start.depth > depth) {
@@ -305,7 +311,7 @@ function replaceTwoWay($from: ResolvedPos, $to: ResolvedPos, depth: number) {
 
 function prepareSliceForReplace(slice: Slice, $along: ResolvedPos) {
   const extra = $along.depth - slice.openStart;
-    const parent = $along.node(extra);
+  const parent = $along.node(extra);
   let node = parent.copy(slice.content);
   for (let i = extra - 1; i >= 0; i--)
     node = $along.node(i).copy(Fragment.from(node));

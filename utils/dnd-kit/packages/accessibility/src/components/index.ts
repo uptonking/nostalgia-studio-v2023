@@ -1,2 +1,2 @@
-export {HiddenText} from './HiddenText';
-export {LiveRegion} from './LiveRegion';
+export { HiddenText } from './HiddenText';
+export { LiveRegion } from './LiveRegion';

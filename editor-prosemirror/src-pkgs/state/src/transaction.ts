@@ -23,8 +23,8 @@ export type Command = (
 ) => boolean;
 
 const UPDATED_SEL = 1;
-  const UPDATED_MARKS = 2;
-  const UPDATED_SCROLL = 4;
+const UPDATED_MARKS = 2;
+const UPDATED_SCROLL = 4;
 
 /** An editor state transaction, which can be applied to a state to
  * create an updated state. Use

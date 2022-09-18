@@ -23,14 +23,14 @@
     "url": "git://github.com/prosemirror/prosemirror-collab.git"
   },
   "dependencies": {
-    "prosemirror-state": "1.4.1111"
+    "prosemirror-state": "1.4.1111",
+    "prosemirror-transform": "1.7.0111"
   },
   "devDependencies": {
     "@prosemirror/buildhelper": "^0.1.5",
     "prosemirror-history": "^1.0.0",
     "prosemirror-model": "^1.0.0",
-    "prosemirror-test-builder": "^1.0.0",
-    "prosemirror-transform": "^1.0.0"
+    "prosemirror-test-builder": "^1.0.0"
   },
   "scripts": {
     "test": "pm-runtests",

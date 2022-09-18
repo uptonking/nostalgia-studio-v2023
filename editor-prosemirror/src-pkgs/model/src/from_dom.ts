@@ -247,7 +247,7 @@ export class DOMParser {
       i++
     ) {
       const rule = this.styles[i];
-        const style = rule.style!;
+      const style = rule.style!;
       if (
         style.indexOf(prop) != 0 ||
         (rule.context && !context.matchesContext(rule.context)) ||
@@ -273,10 +273,10 @@ export class DOMParser {
     const result: ParseRule[] = [];
     function insert(rule: ParseRule) {
       const priority = rule.priority == null ? 50 : rule.priority;
-        let i = 0;
+      let i = 0;
       for (; i < result.length; i++) {
         const next = result[i];
-          const nextPriority = next.priority == null ? 50 : next.priority;
+        const nextPriority = next.priority == null ? 50 : next.priority;
         if (nextPriority < priority) break;
       }
       result.splice(i, 0, rule);
@@ -363,8 +363,8 @@ const listTags: { [tagName: string]: boolean } = { ol: true, ul: true };
 
 // Using a bitfield for node context options
 const OPT_PRESERVE_WS = 1;
-  const OPT_PRESERVE_WS_FULL = 2;
-  const OPT_OPEN_LEFT = 4;
+const OPT_PRESERVE_WS_FULL = 2;
+const OPT_OPEN_LEFT = 4;
 
 function wsOptionsFor(
   type: NodeType | null,
@@ -412,7 +412,7 @@ class NodeContext {
         this.match = this.type.contentMatch.matchFragment(fill)!;
       } else {
         const start = this.type.contentMatch;
-          let wrap;
+        let wrap;
         if ((wrap = start.findWrapping(node.type))) {
           this.match = start;
           return wrap;
@@ -428,7 +428,7 @@ class NodeContext {
     if (!(this.options & OPT_PRESERVE_WS)) {
       // Strip trailing whitespace
       const last = this.content[this.content.length - 1];
-        let m;
+      let m;
       if (last && last.isText && (m = /[ \t\r\n\u000c]+$/.exec(last.text!))) {
         const text = last as TextNode;
         if (last.text!.length == m[0].length) this.content.pop();
@@ -490,7 +490,7 @@ class ParseContext {
     readonly isOpen: boolean,
   ) {
     const topNode = options.topNode;
-      let topContext: NodeContext;
+    let topContext: NodeContext;
     const topOptions =
       wsOptionsFor(null, options.preserveWhitespace, 0) |
       (isOpen ? OPT_OPEN_LEFT : 0);
@@ -542,7 +542,7 @@ class ParseContext {
     } else if (dom.nodeType == 1) {
       const style = (dom as HTMLElement).getAttribute('style');
       const marks = style ? this.readStyles(parseStyles(style)) : null;
-        const top = this.top;
+      const top = this.top;
       if (marks != null)
         for (let i = 0; i < marks.length; i++) this.addPendingMark(marks[i]);
       this.addElement(dom as HTMLElement);
@@ -594,7 +594,7 @@ class ParseContext {
   // none is found, the element's content nodes are added directly.
   addElement(dom: HTMLElement, matchAfter?: ParseRule) {
     const name = dom.nodeName.toLowerCase();
-      let ruleID;
+    let ruleID;
     if (listTags.hasOwnProperty(name) && this.parser.normalizeLists)
       normalizeList(dom);
     const rule =
@@ -608,8 +608,8 @@ class ParseContext {
       else if (rule && (rule.skip as any).nodeType)
         dom = rule.skip as any as HTMLElement;
       let sync;
-        const top = this.top;
-        const oldNeedsBlock = this.needsBlock;
+      const top = this.top;
+      const oldNeedsBlock = this.needsBlock;
       if (blockTags.hasOwnProperty(name)) {
         sync = true;
         if (!top.type) this.needsBlock = true;
@@ -678,7 +678,9 @@ class ParseContext {
     rule: ParseRule,
     continueAfter?: ParseRule,
   ) {
-    let sync; let nodeType; let mark;
+    let sync;
+    let nodeType;
+    let mark;
     if (rule.node) {
       nodeType = this.parser.schema.nodes[rule.node];
       if (!nodeType.isLeaf) {
@@ -741,7 +743,8 @@ class ParseContext {
   // context. May add intermediate wrappers and/or leave non-solid
   // nodes that we're in.
   findPlace(node: Node) {
-    let route; let sync: NodeContext | undefined;
+    let route;
+    let sync: NodeContext | undefined;
     for (let depth = this.open; depth >= 0; depth--) {
       const cx = this.nodes[depth];
       const found = cx.findWrapping(node);
@@ -979,7 +982,7 @@ class ParseContext {
 // actually part of the list item above it.
 function normalizeList(dom: DOMNode) {
   for (
-    let child = dom.firstChild, prevItem = null;
+    let child = dom.firstChild, prevItem: ChildNode | null = null;
     child;
     child = child.nextSibling
   ) {
@@ -1008,9 +1011,11 @@ function matches(dom: any, selector: string): boolean {
 // Tokenize a style attribute into property/value pairs.
 function parseStyles(style: string): string[] {
   const re = /\s*([\w-]+)\s*:\s*([^;]+)/g;
-    let m;
-    const result = [];
-  while ((m = re.exec(style))) result.push(m[1], m[2].trim());
+  let m;
+  const result = [];
+  while ((m = re.exec(style))) {
+    result.push(m[1], m[2].trim());
+  }
   return result;
 }
 
@@ -1029,14 +1034,14 @@ function markMayApply(markType: MarkType, nodeType: NodeType) {
     const parent = nodes[name];
     if (!parent.allowsMarkType(markType)) continue;
     const seen: ContentMatch[] = [];
-      const scan = (match: ContentMatch) => {
-        seen.push(match);
-        for (let i = 0; i < match.edgeCount; i++) {
-          const { type, next } = match.edge(i);
-          if (type == nodeType) return true;
-          if (seen.indexOf(next) < 0 && scan(next)) return true;
-        }
-      };
+    const scan = (match: ContentMatch) => {
+      seen.push(match);
+      for (let i = 0; i < match.edgeCount; i++) {
+        const { type, next } = match.edge(i);
+        if (type == nodeType) return true;
+        if (seen.indexOf(next) < 0 && scan(next)) return true;
+      }
+    };
     if (scan(parent.contentMatch)) return true;
   }
 }

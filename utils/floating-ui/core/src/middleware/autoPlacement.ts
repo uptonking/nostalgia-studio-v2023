@@ -1,26 +1,26 @@
-import type {Middleware, Placement, Alignment} from '../types';
+import type { Middleware, Placement, Alignment } from '../types';
 import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import {getSide} from '../utils/getSide';
-import {getAlignment} from '../utils/getAlignment';
-import {getAlignmentSides} from '../utils/getAlignmentSides';
-import {getOppositeAlignmentPlacement} from '../utils/getOppositeAlignmentPlacement';
-import {allPlacements} from '../enums';
+import { getSide } from '../utils/getSide';
+import { getAlignment } from '../utils/getAlignment';
+import { getAlignmentSides } from '../utils/getAlignmentSides';
+import { getOppositeAlignmentPlacement } from '../utils/getOppositeAlignmentPlacement';
+import { allPlacements } from '../enums';
 
 export function getPlacementList(
   alignment: Alignment | null,
   autoAlignment: boolean,
-  allowedPlacements: Array<Placement>
+  allowedPlacements: Array<Placement>,
 ) {
   const allowedPlacementsSortedByAlignment = alignment
     ? [
         ...allowedPlacements.filter(
-          (placement) => getAlignment(placement) === alignment
+          (placement) => getAlignment(placement) === alignment,
         ),
         ...allowedPlacements.filter(
-          (placement) => getAlignment(placement) !== alignment
+          (placement) => getAlignment(placement) !== alignment,
         ),
       ]
     : allowedPlacements.filter((placement) => getSide(placement) === placement);
@@ -64,12 +64,12 @@ export interface Options {
  * @see https://floating-ui.com/docs/autoPlacement
  */
 export const autoPlacement = (
-  options: Partial<Options & DetectOverflowOptions> = {}
+  options: Partial<Options & DetectOverflowOptions> = {},
 ): Middleware => ({
   name: 'autoPlacement',
   options,
   async fn(middlewareArguments) {
-    const {x, y, rects, middlewareData, placement, platform, elements} =
+    const { x, y, rects, middlewareData, placement, platform, elements } =
       middlewareArguments;
 
     const {
@@ -82,12 +82,12 @@ export const autoPlacement = (
     const placements = getPlacementList(
       alignment,
       autoAlignment,
-      allowedPlacements
+      allowedPlacements,
     );
 
     const overflow = await detectOverflow(
       middlewareArguments,
-      detectOverflowOptions
+      detectOverflowOptions,
     );
 
     const currentIndex = middlewareData.autoPlacement?.index ?? 0;
@@ -97,10 +97,10 @@ export const autoPlacement = (
       return {};
     }
 
-    const {main, cross} = getAlignmentSides(
+    const { main, cross } = getAlignmentSides(
       currentPlacement,
       rects,
-      await platform.isRTL?.(elements.floating)
+      await platform.isRTL?.(elements.floating),
     );
 
     // Make `computeCoords` start from the right place
@@ -122,7 +122,7 @@ export const autoPlacement = (
 
     const allOverflows = [
       ...(middlewareData.autoPlacement?.overflows ?? []),
-      {placement: currentPlacement, overflows: currentOverflows},
+      { placement: currentPlacement, overflows: currentOverflows },
     ];
 
     const nextPlacement = placements[currentIndex + 1];
@@ -144,7 +144,7 @@ export const autoPlacement = (
       .slice()
       .sort((a, b) => a.overflows[0] - b.overflows[0]);
     const placementThatFitsOnAllSides = placementsSortedByLeastOverflow.find(
-      ({overflows}) => overflows.every((overflow) => overflow <= 0)
+      ({ overflows }) => overflows.every((overflow) => overflow <= 0),
     )?.placement;
 
     const resetPlacement =

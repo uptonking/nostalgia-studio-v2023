@@ -78,16 +78,11 @@ const initialStyles = {
 };
 
 function Item({id}) {
-  const {
-    attributes,
-    setNodeRef,
-    listeners,
-    transform,
-    isDragging,
-  } = useSortable({
-    id,
-    transition: null,
-  });
+  const {attributes, setNodeRef, listeners, transform, isDragging} =
+    useSortable({
+      id,
+      transition: null,
+    });
 
   return (
     <motion.div

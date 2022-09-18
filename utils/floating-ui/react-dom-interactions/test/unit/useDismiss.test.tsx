@@ -1,23 +1,23 @@
-import {useState} from 'react';
-import {cleanup, fireEvent, render, screen} from '@testing-library/react';
+import { useState } from 'react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {useDismiss, useInteractions, useFloating} from '../../src';
-import type {Props} from '../../src/hooks/useDismiss';
+import { useDismiss, useInteractions, useFloating } from '../../src';
+import type { Props } from '../../src/hooks/useDismiss';
 
 function App(props: Props) {
   const [open, setOpen] = useState(true);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useDismiss(context, props),
   ]);
 
   return (
     <>
-      <button {...getReferenceProps({ref: reference})} />
-      {open && <div role="tooltip" {...getFloatingProps({ref: floating})} />}
+      <button {...getReferenceProps({ ref: reference })} />
+      {open && <div role='tooltip' {...getFloatingProps({ ref: floating })} />}
     </>
   );
 }
@@ -25,7 +25,7 @@ function App(props: Props) {
 describe('true', () => {
   test('dismisses with escape key', () => {
     render(<App />);
-    fireEvent.keyDown(document.body, {key: 'Escape'});
+    fireEvent.keyDown(document.body, { key: 'Escape' });
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
     cleanup();
   });
@@ -55,7 +55,7 @@ describe('true', () => {
 describe('false', () => {
   test('dismisses with escape key', () => {
     render(<App escapeKey={false} />);
-    fireEvent.keyDown(document.body, {key: 'Escape'});
+    fireEvent.keyDown(document.body, { key: 'Escape' });
     expect(screen.queryByRole('tooltip')).toBeInTheDocument();
     cleanup();
   });

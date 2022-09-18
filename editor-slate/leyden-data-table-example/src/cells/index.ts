@@ -7,9 +7,9 @@ import { UnitOfMeasure } from './UnitOfMeasure';
 import { WholeDollars } from './WholeDollars';
 
 export const cellRenderers: CellRenderers = {
-    CSI,
-    Name,
-    Quantity,
-    UnitOfMeasure,
-    WholeDollars,
+  CSI,
+  Name,
+  Quantity,
+  UnitOfMeasure,
+  WholeDollars,
 };

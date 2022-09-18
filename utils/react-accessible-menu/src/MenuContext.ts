@@ -1,7 +1,6 @@
 import { createContext } from 'react';
 import { MenuContextProps, MenuItemType } from './types';
 
-
 export const MenuContext = createContext<MenuContextProps>({
   registerItem: () => {},
   unregisterItem: () => {},

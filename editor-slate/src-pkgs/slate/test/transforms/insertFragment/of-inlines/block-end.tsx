@@ -1,15 +1,15 @@
 /** @jsx jsx */
-import { Transforms } from 'slate'
-import { jsx } from '../../..'
+import { Transforms } from 'slate';
+import { jsx } from '../../..';
 
-export const run = editor => {
+export const run = (editor) => {
   Transforms.insertFragment(
     editor,
     <fragment>
       <inline>fragment</inline>
-    </fragment>
-  )
-}
+    </fragment>,
+  );
+};
 export const input = (
   <editor>
     <block>
@@ -17,7 +17,7 @@ export const input = (
       <cursor />
     </block>
   </editor>
-)
+);
 // TODO: this cursor placement seems off
 export const output = (
   <editor>
@@ -30,4 +30,4 @@ export const output = (
       <text />
     </block>
   </editor>
-)
+);

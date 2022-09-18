@@ -1,4 +1,4 @@
-import { Text } from 'slate'
+import { Text } from 'slate';
 
 export const input = [
   {
@@ -10,8 +10,8 @@ export const input = [
     properties: {},
     newProperties: {},
   },
-]
-export const test = value => {
-  return Text.isTextList(value)
-}
-export const output = false
+];
+export const test = (value) => {
+  return Text.isTextList(value);
+};
+export const output = false;

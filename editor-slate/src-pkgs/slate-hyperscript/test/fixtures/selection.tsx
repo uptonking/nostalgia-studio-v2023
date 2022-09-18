@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'slate-hyperscript'
+import { jsx } from 'slate-hyperscript';
 
 export const input = (
   <editor>
@@ -9,7 +9,7 @@ export const input = (
       <focus path={[0, 0]} offset={2} />
     </selection>
   </editor>
-)
+);
 export const output = {
   children: [
     {
@@ -30,4 +30,4 @@ export const output = {
       offset: 2,
     },
   },
-}
+};

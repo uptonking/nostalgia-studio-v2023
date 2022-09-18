@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useRef} from 'react';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 import {
   useIsomorphicLayoutEffect,
   useLatestValue,
@@ -6,10 +6,10 @@ import {
   useUniqueId,
 } from '@dnd-kit/utilities';
 
-import {InternalContext, Action, Data} from '../store';
-import type {ClientRect, UniqueIdentifier} from '../types';
+import { InternalContext, Action, Data } from '../store';
+import type { ClientRect, UniqueIdentifier } from '../types';
 
-import {useResizeObserver} from './utilities';
+import { useResizeObserver } from './utilities';
 
 interface ResizeObserverConfig {
   /** Whether the ResizeObserver should be disabled entirely */
@@ -43,10 +43,9 @@ export function useDroppable({
   resizeObserverConfig,
 }: UseDroppableArguments) {
   const key = useUniqueId(ID_PREFIX);
-  const {active, dispatch, over, measureDroppableContainers} = useContext(
-    InternalContext
-  );
-  const previous = useRef({disabled});
+  const { active, dispatch, over, measureDroppableContainers } =
+    useContext(InternalContext);
+  const previous = useRef({ disabled });
   const resizeObserverConnected = useRef(false);
   const rect = useRef<ClientRect | null>(null);
   const callbackId = useRef<NodeJS.Timeout | null>(null);
@@ -74,13 +73,13 @@ export function useDroppable({
 
       callbackId.current = setTimeout(() => {
         measureDroppableContainers(
-          typeof ids.current === 'string' ? [ids.current] : ids.current
+          typeof ids.current === 'string' ? [ids.current] : ids.current,
         );
         callbackId.current = null;
       }, resizeObserverTimeout);
     },
     //eslint-disable-next-line react-hooks/exhaustive-deps
-    [resizeObserverTimeout]
+    [resizeObserverTimeout],
   );
   const resizeObserver = useResizeObserver({
     callback: handleResize,
@@ -101,7 +100,7 @@ export function useDroppable({
         resizeObserver.observe(newElement);
       }
     },
-    [resizeObserver]
+    [resizeObserver],
   );
   const [nodeRef, setNodeRef] = useNodeRef(handleNodeChange);
   const dataRef = useLatestValue(data);
@@ -138,7 +137,7 @@ export function useDroppable({
         });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [id]
+    [id],
   );
 
   useEffect(() => {

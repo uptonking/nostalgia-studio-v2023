@@ -1,5 +1,5 @@
-import {test, expect} from '@playwright/test';
-import {click} from './utils/click';
+import { test, expect } from '@playwright/test';
+import { click } from './utils/click';
 
 [null, 'reference', 'floating', 'body', 'html', 'offsetParent'].forEach(
   (node) => {
@@ -9,8 +9,8 @@ import {click} from './utils/click';
       await page.goto('http://localhost:1234/transform');
       await click(page, `[data-testid="transform-${node}"]`);
       expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-        `${node}.png`
+        `${node}.png`,
       );
     });
-  }
+  },
 );

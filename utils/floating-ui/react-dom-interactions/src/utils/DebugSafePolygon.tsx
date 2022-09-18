@@ -1,4 +1,4 @@
-export function DebugSafePolygon({points}: {points: string}) {
+export function DebugSafePolygon({ points }: { points: string }) {
   return (
     <svg
       style={{
@@ -10,7 +10,7 @@ export function DebugSafePolygon({points}: {points: string}) {
         height: '100vh',
       }}
     >
-      <polygon points={points} style={{fill: 'red', opacity: 0.8}} />
+      <polygon points={points} style={{ fill: 'red', opacity: 0.8 }} />
     </svg>
   );
 }

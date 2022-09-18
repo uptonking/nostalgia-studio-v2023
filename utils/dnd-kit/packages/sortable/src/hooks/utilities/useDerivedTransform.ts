@@ -1,6 +1,6 @@
-import {useEffect, useRef, useState} from 'react';
-import {getClientRect, ClientRect} from '@dnd-kit/core';
-import {Transform, useIsomorphicLayoutEffect} from '@dnd-kit/utilities';
+import { useEffect, useRef, useState } from 'react';
+import { getClientRect, ClientRect } from '@dnd-kit/core';
+import { Transform, useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
 interface Arguments {
   rect: React.MutableRefObject<ClientRect | null>;
@@ -13,9 +13,14 @@ interface Arguments {
  * When the index of an item changes while sorting,
  * we need to temporarily disable the transforms
  */
-export function useDerivedTransform({disabled, index, node, rect}: Arguments) {
+export function useDerivedTransform({
+  disabled,
+  index,
+  node,
+  rect,
+}: Arguments) {
   const [derivedTransform, setDerivedtransform] = useState<Transform | null>(
-    null
+    null,
   );
   const previousIndex = useRef(index);
 

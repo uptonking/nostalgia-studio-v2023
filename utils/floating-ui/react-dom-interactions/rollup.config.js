@@ -1,8 +1,8 @@
 import path from 'path';
-import {babel} from '@rollup/plugin-babel';
-import {nodeResolve} from '@rollup/plugin-node-resolve';
+import { babel } from '@rollup/plugin-babel';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import {terser} from 'rollup-plugin-terser';
+import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 
 const input = path.join(__dirname, 'src/index.ts');
@@ -13,7 +13,7 @@ const bundles = [
     output: {
       file: path.join(
         __dirname,
-        'dist/floating-ui.react-dom-interactions.esm.js'
+        'dist/floating-ui.react-dom-interactions.esm.js',
       ),
       format: 'esm',
     },
@@ -23,7 +23,7 @@ const bundles = [
     output: {
       file: path.join(
         __dirname,
-        'dist/floating-ui.react-dom-interactions.esm.min.js'
+        'dist/floating-ui.react-dom-interactions.esm.min.js',
       ),
       format: 'esm',
     },
@@ -50,7 +50,7 @@ const bundles = [
       name: 'FloatingUIReactDOM',
       file: path.join(
         __dirname,
-        'dist/floating-ui.react-dom-interactions.min.js'
+        'dist/floating-ui.react-dom-interactions.min.js',
       ),
       format: 'umd',
       globals: {
@@ -72,7 +72,7 @@ const bundles = [
   },
 ];
 
-const buildExport = bundles.map(({input, output}) => ({
+const buildExport = bundles.map(({ input, output }) => ({
   input,
   output,
   external: [
@@ -84,7 +84,7 @@ const buildExport = bundles.map(({input, output}) => ({
   ].concat(output.format !== 'umd' ? ['point-in-polygon', 'aria-hidden'] : []),
   plugins: [
     commonjs(),
-    nodeResolve({extensions: ['.ts', '.tsx']}),
+    nodeResolve({ extensions: ['.ts', '.tsx'] }),
     babel({
       babelHelpers: 'bundled',
       extensions: ['.ts', '.tsx'],
@@ -108,7 +108,7 @@ const devExport = {
   },
   plugins: [
     commonjs(),
-    nodeResolve({extensions: ['.ts']}),
+    nodeResolve({ extensions: ['.ts'] }),
     babel({
       babelHelpers: 'bundled',
       extensions: ['.ts'],

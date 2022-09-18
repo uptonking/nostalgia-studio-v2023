@@ -1,5 +1,5 @@
-import { applyDevTools } from 'prosemirror-dev-toolkit';
 // import { applyDevTools } from 'prosemirror-dev-tools';
+import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { schema } from 'prosemirror-schema-basic';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';

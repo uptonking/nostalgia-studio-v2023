@@ -1,4 +1,4 @@
-import {useRef} from 'react';
+import { useRef } from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
 export function usePrevious<T>(value: T) {

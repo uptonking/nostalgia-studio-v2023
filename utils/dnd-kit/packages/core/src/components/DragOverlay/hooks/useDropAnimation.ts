@@ -1,10 +1,10 @@
-import {useState} from 'react';
-import {CSS, Transform, useIsomorphicLayoutEffect} from '@dnd-kit/utilities';
+import { useState } from 'react';
+import { CSS, Transform, useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
-import type {UniqueIdentifier} from '../../../types';
-import type {DraggableNodes} from '../../../store';
-import {getMeasurableNode} from '../../../utilities/nodes';
-import {getTransformAgnosticClientRect} from '../../../utilities/rect';
+import type { UniqueIdentifier } from '../../../types';
+import type { DraggableNodes } from '../../../store';
+import { getMeasurableNode } from '../../../utilities/nodes';
+import { getTransformAgnosticClientRect } from '../../../utilities/rect';
 
 export interface DropAnimation {
   duration: number;
@@ -98,7 +98,7 @@ export function useDropAnimation({
             {
               easing,
               duration,
-            }
+            },
           );
 
           nodeAnimation.onfinish = () => {

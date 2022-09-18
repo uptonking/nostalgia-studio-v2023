@@ -1,31 +1,46 @@
-import { HTMLAttributes, HTMLProps, ReactElement, ReactNode, RefObject } from 'react';
+import {
+  HTMLAttributes,
+  HTMLProps,
+  ReactElement,
+  ReactNode,
+  RefObject,
+} from 'react';
 
 export type ItemId = string | number;
 
-export interface MenuImperativeHandle<T = any | undefined> { // TODO
+export interface MenuImperativeHandle<T = any | undefined> {
+  // TODO
   focusItem: (id: ItemId) => void;
   reorder: () => void;
   focusedItem: ItemId | null;
 }
 
-export interface MenuProps<E extends HTMLElement = HTMLDivElement, D = any | undefined> {
-  type?: MenuItemType,
-  orientation?: MenuOrientation,
+export interface MenuProps<
+  E extends HTMLElement = HTMLDivElement,
+  D = any | undefined,
+> {
+  type?: MenuItemType;
+  orientation?: MenuOrientation;
   onSelectItem?: (id: ItemId, itemData: D) => void;
   onFocusItem?: (id: ItemId, itemData: D) => void;
-  onKeyDown?: (e: KeyboardEvent) => void,
+  onKeyDown?: (e: KeyboardEvent) => void;
   focusedItem?: ItemId;
   scrollToItem?: (id: ItemId, itemData: D) => void;
   renderMenu: (props: MenuRenderProps<E, D>) => ReactElement | null;
 }
 
-export interface MenuRenderProps<E extends HTMLElement = HTMLDivElement, D = any | undefined> {
+export interface MenuRenderProps<
+  E extends HTMLElement = HTMLDivElement,
+  D = any | undefined,
+> {
   props: HTMLAttributes<E>;
   ref: RefObject<E>;
 }
 
-export interface UseMenuProps<E extends HTMLElement = HTMLDivElement, D = any | undefined> extends Omit<MenuProps<E, D>, "renderMenu"> {
-}
+export interface UseMenuProps<
+  E extends HTMLElement = HTMLDivElement,
+  D = any | undefined,
+> extends Omit<MenuProps<E, D>, 'renderMenu'> {}
 
 export enum MenuItemType {
   Menu = 'menu',
@@ -38,7 +53,10 @@ export enum MenuOrientation {
   Horizontal = 'horizontal',
 }
 
-export interface MenuItemProps<E extends HTMLElement = HTMLDivElement, D = any | undefined> {
+export interface MenuItemProps<
+  E extends HTMLElement = HTMLDivElement,
+  D = any | undefined,
+> {
   id?: ItemId;
   data?: D;
   renderItem: (props: MenuItemRenderProps<E, D>) => ReactElement | null;
@@ -49,7 +67,10 @@ export interface MenuItemProps<E extends HTMLElement = HTMLDivElement, D = any |
   type?: MenuItemType;
 }
 
-export interface UseMenuItemProps<E extends HTMLElement = HTMLDivElement, D = any | undefined> extends Omit<MenuItemProps<E, D>, "renderItem"> {
+export interface UseMenuItemProps<
+  E extends HTMLElement = HTMLDivElement,
+  D = any | undefined,
+> extends Omit<MenuItemProps<E, D>, 'renderItem'> {
   updateSearchLabelDeps?: any[];
 }
 

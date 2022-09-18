@@ -1,8 +1,8 @@
-import {useInteractions} from '../../src/useInteractions';
+import { useInteractions } from '../../src/useInteractions';
 
 test('returns prop getters', () => {
-  const {getReferenceProps, getFloatingProps, getItemProps} = useInteractions(
-    []
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [],
   );
 
   expect(typeof getReferenceProps).toBe('function');
@@ -16,8 +16,8 @@ test('correctly merges functions', () => {
   const secondInteractionOnKeyDown = jest.fn();
   const userOnClick = jest.fn();
 
-  const {getReferenceProps} = useInteractions([
-    {reference: {onClick: firstInteractionOnClick}},
+  const { getReferenceProps } = useInteractions([
+    { reference: { onClick: firstInteractionOnClick } },
     {
       reference: {
         onClick: secondInteractionOnClick,
@@ -26,7 +26,7 @@ test('correctly merges functions', () => {
     },
   ]);
 
-  const {onClick, onKeyDown} = getReferenceProps({onClick: userOnClick});
+  const { onClick, onKeyDown } = getReferenceProps({ onClick: userOnClick });
 
   onClick();
   onKeyDown();
@@ -38,9 +38,11 @@ test('correctly merges functions', () => {
 });
 
 test('does not error with undefined user supplied functions', () => {
-  const {getReferenceProps} = useInteractions([{reference: {onClick() {}}}]);
+  const { getReferenceProps } = useInteractions([
+    { reference: { onClick() {} } },
+  ]);
 
   expect(() =>
-    getReferenceProps({onClick: undefined}).onClick()
+    getReferenceProps({ onClick: undefined }).onClick(),
   ).not.toThrowError();
 });

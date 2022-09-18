@@ -1,13 +1,13 @@
-import {useRef} from 'react';
-import {useFloating, shift, arrow} from '.';
+import { useRef } from 'react';
+import { useFloating, shift, arrow } from '.';
 
 App;
 function App() {
   const arrowRef = useRef(null);
   useFloating();
-  const {reference, floating, update} = useFloating({
+  const { reference, floating, update } = useFloating({
     placement: 'right',
-    middleware: [shift(), arrow({element: arrowRef})],
+    middleware: [shift(), arrow({ element: arrowRef })],
     strategy: 'fixed',
   });
   reference(null);

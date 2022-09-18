@@ -1,7 +1,7 @@
-import {useEffect, useRef} from 'react';
-import {useLazyMemo} from '@dnd-kit/utilities';
+import { useEffect, useRef } from 'react';
+import { useLazyMemo } from '@dnd-kit/utilities';
 
-import {getScrollableAncestors} from '../../utilities';
+import { getScrollableAncestors } from '../../utilities';
 
 const defaultValue: Element[] = [];
 
@@ -25,7 +25,7 @@ export function useScrollableAncestors(node: HTMLElement | null) {
 
       return getScrollableAncestors(node);
     },
-    [node]
+    [node],
   );
 
   useEffect(() => {

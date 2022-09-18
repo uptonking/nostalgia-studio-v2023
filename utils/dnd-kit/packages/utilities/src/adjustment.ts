@@ -19,7 +19,7 @@ function createAdjustmentFn(modifier: number) {
       },
       {
         ...object,
-      }
+      },
     );
   };
 }

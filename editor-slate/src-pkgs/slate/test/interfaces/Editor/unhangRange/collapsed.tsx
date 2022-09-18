@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { Editor } from 'slate'
-import { jsx } from '../../..'
+import { Editor } from 'slate';
+import { jsx } from '../../..';
 
 export const input = (
   <editor>
@@ -9,11 +9,11 @@ export const input = (
       <cursor />
     </block>
   </editor>
-)
-export const test = editor => {
-  return Editor.unhangRange(editor, editor.selection)
-}
+);
+export const test = (editor) => {
+  return Editor.unhangRange(editor, editor.selection);
+};
 export const output = {
   anchor: { path: [0, 0], offset: 3 },
   focus: { path: [0, 0], offset: 3 },
-}
+};

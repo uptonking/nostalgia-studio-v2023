@@ -1,4 +1,4 @@
-import { Operation } from 'slate'
+import { Operation } from 'slate';
 
 export const input = {
   type: 'set_node',
@@ -6,8 +6,8 @@ export const input = {
   properties: {},
   newProperties: {},
   custom: true,
-}
-export const test = value => {
-  return Operation.isOperation(value)
-}
-export const output = true
+};
+export const test = (value) => {
+  return Operation.isOperation(value);
+};
+export const output = true;

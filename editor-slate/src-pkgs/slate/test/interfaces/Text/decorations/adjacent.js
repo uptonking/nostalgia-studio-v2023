@@ -1,4 +1,4 @@
-import { Text } from 'slate'
+import { Text } from 'slate';
 
 export const input = [
   {
@@ -23,11 +23,11 @@ export const input = [
     },
     decoration2: 'decoration2',
   },
-]
+];
 
-export const test = decorations => {
-  return Text.decorations({ text: 'abcd', mark: 'mark' }, decorations)
-}
+export const test = (decorations) => {
+  return Text.decorations({ text: 'abcd', mark: 'mark' }, decorations);
+};
 
 export const output = [
   {
@@ -48,4 +48,4 @@ export const output = [
     text: 'd',
     mark: 'mark',
   },
-]
+];

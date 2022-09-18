@@ -1,13 +1,13 @@
-import {hideOthers} from 'aria-hidden';
+import { hideOthers } from 'aria-hidden';
 import * as React from 'react';
-import {useFloatingTree} from './FloatingTree';
-import type {FloatingContext, ReferenceType} from './types';
-import {activeElement} from './utils/activeElement';
-import {getChildren} from './utils/getChildren';
-import {getDocument} from './utils/getDocument';
-import {isElement, isHTMLElement} from './utils/is';
-import {stopEvent} from './utils/stopEvent';
-import {useLatestRef} from './utils/useLatestRef';
+import { useFloatingTree } from './FloatingTree';
+import type { FloatingContext, ReferenceType } from './types';
+import { activeElement } from './utils/activeElement';
+import { getChildren } from './utils/getChildren';
+import { getDocument } from './utils/getDocument';
+import { isElement, isHTMLElement } from './utils/is';
+import { stopEvent } from './utils/stopEvent';
+import { useLatestRef } from './utils/useLatestRef';
 
 function focus(el: HTMLElement | undefined) {
   // `pointerDown` clicks occur before `focus`, so the button will steal the
@@ -58,7 +58,7 @@ export interface Props<RT extends ReferenceType = ReferenceType> {
  * @see https://floating-ui.com/docs/FloatingFocusManager
  */
 export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
-  context: {refs, nodeId, onOpenChange},
+  context: { refs, nodeId, onOpenChange },
   children,
   order = ['content'],
   endGuard = true,
@@ -83,7 +83,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
         }
         if (type === 'content') {
           return Array.from(
-            refs.floating.current?.querySelectorAll(SELECTOR) ?? []
+            refs.floating.current?.querySelectorAll(SELECTOR) ?? [],
           );
         }
 
@@ -107,7 +107,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
       isHTMLElement(refs.reference.current) &&
       refs.reference.current.getAttribute('role') === 'combobox' &&
       refs.reference.current.tagName === 'INPUT',
-    [refs]
+    [refs],
   );
 
   React.useEffect(() => {
@@ -122,7 +122,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
         (el) =>
           el !== refs.floating.current &&
           // @ts-expect-error
-          el !== refs.reference.current
+          el !== refs.reference.current,
       ).length === 0;
 
     function onKeyDown(event: KeyboardEvent) {
@@ -185,12 +185,12 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
         isElement(refs.reference.current) &&
         !refs.reference.current.contains(target) &&
         !(
-          tree && getChildren(tree, nodeId).some(({context}) => context?.open)
+          tree && getChildren(tree, nodeId).some(({ context }) => context?.open)
         ) &&
         !(
           tree &&
           getChildren(tree, nodeId).some((child) =>
-            child.context?.refs.floating.current?.contains(target)
+            child.context?.refs.floating.current?.contains(target),
           )
         )
       ) {
@@ -279,7 +279,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
       )}
       {React.cloneElement(
         children,
-        order.includes('floating') ? {tabIndex: 0} : {}
+        order.includes('floating') ? { tabIndex: 0 } : {},
       )}
       {modal && endGuard && (
         <FocusGuard

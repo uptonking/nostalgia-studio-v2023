@@ -1,6 +1,6 @@
-import {useFloating} from '@floating-ui/react-dom';
-import {useState, useLayoutEffect, useRef} from 'react';
-import {Controls} from '../utils/Controls';
+import { useFloating } from '@floating-ui/react-dom';
+import { useState, useLayoutEffect, useRef } from 'react';
+import { Controls } from '../utils/Controls';
 
 type Node = null | 'reference' | 'floating' | 'body' | 'html' | 'offsetParent';
 const NODES: Node[] = [
@@ -14,7 +14,7 @@ const NODES: Node[] = [
 
 export function Transform() {
   const [node, setNode] = useState<Node>(null);
-  const {x, y, reference, floating, strategy, update} = useFloating();
+  const { x, y, reference, floating, strategy, update } = useFloating();
   const offsetParentRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -54,7 +54,7 @@ export function Transform() {
         certain node has been transformed.
       </p>
       <div
-        className="container"
+        className='container'
         ref={offsetParentRef}
         style={{
           overflow: 'hidden',
@@ -63,7 +63,7 @@ export function Transform() {
       >
         <div
           ref={reference}
-          className="reference"
+          className='reference'
           style={{
             transform:
               node === 'reference' ? 'scale(1.25) translate(2rem, -2rem)' : '',
@@ -73,7 +73,7 @@ export function Transform() {
         </div>
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? '',

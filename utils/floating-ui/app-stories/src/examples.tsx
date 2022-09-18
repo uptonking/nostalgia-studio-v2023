@@ -4,7 +4,6 @@ import * as stories from './stories/slate-author';
 
 // import * as stories from './stories/dnd-kit';
 
-
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {

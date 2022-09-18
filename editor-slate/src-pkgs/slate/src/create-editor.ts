@@ -12,7 +12,7 @@ import {
   RangeRef,
   Text,
   Transforms,
-} from './'
+} from './';
 import { TextUnit } from './interfaces/types';
 import { DIRTY_PATHS, DIRTY_PATH_KEYS, FLUSHING } from './utils/weak-maps';
 

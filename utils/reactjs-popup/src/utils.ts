@@ -47,7 +47,7 @@ const getCoordinatesForPosition = (
   ContentBounding: DOMRect,
   position: PopupPosition, // PopupPosition | PopupPosition[],
   arrow: boolean,
-  { offsetX, offsetY }: { offsetX: number; offsetY: number }
+  { offsetX, offsetY }: { offsetX: number; offsetY: number },
 ): CordsType => {
   const margin = arrow ? 8 : 0;
   const args = position.split(' ');
@@ -128,7 +128,7 @@ export const getTooltipBoundary = (keepTooltipInside: string | boolean) => {
     if (process.env.NODE_ENV !== 'production') {
       if (selector === null)
         throw new Error(
-          `${keepTooltipInside} selector does not exist : keepTooltipInside must be a valid html selector 'class' or 'Id'  or a boolean value`
+          `${keepTooltipInside} selector does not exist : keepTooltipInside must be a valid html selector 'class' or 'Id'  or a boolean value`,
         );
     }
     if (selector !== null) boundingBox = selector.getBoundingClientRect();
@@ -143,7 +143,7 @@ const calculatePosition = (
   position: PopupPosition | PopupPosition[],
   arrow: boolean,
   { offsetX, offsetY }: { offsetX: number; offsetY: number },
-  keepTooltipInside: string | boolean
+  keepTooltipInside: string | boolean,
 ): CordsType => {
   let bestCoords: CordsType = {
     arrowLeft: '0%',
@@ -170,7 +170,7 @@ const calculatePosition = (
       ContentBounding,
       positions[i],
       arrow,
-      { offsetX, offsetY }
+      { offsetX, offsetY },
     );
 
     const contentBox = {

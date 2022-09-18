@@ -66,10 +66,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           {onCollapse && (
             <Action
               onClick={onCollapse}
-              className={cx(
-                styles.Collapse,
-                collapsed && styles.collapsed
-              )}
+              className={cx(styles.Collapse, collapsed && styles.collapsed)}
             >
               {collapseIcon}
             </Action>

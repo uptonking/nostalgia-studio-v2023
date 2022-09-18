@@ -1,10 +1,10 @@
-import {useState} from 'react';
-import {fireEvent, render, screen, cleanup} from '@testing-library/react';
-import {FloatingPortal, useFloating} from '../../src';
+import { useState } from 'react';
+import { fireEvent, render, screen, cleanup } from '@testing-library/react';
+import { FloatingPortal, useFloating } from '../../src';
 
-function App(props: {root?: HTMLElement | null; id?: string}) {
+function App(props: { root?: HTMLElement | null; id?: string }) {
   const [open, setOpen] = useState(false);
-  const {reference, floating} = useFloating({
+  const { reference, floating } = useFloating({
     open,
     onOpenChange: setOpen,
   });
@@ -12,12 +12,12 @@ function App(props: {root?: HTMLElement | null; id?: string}) {
   return (
     <>
       <button
-        data-testid="reference"
+        data-testid='reference'
         ref={reference}
         onClick={() => setOpen(!open)}
       />
       <FloatingPortal {...props}>
-        {open && <div ref={floating} data-testid="floating" />}
+        {open && <div ref={floating} data-testid='floating' />}
       </FloatingPortal>
     </>
   );
@@ -30,7 +30,7 @@ test('creates a id="floating-ui-root" node', () => {
 });
 
 test('creates a id="floating-ui-root" node', () => {
-  render(<App id="custom-id" />);
+  render(<App id='custom-id' />);
   expect(document.querySelector('#custom-id')).toBeInTheDocument();
   cleanup();
 });

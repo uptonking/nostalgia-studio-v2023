@@ -1,5 +1,5 @@
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {useId} from './useId';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { useId } from './useId';
 
 export interface Props {
   enabled?: boolean;
@@ -11,12 +11,12 @@ export interface Props {
  * @see https://floating-ui.com/docs/useRole
  */
 export const useRole = <RT extends ReferenceType = ReferenceType>(
-  {open}: FloatingContext<RT>,
-  {enabled = true, role = 'dialog'}: Partial<Props> = {}
+  { open }: FloatingContext<RT>,
+  { enabled = true, role = 'dialog' }: Partial<Props> = {},
 ): ElementProps => {
   const rootId = useId();
   const referenceId = useId();
-  const floatingProps = {id: rootId, role};
+  const floatingProps = { id: rootId, role };
 
   if (!enabled) {
     return {};

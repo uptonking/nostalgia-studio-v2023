@@ -1,8 +1,8 @@
-import type {Alignment, Placement} from '@floating-ui/core';
-import {useFloating, autoPlacement} from '@floating-ui/react-dom';
-import {useState, useLayoutEffect} from 'react';
-import {Controls} from '../utils/Controls';
-import {useScroll} from '../utils/useScroll';
+import type { Alignment, Placement } from '@floating-ui/core';
+import { useFloating, autoPlacement } from '@floating-ui/react-dom';
+import { useState, useLayoutEffect } from 'react';
+import { Controls } from '../utils/Controls';
+import { useScroll } from '../utils/useScroll';
 
 const BOOLS = [true, false];
 const ALIGNMENTS: Array<null | Alignment> = [null, 'start', 'end'];
@@ -18,7 +18,7 @@ export function AutoPlacement() {
   const [allowedPlacements, setAllowedPlacements] = useState<
     Placement[] | undefined
   >();
-  const {x, y, reference, floating, strategy, update, refs} = useFloating({
+  const { x, y, reference, floating, strategy, update, refs } = useFloating({
     middleware: [
       autoPlacement({
         alignment,
@@ -35,26 +35,26 @@ export function AutoPlacement() {
     allowedPlacements,
   ]);
 
-  const {scrollRef, indicator} = useScroll({refs, update});
+  const { scrollRef, indicator } = useScroll({ refs, update });
 
   return (
     <>
       <h1>AutoPlacement</h1>
       <p></p>
-      <div className="container">
+      <div className='container'>
         <div
-          className="scroll"
+          className='scroll'
           data-x
-          style={{position: 'relative'}}
+          style={{ position: 'relative' }}
           ref={scrollRef}
         >
           {indicator}
-          <div ref={reference} className="reference">
+          <div ref={reference} className='reference'>
             Reference
           </div>
           <div
             ref={floating}
-            className="floating"
+            className='floating'
             style={{
               position: strategy,
               top: y ?? '',

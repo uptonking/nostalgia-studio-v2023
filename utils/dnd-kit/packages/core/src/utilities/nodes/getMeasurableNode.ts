@@ -1,7 +1,7 @@
-import {isHTMLElement} from '@dnd-kit/utilities';
+import { isHTMLElement } from '@dnd-kit/utilities';
 
 export function getMeasurableNode(
-  node: HTMLElement | undefined | null
+  node: HTMLElement | undefined | null,
 ): HTMLElement | null {
   if (!node) {
     return null;

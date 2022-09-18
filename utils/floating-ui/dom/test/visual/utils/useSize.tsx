@@ -1,7 +1,7 @@
-import {useState, useLayoutEffect} from 'react';
+import { useState, useLayoutEffect } from 'react';
 
 export const useSize = (
-  initialSize = 80
+  initialSize = 80,
 ): [number, (event: React.ChangeEvent<HTMLInputElement>) => void] => {
   const [size, setSize] = useState(initialSize);
 

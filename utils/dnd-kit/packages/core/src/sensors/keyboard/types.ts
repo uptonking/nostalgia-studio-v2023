@@ -1,5 +1,5 @@
-import type {Coordinates, UniqueIdentifier} from '../../types';
-import type {SensorContext} from '../types';
+import type { Coordinates, UniqueIdentifier } from '../../types';
+import type { SensorContext } from '../types';
 
 export enum KeyboardCode {
   Space = 'Space',
@@ -23,5 +23,5 @@ export type KeyboardCoordinateGetter = (
     active: UniqueIdentifier;
     currentCoordinates: Coordinates;
     context: SensorContext;
-  }
+  },
 ) => Coordinates | void;

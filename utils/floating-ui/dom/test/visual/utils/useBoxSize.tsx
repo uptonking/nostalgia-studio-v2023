@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 const sizes: Record<string, number> = {
   large: 150,
@@ -7,7 +7,9 @@ const sizes: Record<string, number> = {
   tiny: 10,
 };
 
-export const useBoxSize = (initialSize = 'large'): [number, string, (value: string) => void] => {
+export const useBoxSize = (
+  initialSize = 'large',
+): [number, string, (value: string) => void] => {
   const [size, setSize] = useState(initialSize);
 
   return [sizes[size], size, setSize];

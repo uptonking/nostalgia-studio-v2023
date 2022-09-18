@@ -1,6 +1,6 @@
-import {createContext, useContext, useEffect, useRef} from 'react';
+import { createContext, useContext, useEffect, useRef } from 'react';
 
-import {Action} from '../../store';
+import { Action } from '../../store';
 import type {
   DragStartEvent,
   DragCancelEvent,
@@ -45,7 +45,7 @@ export function useDndMonitor({
 
   useEffect(() => {
     if (monitorState !== previousMonitorState.current) {
-      const {type, event} = monitorState;
+      const { type, event } = monitorState;
 
       switch (type) {
         case Action.DragStart:

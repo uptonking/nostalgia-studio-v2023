@@ -1,5 +1,3 @@
-
-
 export const MENTION_CHARACTERS = [
   'Aayla Secura',
   'Adi Gallia',

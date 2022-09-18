@@ -43,7 +43,7 @@ export class Fragment {
   ) {
     for (let i = 0, pos = 0; pos < to; i++) {
       const child = this.content[i];
-        const end = pos + child.nodeSize;
+      const end = pos + child.nodeSize;
       if (
         end > from &&
         f(child, nodeStart + pos, parent || null, i) !== false &&
@@ -81,7 +81,7 @@ export class Fragment {
     leafText?: string | null | ((leafNode: Node) => string),
   ) {
     let text = '';
-      let separated = true;
+    let separated = true;
     this.nodesBetween(
       from,
       to,
@@ -113,9 +113,9 @@ export class Fragment {
     if (!other.size) return this;
     if (!this.size) return other;
     const last = this.lastChild!;
-      const first = other.firstChild!;
-      const content = this.content.slice();
-      let i = 0;
+    const first = other.firstChild!;
+    const content = this.content.slice();
+    let i = 0;
     if (last.isText && last.sameMarkup(first)) {
       content[content.length - 1] = (last as TextNode).withText(
         last.text! + first.text!,
@@ -129,12 +129,12 @@ export class Fragment {
   /** Cut out the sub-fragment between the two given positions. */
   cut(from: number, to = this.size) {
     if (from == 0 && to == this.size) return this;
-    const result = [];
-      let size = 0;
+    const result = [] as Node[];
+    let size = 0;
     if (to > from)
       for (let i = 0, pos = 0; pos < to; i++) {
         let child = this.content[i];
-          const end = pos + child.nodeSize;
+        const end = pos + child.nodeSize;
         if (end > from) {
           if (pos < from || end > to) {
             if (child.isText)
@@ -265,7 +265,7 @@ export class Fragment {
       throw new RangeError(`Position ${pos} outside of fragment (${this})`);
     for (let i = 0, curPos = 0; ; i++) {
       const cur = this.child(i);
-        const end = curPos + cur.nodeSize;
+      const end = curPos + cur.nodeSize;
       if (end >= pos) {
         if (end == pos || round > 0) return retIndex(i + 1, end);
         return retIndex(i, curPos);
@@ -303,7 +303,7 @@ export class Fragment {
   static fromArray(array: readonly Node[]) {
     if (!array.length) return Fragment.empty;
     let joined: Node[] | undefined;
-      let size = 0;
+    let size = 0;
     for (let i = 0; i < array.length; i++) {
       const node = array[i];
       size += node.nodeSize;

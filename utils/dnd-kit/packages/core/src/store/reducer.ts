@@ -1,14 +1,14 @@
-import {Action, Actions} from './actions';
-import {DroppableContainersMap} from './constructors';
-import type {State} from './types';
+import { Action, Actions } from './actions';
+import { DroppableContainersMap } from './constructors';
+import type { State } from './types';
 
 export function getInitialState(): State {
   return {
     draggable: {
       active: null,
-      initialCoordinates: {x: 0, y: 0},
+      initialCoordinates: { x: 0, y: 0 },
       nodes: {},
-      translate: {x: 0, y: 0},
+      translate: { x: 0, y: 0 },
     },
     droppable: {
       containers: new DroppableContainersMap(),
@@ -49,14 +49,14 @@ export function reducer(state: State, action: Actions): State {
         draggable: {
           ...state.draggable,
           active: null,
-          initialCoordinates: {x: 0, y: 0},
-          translate: {x: 0, y: 0},
+          initialCoordinates: { x: 0, y: 0 },
+          translate: { x: 0, y: 0 },
         },
       };
 
     case Action.RegisterDroppable: {
-      const {element} = action;
-      const {id} = element;
+      const { element } = action;
+      const { id } = element;
       const containers = new DroppableContainersMap(state.droppable.containers);
       containers.set(id, element);
 
@@ -70,7 +70,7 @@ export function reducer(state: State, action: Actions): State {
     }
 
     case Action.SetDroppableDisabled: {
-      const {id, key, disabled} = action;
+      const { id, key, disabled } = action;
       const element = state.droppable.containers.get(id);
 
       if (!element || key !== element.key) {
@@ -93,7 +93,7 @@ export function reducer(state: State, action: Actions): State {
     }
 
     case Action.UnregisterDroppable: {
-      const {id, key} = action;
+      const { id, key } = action;
       const element = state.droppable.containers.get(id);
 
       if (!element || key !== element.key) {

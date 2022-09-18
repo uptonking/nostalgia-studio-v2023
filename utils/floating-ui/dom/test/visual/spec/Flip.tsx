@@ -1,10 +1,10 @@
-import type {Placement} from '@floating-ui/core';
-import type {Options} from '@floating-ui/core/src/middleware/flip';
-import {allPlacements} from '../utils/allPlacements';
-import {useFloating, flip} from '@floating-ui/react-dom';
-import {useState, useLayoutEffect} from 'react';
-import {Controls} from '../utils/Controls';
-import {useScroll} from '../utils/useScroll';
+import type { Placement } from '@floating-ui/core';
+import type { Options } from '@floating-ui/core/src/middleware/flip';
+import { allPlacements } from '../utils/allPlacements';
+import { useFloating, flip } from '@floating-ui/react-dom';
+import { useState, useLayoutEffect } from 'react';
+import { Controls } from '../utils/Controls';
+import { useScroll } from '../utils/useScroll';
 
 const BOOLS = [true, false];
 const FALLBACK_STRATEGIES: Array<Options['fallbackStrategy']> = [
@@ -20,7 +20,7 @@ export function Flip() {
   const [fallbackStrategy, setFallbackStrategy] =
     useState<Options['fallbackStrategy']>('bestFit');
   const [flipAlignment, setFlipAlignment] = useState(true);
-  const {x, y, reference, floating, strategy, update, refs} = useFloating({
+  const { x, y, reference, floating, strategy, update, refs } = useFloating({
     placement,
     middleware: [
       flip({
@@ -41,26 +41,26 @@ export function Flip() {
     fallbackStrategy,
   ]);
 
-  const {scrollRef, indicator} = useScroll({refs, update});
+  const { scrollRef, indicator } = useScroll({ refs, update });
 
   return (
     <>
       <h1>Flip</h1>
       <p></p>
-      <div className="container">
+      <div className='container'>
         <div
-          className="scroll"
+          className='scroll'
           data-x
-          style={{position: 'relative'}}
+          style={{ position: 'relative' }}
           ref={scrollRef}
         >
           {indicator}
-          <div ref={reference} className="reference">
+          <div ref={reference} className='reference'>
             Reference
           </div>
           <div
             ref={floating}
-            className="floating"
+            className='floating'
             style={{
               position: strategy,
               top: y ?? '',
@@ -95,7 +95,7 @@ export function Flip() {
             key={String(bool)}
             data-testid={`mainAxis-${bool}`}
             onClick={() => setMainAxis(bool)}
-            style={{backgroundColor: mainAxis === bool ? 'black' : ''}}
+            style={{ backgroundColor: mainAxis === bool ? 'black' : '' }}
           >
             {String(bool)}
           </button>
@@ -109,7 +109,7 @@ export function Flip() {
             key={String(bool)}
             data-testid={`crossAxis-${bool}`}
             onClick={() => setCrossAxis(bool)}
-            style={{backgroundColor: crossAxis === bool ? 'black' : ''}}
+            style={{ backgroundColor: crossAxis === bool ? 'black' : '' }}
           >
             {String(bool)}
           </button>
@@ -135,7 +135,7 @@ export function Flip() {
                 // @ts-ignore
                 localFallbackPlacements[0] === 'undefined'
                   ? undefined
-                  : localFallbackPlacements
+                  : localFallbackPlacements,
               )
             }
             style={{

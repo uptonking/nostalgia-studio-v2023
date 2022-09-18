@@ -1,8 +1,8 @@
-import {Coords, Placement} from '@floating-ui/core';
-import {useFloating, inline, flip, size} from '@floating-ui/react-dom';
-import React, {useLayoutEffect, useRef, useState} from 'react';
-import {allPlacements} from '../utils/allPlacements';
-import {Controls} from '../utils/Controls';
+import { Coords, Placement } from '@floating-ui/core';
+import { useFloating, inline, flip, size } from '@floating-ui/react-dom';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { allPlacements } from '../utils/allPlacements';
+import { Controls } from '../utils/Controls';
 
 type ConnectedStatus = '1' | '2-disjoined' | '2-joined' | '3';
 const CONNECTED_STATUSES: ConnectedStatus[] = [
@@ -17,13 +17,13 @@ export function Inline() {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<ConnectedStatus>('2-disjoined');
   const mouseCoordsRef = useRef<undefined | Coords>();
-  const {x, y, reference, floating, strategy, update} = useFloating({
+  const { x, y, reference, floating, strategy, update } = useFloating({
     placement,
     middleware: [inline(mouseCoordsRef.current), flip(), size()],
   });
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
-    mouseCoordsRef.current = {x: event.clientX, y: event.clientY};
+    mouseCoordsRef.current = { x: event.clientX, y: event.clientY };
     setOpen(true);
   };
 
@@ -57,12 +57,12 @@ export function Inline() {
     <>
       <h1>Inline</h1>
       <p>The floating element should choose the most appropriate rect.</p>
-      <div className="container">
-        <p className="prose" style={{padding: 10}}>
+      <div className='container'>
+        <p className='prose' style={{ padding: 10 }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.{' '}
           <strong
             ref={reference}
-            style={{color: 'royalblue'}}
+            style={{ color: 'royalblue' }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -77,7 +77,7 @@ export function Inline() {
         {open && (
           <div
             ref={floating}
-            className="floating"
+            className='floating'
             style={{
               position: strategy,
               top: y ?? '',

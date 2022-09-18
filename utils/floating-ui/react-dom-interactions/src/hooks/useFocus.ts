@@ -1,7 +1,7 @@
 import * as React from 'react';
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {getDocument} from '../utils/getDocument';
-import {isElement} from '../utils/is';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { getDocument } from '../utils/getDocument';
+import { isElement } from '../utils/is';
 
 export interface Props {
   enabled?: boolean;
@@ -13,8 +13,8 @@ export interface Props {
  * @see https://floating-ui.com/docs/useFocus
  */
 export const useFocus = <RT extends ReferenceType = ReferenceType>(
-  {open, onOpenChange, dataRef, refs, events}: FloatingContext<RT>,
-  {enabled = true, keyboardOnly = true}: Props = {}
+  { open, onOpenChange, dataRef, refs, events }: FloatingContext<RT>,
+  { enabled = true, keyboardOnly = true }: Props = {},
 ): ElementProps => {
   const pointerTypeRef = React.useRef('');
   const blockFocusRef = React.useRef(false);
@@ -69,7 +69,7 @@ export const useFocus = <RT extends ReferenceType = ReferenceType>(
 
   return {
     reference: {
-      onPointerDown({pointerType}) {
+      onPointerDown({ pointerType }) {
         pointerTypeRef.current = pointerType;
         blockFocusRef.current = !!(pointerType && keyboardOnly);
       },
@@ -85,7 +85,7 @@ export const useFocus = <RT extends ReferenceType = ReferenceType>(
           dataRef.current.openEvent?.type === 'mousedown' &&
           isElement(refs.reference.current) &&
           refs.reference.current?.contains(
-            dataRef.current.openEvent?.target as Element | null
+            dataRef.current.openEvent?.target as Element | null,
           )
         ) {
           return;

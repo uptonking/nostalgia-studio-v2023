@@ -1,4 +1,4 @@
-import {KeyboardCoordinateGetter, KeyboardCode, KeyboardCodes} from './types';
+import { KeyboardCoordinateGetter, KeyboardCode, KeyboardCodes } from './types';
 
 export const defaultKeyboardCodes: KeyboardCodes = {
   start: [KeyboardCode.Space, KeyboardCode.Enter],
@@ -8,7 +8,7 @@ export const defaultKeyboardCodes: KeyboardCodes = {
 
 export const defaultKeyboardCoordinateGetter: KeyboardCoordinateGetter = (
   event,
-  {currentCoordinates}
+  { currentCoordinates },
 ) => {
   switch (event.code) {
     case KeyboardCode.Right:

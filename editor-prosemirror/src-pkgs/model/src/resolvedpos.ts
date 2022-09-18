@@ -135,10 +135,10 @@ export class ResolvedPos {
    */
   get nodeAfter(): Node | null {
     const parent = this.parent;
-      const index = this.index(this.depth);
+    const index = this.index(this.depth);
     if (index == parent.childCount) return null;
     const dOff = this.pos - this.path[this.path.length - 1];
-      const child = parent.child(index);
+    const child = parent.child(index);
     return dOff ? parent.child(index).cut(dOff) : child;
   }
 
@@ -160,7 +160,7 @@ export class ResolvedPos {
   posAtIndex(index: number, depth?: number | null): number {
     depth = this.resolveDepth(depth);
     const node = this.path[depth * 3];
-      let pos = depth == 0 ? 0 : this.path[depth * 3 - 1] + 1;
+    let pos = depth == 0 ? 0 : this.path[depth * 3 - 1] + 1;
     for (let i = 0; i < index; i++) pos += node.child(i).nodeSize;
     return pos;
   }
@@ -173,7 +173,7 @@ export class ResolvedPos {
    */
   marks(): readonly Mark[] {
     const parent = this.parent;
-      const index = this.index();
+    const index = this.index();
 
     // In an empty parent, return the empty array
     if (parent.content.size == 0) return Mark.none;
@@ -182,7 +182,7 @@ export class ResolvedPos {
     if (this.textOffset) return parent.child(index).marks;
 
     let main = parent.maybeChild(index - 1);
-      let other = parent.maybeChild(index);
+    let other = parent.maybeChild(index);
     // If the `after` flag is true of there is no node before, make
     // the node after this position the main reference.
     if (!main) {
@@ -217,7 +217,7 @@ export class ResolvedPos {
     if (!after || !after.isInline) return null;
 
     let marks = after.marks;
-      const next = $end.parent.maybeChild($end.index());
+    const next = $end.parent.maybeChild($end.index());
     for (let i = 0; i < marks.length; i++)
       if (
         marks[i].type.spec.inclusive === false &&
@@ -290,9 +290,9 @@ export class ResolvedPos {
   static resolve(doc: Node, pos: number): ResolvedPos {
     if (!(pos >= 0 && pos <= doc.content.size))
       throw new RangeError('Position ' + pos + ' out of range');
-    const path = [];
+    const path = [] as any[];
     let start = 0;
-      let parentOffset = pos;
+    let parentOffset = pos;
     for (let node = doc; ; ) {
       const { index, offset } = node.content.findIndex(parentOffset);
       const rem = parentOffset - offset;

@@ -1,7 +1,7 @@
-import {getComputedStyle} from './getComputedStyle';
-import {getNodeName} from './getNodeName';
-import {getUAString} from './userAgent';
-import {getWindow} from './window';
+import { getComputedStyle } from './getComputedStyle';
+import { getNodeName } from './getNodeName';
+import { getUAString } from './userAgent';
+import { getWindow } from './window';
 
 declare global {
   interface Window {
@@ -36,7 +36,7 @@ export function isShadowRoot(node: Node): node is ShadowRoot {
 
 export function isOverflowElement(element: HTMLElement): boolean {
   // Firefox wants us to check `-x` and `-y` variations as well
-  const {overflow, overflowX, overflowY} = getComputedStyle(element);
+  const { overflow, overflowX, overflowY } = getComputedStyle(element);
   return /auto|scroll|overlay|hidden/.test(overflow + overflowY + overflowX);
 }
 

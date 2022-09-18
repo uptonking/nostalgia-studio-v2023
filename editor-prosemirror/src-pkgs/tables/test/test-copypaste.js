@@ -133,7 +133,7 @@ describe('insertCells', () => {
   function test(table, cells, result) {
     let state = EditorState.create({ doc: table });
     const $cell = cellAround(table.resolve(table.tag.anchor));
-      const map = TableMap.get(table);
+    const map = TableMap.get(table);
     insertCells(
       state,
       (tr) => (state = state.apply(tr)),

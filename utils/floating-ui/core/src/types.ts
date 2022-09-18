@@ -40,9 +40,9 @@ export interface Platform {
   isRTL?: (element: any) => Promisable<boolean>;
 }
 
-export type Coords = {[key in Axis]: number};
+export type Coords = { [key in Axis]: number };
 
-export type SideObject = {[key in Side]: number};
+export type SideObject = { [key in Side]: number };
 
 export interface MiddlewareData {
   [key: string]: any;
@@ -89,7 +89,7 @@ export interface ComputePositionReturn extends Coords {
 export type ComputePosition = (
   reference: unknown,
   floating: unknown,
-  config: ComputePositionConfig
+  config: ComputePositionConfig,
 ) => Promise<ComputePositionReturn>;
 
 export interface MiddlewareReturn extends Partial<Coords> {
@@ -108,11 +108,11 @@ export type Middleware = {
   name: string;
   options?: any;
   fn: (
-    middlewareArguments: MiddlewareArguments
+    middlewareArguments: MiddlewareArguments,
   ) => Promisable<MiddlewareReturn>;
 };
 
-export type Dimensions = {[key in Length]: number};
+export type Dimensions = { [key in Length]: number };
 
 export type Rect = Coords & Dimensions;
 
@@ -153,15 +153,15 @@ export type Boundary = any;
 export type RootBoundary = 'viewport' | 'document';
 export type ElementContext = 'reference' | 'floating';
 
-export {computePosition} from './computePosition';
-export {rectToClientRect} from './utils/rectToClientRect';
-export {detectOverflow} from './detectOverflow';
+export { computePosition } from './computePosition';
+export { rectToClientRect } from './utils/rectToClientRect';
+export { detectOverflow } from './detectOverflow';
 
-export {arrow} from './middleware/arrow';
-export {autoPlacement} from './middleware/autoPlacement';
-export {flip} from './middleware/flip';
-export {hide} from './middleware/hide';
-export {offset} from './middleware/offset';
-export {shift, limitShift} from './middleware/shift';
-export {size} from './middleware/size';
-export {inline} from './middleware/inline';
+export { arrow } from './middleware/arrow';
+export { autoPlacement } from './middleware/autoPlacement';
+export { flip } from './middleware/flip';
+export { hide } from './middleware/hide';
+export { offset } from './middleware/offset';
+export { shift, limitShift } from './middleware/shift';
+export { size } from './middleware/size';
+export { inline } from './middleware/inline';

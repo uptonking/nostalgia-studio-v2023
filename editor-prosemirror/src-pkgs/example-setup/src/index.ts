@@ -13,49 +13,54 @@ import { buildMenuItems } from './menu';
 
 export { buildMenuItems, buildKeymap, buildInputRules };
 
-/// Create an array of plugins pre-configured for the given schema.
-/// The resulting array will include the following plugins:
-///
-///  * Input rules for smart quotes and creating the block types in the
-///    schema using markdown conventions (say `"> "` to create a
-///    blockquote)
-///
-///  * A keymap that defines keys to create and manipulate the nodes in the
-///    schema
-///
-///  * A keymap binding the default keys provided by the
-///    prosemirror-commands module
-///
-///  * The undo history plugin
-///
-///  * The drop cursor plugin
-///
-///  * The gap cursor plugin
-///
-///  * A custom plugin that adds a `menuContent` prop for the
-///    prosemirror-menu wrapper, and a CSS class that enables the
-///    additional styling defined in `style/style.css` in this package
-///
-/// Probably only useful for quickly setting up a passable
-/// editor—you'll need more control over your settings in most
-/// real-world situations.
+/** Create an array of plugins pre-configured for the given schema.
+ * The resulting array will include the following plugins:
+ *
+ *  * Input rules for smart quotes and creating the block types in the
+ *    schema using markdown conventions (say `"> "` to create a
+ *    blockquote)
+ *
+ *  * A keymap that defines keys to create and manipulate the nodes in the
+ *    schema
+ *
+ *  * A keymap binding the default keys provided by the
+ *    prosemirror-commands module
+ *
+ *  * The undo history plugin
+ *
+ *  * The drop cursor plugin
+ *
+ *  * The gap cursor plugin
+ *
+ *  * A custom plugin that adds a `menuContent` prop for the
+ *    prosemirror-menu wrapper, and a CSS class that enables the
+ *    additional styling defined in `style/style.css` in this package
+ *
+ * Probably only useful for quickly setting up a passable
+ * editor—you'll need more control over your settings in most
+ * real-world situations.
+ */
 export function exampleSetup(options: {
-  /// The schema to generate key bindings and menu items for.
+  /** The schema to generate key bindings and menu items for. */
   schema: Schema;
 
-  /// Can be used to [adjust](#example-setup.buildKeymap) the key bindings created.
+  /** Can be used to [adjust](#example-setup.buildKeymap) the key bindings created. */
   mapKeys?: { [key: string]: string | false };
 
-  /// Set to false to disable the menu bar.
+  /** Set to false to disable the menu bar. */
   menuBar?: boolean;
 
-  /// Set to false to disable the history plugin.
+  /** Set to false to disable the history plugin. */
   history?: boolean;
 
-  /// Set to false to make the menu bar non-floating.
+  /** Set to false to make the menu bar non-floating.
+   * - Determines whether the menu floats, i.e. whether it sticks to
+   * the top of the viewport when the editor is partially scrolled
+   * out of view.
+   */
   floatingMenu?: boolean;
 
-  /// Can be used to override the menu content.
+  /** Can be used to override the menu content. */
   menuContent?: MenuItem[][];
 }) {
   const plugins = [

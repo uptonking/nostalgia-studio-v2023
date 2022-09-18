@@ -1,7 +1,7 @@
-import {distanceBetween} from '../coordinates';
+import { distanceBetween } from '../coordinates';
 
-import type {CollisionDescriptor, CollisionDetection} from './types';
-import {cornersOfRectangle, sortCollisionsAsc} from './helpers';
+import type { CollisionDescriptor, CollisionDetection } from './types';
+import { cornersOfRectangle, sortCollisionsAsc } from './helpers';
 
 /**
  * Returns the closest rectangles from an array of rectangles to the corners of
@@ -16,7 +16,7 @@ export const closestCorners: CollisionDetection = ({
   const collisions: CollisionDescriptor[] = [];
 
   for (const droppableContainer of droppableContainers) {
-    const {id} = droppableContainer;
+    const { id } = droppableContainer;
     const rect = droppableRects.get(id);
 
     if (rect) {
@@ -28,7 +28,7 @@ export const closestCorners: CollisionDetection = ({
 
       collisions.push({
         id,
-        data: {droppableContainer, value: effectiveDistance},
+        data: { droppableContainer, value: effectiveDistance },
       });
     }
   }

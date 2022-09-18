@@ -1,4 +1,4 @@
-import { Operation } from 'slate'
+import { Operation } from 'slate';
 
 export const input = [
   {
@@ -7,8 +7,8 @@ export const input = [
     properties: {},
     newProperties: {},
   },
-]
-export const test = value => {
-  return Operation.isOperationList(value)
-}
-export const output = true
+];
+export const test = (value) => {
+  return Operation.isOperationList(value);
+};
+export const output = true;

@@ -30,31 +30,32 @@ const StyledToolBar = styled.div<any>`
 /** FullPageEditor默认使用的Toolbar。会自适应宽度。
  * - todo FunctionComponent中不应该使用React.createRef
  */
-export const ToolbarWithSizeDetector: React.FunctionComponent<ToolbarWithSizeDetectorProps> =
-  (props) => {
-    const ref = React.createRef<HTMLDivElement>();
-    const [width, setWidth] = React.useState<number | undefined>(undefined);
-    const elementWidth = useElementWidth(ref, {
-      skip: typeof width !== 'undefined',
-    });
+export const ToolbarWithSizeDetector: React.FunctionComponent<
+  ToolbarWithSizeDetectorProps
+> = (props) => {
+  const ref = React.createRef<HTMLDivElement>();
+  const [width, setWidth] = React.useState<number | undefined>(undefined);
+  const elementWidth = useElementWidth(ref, {
+    skip: typeof width !== 'undefined',
+  });
 
-    const toolbarSize =
-      typeof width === 'undefined' && typeof elementWidth === 'undefined'
-        ? undefined
-        : widthToToolbarSize((width || elementWidth)!, props.appearance);
+  const toolbarSize =
+    typeof width === 'undefined' && typeof elementWidth === 'undefined'
+      ? undefined
+      : widthToToolbarSize((width || elementWidth)!, props.appearance);
 
-    const toolbarMinWidth = toolbarSizeToWidth(ToolbarSize.S, props.appearance);
+  const toolbarMinWidth = toolbarSizeToWidth(ToolbarSize.S, props.appearance);
 
-    return (
-      <StyledToolBar
-        minWidth={props.hasMinWidth ? `${toolbarMinWidth}px` : '254px'}
-      >
-        <WidthObserver setWidth={setWidth} />
-        {props.editorView && toolbarSize ? (
-          <Toolbar {...props} toolbarSize={toolbarSize} />
-        ) : (
-          <div ref={ref} />
-        )}
-      </StyledToolBar>
-    );
-  };
+  return (
+    <StyledToolBar
+      minWidth={props.hasMinWidth ? `${toolbarMinWidth}px` : '254px'}
+    >
+      <WidthObserver setWidth={setWidth} />
+      {props.editorView && toolbarSize ? (
+        <Toolbar {...props} toolbarSize={toolbarSize} />
+      ) : (
+        <div ref={ref} />
+      )}
+    </StyledToolBar>
+  );
+};

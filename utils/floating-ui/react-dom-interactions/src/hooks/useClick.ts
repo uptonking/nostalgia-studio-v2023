@@ -1,6 +1,6 @@
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
 import * as React from 'react';
-import {isHTMLElement} from '../utils/is';
+import { isHTMLElement } from '../utils/is';
 
 export interface Props {
   enabled?: boolean;
@@ -14,13 +14,13 @@ export interface Props {
  * @see https://floating-ui.com/docs/useClick
  */
 export const useClick = <RT extends ReferenceType = ReferenceType>(
-  {open, onOpenChange, dataRef, refs}: FloatingContext<RT>,
+  { open, onOpenChange, dataRef, refs }: FloatingContext<RT>,
   {
     enabled = true,
     pointerDown = false,
     toggle = true,
     ignoreMouse = false,
-  }: Props = {}
+  }: Props = {},
 ): ElementProps => {
   const pointerTypeRef = React.useRef<'mouse' | 'pen' | 'touch'>();
 

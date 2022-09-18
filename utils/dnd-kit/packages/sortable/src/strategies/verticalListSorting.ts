@@ -1,5 +1,5 @@
-import type {ClientRect} from '@dnd-kit/core';
-import type {SortingStrategy} from '../types';
+import type { ClientRect } from '@dnd-kit/core';
+import type { SortingStrategy } from '../types';
 
 // To-do: We should be calculating scale transformation
 const defaultScale = {
@@ -67,7 +67,7 @@ export const verticalListSortingStrategy: SortingStrategy = ({
 function getItemGap(
   clientRects: ClientRect[],
   index: number,
-  activeIndex: number
+  activeIndex: number,
 ) {
   const currentRect: ClientRect | undefined = clientRects[index];
   const previousRect: ClientRect | undefined = clientRects[index - 1];

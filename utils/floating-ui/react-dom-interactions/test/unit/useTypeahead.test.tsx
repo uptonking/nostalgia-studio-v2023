@@ -1,20 +1,20 @@
-import {render, screen, cleanup} from '@testing-library/react';
-import {useRef, useState} from 'react';
+import { render, screen, cleanup } from '@testing-library/react';
+import { useRef, useState } from 'react';
 import userEvent from '@testing-library/user-event';
-import {useTypeahead, useFloating, useInteractions} from '../../src';
-import type {Props} from '../../src/hooks/useTypeahead';
+import { useTypeahead, useFloating, useInteractions } from '../../src';
+import type { Props } from '../../src/hooks/useTypeahead';
 
 jest.useFakeTimers();
 
-function App(props: Pick<Props, 'onMatch'> & {list?: Array<string>}) {
+function App(props: Pick<Props, 'onMatch'> & { list?: Array<string> }) {
   const [open, setOpen] = useState(true);
   const [activeIndex, setActiveIndex] = useState<null | number>(null);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
   const listRef = useRef(props.list ?? ['one', 'two', 'three']);
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useTypeahead(context, {
       listRef,
       activeIndex,
@@ -27,8 +27,8 @@ function App(props: Pick<Props, 'onMatch'> & {list?: Array<string>}) {
 
   return (
     <>
-      <input role="combobox" {...getReferenceProps({ref: reference})} />
-      <div role="listbox" {...getFloatingProps({ref: floating})} />
+      <input role='combobox' {...getReferenceProps({ ref: reference })} />
+      <div role='listbox' {...getFloatingProps({ ref: floating })} />
     </>
   );
 }
@@ -71,7 +71,7 @@ test('bails out of rapid focus of first letter if the list contains a string tha
 test('starts from the current activeIndex and correctly loops', async () => {
   const spy = jest.fn();
   render(
-    <App onMatch={spy} list={['Toy Story 2', 'Toy Story 3', 'Toy Story 4']} />
+    <App onMatch={spy} list={['Toy Story 2', 'Toy Story 3', 'Toy Story 4']} />,
   );
 
   const input = screen.getByRole('combobox');

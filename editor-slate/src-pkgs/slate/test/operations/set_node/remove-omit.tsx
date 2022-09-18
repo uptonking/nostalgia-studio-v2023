@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx } from 'slate-hyperscript'
-import { Transforms, Editor } from 'slate'
+import { jsx } from 'slate-hyperscript';
+import { Transforms, Editor } from 'slate';
 
 export const input = (
   <editor>
@@ -8,7 +8,7 @@ export const input = (
       <text someKey />
     </element>
   </editor>
-)
+);
 
 export const operations = [
   {
@@ -17,7 +17,7 @@ export const operations = [
     properties: { someKey: true },
     newProperties: {},
   },
-]
+];
 
 export const output = (
   <editor>
@@ -25,4 +25,4 @@ export const output = (
       <text />
     </element>
   </editor>
-)
+);

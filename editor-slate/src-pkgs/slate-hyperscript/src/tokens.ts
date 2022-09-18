@@ -1,16 +1,16 @@
-import { Node, Path, Text } from 'slate'
+import { Node, Path, Text } from 'slate';
 
 /**
  * A weak map to hold anchor tokens.
  */
 
-const ANCHOR: WeakMap<Node, [number, AnchorToken]> = new WeakMap()
+const ANCHOR: WeakMap<Node, [number, AnchorToken]> = new WeakMap();
 
 /**
  * A weak map to hold focus tokens.
  */
 
-const FOCUS: WeakMap<Node, [number, FocusToken]> = new WeakMap()
+const FOCUS: WeakMap<Node, [number, FocusToken]> = new WeakMap();
 
 /**
  * All tokens inherit from a single constructor for `instanceof` checking.
@@ -23,19 +23,19 @@ export class Token {}
  */
 
 export class AnchorToken extends Token {
-  offset?: number
-  path?: Path
+  offset?: number;
+  path?: Path;
 
   constructor(
     props: {
-      offset?: number
-      path?: Path
-    } = {}
+      offset?: number;
+      path?: Path;
+    } = {},
   ) {
-    super()
-    const { offset, path } = props
-    this.offset = offset
-    this.path = path
+    super();
+    const { offset, path } = props;
+    this.offset = offset;
+    this.path = path;
   }
 }
 
@@ -44,19 +44,19 @@ export class AnchorToken extends Token {
  */
 
 export class FocusToken extends Token {
-  offset?: number
-  path?: Path
+  offset?: number;
+  path?: Path;
 
   constructor(
     props: {
-      offset?: number
-      path?: Path
-    } = {}
+      offset?: number;
+      path?: Path;
+    } = {},
   ) {
-    super()
-    const { offset, path } = props
-    this.offset = offset
-    this.path = path
+    super();
+    const { offset, path } = props;
+    this.offset = offset;
+    this.path = path;
   }
 }
 
@@ -65,35 +65,35 @@ export class FocusToken extends Token {
  */
 
 export const addAnchorToken = (text: Text, token: AnchorToken) => {
-  const offset = text.text.length
-  ANCHOR.set(text, [offset, token])
-}
+  const offset = text.text.length;
+  ANCHOR.set(text, [offset, token]);
+};
 
 /**
  * Get the offset if a text node has an associated anchor token.
  */
 
 export const getAnchorOffset = (
-  text: Text
+  text: Text,
 ): [number, AnchorToken] | undefined => {
-  return ANCHOR.get(text)
-}
+  return ANCHOR.get(text);
+};
 
 /**
  * Add a focus token to the end of a text node.
  */
 
 export const addFocusToken = (text: Text, token: FocusToken) => {
-  const offset = text.text.length
-  FOCUS.set(text, [offset, token])
-}
+  const offset = text.text.length;
+  FOCUS.set(text, [offset, token]);
+};
 
 /**
  * Get the offset if a text node has an associated focus token.
  */
 
 export const getFocusOffset = (
-  text: Text
+  text: Text,
 ): [number, FocusToken] | undefined => {
-  return FOCUS.get(text)
-}
+  return FOCUS.get(text);
+};

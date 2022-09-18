@@ -15,6 +15,7 @@ import { StyledContainer } from '../../editor-examples.styles';
  */
 export const PMExampleSetupBasicEditor = () => {
   const editorContainer = useRef<HTMLDivElement>();
+  const initialEditorContentContainer = useRef<HTMLDivElement>();
   const view = useRef<EditorView>(null);
 
   useEffect(() => {
@@ -27,12 +28,12 @@ export const PMExampleSetupBasicEditor = () => {
     view.current = new EditorView(editorContainer.current, {
       state: EditorState.create({
         doc: DOMParser.fromSchema(mySchema).parse(
-          document.querySelector('#contentForEgSetupBasic'),
+          initialEditorContentContainer.current,
         ),
         plugins: exampleSetup({ schema: mySchema }),
       }),
     });
-    // applyDevTools(view.current, { devToolsExpanded: true });
+    applyDevTools(view.current, { devToolsExpanded: false });
 
     return () => view.current.destroy();
   }, []);
@@ -42,7 +43,7 @@ export const PMExampleSetupBasicEditor = () => {
       <h3> prosemirror-example-setup basic editor</h3>
       <div ref={editorContainer} id='editor' />
       {/* 👇🏻 剩下的全是默认隐藏的编辑器初始数据 */}
-      <div style={{ display: 'none' }} id='contentForEgSetupBasic'>
+      <div style={{ display: 'none' }} ref={initialEditorContentContainer}>
         <h3>Hello ProseMirror</h3>
 
         <p>This is editable text. You can focus it and start typing.</p>

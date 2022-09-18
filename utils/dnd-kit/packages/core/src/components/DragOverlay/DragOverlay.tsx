@@ -1,16 +1,21 @@
-import React, {useContext, useEffect, useRef} from 'react';
-import {CSS, isKeyboardEvent, Transform, useLazyMemo} from '@dnd-kit/utilities';
+import React, { useContext, useEffect, useRef } from 'react';
+import {
+  CSS,
+  isKeyboardEvent,
+  Transform,
+  useLazyMemo,
+} from '@dnd-kit/utilities';
 
-import {InternalContext, defaultInternalContext} from '../../store';
-import {getRelativeTransformOrigin} from '../../utilities';
-import {applyModifiers, Modifiers} from '../../modifiers';
-import {ActiveDraggableContext} from '../DndContext';
-import {useDndContext} from '../../hooks';
-import type {ClientRect} from '../../types';
-import {useDropAnimation, defaultDropAnimation, DropAnimation} from './hooks';
+import { InternalContext, defaultInternalContext } from '../../store';
+import { getRelativeTransformOrigin } from '../../utilities';
+import { applyModifiers, Modifiers } from '../../modifiers';
+import { ActiveDraggableContext } from '../DndContext';
+import { useDndContext } from '../../hooks';
+import type { ClientRect } from '../../types';
+import { useDropAnimation, defaultDropAnimation, DropAnimation } from './hooks';
 
 type TransitionGetter = (
-  activatorEvent: Event | null
+  activatorEvent: Event | null,
 ) => React.CSSProperties['transition'] | undefined;
 
 export interface Props {
@@ -103,7 +108,7 @@ export const DragOverlay = React.memo(
 
         return null;
       },
-      [isDragging, activeNodeRect]
+      [isDragging, activeNodeRect],
     );
 
     // We need to wait for the active node to be measured before connecting the drag overlay ref
@@ -124,7 +129,7 @@ export const DragOverlay = React.memo(
             adjustScale && activatorEvent
               ? getRelativeTransformOrigin(
                   activatorEvent as MouseEvent | KeyboardEvent | TouchEvent,
-                  initialRect
+                  initialRect,
                 )
               : undefined,
           transition:
@@ -144,8 +149,11 @@ export const DragOverlay = React.memo(
       : undefined;
     const attributesSnapshot = useRef(attributes);
     const derivedAttributes = attributes ?? attributesSnapshot.current;
-    const {children: finalChildren, transform: _, ...otherAttributes} =
-      derivedAttributes ?? {};
+    const {
+      children: finalChildren,
+      transform: _,
+      ...otherAttributes
+    } = derivedAttributes ?? {};
     const prevActiveId = useRef(active?.id ?? null);
     const dropAnimationComplete = useDropAnimation({
       animate: Boolean(dropAnimation && prevActiveId.current && !active),
@@ -159,7 +167,7 @@ export const DragOverlay = React.memo(
       transform: attributesSnapshot.current?.transform,
     });
     const shouldRender = Boolean(
-      finalChildren && (children || (dropAnimation && !dropAnimationComplete))
+      finalChildren && (children || (dropAnimation && !dropAnimationComplete)),
     );
 
     useEffect(() => {
@@ -191,10 +199,10 @@ export const DragOverlay = React.memo(
               ...otherAttributes,
               ref,
             },
-            finalChildren
+            finalChildren,
           )}
         </ActiveDraggableContext.Provider>
       </InternalContext.Provider>
     );
-  }
+  },
 );

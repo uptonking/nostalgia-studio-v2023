@@ -1,6 +1,6 @@
 import * as React from 'react';
-import type {Middleware, SideObject} from '@floating-ui/core';
-import {arrow as arrowCore} from '@floating-ui/dom';
+import type { Middleware, SideObject } from '@floating-ui/core';
+import { arrow as arrowCore } from '@floating-ui/dom';
 
 /**
  * Positions an inner element of the floating element such that it is centered
@@ -12,7 +12,7 @@ export const arrow = (options: {
   element: React.MutableRefObject<HTMLElement | null> | HTMLElement;
   padding?: number | SideObject;
 }): Middleware => {
-  const {element, padding} = options;
+  const { element, padding } = options;
 
   function isRef(value: unknown): value is React.MutableRefObject<unknown> {
     return Object.prototype.hasOwnProperty.call(value, 'current');
@@ -24,12 +24,12 @@ export const arrow = (options: {
     fn(args) {
       if (isRef(element)) {
         if (element.current != null) {
-          return arrowCore({element: element.current, padding}).fn(args);
+          return arrowCore({ element: element.current, padding }).fn(args);
         }
 
         return {};
       } else if (element) {
-        return arrowCore({element, padding}).fn(args);
+        return arrowCore({ element, padding }).fn(args);
       }
 
       return {};

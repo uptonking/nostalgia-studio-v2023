@@ -1,4 +1,4 @@
-import type {MutableRefObject} from 'react';
+import type { MutableRefObject } from 'react';
 import type {
   Active,
   Over,
@@ -14,7 +14,7 @@ import type {
   UniqueIdentifier,
   ClientRect,
 } from '../types';
-import type {Collision} from '../utilities/algorithms';
+import type { Collision } from '../utilities/algorithms';
 
 export enum Response {
   Start = 'start',
@@ -79,5 +79,5 @@ export type SensorDescriptor<T> = {
 
 export type SensorHandler = (
   event: React.SyntheticEvent,
-  active: UniqueIdentifier
+  active: UniqueIdentifier,
 ) => boolean | void;

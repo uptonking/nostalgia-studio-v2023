@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'slate-hyperscript'
+import { jsx } from 'slate-hyperscript';
 
-export const input = <fragment />
-export const output = []
+export const input = <fragment />;
+export const output = [];

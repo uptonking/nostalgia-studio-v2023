@@ -1,10 +1,10 @@
-import {getNearestOverflowAncestor} from './getNearestOverflowAncestor';
-import {getWindow} from './window';
-import {isOverflowElement} from './is';
+import { getNearestOverflowAncestor } from './getNearestOverflowAncestor';
+import { getWindow } from './window';
+import { isOverflowElement } from './is';
 
 export function getOverflowAncestors(
   node: Node,
-  list: Array<Element | Window> = []
+  list: Array<Element | Window> = [],
 ): Array<Element | Window | VisualViewport> {
   const scrollableAncestor = getNearestOverflowAncestor(node);
   const isBody = scrollableAncestor === node.ownerDocument?.body;
@@ -12,7 +12,7 @@ export function getOverflowAncestors(
   const target = isBody
     ? ([win] as any).concat(
         win.visualViewport || [],
-        isOverflowElement(scrollableAncestor) ? scrollableAncestor : []
+        isOverflowElement(scrollableAncestor) ? scrollableAncestor : [],
       )
     : scrollableAncestor;
   const updatedList = list.concat(target);

@@ -19,14 +19,14 @@ type ExtendableTypes =
   | 'RemoveTextOperation'
   | 'SetNodeOperation'
   | 'SetSelectionOperation'
-  | 'SplitNodeOperation'
+  | 'SplitNodeOperation';
 
 export interface CustomTypes {
-  [key: string]: unknown
+  [key: string]: unknown;
 }
 
 /** 若CustomTypes中存在可覆盖接口名，则 */
 export type ExtendedType<
   K extends ExtendableTypes,
-  B
-> = unknown extends CustomTypes[K] ? B : CustomTypes[K]
+  B,
+> = unknown extends CustomTypes[K] ? B : CustomTypes[K];

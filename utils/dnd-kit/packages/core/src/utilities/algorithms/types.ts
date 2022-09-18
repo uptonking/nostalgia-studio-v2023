@@ -1,5 +1,5 @@
-import type {Active, Data, DroppableContainer, RectMap} from '../../store';
-import type {Coordinates, ClientRect, UniqueIdentifier} from '../../types';
+import type { Active, Data, DroppableContainer, RectMap } from '../../store';
+import type { Coordinates, ClientRect, UniqueIdentifier } from '../../types';
 
 export interface Collision {
   id: UniqueIdentifier;

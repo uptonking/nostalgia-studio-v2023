@@ -6,26 +6,26 @@ import {
   Rect,
   Strategy,
 } from '@floating-ui/core';
-import {getViewportRect} from './getViewportRect';
-import {getDocumentRect} from './getDocumentRect';
-import {getOverflowAncestors} from './getOverflowAncestors';
-import {getOffsetParent} from './getOffsetParent';
-import {getDocumentElement} from './getDocumentElement';
-import {getComputedStyle} from './getComputedStyle';
-import {isElement, isHTMLElement} from './is';
-import {getBoundingClientRect} from './getBoundingClientRect';
-import {contains} from './contains';
-import {getNodeName} from './getNodeName';
-import {max, min} from './math';
+import { getViewportRect } from './getViewportRect';
+import { getDocumentRect } from './getDocumentRect';
+import { getOverflowAncestors } from './getOverflowAncestors';
+import { getOffsetParent } from './getOffsetParent';
+import { getDocumentElement } from './getDocumentElement';
+import { getComputedStyle } from './getComputedStyle';
+import { isElement, isHTMLElement } from './is';
+import { getBoundingClientRect } from './getBoundingClientRect';
+import { contains } from './contains';
+import { getNodeName } from './getNodeName';
+import { max, min } from './math';
 
 function getInnerBoundingClientRect(
   element: Element,
-  strategy: Strategy
+  strategy: Strategy,
 ): ClientRectObject {
   const clientRect = getBoundingClientRect(
     element,
     false,
-    strategy === 'fixed'
+    strategy === 'fixed',
   );
   const top = clientRect.top + element.clientTop;
   const left = clientRect.left + element.clientLeft;
@@ -44,7 +44,7 @@ function getInnerBoundingClientRect(
 function getClientRectFromClippingAncestor(
   element: Element,
   clippingParent: Element | RootBoundary,
-  strategy: Strategy
+  strategy: Strategy,
 ): ClientRectObject {
   if (clippingParent === 'viewport') {
     return rectToClientRect(getViewportRect(element, strategy));
@@ -63,7 +63,7 @@ function getClientRectFromClippingAncestor(
 function getClippingAncestors(element: Element): Array<Element> {
   const clippingAncestors = getOverflowAncestors(element);
   const canEscapeClipping = ['absolute', 'fixed'].includes(
-    getComputedStyle(element).position
+    getComputedStyle(element).position,
   );
   const clipperElement =
     canEscapeClipping && isHTMLElement(element)
@@ -79,7 +79,7 @@ function getClippingAncestors(element: Element): Array<Element> {
     (clippingAncestors) =>
       isElement(clippingAncestors) &&
       contains(clippingAncestors, clipperElement) &&
-      getNodeName(clippingAncestors) !== 'body'
+      getNodeName(clippingAncestors) !== 'body',
   );
 }
 
@@ -107,7 +107,7 @@ export function getClippingRect({
     const rect = getClientRectFromClippingAncestor(
       element,
       clippingAncestor,
-      strategy
+      strategy,
     );
 
     accRect.top = max(rect.top, accRect.top);

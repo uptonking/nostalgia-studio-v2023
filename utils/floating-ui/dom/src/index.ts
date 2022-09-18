@@ -3,8 +3,8 @@ import type {
   ReferenceElement,
   FloatingElement,
 } from './types';
-import {computePosition as computePositionCore} from '@floating-ui/core';
-import {platform} from './platform';
+import { computePosition as computePositionCore } from '@floating-ui/core';
+import { platform } from './platform';
 
 /**
  * Computes the `x` and `y` coordinates that will place the floating element
@@ -14,8 +14,8 @@ import {platform} from './platform';
 export const computePosition = (
   reference: ReferenceElement,
   floating: FloatingElement,
-  options?: Partial<ComputePositionConfig>
-) => computePositionCore(reference, floating, {platform, ...options});
+  options?: Partial<ComputePositionConfig>,
+) => computePositionCore(reference, floating, { platform, ...options });
 
 export {
   arrow,
@@ -30,6 +30,6 @@ export {
   detectOverflow,
 } from '@floating-ui/core';
 
-export {autoUpdate} from './autoUpdate';
+export { autoUpdate } from './autoUpdate';
 
-export {getOverflowAncestors} from './utils/getOverflowAncestors';
+export { getOverflowAncestors } from './utils/getOverflowAncestors';

@@ -1,4 +1,4 @@
-import {createContext, useContext, useMemo} from 'react';
+import { createContext, useContext, useMemo } from 'react';
 import {
   Transform,
   useNodeRef,
@@ -7,9 +7,9 @@ import {
   useUniqueId,
 } from '@dnd-kit/utilities';
 
-import {InternalContext, Data} from '../store';
-import {ActiveDraggableContext} from '../components/DndContext';
-import {useSyntheticListeners, SyntheticListenerMap} from './utilities';
+import { InternalContext, Data } from '../store';
+import { ActiveDraggableContext } from '../components/DndContext';
+import { useSyntheticListeners, SyntheticListenerMap } from './utilities';
 
 export interface UseDraggableArguments {
   id: string;
@@ -54,11 +54,14 @@ export function useDraggable({
     draggableNodes,
     over,
   } = useContext(InternalContext);
-  const {role = defaultRole, roleDescription = 'draggable', tabIndex = 0} =
-    attributes ?? {};
+  const {
+    role = defaultRole,
+    roleDescription = 'draggable',
+    tabIndex = 0,
+  } = attributes ?? {};
   const isDragging = active?.id === id;
   const transform: Transform | null = useContext(
-    isDragging ? ActiveDraggableContext : NullContext
+    isDragging ? ActiveDraggableContext : NullContext,
   );
   const [node, setNodeRef] = useNodeRef();
   const listeners = useSyntheticListeners(activators, id);
@@ -66,7 +69,7 @@ export function useDraggable({
 
   useIsomorphicLayoutEffect(
     () => {
-      draggableNodes[id] = {id, key, node, data: dataRef};
+      draggableNodes[id] = { id, key, node, data: dataRef };
 
       return () => {
         const node = draggableNodes[id];
@@ -77,7 +80,7 @@ export function useDraggable({
       };
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [draggableNodes, id]
+    [draggableNodes, id],
   );
 
   const memoizedAttributes: DraggableAttributes = useMemo(
@@ -88,7 +91,7 @@ export function useDraggable({
       'aria-roledescription': roleDescription,
       'aria-describedby': ariaDescribedById.draggable,
     }),
-    [role, tabIndex, isDragging, roleDescription, ariaDescribedById.draggable]
+    [role, tabIndex, isDragging, roleDescription, ariaDescribedById.draggable],
   );
 
   return {

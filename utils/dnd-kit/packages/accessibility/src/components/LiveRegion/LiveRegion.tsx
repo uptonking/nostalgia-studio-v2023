@@ -19,13 +19,13 @@ const visuallyHidden: React.CSSProperties = {
   whiteSpace: 'nowrap',
 };
 
-export function LiveRegion({id, announcement}: Props) {
+export function LiveRegion({ id, announcement }: Props) {
   return (
     <div
       id={id}
       style={visuallyHidden}
-      role="status"
-      aria-live="assertive"
+      role='status'
+      aria-live='assertive'
       aria-atomic
     >
       {announcement}

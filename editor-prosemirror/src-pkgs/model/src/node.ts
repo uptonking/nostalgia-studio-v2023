@@ -215,10 +215,10 @@ export class Node {
     if (from == to) return Slice.empty;
 
     const $from = this.resolve(from);
-      const $to = this.resolve(to);
+    const $to = this.resolve(to);
     const depth = includeParents ? 0 : $from.sharedDepth(to);
     const start = $from.start(depth);
-      const node = $from.node(depth);
+    const node = $from.node(depth);
     const content = node.content.cut($from.pos - start, $to.pos - start);
     return new Slice(content, $from.depth - depth, $to.depth - depth);
   }
@@ -376,7 +376,11 @@ export class Node {
     start = 0,
     end = replacement.childCount,
   ) {
-    const one = this.contentMatchAt(from).matchFragment(replacement, start, end);
+    const one = this.contentMatchAt(from).matchFragment(
+      replacement,
+      start,
+      end,
+    );
     const two = one && one.matchFragment(this.content, to);
     if (!two || !two.validEnd) return false;
     for (let i = start; i < end; i++)
@@ -449,13 +453,13 @@ export class Node {
         throw new RangeError('Invalid mark data for Node.fromJSON');
       marks = json.marks.map(schema.markFromJSON);
     }
-    if (json.type == 'text') {
+    if (json.type === 'text') {
       if (typeof json.text !== 'string')
         throw new RangeError('Invalid text node in JSON');
       return schema.text(json.text, marks);
     }
     const content = Fragment.fromJSON(schema, json.content);
-    return schema.nodeType(json.type).create(json.attrs, content, marks);
+    return schema.nodeType(json.type).create(json.attrs, content, marks!);
   }
 }
 

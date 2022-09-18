@@ -1,4 +1,4 @@
-import { Range } from 'slate'
+import { Range } from 'slate';
 
 export const input = {
   anchor: {
@@ -9,8 +9,8 @@ export const input = {
     path: [0, 0],
     offset: 1,
   },
-}
-export const test = value => {
+};
+export const test = (value) => {
   return Range.transform(
     value,
     {
@@ -19,9 +19,9 @@ export const test = value => {
       position: 1,
       properties: {},
     },
-    { affinity: 'inward' }
-  )
-}
+    { affinity: 'inward' },
+  );
+};
 export const output = {
   anchor: {
     path: [0, 1],
@@ -31,4 +31,4 @@ export const output = {
     path: [0, 1],
     offset: 0,
   },
-}
+};

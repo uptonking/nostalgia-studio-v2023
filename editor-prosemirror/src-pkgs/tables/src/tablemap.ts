@@ -9,7 +9,8 @@
 // compute the start position of the table and offset positions passed
 // to or gotten from this structure by that amount.
 
-let readFromCache; let addToCache;
+let readFromCache;
+let addToCache;
 // Prefer using a weak map to cache table maps. Fall back on a
 // fixed-size cache if that's not supported.
 if (typeof WeakMap !== 'undefined') {
@@ -22,8 +23,8 @@ if (typeof WeakMap !== 'undefined') {
   };
 } else {
   const cache = [];
-    const cacheSize = 10;
-    let cachePos = 0;
+  const cacheSize = 10;
+  let cachePos = 0;
   readFromCache = (key) => {
     for (let i = 0; i < cache.length; i += 2)
       if (cache[i] == key) return cache[i + 1];
@@ -44,10 +45,11 @@ export class Rect {
   }
 }
 
-// ::- A table map describes the structore of a given table. To avoid
-// recomputing them all the time, they are cached per table node. To
-// be able to do that, positions saved in the map are relative to the
-// start of the table, rather than the start of the document.
+/** ::- A table map describes the structore of a given table. To avoid
+ * recomputing them all the time, they are cached per table node. To
+ * be able to do that, positions saved in the map are relative to the
+ * start of the table, rather than the start of the document.
+ */
 export class TableMap {
   constructor(width, height, map, problems) {
     // :: number The width of the table
@@ -69,9 +71,9 @@ export class TableMap {
       const curPos = this.map[i];
       if (curPos != pos) continue;
       const left = i % this.width;
-        const top = (i / this.width) | 0;
+      const top = (i / this.width) | 0;
       let right = left + 1;
-        let bottom = top + 1;
+      let bottom = top + 1;
       for (let j = 1; right < this.width && this.map[i + j] == curPos; j++)
         right++;
       for (
@@ -135,11 +137,11 @@ export class TableMap {
   // the given rectangle.
   cellsInRect(rect) {
     const result = [];
-      const seen = {};
+    const seen = {};
     for (let row = rect.top; row < rect.bottom; row++) {
       for (let col = rect.left; col < rect.right; col++) {
         const index = row * this.width + col;
-          const pos = this.map[index];
+        const pos = this.map[index];
         if (seen[pos]) continue;
         seen[pos] = true;
         if (
@@ -160,7 +162,7 @@ export class TableMap {
       const rowEnd = rowStart + table.child(i).nodeSize;
       if (i == row) {
         let index = col + row * this.width;
-          const rowEndIndex = (row + 1) * this.width;
+        const rowEndIndex = (row + 1) * this.width;
         // Skip past cells from previous rows (via rowspan)
         while (index < rowEndIndex && this.map[index] < rowStart) index++;
         return index == rowEndIndex ? rowEnd - 1 : this.map[index];
@@ -181,11 +183,11 @@ function computeMap(table) {
   if (table.type.spec.tableRole != 'table')
     throw new RangeError('Not a table node: ' + table.type.name);
   const width = findWidth(table);
-    const height = table.childCount;
+  const height = table.childCount;
   const map = [];
-    let mapPos = 0;
-    let problems = null;
-    const colWidths = [];
+  let mapPos = 0;
+  let problems = null;
+  const colWidths = [];
   for (let i = 0, e = width * height; i < e; i++) map[i] = 0;
 
   for (let row = 0, pos = 0; row < height; row++) {
@@ -195,7 +197,7 @@ function computeMap(table) {
       while (mapPos < map.length && map[mapPos] != 0) mapPos++;
       if (i == rowNode.childCount) break;
       const cellNode = rowNode.child(i);
-        const { colspan, rowspan, colwidth } = cellNode.attrs;
+      const { colspan, rowspan, colwidth } = cellNode.attrs;
       for (let h = 0; h < rowspan; h++) {
         if (h + row >= height) {
           (problems || (problems = [])).push({
@@ -218,7 +220,7 @@ function computeMap(table) {
           const colW = colwidth && colwidth[w];
           if (colW) {
             const widthIndex = ((start + w) % width) * 2;
-              const prev = colWidths[widthIndex];
+            const prev = colWidths[widthIndex];
             if (
               prev == null ||
               (prev != colW && colWidths[widthIndex + 1] == 1)
@@ -235,7 +237,7 @@ function computeMap(table) {
       pos += cellNode.nodeSize;
     }
     const expectedPos = (row + 1) * width;
-      let missing = 0;
+    let missing = 0;
     while (mapPos < expectedPos) if (map[mapPos++] == 0) missing++;
     if (missing)
       (problems || (problems = [])).push({ type: 'missing', row, n: missing });
@@ -243,7 +245,7 @@ function computeMap(table) {
   }
 
   const tableMap = new TableMap(width, height, map, problems);
-    let badWidths = false;
+  let badWidths = false;
 
   // For columns that have defined widths, but whose widths disagree
   // between rows, fix up the cells whose width doesn't match the
@@ -257,10 +259,10 @@ function computeMap(table) {
 
 function findWidth(table) {
   let width = -1;
-    let hasRowSpan = false;
+  let hasRowSpan = false;
   for (let row = 0; row < table.childCount; row++) {
     const rowNode = table.child(row);
-      let rowWidth = 0;
+    let rowWidth = 0;
     if (hasRowSpan)
       for (let j = 0; j < row; j++) {
         const prevRow = table.child(j);
@@ -287,10 +289,10 @@ function findBadColWidths(map, colWidths, table) {
     if (seen[pos]) continue;
     seen[pos] = true;
     const node = table.nodeAt(pos);
-      let updated = null;
+    let updated = null;
     for (let j = 0; j < node.attrs.colspan; j++) {
       const col = (i + j) % map.width;
-        const colWidth = colWidths[col * 2];
+      const colWidth = colWidths[col * 2];
       if (
         colWidth != null &&
         (!node.attrs.colwidth || node.attrs.colwidth[j] != colWidth)

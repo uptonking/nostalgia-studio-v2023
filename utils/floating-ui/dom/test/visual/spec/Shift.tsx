@@ -1,29 +1,29 @@
-import type {Placement} from '@floating-ui/core';
-import type {LimitShiftOptions} from '@floating-ui/core/src/middleware/shift';
+import type { Placement } from '@floating-ui/core';
+import type { LimitShiftOptions } from '@floating-ui/core/src/middleware/shift';
 import {
   useFloating,
   shift,
   offset,
   limitShift as limitShiftFn,
 } from '@floating-ui/react-dom';
-import {allPlacements} from '../utils/allPlacements';
-import {useState, useLayoutEffect} from 'react';
-import {Controls} from '../utils/Controls';
-import {useScroll} from '../utils/useScroll';
+import { allPlacements } from '../utils/allPlacements';
+import { useState, useLayoutEffect } from 'react';
+import { Controls } from '../utils/Controls';
+import { useScroll } from '../utils/useScroll';
 
 const BOOLS = [true, false];
 const LIMIT_SHIFT_OFFSET: Array<{
   offset: LimitShiftOptions['offset'];
   name: string;
 }> = [
-  {offset: 0, name: '0'},
-  {offset: 50, name: '50'},
-  {offset: -50, name: '-50'},
-  {offset: {mainAxis: 50}, name: 'mA: 50'},
-  {offset: {crossAxis: 50}, name: 'cA: 50'},
-  {offset: ({reference}) => reference.width / 2, name: 'fn => r.width/2'},
+  { offset: 0, name: '0' },
+  { offset: 50, name: '50' },
+  { offset: -50, name: '-50' },
+  { offset: { mainAxis: 50 }, name: 'mA: 50' },
+  { offset: { crossAxis: 50 }, name: 'cA: 50' },
+  { offset: ({ reference }) => reference.width / 2, name: 'fn => r.width/2' },
   {
-    offset: ({reference}) => ({crossAxis: reference.width}),
+    offset: ({ reference }) => ({ crossAxis: reference.width }),
     name: 'fn => cA: f.width/2',
   },
 ];
@@ -40,7 +40,7 @@ export function Shift() {
   const [limitShiftOffset, setLimitShiftOffset] =
     useState<LimitShiftOptions['offset']>(0);
   const [offsetValue, setOffsetValue] = useState(0);
-  const {x, y, reference, floating, strategy, update, refs} = useFloating({
+  const { x, y, reference, floating, strategy, update, refs } = useFloating({
     placement,
     middleware: [
       offset(offsetValue),
@@ -68,26 +68,26 @@ export function Shift() {
     limitShiftOffset,
   ]);
 
-  const {scrollRef, indicator} = useScroll({refs, update});
+  const { scrollRef, indicator } = useScroll({ refs, update });
 
   return (
     <>
       <h1>Shift</h1>
       <p></p>
-      <div className="container">
+      <div className='container'>
         <div
-          className="scroll"
+          className='scroll'
           data-x
-          style={{position: 'relative'}}
+          style={{ position: 'relative' }}
           ref={scrollRef}
         >
           {indicator}
-          <div ref={reference} className="reference">
+          <div ref={reference} className='reference'>
             Reference
           </div>
           <div
             ref={floating}
-            className="floating"
+            className='floating'
             style={{
               position: strategy,
               top: y ?? '',
@@ -122,7 +122,7 @@ export function Shift() {
             key={String(value)}
             data-testid={`offset-${value}`}
             onClick={() => setOffsetValue(value)}
-            style={{backgroundColor: offsetValue === value ? 'black' : ''}}
+            style={{ backgroundColor: offsetValue === value ? 'black' : '' }}
           >
             {String(value)}
           </button>
@@ -136,7 +136,7 @@ export function Shift() {
             key={String(bool)}
             data-testid={`mainAxis-${bool}`}
             onClick={() => setMainAxis(bool)}
-            style={{backgroundColor: mainAxis === bool ? 'black' : ''}}
+            style={{ backgroundColor: mainAxis === bool ? 'black' : '' }}
           >
             {String(bool)}
           </button>
@@ -150,7 +150,7 @@ export function Shift() {
             key={String(bool)}
             data-testid={`crossAxis-${bool}`}
             onClick={() => setCrossAxis(bool)}
-            style={{backgroundColor: crossAxis === bool ? 'black' : ''}}
+            style={{ backgroundColor: crossAxis === bool ? 'black' : '' }}
           >
             {String(bool)}
           </button>
@@ -164,7 +164,7 @@ export function Shift() {
             key={String(bool)}
             data-testid={`limitShift-${bool}`}
             onClick={() => setLimitShift(bool)}
-            style={{backgroundColor: limitShift === bool ? 'black' : ''}}
+            style={{ backgroundColor: limitShift === bool ? 'black' : '' }}
           >
             {String(bool)}
           </button>
@@ -207,7 +207,7 @@ export function Shift() {
 
           <h3>limitShift.offset</h3>
           <Controls>
-            {LIMIT_SHIFT_OFFSET.map(({offset, name}) => (
+            {LIMIT_SHIFT_OFFSET.map(({ offset, name }) => (
               <button
                 key={name}
                 data-testid={`limitShift.offset-${name}`}

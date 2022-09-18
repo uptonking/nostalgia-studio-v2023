@@ -1,5 +1,5 @@
-import {fireEvent, render, screen, cleanup} from '@testing-library/react';
-import {useState} from 'react';
+import { fireEvent, render, screen, cleanup } from '@testing-library/react';
+import { useState } from 'react';
 import {
   useFocus,
   useDismiss,
@@ -7,24 +7,27 @@ import {
   useFloating,
   useInteractions,
 } from '../../src';
-import type {Props} from '../../src/hooks/useFocus';
+import type { Props } from '../../src/hooks/useFocus';
 
-function App(props: Props & {dismiss?: boolean; hover?: boolean}) {
+function App(props: Props & { dismiss?: boolean; hover?: boolean }) {
   const [open, setOpen] = useState(false);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useFocus(context, props),
-    useDismiss(context, {enabled: !!props.dismiss, referencePointerDown: true}),
-    useHover(context, {enabled: !!props.hover}),
+    useDismiss(context, {
+      enabled: !!props.dismiss,
+      referencePointerDown: true,
+    }),
+    useHover(context, { enabled: !!props.hover }),
   ]);
 
   return (
     <>
-      <button {...getReferenceProps({ref: reference})} />
-      {open && <div role="tooltip" {...getFloatingProps({ref: floating})} />}
+      <button {...getReferenceProps({ ref: reference })} />
+      {open && <div role='tooltip' {...getFloatingProps({ ref: floating })} />}
     </>
   );
 }

@@ -1,9 +1,9 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
-import {useLatestValue, useLazyMemo} from '@dnd-kit/utilities';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLatestValue, useLazyMemo } from '@dnd-kit/utilities';
 
-import {Rect, getTransformAgnosticClientRect} from '../../utilities/rect';
-import type {DroppableContainer, RectMap} from '../../store/types';
-import type {ClientRect, UniqueIdentifier} from '../../types';
+import { Rect, getTransformAgnosticClientRect } from '../../utilities/rect';
+import type { DroppableContainer, RectMap } from '../../store/types';
+import type { ClientRect, UniqueIdentifier } from '../../types';
 
 interface Arguments {
   dragging: boolean;
@@ -39,14 +39,14 @@ const defaultConfig: DroppableMeasuring = {
 
 export function useDroppableMeasuring(
   containers: DroppableContainer[],
-  {dragging, dependencies, config}: Arguments
+  { dragging, dependencies, config }: Arguments,
 ) {
   const [
     containerIdsScheduledForMeasurement,
     setContainerIdsScheduledForMeasurement,
   ] = useState<UniqueIdentifier[] | null>(null);
   const measuringScheduled = containerIdsScheduledForMeasurement != null;
-  const {frequency, measure, strategy} = {
+  const { frequency, measure, strategy } = {
     ...defaultConfig,
     ...config,
   };
@@ -60,10 +60,10 @@ export function useDroppableMeasuring(
       }
 
       setContainerIdsScheduledForMeasurement((value) =>
-        value ? value.concat(ids) : ids
+        value ? value.concat(ids) : ids,
       );
     },
-    [disabledRef]
+    [disabledRef],
   );
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
   const droppableRects = useLazyMemo<RectMap>(
@@ -119,7 +119,7 @@ export function useDroppableMeasuring(
       dragging,
       disabled,
       measure,
-    ]
+    ],
   );
 
   useEffect(() => {
@@ -135,7 +135,7 @@ export function useDroppableMeasuring(
       requestAnimationFrame(() => measureDroppableContainers());
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dragging, disabled]
+    [dragging, disabled],
   );
 
   useEffect(() => {
@@ -160,7 +160,7 @@ export function useDroppableMeasuring(
       }, frequency);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [frequency, disabled, measureDroppableContainers, ...dependencies]
+    [frequency, disabled, measureDroppableContainers, ...dependencies],
   );
 
   return {

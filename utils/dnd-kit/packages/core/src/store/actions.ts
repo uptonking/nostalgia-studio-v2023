@@ -1,5 +1,5 @@
-import type {Coordinates, UniqueIdentifier} from '../types';
-import type {DroppableContainer} from './types';
+import type { Coordinates, UniqueIdentifier } from '../types';
+import type { DroppableContainer } from './types';
 
 export enum Action {
   DragStart = 'dragStart',
@@ -18,9 +18,9 @@ export type Actions =
       active: UniqueIdentifier;
       initialCoordinates: Coordinates;
     }
-  | {type: Action.DragMove; coordinates: Coordinates}
-  | {type: Action.DragEnd}
-  | {type: Action.DragCancel}
+  | { type: Action.DragMove; coordinates: Coordinates }
+  | { type: Action.DragEnd }
+  | { type: Action.DragCancel }
   | {
       type: Action.RegisterDroppable;
       element: DroppableContainer;

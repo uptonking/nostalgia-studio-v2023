@@ -1,7 +1,7 @@
-import type {Modifier, ClientRect} from '@dnd-kit/core';
-import type {FirstArgument, Transform} from '@dnd-kit/utilities';
+import type { Modifier, ClientRect } from '@dnd-kit/core';
+import type { FirstArgument, Transform } from '@dnd-kit/utilities';
 
-import {restrictToHorizontalAxis, restrictToVerticalAxis} from '../src';
+import { restrictToHorizontalAxis, restrictToVerticalAxis } from '../src';
 
 describe('@dnd-kit/modifiers', () => {
   const defaultRect: ClientRect = {
@@ -33,10 +33,10 @@ describe('@dnd-kit/modifiers', () => {
   };
 
   it('restrictToHorizontalAxis', () => {
-    const transform: Transform = {...defaultTransform, x: 20, y: 100};
+    const transform: Transform = { ...defaultTransform, x: 20, y: 100 };
 
     expect(
-      restrictToHorizontalAxis({...defaultArguments, transform})
+      restrictToHorizontalAxis({ ...defaultArguments, transform }),
     ).toStrictEqual({
       ...transform,
       y: 0,
@@ -44,10 +44,10 @@ describe('@dnd-kit/modifiers', () => {
   });
 
   it('restrictToVerticalAxis', () => {
-    const transform: Transform = {...defaultTransform, x: 20, y: 100};
+    const transform: Transform = { ...defaultTransform, x: 20, y: 100 };
 
     expect(
-      restrictToVerticalAxis({...defaultArguments, transform})
+      restrictToVerticalAxis({ ...defaultArguments, transform }),
     ).toStrictEqual({
       ...transform,
       x: 0,

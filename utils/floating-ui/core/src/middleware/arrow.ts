@@ -1,9 +1,9 @@
-import type {Middleware, Padding} from '../types';
-import {getLengthFromAxis} from '../utils/getLengthFromAxis';
-import {getMainAxisFromPlacement} from '../utils/getMainAxisFromPlacement';
-import {getSideObjectFromPadding} from '../utils/getPaddingObject';
-import {within} from '../utils/within';
-import {getAlignment} from '../utils/getAlignment';
+import type { Middleware, Padding } from '../types';
+import { getLengthFromAxis } from '../utils/getLengthFromAxis';
+import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
+import { getSideObjectFromPadding } from '../utils/getPaddingObject';
+import { within } from '../utils/within';
+import { getAlignment } from '../utils/getAlignment';
 
 export interface Options {
   /**
@@ -29,20 +29,20 @@ export const arrow = (options: Options): Middleware => ({
   options,
   async fn(middlewareArguments) {
     // Since `element` is required, we don't Partial<> the type
-    const {element, padding = 0} = options ?? {};
-    const {x, y, placement, rects, platform} = middlewareArguments;
+    const { element, padding = 0 } = options ?? {};
+    const { x, y, placement, rects, platform } = middlewareArguments;
 
     if (element == null) {
       if (__DEV__) {
         console.warn(
-          'Floating UI: No `element` was passed to the `arrow` middleware.'
+          'Floating UI: No `element` was passed to the `arrow` middleware.',
         );
       }
       return {};
     }
 
     const paddingObject = getSideObjectFromPadding(padding);
-    const coords = {x, y};
+    const coords = { x, y };
     const axis = getMainAxisFromPlacement(placement);
     const alignment = getAlignment(placement);
     const length = getLengthFromAxis(axis);
@@ -79,12 +79,14 @@ export const arrow = (options: Options): Middleware => ({
     const offset = within(min, center, max);
 
     // Make sure that arrow points at the reference
-    const alignmentPadding = alignment === 'start' ? paddingObject[minProp] : paddingObject[maxProp];
-    const shouldAddOffset = alignmentPadding > 0
-      && center !== offset
-      && rects.reference[length] <= rects.floating[length];
-    const alignmentOffset = shouldAddOffset ?
-      center < min
+    const alignmentPadding =
+      alignment === 'start' ? paddingObject[minProp] : paddingObject[maxProp];
+    const shouldAddOffset =
+      alignmentPadding > 0 &&
+      center !== offset &&
+      rects.reference[length] <= rects.floating[length];
+    const alignmentOffset = shouldAddOffset
+      ? center < min
         ? min - center
         : max - center
       : 0;

@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {unstable_batchedUpdates} from 'react-dom';
+import { unstable_batchedUpdates } from 'react-dom';
 
 import {
   Transform,
@@ -19,7 +19,7 @@ import {
   useUniqueId,
 } from '@dnd-kit/utilities';
 
-import {DndMonitorContext, DndMonitorState} from '../../hooks/monitor';
+import { DndMonitorContext, DndMonitorState } from '../../hooks/monitor';
 import {
   useAutoScroller,
   useCachedNode,
@@ -39,7 +39,7 @@ import type {
   DroppableMeasuring,
   SyntheticListener,
 } from '../../hooks/utilities';
-import {Modifiers, applyModifiers} from '../../modifiers';
+import { Modifiers, applyModifiers } from '../../modifiers';
 import {
   KeyboardSensor,
   PointerSensor,
@@ -58,7 +58,7 @@ import {
   getInitialState,
   reducer,
 } from '../../store';
-import type {Active, DataRef, Over} from '../../store/types';
+import type { Active, DataRef, Over } from '../../store/types';
 import type {
   ClientRect,
   DragCancelEvent,
@@ -77,7 +77,7 @@ import {
   getRectDelta,
   rectIntersection,
 } from '../../utilities';
-import {getTransformAgnosticClientRect} from '../../utilities/rect';
+import { getTransformAgnosticClientRect } from '../../utilities/rect';
 import {
   Accessibility,
   Announcements,
@@ -120,7 +120,7 @@ export interface MeasuringConfiguration {
 export interface CancelDropArguments extends DragEndEvent {}
 
 export type CancelDrop = (
-  args: CancelDropArguments
+  args: CancelDropArguments,
 ) => boolean | Promise<boolean>;
 
 interface DndEvent extends Event {
@@ -130,11 +130,11 @@ interface DndEvent extends Event {
 }
 
 const defaultSensors = [
-  {sensor: PointerSensor, options: {}},
-  {sensor: KeyboardSensor, options: {}},
+  { sensor: PointerSensor, options: {} },
+  { sensor: KeyboardSensor, options: {} },
 ];
 
-const defaultData: DataRef = {current: {}};
+const defaultData: DataRef = { current: {} };
 
 export const ActiveDraggableContext = createContext<Transform>({
   ...defaultCoordinates,
@@ -162,8 +162,8 @@ export const DndContext = memo(function DndContext({
   }));
   const [isDragging, setIsDragging] = useState(false);
   const {
-    draggable: {active: activeId, nodes: draggableNodes, translate},
-    droppable: {containers: droppableContainers},
+    draggable: { active: activeId, nodes: draggableNodes, translate },
+    droppable: { containers: droppableContainers },
   } = state;
   const node = activeId ? draggableNodes[activeId] : null;
   const activeRects = useRef<Active['rect']['current']>({
@@ -180,7 +180,7 @@ export const DndContext = memo(function DndContext({
             rect: activeRects,
           }
         : null,
-    [activeId, node]
+    [activeId, node],
   );
   const activeRef = useRef<UniqueIdentifier | null>(null);
   const [activeSensor, setActiveSensor] = useState<SensorInstance | null>(null);
@@ -189,9 +189,9 @@ export const DndContext = memo(function DndContext({
   const draggableDescribedById = useUniqueId(`DndDescribedBy`, id);
   const enabledDroppableContainers = useMemo(
     () => droppableContainers.getEnabled(),
-    [droppableContainers]
+    [droppableContainers],
   );
-  const {droppableRects, measureDroppableContainers, measuringScheduled} =
+  const { droppableRects, measureDroppableContainers, measuringScheduled } =
     useDroppableMeasuring(enabledDroppableContainers, {
       dragging: isDragging,
       dependencies: [translate.x, translate.y],
@@ -203,10 +203,10 @@ export const DndContext = memo(function DndContext({
     : null;
   const activeNodeRect = useObservedRect(
     activeNode,
-    measuring?.draggable?.measure ?? getTransformAgnosticClientRect
+    measuring?.draggable?.measure ?? getTransformAgnosticClientRect,
   );
   const containerNodeRect = useObservedRect(
-    activeNode ? activeNode.parentElement : null
+    activeNode ? activeNode.parentElement : null,
   );
   const sensorContext = useRef<SensorContext>({
     active: null,
@@ -223,7 +223,7 @@ export const DndContext = memo(function DndContext({
     scrollAdjustedTranslate: null,
   });
   const overNode = droppableContainers.getNodeFor(
-    sensorContext.current.over?.id
+    sensorContext.current.over?.id,
   );
   const dragOverlay = useDragOverlayMeasuring({
     measure: measuring?.dragOverlay?.measure,
@@ -243,12 +243,12 @@ export const DndContext = memo(function DndContext({
 
   // Get the window rect of the dragging node
   const windowRect = useWindowRect(
-    draggingNode ? draggingNode.ownerDocument.defaultView : null
+    draggingNode ? draggingNode.ownerDocument.defaultView : null,
   );
 
   // Get scrollable ancestors of the dragging node
   const scrollableAncestors = useScrollableAncestors(
-    activeId ? overNode ?? draggingNode : null
+    activeId ? overNode ?? draggingNode : null,
   );
   const scrollableAncestorRects = useRects(scrollableAncestors);
 
@@ -312,13 +312,13 @@ export const DndContext = memo(function DndContext({
   const transform = adjustScale(
     appliedTranslate,
     over?.rect ?? null,
-    activeNodeRect
+    activeNodeRect,
   );
 
   const instantiateSensor = useCallback(
     (
       event: React.SyntheticEvent,
-      {sensor: Sensor, options}: SensorDescriptor<any>
+      { sensor: Sensor, options }: SensorDescriptor<any>,
     ) => {
       if (!activeRef.current) {
         return;
@@ -351,9 +351,9 @@ export const DndContext = memo(function DndContext({
             return;
           }
 
-          const {onDragStart} = latestProps.current;
+          const { onDragStart } = latestProps.current;
           const event: DragStartEvent = {
-            active: {id, data: node.data, rect: activeRects},
+            active: { id, data: node.data, rect: activeRects },
           };
 
           unstable_batchedUpdates(() => {
@@ -362,7 +362,7 @@ export const DndContext = memo(function DndContext({
               initialCoordinates,
               active: id,
             });
-            setMonitorState({type: Action.DragStart, event});
+            setMonitorState({ type: Action.DragStart, event });
           });
 
           onDragStart?.(event);
@@ -384,12 +384,12 @@ export const DndContext = memo(function DndContext({
 
       function createHandler(type: Action.DragEnd | Action.DragCancel) {
         return async function handler() {
-          const {active, collisions, over, scrollAdjustedTranslate} =
+          const { active, collisions, over, scrollAdjustedTranslate } =
             sensorContext.current;
           let event: DragEndEvent | null = null;
 
           if (active && scrollAdjustedTranslate) {
-            const {cancelDrop} = latestProps.current;
+            const { cancelDrop } = latestProps.current;
 
             event = {
               active: active,
@@ -410,18 +410,18 @@ export const DndContext = memo(function DndContext({
           activeRef.current = null;
 
           unstable_batchedUpdates(() => {
-            dispatch({type});
+            dispatch({ type });
             setOver(null);
             setIsDragging(false);
             setActiveSensor(null);
             setActivatorEvent(null);
 
             if (event) {
-              setMonitorState({type, event});
+              setMonitorState({ type, event });
             }
 
             if (event) {
-              const {onDragCancel, onDragEnd} = latestProps.current;
+              const { onDragCancel, onDragEnd } = latestProps.current;
               const handler =
                 type === Action.DragEnd ? onDragEnd : onDragCancel;
 
@@ -432,13 +432,13 @@ export const DndContext = memo(function DndContext({
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [draggableNodes]
+    [draggableNodes],
   );
 
   const bindActivatorToSensorInstantiator = useCallback(
     (
       handler: SensorHandler,
-      sensor: SensorDescriptor<any>
+      sensor: SensorDescriptor<any>,
     ): SyntheticListener['handler'] => {
       return (event, active) => {
         const nativeEvent = event.nativeEvent as DndEvent;
@@ -463,12 +463,12 @@ export const DndContext = memo(function DndContext({
         }
       };
     },
-    [instantiateSensor]
+    [instantiateSensor],
   );
 
   const activators = useCombineActivators(
     sensors,
-    bindActivatorToSensorInstantiator
+    bindActivatorToSensorInstantiator,
   );
 
   useSensorSetup(sensors);
@@ -491,8 +491,8 @@ export const DndContext = memo(function DndContext({
 
   useEffect(
     () => {
-      const {onDragMove} = latestProps.current;
-      const {active, collisions, over} = sensorContext.current;
+      const { onDragMove } = latestProps.current;
+      const { active, collisions, over } = sensorContext.current;
 
       if (!active) {
         return;
@@ -508,23 +508,27 @@ export const DndContext = memo(function DndContext({
         over,
       };
 
-      setMonitorState({type: Action.DragMove, event});
+      setMonitorState({ type: Action.DragMove, event });
       onDragMove?.(event);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [scrollAdjustedTranslate.x, scrollAdjustedTranslate.y]
+    [scrollAdjustedTranslate.x, scrollAdjustedTranslate.y],
   );
 
   useEffect(
     () => {
-      const {active, collisions, droppableContainers, scrollAdjustedTranslate} =
-        sensorContext.current;
+      const {
+        active,
+        collisions,
+        droppableContainers,
+        scrollAdjustedTranslate,
+      } = sensorContext.current;
 
       if (!active || !activeRef.current || !scrollAdjustedTranslate) {
         return;
       }
 
-      const {onDragOver} = latestProps.current;
+      const { onDragOver } = latestProps.current;
       const overContainer = droppableContainers.get(overId);
       const over =
         overContainer && overContainer.rect.current
@@ -547,12 +551,12 @@ export const DndContext = memo(function DndContext({
 
       unstable_batchedUpdates(() => {
         setOver(over);
-        setMonitorState({type: Action.DragOver, event});
+        setMonitorState({ type: Action.DragOver, event });
         onDragOver?.(event);
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [overId]
+    [overId],
   );
 
   useIsomorphicLayoutEffect(() => {
@@ -700,6 +704,6 @@ export const DndContext = memo(function DndContext({
       };
     }
 
-    return {enabled};
+    return { enabled };
   }
 });

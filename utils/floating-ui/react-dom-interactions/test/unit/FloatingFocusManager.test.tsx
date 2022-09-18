@@ -1,15 +1,17 @@
-import {useRef, useState} from 'react';
-import {cleanup, fireEvent, render, screen} from '@testing-library/react';
+import { useRef, useState } from 'react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {FloatingFocusManager, useFloating} from '../../src';
-import {Props} from '../../src/FloatingFocusManager';
+import { FloatingFocusManager, useFloating } from '../../src';
+import { Props } from '../../src/FloatingFocusManager';
 
 function App(
-  props: Partial<Omit<Props, 'initialFocus'> & {initialFocus?: 'two' | number}>
+  props: Partial<
+    Omit<Props, 'initialFocus'> & { initialFocus?: 'two' | number }
+  >,
 ) {
   const ref = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState(false);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
@@ -17,7 +19,7 @@ function App(
   return (
     <>
       <button
-        data-testid="reference"
+        data-testid='reference'
         ref={reference}
         onClick={() => setOpen(!open)}
       />
@@ -27,12 +29,12 @@ function App(
           initialFocus={props.initialFocus === 'two' ? ref : props.initialFocus}
           context={context}
         >
-          <div role="dialog" ref={floating} data-testid="floating">
-            <button data-testid="one">close</button>
-            <button data-testid="two" ref={ref}>
+          <div role='dialog' ref={floating} data-testid='floating'>
+            <button data-testid='one'>close</button>
+            <button data-testid='two' ref={ref}>
               confirm
             </button>
-            <button data-testid="three" onClick={() => setOpen(false)}>
+            <button data-testid='three' onClick={() => setOpen(false)}>
               x
             </button>
           </div>
@@ -44,7 +46,7 @@ function App(
 
 describe('initialFocus', () => {
   test('number', () => {
-    const {rerender} = render(<App />);
+    const { rerender } = render(<App />);
 
     fireEvent.click(screen.getByTestId('reference'));
     expect(screen.getByTestId('one')).toHaveFocus();
@@ -59,7 +61,7 @@ describe('initialFocus', () => {
   });
 
   test('ref', () => {
-    render(<App initialFocus="two" />);
+    render(<App initialFocus='two' />);
     fireEvent.click(screen.getByTestId('reference'));
     expect(screen.getByTestId('two')).toHaveFocus();
 
@@ -186,16 +188,16 @@ describe('modal', () => {
     await userEvent.tab();
     expect(screen.getByTestId('one')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('three')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('two')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('one')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('three')).toHaveFocus();
 
     await userEvent.tab();
@@ -229,11 +231,11 @@ describe('modal', () => {
     fireEvent.click(screen.getByTestId('reference'));
 
     await userEvent.tab();
-    await userEvent.tab({shift: true});
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
+    await userEvent.tab({ shift: true });
 
     expect(
-      screen.getByTestId('floating').contains(document.activeElement)
+      screen.getByTestId('floating').contains(document.activeElement),
     ).toBe(false);
 
     cleanup();
@@ -242,7 +244,7 @@ describe('modal', () => {
   test('true - comboboxes hide all other nodes', async () => {
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
@@ -250,20 +252,20 @@ describe('modal', () => {
       return (
         <>
           <input
-            role="combobox"
-            data-testid="reference"
+            role='combobox'
+            data-testid='reference'
             ref={reference}
             onFocus={() => setOpen(true)}
           />
-          <button data-testid="btn-1" />
-          <button data-testid="btn-2" />
+          <button data-testid='btn-1' />
+          <button data-testid='btn-2' />
           {open && (
             <FloatingFocusManager
               context={context}
               modal={true}
               order={['reference']}
             >
-              <div role="listbox" ref={floating} data-testid="floating" />
+              <div role='listbox' ref={floating} data-testid='floating' />
             </FloatingFocusManager>
           )}
         </>
@@ -284,7 +286,7 @@ describe('modal', () => {
   test('false - comboboxes do not hide all other nodes', async () => {
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
@@ -292,16 +294,16 @@ describe('modal', () => {
       return (
         <>
           <input
-            role="combobox"
-            data-testid="reference"
+            role='combobox'
+            data-testid='reference'
             ref={reference}
             onFocus={() => setOpen(true)}
           />
-          <button data-testid="btn-1" />
-          <button data-testid="btn-2" />
+          <button data-testid='btn-1' />
+          <button data-testid='btn-2' />
           {open && (
             <FloatingFocusManager context={context} modal={false}>
-              <div role="listbox" ref={floating} data-testid="floating" />
+              <div role='listbox' ref={floating} data-testid='floating' />
             </FloatingFocusManager>
           )}
         </>
@@ -354,16 +356,16 @@ describe('order', () => {
     await userEvent.tab();
     expect(screen.getByTestId('floating')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('three')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('two')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('one')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('floating')).toHaveFocus();
 
     cleanup();
@@ -391,13 +393,13 @@ describe('order', () => {
     await userEvent.tab();
     expect(screen.getByTestId('reference')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('three')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
-    await userEvent.tab({shift: true});
-    await userEvent.tab({shift: true});
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
+    await userEvent.tab({ shift: true });
+    await userEvent.tab({ shift: true });
+    await userEvent.tab({ shift: true });
 
     expect(screen.getByTestId('reference')).toHaveFocus();
 

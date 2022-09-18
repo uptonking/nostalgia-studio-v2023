@@ -1,1 +1,1 @@
-export {inverseTransform} from './inverseTransform';
+export { inverseTransform } from './inverseTransform';

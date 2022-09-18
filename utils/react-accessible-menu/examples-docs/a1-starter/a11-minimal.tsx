@@ -106,7 +106,7 @@ export const LotsOfItemsWithinContainer = () => {
     <div>
       {/* 👀️ 注意此处不能使用maxHeight，否则内容高度都会显示出来，parent的hidden就不符合预期了 */}
       {/* <div style={{ width: 480, maxHeight: 360 }}> */}
-      <div style={{ width: 480, height: 360 }}> 
+      <div style={{ width: 480, height: 360 }}>
         <div className='eg-scroll-parent '>
           <div className='eg-scroll-child '>
             <Menu

@@ -1,15 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
-import {computePosition} from '@floating-ui/dom';
+import { computePosition } from '@floating-ui/dom';
 import type {
   UseFloatingProps,
   UseFloatingReturn,
   UseFloatingData,
   ReferenceType,
 } from './types';
-import {deepEqual} from './utils/deepEqual';
-import {useLatestRef} from './utils/useLatestRef';
+import { deepEqual } from './utils/deepEqual';
+import { useLatestRef } from './utils/useLatestRef';
 
 export function useFloating<RT extends ReferenceType = ReferenceType>({
   middleware,
@@ -37,8 +37,8 @@ export function useFloating<RT extends ReferenceType = ReferenceType>({
 
   if (
     !deepEqual(
-      latestMiddleware?.map(({options}) => options),
-      middleware?.map(({options}) => options)
+      latestMiddleware?.map(({ options }) => options),
+      middleware?.map(({ options }) => options),
     )
   ) {
     setLatestMiddleware(middleware);
@@ -88,7 +88,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>({
         const cleanupFn = whileElementsMountedRef.current(
           reference.current,
           floating.current,
-          update
+          update,
         );
 
         cleanupRef.current = cleanupFn;
@@ -103,7 +103,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>({
       reference.current = node;
       runElementMountCallback();
     },
-    [runElementMountCallback]
+    [runElementMountCallback],
   );
 
   const setFloating: UseFloatingReturn<RT>['floating'] = React.useCallback(
@@ -111,10 +111,10 @@ export function useFloating<RT extends ReferenceType = ReferenceType>({
       floating.current = node;
       runElementMountCallback();
     },
-    [runElementMountCallback]
+    [runElementMountCallback],
   );
 
-  const refs = React.useMemo(() => ({reference, floating}), []);
+  const refs = React.useMemo(() => ({ reference, floating }), []);
 
   return React.useMemo(
     () => ({
@@ -124,6 +124,6 @@ export function useFloating<RT extends ReferenceType = ReferenceType>({
       reference: setReference,
       floating: setFloating,
     }),
-    [data, update, refs, setReference, setFloating]
+    [data, update, refs, setReference, setFloating],
   );
 }

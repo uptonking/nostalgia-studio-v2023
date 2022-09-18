@@ -9,7 +9,10 @@ const roles = {
   [MenuItemType.Checkbox]: 'menuitemcheckbox',
 };
 
-export const useMenuItem = <E extends HTMLElement = HTMLDivElement, D = any | undefined>({
+export const useMenuItem = <
+  E extends HTMLElement = HTMLDivElement,
+  D = any | undefined,
+>({
   id: defaultId,
   data,
   searchLabel,
@@ -21,7 +24,15 @@ export const useMenuItem = <E extends HTMLElement = HTMLDivElement, D = any | un
 }: UseMenuItemProps<E, D>) => {
   const [id] = useState(defaultId ?? uuid());
   const childRef = useRef<E>(null);
-  const { unregisterItem, registerItem, updateItem, focusedItem, onFocusItem, onSelectItem, type: menuType } = useMenuContext();
+  const {
+    unregisterItem,
+    registerItem,
+    updateItem,
+    focusedItem,
+    onFocusItem,
+    onSelectItem,
+    type: menuType,
+  } = useMenuContext();
   const hasFocus = focusedItem === id;
   const menuItemType = itemType ?? menuType ?? MenuItemType.Menu;
 
@@ -49,21 +60,24 @@ export const useMenuItem = <E extends HTMLElement = HTMLDivElement, D = any | un
     });
   }, [disabled, onSelect, data, searchLabel]);
 
-  const renderProps = useMemo<MenuItemRenderProps<E, D>>(() => ({
-    id,
-    data,
-    ref: childRef,
-    props: {
-      tabIndex: hasFocus ? 0 : -1,
-      role: roles[menuItemType],
-      onFocus: e => {
-        onFocusItem(id);
+  const renderProps = useMemo<MenuItemRenderProps<E, D>>(
+    () => ({
+      id,
+      data,
+      ref: childRef,
+      props: {
+        tabIndex: hasFocus ? 0 : -1,
+        role: roles[menuItemType],
+        onFocus: (e) => {
+          onFocusItem(id);
+        },
+        onClick: (e) => {
+          onSelectItem(id);
+        },
       },
-      onClick: e => {
-        onSelectItem(id);
-      },
-    }
-  }), [id, data, onFocusItem, hasFocus]);
+    }),
+    [id, data, onFocusItem, hasFocus],
+  );
 
   useEffect(() => {
     if (!searchLabel) {
@@ -72,7 +86,7 @@ export const useMenuItem = <E extends HTMLElement = HTMLDivElement, D = any | un
         updateItem(id, { searchLabel });
       }
     }
-  }, [renderProps, ...updateSearchLabelDeps ?? []]);
+  }, [renderProps, ...(updateSearchLabelDeps ?? [])]);
 
   useEffect(() => {
     if (autoFocus) {
@@ -85,4 +99,4 @@ export const useMenuItem = <E extends HTMLElement = HTMLDivElement, D = any | un
     hasFocus,
     renderProps,
   };
-}
+};

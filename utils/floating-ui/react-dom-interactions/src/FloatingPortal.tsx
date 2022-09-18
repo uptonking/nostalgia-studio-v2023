@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {createPortal} from 'react-dom';
+import { createPortal } from 'react-dom';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
 const DEFAULT_ID = 'floating-ui-root';
@@ -49,7 +49,7 @@ export const FloatingPortal = ({
   root?: HTMLElement | null;
 }): React.ReactPortal | null => {
   const [mounted, setMounted] = React.useState(false);
-  const portalNode = useFloatingPortalNode({id, enabled: !root});
+  const portalNode = useFloatingPortalNode({ id, enabled: !root });
 
   useLayoutEffect(() => {
     if (root) {

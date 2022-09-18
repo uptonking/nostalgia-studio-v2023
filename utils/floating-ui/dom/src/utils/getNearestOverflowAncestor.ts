@@ -1,6 +1,6 @@
-import {getParentNode} from './getParentNode';
-import {getNodeName} from './getNodeName';
-import {isOverflowElement, isHTMLElement} from './is';
+import { getParentNode } from './getParentNode';
+import { getNodeName } from './getNodeName';
+import { isOverflowElement, isHTMLElement } from './is';
 
 export function getNearestOverflowAncestor(node: Node): HTMLElement {
   const parentNode = getParentNode(node);

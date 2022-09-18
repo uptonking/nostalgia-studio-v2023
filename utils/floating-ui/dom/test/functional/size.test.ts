@@ -1,9 +1,9 @@
-import {test, expect} from '@playwright/test';
-import {allPlacements} from '../visual/utils/allPlacements';
-import {click} from './utils/click';
+import { test, expect } from '@playwright/test';
+import { allPlacements } from '../visual/utils/allPlacements';
+import { click } from './utils/click';
 
 allPlacements.forEach((placement) => {
-  test(`correctly sized for placement ${placement}`, async ({page}) => {
+  test(`correctly sized for placement ${placement}`, async ({ page }) => {
     await page.goto('http://localhost:1234/size');
     await click(page, `[data-testid="placement-${placement}"]`);
 
@@ -16,7 +16,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${placement}.png`
+      `${placement}.png`,
     );
   });
 
@@ -27,13 +27,15 @@ allPlacements.forEach((placement) => {
     await click(page, `[data-testid="placement-${placement}"]`);
     await click(page, `[data-testid="rtl-true"]`);
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${placement}-rtl.png`
+      `${placement}-rtl.png`,
     );
   });
 });
 
 ['bottom', 'top'].forEach((verticalPlacement) => {
-  test(`does not overflow due to size ${verticalPlacement}`, async ({page}) => {
+  test(`does not overflow due to size ${verticalPlacement}`, async ({
+    page,
+  }) => {
     await page.goto('http://localhost:1234/size');
     await click(page, `[data-testid="placement-${verticalPlacement}"]`);
 
@@ -45,7 +47,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${verticalPlacement}-left-start.png`
+      `${verticalPlacement}-left-start.png`,
     );
 
     await page.evaluate(() => {
@@ -56,7 +58,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${verticalPlacement}-left-end.png`
+      `${verticalPlacement}-left-end.png`,
     );
 
     await page.evaluate(() => {
@@ -67,7 +69,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${verticalPlacement}-right-start.png`
+      `${verticalPlacement}-right-start.png`,
     );
 
     await page.evaluate(() => {
@@ -78,7 +80,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${verticalPlacement}-right-end.png`
+      `${verticalPlacement}-right-end.png`,
     );
   });
 });
@@ -98,7 +100,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${horizontalPlacement}-top-start.png`
+      `${horizontalPlacement}-top-start.png`,
     );
 
     await page.evaluate(() => {
@@ -109,7 +111,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${horizontalPlacement}-top-end.png`
+      `${horizontalPlacement}-top-end.png`,
     );
 
     await page.evaluate(() => {
@@ -120,7 +122,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${horizontalPlacement}-bottom-start.png`
+      `${horizontalPlacement}-bottom-start.png`,
     );
 
     await page.evaluate(() => {
@@ -131,7 +133,7 @@ allPlacements.forEach((placement) => {
     });
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${horizontalPlacement}-bottom-end.png`
+      `${horizontalPlacement}-bottom-end.png`,
     );
   });
 });

@@ -1,3 +1,2 @@
-export const notUndefined = <T>(val: T|undefined): val is T => (
-    val !== undefined
-);
+export const notUndefined = <T>(val: T | undefined): val is T =>
+  val !== undefined;

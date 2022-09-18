@@ -1,8 +1,11 @@
-import {useCallback, useEffect, useMemo, useRef} from 'react';
-import {useInterval} from '@dnd-kit/utilities';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useInterval } from '@dnd-kit/utilities';
 
-import {getScrollDirectionAndSpeed, defaultCoordinates} from '../../utilities';
-import type {Coordinates, Direction, ClientRect} from '../../types';
+import {
+  getScrollDirectionAndSpeed,
+  defaultCoordinates,
+} from '../../utilities';
+import type { Coordinates, Direction, ClientRect } from '../../types';
 
 export type ScrollAncestorSortingFn = (ancestors: Element[]) => Element[];
 
@@ -98,7 +101,7 @@ export function useAutoScroller({
       order === TraversalOrder.TreeOrder
         ? [...scrollableAncestors].reverse()
         : scrollableAncestors,
-    [order, scrollableAncestors]
+    [order, scrollableAncestors],
   );
 
   useEffect(
@@ -120,12 +123,12 @@ export function useAutoScroller({
           continue;
         }
 
-        const {direction, speed} = getScrollDirectionAndSpeed(
+        const { direction, speed } = getScrollDirectionAndSpeed(
           scrollContainer,
           scrollContainerRect,
           rect,
           acceleration,
-          threshold
+          threshold,
         );
 
         if (speed.x > 0 || speed.y > 0) {
@@ -141,8 +144,8 @@ export function useAutoScroller({
         }
       }
 
-      scrollSpeed.current = {x: 0, y: 0};
-      scrollDirection.current = {x: 0, y: 0};
+      scrollSpeed.current = { x: 0, y: 0 };
+      scrollDirection.current = { x: 0, y: 0 };
       clearAutoScrollInterval();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,6 +164,6 @@ export function useAutoScroller({
       scrollableAncestorRects,
       // eslint-disable-next-line react-hooks/exhaustive-deps
       JSON.stringify(threshold),
-    ]
+    ],
   );
 }

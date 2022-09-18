@@ -1,4 +1,4 @@
-import { Text } from 'slate'
+import { Text } from 'slate';
 
 export const input = {
   textNodeA: {
@@ -11,10 +11,10 @@ export const input = {
     bold: true,
     italic: { origin: 'inherited', value: true },
   },
-}
+};
 
 export const test = ({ textNodeA, textNodeB }) => {
-  return Text.equals(textNodeA, textNodeB, { loose: false })
-}
+  return Text.equals(textNodeA, textNodeB, { loose: false });
+};
 
-export const output = false
+export const output = false;

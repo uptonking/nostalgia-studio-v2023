@@ -1,20 +1,20 @@
-import {useCallback, useMemo, useReducer} from 'react';
-import {useIsomorphicLayoutEffect} from '@dnd-kit/utilities';
+import { useCallback, useMemo, useReducer } from 'react';
+import { useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
-import type {ClientRect} from '../../types';
-import {getClientRect} from '../../utilities';
+import type { ClientRect } from '../../types';
+import { getClientRect } from '../../utilities';
 
-import {useMutationObserver} from './useMutationObserver';
-import {useResizeObserver} from './useResizeObserver';
+import { useMutationObserver } from './useMutationObserver';
+import { useResizeObserver } from './useResizeObserver';
 
 export function useObservedRect(
   element: HTMLElement | null,
-  measure: (element: HTMLElement) => ClientRect = getClientRect
+  measure: (element: HTMLElement) => ClientRect = getClientRect,
 ) {
-  const initialRect = useMemo(() => (element ? measure(element) : null), [
-    element,
-    measure,
-  ]);
+  const initialRect = useMemo(
+    () => (element ? measure(element) : null),
+    [element, measure],
+  );
   const [rect, measureRect] = useReducer(reducer, null);
 
   const handleMutations = useCallback<MutationCallback>(
@@ -24,7 +24,7 @@ export function useObservedRect(
       }
 
       for (const record of records) {
-        const {type, target} = record;
+        const { type, target } = record;
 
         if (
           type === 'childList' &&
@@ -36,11 +36,11 @@ export function useObservedRect(
         }
       }
     },
-    [element]
+    [element],
   );
 
-  const mutationObserver = useMutationObserver({callback: handleMutations});
-  const resizeObserver = useResizeObserver({callback: measureRect});
+  const mutationObserver = useMutationObserver({ callback: handleMutations });
+  const resizeObserver = useResizeObserver({ callback: measureRect });
 
   useIsomorphicLayoutEffect(() => {
     measureRect();

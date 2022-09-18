@@ -1,7 +1,7 @@
-import {test, expect} from '@playwright/test';
-import {click} from './utils/click';
+import { test, expect } from '@playwright/test';
+import { click } from './utils/click';
 
-test('does not flip when `mainAxis` is false', async ({page}) => {
+test('does not flip when `mainAxis` is false', async ({ page }) => {
   await page.goto('http://localhost:1234/flip');
   await click(page, `[data-testid="mainAxis-false"]`);
 
@@ -13,11 +13,11 @@ test('does not flip when `mainAxis` is false', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `mainAxis-false.png`
+    `mainAxis-false.png`,
   );
 });
 
-test('does flip when `mainAxis` is true', async ({page}) => {
+test('does flip when `mainAxis` is true', async ({ page }) => {
   await page.goto('http://localhost:1234/flip');
   await click(page, `[data-testid="mainAxis-true"]`);
 
@@ -29,11 +29,11 @@ test('does flip when `mainAxis` is true', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `mainAxis-true.png`
+    `mainAxis-true.png`,
   );
 });
 
-test('does not flip when `crossAxis` is false', async ({page}) => {
+test('does not flip when `crossAxis` is false', async ({ page }) => {
   await page.goto('http://localhost:1234/flip');
   await click(page, `[data-testid="crossAxis-false"]`);
   await click(page, `[data-testid="fallbackPlacements-all"]`);
@@ -46,11 +46,11 @@ test('does not flip when `crossAxis` is false', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `crossAxis-false.png`
+    `crossAxis-false.png`,
   );
 });
 
-test('does flip when `crossAxis` is true', async ({page}) => {
+test('does flip when `crossAxis` is true', async ({ page }) => {
   await page.goto('http://localhost:1234/flip');
   await click(page, `[data-testid="crossAxis-true"]`);
   await click(page, `[data-testid="fallbackPlacements-all"]`);
@@ -63,7 +63,7 @@ test('does flip when `crossAxis` is true', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `crossAxis-true.png`
+    `crossAxis-true.png`,
   );
 });
 
@@ -81,17 +81,17 @@ test('does not flip when `fallbackPlacements` is an empty array', async ({
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackPlacements-empty-array.png`
+    `fallbackPlacements-empty-array.png`,
   );
 });
 
-test('fallbackPlacements: all', async ({page}) => {
+test('fallbackPlacements: all', async ({ page }) => {
   await page.goto('http://localhost:1234/flip');
   await click(page, `[data-testid="placement-top-start"]`);
   await click(page, `[data-testid="fallbackPlacements-all"]`);
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-all-top-start.png`
+    `fallbackStrategy-all-top-start.png`,
   );
 
   await page.evaluate(() => {
@@ -102,7 +102,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-top.png`
+    `fallbackStrategy-top.png`,
   );
 
   await page.evaluate(() => {
@@ -113,7 +113,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-top-end.png`
+    `fallbackStrategy-top-end.png`,
   );
 
   await page.evaluate(() => {
@@ -124,7 +124,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-right-start.png`
+    `fallbackStrategy-right-start.png`,
   );
 
   await page.evaluate(() => {
@@ -135,7 +135,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-right.png`
+    `fallbackStrategy-right.png`,
   );
 
   await page.evaluate(() => {
@@ -146,7 +146,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-right-end.png`
+    `fallbackStrategy-right-end.png`,
   );
 
   await page.evaluate(() => {
@@ -157,7 +157,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-bottom-end.png`
+    `fallbackStrategy-bottom-end.png`,
   );
 
   await page.evaluate(() => {
@@ -168,7 +168,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-bottom.png`
+    `fallbackStrategy-bottom.png`,
   );
 
   await page.evaluate(() => {
@@ -179,7 +179,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-bottom-start.png`
+    `fallbackStrategy-bottom-start.png`,
   );
 
   await page.evaluate(() => {
@@ -190,7 +190,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-left-end.png`
+    `fallbackStrategy-left-end.png`,
   );
 
   await page.evaluate(() => {
@@ -201,7 +201,7 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-left.png`
+    `fallbackStrategy-left.png`,
   );
 
   await page.evaluate(() => {
@@ -212,11 +212,11 @@ test('fallbackPlacements: all', async ({page}) => {
     }
   });
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-left-start.png`
+    `fallbackStrategy-left-start.png`,
   );
 });
 
-test('fallbackStrategy: "bestFit"', async ({page}) => {
+test('fallbackStrategy: "bestFit"', async ({ page }) => {
   await page.goto('http://localhost:1234/flip');
   await click(page, `[data-testid="fallbackStrategy-bestFit"]`);
 
@@ -229,11 +229,11 @@ test('fallbackStrategy: "bestFit"', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-bestFit.png`
+    `fallbackStrategy-bestFit.png`,
   );
 });
 
-test('fallbackStrategy: "initialPlacement"', async ({page}) => {
+test('fallbackStrategy: "initialPlacement"', async ({ page }) => {
   await page.goto('http://localhost:1234/flip');
   await click(page, `[data-testid="fallbackStrategy-initialPlacement"]`);
 
@@ -246,6 +246,6 @@ test('fallbackStrategy: "initialPlacement"', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `fallbackStrategy-initialPlacement.png`
+    `fallbackStrategy-initialPlacement.png`,
   );
 });

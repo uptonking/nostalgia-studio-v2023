@@ -1,8 +1,12 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
-import type {FloatingNodeType, FloatingTreeType, ReferenceType} from './types';
-import {useId} from './hooks/useId';
-import {createPubSub} from './createPubSub';
+import type {
+  FloatingNodeType,
+  FloatingTreeType,
+  ReferenceType,
+} from './types';
+import { useId } from './hooks/useId';
+import { createPubSub } from './createPubSub';
 
 const FloatingNodeContext = React.createContext<FloatingNodeType | null>(null);
 const FloatingTreeContext = React.createContext<FloatingTreeType | null>(null);
@@ -10,7 +14,7 @@ const FloatingTreeContext = React.createContext<FloatingTreeType | null>(null);
 export const useFloatingParentNodeId = (): string | null =>
   React.useContext(FloatingNodeContext)?.id ?? null;
 export const useFloatingTree = <
-  RT extends ReferenceType = ReferenceType
+  RT extends ReferenceType = ReferenceType,
 >(): FloatingTreeType<RT> | null =>
   React.useContext(FloatingTreeContext) as FloatingTreeType<RT> | null;
 
@@ -23,7 +27,7 @@ export const useFloatingNodeId = (): string => {
   const parentId = useFloatingParentNodeId();
 
   useLayoutEffect(() => {
-    const node = {id, parentId};
+    const node = { id, parentId };
     tree?.addNode(node);
     return () => {
       tree?.removeNode(node);
@@ -48,7 +52,7 @@ export const FloatingNode = ({
 
   return (
     <FloatingNodeContext.Provider
-      value={React.useMemo(() => ({id, parentId}), [id, parentId])}
+      value={React.useMemo(() => ({ id, parentId }), [id, parentId])}
     >
       {children}
     </FloatingNodeContext.Provider>
@@ -87,7 +91,7 @@ export const FloatingTree = ({
           removeNode,
           events,
         }),
-        [nodesRef, addNode, removeNode, events]
+        [nodesRef, addNode, removeNode, events],
       )}
     >
       {children}

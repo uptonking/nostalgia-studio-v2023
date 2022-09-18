@@ -1,13 +1,13 @@
 {
   "extends": "../../tsconfig.base",
-    "include": ["src/**/*"],
-    "compilerOptions": {
-        "rootDir": "./src",
-        "outDir": "./lib",
-        "composite": true,
-        "paths": {
-            "*": ["./src/@types"]
-        }
-    },
-    "references": []
+  "include": ["src/**/*"],
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "composite": true,
+    "paths": {
+      "*": ["./src/@types"]
+    }
+  },
+  "references": []
 }

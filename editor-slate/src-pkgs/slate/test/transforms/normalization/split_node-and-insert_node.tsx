@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { Editor, Transforms } from 'slate'
-import { jsx } from '../..'
+import { Editor, Transforms } from 'slate';
+import { jsx } from '../..';
 
 export const input = (
   <editor>
@@ -15,8 +15,8 @@ export const input = (
       <text />
     </block>
   </editor>
-)
-export const run = editor => {
+);
+export const run = (editor) => {
   Editor.withoutNormalizing(editor, () => {
     const operations = [
       {
@@ -50,10 +50,10 @@ export const run = editor => {
         properties: {},
       },
       { type: 'insert_node', path: [2, 1], node: { text: '' } },
-    ]
-    operations.forEach(editor.apply)
-  })
-}
+    ];
+    operations.forEach(editor.apply);
+  });
+};
 export const output = (
   <editor>
     <block>
@@ -81,4 +81,4 @@ export const output = (
       <text />
     </block>
   </editor>
-)
+);

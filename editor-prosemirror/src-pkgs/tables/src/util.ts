@@ -84,7 +84,7 @@ export function colCount($pos) {
 
 export function nextCell($pos, axis, dir) {
   const start = $pos.start(-1);
-    const map = TableMap.get($pos.node(-1));
+  const map = TableMap.get($pos.node(-1));
   const moved = map.nextCell($pos.pos - start, axis, dir);
   return moved == null ? null : $pos.node(0).resolve(start + moved);
 }

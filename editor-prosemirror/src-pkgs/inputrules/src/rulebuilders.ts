@@ -1,6 +1,6 @@
-import {InputRule} from "./inputrules"
-import {findWrapping, canJoin} from "prosemirror-transform"
-import {NodeType, Node, Attrs} from "prosemirror-model"
+import { InputRule } from './inputrules';
+import { findWrapping, canJoin } from 'prosemirror-transform';
+import { NodeType, Node, Attrs } from 'prosemirror-model';
 
 /// Build an input rule for automatically wrapping a textblock when a
 /// given string is typed. The `regexp` argument is
@@ -21,20 +21,26 @@ export function wrappingInputRule(
   regexp: RegExp,
   nodeType: NodeType,
   getAttrs: Attrs | null | ((matches: RegExpMatchArray) => Attrs | null) = null,
-  joinPredicate?: (match: RegExpMatchArray, node: Node) => boolean
+  joinPredicate?: (match: RegExpMatchArray, node: Node) => boolean,
 ) {
   return new InputRule(regexp, (state, match, start, end) => {
-    const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs
-    const tr = state.tr.delete(start, end)
-    const $start = tr.doc.resolve(start); const range = $start.blockRange(); const wrapping = range && findWrapping(range, nodeType, attrs)
-    if (!wrapping) return null
-    tr.wrap(range!, wrapping)
-    const before = tr.doc.resolve(start - 1).nodeBefore
-    if (before && before.type == nodeType && canJoin(tr.doc, start - 1) &&
-        (!joinPredicate || joinPredicate(match, before)))
-      tr.join(start - 1)
-    return tr
-  })
+    const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
+    const tr = state.tr.delete(start, end);
+    const $start = tr.doc.resolve(start);
+    const range = $start.blockRange();
+    const wrapping = range && findWrapping(range, nodeType, attrs);
+    if (!wrapping) return null;
+    tr.wrap(range!, wrapping);
+    const before = tr.doc.resolve(start - 1).nodeBefore;
+    if (
+      before &&
+      before.type == nodeType &&
+      canJoin(tr.doc, start - 1) &&
+      (!joinPredicate || joinPredicate(match, before))
+    )
+      tr.join(start - 1);
+    return tr;
+  });
 }
 
 /// Build an input rule that changes the type of a textblock when the
@@ -46,14 +52,19 @@ export function wrappingInputRule(
 export function textblockTypeInputRule(
   regexp: RegExp,
   nodeType: NodeType,
-  getAttrs: Attrs | null | ((match: RegExpMatchArray) => Attrs | null) = null
+  getAttrs: Attrs | null | ((match: RegExpMatchArray) => Attrs | null) = null,
 ) {
   return new InputRule(regexp, (state, match, start, end) => {
-    const $start = state.doc.resolve(start)
-    const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs
-    if (!$start.node(-1).canReplaceWith($start.index(-1), $start.indexAfter(-1), nodeType)) return null
+    const $start = state.doc.resolve(start);
+    const attrs = getAttrs instanceof Function ? getAttrs(match) : getAttrs;
+    if (
+      !$start
+        .node(-1)
+        .canReplaceWith($start.index(-1), $start.indexAfter(-1), nodeType)
+    )
+      return null;
     return state.tr
       .delete(start, end)
-      .setBlockType(start, start, nodeType, attrs)
-  })
+      .setBlockType(start, start, nodeType, attrs);
+  });
 }

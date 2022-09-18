@@ -1,9 +1,9 @@
 /** @jsx jsx */
-import { jsx } from '../..'
+import { jsx } from '../..';
 
-export const run = editor => {
-  editor.deleteBackward()
-}
+export const run = (editor) => {
+  editor.deleteBackward();
+};
 export const input = (
   <editor>
     <block>Hello</block>
@@ -12,7 +12,7 @@ export const input = (
       world!
     </block>
   </editor>
-)
+);
 export const output = (
   <editor>
     <block>Hello</block>
@@ -21,4 +21,4 @@ export const output = (
       world!
     </block>
   </editor>
-)
+);

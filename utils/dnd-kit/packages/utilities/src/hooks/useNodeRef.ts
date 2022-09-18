@@ -1,12 +1,12 @@
-import {useRef, useCallback} from 'react';
+import { useRef, useCallback } from 'react';
 
-import {useLatestValue} from './useLatestValue';
+import { useLatestValue } from './useLatestValue';
 
 export function useNodeRef(
   onChange?: (
     newElement: HTMLElement | null,
-    previousElement: HTMLElement | null
-  ) => void
+    previousElement: HTMLElement | null,
+  ) => void,
 ) {
   const onChangeRef = useLatestValue(onChange);
   const node = useRef<HTMLElement | null>(null);
@@ -19,7 +19,7 @@ export function useNodeRef(
       node.current = element;
     },
     //eslint-disable-next-line
-    []
+    [],
   );
 
   return [node, setNodeRef] as const;

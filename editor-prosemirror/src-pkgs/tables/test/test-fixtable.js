@@ -18,7 +18,7 @@ import {
 import { fixTables } from '../src/';
 
 const cw100 = td({ colwidth: [100] }, p('x'));
-  const cw200 = td({ colwidth: [200] }, p('x'));
+const cw200 = td({ colwidth: [200] }, p('x'));
 
 function fix(table) {
   const state = EditorState.create({ doc: doc(table) });

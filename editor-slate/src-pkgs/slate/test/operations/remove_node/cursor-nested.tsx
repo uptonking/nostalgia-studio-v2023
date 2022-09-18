@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from 'slate-hyperscript'
+import { jsx } from 'slate-hyperscript';
 
 export const input = (
   <editor>
@@ -13,14 +13,14 @@ export const input = (
       </element>
     </element>
   </editor>
-)
+);
 export const operations = [
   {
     type: 'remove_node',
     path: [1, 0, 0],
     node: { text: '' },
   },
-]
+];
 export const output = (
   <editor>
     <element>
@@ -32,4 +32,4 @@ export const output = (
       </element>
     </element>
   </editor>
-)
+);

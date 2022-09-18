@@ -8,4 +8,4 @@ export const useRefCopy = <T>(currentValue: T) => {
   }, [currentValue]);
 
   return ref;
-}
+};

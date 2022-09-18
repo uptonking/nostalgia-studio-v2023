@@ -1,4 +1,9 @@
-import React, {cloneElement, isValidElement, useEffect, useState} from 'react';
+import React, {
+  cloneElement,
+  isValidElement,
+  useEffect,
+  useState,
+} from 'react';
 import {
   Placement,
   offset,
@@ -12,9 +17,9 @@ import {
   useRole,
   useDismiss,
 } from '@floating-ui/react-dom-interactions';
-import {Controls} from '../utils/Controls';
+import { Controls } from '../utils/Controls';
 
-type Delay = number | Partial<{open: number; close: number}>;
+type Delay = number | Partial<{ open: number; close: number }>;
 
 interface Props {
   label: string;
@@ -32,26 +37,26 @@ export const Main = () => {
       <p>
         A floating element that displays a label describing another element.
       </p>
-      <div className="container">
-        <Tooltip label="My tooltip" delay={delay}>
+      <div className='container'>
+        <Tooltip label='My tooltip' delay={delay}>
           <button>My button</button>
         </Tooltip>
       </div>
       <Controls>
         <button
           onClick={() => setDelay(0)}
-          style={{background: delay === 0 ? 'black' : ''}}
+          style={{ background: delay === 0 ? 'black' : '' }}
         >
           delay: 0
         </button>
         <button
           onClick={() => setDelay(500)}
-          style={{background: delay === 500 ? 'black' : ''}}
+          style={{ background: delay === 500 ? 'black' : '' }}
         >
           delay: 500
         </button>
         <button
-          onClick={() => setDelay({open: 500})}
+          onClick={() => setDelay({ open: 500 })}
           style={{
             background:
               typeof delay === 'object' && delay.open === 500 ? 'black' : '',
@@ -60,7 +65,7 @@ export const Main = () => {
           {String('delay: {open: 500}')}
         </button>
         <button
-          onClick={() => setDelay({close: 500})}
+          onClick={() => setDelay({ close: 500 })}
           style={{
             background:
               typeof delay === 'object' && delay.close === 500 ? 'black' : '',
@@ -81,18 +86,18 @@ export function Tooltip({
 }: Props) {
   const [open, setOpen] = useState(false);
 
-  const {x, y, reference, floating, strategy, context, refs, update} =
+  const { x, y, reference, floating, strategy, context, refs, update } =
     useFloating({
       placement,
       open,
       onOpenChange: setOpen,
-      middleware: [offset(5), flip(), shift({padding: 8})],
+      middleware: [offset(5), flip(), shift({ padding: 8 })],
     });
 
-  const {getReferenceProps, getFloatingProps} = useInteractions([
-    useHover(context, {delay}),
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    useHover(context, { delay }),
     useFocus(context),
-    useRole(context, {role: 'tooltip'}),
+    useRole(context, { role: 'tooltip' }),
     useDismiss(context),
   ]);
 
@@ -105,7 +110,7 @@ export function Tooltip({
   return (
     <>
       {isValidElement(children) &&
-        cloneElement(children, getReferenceProps({ref: reference}))}
+        cloneElement(children, getReferenceProps({ ref: reference }))}
       {open && (
         <div
           {...getFloatingProps({

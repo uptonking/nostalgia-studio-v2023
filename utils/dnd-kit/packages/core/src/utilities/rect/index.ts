@@ -1,11 +1,11 @@
-export {adjustScale} from './adjustScale';
+export { adjustScale } from './adjustScale';
 
-export {getRectDelta} from './getRectDelta';
+export { getRectDelta } from './getRectDelta';
 
-export {getAdjustedRect} from './rectAdjustment';
+export { getAdjustedRect } from './rectAdjustment';
 
-export {getClientRect, getTransformAgnosticClientRect} from './getRect';
+export { getClientRect, getTransformAgnosticClientRect } from './getRect';
 
-export {getWindowClientRect} from './getWindowClientRect';
+export { getWindowClientRect } from './getWindowClientRect';
 
-export {Rect} from './Rect';
+export { Rect } from './Rect';

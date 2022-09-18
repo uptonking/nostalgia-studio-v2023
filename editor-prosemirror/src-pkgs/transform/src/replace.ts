@@ -27,7 +27,7 @@ export function replaceStep(
   if (from == to && !slice.size) return null;
 
   const $from = doc.resolve(from);
-    const $to = doc.resolve(to);
+  const $to = doc.resolve(to);
   // Optimization -- avoid work if it's obvious that it's not needed.
   // 在第一层简单插入
   if (fitsTrivially($from, $to, slice)) {
@@ -116,17 +116,17 @@ class Fitter {
     // That means the fitting must be done to the end of the textblock
     // node after `this.$to`, not `this.$to` itself.
     const moveInline = this.mustMoveInline();
-      const placedSize = this.placed.size - this.depth - this.$from.depth;
+    const placedSize = this.placed.size - this.depth - this.$from.depth;
     const $from = this.$from;
-      const $to = this.close(
-        moveInline < 0 ? this.$to : $from.doc.resolve(moveInline),
-      );
+    const $to = this.close(
+      moveInline < 0 ? this.$to : $from.doc.resolve(moveInline),
+    );
     if (!$to) return null;
 
     // If closing to `$to` succeeded, create a step
     let content = this.placed;
-      let openStart = $from.depth;
-      let openEnd = $to.depth;
+    let openStart = $from.depth;
+    let openEnd = $to.depth;
     while (openStart && openEnd && content.childCount == 1) {
       // Normalize by dropping open parent nodes
       content = content.firstChild!.content;
@@ -162,7 +162,7 @@ class Fitter {
         sliceDepth--
       ) {
         let fragment;
-          let parent = null;
+        let parent = null;
         if (sliceDepth) {
           parent = contentAt(this.unplaced.content, sliceDepth - 1).firstChild;
           fragment = parent!.content;
@@ -176,8 +176,8 @@ class Fitter {
           frontierDepth--
         ) {
           const { type, match } = this.frontier[frontierDepth];
-            let wrap;
-            let inject: Fragment | null = null;
+          let wrap;
+          let inject: Fragment | null = null;
           // In pass 1, if the next node matches, or there is no next
           // node but the parents look compatible, we've found a
           // place.
@@ -248,10 +248,10 @@ class Fitter {
       for (let i = 0; i < wrap.length; i++) this.openFrontierNode(wrap[i]);
 
     const slice = this.unplaced;
-      const fragment = parent ? parent.content : slice.content;
+    const fragment = parent ? parent.content : slice.content;
     const openStart = slice.openStart - sliceDepth;
     let taken = 0;
-      const add = [];
+    const add = [];
     let { match, type } = this.frontier[frontierDepth];
     if (inject) {
       for (let i = 0; i < inject.childCount; i++) add.push(inject.child(i));
@@ -266,7 +266,7 @@ class Fitter {
     // possible.
     while (taken < fragment.childCount) {
       const next = fragment.child(taken);
-        const matches = match.matchType(next.type);
+      const matches = match.matchType(next.type);
       if (!matches) break;
       taken++;
       if (taken > 1 || openStart == 0 || next.content.size) {
@@ -329,7 +329,7 @@ class Fitter {
   mustMoveInline() {
     if (!this.$to.parent.isTextblock) return -1;
     const top = this.frontier[this.depth];
-      let level;
+    let level;
     if (
       !top.type.isTextblock ||
       !contentAfterFits(this.$to, this.$to.depth, top.type, top.match, false) ||
@@ -340,7 +340,7 @@ class Fitter {
       return -1;
 
     let { depth } = this.$to;
-      let after = this.$to.after(depth);
+    let after = this.$to.after(depth);
     while (depth > 1 && after == this.$to.end(--depth)) ++after;
     return after;
   }
@@ -375,11 +375,11 @@ class Fitter {
     $to = close.move;
     for (let d = close.depth + 1; d <= $to.depth; d++) {
       const node = $to.node(d);
-        const add = node.type.contentMatch.fillBefore(
-          node.content,
-          true,
-          $to.index(d),
-        )!;
+      const add = node.type.contentMatch.fillBefore(
+        node.content,
+        true,
+        $to.index(d),
+      )!;
       this.openFrontierNode(node.type, node.attrs, add);
     }
     return $to;
@@ -473,7 +473,7 @@ function contentAfterFits(
   open: boolean,
 ) {
   const node = $to.node(depth);
-    const index = open ? $to.indexAfter(depth) : $to.index(depth);
+  const index = open ? $to.indexAfter(depth) : $to.index(depth);
   if (index == node.childCount && !type.compatibleContent(node.type))
     return null;
   const fit = match.fillBefore(node.content, true, index);
@@ -503,7 +503,7 @@ export function replaceRange(
   if (!slice.size) return tr.deleteRange(from, to);
 
   const $from = tr.doc.resolve(from);
-    const $to = tr.doc.resolve(to);
+  const $to = tr.doc.resolve(to);
   if (fitsTrivially($from, $to, slice))
     return tr.step(new ReplaceStep(from, to, slice));
 
@@ -529,7 +529,7 @@ export function replaceRange(
   const preferredTargetIndex = targetDepths.indexOf(preferredTarget);
 
   const leftNodes = [];
-    let preferredDepth = slice.openStart;
+  let preferredDepth = slice.openStart;
   for (let content = slice.content, i = 0; ; i++) {
     const node = content.firstChild!;
     leftNodes.push(node);
@@ -541,7 +541,7 @@ export function replaceRange(
   // above it, possibly skipping a non-defining textblock.
   for (let d = preferredDepth - 1; d >= 0; d--) {
     const type = leftNodes[d].type;
-      const def = definesContent(type);
+    const def = definesContent(type);
     if (def && $from.node(preferredTargetIndex).type != type)
       preferredDepth = d;
     else if (def || !type.isTextblock) break;
@@ -556,14 +556,14 @@ export function replaceRange(
       // Loop over possible expansion levels, starting with the
       // preferred one
       let targetDepth =
-          targetDepths[(i + preferredTargetIndex) % targetDepths.length];
-        let expand = true;
+        targetDepths[(i + preferredTargetIndex) % targetDepths.length];
+      let expand = true;
       if (targetDepth < 0) {
         expand = false;
         targetDepth = -targetDepth;
       }
       const parent = $from.node(targetDepth - 1);
-        const index = $from.index(targetDepth - 1);
+      const index = $from.index(targetDepth - 1);
 
       // 匹配到适合插入的位置
       if (parent.canReplaceWith(index, index, insert.type, insert.marks))
@@ -636,11 +636,11 @@ export function replaceRangeWith(
 
 export function deleteRange(tr: Transform, from: number, to: number) {
   const $from = tr.doc.resolve(from);
-    const $to = tr.doc.resolve(to);
+  const $to = tr.doc.resolve(to);
   const covered = coveredDepths($from, $to);
   for (let i = 0; i < covered.length; i++) {
     const depth = covered[i];
-      const last = i == covered.length - 1;
+    const last = i == covered.length - 1;
     if ((last && depth == 0) || $from.node(depth).type.contentMatch.validEnd)
       return tr.delete($from.start(depth), $to.end(depth));
     if (
@@ -667,7 +667,7 @@ export function deleteRange(tr: Transform, from: number, to: number) {
 // whole content of the nodes at that depth.
 function coveredDepths($from: ResolvedPos, $to: ResolvedPos) {
   const result = [];
-    const minDepth = Math.min($from.depth, $to.depth);
+  const minDepth = Math.min($from.depth, $to.depth);
   for (let d = minDepth; d >= 0; d--) {
     const start = $from.start(d);
     if (

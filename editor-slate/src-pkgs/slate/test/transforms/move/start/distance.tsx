@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { Transforms } from 'slate'
-import { jsx } from '../../..'
+import { Transforms } from 'slate';
+import { jsx } from '../../..';
 
-export const run = editor => {
-  Transforms.move(editor, { edge: 'start', distance: 3 })
-}
+export const run = (editor) => {
+  Transforms.move(editor, { edge: 'start', distance: 3 });
+};
 export const input = (
   <editor>
     <block>
@@ -13,7 +13,7 @@ export const input = (
       hree
     </block>
   </editor>
-)
+);
 export const output = (
   <editor>
     <block>
@@ -22,4 +22,4 @@ export const output = (
       hree
     </block>
   </editor>
-)
+);

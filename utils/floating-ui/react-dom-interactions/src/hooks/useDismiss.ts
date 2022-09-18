@@ -1,13 +1,13 @@
-import {getOverflowAncestors} from '@floating-ui/react-dom';
+import { getOverflowAncestors } from '@floating-ui/react-dom';
 import * as React from 'react';
-import {useFloatingTree} from '../FloatingTree';
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {activeElement} from '../utils/activeElement';
-import {getChildren} from '../utils/getChildren';
-import {getDocument} from '../utils/getDocument';
-import {isElement, isHTMLElement} from '../utils/is';
-import {isEventTargetWithin} from '../utils/isEventTargetWithin';
-import {useLatestRef} from '../utils/useLatestRef';
+import { useFloatingTree } from '../FloatingTree';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { activeElement } from '../utils/activeElement';
+import { getChildren } from '../utils/getChildren';
+import { getDocument } from '../utils/getDocument';
+import { isElement, isHTMLElement } from '../utils/is';
+import { isEventTargetWithin } from '../utils/isEventTargetWithin';
+import { useLatestRef } from '../utils/useLatestRef';
 
 export interface Props {
   enabled?: boolean;
@@ -23,7 +23,7 @@ export interface Props {
  * @see https://floating-ui.com/docs/useDismiss
  */
 export const useDismiss = <RT extends ReferenceType = ReferenceType>(
-  {open, onOpenChange, refs, events, nodeId}: FloatingContext<RT>,
+  { open, onOpenChange, refs, events, nodeId }: FloatingContext<RT>,
   {
     enabled = true,
     escapeKey = true,
@@ -31,14 +31,14 @@ export const useDismiss = <RT extends ReferenceType = ReferenceType>(
     referencePointerDown = false,
     ancestorScroll = false,
     bubbles = true,
-  }: Props = {}
+  }: Props = {},
 ): ElementProps => {
   const tree = useFloatingTree();
   const onOpenChangeRef = useLatestRef(onOpenChange);
 
   const isFocusInsideFloating = React.useCallback(() => {
     return refs.floating.current?.contains(
-      activeElement(getDocument(refs.floating.current))
+      activeElement(getDocument(refs.floating.current)),
     );
   }, [refs.floating]);
 
@@ -69,7 +69,7 @@ export const useDismiss = <RT extends ReferenceType = ReferenceType>(
       const targetIsInsideChildren =
         tree &&
         getChildren(tree, nodeId).some((node) =>
-          isEventTargetWithin(event, node.context?.refs.floating.current)
+          isEventTargetWithin(event, node.context?.refs.floating.current),
         );
 
       if (
@@ -115,17 +115,17 @@ export const useDismiss = <RT extends ReferenceType = ReferenceType>(
     ).filter(
       (ancestor) =>
         // Ignore the visual viewport for scrolling dismissal (allow pinch-zoom)
-        ancestor !== doc.defaultView?.visualViewport
+        ancestor !== doc.defaultView?.visualViewport,
     );
     ancestors.forEach((ancestor) =>
-      ancestor.addEventListener('scroll', onScroll, {passive: true})
+      ancestor.addEventListener('scroll', onScroll, { passive: true }),
     );
 
     return () => {
       escapeKey && doc.removeEventListener('keydown', onKeyDown);
       outsidePointerDown && doc.removeEventListener('mousedown', onPointerDown);
       ancestors.forEach((ancestor) =>
-        ancestor.removeEventListener('scroll', onScroll)
+        ancestor.removeEventListener('scroll', onScroll),
       );
     };
   }, [

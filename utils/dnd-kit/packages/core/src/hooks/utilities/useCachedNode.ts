@@ -1,11 +1,11 @@
-import {useLazyMemo} from '@dnd-kit/utilities';
+import { useLazyMemo } from '@dnd-kit/utilities';
 
-import type {DraggableNode, DraggableNodes} from '../../store';
-import type {UniqueIdentifier} from '../../types';
+import type { DraggableNode, DraggableNodes } from '../../store';
+import type { UniqueIdentifier } from '../../types';
 
 export function useCachedNode(
   draggableNodes: DraggableNodes,
-  id: UniqueIdentifier | null
+  id: UniqueIdentifier | null,
 ): DraggableNode['node']['current'] {
   const draggableNode = id !== null ? draggableNodes[id] : undefined;
   const node = draggableNode ? draggableNode.node.current : null;
@@ -21,6 +21,6 @@ export function useCachedNode(
       // we fall back to the last known value for that node.
       return node ?? cachedNode ?? null;
     },
-    [node, id]
+    [node, id],
   );
 }

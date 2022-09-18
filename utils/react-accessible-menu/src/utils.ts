@@ -6,14 +6,14 @@ import { RegisteredItem } from './types';
 
 export function sortItems(items: RegisteredItem[]) {
   return items.sort((a, b) => {
-    const compare = a.node.compareDocumentPosition(b.node)
+    const compare = a.node.compareDocumentPosition(b.node);
 
     if (
       compare & Node.DOCUMENT_POSITION_FOLLOWING ||
       compare & Node.DOCUMENT_POSITION_CONTAINED_BY
     ) {
       // a < b
-      return -1
+      return -1;
     }
 
     if (
@@ -21,16 +21,16 @@ export function sortItems(items: RegisteredItem[]) {
       compare & Node.DOCUMENT_POSITION_CONTAINS
     ) {
       // a > b
-      return 1
+      return 1;
     }
 
     if (
       compare & Node.DOCUMENT_POSITION_DISCONNECTED ||
       compare & Node.DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC
     ) {
-      throw Error("unsortable")
+      throw Error('unsortable');
     } else {
-      return 0
+      return 0;
     }
-  })
+  });
 }

@@ -1,4 +1,4 @@
-import {useCallback, useRef} from 'react';
+import { useCallback, useRef } from 'react';
 
 export function useInterval() {
   const intervalRef = useRef<number | null>(null);

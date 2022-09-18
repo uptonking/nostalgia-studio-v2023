@@ -1,5 +1,5 @@
-import {ContextType, useContext} from 'react';
-import {PublicContext} from '../store';
+import { ContextType, useContext } from 'react';
+import { PublicContext } from '../store';
 
 export function useDndContext() {
   return useContext(PublicContext);

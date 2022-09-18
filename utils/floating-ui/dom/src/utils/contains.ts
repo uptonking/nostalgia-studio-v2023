@@ -1,8 +1,8 @@
-import {isShadowRoot} from './is';
+import { isShadowRoot } from './is';
 
 export function contains(
   parent: Element | null,
-  child: Element | null
+  child: Element | null,
 ): boolean {
   const rootNode = child?.getRootNode?.();
 

@@ -1,1 +1,1 @@
-export {HiddenText} from './HiddenText';
+export { HiddenText } from './HiddenText';

@@ -1,4 +1,4 @@
-import {useMemo} from 'react';
+import { useMemo } from 'react';
 
 export function useCombinedRefs<T>(
   ...refs: ((node: T) => void)[]
@@ -8,6 +8,6 @@ export function useCombinedRefs<T>(
       refs.forEach((ref) => ref(node));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    refs
+    refs,
   );
 }

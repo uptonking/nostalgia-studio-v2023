@@ -57,7 +57,7 @@ export class GapCursor extends Selection {
     search: for (;;) {
       if (!mustMove && GapCursor.valid($pos)) return $pos;
       let pos = $pos.pos;
-        let next = null;
+      let next = null;
       // Scan up from this position
       for (let d = $pos.depth; ; d--) {
         const parent = $pos.node(d);
@@ -121,7 +121,7 @@ class GapBookmark {
 function closedBefore($pos: ResolvedPos) {
   for (let d = $pos.depth; d >= 0; d--) {
     const index = $pos.index(d);
-      const parent = $pos.node(d);
+    const parent = $pos.node(d);
     // At the start of this parent, look at next one
     if (index == 0) {
       if (parent.type.spec.isolating) return true;
@@ -145,7 +145,7 @@ function closedBefore($pos: ResolvedPos) {
 function closedAfter($pos: ResolvedPos) {
   for (let d = $pos.depth; d >= 0; d--) {
     const index = $pos.indexAfter(d);
-      const parent = $pos.node(d);
+    const parent = $pos.node(d);
     if (index == parent.childCount) {
       if (parent.type.spec.isolating) return true;
       continue;

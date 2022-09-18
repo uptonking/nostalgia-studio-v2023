@@ -58,11 +58,11 @@ export class DOMSerializer {
     if (!target) target = doc(options).createDocumentFragment();
 
     let top = target!;
-      const active: [Mark, HTMLElement | DocumentFragment][] = [];
+    const active: [Mark, HTMLElement | DocumentFragment][] = [];
     fragment.forEach((node) => {
       if (active.length || node.marks.length) {
         let keep = 0;
-          let rendered = 0;
+        let rendered = 0;
         while (keep < active.length && rendered < node.marks.length) {
           const next = node.marks[rendered];
           if (!this.marks[next.type.name]) {
@@ -150,7 +150,7 @@ export class DOMSerializer {
     if ((structure as any).dom && (structure as any).dom.nodeType != null)
       return structure as { dom: DOMNode; contentDOM?: HTMLElement };
     let tagName = (structure as [string])[0];
-      const space = tagName.indexOf(' ');
+    const space = tagName.indexOf(' ');
     if (space > 0) {
       xmlNS = tagName.slice(0, space);
       tagName = tagName.slice(space + 1);
@@ -160,7 +160,7 @@ export class DOMSerializer {
       xmlNS ? doc.createElementNS(xmlNS, tagName) : doc.createElement(tagName)
     ) as HTMLElement;
     const attrs = (structure as any)[1];
-      let start = 1;
+    let start = 1;
     if (
       attrs &&
       typeof attrs === 'object' &&
@@ -189,11 +189,8 @@ export class DOMSerializer {
           );
         return { dom, contentDOM: dom };
       } else {
-        const { dom: inner, contentDOM: innerContent } = DOMSerializer.renderSpec(
-          doc,
-          child,
-          xmlNS,
-        );
+        const { dom: inner, contentDOM: innerContent } =
+          DOMSerializer.renderSpec(doc, child, xmlNS);
         dom.appendChild(inner);
         if (innerContent) {
           if (contentDOM) throw new RangeError('Multiple content holes');

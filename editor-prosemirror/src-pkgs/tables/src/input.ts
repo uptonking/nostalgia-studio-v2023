@@ -62,8 +62,8 @@ function arrow(axis, dir) {
       );
     } else {
       const $cell = state.doc.resolve(end);
-        const $next = nextCell($cell, axis, dir);
-        let newSel;
+      const $next = nextCell($cell, axis, dir);
+      let newSel;
       if ($next) newSel = Selection.near($next, 1);
       else if (dir < 0)
         newSel = Selection.near(state.doc.resolve($cell.before(-1)), -1);
@@ -96,7 +96,8 @@ function deleteCellSelection(state, dispatch) {
   if (!(sel instanceof CellSelection)) return false;
   if (dispatch) {
     const tr = state.tr;
-      const baseContent = tableNodeTypes(state.schema).cell.createAndFill().content;
+    const baseContent = tableNodeTypes(state.schema).cell.createAndFill()
+      .content;
     sel.forEachCell((cell, pos) => {
       if (!cell.content.eq(baseContent))
         tr.replace(
@@ -112,7 +113,7 @@ function deleteCellSelection(state, dispatch) {
 
 export function handleTripleClick(view, pos) {
   const doc = view.state.doc;
-    const $cell = cellAround(doc.resolve(pos));
+  const $cell = cellAround(doc.resolve(pos));
   if (!$cell) return false;
   view.dispatch(view.state.tr.setSelection(new CellSelection($cell)));
   return true;
@@ -121,7 +122,7 @@ export function handleTripleClick(view, pos) {
 export function handlePaste(view, _, slice) {
   if (!isInTable(view.state)) return false;
   let cells = pastedCells(slice);
-    const sel = view.state.selection;
+  const sel = view.state.selection;
   if (sel instanceof CellSelection) {
     if (!cells)
       cells = {
@@ -134,7 +135,7 @@ export function handlePaste(view, _, slice) {
         ],
       };
     const table = sel.$anchorCell.node(-1);
-      const start = sel.$anchorCell.start(-1);
+    const start = sel.$anchorCell.start(-1);
     const rect = TableMap.get(table).rectBetween(
       sel.$anchorCell.pos - start,
       sel.$headCell.pos - start,
@@ -144,7 +145,7 @@ export function handlePaste(view, _, slice) {
     return true;
   } else if (cells) {
     const $cell = selectionCell(view.state);
-      const start = $cell.start(-1);
+    const start = $cell.start(-1);
     insertCells(
       view.state,
       view.dispatch,
@@ -162,7 +163,7 @@ export function handleMouseDown(view, startEvent) {
   if (startEvent.ctrlKey || startEvent.metaKey) return;
 
   const startDOMCell = domInCell(view, startEvent.target);
-    let $anchor;
+  let $anchor;
   if (startEvent.shiftKey && view.state.selection instanceof CellSelection) {
     // Adding to an existing cell selection
     setCellSelection(view.state.selection.$anchorCell, startEvent);
@@ -210,7 +211,7 @@ export function handleMouseDown(view, startEvent) {
 
   function move(event) {
     const anchor = key.getState(view.state);
-      let $anchor;
+    let $anchor;
     if (anchor != null) {
       // Continuing an existing cross-cell selection
       $anchor = view.state.doc.resolve(anchor);
@@ -233,7 +234,7 @@ function atEndOfCell(view, axis, dir) {
   const { $head } = view.state.selection;
   for (let d = $head.depth - 1; d >= 0; d--) {
     const parent = $head.node(d);
-      const index = dir < 0 ? $head.index(d) : $head.indexAfter(d);
+    const index = dir < 0 ? $head.index(d) : $head.indexAfter(d);
     if (index != (dir < 0 ? 0 : parent.childCount)) return null;
     if (
       parent.type.spec.tableRole == 'cell' ||
@@ -254,7 +255,10 @@ function domInCell(view, dom) {
 }
 
 function cellUnderMouse(view, event) {
-  const mousePos = view.posAtCoords({ left: event.clientX, top: event.clientY });
+  const mousePos = view.posAtCoords({
+    left: event.clientX,
+    top: event.clientY,
+  });
   if (!mousePos) return null;
   return mousePos ? cellAround(view.state.doc.resolve(mousePos.pos)) : null;
 }

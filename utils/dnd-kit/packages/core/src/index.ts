@@ -36,8 +36,8 @@ export type {
   UseDroppableArguments,
 } from './hooks';
 
-export {applyModifiers} from './modifiers';
-export type {Modifier, Modifiers} from './modifiers';
+export { applyModifiers } from './modifiers';
+export type { Modifier, Modifiers } from './modifiers';
 
 export {
   KeyboardSensor,

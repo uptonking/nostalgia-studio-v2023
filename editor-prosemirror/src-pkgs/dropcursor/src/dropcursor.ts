@@ -81,10 +81,10 @@ class DropCursorView {
 
   updateOverlay() {
     const $pos = this.editorView.state.doc.resolve(this.cursorPos!);
-      let rect;
+    let rect;
     if (!$pos.parent.inlineContent) {
       const before = $pos.nodeBefore;
-        const after = $pos.nodeAfter;
+      const after = $pos.nodeAfter;
       if (before || after) {
         const nodeRect = (
           this.editorView.nodeDOM(
@@ -125,7 +125,8 @@ class DropCursorView {
         'position: absolute; z-index: 50; pointer-events: none; background-color: ' +
         this.color;
     }
-    let parentLeft; let parentTop;
+    let parentLeft;
+    let parentTop;
     if (
       !parent ||
       (parent == document.body && getComputedStyle(parent).position == 'static')
@@ -145,7 +146,7 @@ class DropCursorView {
 
   scheduleRemoval(timeout: number) {
     clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => this.setCursor(null), timeout);
+    this.timeout = window.setTimeout(() => this.setCursor(null), timeout);
   }
 
   dragover(event: DragEvent) {

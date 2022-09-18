@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react';
+import { useCallback, useState } from 'react';
 
 export function useAnnouncement() {
   const [announcement, setAnnouncement] = useState('');
@@ -8,5 +8,5 @@ export function useAnnouncement() {
     }
   }, []);
 
-  return {announce, announcement} as const;
+  return { announce, announcement } as const;
 }

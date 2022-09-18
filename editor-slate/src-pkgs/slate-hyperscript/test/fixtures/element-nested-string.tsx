@@ -1,11 +1,11 @@
 /** @jsx jsx */
-import { jsx } from 'slate-hyperscript'
+import { jsx } from 'slate-hyperscript';
 
 export const input = (
   <element>
     <element>word</element>
   </element>
-)
+);
 export const output = {
   children: [
     {
@@ -16,4 +16,4 @@ export const output = {
       ],
     },
   ],
-}
+};

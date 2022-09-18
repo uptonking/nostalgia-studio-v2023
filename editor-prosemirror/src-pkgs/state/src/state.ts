@@ -250,7 +250,8 @@ export class EditorState {
     return newInstance;
   }
 
-  /** Create a new state. 创建实例后，把插件加载到状态集合中。
+  /** Create a new state.
+   * - 创建editorState实例后，会把插件状态加载到editorState集合中。
    * - 不能直接用new创建EditorState的原因是，创建state对象后要立即将plugins的状态初始化并挂载到state对象下
    */
   static create(config: EditorStateConfig) {

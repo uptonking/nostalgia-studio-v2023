@@ -1,4 +1,4 @@
-import {getDocument} from './getDocument';
+import { getDocument } from './getDocument';
 
 function getWindow(value: any) {
   return getDocument(value).defaultView ?? window;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useFloating as usePositionalFloating} from '@floating-ui/react-dom';
+import { useFloating as usePositionalFloating } from '@floating-ui/react-dom';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 import type {
   FloatingContext,
@@ -8,8 +8,8 @@ import type {
   UseFloatingReturn,
   UseFloatingProps,
 } from './types';
-import {createPubSub} from './createPubSub';
-import {useFloatingTree} from './FloatingTree';
+import { createPubSub } from './createPubSub';
+import { useFloatingTree } from './FloatingTree';
 
 export function useFloating<RT extends ReferenceType = ReferenceType>({
   open = false,
@@ -41,7 +41,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>({
       open,
       onOpenChange,
     }),
-    [floating, dataRef, nodeId, events, open, onOpenChange]
+    [floating, dataRef, nodeId, events, open, onOpenChange],
   );
 
   useLayoutEffect(() => {
@@ -56,6 +56,6 @@ export function useFloating<RT extends ReferenceType = ReferenceType>({
       context,
       ...floating,
     }),
-    [floating, context]
+    [floating, context],
   );
 }

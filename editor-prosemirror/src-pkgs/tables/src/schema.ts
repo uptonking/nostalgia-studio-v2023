@@ -125,7 +125,7 @@ export function tableNodeTypes(schema) {
     result = schema.cached.tableNodeTypes = {};
     for (const name in schema.nodes) {
       const type = schema.nodes[name];
-        const role = type.spec.tableRole;
+      const role = type.spec.tableRole;
       if (role) result[role] = type;
     }
   }

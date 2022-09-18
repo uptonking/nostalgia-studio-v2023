@@ -6,8 +6,8 @@ import type {
   ElementContext,
   MiddlewareArguments,
 } from './types';
-import {getSideObjectFromPadding} from './utils/getPaddingObject';
-import {rectToClientRect} from './utils/rectToClientRect';
+import { getSideObjectFromPadding } from './utils/getPaddingObject';
+import { rectToClientRect } from './utils/rectToClientRect';
 
 export interface Options {
   /**
@@ -48,9 +48,9 @@ export interface Options {
  */
 export async function detectOverflow(
   middlewareArguments: MiddlewareArguments,
-  options: Partial<Options> = {}
+  options: Partial<Options> = {},
 ): Promise<SideObject> {
-  const {x, y, platform, rects, elements, strategy} = middlewareArguments;
+  const { x, y, platform, rects, elements, strategy } = middlewareArguments;
 
   const {
     boundary = 'clippingAncestors',
@@ -74,7 +74,7 @@ export async function detectOverflow(
       boundary,
       rootBoundary,
       strategy,
-    })
+    }),
   );
 
   const elementClientRect = rectToClientRect(
@@ -82,12 +82,12 @@ export async function detectOverflow(
       ? await platform.convertOffsetParentRelativeRectToViewportRelativeRect({
           rect:
             elementContext === 'floating'
-              ? {...rects.floating, x, y}
+              ? { ...rects.floating, x, y }
               : rects.reference,
           offsetParent: await platform.getOffsetParent?.(elements.floating),
           strategy,
         })
-      : rects[elementContext]
+      : rects[elementContext],
   );
 
   // positive = overflowing the clipping rect

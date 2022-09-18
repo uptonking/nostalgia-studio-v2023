@@ -1,14 +1,14 @@
-import type {ClientRect} from '../../types';
+import type { ClientRect } from '../../types';
 
-import type {CollisionDescriptor, CollisionDetection} from './types';
-import {sortCollisionsDesc} from './helpers';
+import type { CollisionDescriptor, CollisionDetection } from './types';
+import { sortCollisionsDesc } from './helpers';
 
 /**
  * Returns the intersecting rectangle area between two rectangles
  */
 export function getIntersectionRatio(
   entry: ClientRect,
-  target: ClientRect
+  target: ClientRect,
 ): number {
   const top = Math.max(target.top, entry.top);
   const left = Math.max(target.left, entry.left);
@@ -43,7 +43,7 @@ export const rectIntersection: CollisionDetection = ({
   const collisions: CollisionDescriptor[] = [];
 
   for (const droppableContainer of droppableContainers) {
-    const {id} = droppableContainer;
+    const { id } = droppableContainer;
     const rect = droppableRects.get(id);
 
     if (rect) {
@@ -52,7 +52,7 @@ export const rectIntersection: CollisionDetection = ({
       if (intersectionRatio > 0) {
         collisions.push({
           id,
-          data: {droppableContainer, value: intersectionRatio},
+          data: { droppableContainer, value: intersectionRatio },
         });
       }
     }

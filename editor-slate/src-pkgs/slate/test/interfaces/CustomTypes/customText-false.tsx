@@ -1,11 +1,11 @@
-import { Text } from 'slate'
-import { isCustomText } from './type-guards'
+import { Text } from 'slate';
+import { isCustomText } from './type-guards';
 
 export const input: Text = {
   bold: true,
   text: 'mytext',
-}
+};
 
-export const test = isCustomText
+export const test = isCustomText;
 
-export const output = false
+export const output = false;

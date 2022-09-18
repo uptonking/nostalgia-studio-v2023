@@ -1,5 +1,5 @@
-import { isPlainObject } from 'is-plain-object'
-import { Operation } from 'slate'
+import { isPlainObject } from 'is-plain-object';
+import { Operation } from 'slate';
 
 /**
  * `History` objects hold all of the operations that are applied to a value, so
@@ -7,8 +7,8 @@ import { Operation } from 'slate'
  */
 
 export interface History {
-  redos: Operation[][]
-  undos: Operation[][]
+  redos: Operation[][];
+  undos: Operation[][];
 }
 
 export const History = {
@@ -23,6 +23,6 @@ export const History = {
       Array.isArray(value.undos) &&
       (value.redos.length === 0 || Operation.isOperationList(value.redos[0])) &&
       (value.undos.length === 0 || Operation.isOperationList(value.undos[0]))
-    )
+    );
   },
-}
+};

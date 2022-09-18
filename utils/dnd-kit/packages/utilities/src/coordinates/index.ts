@@ -1,2 +1,2 @@
-export type {Coordinates} from './types';
-export {getEventCoordinates} from './getEventCoordinates';
+export type { Coordinates } from './types';
+export { getEventCoordinates } from './getEventCoordinates';

@@ -1,6 +1,6 @@
-import {Direction, ClientRect} from '../../types';
-import {getScrollPosition} from './getScrollPosition';
-import {isDocumentScrollingElement} from './documentScrollingElement';
+import { Direction, ClientRect } from '../../types';
+import { getScrollPosition } from './getScrollPosition';
+import { isDocumentScrollingElement } from './documentScrollingElement';
 
 interface PositionalCoordinates
   extends Pick<ClientRect, 'top' | 'left' | 'right' | 'bottom'> {}
@@ -13,11 +13,11 @@ const defaultThreshold = {
 export function getScrollDirectionAndSpeed(
   scrollContainer: Element,
   scrollContainerRect: ClientRect,
-  {top, left, right, bottom}: PositionalCoordinates,
+  { top, left, right, bottom }: PositionalCoordinates,
   acceleration = 10,
-  thresholdPercentage = defaultThreshold
+  thresholdPercentage = defaultThreshold,
 ) {
-  const {clientHeight, clientWidth} = scrollContainer;
+  const { clientHeight, clientWidth } = scrollContainer;
   const finalScrollContainerRect = isDocumentScrollingElement(scrollContainer)
     ? {
         top: 0,
@@ -28,7 +28,8 @@ export function getScrollDirectionAndSpeed(
         height: clientHeight,
       }
     : scrollContainerRect;
-  const {isTop, isBottom, isLeft, isRight} = getScrollPosition(scrollContainer);
+  const { isTop, isBottom, isLeft, isRight } =
+    getScrollPosition(scrollContainer);
 
   const direction = {
     x: 0,
@@ -50,7 +51,7 @@ export function getScrollDirectionAndSpeed(
       acceleration *
       Math.abs(
         (finalScrollContainerRect.top + threshold.height - top) /
-          threshold.height
+          threshold.height,
       );
   } else if (
     !isBottom &&
@@ -62,7 +63,7 @@ export function getScrollDirectionAndSpeed(
       acceleration *
       Math.abs(
         (finalScrollContainerRect.bottom - threshold.height - bottom) /
-          threshold.height
+          threshold.height,
       );
   }
 
@@ -73,7 +74,7 @@ export function getScrollDirectionAndSpeed(
       acceleration *
       Math.abs(
         (finalScrollContainerRect.right - threshold.width - right) /
-          threshold.width
+          threshold.width,
       );
   } else if (
     !isLeft &&
@@ -85,7 +86,7 @@ export function getScrollDirectionAndSpeed(
       acceleration *
       Math.abs(
         (finalScrollContainerRect.left + threshold.width - left) /
-          threshold.width
+          threshold.width,
       );
   }
 

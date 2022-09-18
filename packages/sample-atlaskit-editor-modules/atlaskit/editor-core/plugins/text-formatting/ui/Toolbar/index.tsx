@@ -33,92 +33,93 @@ export type ToolbarFormattingProps = {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
 };
-const ToolbarFormatting: React.FC<ToolbarFormattingProps & InjectedIntlProps> =
-  ({
-    shouldUseResponsiveToolbar,
-    popupsMountPoint,
-    popupsBoundariesElement,
-    popupsScrollableElement,
-    editorView,
-    toolbarSize,
-    isReducedSpacing,
-    isToolbarDisabled,
+const ToolbarFormatting: React.FC<
+  ToolbarFormattingProps & InjectedIntlProps
+> = ({
+  shouldUseResponsiveToolbar,
+  popupsMountPoint,
+  popupsBoundariesElement,
+  popupsScrollableElement,
+  editorView,
+  toolbarSize,
+  isReducedSpacing,
+  isToolbarDisabled,
+  intl,
+}) => {
+  const editorState = useMemo(() => editorView.state, [editorView.state]);
+
+  const defaultIcons = useFormattingIcons({
+    editorState,
     intl,
-  }) => {
-    const editorState = useMemo(() => editorView.state, [editorView.state]);
+    isToolbarDisabled,
+  });
+  const clearIcon = useClearIcon({
+    editorState,
+    intl,
+  });
 
-    const defaultIcons = useFormattingIcons({
-      editorState,
-      intl,
-      isToolbarDisabled,
-    });
-    const clearIcon = useClearIcon({
-      editorState,
-      intl,
-    });
+  const menuIconTypeList = useResponsiveIconTypeMenu({
+    toolbarSize,
+    responsivenessEnabled: shouldUseResponsiveToolbar,
+  });
+  const hasFormattingActive = useHasFormattingActived({
+    editorState: editorView.state,
+    iconTypeList: menuIconTypeList,
+  });
 
-    const menuIconTypeList = useResponsiveIconTypeMenu({
-      toolbarSize,
-      responsivenessEnabled: shouldUseResponsiveToolbar,
-    });
-    const hasFormattingActive = useHasFormattingActived({
-      editorState: editorView.state,
-      iconTypeList: menuIconTypeList,
-    });
+  const { dropdownItems, singleItems } = useResponsiveToolbarButtons({
+    icons: defaultIcons,
+    toolbarSize,
+    responsivenessEnabled: shouldUseResponsiveToolbar,
+  });
 
-    const { dropdownItems, singleItems } = useResponsiveToolbarButtons({
-      icons: defaultIcons,
-      toolbarSize,
-      responsivenessEnabled: shouldUseResponsiveToolbar,
-    });
+  const items: Array<MenuIconItem> = useMemo(() => {
+    if (!clearIcon) {
+      return dropdownItems;
+    }
 
-    const items: Array<MenuIconItem> = useMemo(() => {
-      if (!clearIcon) {
-        return dropdownItems;
-      }
+    return [...dropdownItems, clearIcon];
+  }, [clearIcon, dropdownItems]);
 
-      return [...dropdownItems, clearIcon];
-    }, [clearIcon, dropdownItems]);
+  const moreFormattingButtonLabel = intl.formatMessage(
+    toolbarMessages.moreFormatting,
+  );
 
-    const moreFormattingButtonLabel = intl.formatMessage(
-      toolbarMessages.moreFormatting,
-    );
+  return (
+    <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
+      <SingleToolbarButtons
+        items={singleItems}
+        editorView={editorView}
+        isReducedSpacing={isReducedSpacing}
+      />
 
-    return (
-      <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
-        <SingleToolbarButtons
-          items={singleItems}
-          editorView={editorView}
-          isReducedSpacing={isReducedSpacing}
-        />
-
-        <Wrapper>
-          {isToolbarDisabled ? (
-            <div>
-              <MoreButton
-                label={moreFormattingButtonLabel}
-                isReducedSpacing={isReducedSpacing}
-                isDisabled={true}
-                isSelected={false}
-              />
-            </div>
-          ) : (
-            <FormattingTextDropdownMenu
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
-              popupsScrollableElement={popupsScrollableElement}
-              editorView={editorView}
+      <Wrapper>
+        {isToolbarDisabled ? (
+          <div>
+            <MoreButton
+              label={moreFormattingButtonLabel}
               isReducedSpacing={isReducedSpacing}
-              moreButtonLabel={moreFormattingButtonLabel}
-              hasFormattingActive={hasFormattingActive}
-              items={items}
+              isDisabled={true}
+              isSelected={false}
             />
-          )}
-          <Separator />
-        </Wrapper>
-      </ButtonGroup>
-    );
-  };
+          </div>
+        ) : (
+          <FormattingTextDropdownMenu
+            popupsMountPoint={popupsMountPoint}
+            popupsBoundariesElement={popupsBoundariesElement}
+            popupsScrollableElement={popupsScrollableElement}
+            editorView={editorView}
+            isReducedSpacing={isReducedSpacing}
+            moreButtonLabel={moreFormattingButtonLabel}
+            hasFormattingActive={hasFormattingActive}
+            items={items}
+          />
+        )}
+        <Separator />
+      </Wrapper>
+    </ButtonGroup>
+  );
+};
 
 class Toolbar extends React.PureComponent<
   ToolbarFormattingProps & InjectedIntlProps & { editorState: EditorState }

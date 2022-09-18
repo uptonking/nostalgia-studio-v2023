@@ -1,14 +1,14 @@
-import {useRef} from 'react';
-import {useLazyMemo} from '@dnd-kit/utilities';
+import { useRef } from 'react';
+import { useLazyMemo } from '@dnd-kit/utilities';
 
-import {Rect, getTransformAgnosticClientRect} from '../../utilities/rect';
+import { Rect, getTransformAgnosticClientRect } from '../../utilities/rect';
 
 const defaultValue: Rect[] = [];
 
 export function useRects(
   elements: Element[],
   forceRecompute?: boolean,
-  measure = getTransformAgnosticClientRect
+  measure = getTransformAgnosticClientRect,
 ): Rect[] {
   const previousElements = useRef(elements);
 
@@ -28,6 +28,6 @@ export function useRects(
 
       return previousValue ?? defaultValue;
     },
-    [elements, measure, forceRecompute]
+    [elements, measure, forceRecompute],
   );
 }

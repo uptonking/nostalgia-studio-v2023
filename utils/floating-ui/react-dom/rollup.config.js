@@ -1,8 +1,8 @@
 import path from 'path';
-import {babel} from '@rollup/plugin-babel';
-import {nodeResolve} from '@rollup/plugin-node-resolve';
+import { babel } from '@rollup/plugin-babel';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import {terser} from 'rollup-plugin-terser';
+import { terser } from 'rollup-plugin-terser';
 import commonjs from '@rollup/plugin-commonjs';
 
 const input = path.join(__dirname, 'src/index.ts');
@@ -59,13 +59,13 @@ const bundles = [
   },
 ];
 
-const buildExport = bundles.map(({input, output}) => ({
+const buildExport = bundles.map(({ input, output }) => ({
   input,
   output,
   external: ['react', 'react-dom', '@floating-ui/core', '@floating-ui/dom'],
   plugins: [
     commonjs(),
-    nodeResolve({extensions: ['.ts']}),
+    nodeResolve({ extensions: ['.ts'] }),
     babel({
       babelHelpers: 'bundled',
       extensions: ['.ts'],
@@ -89,7 +89,7 @@ const devExport = {
   },
   plugins: [
     commonjs(),
-    nodeResolve({extensions: ['.ts']}),
+    nodeResolve({ extensions: ['.ts'] }),
     babel({
       babelHelpers: 'bundled',
       extensions: ['.ts'],

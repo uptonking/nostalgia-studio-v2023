@@ -1,10 +1,10 @@
 /** @jsx jsx */
-import { Transforms } from 'slate'
-import { jsx } from '../../..'
+import { Transforms } from 'slate';
+import { jsx } from '../../..';
 
-export const run = editor => {
-  Transforms.delete(editor)
-}
+export const run = (editor) => {
+  Transforms.delete(editor);
+};
 export const input = (
   <editor>
     <block>
@@ -16,7 +16,7 @@ export const input = (
       two<inline>three</inline>four
     </block>
   </editor>
-)
+);
 export const output = (
   <editor>
     <block>
@@ -25,4 +25,4 @@ export const output = (
       two<inline>three</inline>four
     </block>
   </editor>
-)
+);

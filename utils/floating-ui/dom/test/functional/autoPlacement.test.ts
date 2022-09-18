@@ -1,16 +1,16 @@
-import {test, expect} from '@playwright/test';
-import {click} from './utils/click';
+import { test, expect } from '@playwright/test';
+import { click } from './utils/click';
 
-test('top-start', async ({page}) => {
+test('top-start', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-start"]`);
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `top-start.png`
+    `top-start.png`,
   );
 });
 
-test('bottom-start', async ({page}) => {
+test('bottom-start', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-start"]`);
 
@@ -22,11 +22,11 @@ test('bottom-start', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `bottom-start.png`
+    `bottom-start.png`,
   );
 });
 
-test('right-start', async ({page}) => {
+test('right-start', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-start"]`);
 
@@ -38,11 +38,11 @@ test('right-start', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `right-start.png`
+    `right-start.png`,
   );
 });
 
-test('left-start', async ({page}) => {
+test('left-start', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-start"]`);
 
@@ -54,20 +54,20 @@ test('left-start', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `left-start.png`
+    `left-start.png`,
   );
 });
 
-test('top', async ({page}) => {
+test('top', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-null"]`);
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `top.png`
+    `top.png`,
   );
 });
 
-test('bottom', async ({page}) => {
+test('bottom', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-null"]`);
 
@@ -79,11 +79,11 @@ test('bottom', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `bottom.png`
+    `bottom.png`,
   );
 });
 
-test('right', async ({page}) => {
+test('right', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-null"]`);
 
@@ -95,11 +95,11 @@ test('right', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `right.png`
+    `right.png`,
   );
 });
 
-test('left', async ({page}) => {
+test('left', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-null"]`);
 
@@ -111,20 +111,20 @@ test('left', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `left.png`
+    `left.png`,
   );
 });
 
-test('top-end', async ({page}) => {
+test('top-end', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-end"]`);
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `top-end.png`
+    `top-end.png`,
   );
 });
 
-test('bottom-end', async ({page}) => {
+test('bottom-end', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-end"]`);
 
@@ -136,11 +136,11 @@ test('bottom-end', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `bottom-end.png`
+    `bottom-end.png`,
   );
 });
 
-test('right-end', async ({page}) => {
+test('right-end', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-end"]`);
 
@@ -152,11 +152,11 @@ test('right-end', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `right-end.png`
+    `right-end.png`,
   );
 });
 
-test('left-end', async ({page}) => {
+test('left-end', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-end"]`);
 
@@ -168,11 +168,11 @@ test('left-end', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `left-end.png`
+    `left-end.png`,
   );
 });
 
-test('only top, bottom allowed', async ({page}) => {
+test('only top, bottom allowed', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-null"]`);
   await click(page, `[data-testid="allowedPlacements-top,bottom"]`);
@@ -186,7 +186,7 @@ test('only top, bottom allowed', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `allowedPlacements-bottom.png`
+    `allowedPlacements-bottom.png`,
   );
 
   await page.evaluate(() => {
@@ -198,11 +198,11 @@ test('only top, bottom allowed', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `allowedPlacements-top.png`
+    `allowedPlacements-top.png`,
   );
 });
 
-test('only left, right allowed', async ({page}) => {
+test('only left, right allowed', async ({ page }) => {
   await page.goto('http://localhost:1234/autoPlacement');
   await click(page, `[data-testid="alignment-null"]`);
   await click(page, `[data-testid="allowedPlacements-left,right"]`);
@@ -216,7 +216,7 @@ test('only left, right allowed', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `allowedPlacements-right.png`
+    `allowedPlacements-right.png`,
   );
 
   await page.evaluate(() => {
@@ -228,6 +228,6 @@ test('only left, right allowed', async ({page}) => {
   });
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `allowedPlacements-left.png`
+    `allowedPlacements-left.png`,
   );
 });

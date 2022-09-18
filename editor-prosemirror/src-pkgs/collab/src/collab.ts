@@ -15,8 +15,9 @@ class Rebaseable {
   ) {}
 }
 
-/// Undo a given set of steps, apply a set of other steps, and then
-/// redo them @internal
+/** Undo a given set of steps, apply a set of other steps, and then
+ * redo them @internal
+ */
 export function rebaseSteps(
   steps: readonly Rebaseable[],
   over: readonly Step[],
@@ -24,7 +25,7 @@ export function rebaseSteps(
 ) {
   for (let i = steps.length - 1; i >= 0; i--) transform.step(steps[i].inverted);
   for (let i = 0; i < over.length; i++) transform.step(over[i]);
-  const result = [];
+  const result: Rebaseable[] = [];
   for (let i = 0, mapFrom = steps.length; i < steps.length; i++) {
     const mapped = steps[i].step.map(transform.mapping.slice(mapFrom));
     mapFrom--;
@@ -42,11 +43,12 @@ export function rebaseSteps(
   return result;
 }
 
-// This state field accumulates changes that have to be sent to the
-// central authority in the collaborating group and makes it possible
-// to integrate changes made by peers into our local document. It is
-// defined by the plugin, and will be available as the `collab` field
-// in the resulting editor state.
+/** This state field accumulates changes that have to be sent to the
+ * central authority in the collaborating group and makes it possible
+ * to integrate changes made by peers into our local document. It is
+ * defined by the plugin, and will be available as the `collab` field
+ * in the resulting editor state.
+ */
 class CollabState {
   constructor(
     // The version number of the last update received from the central
@@ -61,7 +63,7 @@ class CollabState {
 }
 
 function unconfirmedFrom(transform: Transform) {
-  const result = [];
+  const result: Rebaseable[] = [];
   for (let i = 0; i < transform.steps.length; i++)
     result.push(
       new Rebaseable(
@@ -85,8 +87,9 @@ type CollabConfig = {
   clientID?: number | string;
 };
 
-/// Creates a plugin that enables the collaborative editing framework
-/// for the editor.
+/** Creates a plugin that enables the collaborative editing framework
+ * for the editor.
+ */
 export function collab(config: CollabConfig = {}): Plugin {
   const conf: Required<CollabConfig> = {
     version: config.version || 0,

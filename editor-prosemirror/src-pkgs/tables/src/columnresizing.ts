@@ -73,7 +73,7 @@ class ResizeState {
 
   apply(tr) {
     let state = this;
-      const action = tr.getMeta(key);
+    const action = tr.getMeta(key);
     if (action && action.setHandle != null)
       return new ResizeState(action.setHandle, null);
     if (action && action.setDragging !== undefined)
@@ -98,7 +98,7 @@ function handleMouseMove(
 
   if (!pluginState.dragging) {
     const target = domCellAround(event.target);
-      let cell = -1;
+    let cell = -1;
     if (target) {
       const { left, right } = target.getBoundingClientRect();
       if (event.clientX - left <= handleWidth)
@@ -111,8 +111,8 @@ function handleMouseMove(
       if (!lastColumnResizable && cell !== -1) {
         const $cell = view.state.doc.resolve(cell);
         const table = $cell.node(-1);
-          const map = TableMap.get(table);
-          const start = $cell.start(-1);
+        const map = TableMap.get(table);
+        const start = $cell.start(-1);
         const col =
           map.colCount($cell.pos - start) + $cell.nodeAfter.attrs.colspan - 1;
 
@@ -176,7 +176,7 @@ function currentColWidth(view, cellPos, { colspan, colwidth }) {
   const dom = view.domAtPos(cellPos);
   const node = dom.node.childNodes[dom.offset];
   let domWidth = node.offsetWidth;
-    let parts = colspan;
+  let parts = colspan;
   if (colwidth)
     for (let i = 0; i < colspan; i++)
       if (colwidth[i]) {
@@ -203,7 +203,7 @@ function edgeCell(view, event, side) {
   if (!$cell) return -1;
   if (side == 'right') return $cell.pos;
   const map = TableMap.get($cell.node(-1));
-    const start = $cell.start(-1);
+  const start = $cell.start(-1);
   const index = map.map.indexOf($cell.pos - start);
   return index % map.width == 0 ? -1 : start + map.map[index - 1];
 }
@@ -220,16 +220,17 @@ function updateHandle(view, value) {
 function updateColumnWidth(view, cell, width) {
   const $cell = view.state.doc.resolve(cell);
   const table = $cell.node(-1);
-    const map = TableMap.get(table);
-    const start = $cell.start(-1);
-  const col = map.colCount($cell.pos - start) + $cell.nodeAfter.attrs.colspan - 1;
+  const map = TableMap.get(table);
+  const start = $cell.start(-1);
+  const col =
+    map.colCount($cell.pos - start) + $cell.nodeAfter.attrs.colspan - 1;
   const tr = view.state.tr;
   for (let row = 0; row < map.height; row++) {
     const mapIndex = row * map.width + col;
     // Rowspanning cell that has already been handled
     if (row && map.map[mapIndex] == map.map[mapIndex - map.width]) continue;
     const pos = map.map[mapIndex];
-      const { attrs } = table.nodeAt(pos);
+    const { attrs } = table.nodeAt(pos);
     const index = attrs.colspan == 1 ? 0 : col - map.colCount(pos);
     if (attrs.colwidth && attrs.colwidth[index] == width) continue;
     const colwidth = attrs.colwidth
@@ -244,7 +245,7 @@ function updateColumnWidth(view, cell, width) {
 function displayColumnWidth(view, cell, width, cellMinWidth) {
   const $cell = view.state.doc.resolve(cell);
   const table = $cell.node(-1);
-    const start = $cell.start(-1);
+  const start = $cell.start(-1);
   const col =
     TableMap.get(table).colCount($cell.pos - start) +
     $cell.nodeAfter.attrs.colspan -

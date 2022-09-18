@@ -353,7 +353,7 @@ function parseBetween(view: EditorView, from_: number, to_: number) {
   if (browser.chrome && view.input.lastKeyCode === 8) {
     for (let off = toOffset; off > fromOffset; off--) {
       const node = parent.childNodes[off - 1];
-        const desc = node.pmViewDesc;
+      const desc = node.pmViewDesc;
       if (node.nodeName == 'BR' && !desc) {
         toOffset = off;
         break;
@@ -367,20 +367,20 @@ function parseBetween(view: EditorView, from_: number, to_: number) {
   const $from = startDoc.resolve(from);
 
   let sel = null;
-    const doc = parser.parse(parent, {
-      topNode: $from.parent,
-      topMatch: $from.parent.contentMatchAt($from.index()),
-      topOpen: true,
-      from: fromOffset,
-      to: toOffset,
-      preserveWhitespace: $from.parent.type.whitespace == 'pre' ? 'full' : true,
-      findPositions: find,
-      ruleFromNode,
-      context: $from,
-    });
+  const doc = parser.parse(parent, {
+    topNode: $from.parent,
+    topMatch: $from.parent.contentMatchAt($from.index()),
+    topOpen: true,
+    from: fromOffset,
+    to: toOffset,
+    preserveWhitespace: $from.parent.type.whitespace == 'pre' ? 'full' : true,
+    findPositions: find,
+    ruleFromNode,
+    context: $from,
+  });
   if (find && find[0].pos != null) {
     const anchor = find[0].pos;
-      let head = find[1] && find[1].pos;
+    let head = find[1] && find[1].pos;
     if (head == null) head = anchor;
     sel = { anchor: anchor + from, head: head + from };
   }
@@ -434,12 +434,12 @@ function resolveSelection(
  */
 function isMarkChange(cur: Fragment, prev: Fragment) {
   const curMarks = cur.firstChild!.marks;
-    const prevMarks = prev.firstChild!.marks;
+  const prevMarks = prev.firstChild!.marks;
   let added = curMarks;
-    let removed = prevMarks;
-    let type;
-    let mark: Mark | undefined;
-    let update;
+  let removed = prevMarks;
+  let type;
+  let mark: Mark | undefined;
+  let update;
   for (let i = 0; i < prevMarks.length; i++)
     added = prevMarks[i].removeFromSet(added);
   for (let i = 0; i < curMarks.length; i++)
@@ -504,7 +504,7 @@ function skipClosingAndOpening(
   mayOpen: boolean,
 ) {
   let depth = $pos.depth;
-    let end = fromEnd ? $pos.end() : $pos.pos;
+  let end = fromEnd ? $pos.end() : $pos.pos;
   while (
     depth > 0 &&
     (fromEnd || $pos.indexAfter(depth) == $pos.node(depth).childCount)

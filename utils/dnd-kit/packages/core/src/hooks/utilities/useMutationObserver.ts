@@ -1,4 +1,4 @@
-import {useEffect, useMemo} from 'react';
+import { useEffect, useMemo } from 'react';
 
 interface Arguments {
   callback: MutationCallback;
@@ -9,7 +9,7 @@ interface Arguments {
  * Returns a new MutationObserver instance.
  * If `MutationObserver` is undefined in the execution environment, returns `undefined`.
  */
-export function useMutationObserver({callback, disabled}: Arguments) {
+export function useMutationObserver({ callback, disabled }: Arguments) {
   const mutationObserver = useMemo(() => {
     if (
       disabled ||
@@ -19,7 +19,7 @@ export function useMutationObserver({callback, disabled}: Arguments) {
       return undefined;
     }
 
-    const {MutationObserver} = window;
+    const { MutationObserver } = window;
 
     return new MutationObserver(callback);
   }, [callback, disabled]);

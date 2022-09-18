@@ -1,14 +1,14 @@
-import React, {useEffect, useMemo, useRef} from 'react';
-import {useDndContext, ClientRect, UniqueIdentifier} from '@dnd-kit/core';
-import {useIsomorphicLayoutEffect, useUniqueId} from '@dnd-kit/utilities';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { useDndContext, ClientRect, UniqueIdentifier } from '@dnd-kit/core';
+import { useIsomorphicLayoutEffect, useUniqueId } from '@dnd-kit/utilities';
 
-import type {SortingStrategy} from '../types';
-import {getSortedRects} from '../utilities';
-import {rectSortingStrategy} from '../strategies';
+import type { SortingStrategy } from '../types';
+import { getSortedRects } from '../utilities';
+import { rectSortingStrategy } from '../strategies';
 
 export interface Props {
   children: React.ReactNode;
-  items: (UniqueIdentifier | {id: UniqueIdentifier})[];
+  items: (UniqueIdentifier | { id: UniqueIdentifier })[];
   strategy?: SortingStrategy;
   id?: string;
 }
@@ -56,9 +56,9 @@ export function SortableContext({
   const items = useMemo(
     () =>
       userDefinedItems.map((item) =>
-        typeof item === 'string' ? item : item.id
+        typeof item === 'string' ? item : item.id,
       ),
-    [userDefinedItems]
+    [userDefinedItems],
   );
   const activeIndex = active ? items.indexOf(active.id) : -1;
   const overIndex = over ? items.indexOf(over.id) : -1;
@@ -97,7 +97,7 @@ export function SortableContext({
       droppableRects,
       useDragOverlay,
       strategy,
-    ]
+    ],
   );
 
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
@@ -113,4 +113,3 @@ function isEqual(arr1: string[], arr2: string[]) {
   }
   return true;
 }
-

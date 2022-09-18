@@ -1,5 +1,5 @@
-import {cloneElement, useState} from 'react';
-import {render, screen, fireEvent} from '@testing-library/react';
+import { cloneElement, useState } from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import {
   useFloating,
   useInteractions,
@@ -8,7 +8,7 @@ import {
   useDelayGroup,
   FloatingDelayGroup,
 } from '../../src';
-import {act} from '@testing-library/react-hooks';
+import { act } from '@testing-library/react-hooks';
 
 jest.useFakeTimers();
 
@@ -17,11 +17,11 @@ interface Props {
   children: JSX.Element;
 }
 
-export const Tooltip = ({children, label}: Props) => {
-  const {delay, setCurrentId} = useDelayGroupContext();
+export const Tooltip = ({ children, label }: Props) => {
+  const { delay, setCurrentId } = useDelayGroupContext();
   const [open, setOpen] = useState(false);
 
-  const {x, y, reference, floating, strategy, context} = useFloating({
+  const { x, y, reference, floating, strategy, context } = useFloating({
     open,
     onOpenChange(open) {
       setOpen(open);
@@ -29,9 +29,9 @@ export const Tooltip = ({children, label}: Props) => {
     },
   });
 
-  const {getReferenceProps} = useInteractions([
-    useHover(context, {delay}),
-    useDelayGroup(context, {id: label}),
+  const { getReferenceProps } = useInteractions([
+    useHover(context, { delay }),
+    useDelayGroup(context, { id: label }),
   ]);
 
   return (
@@ -41,7 +41,7 @@ export const Tooltip = ({children, label}: Props) => {
         getReferenceProps({
           ref: reference,
           ...children.props,
-        })
+        }),
       )}
       {open && (
         <div
@@ -62,15 +62,15 @@ export const Tooltip = ({children, label}: Props) => {
 
 function App() {
   return (
-    <FloatingDelayGroup delay={{open: 1000, close: 200}}>
-      <Tooltip label="one">
-        <button data-testid="reference-one" />
+    <FloatingDelayGroup delay={{ open: 1000, close: 200 }}>
+      <Tooltip label='one'>
+        <button data-testid='reference-one' />
       </Tooltip>
-      <Tooltip label="two">
-        <button data-testid="reference-two" />
+      <Tooltip label='two'>
+        <button data-testid='reference-two' />
       </Tooltip>
-      <Tooltip label="three">
-        <button data-testid="reference-three" />
+      <Tooltip label='three'>
+        <button data-testid='reference-three' />
       </Tooltip>
     </FloatingDelayGroup>
   );

@@ -1,5 +1,5 @@
-import type {Middleware, Rect, SideObject} from '../types';
-import {sides} from '../enums';
+import type { Middleware, Rect, SideObject } from '../types';
+import { sides } from '../enums';
 import {
   detectOverflow,
   Options as DetectOverflowOptions,
@@ -33,7 +33,7 @@ export const hide = ({
 }: Partial<Options & DetectOverflowOptions> = {}): Middleware => ({
   name: 'hide',
   async fn(middlewareArguments) {
-    const {rects} = middlewareArguments;
+    const { rects } = middlewareArguments;
 
     switch (strategy) {
       case 'referenceHidden': {

@@ -1,6 +1,6 @@
 /** @jsx jsx */
-import { jsx } from 'slate-hyperscript'
-import { Transforms, Editor } from 'slate'
+import { jsx } from 'slate-hyperscript';
+import { Transforms, Editor } from 'slate';
 
 export const input = (
   <editor>
@@ -8,7 +8,7 @@ export const input = (
       <text someKey />
     </element>
   </editor>
-)
+);
 
 // this is supported for backwards compatibility only; newProperties should omit removed values.
 export const operations = [
@@ -18,7 +18,7 @@ export const operations = [
     properties: { someKey: true },
     newProperties: { someKey: null },
   },
-]
+];
 
 export const output = (
   <editor>
@@ -26,4 +26,4 @@ export const output = (
       <text />
     </element>
   </editor>
-)
+);

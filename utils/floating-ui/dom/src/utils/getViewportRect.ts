@@ -1,7 +1,7 @@
-import type {Rect, Strategy} from '@floating-ui/core';
-import {getWindow} from './window';
-import {getDocumentElement} from './getDocumentElement';
-import {isLayoutViewport} from './is';
+import type { Rect, Strategy } from '@floating-ui/core';
+import { getWindow } from './window';
+import { getDocumentElement } from './getDocumentElement';
+import { isLayoutViewport } from './is';
 
 export function getViewportRect(element: Element, strategy: Strategy): Rect {
   const win = getWindow(element);
@@ -25,5 +25,5 @@ export function getViewportRect(element: Element, strategy: Strategy): Rect {
     }
   }
 
-  return {width, height, x, y};
+  return { width, height, x, y };
 }

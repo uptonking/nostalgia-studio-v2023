@@ -4,7 +4,7 @@ export type {
   Translate,
   ScrollCoordinates,
 } from './coordinates';
-export {Direction} from './direction';
+export { Direction } from './direction';
 export type {
   DragStartEvent,
   DragCancelEvent,
@@ -12,6 +12,6 @@ export type {
   DragMoveEvent,
   DragOverEvent,
 } from './events';
-export type {UniqueIdentifier} from './other';
-export type {SyntheticEventName} from './react';
-export type {ClientRect} from './rect';
+export type { UniqueIdentifier } from './other';
+export type { SyntheticEventName } from './react';
+export type { ClientRect } from './rect';

@@ -1,6 +1,6 @@
 export function getScrollElementRect(element: Element) {
   if (element === document.scrollingElement) {
-    const {innerWidth, innerHeight} = window;
+    const { innerWidth, innerHeight } = window;
 
     return {
       top: 0,
@@ -12,7 +12,7 @@ export function getScrollElementRect(element: Element) {
     };
   }
 
-  const {top, left, right, bottom} = element.getBoundingClientRect();
+  const { top, left, right, bottom } = element.getBoundingClientRect();
 
   return {
     top,

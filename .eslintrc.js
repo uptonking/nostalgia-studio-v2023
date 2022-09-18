@@ -50,6 +50,7 @@ module.exports = {
     'no-implicit-coercion': 1,
     'no-useless-concat': 1,
     'no-labels': 1,
+    'no-cond-assign': 1,
     eqeqeq: 1,
     'one-var': 1,
     'guard-for-in': 1,

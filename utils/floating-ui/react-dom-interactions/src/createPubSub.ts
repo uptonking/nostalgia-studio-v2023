@@ -11,7 +11,7 @@ export function createPubSub() {
     off(event: string, listener: (data: any) => void) {
       map.set(
         event,
-        (map.get(event) || []).filter((l) => l !== listener)
+        (map.get(event) || []).filter((l) => l !== listener),
       );
     },
   };

@@ -1,6 +1,6 @@
 /** @jsx jsx  */
-import { Editor } from 'slate'
-import { jsx } from '../../..'
+import { Editor } from 'slate';
+import { jsx } from '../../..';
 
 export const input = (
   <editor>
@@ -13,8 +13,8 @@ export const input = (
       <text>four</text>
     </block>
   </editor>
-)
-export const test = editor => {
-  return Editor.string(editor, [])
-}
-export const output = `onetwothreefour`
+);
+export const test = (editor) => {
+  return Editor.string(editor, []);
+};
+export const output = `onetwothreefour`;

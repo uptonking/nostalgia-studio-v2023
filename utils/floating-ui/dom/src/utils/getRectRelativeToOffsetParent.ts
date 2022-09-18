@@ -1,11 +1,11 @@
-import type {Rect, Strategy, VirtualElement} from '@floating-ui/core';
-import {getBoundingClientRect} from './getBoundingClientRect';
-import {getDocumentElement} from './getDocumentElement';
-import {getNodeName} from './getNodeName';
-import {getNodeScroll} from './getNodeScroll';
+import type { Rect, Strategy, VirtualElement } from '@floating-ui/core';
+import { getBoundingClientRect } from './getBoundingClientRect';
+import { getDocumentElement } from './getDocumentElement';
+import { getNodeName } from './getNodeName';
+import { getNodeScroll } from './getNodeScroll';
 import getWindowScrollBarX from './getWindowScrollBarX';
-import {isHTMLElement, isOverflowElement} from './is';
-import {round} from './math';
+import { isHTMLElement, isOverflowElement } from './is';
+import { round } from './math';
 
 function isScaled(element: HTMLElement): boolean {
   const rect = getBoundingClientRect(element);
@@ -18,7 +18,7 @@ function isScaled(element: HTMLElement): boolean {
 export function getRectRelativeToOffsetParent(
   element: Element | VirtualElement,
   offsetParent: Element | Window,
-  strategy: Strategy
+  strategy: Strategy,
 ): Rect {
   const isOffsetParentAnElement = isHTMLElement(offsetParent);
   const documentElement = getDocumentElement(offsetParent);
@@ -26,11 +26,11 @@ export function getRectRelativeToOffsetParent(
     element,
     // @ts-ignore - checked above (TS 4.1 compat)
     isOffsetParentAnElement && isScaled(offsetParent),
-    strategy === 'fixed'
+    strategy === 'fixed',
   );
 
-  let scroll = {scrollLeft: 0, scrollTop: 0};
-  const offsets = {x: 0, y: 0};
+  let scroll = { scrollLeft: 0, scrollTop: 0 };
+  const offsets = { x: 0, y: 0 };
 
   if (
     isOffsetParentAnElement ||

@@ -38,12 +38,12 @@ function selectHorizontally(view: EditorView, dir: number, mods: string) {
       return false;
     } else if (!(browser.mac && mods.indexOf('m') > -1)) {
       const $head = sel.$head;
-        const node = $head.textOffset
-          ? null
-          : dir < 0
-          ? $head.nodeBefore
-          : $head.nodeAfter;
-        let desc;
+      const node = $head.textOffset
+        ? null
+        : dir < 0
+        ? $head.nodeBefore
+        : $head.nodeAfter;
+      let desc;
       if (!node || node.isText) return false;
       const nodePos = dir < 0 ? $head.pos - node.nodeSize : $head.pos;
       if (
@@ -97,11 +97,11 @@ function isIgnorable(dom: Node) {
 function skipIgnoredNodesLeft(view: EditorView) {
   const sel = view.domSelection();
   let node = sel.focusNode!;
-    let offset = sel.focusOffset;
+  let offset = sel.focusOffset;
   if (!node) return;
   let moveNode;
-    let moveOffset: number | undefined;
-    let force = false;
+  let moveOffset: number | undefined;
+  let force = false;
   // Gecko will do odd things when the selection is directly in front
   // of a non-editable node, so in that case, move it into the next
   // node if possible. Issue prosemirror/prosemirror#832.
@@ -154,10 +154,11 @@ function skipIgnoredNodesLeft(view: EditorView) {
 function skipIgnoredNodesRight(view: EditorView) {
   const sel = view.domSelection();
   let node = sel.focusNode!;
-    let offset = sel.focusOffset;
+  let offset = sel.focusOffset;
   if (!node) return;
   let len = nodeLen(node);
-  let moveNode; let moveOffset: number | undefined;
+  let moveNode;
+  let moveOffset: number | undefined;
   for (;;) {
     if (offset < len) {
       if (node.nodeType != 1) break;
@@ -310,7 +311,7 @@ function getMods(event: KeyboardEvent) {
 
 export function captureKeyDown(view: EditorView, event: KeyboardEvent) {
   const code = event.keyCode;
-    const mods = getMods(event);
+  const mods = getMods(event);
   if (code == 8 || (browser.mac && code == 72 && mods == 'c')) {
     // Backspace, Ctrl-h on Mac
     return stopNativeHorizontalDelete(view, -1) || skipIgnoredNodesLeft(view);

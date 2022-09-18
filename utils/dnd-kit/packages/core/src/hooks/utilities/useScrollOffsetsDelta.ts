@@ -1,11 +1,11 @@
-import {useEffect, useRef} from 'react';
-import {Coordinates, subtract} from '@dnd-kit/utilities';
+import { useEffect, useRef } from 'react';
+import { Coordinates, subtract } from '@dnd-kit/utilities';
 
-import {defaultCoordinates} from '../../utilities';
+import { defaultCoordinates } from '../../utilities';
 
 export function useScrollOffsetsDelta(
   scrollOffsets: Coordinates,
-  dependencies: any[] = []
+  dependencies: any[] = [],
 ) {
   const initialScrollOffsets = useRef<Coordinates | null>(null);
 
@@ -14,7 +14,7 @@ export function useScrollOffsetsDelta(
       initialScrollOffsets.current = null;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    dependencies
+    dependencies,
   );
 
   useEffect(() => {

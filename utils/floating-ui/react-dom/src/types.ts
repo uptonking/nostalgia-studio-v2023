@@ -7,8 +7,8 @@ import type {
 
 export * from '@floating-ui/dom';
 
-export {useFloating} from './';
-export {arrow} from './';
+export { useFloating } from './';
+export { arrow } from './';
 
 export type UseFloatingData = Omit<ComputePositionReturn, 'x' | 'y'> & {
   x: number | null;
@@ -35,6 +35,6 @@ export type UseFloatingProps<RT extends ReferenceType = ReferenceType> = Omit<
   whileElementsMounted?: (
     reference: RT,
     floating: HTMLElement,
-    update: () => void
+    update: () => void,
   ) => void | (() => void);
 };

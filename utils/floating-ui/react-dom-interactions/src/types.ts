@@ -10,7 +10,7 @@ import type {
 export * from '@floating-ui/dom';
 export * from './';
 
-export {arrow} from '@floating-ui/react-dom';
+export { arrow } from '@floating-ui/react-dom';
 
 export interface FloatingEvents {
   emit(event: string, data?: any): void;
@@ -80,6 +80,6 @@ export interface UseFloatingProps<RT extends ReferenceType = ReferenceType> {
   whileElementsMounted?: (
     reference: RT,
     floating: HTMLElement,
-    update: () => void
+    update: () => void,
   ) => void | (() => void);
 }

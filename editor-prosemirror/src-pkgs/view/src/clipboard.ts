@@ -102,7 +102,7 @@ export function parseFromClipboard(
       f(text, $context, plainText),
     );
     if (parsed) {
-      slice = parsed;
+      slice = parsed as any;
     } else {
       const marks = $context.marks();
       const { schema } = view.state;

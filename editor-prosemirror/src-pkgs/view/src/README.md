@@ -16,6 +16,9 @@ this module.
   - ProseMirror会捕捉处于编辑区域的事件，然后更新相应的文档状态state，然后再更新相应的视图描述viewDesc，以此来匹配更新后的文档状态。
 
 
+- prosemirror编辑器架构分析
+  - https://marvinsblog.net/tags/prosemirror/
+
 @EditorView
 
 ### Props

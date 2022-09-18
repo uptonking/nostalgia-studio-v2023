@@ -35,6 +35,7 @@ export let TransformError = class extends Error {};
 
 TransformError = function TransformError(this: any, message: string) {
   const err = Error.call(this, message);
+  // eslint-disable-next-line no-proto
   (err as any).__proto__ = TransformError.prototype;
   return err;
 } as any;
@@ -48,19 +49,23 @@ TransformError.prototype.name = 'TransformError';
  *
  * Most transforming methods return the `Transform` object itself, so
  * that they can be chained.
+ * - Transform可以把多个Steps累计到一起，把它们逐个应用到文档中。
  */
 export class Transform {
   /** The steps in this transform. */
   readonly steps: Step[] = [];
-  /** The documents before each of the steps. */
+  /** The documents before each of the steps.
+   * - 每次应用一个Step，就会产生一个新的文档，但是也会留下一个旧的文档。Transform会把这些旧的文档聚拢在一起，形成一个数组。
+   */
   readonly docs: Node[] = [];
   /** A mapping with the maps for each of the steps in this transform. */
   readonly mapping: Mapping = new Mapping();
 
-  /// Create a transform that starts with the given document.
+  /** Create a transform that starts with the given document. */
   constructor(
-    /// The current document (the result of applying the steps in the
-    /// transform).
+    /** The current document (the result of applying the steps in the
+     * transform).
+     */
     public doc: Node,
   ) {}
 

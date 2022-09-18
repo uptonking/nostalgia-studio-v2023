@@ -128,6 +128,7 @@ export interface StateField<T> {
    * field value. Note that the `newState` argument is again a partially
    * constructed state does not yet contain the state from plugins
    * coming after this one.
+   * - 表明这个插件如何影响事务过程（编辑操作是以事务的方式提交的）
    */
   apply: (
     tr: Transaction,

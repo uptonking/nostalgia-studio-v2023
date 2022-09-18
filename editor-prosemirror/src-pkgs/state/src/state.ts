@@ -9,7 +9,13 @@ function bind<T extends Function>(f: T, self: any): T {
 }
 
 class FieldDesc<T> {
+  /** 插件初始化时候的回调函数，它接收一个config对象。
+   * - 这个config对象就是从传给EditorState.create做参数的那个对象扩展出来的，出了包含最初传入EditorState.create的那些属性以外，还包括所有插件（包括内置的插件）。
+   * - 也就是说所有插件看到的是一样的config，这个config对象包含了所以其他插件。
+   * - init方法是在EditorState.create的时候被调用的。
+   */
   init: (config: EditorStateConfig, instance: EditorState) => T;
+  /** 表明这个插件如何影响事务过程（编辑操作是以事务的方式提交的） */
   apply: (
     tr: Transaction,
     value: T,
@@ -107,12 +113,14 @@ export interface EditorStateConfig {
  * this type. A state is a persistent data structure—it isn't
  * updated, but rather a new state value is computed from an old one
  * using the [`apply`](#state.EditorState.apply) method.
+ * - 编辑器状态主要包括：doc内容、selection、storedMarks、config(包括plugins/fields)
+ * - pm-state状态是immutable的设计，不要用new创建，使用静态方法如create
  *
  * A state holds a number of built-in fields, and plugins can
  * [define](#state.PluginSpec.state) additional fields.
  */
 export class EditorState {
-  /// @internal
+  /** @internal pm-state状态是immutable的设计，不要用new创建，使用静态方法如create  */
   constructor(
     /// @internal
     readonly config: Configuration,
@@ -139,12 +147,16 @@ export class EditorState {
     return this.config.plugins;
   }
 
-  /** Start a [transaction](#state.Transaction) from this state. */
+  /** Start a [transaction](#state.Transaction) from this state.
+   * - 实际执行 `new Transaction(this);`，创建一个针对当前状态的事务
+   */
   get tr(): Transaction {
     return new Transaction(this);
   }
 
-  /** Apply the given transaction to produce a new state. */
+  /** Apply the given transaction to produce a new state.
+   * - 提交一个事务，让每个插件返回一个更新状态，然后构成一个新的EditorState
+   */
   apply(tr: Transaction): EditorState {
     return this.applyTransaction(tr).state;
   }
@@ -189,7 +201,7 @@ export class EditorState {
         const plugin = this.config.plugins[i];
         if (plugin.spec.appendTransaction) {
           const n = seen ? seen[i].n : 0;
-            const oldState = seen ? seen[i].state : this;
+          const oldState = seen ? seen[i].state : this;
           const tr =
             n < trs.length &&
             plugin.spec.appendTransaction.call(
@@ -225,7 +237,7 @@ export class EditorState {
     if (!tr.before.eq(this.doc))
       throw new RangeError('Applying a mismatched transaction');
     const newInstance = new EditorState(this.config);
-      const fields = this.config.fields;
+    const fields = this.config.fields;
     for (let i = 0; i < fields.length; i++) {
       const field = fields[i];
       (newInstance as any)[field.name] = field.apply(
@@ -238,7 +250,9 @@ export class EditorState {
     return newInstance;
   }
 
-  /** Create a new state. 创建实例后，把插件加载到状态集合中 */
+  /** Create a new state. 创建实例后，把插件加载到状态集合中。
+   * - 不能直接用new创建EditorState的原因是，创建state对象后要立即将plugins的状态初始化并挂载到state对象下
+   */
   static create(config: EditorStateConfig) {
     const $config = new Configuration(
       config.doc ? config.doc.type.schema : config.schema!,
@@ -296,7 +310,7 @@ export class EditorState {
             'The JSON fields `doc` and `selection` are reserved',
           );
         const plugin = pluginFields[prop];
-          const state = plugin.spec.state;
+        const state = plugin.spec.state;
         if (state && state.toJSON)
           result[prop] = state.toJSON.call(plugin, (this as any)[plugin.key]);
       }
@@ -338,7 +352,7 @@ export class EditorState {
         if (pluginFields)
           for (const prop in pluginFields) {
             const plugin = pluginFields[prop];
-              const state = plugin.spec.state;
+            const state = plugin.spec.state;
             if (
               plugin.key == field.name &&
               state &&

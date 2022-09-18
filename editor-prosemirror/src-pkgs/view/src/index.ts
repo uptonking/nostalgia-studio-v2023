@@ -32,7 +32,8 @@ import {
   ensureListeners,
   clearComposition,
   InputState,
- endComposition } from './input';
+  endComposition,
+} from './input';
 import {
   selectionToDOM,
   anchorInRightPlace,
@@ -87,7 +88,7 @@ export class EditorView {
   nodeViews: NodeViewSet;
   /// @internal
   lastSelectedViewDesc: ViewDesc | undefined = undefined;
-  /** @internal a view desc for the top-level document node  */
+  /** a ViewDesc for the top-level document node @internal  */
   docView: NodeViewDesc;
   /** @internal  */
   input = new InputState();
@@ -194,7 +195,7 @@ export class EditorView {
   }
 
   /** Update the view's props. Will immediately cause an update to the DOM.
-   * - 在最后会执行 updateStateInner()
+   * - 替换既有的DirectEditorProps，在最后会执行 updateStateInner()
    */
   update(props: DirectEditorProps) {
     if (props.handleDOMEvents != this._props.handleDOMEvents) {
@@ -226,7 +227,7 @@ export class EditorView {
   }
 
   /** Update the editor's `state` prop, without touching any of the other props.
-   * - 直接执行 updateStateInner()，只更新state
+   * - 直接执行 updateStateInner()，只更新state，不更新props
    */
   updateState(state: EditorState) {
     this.updateStateInner(state, this.state.plugins != state.plugins);
@@ -270,7 +271,7 @@ export class EditorView {
       updateSel = true;
     }
     const oldScrollPos =
-      scroll == 'preserve' &&
+      scroll === 'preserve' &&
       updateSel &&
       this.dom.style.overflowAnchor == null &&
       storeScrollPos(this);
@@ -681,7 +682,7 @@ function updateCursorWrapper(view: EditorView) {
   }
 }
 
-/** 任意一个插件都可以通过editable属性决定编辑器是否处于允许编辑状态 */
+/** 任意一个插件都可以通过editable属性决定编辑器是否处于允许编辑状态，通过someProp遍历editable属性 */
 function getEditable(view: EditorView) {
   return !view.someProp('editable', (value) => value(view.state) === false);
 }
@@ -1047,6 +1048,9 @@ export interface EditorProps<P = any> {
    * provided here will be added to the class. For other attributes,
    * the value provided first (as in
    * [`someProp`](#view.EditorView.someProp)) will be used.
+   * - attributes可以直接是一个包含待添加属性的对象，或者一个函数。
+   * - 如果是一个函数，则这个函数接受编辑器状态为参数，并生成待添加属性对象。
+   * - 这种细节上的区分对待允许根据编辑器状态的不同来对文档的外层节点设置不同的属性，比如当文档失去焦点时将背景设成灰色等等。
    */
   attributes?:
     | { [name: string]: string }

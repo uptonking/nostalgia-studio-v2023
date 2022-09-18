@@ -7,6 +7,7 @@ import {
 
 import { Transaction } from './transaction';
 
+/** 一个空映射表 */
 const classesById = Object.create(null);
 
 /** Superclass for editor selections. Every selection type should
@@ -14,7 +15,7 @@ const classesById = Object.create(null);
  * - 由于contenteditable对光标位置的处理不尽如人意，所以绝大多数的编辑器都会维护自己的选区信息，用于抹平浏览器原生处理带来的问题
  * - 一个Selection可以包含若干个范围（SelectionRange），但至少包含一个。
  * - 一个Selection由基点anchor和头部head构成，一个SelectionRange由起始位置$from和结束为止$to构成
-* - 子类包括 TextSelection, NodeSelection, AllSelection, GapCursor
+ * - 子类包括 TextSelection, NodeSelection, AllSelection, GapCursor
  */
 export abstract class Selection {
   /** Initialize a selection with the head and anchor and ranges. If no
@@ -36,7 +37,9 @@ export abstract class Selection {
     ];
   }
 
-  /** The ranges covered by the selection. */
+  /** The ranges covered by the selection.
+   * - 一个Selection对象支持多个范围
+   */
   ranges: readonly SelectionRange[];
 
   /** The selection's anchor, as an unresolved position. */
@@ -101,17 +104,17 @@ export abstract class Selection {
     // content. When that ended in an inline node, search backwards,
     // to get the position after that node. If not, search forward.
     let lastNode = content.content.lastChild;
-      let lastParent = null;
+    let lastParent = null;
     for (let i = 0; i < content.openEnd; i++) {
       lastParent = lastNode!;
       lastNode = lastNode!.lastChild;
     }
 
     const mapFrom = tr.steps.length;
-      const ranges = this.ranges;
+    const ranges = this.ranges;
     for (let i = 0; i < ranges.length; i++) {
       const { $from, $to } = ranges[i];
-        const mapping = tr.mapping.slice(mapFrom);
+      const mapping = tr.mapping.slice(mapFrom);
       tr.replaceRange(
         mapping.map($from.pos),
         mapping.map($to.pos),
@@ -134,12 +137,12 @@ export abstract class Selection {
    */
   replaceWith(tr: Transaction, node: Node) {
     const mapFrom = tr.steps.length;
-      const ranges = this.ranges;
+    const ranges = this.ranges;
     for (let i = 0; i < ranges.length; i++) {
       const { $from, $to } = ranges[i];
-        const mapping = tr.mapping.slice(mapFrom);
+      const mapping = tr.mapping.slice(mapFrom);
       const from = mapping.map($from.pos);
-        const to = mapping.map($to.pos);
+      const to = mapping.map($to.pos);
       if (i) {
         tr.deleteRange(from, to);
       } else {
@@ -285,6 +288,8 @@ export abstract class Selection {
 /** A lightweight, document-independent representation of a selection.
  * You can define a custom bookmark type for a custom selection class
  * to make the history handle it well.
+ * - 是一种与文档无关的选段表示方式，可以用于历史记录中。
+ * - 每一种Selection类型，都对应着一种Bookmark类型。
  */
 export interface SelectionBookmark {
   /** Map the bookmark through a set of changes. */
@@ -298,7 +303,9 @@ export interface SelectionBookmark {
   resolve: (doc: Node) => Selection;
 }
 
-/** Represents a selected range in a document. */
+/** Represents a selected range in a document.
+ * - 代表一个选段范围，简单对象，仅包含 $from/$to
+ */
 export class SelectionRange {
   /// Create a range.
   constructor(
@@ -324,7 +331,7 @@ function checkTextSelection($pos: ResolvedPos) {
 /** A text selection represents a classical editor selection, with a
  * head (the moving side) and anchor (immobile side), both of which
  * point into textblock nodes.
-* - 👉🏻 It can be empty (a regular cursor position).
+ * - 👉🏻 It can be empty (a regular cursor position).
  */
 export class TextSelection extends Selection {
   /// Construct a text selection between the given points.
@@ -512,7 +519,7 @@ class NodeBookmark {
   }
   resolve(doc: Node) {
     const $pos = doc.resolve(this.anchor);
-      const node = $pos.nodeAfter;
+    const node = $pos.nodeAfter;
     if (node && NodeSelection.isSelectable(node))
       return new NodeSelection($pos);
     return Selection.near($pos);

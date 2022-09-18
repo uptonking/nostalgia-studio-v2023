@@ -112,15 +112,15 @@ export interface NodeView {
 }
 
 const NOT_DIRTY = 0;
-  const CHILD_DIRTY = 1;
-  const CONTENT_DIRTY = 2;
-  const NODE_DIRTY = 3;
+const CHILD_DIRTY = 1;
+const CONTENT_DIRTY = 2;
+const NODE_DIRTY = 3;
 
 /** Superclass for the various kinds of descriptions. Defines their
  * basic structure and shared methods.
- * - 可以把ViewDesc理解为VirtualDOM，通过ViewDesc来保持文档模型和DOM之间的同步
- * - 在内部描述视图的抽象，可看作是dom与编辑器state的中间层，相当于是vdom
- * - ViewDesc会挂载到相应的 dom 的 pmViewDesc 属性上，并保存相应的 dom 和 node
+ * - ViewDesc是prosemirror在内部描述视图的抽象，可看作dom与编辑器state的中间层，相当于vdom
+ * - 通过ViewDesc来保持文档模型和DOM之间的同步
+ * - ViewDesc对象会挂载到相应的 dom 的 pmViewDesc 属性上，并保存相应的 dom 和 node
  * - viewDesc主要提供了匹配节点，获取索引，状态标记等等方法，帮助 prosemirror 更好地处理 state 与 dom 的状态同步
  *
  * View descriptions are data structures that describe the DOM that is
@@ -132,9 +132,12 @@ const NOT_DIRTY = 0;
  * - Wiring in custom implementations of the editing interface for a
  *   given node
  * - They form a doubly-linked mutable tree, starting at `view.docView`.
+ * - 每个视图描述对象使用dom属性指向它所使用的DOM节点，并且在该DOM节点上添加了一个pmViewDesc属性来反向索引。这看起来像是一个双向链表。
  */
 export class ViewDesc {
-  /** 默认值0即无需更新；如果需要更新时，它会为自己设置一个dirty属性值  */
+  /** 默认值0即无需更新；
+   * - 视图描述只是虚拟DOM，如果一个视图描述节点需要更新时，它会为自己设置一个dirty属性，表示需要更新
+   */
   dirty = NOT_DIRTY;
   node!: Node | null;
 
@@ -147,7 +150,7 @@ export class ViewDesc {
     public dom: DOMNode,
     /** This is the node that holds the child views. It may be null for
      * descs that don't have children.
-     * - contentDOM用于指定在何处插入子ViewDesc。contentDOM和dom可以是同一个DOM节点
+     * - contentDOM用来表示当前文档节点的子内容应该放置何处，指定在何处插入子ViewDesc。contentDOM和dom可以是同一个DOM节点
      * - 对于文档的叶子节点，contentDOM为空
      * - contentDOM就是在创建文档节点schema定义中toDOM属性中的0（空洞）所在位置
      */
@@ -260,7 +263,8 @@ export class ViewDesc {
           ? this.posBeforeChild(desc!) + desc!.size
           : this.posAtStart;
       } else {
-        let domAfter; let desc: ViewDesc | undefined;
+        let domAfter;
+        let desc: ViewDesc | undefined;
         if (dom == this.contentDOM) {
           domAfter = dom.childNodes[offset];
         } else {
@@ -361,7 +365,7 @@ export class ViewDesc {
   descAt(pos: number): ViewDesc | undefined {
     for (let i = 0, offset = 0; i < this.children.length; i++) {
       let child = this.children[i];
-        const end = offset + child.size;
+      const end = offset + child.size;
       if (offset == pos && end != offset) {
         while (!child.border && child.children.length)
           child = child.children[0];
@@ -379,10 +383,10 @@ export class ViewDesc {
     if (!this.contentDOM) return { node: this.dom, offset: 0, atom: pos + 1 };
     // First find the position in the child array
     let i = 0;
-      let offset = 0;
+    let offset = 0;
     for (let curPos = 0; i < this.children.length; i++) {
       const child = this.children[i];
-        const end = curPos + child.size;
+      const end = curPos + child.size;
       if (end > pos || child instanceof TrailingHackViewDesc) {
         offset = pos - curPos;
         break;
@@ -407,7 +411,7 @@ export class ViewDesc {
     // Scan towards the first useable node
     if (side <= 0) {
       let prev;
-        let enter = true;
+      let enter = true;
       for (; ; i--, enter = false) {
         prev = i ? this.children[i - 1] : null;
         if (!prev || prev.dom.parentNode == this.contentDOM) break;
@@ -420,7 +424,7 @@ export class ViewDesc {
       };
     } else {
       let next;
-        let enter = true;
+      let enter = true;
       for (; ; i++, enter = false) {
         next = i < this.children.length ? this.children[i] : null;
         if (!next || next.dom.parentNode == this.contentDOM) break;
@@ -456,10 +460,10 @@ export class ViewDesc {
       };
 
     let fromOffset = -1;
-      let toOffset = -1;
+    let toOffset = -1;
     for (let offset = base, i = 0; ; i++) {
       const child = this.children[i];
-        const end = offset + child.size;
+      const end = offset + child.size;
       if (fromOffset == -1 && from <= end) {
         const childBase = offset + child.border;
         // FIXME maybe descend mark views to parse a narrower range?
@@ -539,7 +543,7 @@ export class ViewDesc {
     const to = Math.max(anchor, head);
     for (let i = 0, offset = 0; i < this.children.length; i++) {
       const child = this.children[i];
-        const end = offset + child.size;
+      const end = offset + child.size;
       if (from > offset && to < end)
         return child.setSelection(
           anchor - offset - child.border,
@@ -734,7 +738,7 @@ class WidgetViewDesc extends ViewDesc {
     pos: number,
   ) {
     let self: WidgetViewDesc;
-      let dom = (widget.type as any).toDOM as WidgetConstructor;
+    let dom = (widget.type as any).toDOM as WidgetConstructor;
     if (typeof dom === 'function')
       dom = dom(view, () => {
         if (!self) return pos;
@@ -885,7 +889,7 @@ class MarkViewDesc extends ViewDesc {
   slice(from: number, to: number, view: EditorView) {
     const copy = MarkViewDesc.create(this.parent!, this.mark, true, view);
     let nodes = this.children;
-      const size = this.size;
+    const size = this.size;
     if (to < size) nodes = replaceNodes(nodes, to, size, view);
     if (from > 0) nodes = replaceNodes(nodes, 0, from, view);
     for (let i = 0; i < nodes.length; i++) nodes[i].parent = copy;
@@ -934,7 +938,7 @@ export class NodeViewDesc extends ViewDesc {
     pos: number,
   ) {
     const custom = view.nodeViews[node.type.name];
-      let descObj: ViewDesc;
+    let descObj: ViewDesc;
     const spec: NodeView | undefined =
       custom &&
       (custom as any)(
@@ -951,7 +955,7 @@ export class NodeViewDesc extends ViewDesc {
       );
 
     let dom = spec && spec.dom;
-      let contentDOM = spec && spec.contentDOM;
+    let contentDOM = spec && spec.contentDOM;
     if (node.isText) {
       if (!dom) dom = document.createTextNode(node.text!);
       else if (dom.nodeType != 3)
@@ -1016,7 +1020,10 @@ export class NodeViewDesc extends ViewDesc {
     // attrs means that if the user somehow manages to change the
     // attrs in the dom, that won't be picked up. Not entirely sure
     // whether this is a problem
-    const rule: ParseRule = { node: this.node.type.name, attrs: this.node.attrs };
+    const rule: ParseRule = {
+      node: this.node.type.name,
+      attrs: this.node.attrs,
+    };
     if (this.node.type.whitespace == 'pre') rule.preserveWhitespace = 'full';
     if (!this.contentDOM) {
       rule.getContent = () => this.node.content;
@@ -1063,6 +1070,7 @@ export class NodeViewDesc extends ViewDesc {
    * decorations, possibly introducing nesting for marks. Then, in a
    * separate step, syncs the DOM inside `this.contentDOM` to
    * `this.children`.
+   * - 先创建ViewTreeUpdater工具，分别调用 onNode 以及 onDeco 方法更新
    */
   updateChildren(view: EditorView, pos: number) {
     const inline = this.node.inlineContent;
@@ -1088,7 +1096,7 @@ export class NodeViewDesc extends ViewDesc {
           updater.syncToMarks(widget.spec.marks, inline, view);
         else if ((widget.type as WidgetType).side >= 0 && !insideNode)
           updater.syncToMarks(
-            i == this.node.childCount ? Mark.none : this.node.child(i).marks,
+            i === this.node.childCount ? Mark.none : this.node.child(i).marks,
             inline,
             view,
           );
@@ -1131,8 +1139,8 @@ export class NodeViewDesc extends ViewDesc {
     updater.destroyRest();
 
     // Sync the DOM if anything changed
-    // 若updater中需要更新，则进入dom层面的操作，并进行子节点的渲染（根据实际的 dom 以及更新后的 descs）
-    if (updater.changed || this.dirty == CONTENT_DIRTY) {
+    if (updater.changed || this.dirty === CONTENT_DIRTY) {
+      // /若updater中需要更新，则进入dom层面的操作，并进行子节点的渲染（根据实际的 dom 以及更新后的 descs）
       // May have to protect focused DOM from being changed if a composition is active
       if (localComposition)
         this.protectLocalComposition(view, localComposition);
@@ -1217,12 +1225,12 @@ export class NodeViewDesc extends ViewDesc {
     innerDeco: DecorationSource,
     view: EditorView,
   ) {
-    if (this.dirty == NODE_DIRTY || !node.sameMarkup(this.node)) {
+    if (this.dirty === NODE_DIRTY || !node.sameMarkup(this.node)) {
       // 判断当前节点的数据是否发生变化，如果发生变化，返回 false
       return false;
     }
     this.updateInner(node, outerDeco, innerDeco, view);
-    // 返回 true 的情况，所有节点都能匹配到不需要重建
+    // 返回 true 的情况，所有节点都能匹配到不需要重建，进行子节点的更新。
     return true;
   }
 
@@ -1376,7 +1384,7 @@ class TextViewDesc extends NodeViewDesc {
 
   slice(from: number, to: number, view: EditorView) {
     const node = this.node.cut(from, to);
-      const dom = document.createTextNode(node.text!);
+    const dom = document.createTextNode(node.text!);
     return new TextViewDesc(
       this.parent,
       node,
@@ -1511,6 +1519,8 @@ class CustomNodeViewDesc extends NodeViewDesc {
 /** Sync the content of the given DOM node with the nodes associated
  * with the given array of view descs, recursing into mark descs
  * because this should sync the subtree for a whole node at a time.
+ * - ViewDesc指示DOM的更新，深度遍历从叶子节点往上遍历，完成一个层级就调用renderDescs()来更新相应的DOM。
+ * - 若有需要重建的节点或者删除的节点，updater.changed 会被置为 true，进入 dom 层面的操作。
  * - 此时的操作以 update 后的 viewDescs（此时即为 docView.children）的数据为准，调整当前视图中 dom 展示的节点，不会有位置的调整，不匹配就销毁，不存在就重建
  */
 function renderDescs(
@@ -1519,11 +1529,13 @@ function renderDescs(
   view: EditorView,
 ) {
   let dom = parentDOM.firstChild;
-    let written = false;
+  let written = false;
   for (let i = 0; i < descs.length; i++) {
     const desc = descs[i];
-      const childDOM = desc.dom;
+    /** dom为当前视图中的dom，childDOM为desc对应的dom */
+    const childDOM = desc.dom;
     if (childDOM.parentNode == parentDOM) {
+      // /ChildDOM在视图中存在
       while (childDOM != dom) {
         dom = rm(dom!);
         written = true;
@@ -1566,7 +1578,7 @@ function computeOuterDeco(
   if (outerDeco.length == 0) return noDeco;
 
   let top = needsWrap ? noDeco[0] : new OuterDecoLevel();
-    const result = [top];
+  const result = [top];
 
   for (let i = 0; i < outerDeco.length; i++) {
     const attrs = (outerDeco[i].type as NodeType).attrs;
@@ -1600,7 +1612,7 @@ function patchOuterDeco(
   let curDOM = nodeDOM;
   for (let i = 0; i < curComputed.length; i++) {
     const deco = curComputed[i];
-      let prev = prevComputed[i];
+    let prev = prevComputed[i];
     if (i) {
       let parent: DOMNode | null;
       if (
@@ -1657,8 +1669,8 @@ function patchAttributes(
   if (prev.style != cur.style) {
     if (prev.style) {
       const prop =
-          /\s*([\w\-\xa1-\uffff]+)\s*:(?:"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|\(.*?\)|[^;])*/g;
-        let m;
+        /\s*([\w\-\xa1-\uffff]+)\s*:(?:"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|\(.*?\)|[^;])*/g;
+      let m;
       while ((m = prop.exec(prev.style))) dom.style.removeProperty(m[1]);
     }
     if (cur.style) dom.style.cssText += cur.style;
@@ -1733,7 +1745,7 @@ class ViewTreeUpdater {
   /** Sync the current stack of mark descs with the given array of
    * marks, reusing existing mark descs when possible.
    * - 用来更新mark，将视图标记描述对应到文档节点的标记。
-   * - 通过一个栈结构来实现
+   * - 将文本节点的内容描述，放置到标记描述之下。通过一个栈结构来实现
    * - 深度遍历从叶子节点往上遍历，完成一个层级就调用renderDescs()来更新相应的DOM。
    */
   syncToMarks(marks: readonly Mark[], inline: boolean, view: EditorView) {
@@ -1742,7 +1754,7 @@ class ViewTreeUpdater {
     const maxKeep = Math.min(depth, marks.length);
     while (
       keep < maxKeep &&
-      (keep == depth - 1
+      (keep === depth - 1
         ? this.top
         : (this.stack[(keep + 1) << 1] as ViewDesc)
       ).matchesMark(marks[keep]) &&
@@ -1758,6 +1770,7 @@ class ViewTreeUpdater {
       this.top = this.stack.pop() as ViewDesc;
       depth--;
     }
+
     while (depth < marks.length) {
       this.stack.push(this.top, this.index + 1);
       let found = -1;
@@ -1959,7 +1972,7 @@ class ViewTreeUpdater {
   /** Make sure a textblock looks and behaves correctly in contentEditable. */
   addTextblockHacks() {
     let lastChild = this.top.children[this.index - 1];
-      let parent = this.top;
+    let parent = this.top;
     while (lastChild instanceof MarkViewDesc) {
       parent = lastChild;
       lastChild = parent.children[parent.children.length - 1];
@@ -2020,10 +2033,10 @@ function preMatch(
   matches: readonly ViewDesc[];
 } {
   let curDesc = parentDesc;
-    let descI = curDesc.children.length;
+  let descI = curDesc.children.length;
   let fI = frag.childCount;
-    const matched = new Map();
-    const matches = [];
+  const matched = new Map();
+  const matches = [];
   outer: while (fI > 0) {
     let desc;
     for (;;) {
@@ -2076,7 +2089,7 @@ function iterDeco(
   ) => void,
 ) {
   const locals = deco.locals(parent);
-    let offset = 0;
+  let offset = 0;
   // Simple, cheap variant for when there are no local decorations
   if (locals.length == 0) {
     for (let i = 0; i < parent.childCount; i++) {
@@ -2088,12 +2101,12 @@ function iterDeco(
   }
 
   let decoIndex = 0;
-    const active = [];
-    let restNode = null;
+  const active = [];
+  let restNode = null;
   for (let parentIndex = 0; ; ) {
     if (decoIndex < locals.length && locals[decoIndex].to == offset) {
       const widget = locals[decoIndex++];
-        let widgets;
+      let widgets;
       while (decoIndex < locals.length && locals[decoIndex].to == offset)
         (widgets || (widgets = [widget])).push(locals[decoIndex++]);
       if (widgets) {
@@ -2105,7 +2118,8 @@ function iterDeco(
       }
     }
 
-    let child; let index;
+    let child;
+    let index;
     if (restNode) {
       index = -1;
       child = restNode;
@@ -2190,7 +2204,7 @@ function findTextInFragment(
 ) {
   for (let i = 0, pos = 0; i < frag.childCount && pos <= to; ) {
     const child = frag.child(i++);
-      const childStart = pos;
+    const childStart = pos;
     pos += child.nodeSize;
     if (!child.isText) continue;
     let str = child.text!;
@@ -2232,8 +2246,8 @@ function replaceNodes(
   const result = [];
   for (let i = 0, off = 0; i < nodes.length; i++) {
     const child = nodes[i];
-      const start = off;
-      const end = (off += child.size);
+    const start = off;
+    const end = (off += child.size);
     if (start >= to || end <= from) {
       result.push(child);
     } else {

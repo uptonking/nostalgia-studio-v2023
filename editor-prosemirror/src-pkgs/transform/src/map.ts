@@ -43,9 +43,9 @@ function recoverOffset(value: number) {
 }
 
 const DEL_BEFORE = 1;
-  const DEL_AFTER = 2;
-  const DEL_ACROSS = 4;
-  const DEL_SIDE = 8;
+const DEL_AFTER = 2;
+const DEL_ACROSS = 4;
+const DEL_SIDE = 8;
 
 /// An object representing a mapped position with extra
 /// information.
@@ -92,22 +92,26 @@ export class MapResult {
  * - 这个StepMap记住了文档改动的位置信息，主要包括：改动的开始位置、改动前的大小、改动后的大小
  */
 export class StepMap implements Mappable {
-  /// Create a position map. The modifications to the document are
-  /// represented as an array of numbers, in which each group of three
-  /// represents a modified chunk as `[start, oldSize, newSize]`.
+  /** Create a position map. The modifications to the document are
+   * represented as an array of numbers, in which each group of three
+   * represents a modified chunk as `[start, oldSize, newSize]`.
+   */
   constructor(
     /// @internal
     readonly ranges: readonly number[],
     /// @internal
     readonly inverted = false,
   ) {
-    if (!ranges.length && StepMap.empty) return StepMap.empty;
+    if (!ranges.length && StepMap.empty) {
+      // eslint-disable-next-line no-constructor-return
+      return StepMap.empty;
+    }
   }
 
   /// @internal
   recover(value: number) {
     let diff = 0;
-      const index = recoverIndex(value);
+    const index = recoverIndex(value);
     if (!this.inverted)
       for (let i = 0; i < index; i++)
         diff += this.ranges[i * 3 + 2] - this.ranges[i * 3 + 1];
@@ -125,14 +129,14 @@ export class StepMap implements Mappable {
   /// @internal
   _map(pos: number, assoc: number, simple: boolean) {
     let diff = 0;
-      const oldIndex = this.inverted ? 2 : 1;
-      const newIndex = this.inverted ? 1 : 2;
+    const oldIndex = this.inverted ? 2 : 1;
+    const newIndex = this.inverted ? 1 : 2;
     for (let i = 0; i < this.ranges.length; i += 3) {
       const start = this.ranges[i] - (this.inverted ? diff : 0);
       if (start > pos) break;
       const oldSize = this.ranges[i + oldIndex];
-        const newSize = this.ranges[i + newIndex];
-        const end = start + oldSize;
+      const newSize = this.ranges[i + newIndex];
+      const end = start + oldSize;
       if (pos <= end) {
         const side = !oldSize
           ? assoc
@@ -160,14 +164,14 @@ export class StepMap implements Mappable {
   /// @internal
   touches(pos: number, recover: number) {
     let diff = 0;
-      const index = recoverIndex(recover);
+    const index = recoverIndex(recover);
     const oldIndex = this.inverted ? 2 : 1;
-      const newIndex = this.inverted ? 1 : 2;
+    const newIndex = this.inverted ? 1 : 2;
     for (let i = 0; i < this.ranges.length; i += 3) {
       const start = this.ranges[i] - (this.inverted ? diff : 0);
       if (start > pos) break;
       const oldSize = this.ranges[i + oldIndex];
-        const end = start + oldSize;
+      const end = start + oldSize;
       if (pos <= end && i == index * 3) return true;
       diff += this.ranges[i + newIndex] - oldSize;
     }
@@ -185,13 +189,13 @@ export class StepMap implements Mappable {
     ) => void,
   ) {
     const oldIndex = this.inverted ? 2 : 1;
-      const newIndex = this.inverted ? 1 : 2;
+    const newIndex = this.inverted ? 1 : 2;
     for (let i = 0, diff = 0; i < this.ranges.length; i += 3) {
       const start = this.ranges[i];
-        const oldStart = start - (this.inverted ? diff : 0);
-        const newStart = start + (this.inverted ? 0 : diff);
+      const oldStart = start - (this.inverted ? diff : 0);
+      const newStart = start + (this.inverted ? 0 : diff);
       const oldSize = this.ranges[i + oldIndex];
-        const newSize = this.ranges[i + newIndex];
+      const newSize = this.ranges[i + newIndex];
       f(oldStart, oldStart + oldSize, newStart, newStart + newSize);
       diff += newSize - oldSize;
     }
@@ -342,7 +346,7 @@ export class Mapping implements Mappable {
 
     for (let i = this.from; i < this.to; i++) {
       const map = this.maps[i];
-        const result = map.mapResult(pos, assoc);
+      const result = map.mapResult(pos, assoc);
       if (result.recover != null) {
         const corr = this.getMirror(i);
         if (corr != null && corr > i && corr < this.to) {

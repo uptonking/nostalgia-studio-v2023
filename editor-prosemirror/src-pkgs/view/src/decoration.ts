@@ -137,7 +137,7 @@ export class NodeType implements DecorationType {
 
   valid(node: Node, span: Decoration): boolean {
     const { index, offset } = node.content.findIndex(span.from);
-      let child;
+    let child;
     return (
       offset == span.from &&
       !(child = node.child(index)).isText &&
@@ -160,15 +160,20 @@ export class NodeType implements DecorationType {
 /** Decoration objects can be provided to the view through the
  * [`decorations` prop](#view.EditorProps.decorations). They come in
  * several variants—see the static members of this class for details.
+ * - Decoration与编辑器模型/Node/Mark并无直接关系，可以用于高亮文档之类的目的
  * - 每个装饰（Decoration）由一个from和to定义的文档位移构成。这两个位移指明了该装饰所能应用于的文档节点层级。
  * - 每层装饰集所拥有的装饰列表所代表的文档位移（from和to）会被调整成相对于当前文档节点层级的位移。
  * - 上层装饰集会被切块，使之边界上与下层装饰集对齐，这样一来文档的某个范围内，可能有若干个不同层级的装饰集应用于之上。
  * - 层级最深的装饰集所带有的装饰列表，可能只应用于文档的几个字符。
+ * - Leaf类型的节点是没有装饰的
+ * - 第一层装饰是加在文档的外层节点上的。这个节点的contenteditable会被设置。另外，这个节点默认会被设置一个ProseMirror的css类。可以通过指定EditorProps.attributes来向这个节点添加额外CSS类，或者其他节点属性。
  */
 export class Decoration {
   /// @internal
   constructor(
-    /** The start position of the decoration. */
+    /** The start position of the decoration.
+     * - 每个Decoration由一个from和to定义的文档位移构成。这两个位移指明了该装饰所能应用于的文档节点层级。
+     */
     readonly from: number,
     /** The end position. Will be the same as `from` for [widget
      * decorations](#view.Decoration^widget).
@@ -328,7 +333,7 @@ export type DecorationAttrs = {
 };
 
 const none: readonly any[] = [];
-  const noSpec = {};
+const noSpec = {};
 
 /** An object that can [provide](#view.EditorProps.decorations)
  * decorations. Implemented by [`DecorationSet`](#view.DecorationSet),
@@ -351,10 +356,14 @@ export interface DecorationSource {
  * a way that the drawing algorithm can efficiently use and compare
  * them. This is a persistent data structure—it is not modified,
  * updates create a new value.
- * - 既然装饰是文档节点的附属，装饰的组织方式要匹配文档的组织方式
+ * - 既然装饰是文档节点的附属，装饰的组织方式要匹配文档的组织方式。
+ * - 而将多个装饰对应到一个文档节点则是采用数据结构装饰集DecorationSet。
  * - 装饰集其实是嵌套的，每个装饰集对应文档树的一个层级，并保留有能够应用到当前层级的装饰列表
  * - 装饰集是作用于文档内容的，而不是作用于文档模型的，装饰集也是immutable。
- * - Leaf类型的节点是没有装饰的
+ * - 每层装饰集所拥有的装饰列表所代表的文档位移（from和to）会被调整成相对于当前文档节点层级的位移。并且上层装饰集会被切块，使之边界上与下层装饰集对齐
+ * - 这样一来文档的某个范围内，可能有若干个不同层级的装饰集应用于之上。
+ * - 层级最深的装饰集所带有的装饰列表，可能只应用于文档的几个字符。
+ * - 装饰集是作用于文档内容的，而不是作用于文档模型的。 装饰集也是immutable数据类型。
  */
 export class DecorationSet implements DecorationSource {
   /// @internal
@@ -371,8 +380,8 @@ export class DecorationSet implements DecorationSource {
     this.children = children.length ? children : none;
   }
 
-  /** Create a set of decorations, using the structure of the given
-   * document.
+  /** Create a set of decorations, using the structure of the given document.
+   * - 会按照文档树的结构形成一套与之对应的装饰树。
    */
   static create(doc: Node, decorations: Decoration[]) {
     return decorations.length ? buildTree(decorations, doc, 0, noSpec) : empty;
@@ -492,10 +501,10 @@ export class DecorationSet implements DecorationSource {
 
   private addInner(doc: Node, decorations: Decoration[], offset: number) {
     let children: (number | DecorationSet)[] | undefined;
-      let childIndex = 0;
+    let childIndex = 0;
     doc.forEach((childNode, childOffset) => {
       const baseOffset = childOffset + offset;
-        let found;
+      let found;
       if (!(found = takeSpansForNode(decorations, childNode, baseOffset)))
         return;
 
@@ -540,11 +549,11 @@ export class DecorationSet implements DecorationSource {
 
   private removeInner(decorations: (Decoration | null)[], offset: number) {
     let children = this.children as (number | DecorationSet)[];
-      let local = this.local as Decoration[];
+    let local = this.local as Decoration[];
     for (let i = 0; i < children.length; i += 3) {
       let found: Decoration[] | undefined;
       const from = (children[i] as number) + offset;
-        const to = (children[i + 1] as number) + offset;
+      const to = (children[i + 1] as number) + offset;
       for (let j = 0, span; j < decorations.length; j++)
         if ((span = decorations[j])) {
           if (span.from > from && span.to < to) {
@@ -585,7 +594,8 @@ export class DecorationSet implements DecorationSource {
     if (this == empty) return this;
     if (node.isLeaf) return DecorationSet.empty;
 
-    let child; let local: Decoration[] | undefined;
+    let child;
+    let local: Decoration[] | undefined;
     for (let i = 0; i < this.children.length; i += 3)
       if (this.children[i] >= offset) {
         if (this.children[i] == offset)
@@ -593,12 +603,12 @@ export class DecorationSet implements DecorationSource {
         break;
       }
     const start = offset + 1;
-      const end = start + node.content.size;
+    const end = start + node.content.size;
     for (let i = 0; i < this.local.length; i++) {
       const dec = this.local[i];
       if (dec.from < end && dec.to > start && dec.type instanceof InlineType) {
         const from = Math.max(start, dec.from) - start;
-          const to = Math.min(end, dec.to) - start;
+        const to = Math.min(end, dec.to) - start;
         if (from < to) (local || (local = [])).push(dec.copy(from, to));
       }
     }
@@ -699,7 +709,7 @@ class DecorationGroup implements DecorationSource {
 
   locals(node: Node) {
     let result: Decoration[] | undefined;
-      let sorted = true;
+    let sorted = true;
     for (let i = 0; i < this.members.length; i++) {
       const locals = this.members[i].localsInner(node);
       if (!locals.length) continue;
@@ -779,14 +789,14 @@ function mapChildren(
         continue;
       }
       const from = mapping.map((oldChildren[i] as number) + oldOffset);
-        const fromLocal = from - offset;
+      const fromLocal = from - offset;
       if (fromLocal < 0 || fromLocal >= node.content.size) {
         mustRebuild = true;
         continue;
       }
       // Must read oldChildren because children was tagged with -1
       const to = mapping.map((oldChildren[i + 1] as number) + oldOffset, -1);
-        const toLocal = to - offset;
+      const toLocal = to - offset;
       const { index, offset: childOffset } = node.content.findIndex(fromLocal);
       const childNode = node.maybeChild(index);
       if (
@@ -899,7 +909,7 @@ function takeSpansForNode(
 ): Decoration[] | null {
   if (node.isLeaf) return null;
   const end = offset + node.nodeSize;
-    let found = null;
+  let found = null;
   for (let i = 0, span; i < spans.length; i++) {
     if ((span = spans[i]) && span.from > offset && span.to < end) {
       (found || (found = [])).push(span);
@@ -920,7 +930,14 @@ function withoutNulls<T>(array: readonly (T | null)[]): T[] {
  * is a base offset that should be subtracted from the `from` and `to`
  * positions in the spans (so that we don't have to allocate new spans
  * for recursive calls).
- * - 构建装饰集树,注意，生成装饰集树的时候，如果某装饰不能应用于当前文档节点（如类型不匹配），则会被丢弃。
+ * - 在使用DecorationSet.create创建装饰集的时候，会按照文档树的结构形成一套与之对应的装饰树。
+ * - 装饰集其实是嵌套的，每个装饰集对应文档树的一个层级，并保留有能够应用到当前层级的装饰列表；
+ * - 每个装饰（Decoration）由一个from和to定义的文档位移构成。这两个位移指明了该装饰所能应用于的文档节点层级。
+ * - 每层装饰集所拥有的装饰列表所代表的文档位移（from和to）会被调整成相对于当前文档节点层级的位移。
+ * - 并且上层装饰集会被切块，使之边界上与下层装饰集对齐，这样一来文档的某个范围内，可能有若干个不同层级的装饰集应用于之上。
+ * - 层级最深的装饰集所带有的装饰列表，可能只应用于文档的几个字符。
+ * - 注意，生成装饰集树的时候，如果某装饰不能应用于当前文档节点（如类型不匹配），则会被丢弃。
+ * - 需要注意的是，装饰集是作用于文档内容的，而不是作用于文档模型的。 装饰集也是immutable数据类型。
  */
 function buildTree(
   spans: Decoration[],
@@ -929,7 +946,7 @@ function buildTree(
   options: { onRemove?: (decorationSpec: any) => void },
 ) {
   const children: (DecorationSet | number)[] = [];
-    let hasNulls = false;
+  let hasNulls = false;
   node.forEach((childNode, localStart) => {
     const found = takeSpansForNode(spans, childNode, localStart + offset);
     if (found) {
@@ -944,9 +961,10 @@ function buildTree(
         children.push(localStart, localStart + childNode.nodeSize, subtree);
     }
   });
-  const locals = moveSpans(hasNulls ? withoutNulls(spans) : spans, -offset).sort(
-    byPos,
-  );
+  const locals = moveSpans(
+    hasNulls ? withoutNulls(spans) : spans,
+    -offset,
+  ).sort(byPos);
   for (let i = 0; i < locals.length; i++)
     if (!locals[i].type.valid(node, locals[i])) {
       if (options.onRemove) options.onRemove(locals[i].spec);

@@ -29,7 +29,7 @@ const UPDATED_SEL = 1;
 /** An editor state transaction, which can be applied to a state to
  * create an updated state. Use
  * [`EditorState.tr`](#state.EditorState.tr) to create an instance.
- *
+ * - Transform看到的是文档的Model，Transaction在Transform的基础上，同时管理当前的编辑状态
  * - Transaction除了处理文档改动之外，还管理selection、当前使用标记集合、还有时间戳等等
  *
  * Transactions track changes to the document (they are a subclass of
@@ -233,6 +233,7 @@ export class Transaction extends Transform {
    * and can thus safely be extended.
    */
   get isGeneric() {
+    // eslint-disable-next-line no-unreachable-loop
     for (const _ in this.meta) return false;
     return true;
   }

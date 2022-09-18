@@ -430,6 +430,7 @@ export class Node {
   /** Return a JSON-serializeable representation of this node. */
   toJSON(): any {
     const obj: any = { type: this.type.name };
+    // eslint-disable-next-line no-unreachable-loop
     for (const _ in this.attrs) {
       obj.attrs = this.attrs;
       break;

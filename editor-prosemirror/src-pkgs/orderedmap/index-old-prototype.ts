@@ -10,7 +10,7 @@ OrderedMap.prototype = {
   constructor: OrderedMap,
 
   find: function (key) {
-    for (var i = 0; i < this.content.length; i += 2)
+    for (let i = 0; i < this.content.length; i += 2)
       if (this.content[i] === key) return i;
     return -1;
   },
@@ -20,7 +20,7 @@ OrderedMap.prototype = {
    * no such key exists.
    */
   get: function (key) {
-    var found = this.find(key);
+    const found = this.find(key);
     return found == -1 ? undefined : this.content[found + 1];
   },
 
@@ -30,9 +30,9 @@ OrderedMap.prototype = {
    * given, the key of the binding will be replaced with that key.
    */
   update: function (key, value, newKey) {
-    var self = newKey && newKey != key ? this.remove(newKey) : this;
-    var found = self.find(key),
-      content = self.content.slice();
+    const self = newKey && newKey != key ? this.remove(newKey) : this;
+    const found = self.find(key);
+      const content = self.content.slice();
     if (found == -1) {
       content.push(newKey || key, value);
     } else {
@@ -46,9 +46,9 @@ OrderedMap.prototype = {
    * Return a map with the given key removed, if it existed.
    */
   remove: function (key) {
-    var found = this.find(key);
+    const found = this.find(key);
     if (found == -1) return this;
-    var content = this.content.slice();
+    const content = this.content.slice();
     content.splice(found, 2);
     return new OrderedMap(content);
   },
@@ -64,7 +64,7 @@ OrderedMap.prototype = {
    * Add a new key to the end of the map.
    */
   addToEnd: function (key, value) {
-    var content = this.remove(key).content.slice();
+    const content = this.remove(key).content.slice();
     content.push(key, value);
     return new OrderedMap(content);
   },
@@ -74,9 +74,9 @@ OrderedMap.prototype = {
    * key is added to the end.
    */
   addBefore: function (place, key, value) {
-    var without = this.remove(key),
-      content = without.content.slice();
-    var found = without.find(place);
+    const without = this.remove(key);
+      const content = without.content.slice();
+    const found = without.find(place);
     content.splice(found == -1 ? content.length : found, 0, key, value);
     return new OrderedMap(content);
   },
@@ -86,7 +86,7 @@ OrderedMap.prototype = {
    * order.
    */
   forEach: function (f) {
-    for (var i = 0; i < this.content.length; i += 2)
+    for (let i = 0; i < this.content.length; i += 2)
       f(this.content[i], this.content[i + 1]);
   },
 
@@ -115,9 +115,9 @@ OrderedMap.prototype = {
    * appear in `map`.
    */
   subtract: function (map) {
-    var result = this;
+    let result = this;
     map = OrderedMap.from(map);
-    for (var i = 0; i < map.content.length; i += 2)
+    for (let i = 0; i < map.content.length; i += 2)
       result = result.remove(map.content[i]);
     return result;
   },
@@ -140,7 +140,7 @@ OrderedMap.from = function (value) {
 
   const content = [] as any[];
   if (value)
-    for (var prop in value) {
+    for (const prop in value) {
       content.push(prop, value[prop]);
     }
   return new OrderedMap(content);

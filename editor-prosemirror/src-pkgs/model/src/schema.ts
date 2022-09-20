@@ -258,7 +258,7 @@ export class NodeType {
     return !copy ? marks : copy.length ? copy : Mark.none;
   }
 
-  /// @internal
+  /** @internal */
   static compile<Nodes extends string>(
     nodes: OrderedMap<NodeSpec>,
     schema: Schema<Nodes>,
@@ -269,10 +269,12 @@ export class NodeType {
     );
 
     const topType = schema.spec.topNode || 'doc';
-    if (!result[topType])
+
+    if (!result[topType]) {
       throw new RangeError(
         "Schema is missing its top node type ('" + topType + "')",
       );
+    }
     if (!result.text) throw new RangeError("Every schema needs a 'text' type");
     // eslint-disable-next-line no-unreachable-loop
     for (const _ in result.text.attrs)
@@ -373,10 +375,7 @@ export class MarkType {
 /** An object describing a schema, as passed to the [`Schema`](#model.Schema)
  * constructor.
  */
-export interface SchemaSpec<
-  Nodes extends string = any,
-  Marks extends string = any,
-> {
+export interface SchemaSpec<Nodes extends string = any, Marks extends string = any> {
   /** The node types in this schema. Maps names to
    * [`NodeSpec`](#model.NodeSpec) objects that describe the node type
    * associated with that name. Their order is significant—it
@@ -391,9 +390,7 @@ export interface SchemaSpec<
    * rules](#model.MarkSpec.parseDOM) are tried.
    */
   marks?: { [name in Marks]: MarkSpec } | OrderedMap<MarkSpec>;
-  /** The name of the default top-level node for the schema. Defaults
-   * to `"doc"`.
-   */
+  /** The name of default top-level node for the schema. Defaults to `"doc"` */
   topNode?: string;
 }
 
@@ -661,6 +658,8 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
           ? []
           : null;
     }
+
+    // eslint-disable-next-line guard-for-in
     for (const prop in this.marks) {
       const type = this.marks[prop];
       const excl = type.spec.excludes;
@@ -674,12 +673,13 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
 
     this.nodeFromJSON = this.nodeFromJSON.bind(this);
     this.markFromJSON = this.markFromJSON.bind(this);
+
     this.topNodeType = this.nodes[this.spec.topNode || 'doc'];
     this.cached.wrappings = Object.create(null);
   }
 
   /** The type of the [default top node](#model.SchemaSpec.topNode)
-   * for this schema.
+   * for this schema. 构造函数中会设置默认值为`doc`
    */
   topNodeType: NodeType;
 

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+/** pme官方示例用到的css集合，包括了prosemirror-view/menu/gapcursor/example-setup */
 export const StyledContainer = styled('div')`
   .ProseMirror {
     position: relative;
@@ -60,6 +61,8 @@ export const StyledContainer = styled('div')`
     border: none !important;
     margin: 0 !important;
   }
+  // #endregion prosemirror-view css
+
   .ProseMirror-textblock-dropdown {
     min-width: 3em;
   }
@@ -213,6 +216,8 @@ export const StyledContainer = styled('div')`
   .ProseMirror-icon span {
     vertical-align: text-top;
   }
+  // #endregion prosemirror-menu css
+
   .ProseMirror-gapcursor {
     display: none;
     pointer-events: none;
@@ -238,6 +243,8 @@ export const StyledContainer = styled('div')`
   .ProseMirror-focused .ProseMirror-gapcursor {
     display: block;
   }
+  // #endregion prosemirror-gapcursor css
+
   /* Add space around the hr to make clicking it easier */
 
   .ProseMirror-example-setup-style hr {
@@ -326,6 +333,7 @@ export const StyledContainer = styled('div')`
     margin-top: 5px;
     display: none;
   }
+  // #endregion prosemirror-example-setup css
 
   #editor,
   .editor {
@@ -357,4 +365,100 @@ export const StyledContainer = styled('div')`
   .ProseMirror p {
     margin-bottom: 1em;
   }
+  // #endregion prosemirror examples/tutorials base css
+`;
+
+export const StyledProseMirrorCore = styled('div')`
+  .ProseMirror {
+    position: relative;
+  }
+
+  .ProseMirror {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    white-space: break-spaces;
+    -webkit-font-variant-ligatures: none;
+    font-variant-ligatures: none;
+    font-feature-settings: 'liga' 0; /* the above doesn't seem to work in Edge */
+  }
+
+  .ProseMirror pre {
+    white-space: pre-wrap;
+  }
+
+  .ProseMirror li {
+    position: relative;
+  }
+
+  .ProseMirror-hideselection *::selection {
+    background: transparent;
+  }
+  .ProseMirror-hideselection *::-moz-selection {
+    background: transparent;
+  }
+  .ProseMirror-hideselection {
+    caret-color: transparent;
+  }
+
+  .ProseMirror-selectednode {
+    outline: 2px solid #8cf;
+  }
+
+  /* Make sure li selections wrap around markers */
+
+  li.ProseMirror-selectednode {
+    outline: none;
+  }
+
+  li.ProseMirror-selectednode:after {
+    content: '';
+    position: absolute;
+    left: -32px;
+    right: -2px;
+    top: -2px;
+    bottom: -2px;
+    border: 2px solid #8cf;
+    pointer-events: none;
+  }
+
+  /* Protect against generic img rules */
+
+  img.ProseMirror-separator {
+    display: inline !important;
+    border: none !important;
+    margin: 0 !important;
+  }
+  // #endregion prosemirror-view css
+
+  #editor,
+  .editor {
+    background: white;
+    color: black;
+    background-clip: padding-box;
+    border-radius: 4px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    padding: 5px 0;
+    margin-bottom: 23px;
+  }
+
+  .ProseMirror p:first-of-type,
+  .ProseMirror h1:first-of-type,
+  .ProseMirror h2:first-of-type,
+  .ProseMirror h3:first-of-type,
+  .ProseMirror h4:first-of-type,
+  .ProseMirror h5:first-of-type,
+  .ProseMirror h6:first-of-type {
+    margin-top: 10px;
+  }
+
+  .ProseMirror {
+    padding: 4px 8px 4px 14px;
+    line-height: 1.2;
+    outline: none;
+  }
+
+  .ProseMirror p {
+    margin-bottom: 1em;
+  }
+  // #endregion prosemirror examples/tutorials base css
 `;

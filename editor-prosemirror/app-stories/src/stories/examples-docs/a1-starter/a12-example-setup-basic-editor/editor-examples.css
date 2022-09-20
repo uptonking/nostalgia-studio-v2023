@@ -57,6 +57,8 @@ img.ProseMirror-separator {
   border: none !important;
   margin: 0 !important;
 }
+/* #endregion prosemirror-view css */
+
 .ProseMirror-textblock-dropdown {
   min-width: 3em;
 }
@@ -210,6 +212,8 @@ img.ProseMirror-separator {
 .ProseMirror-icon span {
   vertical-align: text-top;
 }
+/* #endregion prosemirror-menu css */
+
 .ProseMirror-gapcursor {
   display: none;
   pointer-events: none;
@@ -235,6 +239,8 @@ img.ProseMirror-separator {
 .ProseMirror-focused .ProseMirror-gapcursor {
   display: block;
 }
+/* #endregion prosemirror-gapcursor css */
+
 /* Add space around the hr to make clicking it easier */
 
 .ProseMirror-example-setup-style hr {
@@ -323,6 +329,7 @@ img.ProseMirror-separator {
   margin-top: 5px;
   display: none;
 }
+/* #endregion prosemirror-example-setup css */
 
 #editor,
 .editor {
@@ -354,3 +361,4 @@ img.ProseMirror-separator {
 .ProseMirror p {
   margin-bottom: 1em;
 }
+/* #endregion prosemirror examples/tutorials base css */

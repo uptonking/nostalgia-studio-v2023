@@ -29,7 +29,7 @@ export function gapCursor(): Plugin {
       decorations: drawGapCursor,
 
       createSelectionBetween(_view, $anchor, $head) {
-        return $anchor.pos == $head.pos && GapCursor.valid($head)
+        return $anchor.pos === $head.pos && GapCursor.valid($head)
           ? new GapCursor($head)
           : null;
       },

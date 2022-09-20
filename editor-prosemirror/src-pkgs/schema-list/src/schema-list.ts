@@ -1,26 +1,26 @@
-import {
-  findWrapping,
-  liftTarget,
-  canSplit,
-  ReplaceAroundStep,
-} from 'prosemirror-transform';
-import {
-  Slice,
-  Fragment,
-  NodeSpec,
-  DOMOutputSpec,
-  NodeType,
-  Attrs,
-  NodeRange,
-} from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
+import {
+  Attrs,
+  DOMOutputSpec,
+  Fragment,
+  NodeRange,
+  NodeSpec,
+  NodeType,
+  Slice,
+} from 'prosemirror-model';
 import {
   Command,
   EditorState,
-  Transaction,
   NodeSelection,
   Selection,
+  Transaction,
 } from 'prosemirror-state';
+import {
+  ReplaceAroundStep,
+  canSplit,
+  findWrapping,
+  liftTarget,
+} from 'prosemirror-transform';
 
 const olDOM: DOMOutputSpec = ['ol', 0];
 const ulDOM: DOMOutputSpec = ['ul', 0];
@@ -69,11 +69,14 @@ export const listItem: NodeSpec = {
   defining: true,
 };
 
+/** 返回一个包含obj和props所有属性的新对象，注意对于同名属性，props会覆盖obj */
 function add(obj: { [prop: string]: any }, props: { [prop: string]: any }) {
   const copy: { [prop: string]: any } = {};
+  // eslint-disable-next-line guard-for-in
   for (const prop in obj) {
     copy[prop] = obj[prop];
   }
+  // eslint-disable-next-line guard-for-in
   for (const prop in props) {
     copy[prop] = props[prop];
   }
@@ -86,12 +89,12 @@ function add(obj: { [prop: string]: any }, props: { [prop: string]: any }) {
  * [`bulletList`](#schema-list.bulletList) as `"bullet_list"`, and
  * [`listItem`](#schema-list.listItem) as `"list_item"`.
  *
- * `itemContent` determines the content expression for the list items.
+ * - `itemContent` determines the content expression for the list items.
  * If you want the commands defined in this module to apply to your
  * list structure, it should have a shape like `"paragraph block*"` or
- * `"paragraph (ordered_list | bullet_list)*"`. `listGroup` can be
- * given to assign a group name to the list node types, for example
- * `"block"`.
+ * `"paragraph (ordered_list | bullet_list)*"`.
+ * - `listGroup` can be given to assign a group name to the list node types,
+ * for example `"block"`, 无默认值.
  */
 export function addListNodes(
   nodes: OrderedMap<NodeSpec>,
@@ -124,7 +127,7 @@ export function wrapInList(
     if (
       range.depth >= 2 &&
       $from.node(range.depth - 1).type.compatibleContent(listType) &&
-      range.startIndex == 0
+      range.startIndex === 0
     ) {
       // Don't do anything if this is the top of the list
       if ($from.index(range.depth - 1) == 0) return false;
@@ -148,6 +151,7 @@ export function wrapInList(
   };
 }
 
+/** 增强并返回包含list操作的`tr` */
 function doWrapInList(
   tr: Transaction,
   range: NodeRange,
@@ -156,10 +160,11 @@ function doWrapInList(
   listType: NodeType,
 ) {
   let content = Fragment.empty;
-  for (let i = wrappers.length - 1; i >= 0; i--)
+  for (let i = wrappers.length - 1; i >= 0; i--) {
     content = Fragment.from(
       wrappers[i].type.create(wrappers[i].attrs, content),
     );
+  }
 
   tr.step(
     new ReplaceAroundStep(
@@ -174,8 +179,9 @@ function doWrapInList(
   );
 
   let found = 0;
-  for (let i = 0; i < wrappers.length; i++)
+  for (let i = 0; i < wrappers.length; i++) {
     if (wrappers[i].type == listType) found = i + 1;
+  }
   const splitDepth = wrappers.length - found;
 
   let splitPos = range.start + wrappers.length - (joinBefore ? 2 : 0);

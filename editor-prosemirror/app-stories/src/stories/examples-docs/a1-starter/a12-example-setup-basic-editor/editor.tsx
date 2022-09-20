@@ -15,23 +15,26 @@ import { StyledContainer } from '../../editor-examples.styles';
  */
 export const PMExampleSetupBasicEditor = () => {
   const editorContainer = useRef<HTMLDivElement>();
-  const initialEditorContentContainer = useRef<HTMLDivElement>();
+  const initialContentContainer = useRef<HTMLDivElement>();
   const view = useRef<EditorView>(null);
 
   useEffect(() => {
     // create a schema with list support.
     const mySchema = new Schema({
+      // "heading paragraph+" means ‘first a heading, then one or more paragraphs’.
       nodes: addListNodes(schema.spec.nodes, 'paragraph block*', 'block'),
       marks: schema.spec.marks,
     });
     // const state = EditorState.create({ schema: mySchema });
+    const state = EditorState.create({
+      doc: DOMParser.fromSchema(mySchema).parse(
+        initialContentContainer.current,
+      ),
+      plugins: exampleSetup({ schema: mySchema }),
+    });
+
     view.current = new EditorView(editorContainer.current, {
-      state: EditorState.create({
-        doc: DOMParser.fromSchema(mySchema).parse(
-          initialEditorContentContainer.current,
-        ),
-        plugins: exampleSetup({ schema: mySchema }),
-      }),
+      state,
     });
     applyDevTools(view.current, { devToolsExpanded: false });
 
@@ -43,7 +46,7 @@ export const PMExampleSetupBasicEditor = () => {
       <h3> prosemirror-example-setup basic editor</h3>
       <div ref={editorContainer} id='editor' />
       {/* 👇🏻 剩下的全是默认隐藏的编辑器初始数据 */}
-      <div style={{ display: 'none' }} ref={initialEditorContentContainer}>
+      <div ref={initialContentContainer} style={{ display: 'none' }}>
         <h3>Hello ProseMirror</h3>
 
         <p>This is editable text. You can focus it and start typing.</p>

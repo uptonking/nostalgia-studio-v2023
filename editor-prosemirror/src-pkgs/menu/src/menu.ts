@@ -1,15 +1,15 @@
 import crel from 'crelt';
 import {
-  lift,
   joinUp,
+  lift,
   selectParentNode,
-  wrapIn,
   setBlockType,
+  wrapIn,
 } from 'prosemirror-commands';
-import { undo, redo } from 'prosemirror-history';
+import { redo, undo } from 'prosemirror-history';
+import { Attrs, NodeType } from 'prosemirror-model';
+import { EditorState, NodeSelection, Transaction } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
-import { NodeType, Attrs } from 'prosemirror-model';
 
 import { getIcon } from './icons';
 
@@ -175,7 +175,8 @@ function isMenuEvent(wrapper: HTMLElement) {
  */
 export class Dropdown implements MenuElement {
   /// @internal
-  content: readonly MenuElement[];
+  // content: readonly MenuElement[];
+  content: MenuElement[];
 
   /// Create a dropdown wrapping the elements.
   constructor(

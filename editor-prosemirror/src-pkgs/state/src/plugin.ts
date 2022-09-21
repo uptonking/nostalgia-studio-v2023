@@ -69,6 +69,7 @@ export type PluginView = {
   destroy?: () => void;
 };
 
+/** 将obj的所有属性拷贝到target对象并返回 */
 function bindProps(
   obj: { [prop: string]: any },
   self: any,
@@ -89,10 +90,12 @@ function bindProps(
  */
 export class Plugin<PluginState = any> {
   constructor(
-    /// The plugin's [spec object](#state.PluginSpec).
+    /** The plugin's [spec object](#state.PluginSpec). */
     readonly spec: PluginSpec<PluginState>,
   ) {
-    if (spec.props) bindProps(spec.props, this, this.props);
+    if (spec.props) {
+      bindProps(spec.props, this, this.props);
+    }
     this.key = spec.key ? spec.key.key : createKey('plugin');
   }
 
@@ -148,6 +151,7 @@ export interface StateField<T> {
   fromJSON?: (config: EditorStateConfig, value: any, state: EditorState) => T;
 }
 
+/** 保存所有plugins的keys的映射表，自动生成的key都以$结尾 */
 const keys = Object.create(null);
 
 function createKey(name: string) {

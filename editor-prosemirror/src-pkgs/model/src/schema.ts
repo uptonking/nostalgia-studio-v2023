@@ -375,7 +375,10 @@ export class MarkType {
 /** An object describing a schema, as passed to the [`Schema`](#model.Schema)
  * constructor.
  */
-export interface SchemaSpec<Nodes extends string = any, Marks extends string = any> {
+export interface SchemaSpec<
+  Nodes extends string = any,
+  Marks extends string = any,
+> {
   /** The node types in this schema. Maps names to
    * [`NodeSpec`](#model.NodeSpec) objects that describe the node type
    * associated with that name. Their order is significant—it
@@ -394,11 +397,13 @@ export interface SchemaSpec<Nodes extends string = any, Marks extends string = a
   topNode?: string;
 }
 
-/** A description of a node type, used when defining a schema. */
+/** A description of a node type, used when defining a schema.
+ * - 若不指定content属性，则node不允许包含内容
+ */
 export interface NodeSpec {
   /** The content expression for this node, as described in the [schema
-   * guide](/docs/guide/#schema.content_expressions). When not given,
-   * the node does not allow any content.
+   * guide](/docs/guide/#schema.content_expressions).
+   * - When not given, the node does not allow any content.
    */
   content?: string;
 

@@ -138,7 +138,7 @@ export class EditorView {
         this.mounted = true;
       }
     }
-    this.dom.classList.add('idEditViewDOM');
+    this.dom.classList.add('idPMEditViewDOM');
 
     this.editable = getEditable(this);
     updateCursorWrapper(this);

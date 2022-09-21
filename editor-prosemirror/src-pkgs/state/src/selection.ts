@@ -53,22 +53,22 @@ export abstract class Selection {
   }
 
   /** The lower bound of the selection's main range. */
-  get from() {
+  get from(): number {
     return this.$from.pos;
   }
 
   /** The upper bound of the selection's main range. */
-  get to() {
+  get to(): number {
     return this.$to.pos;
   }
 
-  /** The resolved lower  bound of the selection's main range. */
-  get $from() {
+  /** The resolved lower bound of the selection's main range. */
+  get $from(): ResolvedPos {
     return this.ranges[0].$from;
   }
 
   /** The resolved upper bound of the selection's main range. */
-  get $to() {
+  get $to(): ResolvedPos {
     return this.ranges[0].$to;
   }
 

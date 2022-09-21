@@ -70,8 +70,8 @@ const notionLikeSchema = new Schema({
   marks: schema.spec.marks,
 });
 
-function insertNotionLikeAppIcon(type: typeof notionLikeApps[number]) {
-  const cmd: Command = (state, dispatch) => {
+function insertNotionLikeAppIconCmd(type: typeof notionLikeApps[number]) {
+  const resultCmd: Command = (state, dispatch) => {
     const { $from } = state.selection;
     const index = $from.index();
     if (
@@ -89,7 +89,7 @@ function insertNotionLikeAppIcon(type: typeof notionLikeApps[number]) {
 
     return true;
   };
-  return cmd;
+  return resultCmd;
 }
 
 const menu = buildMenuItems(notionLikeSchema);
@@ -98,16 +98,18 @@ notionLikeApps.forEach((name) =>
     new MenuItem({
       title: '插入 ' + name,
       label: name.charAt(0).toUpperCase() + name.slice(1),
-      enable: (state) => insertNotionLikeAppIcon(name)(state),
-      run: insertNotionLikeAppIcon(name),
+      enable: (state) => insertNotionLikeAppIconCmd(name)(state),
+      run: insertNotionLikeAppIconCmd(name),
     }),
   ),
 );
 
 /**
  * ✨ 官方编辑器示例，自定义Node/元素 。
- * - ❓ 编辑器的宽度由内容的最大宽度决定；当每行内容都很短时，编辑器宽度就显得很窄
  * - https://prosemirror.net/examples/dino/
+ *
+ * - ❓ 编辑器的宽度由内容的最大宽度决定；当每行内容都很短时，编辑器宽度就显得很窄
+ * - 此时dom元素的属性名可能包括`toDOM`生成的非标准属性
  */
 export const CustomElementEditor = () => {
   const editorContainer = useRef<HTMLDivElement>();

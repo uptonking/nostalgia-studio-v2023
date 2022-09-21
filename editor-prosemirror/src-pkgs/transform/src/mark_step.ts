@@ -23,11 +23,11 @@ function mapFragment(
 export class AddMarkStep extends Step {
   /// Create a mark step.
   constructor(
-    /// The start of the marked range.
+    /** The start of the marked range. */
     readonly from: number,
-    /// The end of the marked range.
+    /** The end of the marked range. */
     readonly to: number,
-    /// The mark to add.
+    /** The mark to add. */
     readonly mark: Mark,
   ) {
     super();
@@ -98,15 +98,15 @@ export class AddMarkStep extends Step {
 
 Step.jsonID('addMark', AddMarkStep);
 
-/// Remove a mark from all inline content between two positions.
+/** Remove a mark from all inline content between two positions. */
 export class RemoveMarkStep extends Step {
   /// Create a mark-removing step.
   constructor(
-    /// The start of the unmarked range.
+    /** The start of the unmarked range. */
     readonly from: number,
-    /// The end of the unmarked range.
+    /** The end of the unmarked range. */
     readonly to: number,
-    /// The mark to remove.
+    /** The mark to remove. */
     readonly mark: Mark,
   ) {
     super();
@@ -177,13 +177,13 @@ export class RemoveMarkStep extends Step {
 
 Step.jsonID('removeMark', RemoveMarkStep);
 
-/// Add a mark to a specific node.
+/** Add a mark to a specific node. */
 export class AddNodeMarkStep extends Step {
   /// Create a node mark step.
   constructor(
-    /// The position of the target node.
+    /** The position of the target node. */
     readonly pos: number,
-    /// The mark to add.
+    /** The mark to add. */
     readonly mark: Mark,
   ) {
     super();
@@ -238,13 +238,13 @@ export class AddNodeMarkStep extends Step {
 
 Step.jsonID('addNodeMark', AddNodeMarkStep);
 
-/// Remove a mark from a specific node.
+/** Remove a mark from a specific node. */
 export class RemoveNodeMarkStep extends Step {
   /// Create a mark-removing step.
   constructor(
-    /// The position of the target node.
+    /** The position of the target node. */
     readonly pos: number,
-    /// The mark to remove.
+    /** The mark to remove. */
     readonly mark: Mark,
   ) {
     super();

@@ -431,6 +431,7 @@ export const StyledProseMirrorCore = styled('div')`
   // #endregion prosemirror-view css
 
   #editor,
+  #editor2,
   .editor {
     background: white;
     color: black;

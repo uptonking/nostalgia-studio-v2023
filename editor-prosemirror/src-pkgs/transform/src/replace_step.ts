@@ -6,21 +6,22 @@ import { Step, StepResult } from './step';
 /** Replace a part of the document with a slice of new content.
  */
 export class ReplaceStep extends Step {
-  /// The given `slice` should fit the 'gap' between `from` and
-  /// `to`—the depths must line up, and the surrounding nodes must be
-  /// able to be joined with the open sides of the slice. When
-  /// `structure` is true, the step will fail if the content between
-  /// from and to is not just a sequence of closing and then opening
-  /// tokens (this is to guard against rebased replace steps
-  /// overwriting something they weren't supposed to).
+  /** The given `slice` should fit the 'gap' between `from` and
+   * `to`—the depths must line up, and the surrounding nodes must be
+   * able to be joined with the open sides of the slice. When
+   * `structure` is true, the step will fail if the content between
+   * from and to is not just a sequence of closing and then opening
+   * tokens (this is to guard against rebased replace steps
+   * overwriting something they weren't supposed to).
+   */
   constructor(
-    /// The start position of the replaced range.
+    /** The start position of the replaced range. */
     readonly from: number,
-    /// The end position of the replaced range.
+    /** The end position of the replaced range. */
     readonly to: number,
-    /// The slice to insert.
+    /** The slice to insert. */
     readonly slice: Slice,
-    /// @internal
+    /** @internal */
     readonly structure = false,
   ) {
     super();
@@ -122,25 +123,25 @@ Step.jsonID('replace', ReplaceStep);
  * slice.
  */
 export class ReplaceAroundStep extends Step {
-  /// Create a replace-around step with the given range and gap.
-  /// `insert` should be the point in the slice into which the content
-  /// of the gap should be moved. `structure` has the same meaning as
-  /// it has in the [`ReplaceStep`](#transform.ReplaceStep) class.
+  /** Create a replace-around step with the given range and gap.
+   * `insert` should be the point in the slice into which the content
+   * of the gap should be moved. `structure` has the same meaning as
+   * it has in the [`ReplaceStep`](#transform.ReplaceStep) class.
+   */
   constructor(
-    /// The start position of the replaced range.
+    /** The start position of the replaced range. */
     readonly from: number,
-    /// The end position of the replaced range.
+    /** The end position of the replaced range. */
     readonly to: number,
-    /// The start of preserved range.
+    /** The start of preserved range. */
     readonly gapFrom: number,
-    /// The end of preserved range.
+    /** The end of preserved range. */
     readonly gapTo: number,
-    /// The slice to insert.
+    /** The slice to insert. */
     readonly slice: Slice,
-    /// The position in the slice where the preserved range should be
-    /// inserted.
+    /** The position in the slice where the preserved range should be inserted */
     readonly insert: number,
-    /// @internal
+    /** @internal */
     readonly structure = false,
   ) {
     super();

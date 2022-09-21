@@ -47,12 +47,13 @@ const DEL_AFTER = 2;
 const DEL_ACROSS = 4;
 const DEL_SIDE = 8;
 
-/// An object representing a mapped position with extra
-/// information.
+/** An object representing a mapped position with extra
+ * information.
+ */
 export class MapResult {
   /// @internal
   constructor(
-    /// The mapped version of the position.
+    /** The mapped version of the position. */
     readonly pos: number,
     /// @internal
     readonly delInfo: number,
@@ -60,26 +61,28 @@ export class MapResult {
     readonly recover: number | null,
   ) {}
 
-  /// Tells you whether the position was deleted, that is, whether the
-  /// step removed the token on the side queried (via the `assoc`)
-  /// argument from the document.
+  /** Tells you whether the position was deleted, that is, whether the
+   * step removed the token on the side queried (via the `assoc`)
+   * argument from the document.
+   */
   get deleted() {
     return (this.delInfo & DEL_SIDE) > 0;
   }
 
-  /// Tells you whether the token before the mapped position was deleted.
+  /** Tells you whether the token before the mapped position was deleted. */
   get deletedBefore() {
     return (this.delInfo & (DEL_BEFORE | DEL_ACROSS)) > 0;
   }
 
-  /// True when the token after the mapped position was deleted.
+  /** True when the token after the mapped position was deleted. */
   get deletedAfter() {
     return (this.delInfo & (DEL_AFTER | DEL_ACROSS)) > 0;
   }
 
-  /// Tells whether any of the steps mapped through deletes across the
-  /// position (including both the token before and after the
-  /// position).
+  /** Tells whether any of the steps mapped through deletes across the
+   * position (including both the token before and after the
+   * position).
+   */
   get deletedAcross() {
     return (this.delInfo & DEL_ACROSS) > 0;
   }
@@ -178,8 +181,9 @@ export class StepMap implements Mappable {
     return false;
   }
 
-  /// Calls the given function on each of the changed ranges included in
-  /// this map.
+  /** Calls the given function on each of the changed ranges included in
+   * this map.
+   */
   forEach(
     f: (
       oldStart: number,
@@ -201,8 +205,9 @@ export class StepMap implements Mappable {
     }
   }
 
-  /// Create an inverted version of this map. The result can be used to
-  /// map positions in the post-step document to the pre-step document.
+  /** Create an inverted version of this map. The result can be used to
+   * map positions in the post-step document to the pre-step document.
+   */
   invert() {
     return new StepMap(this.ranges, !this.inverted);
   }
@@ -212,14 +217,15 @@ export class StepMap implements Mappable {
     return (this.inverted ? '-' : '') + JSON.stringify(this.ranges);
   }
 
-  /// Create a map that moves all positions by offset `n` (which may be
-  /// negative). This can be useful when applying steps meant for a
-  /// sub-document to a larger document, or vice-versa.
+  /** Create a map that moves all positions by offset `n` (which may be
+   * negative). This can be useful when applying steps meant for a
+   * sub-document to a larger document, or vice-versa.
+   */
   static offset(n: number) {
     return n == 0 ? StepMap.empty : new StepMap(n < 0 ? [0, -n, 0] : [0, 0, n]);
   }
 
-  /// A StepMap that contains no changed ranges.
+  /** A StepMap that contains no changed ranges. */
   static empty = new StepMap([]);
 }
 
@@ -287,9 +293,10 @@ export class Mapping implements Mappable {
     }
   }
 
-  /// Finds the offset of the step map that mirrors the map at the
-  /// given offset, in this mapping (as per the second argument to
-  /// `appendMap`).
+  /** Finds the offset of the step map that mirrors the map at the
+  * given offset, in this mapping (as per the second argument to
+  * `appendMap`).
+  */
   getMirror(n: number): number | undefined {
     if (this.mirror)
       for (let i = 0; i < this.mirror.length; i++)
@@ -302,7 +309,7 @@ export class Mapping implements Mappable {
     this.mirror.push(n, m);
   }
 
-  /// Append the inverse of the given mapping to this one.
+  /** Append the inverse of the given mapping to this one. */
   appendMappingInverted(mapping: Mapping) {
     for (
       let i = mapping.maps.length - 1,

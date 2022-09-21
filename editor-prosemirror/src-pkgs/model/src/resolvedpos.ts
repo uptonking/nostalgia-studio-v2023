@@ -238,11 +238,12 @@ export class ResolvedPos {
   }
 
   /** Returns a range based on the place where this position and the
-   * given position diverge around block content. If both point into
-   * the same textblock, for example, a range around that textblock
-   * will be returned. If they point into different blocks, the range
-   * around those blocks in their shared ancestor is returned. You can
-   * pass in an optional predicate that will be called with a parent
+   * given position diverge/分叉/偏离 around block content.
+   * - If both point into the same textblock, for example, a range around that
+   * textblock will be returned.
+   * - If they point into different blocks, the range
+   * around those blocks in their shared ancestor is returned.
+   * - You can pass in an optional predicate that will be called with a parent
    * node to see if a range into that parent is acceptable.
    */
   blockRange(

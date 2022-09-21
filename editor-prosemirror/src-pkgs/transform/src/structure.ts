@@ -1,27 +1,28 @@
 import {
-  Slice,
-  Fragment,
-  NodeRange,
-  NodeType,
-  Node,
-  Mark,
   Attrs,
   ContentMatch,
+  Fragment,
+  Mark,
+  Node,
+  NodeRange,
+  NodeType,
+  Slice,
 } from 'prosemirror-model';
 
+import { ReplaceAroundStep, ReplaceStep } from './replace_step';
 import { Transform } from './transform';
-import { ReplaceStep, ReplaceAroundStep } from './replace_step';
 
 function canCut(node: Node, start: number, end: number) {
   return (
-    (start == 0 || node.canReplace(start, node.childCount)) &&
-    (end == node.childCount || node.canReplace(0, end))
+    (start === 0 || node.canReplace(start, node.childCount)) &&
+    (end === node.childCount || node.canReplace(0, end))
   );
 }
 
-/// Try to find a target depth to which the content in the given range
-/// can be lifted. Will not go across
-/// [isolating](#model.NodeSpec.isolating) parent nodes.
+/** Try to find a target depth to which the content in the given range
+* can be lifted. Will not go across
+* [isolating](#model.NodeSpec.isolating) parent nodes.
+*/
 export function liftTarget(range: NodeRange): number | null {
   const parent = range.parent;
   const content = parent.content.cutByIndex(range.startIndex, range.endIndex);
@@ -83,12 +84,13 @@ export function lift(tr: Transform, range: NodeRange, target: number) {
   );
 }
 
-/// Try to find a valid way to wrap the content in the given range in a
-/// node of the given type. May introduce extra nodes around and inside
-/// the wrapper node, if necessary. Returns null if no valid wrapping
-/// could be found. When `innerRange` is given, that range's content is
-/// used as the content to fit into the wrapping, instead of the
-/// content of `range`.
+/** Try to find a valid way to wrap the content in the given range in a
+ * node of the given type. May introduce extra nodes around and inside
+ * the wrapper node, if necessary. Returns null if no valid wrapping
+ * could be found. When `innerRange` is given, that range's content is
+ * used as the content to fit into the wrapping, instead of the
+ * content of `range`.
+ */
 export function findWrapping(
   range: NodeRange,
   nodeType: NodeType,
@@ -205,8 +207,9 @@ function canChangeType(doc: Node, pos: number, type: NodeType) {
   return $pos.parent.canReplaceWith(index, index + 1, type);
 }
 
-/// Change the type, attributes, and/or marks of the node at `pos`.
-/// When `type` isn't given, the existing node type is preserved,
+/** Change the type, attributes, and/or marks of the node at `pos`.
+* When `type` isn't given, the existing node type is preserved,
+*/
 export function setNodeMarkup(
   tr: Transform,
   pos: number,
@@ -236,7 +239,7 @@ export function setNodeMarkup(
   );
 }
 
-/// Check whether splitting at the given position is allowed.
+/** Check whether splitting at the given position is allowed. */
 export function canSplit(
   doc: Node,
   pos: number,
@@ -313,8 +316,9 @@ export function split(
   );
 }
 
-/// Test whether the blocks before and after a given position can be
-/// joined.
+/** Test whether the blocks before and after a given position can be
+* joined.
+*/
 export function canJoin(doc: Node, pos: number): boolean {
   const $pos = doc.resolve(pos);
   const index = $pos.index();
@@ -328,9 +332,10 @@ function joinable(a: Node | null, b: Node | null) {
   return !!(a && b && !a.isLeaf && a.canAppend(b));
 }
 
-/// Find an ancestor of the given position that can be joined to the
-/// block before (or after if `dir` is positive). Returns the joinable
-/// point, if any.
+/** Find an ancestor of the given position that can be joined to the
+* block before (or after if `dir` is positive). Returns the joinable
+* point, if any.
+*/
 export function joinPoint(doc: Node, pos: number, dir = -1) {
   const $pos = doc.resolve(pos);
   for (let d = $pos.depth; ; d--) {
@@ -365,10 +370,11 @@ export function join(tr: Transform, pos: number, depth: number) {
   tr.step(step);
 }
 
-/// Try to find a point where a node of the given type can be inserted
-/// near `pos`, by searching up the node hierarchy when `pos` itself
-/// isn't a valid place but is at the start or end of a node. Return
-/// null if no position was found.
+/** Try to find a point where a node of the given type can be inserted
+* near `pos`, by searching up the node hierarchy when `pos` itself
+* isn't a valid place but is at the start or end of a node. Return
+* null if no position was found.
+*/
 export function insertPoint(
   doc: Node,
   pos: number,
@@ -395,10 +401,11 @@ export function insertPoint(
   return null;
 }
 
-/// Finds a position at or around the given position where the given
-/// slice can be inserted. Will look at parent nodes' nearest boundary
-/// and try there, even if the original position wasn't directly at the
-/// start or end of that node. Returns null when no position was found.
+/** Finds a position at or around the given position where the given
+* slice can be inserted. Will look at parent nodes' nearest boundary
+* and try there, even if the original position wasn't directly at the
+* start or end of that node. Returns null when no position was found.
+*/
 export function dropPoint(doc: Node, pos: number, slice: Slice): number | null {
   const $pos = doc.resolve(pos);
   if (!slice.content.size) return pos;

@@ -21,37 +21,6 @@ import styled from '@emotion/styled';
 
 import { StyledProseMirrorCore } from '../editor-examples.styles';
 
-const StyledDemoContainer = styled(StyledProseMirrorCore)`
-  .ProseMirror blockquote {
-    padding-left: 1em;
-    border-left: 3px solid #eee;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .menubar {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    line-height: 0.1;
-  }
-  .menuicon {
-    display: inline-block;
-    border-right: 1px solid rgba(0, 0, 0, 0.2);
-    color: #888;
-    line-height: 1;
-    padding: 0 7px;
-    margin: 1px;
-    cursor: pointer;
-    text-align: center;
-    min-width: 1.4em;
-  }
-  .strong,
-  .heading {
-    font-weight: bold;
-  }
-  .em {
-    font-style: italic;
-  }
-`;
-
 type CmdWithIcon = {
   command: Command;
   dom: HTMLSpanElement;
@@ -180,3 +149,34 @@ export const CustomMenuToolbar = () => {
     </StyledDemoContainer>
   );
 };
+
+const StyledDemoContainer = styled(StyledProseMirrorCore)`
+  .ProseMirror blockquote {
+    padding-left: 1em;
+    border-left: 3px solid #eee;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .menubar {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    line-height: 0.1;
+  }
+  .menuicon {
+    display: inline-block;
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+    color: #888;
+    line-height: 1;
+    padding: 0 7px;
+    margin: 1px;
+    cursor: pointer;
+    text-align: center;
+    min-width: 1.4em;
+  }
+  .strong,
+  .heading {
+    font-weight: bold;
+  }
+  .em {
+    font-style: italic;
+  }
+`;

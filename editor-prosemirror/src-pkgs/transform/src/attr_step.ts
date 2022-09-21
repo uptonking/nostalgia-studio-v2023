@@ -7,11 +7,11 @@ import { Step, StepResult } from './step';
 export class AttrStep extends Step {
   /// Construct an attribute step.
   constructor(
-    /// The position of the target node.
+    /** The position of the target node. */
     readonly pos: number,
-    /// The attribute to set.
+    /** The attribute to set. */
     readonly attr: string,
-    // The attribute's new value.
+    /** The attribute's new value. */
     readonly value: any,
   ) {
     super();

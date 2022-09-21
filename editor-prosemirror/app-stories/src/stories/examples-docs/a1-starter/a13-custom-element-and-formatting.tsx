@@ -13,16 +13,6 @@ import styled from '@emotion/styled';
 
 import { StyledContainer } from '../editor-examples.styles';
 
-const StyledDemoContainer = styled(StyledContainer)`
-  img.notion-like {
-    height: 40px;
-    vertical-align: bottom;
-    border: 1px solid #0ae;
-    border-radius: 4px;
-    background: #ddf6ff;
-  }
-`;
-
 const notionLikeApps = [
   'notion',
   'outline',
@@ -168,3 +158,13 @@ export const CustomElementEditor = () => {
     </StyledDemoContainer>
   );
 };
+
+const StyledDemoContainer = styled(StyledContainer)`
+  img.notion-like {
+    height: 40px;
+    vertical-align: bottom;
+    border: 1px solid #0ae;
+    border-radius: 4px;
+    background: #ddf6ff;
+  }
+`;

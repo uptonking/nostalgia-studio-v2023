@@ -537,6 +537,7 @@ export interface MarkSpec {
   /** Whether this mark should be active when the cursor is positioned
    * at its end (or at its start when that is also the start of the
    * parent node). Defaults to true.
+   * - 默认true，当光标在加粗文本末尾时，继续输入仍会是加粗，若false则不再是加粗
    */
   inclusive?: boolean;
 

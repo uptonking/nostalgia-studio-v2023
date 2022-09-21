@@ -1266,17 +1266,20 @@ export class NodeViewDesc extends ViewDesc {
     this.outerDeco = outerDeco;
   }
 
-  // Mark this node as being the selected node.
+  /** Mark this node as being the selected node. */
   selectNode() {
-    if (this.nodeDOM.nodeType == 1)
+    if (this.nodeDOM.nodeType === 1) {
+      console.trace(';; selectNode ', this.nodeDOM);
       (this.nodeDOM as HTMLElement).classList.add('ProseMirror-selectednode');
-    if (this.contentDOM || !this.node.type.spec.draggable)
+    }
+    if (this.contentDOM || !this.node.type.spec.draggable) {
       (this.dom as HTMLElement).draggable = true;
+    }
   }
 
-  // Remove selected node marking from this node.
+  /** Remove selected node marking from this node. */
   deselectNode() {
-    if (this.nodeDOM.nodeType == 1)
+    if (this.nodeDOM.nodeType === 1)
       (this.nodeDOM as HTMLElement).classList.remove(
         'ProseMirror-selectednode',
       );

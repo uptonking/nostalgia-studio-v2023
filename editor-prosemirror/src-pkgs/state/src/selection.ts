@@ -72,11 +72,16 @@ export abstract class Selection {
     return this.ranges[0].$to;
   }
 
-  /** Indicates whether the selection contains any content. */
+  /** Indicates whether the selection contains any content.
+   * - 若$from.pos !== $to.pos，则非空，否则为空
+   */
   get empty(): boolean {
     const ranges = this.ranges;
-    for (let i = 0; i < ranges.length; i++)
-      if (ranges[i].$from.pos != ranges[i].$to.pos) return false;
+    for (let i = 0; i < ranges.length; i++) {
+      if (ranges[i].$from.pos !== ranges[i].$to.pos) {
+        return false;
+      }
+    }
     return true;
   }
 

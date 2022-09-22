@@ -1,3 +1,5 @@
+/** pme官方示例用到的css集合，包括了prosemirror-view/menu/gapcursor/example-setup */
+
 .ProseMirror {
   position: relative;
 }
@@ -332,6 +334,7 @@ img.ProseMirror-separator {
 /* #endregion prosemirror-example-setup css */
 
 #editor,
+#editor2,
 .editor {
   background: white;
   color: black;
@@ -362,3 +365,18 @@ img.ProseMirror-separator {
   margin-bottom: 1em;
 }
 /* #endregion prosemirror examples/tutorials base css */
+
+placeholder {
+  display: inline;
+  border: 1px solid #ccc;
+  color: #ccc;
+}
+placeholder:after {
+  content: '☁';
+  font-size: 200%;
+  line-height: 0.1;
+  font-weight: bold;
+}
+.ProseMirror img {
+  max-width: 100px;
+}

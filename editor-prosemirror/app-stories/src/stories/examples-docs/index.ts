@@ -5,6 +5,7 @@ export { CustomMenuToolbar as A14CustomMenuToolbar } from './a1-starter/a14-menu
 export { EditorTooltipPopover as A15EditorTooltipPopover } from './a1-starter/a15-tooltip';
 export { CustomSchemaBlockGroupLink as A16CustomSchemaBlockGroupLink } from './a1-starter/a16-custom-schema-link';
 export { ImageUpload as A17ImageUpload } from './a1-starter/a17-image-upload';
+export { MarkdownViewsSwitcher as A18MarkdownViewsSwitcher } from './a1-starter/a18-markdown-views-switcher';
 // export { InlineToolbarApp as A22InlineToolbarApp } from './a2-features/a22-inline-toolbar';
 // export { InlineLinkButtonApp as A23InlineLinkButtonApp } from './a2-features/a23-inline-link-button';
 // export { SlateWrappedInContenteditableApp as A71InlineLinkButtonApp } from './a7-issues/a71-slate-wrapped-in-contenteditable';

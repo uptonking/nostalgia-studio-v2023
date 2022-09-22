@@ -4,7 +4,6 @@ import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
 import { MenuItem } from 'prosemirror-menu';
 import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
-import { addListNodes } from 'prosemirror-schema-list';
 import { Command, EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
@@ -98,8 +97,9 @@ notionLikeApps.forEach((name) =>
  * ✨ 官方编辑器示例，自定义Node/元素 。
  * - https://prosemirror.net/examples/dino/
  *
- * - ❓ 编辑器的宽度由内容的最大宽度决定；当每行内容都很短时，编辑器宽度就显得很窄
+ * - 👉🏻 本示例要点
  * - 此时dom元素的属性名可能包括`toDOM`生成的非标准属性
+ * - ❓ 编辑器的宽度由内容的最大宽度决定；当每行内容都很短时，编辑器宽度就显得很窄
  */
 export const CustomElementEditor = () => {
   const editorContainer = useRef<HTMLDivElement>();

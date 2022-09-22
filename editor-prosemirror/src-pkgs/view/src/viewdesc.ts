@@ -1269,7 +1269,7 @@ export class NodeViewDesc extends ViewDesc {
   /** Mark this node as being the selected node. */
   selectNode() {
     if (this.nodeDOM.nodeType === 1) {
-      console.trace(';; selectNode ', this.nodeDOM);
+      // console.trace(';; selectNode ', this.nodeDOM);
       (this.nodeDOM as HTMLElement).classList.add('ProseMirror-selectednode');
     }
     if (this.contentDOM || !this.node.type.spec.draggable) {

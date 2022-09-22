@@ -74,12 +74,11 @@ const selectionSizePlugin = new Plugin({
 });
 
 /**
- * ✨ 官方编辑器示例，自定义tooltip 。
+ * ✨ 官方编辑器示例，基于pluginView实现自定义tooltip 。
  * - https://prosemirror.net/examples/tooltip/
  * - 实现tooltip的两种思路
  *   1. 最简单的方式是插入绝对定位的widget decoration，相对于文档流
  *   2. 手动计算选区位置，然后控制弹层元素的显示与隐藏，此法更通用
- *
  *
  * - 👉🏻 本示例要点
  * - 弹出层会显示当前选中的包含空白的字符数量，并且鼠标拖选移动时数量会实时更新

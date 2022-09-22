@@ -326,12 +326,12 @@ function updateSelection(
 ) {
   if (!view.focused) view.focus();
   const tr = view.state.tr.setSelection(selection);
-  if (origin == 'pointer') tr.setMeta('pointer', true);
+  if (origin === 'pointer') tr.setMeta('pointer', true);
   view.dispatch(tr);
 }
 
 function selectClickedLeaf(view: EditorView, inside: number) {
-  if (inside == -1) return false;
+  if (inside === -1) return false;
   const $pos = view.state.doc.resolve(inside);
   const node = $pos.nodeAfter;
 
@@ -470,7 +470,7 @@ const selectNodeModifier: keyof MouseEvent = browser.mac
 
 /** 鼠标相关事件的管理器，
  * - 构造函数中会初始化鼠标事件相关数据，触发domObserver.start()
- * - 会在页面顶层document上注册mouseup/move事件，mouseup中包含单击的事件处理逻辑
+ * - 👉🏻 会在页面顶层document上注册mouseup/move事件，mouseup中包含单击的事件处理逻辑
  */
 class MouseDown {
   startDoc: Node;
@@ -646,6 +646,7 @@ class MouseDown {
 /**
  * - 包含双击、三击的判断逻辑
  * - 鼠标点击事件的执行在mouseup事件处理函数，而不在这里的mousedown函数
+ * - 👉🏻 没有单独的 handlers.mouseup，而是在这里的按下事件里面注册up事件
  */
 handlers.mousedown = (view, _event) => {
   const event = _event as MouseEvent;
@@ -673,7 +674,7 @@ handlers.mousedown = (view, _event) => {
   const pos = view.posAtCoords(eventCoords(event));
   if (!pos) return;
 
-  if (type == 'singleClick') {
+  if (type === 'singleClick') {
     if (view.input.mouseDown) {
       view.input.mouseDown.done();
     }

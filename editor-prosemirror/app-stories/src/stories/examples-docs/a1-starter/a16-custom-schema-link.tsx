@@ -161,7 +161,8 @@ const starKeymap = keymap({
  * - https://prosemirror.net/examples/schema/
  *
  * - 👉🏻 本示例要点
- *   - note作为block/block-group的示例，在编辑器dom内渲染了自定义html元素标签、css选择器
+ * - note作为block/block-group的示例，在编辑器dom内渲染了自定义html元素标签、css选择器
+ * - 回车和退格能够复用官方keymap插件
  */
 export const CustomSchemaBlockGroupLink = () => {
   const editorContainer = useRef<HTMLDivElement>();
@@ -201,7 +202,6 @@ export const CustomSchemaBlockGroupLink = () => {
     view2.current = new EditorView(editorContainerStarLink.current, {
       state: state2,
     });
-
     // applyDevTools(view.current, { devToolsExpanded: false });
 
     return () => {

@@ -336,6 +336,7 @@ export const StyledContainer = styled('div')`
   // #endregion prosemirror-example-setup css
 
   #editor,
+  #editor2,
   .editor {
     background: white;
     color: black;

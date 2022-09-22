@@ -356,10 +356,10 @@ export interface DecorationSource {
  * a way that the drawing algorithm can efficiently use and compare
  * them. This is a persistent data structure—it is not modified,
  * updates create a new value.
+ * - decoration set is a data structure that mimics the tree shape of the actual document
  * - 既然装饰是文档节点的附属，装饰的组织方式要匹配文档的组织方式。
  * - 而将多个装饰对应到一个文档节点则是采用数据结构装饰集DecorationSet。
  * - 装饰集其实是嵌套的，每个装饰集对应文档树的一个层级，并保留有能够应用到当前层级的装饰列表
- * - 装饰集是作用于文档内容的，而不是作用于文档模型的，装饰集也是immutable。
  * - 每层装饰集所拥有的装饰列表所代表的文档位移（from和to）会被调整成相对于当前文档节点层级的位移。并且上层装饰集会被切块，使之边界上与下层装饰集对齐
  * - 这样一来文档的某个范围内，可能有若干个不同层级的装饰集应用于之上。
  * - 层级最深的装饰集所带有的装饰列表，可能只应用于文档的几个字符。
@@ -660,7 +660,7 @@ export class DecorationSet implements DecorationSource {
     return result;
   }
 
-  /// The empty set of decorations.
+  /** The empty set of decorations. 简单执行 `new DecorationSet([], [])` */
   static empty: DecorationSet = new DecorationSet([], []);
 
   /// @internal

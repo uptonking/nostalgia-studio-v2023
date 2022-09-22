@@ -108,7 +108,7 @@ const menuPlugin = createMenuPlugin([
 ]);
 
 /**
- * ✨ 官方编辑器示例，自定义toolbar工具条 。
+ * ✨ 官方编辑器示例，基于pluginView实现自定义toolbar工具条 。
  * - https://prosemirror.net/examples/menu/
  *
  * - 👉🏻 本示例要点

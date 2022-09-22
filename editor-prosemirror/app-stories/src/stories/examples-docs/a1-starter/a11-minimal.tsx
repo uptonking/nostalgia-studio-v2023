@@ -5,7 +5,7 @@ import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
 
-import { StyledContainer } from './a11-minimal.styles';
+import { StyledProseMirrorCore } from '../editor-examples.styles';
 
 const initialValue = [
   {
@@ -32,9 +32,9 @@ export const PMMinimalApp = () => {
   }, []);
 
   return (
-    <StyledContainer>
+    <StyledProseMirrorCore>
       <h3> ProseMirror Minimal Editor 202209</h3>
       <div ref={editorContainer} />
-    </StyledContainer>
+    </StyledProseMirrorCore>
   );
 };

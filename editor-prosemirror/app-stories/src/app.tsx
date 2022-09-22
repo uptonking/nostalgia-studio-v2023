@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { PMExampleSetupBasicEditor } from './stories/examples-docs/a1-starter/a12-example-setup-basic-editor/editor';
+import { PMExampleSetupBasicEditor } from './stories/examples-docs/a1-starter/a12-example-setup-basic-editor';
 
 export function App() {
   return (

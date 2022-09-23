@@ -9,12 +9,7 @@ import {
   Schema,
 } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
-import {
-  EditorState,
-  Plugin,
-  Transaction,
-  type PluginView,
-} from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { EditorView, type NodeView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
 import { insertPoint, StepMap } from 'prosemirror-transform';
@@ -137,10 +132,20 @@ class FootnoteView implements NodeView {
           // footnote is node-selected (and thus DOM-selected) when
           // the parent editor is focused.
           // 为了避免出现问题，当父编辑器 focus 的时候，脚注的编辑器也要 focus。
-          if (this.outerView.hasFocus()) this.innerView.focus();
+          if (this.outerView.hasFocus()) {
+            this.innerView.focus();
+          }
         },
       },
     });
+    // console.log(
+    //   ';; 子编辑初始 ',
+    //   this.innerView.state.selection.from,
+    //   this.innerView.state.selection.to,
+    //   this.innerView.state.selection,
+    // );
+    const sel = window.getSelection();
+    // console.log(';; 子编辑初始window ', sel.anchorOffset, sel.focusOffset, sel);
   }
 
   close() {
@@ -151,6 +156,13 @@ class FootnoteView implements NodeView {
 
   dispatchInner(tr: Transaction) {
     const { state, transactions } = this.innerView.state.applyTransaction(tr);
+    // console.log(
+    //   ';; 子编辑dispatch ',
+    //   state.selection.from,
+    //   state.selection.to,
+    //   state.selection,
+    // );
+
     this.innerView.updateState(state);
 
     if (!tr.getMeta('fromOutside')) {
@@ -218,6 +230,7 @@ class FootnoteView implements NodeView {
  * - 在中间插入footnote时，后面所有脚注序号的数字会自动更新，css counter容易实现正序，倒序需要指定初始值
  * - 分析父子编辑器的快捷键、数据更新处理
  * - 编辑器中序号标识node是atom，内容不可编辑，但可在外部通过退格删除
+ * - 本地示例打开子编辑器时内容默认处于选中状态，因为::selection选择器未生效，之前修改源码导致
  * - ❓ 本地示例会显示红色下划线的拼写检查，但线上示例无
  */
 export const Footnote = () => {
@@ -244,6 +257,13 @@ export const Footnote = () => {
         },
       },
     });
+
+    // console.log(
+    //   ';; 父编辑初始 ',
+    //   view.current.state.selection.from,
+    //   view.current.state.selection.to,
+    //   view.current.state.selection,
+    // );
     applyDevTools(view.current, { devToolsExpanded: false });
 
     return () => view.current.destroy();

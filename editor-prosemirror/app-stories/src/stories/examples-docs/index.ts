@@ -6,7 +6,9 @@ export { EditorTooltipPopover as A15EditorTooltipPopover } from './a1-starter/a1
 export { CustomSchemaBlockGroupLink as A16CustomSchemaBlockGroupLink } from './a1-starter/a16-custom-schema-link';
 export { ImageUpload as A17ImageUpload } from './a1-starter/a17-image-upload';
 export { MarkdownViewsSwitcher as A18MarkdownViewsSwitcher } from './a1-starter/a18-markdown-views-switcher';
-export { Footnote as A1b1Footnote } from './a1-starter/a1b1-footnotes';
+export { Footnote as A1b1Footnote } from './a1-starter/a1b1-footnote';
+export { Lint as A1b2Lint } from './a1-starter/a1b2-lint';
+// export { Footnote2 as A1b1Footnote2 } from './a1-starter/a1b1-footnote2';
 // export { InlineToolbarApp as A22InlineToolbarApp } from './a2-features/a22-inline-toolbar';
 // export { InlineLinkButtonApp as A23InlineLinkButtonApp } from './a2-features/a23-inline-link-button';
 // export { SlateWrappedInContenteditableApp as A71InlineLinkButtonApp } from './a7-issues/a71-slate-wrapped-in-contenteditable';

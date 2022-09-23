@@ -18,7 +18,14 @@ export function selectionFromDOM(
   view: EditorView,
   origin: string | null = null,
 ) {
-  const domSel = view.domSelection(); // 浏览器默认选区对象
+  const domSel = view.domSelection(); // 获取浏览器默认选区对象
+  // console.trace(
+  //   ';; selFromDOM-浏览器选区 ',
+  //   domSel.anchorOffset,
+  //   domSel.focusOffset,
+  //   domSel,
+  // );
+
   const doc = view.state.doc;
   if (!domSel.focusNode) return null;
   let nearestDesc = view.docView.nearestDesc(domSel.focusNode);
@@ -46,7 +53,7 @@ export function selectionFromDOM(
     ) {
       // /这里只处理 NodeSelection
       const pos = nearestDesc.posBefore;
-      selection = new NodeSelection(head == pos ? $head : doc.resolve(pos));
+      selection = new NodeSelection(head === pos ? $head : doc.resolve(pos));
     }
   } else {
     // /when selection is not collapsed
@@ -62,10 +69,11 @@ export function selectionFromDOM(
   if (!selection) {
     // 对于单光标，bias是1
     const bias =
-      origin == 'pointer' ||
+      origin === 'pointer' ||
       (view.state.selection.head < $head.pos && !inWidget)
         ? 1
         : -1;
+    // 这里会创建TextSelection
     selection = selectionBetween(view, $anchor, $head, bias);
   }
 
@@ -85,7 +93,7 @@ function editorOwnsSelection(view: EditorView) {
  */
 export function selectionToDOM(view: EditorView, force = false) {
   const sel = view.state.selection;
-  // console.log('selectionToDOM', sel.visible, sel);
+  // console.trace('selToDOM-编辑器选区', sel.from, sel.to, sel);
 
   syncNodeSelection(view, sel);
 
@@ -124,8 +132,8 @@ export function selectionToDOM(view: EditorView, force = false) {
     selectCursorWrapper(view);
   } else {
     const { anchor, head } = sel;
-    let resetEditableFrom;
-    let resetEditableTo;
+    let resetEditableFrom: HTMLElement;
+    let resetEditableTo: HTMLElement;
     if (brokenSelectBetweenUneditable && !(sel instanceof TextSelection)) {
       if (!sel.$from.parent.inlineContent)
         resetEditableFrom = temporarilyEditableNear(view, sel.from);

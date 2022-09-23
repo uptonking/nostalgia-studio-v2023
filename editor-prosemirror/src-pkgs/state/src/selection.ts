@@ -510,7 +510,7 @@ export class NodeSelection extends Selection {
     return !node.isText && node.type.spec.selectable !== false;
   }
 
-  visible: boolean = true;
+  visible: boolean = false;
 }
 // NodeSelection.prototype.visible = false;
 

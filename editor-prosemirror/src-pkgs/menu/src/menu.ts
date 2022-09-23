@@ -109,7 +109,7 @@ export type IconSpec =
 
 /** The configuration object passed to the `MenuItem` constructor. */
 export interface MenuItemSpec {
-  /// The function to execute when the menu item is activated.
+  /** The function to execute when the menu item is activated. */
   run: (
     state: EditorState,
     dispatch: (tr: Transaction) => void,
@@ -117,40 +117,44 @@ export interface MenuItemSpec {
     event: Event,
   ) => void;
 
-  /// Optional function that is used to determine whether the item is
-  /// appropriate at the moment. Deselected items will be hidden.
+  /** Optional function that is used to determine whether the item is
+   * appropriate at the moment. Deselected items will be hidden.
+   */
   select?: (state: EditorState) => boolean;
 
-  /// Function that is used to determine if the item is enabled. If
-  /// given and returning false, the item will be given a disabled
-  /// styling.
+  /** Function that is used to determine if the item is enabled. If
+   * given and returning false, the item will be given a disabled
+   * styling.
+   */
   enable?: (state: EditorState) => boolean;
 
-  /// A predicate function to determine whether the item is 'active' (for
-  /// example, the item for toggling the strong mark might be active then
-  /// the cursor is in strong text).
+  /** A predicate function to determine whether the item is 'active' (for
+   * example, the item for toggling the strong mark might be active then
+   * the cursor is in strong text).
+   */
   active?: (state: EditorState) => boolean;
 
-  /// A function that renders the item. You must provide either this,
-  /// [`icon`](#menu.MenuItemSpec.icon), or [`label`](#MenuItemSpec.label).
+  /** A function that renders the item. You must provide either this,
+   * [`icon`](#menu.MenuItemSpec.icon), or [`label`](#MenuItemSpec.label).
+   */
   render?: (view: EditorView) => HTMLElement;
 
-  /// Describes an icon to show for this item.
+  /** Describes an icon to show for this item. */
   icon?: IconSpec;
 
-  /// Makes the item show up as a text label. Mostly useful for items
-  /// wrapped in a [drop-down](#menu.Dropdown) or similar menu. The object
-  /// should have a `label` property providing the text to display.
+  /** Makes the item show up as a text label. Mostly useful for items
+   * wrapped in a [drop-down](#menu.Dropdown) or similar menu. The object
+   * should have a `label` property providing the text to display.
+   */
   label?: string;
 
-  /// Defines DOM title (mouseover) text for the item.
+  /** Defines DOM title (mouseover) text for the item. */
   title?: string | ((state: EditorState) => string);
 
-  /// Optionally adds a CSS class to the item's DOM representation.
+  /** Optionally adds a CSS class to the item's DOM representation. */
   class?: string;
 
-  /// Optionally adds a string of inline CSS to the item's DOM
-  /// representation.
+  /** Optionally adds a string of inline CSS to the item's DOM representation. */
   css?: string;
 }
 
@@ -183,18 +187,19 @@ export class Dropdown implements MenuElement {
     content: readonly MenuElement[] | MenuElement,
     /// @internal
     readonly options: {
-      /// The label to show on the drop-down control.
+      /** The label to show on the drop-down control. */
       label?: string;
 
-      /// Sets the
-      /// [`title`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/title)
-      /// attribute given to the menu control.
+      /** Sets the
+       * [`title`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/title)
+       * attribute given to the menu control.
+       */
       title?: string;
 
-      /// When given, adds an extra CSS class to the menu control.
+      /** When given, adds an extra CSS class to the menu control. */
       class?: string;
 
-      /// When given, adds an extra set of CSS styles to the menu control.
+      /** When given, adds an extra set of CSS styles to the menu control. */
       css?: string;
     } = {},
   ) {
@@ -202,7 +207,7 @@ export class Dropdown implements MenuElement {
     this.content = Array.isArray(content) ? content : [content];
   }
 
-  /// Render the dropdown menu and sub-items.
+  /** Render the dropdown menu and sub-items. */
   render(view: EditorView) {
     const content = renderDropdownItems(this.content, view);
 
@@ -303,13 +308,14 @@ export class DropdownSubmenu implements MenuElement {
   /// @internal
   content: readonly MenuElement[];
 
-  /// Creates a submenu for the given group of menu elements. The
-  /// following options are recognized:
+  /** Creates a submenu for the given group of menu elements. The
+   * following options are recognized:
+   */
   constructor(
     content: readonly MenuElement[] | MenuElement,
     /// @internal
     readonly options: {
-      /// The label to show on the submenu.
+      /** The label to show on the submenu. */
       label?: string;
     } = {},
   ) {
@@ -473,7 +479,7 @@ export const icons: { [name: string]: IconSpec } = {
   },
 };
 
-/// Menu item for the `joinUp` command.
+/** Menu item for the `joinUp` command. */
 export const joinUpItem = new MenuItem({
   title: 'Join with above block',
   run: joinUp,
@@ -481,7 +487,7 @@ export const joinUpItem = new MenuItem({
   icon: icons.join,
 });
 
-/// Menu item for the `lift` command.
+/** Menu item for the `lift` command. */
 export const liftItem = new MenuItem({
   title: 'Lift out of enclosing block',
   run: lift,
@@ -497,7 +503,7 @@ export const selectParentNodeItem = new MenuItem({
   icon: icons.selectParentNode,
 });
 
-/// Menu item for the `undo` command.
+/** Menu item for the `undo` command. */
 export const undoItem = new MenuItem({
   title: 'Undo last change',
   run: undo,

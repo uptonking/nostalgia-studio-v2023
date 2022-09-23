@@ -1,22 +1,23 @@
+import { toggleMark } from 'prosemirror-commands';
 import {
-  wrapItem,
-  blockTypeItem,
   Dropdown,
   DropdownSubmenu,
+  MenuElement,
+  MenuItem,
+  MenuItemSpec,
+  blockTypeItem,
+  icons,
   joinUpItem,
   liftItem,
+  redoItem,
   selectParentNodeItem,
   undoItem,
-  redoItem,
-  icons,
-  MenuItem,
-  MenuElement,
-  MenuItemSpec,
+  wrapItem,
 } from 'prosemirror-menu';
-import { NodeSelection, EditorState, Command } from 'prosemirror-state';
-import { Schema, NodeType, MarkType } from 'prosemirror-model';
-import { toggleMark } from 'prosemirror-commands';
+import { MarkType, NodeType, Schema } from 'prosemirror-model';
 import { wrapInList } from 'prosemirror-schema-list';
+import { Command, EditorState, NodeSelection } from 'prosemirror-state';
+
 import { TextField, openPrompt } from './prompt';
 
 // Helpers to create specific types of items
@@ -179,15 +180,17 @@ type MenuItemResult = {
   makeHead5?: MenuItem;
   makeHead6?: MenuItem;
 
-  /// A menu item to insert a horizontal rule.
+  /** A menu item to insert a horizontal rule. */
   insertHorizontalRule?: MenuItem;
 
-  /// A dropdown containing the `insertImage` and
-  /// `insertHorizontalRule` items.
+  /** A dropdown containing the `insertImage` and
+   * `insertHorizontalRule` items.
+   */
   insertMenu: Dropdown;
 
-  /// A dropdown containing the items for making the current
-  /// textblock a paragraph, code block, or heading.
+  /** A dropdown containing the items for making the current
+   * textblock a paragraph, code block, or heading.
+   */
   typeMenu: Dropdown;
 
   /// Array of block-related menu items.
@@ -196,9 +199,10 @@ type MenuItemResult = {
   /// Inline-markup related menu items.
   inlineMenu: MenuElement[][];
 
-  /// An array of arrays of menu elements for use as the full menu
-  /// for, for example the [menu
-  /// bar](https://github.com/prosemirror/prosemirror-menu#user-content-menubar).
+  /** An array of arrays of menu elements for use as the full menu
+   * for, for example the [menu
+   * bar](https://github.com/prosemirror/prosemirror-menu#user-content-menubar).
+   */
   fullMenu: MenuElement[][];
 };
 

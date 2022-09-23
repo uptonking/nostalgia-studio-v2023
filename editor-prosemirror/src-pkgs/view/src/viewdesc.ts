@@ -89,8 +89,8 @@ export interface NodeView {
   ) => void;
 
   /** Can be used to prevent the editor view from trying to handle some
-   * or all DOM events that bubble up from the node view. Events for
-   * which this returns true are not handled by the editor.
+   * or all DOM events that bubble up from the node view.
+   * - Events for which this returns true are not handled by the editor.
    */
   stopEvent?: (event: Event) => boolean;
 

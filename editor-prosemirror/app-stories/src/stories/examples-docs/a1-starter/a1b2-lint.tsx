@@ -1,12 +1,11 @@
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
-import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
+import { DOMParser, NodeSpec, NodeType, Node } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import {
   EditorState,
   Plugin,
   TextSelection,
-  Transaction,
   type Command,
 } from 'prosemirror-state';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
@@ -16,8 +15,10 @@ import styled from '@emotion/styled';
 
 import { StyledContainer } from '../editor-examples.styles';
 
-/** Words you probably shouldn't use */
-const badWords = /\b(obviously|clearly|evidently|simply)\b/gi;
+/** Words you probably shouldn't use.
+ * - `\b` 匹配一个单词的边界
+ */
+const badWords = /\b(obviously|clearly|evidently|simply|slate|ckeditor)\b/gi;
 /** Matches punctuation with a space before it */
 const badPunc = / ([,\.!?:]) ?/g;
 
@@ -26,56 +27,71 @@ type CommandParams = {
   dispatch: Parameters<Command>[1];
 };
 
-/**  */
-function lint(doc) {
-  const result = [];
-  let lastHeadLevel = null;
+type ProblemItem = {
+  msg: string;
+  from: number;
+  to: number;
+  fix?: (args: any) => (args2: CommandParams) => void;
+};
 
-  function record(msg, from, to, fix) {
+/** get an array of problems found in the document */
+function lint(doc: Node) {
+  const result = [] as ProblemItem[];
+  let lastHeadLevel = null as null | number;
+
+  // eslint-disable-next-line max-params
+  function problemRecord(msg, from, to, fix) {
     result.push({ msg, from, to, fix });
   }
 
-  // For each node in the document
+  // 👉🏻 use `descendants()` to iterate over all nodes in a document.
+  // ❓ 如何在一个节点内检查heading级别是否跳跃
   doc.descendants((node, pos) => {
     if (node.isText) {
       // Scan text nodes for suspicious patterns
-      let m;
-      while ((m = badWords.exec(node.text)))
-        record(
+      // /基于正则 regexp.exec(str)，遍历匹配项，记录badWords/Punc
+      let m: RegExpExecArray;
+      while ((m = badWords.exec(node.text))) {
+        problemRecord(
           `Try not to say '${m[0]}'`,
           pos + m.index,
           pos + m.index + m[0].length,
           undefined,
         );
-      while ((m = badPunc.exec(node.text)))
-        record(
+      }
+      while ((m = badPunc.exec(node.text))) {
+        problemRecord(
           'Suspicious spacing around punctuation',
           pos + m.index,
           pos + m.index + m[0].length,
           fixPunc(m[1] + ' '),
         );
-    } else if (node.type.name == 'heading') {
+      }
+    }
+    if (node.type.name === 'heading') {
       // Check whether heading levels fit under the current level
       const level = node.attrs.level;
+      // `null + 1` 的值为1，这里只检查当前heading值比上一个大的情况
       if (lastHeadLevel != null && level > lastHeadLevel + 1)
-        record(
+        problemRecord(
           `Heading too small (${level} under ${lastHeadLevel})`,
           pos + 1,
           pos + 1 + node.content.size,
           fixHeader(lastHeadLevel + 1),
         );
       lastHeadLevel = level;
-    } else if (node.type.name == 'image' && !node.attrs.alt) {
+    }
+    if (node.type.name === 'image' && !node.attrs.alt) {
       // Ensure images have alt text
-      record('Image without alt text', pos, pos + 1, addAlt);
+      problemRecord('Image without alt text', pos, pos + 1, addAlt);
     }
   });
 
   return result;
 }
 
-/**  */
-function fixPunc(replacement) {
+/** 用replacement替换原来有问题的部分，这里是去掉标点前空格并在标签后加空格 */
+function fixPunc(replacement: string) {
   return function ({ state, dispatch }: CommandParams) {
     dispatch(
       // @ts-ignore
@@ -84,6 +100,7 @@ function fixPunc(replacement) {
   };
 }
 
+/** 将标题字体变大一级 */
 function fixHeader(level) {
   return function ({ state, dispatch }: CommandParams) {
     // @ts-ignore
@@ -91,6 +108,7 @@ function fixHeader(level) {
   };
 }
 
+/** 给文字添加alt描述文字 */
 function addAlt({ state, dispatch }: CommandParams) {
   const alt = prompt('Alt text', '');
   if (alt) {
@@ -101,33 +119,36 @@ function addAlt({ state, dispatch }: CommandParams) {
   }
 }
 
-function lintDeco(doc) {
-  const decos = [];
-  lint(doc).forEach((prob) => {
+function createLintSideDecos(doc: Node) {
+  const decos = [] as Decoration[];
+  lint(doc).forEach((problem) => {
     decos.push(
-      Decoration.inline(prob.from, prob.to, { class: 'problem' }),
-      Decoration.widget(prob.from, lintIcon(prob)),
+      // 在问题位置加上浅红色背景和红色下划线
+      Decoration.inline(problem.from, problem.to, { class: 'problem' }),
+      // 在问题所在行，通过 position:absolute 在该行最右侧显示lint操作图标
+      Decoration.widget(problem.from, createLintIcon(problem)),
     );
   });
   return DecorationSet.create(doc, decos);
 }
 
-function lintIcon(prob) {
+/** 作为widget decoration，这里将问题数据保存在了dom对象属性上 */
+function createLintIcon(problem: ProblemItem) {
   const icon = document.createElement('div');
   icon.className = 'lint-icon';
-  icon.title = prob.msg;
+  icon.title = problem.msg;
   // @ts-ignore
-  icon.problem = prob;
+  icon.problem = problem;
   return icon;
 }
 
 const lintPlugin = new Plugin({
   state: {
     init(_, { doc }) {
-      return lintDeco(doc);
+      return createLintSideDecos(doc);
     },
     apply(tr, old) {
-      return tr.docChanged ? lintDeco(tr.doc) : old;
+      return tr.docChanged ? createLintSideDecos(tr.doc) : old;
     },
   },
   props: {
@@ -165,10 +186,13 @@ const lintPlugin = new Plugin({
 });
 
 /**
- * ✨ 官方编辑器示例，基于pluginView实现lint 。
+ * ✨ 官方编辑器示例，基于decoration实现lint 。
  * - https://prosemirror.net/examples/lint/
+ * - 🔨 每次更新都会重新计算问题节点并创建decorations，待优化，根据tr中的信息
  *
  * - 👉🏻 本示例要点
+ * - 右侧操作图标基于decoration实现，绝对定位相对于xx节点，物理上是夹杂在编辑器dom中间的
+ * - 问题相关数据都保存在dom对象上
  */
 export const Lint = () => {
   const editorContainer = useRef<HTMLDivElement>();
@@ -198,7 +222,7 @@ export const Lint = () => {
       <div ref={initialContentContainer} style={{ display: 'none' }}>
         <h3>Lint in ProseMirror: 单击侧边选中内容，双击侧边修复问题</h3>
 
-        <p>This is a sentence ,but the comma isn't in the right place.</p>
+        <p>This is ! a sentence ,but the comma isn't in ? the right place.</p>
         <h5>Too-minor header</h5>
         <p>
           This is an image <img src='/img/smiley.png' /> without alt text. You

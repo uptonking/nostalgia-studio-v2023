@@ -52,13 +52,14 @@ TransformError.prototype.name = 'TransformError';
  * - Transform可以把多个Steps累计到一起，把它们逐个应用到文档中。
  */
 export class Transform {
-  /** The steps in this transform. */
+  /** The steps in this transform. 默认空数组。 */
   readonly steps: Step[] = [];
   /** The documents before each of the steps.
    * - 每次应用一个Step，就会产生一个新的文档，但是也会留下一个旧的文档。Transform会把这些旧的文档聚拢在一起，形成一个数组。
    */
   readonly docs: Node[] = [];
-  /** A mapping with the maps for each of the steps in this transform. */
+
+  /** A mapping with the maps for each of the steps in this transform. 默认mapping = `new Mapping()`。 */
   readonly mapping: Mapping = new Mapping();
 
   /** Create a transform that starts with the given document. */

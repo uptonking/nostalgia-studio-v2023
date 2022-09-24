@@ -294,9 +294,9 @@ export class Mapping implements Mappable {
   }
 
   /** Finds the offset of the step map that mirrors the map at the
-  * given offset, in this mapping (as per the second argument to
-  * `appendMap`).
-  */
+   * given offset, in this mapping (as per the second argument to
+   * `appendMap`).
+   */
   getMirror(n: number): number | undefined {
     if (this.mirror)
       for (let i = 0; i < this.mirror.length; i++)
@@ -334,9 +334,12 @@ export class Mapping implements Mappable {
 
   /** Map a position through this mapping. */
   map(pos: number, assoc = 1) {
-    if (this.mirror) return this._map(pos, assoc, true) as number;
-    for (let i = this.from; i < this.to; i++)
+    if (this.mirror) {
+      return this._map(pos, assoc, true) as number;
+    }
+    for (let i = this.from; i < this.to; i++) {
       pos = this.maps[i].map(pos, assoc);
+    }
     return pos;
   }
 

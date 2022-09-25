@@ -40,8 +40,8 @@ class Commit {
 }
 
 /** a sequence of document ranges, along with the commit that inserted them
- * - 一个文档选区范围Span对应的commitId
- * - 一个commit对应的文档选区范围Span，可包含多个范围区间
+ * - 1个commit可以对应多个span
+ * - 1个span只对应一个commit
  */
 class Span {
   from: number;
@@ -59,9 +59,8 @@ class Span {
  * - 每次插件状态更新时都会执行 applyTransform + applyCommit
  */
 class TrackState {
-  /**
-   * - commits对应的文档选区范围
-   * The blame map is a data structure that lists a sequence of
+  /** 记录每个span对应的commitId，用来实现高亮commit范围
+   * - The blame map is a data structure that lists a sequence of
    * document ranges, along with the commit that inserted them. This
    * can be used to, for example, highlight the part of the document
    * that was inserted by a commit.
@@ -87,7 +86,9 @@ class TrackState {
     this.uncommittedMaps = uncommittedMaps;
   }
 
-  /** Apply a transform to this state。主要是更新操作范围。每次返回新状态对象 */
+  /** Apply a transform to this state。主要是更新操作范围。每次返回新状态对象
+   * - 这里只更新文档内容变化对应的blames范围，commits不变因为未提交
+   */
   applyTransform(transform: Transform) {
     // Invert steps in the transaction, to be able to save them in the next commit
     const inverted: Step[] = transform.steps.map((step, i) =>
@@ -98,6 +99,8 @@ class TrackState {
       transform,
       this.commits.length,
     );
+
+    // console.log(';; applyTransform-new-trackState');
 
     // Create a new state—since these are part of the editor state, a
     // persistent data structure, they must not be mutated.
@@ -111,7 +114,7 @@ class TrackState {
 
   /** When a transaction is marked as a commit, this is used to put any
    * uncommitted steps into a new commit.
-   * - 创建新commit并追加到提交历史
+   * - 创建新commit并追加到提交历史，只记录提交描述而文档内容此时不变
    */
   applyCommit(message: string, time: Date) {
     if (this.uncommittedSteps.length === 0) return this;
@@ -130,6 +133,7 @@ function updateBlameMap(blames: Span[], transform: Transform, id: number) {
   const result = [] as Span[];
   const mapping = transform.mapping;
 
+  // 根据本次操作更新现有blames
   for (let i = 0; i < blames.length; i++) {
     const span = blames[i];
     const from = mapping.map(span.from, 1);
@@ -139,6 +143,7 @@ function updateBlameMap(blames: Span[], transform: Transform, id: number) {
     }
   }
 
+  // 将本次操作插入blames
   for (let i = 0; i < mapping.maps.length; i++) {
     const map = mapping.maps[i];
     const after = mapping.slice(i + 1);
@@ -150,6 +155,7 @@ function updateBlameMap(blames: Span[], transform: Transform, id: number) {
   return result;
 }
 
+/** 在blames中找到合适位置，插入from-to-commit对应的span */
 function insertIntoBlameMap(
   blames: Span[],
   from: number,
@@ -209,9 +215,11 @@ const trackPlugin = new Plugin({
     },
     apply(tr, trackPluginState) {
       if (tr.docChanged) {
+        // /只有选区变化时，不会执行这里
         trackPluginState = trackPluginState.applyTransform(tr);
       }
       const commitMessageMeta = tr.getMeta(trackPlugin);
+      // console.log(';; plug ', tr.docChanged, commitMessageMeta);
       if (commitMessageMeta) {
         trackPluginState = trackPluginState.applyCommit(
           commitMessageMeta,
@@ -223,7 +231,7 @@ const trackPlugin = new Plugin({
   },
 });
 
-/** 创建高亮decos */
+/** 高亮编辑器中对应commit范围的decos的渲染与隐藏 */
 const highlightPlugin = new Plugin({
   state: {
     init() {
@@ -268,26 +276,84 @@ const highlightPlugin = new Plugin({
   },
 });
 
-let lastRendered: TrackState = null;
-
 // #region editor-init
 
-/** 始终存放最新editorState，全局单例 */
+/** 始终指向最新editorState，全局单例 */
 let state: EditorState = null;
 /** 全局单例 */
 let view: EditorView = null;
 
-/** 通过dispatchTransaction方法，一直更新editorState到全局变量state */
+/** 保存上次的提交数据，在(~~编辑了且未提交~~)内容不变只有选区变化的场景避免重渲染下方messages列表 */
+let lastRenderedTrackState: TrackState = null;
+
+/** 一直会更新editorState到全局变量state
+ * - 在state更新时需要执行的逻辑都放在这里，然后通过dispatchTransaction方法伴随编辑执行
+ */
 function dispatchMy(tr: Transaction) {
   state = state?.apply(tr);
   view?.updateState(state);
-  setDisabled(state);
+  // console.log(';;edit-dispatch ', trackPlugin.getState(state));
+  setCommitMessageFormDisabled(state);
   renderCommits(state, dispatchMy);
 }
 
 // #endregion editor-init
 
-function setDisabled(state: EditorState) {
+/** 创建一个tr，并setMeta提交信息 */
+function doCommit(
+  message: string,
+  state: EditorState,
+  dispatch: Parameters<Command>[1],
+) {
+  dispatch(state.tr.setMeta(trackPlugin, message));
+}
+
+/** 撤销一个commit的思路，创建一个tr，将该commit后的mapping调整下 */
+function revertCommit(
+  commit: Commit,
+  state: EditorState,
+  dispatch: Parameters<Command>[1],
+) {
+  const trackState = trackPlugin.getState(state);
+  const index = trackState.commits.indexOf(commit);
+  // If this commit is not in the history, we can't revert it
+  if (index === -1) return;
+  // Reverting is only possible if there are no uncommitted changes 类似git
+  if (trackState.uncommittedSteps.length) {
+    return alert('Commit your changes first!');
+  }
+
+  /** This is the mapping from the document as it was at the start of
+   * the commit to the current document.
+   */
+  const remapping = new Mapping(
+    trackState.commits
+      .slice(index)
+      .reduce((maps, c) => maps.concat(c.maps), [] as StepMap[]),
+  );
+  const tr = state.tr;
+  // Build up a transaction that includes all (inverted) steps in this
+  // commit, rebased to the current document. They have to be applied
+  // in reverse order.
+  for (let i = commit.steps.length - 1; i >= 0; i--) {
+    // The mapping is sliced to not include maps for this step and the
+    // ones before it.
+    const remapped = commit.steps[i].map(remapping.slice(i + 1));
+    if (!remapped) continue;
+    const result = tr.maybeStep(remapped);
+    // If the step can be applied, add its map to our mapping
+    // pipeline, so that subsequent steps are mapped over it.
+    if (result.doc) {
+      remapping.appendMap(remapped.getMap(), i);
+    }
+  }
+  // Add a commit message and dispatch.
+  if (tr.docChanged) {
+    dispatch(tr.setMeta(trackPlugin, `Revert '${commit.message}'`));
+  }
+}
+
+function setCommitMessageFormDisabled(state: EditorState) {
   const input = document.querySelector('#message') as HTMLInputElement;
   const button = document.querySelector('#commitbutton') as HTMLButtonElement;
   input.disabled = button.disabled =
@@ -308,14 +374,18 @@ function createElementThenAddChildren(name, attrs, ...children) {
   return dom;
 }
 
+/** 将提交信息渲染到dom，并注册操作提交messages列表的事件 */
 function renderCommits(state: EditorState, dispatch: Parameters<Command>[1]) {
   const curState = trackPlugin.getState(state);
-  if (lastRendered === curState) return;
-  lastRendered = curState;
+  const isTrackStatesUnchanged = lastRenderedTrackState === curState;
+  // console.log(';; isTrackStatesUnchanged ', isTrackStatesUnchanged);
+  if (isTrackStatesUnchanged) return;
+  lastRenderedTrackState = curState;
 
   const commitsHistoryDOM = document.querySelector('#commits');
   commitsHistoryDOM.textContent = '';
   const commits = curState.commits;
+  // console.log(';; rerender消息列表 ', commits);
   commits.forEach((commit) => {
     const node = createElementThenAddChildren(
       'div',
@@ -350,55 +420,6 @@ function renderCommits(state: EditorState, dispatch: Parameters<Command>[1]) {
   });
 }
 
-function doCommit(
-  message: string,
-  state: EditorState,
-  dispatch: Parameters<Command>[1],
-) {
-  dispatch(state.tr.setMeta(trackPlugin, message));
-}
-
-function revertCommit(
-  commit: Commit,
-  state: EditorState,
-  dispatch: Parameters<Command>[1],
-) {
-  const trackState = trackPlugin.getState(state);
-  const index = trackState.commits.indexOf(commit);
-  // If this commit is not in the history, we can't revert it
-  if (index === -1) return;
-
-  // Reverting is only possible if there are no uncommitted changes
-  if (trackState.uncommittedSteps.length)
-    return alert('Commit your changes first!');
-
-  // This is the mapping from the document as it was at the start of
-  // the commit to the current document.
-  const remap = new Mapping(
-    trackState.commits
-      .slice(index)
-      .reduce((maps, c) => maps.concat(c.maps), []),
-  );
-  const tr = state.tr;
-  // Build up a transaction that includes all (inverted) steps in this
-  // commit, rebased to the current document. They have to be applied
-  // in reverse order.
-  for (let i = commit.steps.length - 1; i >= 0; i--) {
-    // The mapping is sliced to not include maps for this step and the
-    // ones before it.
-    const remapped = commit.steps[i].map(remap.slice(i + 1));
-    if (!remapped) continue;
-    const result = tr.maybeStep(remapped);
-    // If the step can be applied, add its map to our mapping
-    // pipeline, so that subsequent steps are mapped over it.
-    if (result.doc) remap.appendMap(remapped.getMap(), i);
-  }
-  // Add a commit message and dispatch.
-  if (tr.docChanged) {
-    dispatch(tr.setMeta(trackPlugin, `Revert '${commit.message}'`));
-  }
-}
-
 function findInBlameMap(pos: number, state: EditorState) {
   const map = trackPlugin.getState(state).blameMap;
   for (let i = 0; i < map.length; i++) {
@@ -416,7 +437,9 @@ function findInBlameMap(pos: number, state: EditorState) {
  * - revision history一般依赖自动保存，会展示一段时间内自动保存的内容，可包含N>=0个commit
  *
  * - 👉🏻 本示例要点
+ * - ❓ 编辑了且未提交时，lastRenderedTrackState为什么会不变
  * - ❓ 自定义dispatchMy方法可视为全局修改编辑器数据的一种方式，是否有缺点
+ * - 未考虑多个commit交叉重叠的复杂情况，此时revert结果可能比较意外，最好提供单独ui给用户
  */
 export const TrackChangesMinimal = () => {
   const editorContainer = useRef<HTMLDivElement>();
@@ -491,7 +514,8 @@ export const TrackChangesMinimal = () => {
     <StyledDemoContainer id='trackDemoContainer'>
       <div ref={editorContainer} id='editor' />
       <form id='commit'>
-        Commit message: <input type='text' id='message' name='message' />
+        Commit message:
+        <input id='message' type='text' name='message' />
         <button id='commitbutton' type='submit'>
           commit
         </button>

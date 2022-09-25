@@ -1,7 +1,11 @@
 // Defines a parser and serializer for [CommonMark](http://commonmark.org/) text.
 
 export { schema } from './schema';
-export { defaultMarkdownParser, MarkdownParser } from './from_markdown';
+export {
+  defaultMarkdownParser,
+  MarkdownParser,
+  type ParseSpec,
+} from './from_markdown';
 export {
   MarkdownSerializer,
   defaultMarkdownSerializer,

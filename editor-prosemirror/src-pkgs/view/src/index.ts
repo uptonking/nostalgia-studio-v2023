@@ -198,15 +198,15 @@ export class EditorView {
    * - 替换既有的DirectEditorProps，在最后会执行 updateStateInner()
    */
   update(props: DirectEditorProps) {
-    if (props.handleDOMEvents != this._props.handleDOMEvents) {
+    if (props.handleDOMEvents != this._props.handleDOMEvents)
       ensureListeners(this);
-    }
+    const prevProps = this._props;
     this._props = props;
     if (props.plugins) {
       props.plugins.forEach(checkStateComponent);
       this.directPlugins = props.plugins;
     }
-    this.updateStateInner(props.state, true);
+    this.updateStateInner(props.state, prevProps);
   }
 
   /** Update the view by updating existing props object with the object
@@ -230,28 +230,40 @@ export class EditorView {
    * - 直接执行 updateStateInner()，只更新state，不更新props
    */
   updateState(state: EditorState) {
-    this.updateStateInner(state, this.state.plugins != state.plugins);
+    this.updateStateInner(state, this._props);
   }
 
   /** 输入新的editorState，更新editorView；用户做了什么操作这部分由DOMObserver去处理并应用到state上
    * - 会调用`docView.update`更新视图
    */
-  private updateStateInner(state: EditorState, reconfigured: boolean) {
+  private updateStateInner(state: EditorState, prevProps: DirectEditorProps) {
     const prev = this.state;
     let redraw = false;
     let updateSel = false;
-    // if stored marks are added, stop composition, so that they can be displayed.
+    // When stored marks are added, stop composition, so that they can
+    // be displayed.
     if (state.storedMarks && this.composing) {
       clearComposition(this);
       updateSel = true;
     }
     this.state = state;
-    if (reconfigured) {
+    const pluginsChanged =
+      prev.plugins != state.plugins || this._props.plugins != prevProps.plugins;
+    if (
+      pluginsChanged ||
+      this._props.plugins != prevProps.plugins ||
+      this._props.nodeViews != prevProps.nodeViews
+    ) {
       const nodeViews = buildNodeViews(this);
       if (changedNodeViews(nodeViews, this.nodeViews)) {
         this.nodeViews = nodeViews;
         redraw = true;
       }
+    }
+    if (
+      pluginsChanged ||
+      prevProps.handleDOMEvents != this._props.handleDOMEvents
+    ) {
       ensureListeners(this);
     }
 
@@ -260,18 +272,18 @@ export class EditorView {
     const innerDeco = viewDecorations(this);
     const outerDeco = computeDocDeco(this);
 
-    const scroll = reconfigured
-      ? 'reset'
-      : (state as any).scrollToSelection > (prev as any).scrollToSelection
-      ? 'to selection'
-      : 'preserve';
+    // Fix: editor would reset its scroll position to the top of the document for any state reconfiguration, even if the document was unchanged.
+    const scroll =
+      prev.plugins != state.plugins && !prev.doc.eq(state.doc)
+        ? 'reset'
+        : (state as any).scrollToSelection > (prev as any).scrollToSelection
+        ? 'to selection'
+        : 'preserve';
     const updateDoc =
       redraw || !this.docView.matchesNode(state.doc, outerDeco, innerDeco);
-    if (updateDoc || !state.selection.eq(prev.selection)) {
-      updateSel = true;
-    }
+    if (updateDoc || !state.selection.eq(prev.selection)) updateSel = true;
     const oldScrollPos =
-      scroll === 'preserve' &&
+      scroll == 'preserve' &&
       updateSel &&
       this.dom.style.overflowAnchor == null &&
       storeScrollPos(this);
@@ -298,8 +310,6 @@ export class EditorView {
         const chromeKludge = browser.chrome
           ? (this.trackWrites = this.domSelection().focusNode)
           : null;
-
-        // 👇🏻 docView.update()实际执行更新视图
         if (
           redraw ||
           !this.docView.update(state.doc, outerDeco, innerDeco, this)
@@ -338,9 +348,9 @@ export class EditorView {
 
     this.updatePluginViews(prev);
 
-    if (scroll === 'reset') {
+    if (scroll == 'reset') {
       this.dom.scrollTop = 0;
-    } else if (scroll === 'to selection') {
+    } else if (scroll == 'to selection') {
       this.scrollToSelection();
     } else if (oldScrollPos) {
       resetScrollPos(oldScrollPos);

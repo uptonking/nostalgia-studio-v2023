@@ -93,8 +93,8 @@ export class Transform {
     return result;
   }
 
-  /** True when the document has been changed (when there are any
-   * steps).
+  /** True when the document has been changed (when there are any steps).
+   * - 直接判断 `this.steps.length > 0`，包括内容操作，此时选区可变可不变
    */
   get docChanged() {
     return this.steps.length > 0;

@@ -95,7 +95,7 @@ export abstract class Step {
 export class StepResult {
   /// @internal
   constructor(
-    /** The transformed document, if successful. */
+    /** The transformed document, if successful. 失败时值为`null` */
     readonly doc: Node | null,
     /** The failure message, if unsuccessful. 用来指示这个Step是否应用成功  */
     readonly failed: string | null,

@@ -1,14 +1,15 @@
 // @ts-ignore
 import markdownit from 'markdown-it';
-import { schema } from './schema';
 import {
+  Attrs,
   Mark,
   MarkType,
   Node,
-  Attrs,
-  Schema,
   NodeType,
+  Schema,
 } from 'prosemirror-model';
+
+import { schema } from './schema';
 
 // FIXME
 type Token = any;
@@ -202,7 +203,7 @@ function tokenHandlers(schema: Schema, tokens: { [token: string]: ParseSpec }) {
   return handlers;
 }
 
-interface ParseSpec {
+export interface ParseSpec {
   /** This token maps to a single node, whose type can be looked up
    * in the schema under the given name. Exactly one of `node`,
    * `block`, or `mark` must be set.

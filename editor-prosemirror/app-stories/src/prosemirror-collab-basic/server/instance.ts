@@ -2,7 +2,7 @@ const {readFileSync, writeFile} = require("fs")
 
 const {Mapping} = require("prosemirror-transform")
 
-const {schema} = require("../schema")
+const { schema } = require('./schema');
 const {Comments, Comment} = require("./comments")
 const {populateDefaultInstances} = require("./defaultinstances")
 
@@ -34,10 +34,10 @@ class Instance {
   addEvents(version, steps, comments, clientID) {
     this.checkVersion(version)
     if (this.version != version) return false
-    let doc = this.doc, maps = []
+    let doc = this.doc; const maps = []
     for (let i = 0; i < steps.length; i++) {
       steps[i].clientID = clientID
-      let result = steps[i].apply(doc)
+      const result = steps[i].apply(doc)
       doc = result.doc
       maps.push(steps[i].getMap())
     }
@@ -49,7 +49,7 @@ class Instance {
 
     this.comments.mapThrough(new Mapping(maps))
     if (comments) for (let i = 0; i < comments.length; i++) {
-      let event = comments[i]
+      const event = comments[i]
       if (event.type == "delete")
         this.comments.deleted(event.id)
       else
@@ -70,7 +70,7 @@ class Instance {
   // document version.
   checkVersion(version) {
     if (version < 0 || version > this.version) {
-      let err = new Error("Invalid version " + version)
+      const err = new Error("Invalid version " + version)
       err.status = 400
       throw err
     }
@@ -81,9 +81,9 @@ class Instance {
   // the current document version.
   getEvents(version, commentVersion) {
     this.checkVersion(version)
-    let startIndex = this.steps.length - (this.version - version)
+    const startIndex = this.steps.length - (this.version - version)
     if (startIndex < 0) return false
-    let commentStartIndex = this.comments.events.length - (this.comments.version - commentVersion)
+    const commentStartIndex = this.comments.events.length - (this.comments.version - commentVersion)
     if (commentStartIndex < 0) return false
 
     return {steps: this.steps.slice(startIndex),
@@ -120,9 +120,9 @@ class Instance {
 
 const instances = Object.create(null)
 let instanceCount = 0
-let maxCount = 20
+const maxCount = 20
 
-let saveFile = __dirname + "/../demo-instances.json", json
+const saveFile = __dirname + "/../demo-instances.json"; let json
 if (process.argv.indexOf("--fresh") == -1) {
   try {
     json = JSON.parse(readFileSync(saveFile, "utf8"))
@@ -130,29 +130,29 @@ if (process.argv.indexOf("--fresh") == -1) {
 }
 
 if (json) {
-  for (let prop in json)
+  for (const prop in json)
     newInstance(prop, schema.nodeFromJSON(json[prop].doc),
                 new Comments(json[prop].comments.map(c => Comment.fromJSON(c))))
 } else {
   populateDefaultInstances(newInstance)
 }
 
-let saveTimeout = null, saveEvery = 1e4
+let saveTimeout = null; const saveEvery = 1e4
 function scheduleSave() {
   if (saveTimeout != null) return
   saveTimeout = setTimeout(doSave, saveEvery)
 }
 function doSave() {
   saveTimeout = null
-  let out = {}
-  for (var prop in instances)
+  const out = {}
+  for (const prop in instances)
     out[prop] = {doc: instances[prop].doc.toJSON(),
                  comments: instances[prop].comments.comments}
   writeFile(saveFile, JSON.stringify(out), () => null)
 }
 
 function getInstance(id, ip) {
-  let inst = instances[id] || newInstance(id)
+  const inst = instances[id] || newInstance(id)
   if (ip) inst.registerUser(ip)
   inst.lastActive = Date.now()
   return inst
@@ -162,8 +162,8 @@ exports.getInstance = getInstance
 function newInstance(id, doc, comments) {
   if (++instanceCount > maxCount) {
     let oldest = null
-    for (let id in instances) {
-      let inst = instances[id]
+    for (const id in instances) {
+      const inst = instances[id]
       if (!oldest || inst.lastActive < oldest.lastActive) oldest = inst
     }
     instances[oldest.id].stop()
@@ -174,8 +174,8 @@ function newInstance(id, doc, comments) {
 }
 
 function instanceInfo() {
-  let found = []
-  for (let id in instances)
+  const found = []
+  for (const id in instances)
     found.push({id: id, users: instances[id].userCount})
   return found
 }

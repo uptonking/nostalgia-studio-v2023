@@ -9,7 +9,7 @@ const server = http.createServer((request, response) => {
 })
 
 function maybeCollab(req, resp) {
-  let url = req.url, backend = url.replace(/\/collab-backend\b/, "")
+  const url = req.url; const backend = url.replace(/\/collab-backend\b/, "")
   if (backend != url) {
     req.url = backend
     if (handleCollabRequest(req, resp)) return true

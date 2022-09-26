@@ -1,7 +1,7 @@
 const {Step} = require("prosemirror-transform")
 
 const {Router} = require("./route")
-const {schema} = require("../schema")
+const { schema } = require('./schema');
 const {getInstance, instanceInfo} = require("./instance")
 
 const router = new Router
@@ -35,7 +35,7 @@ function readStreamAsJSON(stream, callback) {
   let data = ""
   stream.on("data", chunk => data += chunk)
   stream.on("end", () => {
-    let result, error
+    let result; let error
     try { result = JSON.parse(data) }
     catch (e) { error = e }
     callback(error, result)
@@ -76,7 +76,7 @@ handle("GET", ["docs"], () => {
 
 // Output the current state of a document instance.
 handle("GET", ["docs", null], (id, req) => {
-  let inst = getInstance(id, reqIP(req))
+  const inst = getInstance(id, reqIP(req))
   return Output.json({doc: inst.doc.toJSON(),
                       users: inst.userCount,
                       version: inst.version,
@@ -85,9 +85,9 @@ handle("GET", ["docs", null], (id, req) => {
 })
 
 function nonNegInteger(str) {
-  let num = Number(str)
+  const num = Number(str)
   if (!isNaN(num) && Math.floor(num) == num && num >= 0) return num
-  let err = new Error("Not a non-negative integer: " + str)
+  const err = new Error("Not a non-negative integer: " + str)
   err.status = 400
   throw err
 }
@@ -109,7 +109,7 @@ class Waiting {
   }
 
   abort() {
-    let found = this.inst.waiting.indexOf(this)
+    const found = this.inst.waiting.indexOf(this)
     if (found > -1) this.inst.waiting.splice(found, 1)
   }
 
@@ -133,11 +133,11 @@ function outputEvents(inst, data) {
 // returns all events between a given version and the server's
 // current version of the document.
 handle("GET", ["docs", null, "events"], (id, req, resp) => {
-  let version = nonNegInteger(req.query.version)
-  let commentVersion = nonNegInteger(req.query.commentVersion)
+  const version = nonNegInteger(req.query.version)
+  const commentVersion = nonNegInteger(req.query.commentVersion)
 
-  let inst = getInstance(id, reqIP(req))
-  let data = inst.getEvents(version, commentVersion)
+  const inst = getInstance(id, reqIP(req))
+  const data = inst.getEvents(version, commentVersion)
   if (data === false)
     return new Output(410, "History no longer available")
   // If the server version is greater than the given version,
@@ -146,7 +146,7 @@ handle("GET", ["docs", null, "events"], (id, req, resp) => {
     return outputEvents(inst, data)
   // If the server version matches the given version,
   // wait until a new version is published to return the event data.
-  let wait = new Waiting(resp, inst, reqIP(req), () => {
+  const wait = new Waiting(resp, inst, reqIP(req), () => {
     wait.send(outputEvents(inst, inst.getEvents(version, commentVersion)))
   })
   inst.waiting.push(wait)
@@ -159,9 +159,9 @@ function reqIP(request) {
 
 // The event submission endpoint, which a client sends an event to.
 handle("POST", ["docs", null, "events"], (data, id, req) => {
-  let version = nonNegInteger(data.version)
-  let steps = data.steps.map(s => Step.fromJSON(schema, s))
-  let result = getInstance(id, reqIP(req)).addEvents(version, steps, data.comment, data.clientID)
+  const version = nonNegInteger(data.version)
+  const steps = data.steps.map(s => Step.fromJSON(schema, s))
+  const result = getInstance(id, reqIP(req)).addEvents(version, steps, data.comment, data.clientID)
   if (!result)
     return new Output(409, "Version not current")
   else

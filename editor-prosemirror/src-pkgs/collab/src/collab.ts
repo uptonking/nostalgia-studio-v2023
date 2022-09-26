@@ -23,8 +23,12 @@ export function rebaseSteps(
   over: readonly Step[],
   transform: Transform,
 ) {
-  for (let i = steps.length - 1; i >= 0; i--) transform.step(steps[i].inverted);
-  for (let i = 0; i < over.length; i++) transform.step(over[i]);
+  for (let i = steps.length - 1; i >= 0; i--) {
+    transform.step(steps[i].inverted);
+  }
+  for (let i = 0; i < over.length; i++) {
+    transform.step(over[i]);
+  }
   const result: Rebaseable[] = [];
   for (let i = 0, mapFrom = steps.length; i < steps.length; i++) {
     const mapped = steps[i].step.map(transform.mapping.slice(mapFrom));
@@ -51,13 +55,15 @@ export function rebaseSteps(
  */
 class CollabState {
   constructor(
-    // The version number of the last update received from the central
-    // authority. Starts at 0 or the value of the `version` property
-    // in the option object, for the editor's value when the option
-    // was enabled.
+    /** The version number of the last update received from the central
+     * authority. Starts at 0 or the value of the `version` property
+     * in the option object, for the editor's value when the option
+     * was enabled.
+     */
     readonly version: number,
-    // The local steps that havent been successfully sent to the
-    // server yet.
+    /** The local steps that havent been successfully sent to the
+     * server yet.
+     */
     readonly unconfirmed: readonly Rebaseable[],
   ) {}
 }
@@ -78,12 +84,14 @@ function unconfirmedFrom(transform: Transform) {
 const collabKey = new PluginKey('collab');
 
 type CollabConfig = {
-  /// The starting version number of the collaborative editing.
-  /// Defaults to 0.
+  /** The starting version number of the collaborative editing.
+   * Defaults to 0.
+   */
   version?: number;
 
-  /// This client's ID, used to distinguish its changes from those of
-  /// other clients. Defaults to a random 32-bit number.
+  /** This client's ID, used to distinguish its changes from those of
+   * other clients. Defaults to a random 32-bit number.
+   */
   clientID?: number | string;
 };
 
@@ -117,27 +125,28 @@ export function collab(config: CollabConfig = {}): Plugin {
     },
 
     config: conf,
-
     // This is used to notify the history plugin to not merge steps,
     // so that the history can be rebased.
     historyPreserveItems: true,
   });
 }
 
-/// Create a transaction that represents a set of new steps received from
-/// the authority. Applying this transaction moves the state forward to
-/// adjust to the authority's view of the document.
+/** Create a transaction that represents a set of new steps received from
+ * the authority. Applying this transaction moves the state forward to
+ * adjust to the authority's view of the document.
+ */
 export function receiveTransaction(
   state: EditorState,
   steps: readonly Step[],
   clientIDs: readonly (string | number)[],
   options: {
-    /// When enabled (the default is `false`), if the current
-    /// selection is a [text selection](#state.TextSelection), its
-    /// sides are mapped with a negative bias for this transaction, so
-    /// that content inserted at the cursor ends up after the cursor.
-    /// Users usually prefer this, but it isn't done by default for
-    /// reasons of backwards compatibility.
+    /** When enabled (the default is `false`), if the current
+     * selection is a [text selection](#state.TextSelection), its
+     * sides are mapped with a negative bias for this transaction, so
+     * that content inserted at the cursor ends up after the cursor.
+     * Users usually prefer this, but it isn't done by default for
+     * reasons of backwards compatibility.
+     */
     mapSelectionBackward?: boolean;
   } = {},
 ) {
@@ -191,15 +200,16 @@ export function receiveTransaction(
     .setMeta(collabKey, newCollabState);
 }
 
-/// Provides data describing the editor's unconfirmed steps, which need
-/// to be sent to the central authority. Returns null when there is
-/// nothing to send.
-///
-/// `origins` holds the _original_ transactions that produced each
-/// steps. This can be useful for looking up time stamps and other
-/// metadata for the steps, but note that the steps may have been
-/// rebased, whereas the origin transactions are still the old,
-/// unchanged objects.
+/** Provides data describing the editor's unconfirmed steps, which need
+ * to be sent to the central authority. Returns null when there is
+ * nothing to send.
+ *
+ * `origins` holds the _original_ transactions that produced each
+ * steps. This can be useful for looking up time stamps and other
+ * metadata for the steps, but note that the steps may have been
+ * rebased, whereas the origin transactions are still the old,
+ * unchanged objects.
+ */
 export function sendableSteps(state: EditorState): {
   version: number;
   steps: readonly Step[];
@@ -221,8 +231,9 @@ export function sendableSteps(state: EditorState): {
   };
 }
 
-/// Get the version up to which the collab plugin has synced with the
-/// central authority.
+/** Get the version up to which the collab plugin has synced with the
+ * central authority.
+ */
 export function getVersion(state: EditorState): number {
   return collabKey.getState(state).version;
 }

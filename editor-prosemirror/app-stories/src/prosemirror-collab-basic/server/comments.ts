@@ -1,4 +1,8 @@
 export class Comment {
+  from: number;
+  to: number;
+  text: string;
+  id: number;
   constructor(from, to, text, id) {
     this.from = from;
     this.to = to;
@@ -11,8 +15,13 @@ export class Comment {
   }
 }
 
+type IEvent = { type: string; id?: number };
+
 export class Comments {
-  constructor(comments) {
+  comments: Comment[];
+  events: IEvent[];
+  version: number;
+  constructor(comments: Comment[] = []) {
     this.comments = comments || [];
     this.events = [];
     this.version = 0;

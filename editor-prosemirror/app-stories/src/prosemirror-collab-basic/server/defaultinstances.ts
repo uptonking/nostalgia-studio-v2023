@@ -1,8 +1,14 @@
 import { schema } from './schema';
 
-const $node = (type, attrs, content, marks) =>
-  schema.node(type, attrs, content, marks);
-const $text = (str, marks) => schema.text(str, marks);
+const $node = (
+  type,
+  attrs = undefined,
+  content = undefined,
+  marks = undefined,
+) => schema.node(type, attrs, content, marks);
+
+const $text = (str, marks = undefined) => schema.text(str, marks);
+
 const em = schema.marks.em.create();
 const strong = schema.marks.strong.create();
 

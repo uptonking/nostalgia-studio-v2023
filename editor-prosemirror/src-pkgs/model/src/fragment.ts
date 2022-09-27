@@ -11,6 +11,7 @@ import { Schema } from './schema';
 export class Fragment {
   /** The size of the fragment, which is the total of the size of
    * its content nodes.
+   * - 通过 content[i].nodeSize 求和
    */
   readonly size: number;
 
@@ -21,8 +22,11 @@ export class Fragment {
     size?: number,
   ) {
     this.size = size || 0;
-    if (size == null)
-      for (let i = 0; i < content.length; i++) this.size += content[i].nodeSize;
+    if (size == null) {
+      for (let i = 0; i < content.length; i++) {
+        this.size += content[i].nodeSize;
+      }
+    }
   }
 
   /** Invoke a callback for all descendant nodes between the given two

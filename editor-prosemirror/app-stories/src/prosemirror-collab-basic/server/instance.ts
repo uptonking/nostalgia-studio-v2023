@@ -1,15 +1,31 @@
-import { readFileSync, writeFile } from 'fs';
-
+import { readFileSync, writeFile } from 'node:fs';
 import { Mapping } from 'prosemirror-transform';
+import { type Node } from 'prosemirror-model';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 
 import { Comment, Comments } from './comments';
 import { populateDefaultInstances } from './defaultinstances';
 import { schema } from './schema';
 
+/** max steps/operations on server */
 const MAX_STEP_HISTORY = 10000;
 
-// A collaborative editing document instance.
+/** A collaborative editing document instance.
+ * - ❓ 虽然能work，但控制台都是invalid version的异常信息
+ */
 class Instance {
+  id: number;
+  doc: Node;
+  steps: any[];
+  comments: any;
+  version: number;
+  lastActive: number;
+  users: any;
+  userCount: number;
+  waiting: any[];
+  collecting: any;
+
   constructor(id, doc, comments) {
     this.id = id;
     this.doc =
@@ -71,20 +87,23 @@ class Instance {
     while (this.waiting.length) this.waiting.pop().finish();
   }
 
-  // : (Number)
-  // Check if a document version number relates to an existing
-  // document version.
-  checkVersion(version) {
+  /** : (Number)
+   * Check if a document version number relates to an existing
+   * document version.
+   */
+  checkVersion(version: number) {
     if (version < 0 || version > this.version) {
       const err = new Error('Invalid version ' + version);
+      // @ts-expect-error custom prop
       err.status = 400;
       throw err;
     }
   }
 
-  // : (Number, Number)
-  // Get events between a given document version and
-  // the current document version.
+  /** : (Number, Number)
+   * Get events between a given document version and
+   * the current document version.
+   */
   getEvents(version, commentVersion) {
     this.checkVersion(version);
     const startIndex = this.steps.length - (this.version - version);
@@ -131,20 +150,26 @@ const instances = Object.create(null);
 let instanceCount = 0;
 const maxCount = 20;
 
-// const saveFile = __dirname + '/../demo-instances.json';
-const saveFile = './src/prosemirror-collab-basic/demo-instances.json';
-let json;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const saveFilePath = __dirname + '/../demo-instances.json';
+console.log(';; saveFilePath, ', saveFilePath);
+
+// const saveFilePath = './src/prosemirror-collab-basic/demo-instances.json';
+let json: { [x: string]: { comments: any[] } };
+
 if (process.argv.indexOf('--fresh') === -1) {
   try {
-    json = JSON.parse(readFileSync(saveFile, 'utf8'));
+    json = JSON.parse(readFileSync(saveFilePath, 'utf8'));
   } catch (e) {}
 }
 
 if (json) {
+  // eslint-disable-next-line guard-for-in
   for (const prop in json)
     newInstance(
       prop,
-      schema.nodeFromJSON(json[prop].doc),
+      schema.nodeFromJSON(json[prop]['doc']),
       new Comments(json[prop].comments.map((c) => Comment.fromJSON(c))),
     );
 } else {
@@ -157,15 +182,17 @@ function scheduleSave() {
   if (saveTimeout != null) return;
   saveTimeout = setTimeout(doSave, saveEvery);
 }
+
 function doSave() {
   saveTimeout = null;
   const out = {};
+  // eslint-disable-next-line guard-for-in
   for (const prop in instances)
     out[prop] = {
       doc: instances[prop].doc.toJSON(),
       comments: instances[prop].comments.comments,
     };
-  writeFile(saveFile, JSON.stringify(out), () => null);
+  writeFile(saveFilePath, JSON.stringify(out), () => null);
 }
 
 export function getInstance(id, ip) {
@@ -175,7 +202,7 @@ export function getInstance(id, ip) {
   return inst;
 }
 
-function newInstance(id, doc, comments) {
+function newInstance(id, doc = undefined, comments = undefined) {
   if (++instanceCount > maxCount) {
     let oldest = null;
     for (const id in instances) {

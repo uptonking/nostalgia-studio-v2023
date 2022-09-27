@@ -3,7 +3,7 @@ import { type Command, type EditorState, Plugin } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 
 class Comment {
-  id: string;
+  id: number;
   text: string;
   constructor(text, id) {
     this.id = id;

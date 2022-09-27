@@ -217,7 +217,7 @@ export function sendableSteps(state: EditorState): {
   origins: readonly Transaction[];
 } | null {
   const collabState = collabKey.getState(state) as CollabState;
-  if (collabState.unconfirmed.length == 0) return null;
+  if (collabState.unconfirmed.length === 0) return null;
   return {
     version: collabState.version,
     steps: collabState.unconfirmed.map((s) => s.step),

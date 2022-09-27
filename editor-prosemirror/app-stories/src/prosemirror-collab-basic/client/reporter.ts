@@ -40,6 +40,7 @@ export class Reporter {
     this.node.textContent = message;
   }
 
+  /** 这是简单清除信息，这里并没有显示新的成功信息 */
   success() {
     if (this.state === 'fail' && this.setAt > Date.now() - 1000 * 10) {
       setTimeout(() => this.success(), 5000);

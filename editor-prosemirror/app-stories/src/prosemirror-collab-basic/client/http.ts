@@ -8,6 +8,8 @@ export function req(conf: {
   const req = new XMLHttpRequest();
   let aborted = false;
   const result = new Promise((success, failure) => {
+    console.log(';; ajax-conf ', conf.method, conf);
+
     req.open(conf.method, conf.url, true);
     req.addEventListener('load', () => {
       if (aborted) return;
@@ -51,11 +53,19 @@ function makePlain(html: string) {
   return elt.textContent.replace(/\n[^]*|\s+$/g, '');
 }
 
-export function GET(url: string, baseUrl = 'http://localhost:3000') {
+const baseUrl = 'http://localhost:3001';
+
+export function GET(url: string) {
   console.log('[GET]', baseUrl + url);
   return req({ url: baseUrl + url, method: 'GET' });
 }
 
 export function POST(url: string, body: string, type: string) {
-  return req({ url, method: 'POST', body, headers: { 'Content-Type': type } });
+  console.log('[POST]', baseUrl + url);
+  return req({
+    url: baseUrl + url,
+    method: 'POST',
+    body,
+    headers: { 'Content-Type': type },
+  });
 }

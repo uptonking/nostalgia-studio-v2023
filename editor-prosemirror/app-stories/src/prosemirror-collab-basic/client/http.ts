@@ -51,9 +51,9 @@ function makePlain(html: string) {
   return elt.textContent.replace(/\n[^]*|\s+$/g, '');
 }
 
-export function GET(url: string) {
-  console.log('[GET]', url);
-  return req({ url, method: 'GET' });
+export function GET(url: string, baseUrl = 'http://localhost:3000') {
+  console.log('[GET]', baseUrl + url);
+  return req({ url: baseUrl + url, method: 'GET' });
 }
 
 export function POST(url: string, body: string, type: string) {

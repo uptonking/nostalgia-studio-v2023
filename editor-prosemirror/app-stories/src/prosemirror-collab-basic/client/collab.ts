@@ -11,7 +11,7 @@ import { MenuItem } from 'prosemirror-menu';
 import { Schema } from 'prosemirror-model';
 import { schema as basicSchema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
-import { EditorState } from 'prosemirror-state';
+import { EditorState, type Transaction } from 'prosemirror-state';
 import { Step } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
 
@@ -23,6 +23,7 @@ import {
 } from './comment';
 import { GET, POST } from './http';
 import { Reporter } from './reporter';
+export { Reporter } from './reporter';
 
 const schema = new Schema({
   nodes: addListNodes(basicSchema.spec.nodes, 'paragraph block*', 'block'),
@@ -44,32 +45,45 @@ class State {
   }
 }
 
-class EditorConnection {
+export class EditorConnection {
   report: Reporter;
   url: string;
   state: State;
   request: any;
   backOff: number;
   view: EditorView;
+  editorViewDOM: HTMLDivElement;
+  usernamesDOM: HTMLDivElement;
 
-  constructor(report: Reporter, url: string) {
+  constructor(report: Reporter, url: string, editorViewDOM, usernamesDOM) {
     this.report = report;
     this.url = url;
     this.state = new State(null, 'start');
     this.request = null;
     this.backOff = 0;
     this.view = null;
+    this.editorViewDOM = editorViewDOM;
+    this.usernamesDOM = usernamesDOM;
     this.dispatch = this.dispatch.bind(this);
 
     this.start();
   }
 
   /** All state changes go through this */
-  dispatch(action) {
+  dispatch(action: {
+    type: string;
+    transaction?: Transaction;
+    doc?: any;
+    version?: number;
+    users?: any;
+    comments?: any;
+    requestDone?: any;
+    error?: any;
+  }) {
     let newEditState: EditorState = null;
     console.log('[dispatch]', action);
-    if (action.type == 'loaded') {
-      info.users.textContent = userString(action.users);
+    if (action.type === 'loaded') {
+      this.usernamesDOM.textContent = userString(action.users);
       const editState = EditorState.create({
         doc: action.doc,
         plugins: exampleSetup({
@@ -133,7 +147,7 @@ class EditorConnection {
       if (this.view) this.view.updateState(this.state.edit);
       else
         this.setView(
-          new EditorView(document.querySelector('#editor'), {
+          new EditorView(this.editorViewDOM, {
             state: this.state.edit,
             dispatchTransaction: (transaction) =>
               this.dispatch({ type: 'transaction', transaction }),
@@ -199,28 +213,28 @@ class EditorConnection {
         } else {
           this.poll();
         }
-        info.users.textContent = userString(data.users);
+        this.usernamesDOM.textContent = userString(data.users);
       },
-        (err) => {
-          if (err.status == 410 || badVersion(err)) {
-            // Too far behind. Revert to server state
-            this.report.failure(err);
-            this.dispatch({ type: 'restart' });
-          } else if (err) {
-            this.dispatch({ type: 'recover', error: err });
-          }
+      (err) => {
+        if (err.status == 410 || badVersion(err)) {
+          // Too far behind. Revert to server state
+          this.report.failure(err);
+          this.dispatch({ type: 'restart' });
+        } else if (err) {
+          this.dispatch({ type: 'recover', error: err });
         }
+      },
     );
   }
 
-  sendable(editState) {
+  sendable(editState: EditorState) {
     const steps = sendableSteps(editState);
     const comments = commentPlugin.getState(editState).unsentEvents();
     if (steps || comments.length) return { steps, comments };
   }
 
   /** Send the given steps to the server */
-  send(editState, { steps, comments }) {
+  send(editState: EditorState, { steps, comments }: any) {
     const json = JSON.stringify({
       version: getVersion(editState),
       steps: steps ? steps.steps.map((s) => s.toJSON()) : [],
@@ -250,19 +264,19 @@ class EditorConnection {
           requestDone: true,
         });
       },
-        (err) => {
-          if (err.status === 409) {
-            // The client's document conflicts with the server's version.
-            // Poll for changes and then try again.
-            this.backOff = 0;
-            this.dispatch({ type: 'poll' });
-          } else if (badVersion(err)) {
-            this.report.failure(err);
-            this.dispatch({ type: 'restart' });
-          } else {
-            this.dispatch({ type: 'recover', error: err });
-          }
+      (err) => {
+        if (err.status === 409) {
+          // The client's document conflicts with the server's version.
+          // Poll for changes and then try again.
+          this.backOff = 0;
+          this.dispatch({ type: 'poll' });
+        } else if (badVersion(err)) {
+          this.report.failure(err);
+          this.dispatch({ type: 'restart' });
+        } else {
+          this.dispatch({ type: 'recover', error: err });
         }
+      },
     );
   }
 
@@ -283,7 +297,7 @@ class EditorConnection {
     }
   }
 
-  run(request) {
+  run(request: Promise<any>) {
     return (this.request = request);
   }
 
@@ -292,10 +306,10 @@ class EditorConnection {
     this.setView(null);
   }
 
-  setView(view) {
+  setView(view: EditorView) {
     if (this.view) this.view.destroy();
     this.view = view;
-    window.view = view;
+    window['view'] = view;
   }
 }
 
@@ -314,20 +328,8 @@ const annotationMenuItem = new MenuItem({
 const menu = buildMenuItems(schema);
 menu.fullMenu[0].push(annotationMenuItem);
 
-const info = {
-  name: document.querySelector('#docname'),
-  users: document.querySelector('#users'),
-};
-
-document.querySelector('#changedoc').addEventListener('click', (e) => {
-  GET('/collab-backend/docs/').then(
-    (data:string) => showDocList(e.target, JSON.parse(data)),
-    (err) => reporter.failure(err),
-  );
-});
-
 function userString(n) {
-  return '(' + n + ' user' + (n == 1 ? '' : 's') + ')';
+  return '(' + n + ' user' + (n === 1 ? '' : 's') + ')';
 }
 
 let docList;
@@ -363,14 +365,16 @@ function showDocList(node, list) {
   ul.style.left = rect.left - 5 + pageXOffset + 'px';
 
   ul.addEventListener('click', (e) => {
-    const targetEl  = e.target as HTMLElement
+    const targetEl = e.target as HTMLElement;
     if (targetEl.nodeName == 'LI') {
       ul.parentNode.removeChild(ul);
       docList = null;
-      if (targetEl.hasAttribute('data-name'))
-        {location.hash =
+      if (targetEl.hasAttribute('data-name')) {
+        location.hash =
           '#edit-' + encodeURIComponent(targetEl.getAttribute('data-name'));
-      }else {newDocument();}
+      } else {
+        newDocument();
+      }
     }
   });
 }
@@ -387,33 +391,44 @@ function newDocument() {
   if (name) location.hash = '#edit-' + encodeURIComponent(name);
 }
 
+const infoEle = {
+  name: document.querySelector('#docname'),
+  users: document.querySelector('#users'),
+  editor: document.querySelector('#editor'),
+};
+
 let connection: EditorConnection = null;
 
 function connectFromHash() {
   const isID = /^#edit-(.+)/.exec(location.hash);
+  console.log('connect from hash/hashIsID ', location.hash, Boolean(isID));
+
   if (isID) {
     if (connection) connection.close();
-    info.name.textContent = decodeURIComponent(isID[1]);
+    infoEle.name.textContent = decodeURIComponent(isID[1]);
     connection = new EditorConnection(
       reporter,
       '/collab-backend/docs/' + isID[1],
+      infoEle.editor,
+      infoEle.users,
     );
-    window.connection = connection;
+    window['connection'] = connection;
     connection.request.then(() => connection.view.focus());
     return true;
   }
 }
 
-// addEventListener("hashchange", connectFromHash)
-// console.log('connect from hash');
-function run() {
+// addEventListener('hashchange', connectFromHash);
+
+export function run() {
   connectFromHash() || (location.hash = '#edit-Example');
 }
 // window.start = run;
 
-declare global {
-  interface Window {
-    connection: EditorConnection;
-    view: EditorView;
-  }
-}
+// 未使用下面的功能，原示例用来切换文档示例或创建新文档
+document.querySelector('#changedoc')?.addEventListener('click', (e) => {
+  GET('/collab-backend/docs/').then(
+    (data: string) => showDocList(e.target, JSON.parse(data)),
+    (err) => reporter.failure(err),
+  );
+});

@@ -3,15 +3,17 @@
   "version": "1.0.0111",
   "main": "src/index.ts",
   "module": "src/index.ts",
+  "type": "module",
   "scripts": {
     "build": "rimraf dist && npm run build:prod",
     "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
     "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
     "build:types": "",
-    "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.js",
+    "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.cjs",
     "demo2": "run-p dev:collab-basic-frontend dev:collab-basic-server",
     "dev:collab-basic-frontend": "cross-env APP_ENV=reacthot webpack --watch --hot --config webpack/webpack.config.demo.js",
-    "dev:collab-basic-server": "ts-node-dev ./src/prosemirror-collab-basic/run.ts",
+    "dev:collab-basic-server2": "ts-node-dev --transpile-only ./src/prosemirror-collab-basic/run.ts",
+    "dev:collab-basic-server": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./src/prosemirror-collab-basic/run.ts",
     "start": "npm run demo",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
@@ -55,9 +57,11 @@
     "@types/is-url": "^1.2.30",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.9",
+    "nodemon": "^2.0.19",
     "npm-run-all": "^4.1.5",
     "prosemirror-dev-toolkit": "^1.0.2",
     "prosemirror-dev-tools": "^3.1.0",
+    "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0"
   }
 }

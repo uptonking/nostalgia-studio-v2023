@@ -1,68 +1,74 @@
-const {readFileSync, writeFile} = require("fs")
+import { readFileSync, writeFile } from 'fs';
 
-const {Mapping} = require("prosemirror-transform")
+import { Mapping } from 'prosemirror-transform';
 
-const { schema } = require('./schema');
-const {Comments, Comment} = require("./comments")
-const {populateDefaultInstances} = require("./defaultinstances")
+import { Comment, Comments } from './comments';
+import { populateDefaultInstances } from './defaultinstances';
+import { schema } from './schema';
 
-const MAX_STEP_HISTORY = 10000
+const MAX_STEP_HISTORY = 10000;
 
 // A collaborative editing document instance.
 class Instance {
   constructor(id, doc, comments) {
-    this.id = id
-    this.doc = doc || schema.node("doc", null, [schema.node("paragraph", null, [
-      schema.text("This is a collaborative test document. Start editing to make it more interesting!")
-    ])])
-    this.comments = comments || new Comments
+    this.id = id;
+    this.doc =
+      doc ||
+      schema.node('doc', null, [
+        schema.node('paragraph', null, [
+          schema.text(
+            'This is a collaborative test document. Start editing to make it more interesting!',
+          ),
+        ]),
+      ]);
+    this.comments = comments || new Comments();
     // The version number of the document instance.
-    this.version = 0
-    this.steps = []
-    this.lastActive = Date.now()
-    this.users = Object.create(null)
-    this.userCount = 0
-    this.waiting = []
+    this.version = 0;
+    this.steps = [];
+    this.lastActive = Date.now();
+    this.users = Object.create(null);
+    this.userCount = 0;
+    this.waiting = [];
 
-    this.collecting = null
+    this.collecting = null;
   }
 
   stop() {
-    if (this.collecting != null) clearInterval(this.collecting)
+    if (this.collecting != null) clearInterval(this.collecting);
   }
 
   addEvents(version, steps, comments, clientID) {
-    this.checkVersion(version)
-    if (this.version != version) return false
-    let doc = this.doc; const maps = []
+    this.checkVersion(version);
+    if (this.version != version) return false;
+    let doc = this.doc;
+    const maps = [];
     for (let i = 0; i < steps.length; i++) {
-      steps[i].clientID = clientID
-      const result = steps[i].apply(doc)
-      doc = result.doc
-      maps.push(steps[i].getMap())
+      steps[i].clientID = clientID;
+      const result = steps[i].apply(doc);
+      doc = result.doc;
+      maps.push(steps[i].getMap());
     }
-    this.doc = doc
-    this.version += steps.length
-    this.steps = this.steps.concat(steps)
+    this.doc = doc;
+    this.version += steps.length;
+    this.steps = this.steps.concat(steps);
     if (this.steps.length > MAX_STEP_HISTORY)
-      this.steps = this.steps.slice(this.steps.length - MAX_STEP_HISTORY)
+      this.steps = this.steps.slice(this.steps.length - MAX_STEP_HISTORY);
 
-    this.comments.mapThrough(new Mapping(maps))
-    if (comments) for (let i = 0; i < comments.length; i++) {
-      const event = comments[i]
-      if (event.type == "delete")
-        this.comments.deleted(event.id)
-      else
-        this.comments.created(event)
-    }
+    this.comments.mapThrough(new Mapping(maps));
+    if (comments)
+      for (let i = 0; i < comments.length; i++) {
+        const event = comments[i];
+        if (event.type == 'delete') this.comments.deleted(event.id);
+        else this.comments.created(event);
+      }
 
-    this.sendUpdates()
-    scheduleSave()
-    return {version: this.version, commentVersion: this.comments.version}
+    this.sendUpdates();
+    scheduleSave();
+    return { version: this.version, commentVersion: this.comments.version };
   }
 
   sendUpdates() {
-    while (this.waiting.length) this.waiting.pop().finish()
+    while (this.waiting.length) this.waiting.pop().finish();
   }
 
   // : (Number)
@@ -70,9 +76,9 @@ class Instance {
   // document version.
   checkVersion(version) {
     if (version < 0 || version > this.version) {
-      const err = new Error("Invalid version " + version)
-      err.status = 400
-      throw err
+      const err = new Error('Invalid version ' + version);
+      err.status = 400;
+      throw err;
     }
   }
 
@@ -80,103 +86,112 @@ class Instance {
   // Get events between a given document version and
   // the current document version.
   getEvents(version, commentVersion) {
-    this.checkVersion(version)
-    const startIndex = this.steps.length - (this.version - version)
-    if (startIndex < 0) return false
-    const commentStartIndex = this.comments.events.length - (this.comments.version - commentVersion)
-    if (commentStartIndex < 0) return false
+    this.checkVersion(version);
+    const startIndex = this.steps.length - (this.version - version);
+    if (startIndex < 0) return false;
+    const commentStartIndex =
+      this.comments.events.length - (this.comments.version - commentVersion);
+    if (commentStartIndex < 0) return false;
 
-    return {steps: this.steps.slice(startIndex),
-            comment: this.comments.eventsAfter(commentStartIndex),
-            users: this.userCount}
+    return {
+      steps: this.steps.slice(startIndex),
+      comment: this.comments.eventsAfter(commentStartIndex),
+      users: this.userCount,
+    };
   }
 
   collectUsers() {
-    const oldUserCount = this.userCount
-    this.users = Object.create(null)
-    this.userCount = 0
-    this.collecting = null
+    const oldUserCount = this.userCount;
+    this.users = Object.create(null);
+    this.userCount = 0;
+    this.collecting = null;
     for (let i = 0; i < this.waiting.length; i++)
-      this._registerUser(this.waiting[i].ip)
-    if (this.userCount != oldUserCount) this.sendUpdates()
+      this._registerUser(this.waiting[i].ip);
+    if (this.userCount != oldUserCount) this.sendUpdates();
   }
 
   registerUser(ip) {
     if (!(ip in this.users)) {
-      this._registerUser(ip)
-      this.sendUpdates()
+      this._registerUser(ip);
+      this.sendUpdates();
     }
   }
 
   _registerUser(ip) {
     if (!(ip in this.users)) {
-      this.users[ip] = true
-      this.userCount++
+      this.users[ip] = true;
+      this.userCount++;
       if (this.collecting == null)
-        this.collecting = setTimeout(() => this.collectUsers(), 5000)
+        this.collecting = setTimeout(() => this.collectUsers(), 5000);
     }
   }
 }
 
-const instances = Object.create(null)
-let instanceCount = 0
-const maxCount = 20
+const instances = Object.create(null);
+let instanceCount = 0;
+const maxCount = 20;
 
-const saveFile = __dirname + "/../demo-instances.json"; let json
-if (process.argv.indexOf("--fresh") == -1) {
+// const saveFile = __dirname + '/../demo-instances.json';
+const saveFile = './src/prosemirror-collab-basic/demo-instances.json';
+let json;
+if (process.argv.indexOf('--fresh') === -1) {
   try {
-    json = JSON.parse(readFileSync(saveFile, "utf8"))
+    json = JSON.parse(readFileSync(saveFile, 'utf8'));
   } catch (e) {}
 }
 
 if (json) {
   for (const prop in json)
-    newInstance(prop, schema.nodeFromJSON(json[prop].doc),
-                new Comments(json[prop].comments.map(c => Comment.fromJSON(c))))
+    newInstance(
+      prop,
+      schema.nodeFromJSON(json[prop].doc),
+      new Comments(json[prop].comments.map((c) => Comment.fromJSON(c))),
+    );
 } else {
-  populateDefaultInstances(newInstance)
+  populateDefaultInstances(newInstance);
 }
 
-let saveTimeout = null; const saveEvery = 1e4
+let saveTimeout = null;
+const saveEvery = 1e4;
 function scheduleSave() {
-  if (saveTimeout != null) return
-  saveTimeout = setTimeout(doSave, saveEvery)
+  if (saveTimeout != null) return;
+  saveTimeout = setTimeout(doSave, saveEvery);
 }
 function doSave() {
-  saveTimeout = null
-  const out = {}
+  saveTimeout = null;
+  const out = {};
   for (const prop in instances)
-    out[prop] = {doc: instances[prop].doc.toJSON(),
-                 comments: instances[prop].comments.comments}
-  writeFile(saveFile, JSON.stringify(out), () => null)
+    out[prop] = {
+      doc: instances[prop].doc.toJSON(),
+      comments: instances[prop].comments.comments,
+    };
+  writeFile(saveFile, JSON.stringify(out), () => null);
 }
 
-function getInstance(id, ip) {
-  const inst = instances[id] || newInstance(id)
-  if (ip) inst.registerUser(ip)
-  inst.lastActive = Date.now()
-  return inst
+export function getInstance(id, ip) {
+  const inst = instances[id] || newInstance(id);
+  if (ip) inst.registerUser(ip);
+  inst.lastActive = Date.now();
+  return inst;
 }
-exports.getInstance = getInstance
 
 function newInstance(id, doc, comments) {
   if (++instanceCount > maxCount) {
-    let oldest = null
+    let oldest = null;
     for (const id in instances) {
-      const inst = instances[id]
-      if (!oldest || inst.lastActive < oldest.lastActive) oldest = inst
+      const inst = instances[id];
+      if (!oldest || inst.lastActive < oldest.lastActive) oldest = inst;
     }
-    instances[oldest.id].stop()
-    delete instances[oldest.id]
-    --instanceCount
+    instances[oldest.id].stop();
+    delete instances[oldest.id];
+    --instanceCount;
   }
-  return instances[id] = new Instance(id, doc, comments)
+  return (instances[id] = new Instance(id, doc, comments));
 }
 
-function instanceInfo() {
-  const found = []
+export function instanceInfo() {
+  const found = [];
   for (const id in instances)
-    found.push({id: id, users: instances[id].userCount})
-  return found
+    found.push({ id: id, users: instances[id].userCount });
+  return found;
 }
-exports.instanceInfo = instanceInfo

@@ -107,6 +107,7 @@ class CommentState {
   }
 }
 
+/** 只处理comment state和decorations */
 export const commentPlugin = new Plugin({
   state: {
     init: CommentState.init,
@@ -156,7 +157,10 @@ export const annotationIcon = {
 
 // Comment UI
 
-export const commentUI = function (dispatch: Parameters<Command>[1]) {
+/** 基于decorations属性创建 */
+export const createCommentUIPlugin = function (
+  dispatch: Parameters<Command>[1],
+) {
   return new Plugin({
     props: {
       decorations(state) {

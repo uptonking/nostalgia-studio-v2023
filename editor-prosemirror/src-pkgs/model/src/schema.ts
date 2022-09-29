@@ -734,6 +734,7 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
   /** Deserialize a node from its JSON representation. This method is
    * bound.
    */
+  // nodeFromJSON(json: Record<string, unknown>): Node {
   nodeFromJSON(json: any): Node {
     return Node.fromJSON(this, json);
   }

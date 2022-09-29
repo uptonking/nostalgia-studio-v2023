@@ -25,7 +25,7 @@ function maybeCollab(
 
   if (request.method === 'OPTIONS') {
     const headers = {
-      'Access-Control-Allow-Origin': '*' /* @dev First, read about security */,
+      'Access-Control-Allow-Origin': '*', // @dev First, read about security
       'Access-Control-Allow-Methods': 'OPTIONS, POST, GET',
       'Access-Control-Max-Age': 2592000, // 30 days
       'Access-Control-Allow-Headers':

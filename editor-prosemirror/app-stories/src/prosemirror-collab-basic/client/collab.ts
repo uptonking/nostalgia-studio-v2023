@@ -19,7 +19,7 @@ import {
   addAnnotation,
   annotationIcon,
   commentPlugin,
-  commentUI,
+  createCommentUIPlugin,
 } from './comment';
 import { GET, POST } from './http';
 import { Reporter } from './reporter';
@@ -36,6 +36,7 @@ function badVersion(err) {
   return err.status === 400 && /invalid version/i.test(err);
 }
 
+/** editorState + 变更标记 */
 class State {
   edit: EditorState;
   // comm: 'poll' | 'recover' | 'detached' | 'send';
@@ -46,12 +47,21 @@ class State {
   }
 }
 
-/**  */
+/** 创建pm-EditorView对象，并建立到服务器的连接来接收服务端发来的更改。
+ * - 轮询服务端的变更通过在服务端等待response.setTimeout实现，
+ * - 在所有客户端都无操作时，客户端每次请求都会等待N秒才会受到请求空结果返回，然后客户端会立即再次发起请求
+ *
+ */
 export class EditorConnection {
+  /** 用来显示/隐藏操作成功/失败的消息 */
   report: Reporter;
+  /** 代表当前文档地址的url */
   url: string;
+  /** 带标记的editorState */
   state: State;
+  /** 当前正在执行的异步请求 */
   request: Promise<any>;
+  /**  */
   backOff: number;
   view: EditorView;
   editorViewDOM: HTMLDivElement;
@@ -118,7 +128,7 @@ export class EditorConnection {
           history(),
           collab({ version: action.version }),
           commentPlugin,
-          commentUI((transaction) =>
+          createCommentUIPlugin((transaction) =>
             this.dispatch({ type: 'transaction', transaction }),
           ),
         ]),
@@ -202,6 +212,7 @@ export class EditorConnection {
    * of the document that the client knows about. This request waits
    * for a new version of the document to be created if the client
    * is already up-to-date.
+   * - 在所有客户端都无操作时，客户端每次请求都会等待N秒才会受到请求空结果返回，然后客户端会立即再次发起请求
    */
   poll() {
     const query =
@@ -210,12 +221,21 @@ export class EditorConnection {
       '&commentVersion=' +
       commentPlugin.getState(this.state.edit).version;
 
+    // 注意服务端处理这个请求时，若无变更则会先等待N秒，在获取请求结果后立即再次poll()就实现了轮询
     this.run(GET(this.url + '/events?' + query)).then(
       (data) => {
         this.report.success();
         data = JSON.parse(data);
         this.backOff = 0;
+        console.log(
+          ';; poll-ok ',
+          data?.steps?.length,
+          data?.steps,
+          data?.comment,
+        );
+
         if (data.steps && (data.steps.length || data.comment.length)) {
+          // 创建一个tr
           const tr = receiveTransaction(
             this.state.edit,
             data.steps.map((j) => Step.fromJSON(schema, j)),
@@ -238,6 +258,8 @@ export class EditorConnection {
         this.usernamesDOM.textContent = userString(data.users);
       },
       (err) => {
+        console.log(';; poll-err ', err);
+
         if (err.status === 410 || badVersion(err)) {
           // Too far behind. Revert to server state
           this.report.failure(err);
@@ -331,6 +353,7 @@ export class EditorConnection {
     return (this.request = request);
   }
 
+  /** 将this.request/this.view置为null */
   close() {
     this.closeRequest();
     this.setView(null);

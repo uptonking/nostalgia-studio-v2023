@@ -1,6 +1,6 @@
 import { Step } from 'prosemirror-transform';
 import { type IncomingMessage, type ServerResponse } from 'node:http';
-import { getInstance, instanceInfo } from './instance';
+import { getInstance, instanceInfo, type Instance } from './instance';
 import { Router } from './route';
 import { schema } from './schema';
 
@@ -27,7 +27,8 @@ class Output {
     this.type = type || 'text/plain';
   }
 
-  static json(data) {
+  // static json(data: Record<string, unknown>) {
+  static json(data: unknown) {
     return new Output(200, JSON.stringify(data), 'application/json');
   }
 
@@ -46,7 +47,7 @@ class Output {
 }
 
 /** : (stream.Readable, Function)
- * Invoke a callback with a stream's data.
+ * - Invoke a callback with a stream's data.
  */
 function readStreamAsJSON(stream, callback) {
   let data = '';
@@ -67,15 +68,15 @@ function readStreamAsJSON(stream, callback) {
 /** : (string, Array, Function)
  * - Register a server route.
  */
-function handle(method: string, url: string[], f: (...args: any) => Output) {
+function handle(method: string, url: string[], f: (...args1: any) => Output) {
   router.add(
     method,
     url,
-    (req: IncomingMessage, resp: ServerResponse<IncomingMessage>, ...args) => {
+    (req: IncomingMessage, resp: ServerResponse<IncomingMessage>, ...args2) => {
       function finish() {
         let output: Output;
         try {
-          output = f(...args, req, resp);
+          output = f(...args2, req, resp);
         } catch (err) {
           console.log(err.stack);
           output = new Output(err.status || 500, err.toString());
@@ -89,7 +90,7 @@ function handle(method: string, url: string[], f: (...args: any) => Output) {
         readStreamAsJSON(req, (err, val) => {
           if (err) new Output(500, err.toString()).resp(resp);
           else {
-            args.unshift(val);
+            args2.unshift(val);
             finish();
           }
         });
@@ -120,7 +121,7 @@ handle('GET', ['docs', null], (id, req) => {
   });
 });
 
-function nonNegInteger(str) {
+function nonNegInteger(str: string) {
   const num = Number(str);
   if (!isNaN(num) && Math.floor(num) == num && num >= 0) return num;
   const err = new Error('Not a non-negative integer: ' + str);
@@ -134,18 +135,19 @@ function nonNegInteger(str) {
  * event data to the client.
  */
 class Waiting {
-  resp: any;
-  inst: any;
+  resp: ServerResponse<IncomingMessage>;
+  inst: Instance;
   ip: any;
   finish: any;
   done: boolean;
-  constructor(resp, inst, ip, finish) {
+  constructor(resp: ServerResponse<IncomingMessage>, inst, ip, finish) {
     this.resp = resp;
     this.inst = inst;
     this.ip = ip;
     this.finish = finish;
     this.done = false;
-    resp.setTimeout(1000 * 60 * 5, () => {
+    /** 👇🏻 每个waiting对象都会使请求的response进入等待状态 */
+    resp.setTimeout(1000 * 60 * 0.5, () => {
       this.abort();
       this.send(Output.json({}));
     });
@@ -156,7 +158,7 @@ class Waiting {
     if (found > -1) this.inst.waiting.splice(found, 1);
   }
 
-  send(output) {
+  send(output: Output) {
     if (this.done) return;
     output.resp(this.resp);
     this.done = true;
@@ -178,24 +180,33 @@ function outputEvents(inst, data) {
  * returns all events between a given version and the server's
  * current version of the document.
  */
-handle('GET', ['docs', null, 'events'], (id, req, resp) => {
-  const version = nonNegInteger(req.query.version);
-  const commentVersion = nonNegInteger(req.query.commentVersion);
+handle(
+  'GET',
+  ['docs', null, 'events'],
+  (
+    id,
+    req: IncomingMessage & { query: any },
+    resp: ServerResponse<IncomingMessage>,
+  ) => {
+    const version = nonNegInteger(req.query.version);
+    const commentVersion = nonNegInteger(req.query.commentVersion);
 
-  const inst = getInstance(id, reqIP(req));
-  const data = inst.getEvents(version, commentVersion);
-  if (data === false) return new Output(410, 'History no longer available');
-  // If the server version is greater than the given version,
-  // return the data immediately.
-  if (data.steps.length || data.comment.length) return outputEvents(inst, data);
-  // If the server version matches the given version,
-  // wait until a new version is published to return the event data.
-  const wait = new Waiting(resp, inst, reqIP(req), () => {
-    wait.send(outputEvents(inst, inst.getEvents(version, commentVersion)));
-  });
-  inst.waiting.push(wait);
-  resp.on('close', () => wait.abort());
-});
+    const inst = getInstance(id, reqIP(req)) as Instance;
+    const data = inst.getEvents(version, commentVersion);
+    if (data === false) return new Output(410, 'History no longer available');
+    // If the server version is greater than the given version,
+    // return the data immediately.
+    if (data.steps.length || data.comment.length)
+      return outputEvents(inst, data);
+    // If the server version matches the given version,
+    // wait until a new version is published to return the event data.
+    const wait = new Waiting(resp, inst, reqIP(req), () => {
+      wait.send(outputEvents(inst, inst.getEvents(version, commentVersion)));
+    });
+    inst.waiting.push(wait);
+    resp.on('close', () => wait.abort());
+  },
+);
 
 function reqIP(request) {
   return request.headers['x-forwarded-for'] || request.socket.remoteAddress;

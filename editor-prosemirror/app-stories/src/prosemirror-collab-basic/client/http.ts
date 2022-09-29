@@ -1,46 +1,50 @@
-/** A simple wrapper for XHR. */
-export function req(conf: {
+type AjaxOptions = {
   url: string;
   method: string;
-  body?: any;
-  headers?: any;
-}) {
-  const req = new XMLHttpRequest();
-  let aborted = false;
-  const result = new Promise((success, failure) => {
-    console.log(';; ajax-conf ', conf.method, conf);
+  body?: string;
+  headers?: Record<string, string>;
+};
 
-    req.open(conf.method, conf.url, true);
-    req.addEventListener('load', () => {
+/** A simple wrapper for XHR. */
+export function ajax(options: AjaxOptions): Promise<unknown> {
+  const xhr = new XMLHttpRequest();
+  let aborted = false;
+  const result = new Promise((resolve, reject) => {
+    // console.log(';; ajax-options ', options.method, options);
+
+    xhr.open(options.method, options.url, true);
+    xhr.addEventListener('load', () => {
       if (aborted) return;
-      if (req.status < 400) {
-        success(req.responseText);
+      if (xhr.status < 400) {
+        resolve(xhr.responseText);
       } else {
-        let text = req.responseText;
-        if (text && /html/.test(req.getResponseHeader('content-type')))
+        // / 400、500
+        let text = xhr.responseText;
+        if (text && /html/.test(xhr.getResponseHeader('content-type')))
           text = makePlain(text);
         const err = new Error(
-          'Request failed: ' + req.statusText + (text ? '\n\n' + text : ''),
+          'Request failed: ' + xhr.statusText + (text ? '\n\n' + text : ''),
         );
         // @ts-expect-error custom-api
-        err.status = req.status;
-        failure(err);
+        err.status = xhr.status;
+        reject(err);
       }
     });
-    req.addEventListener('error', () => {
-      if (!aborted) failure(new Error('Network error'));
+    xhr.addEventListener('error', () => {
+      if (!aborted) reject(new Error('Network error'));
     });
-    if (conf.headers) {
-      for (const header in conf.headers) {
-        req.setRequestHeader(header, conf.headers[header]);
+    if (options.headers) {
+      // eslint-disable-next-line guard-for-in
+      for (const name in options.headers) {
+        xhr.setRequestHeader(name, options.headers[name]);
       }
     }
-    req.send(conf.body || null);
+    xhr.send(options.body || null);
   });
   // @ts-expect-error custom-api
   result.abort = () => {
     if (!aborted) {
-      req.abort();
+      xhr.abort();
       aborted = true;
     }
   };
@@ -48,21 +52,21 @@ export function req(conf: {
 }
 
 function makePlain(html: string) {
-  const elt = document.createElement('div');
-  elt.innerHTML = html;
-  return elt.textContent.replace(/\n[^]*|\s+$/g, '');
+  const ele = document.createElement('div');
+  ele.innerHTML = html;
+  return ele.textContent.replace(/\n[^]*|\s+$/g, '');
 }
 
 const baseUrl = 'http://localhost:3001';
 
 export function GET(url: string) {
   console.log('[GET]', baseUrl + url);
-  return req({ url: baseUrl + url, method: 'GET' });
+  return ajax({ url: baseUrl + url, method: 'GET' });
 }
 
 export function POST(url: string, body: string, type: string) {
   console.log('[POST]', baseUrl + url);
-  return req({
+  return ajax({
     url: baseUrl + url,
     method: 'POST',
     body,

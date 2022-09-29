@@ -4,6 +4,7 @@ import { type IncomingMessage, type ServerResponse } from 'node:http';
 type IRoute = {
   method: string;
   url: string[];
+  /** 针对url请求的处理方法 */
   handler: (...args: any) => void;
 };
 

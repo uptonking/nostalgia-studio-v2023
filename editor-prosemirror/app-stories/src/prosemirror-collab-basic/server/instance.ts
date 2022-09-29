@@ -14,7 +14,7 @@ const MAX_STEP_HISTORY = 10000;
 /** A collaborative editing document instance.
  * - ❓ 虽然能work，但控制台都是invalid version的异常信息
  */
-class Instance {
+export class Instance {
   id: number;
   doc: Node;
   steps: any[];
@@ -146,6 +146,7 @@ class Instance {
   }
 }
 
+/** 全局映射表， */
 const instances = Object.create(null);
 let instanceCount = 0;
 const maxCount = 20;
@@ -205,6 +206,7 @@ export function getInstance(id, ip) {
 function newInstance(id, doc = undefined, comments = undefined) {
   if (++instanceCount > maxCount) {
     let oldest = null;
+    // eslint-disable-next-line guard-for-in
     for (const id in instances) {
       const inst = instances[id];
       if (!oldest || inst.lastActive < oldest.lastActive) oldest = inst;
@@ -218,7 +220,8 @@ function newInstance(id, doc = undefined, comments = undefined) {
 
 export function instanceInfo() {
   const found = [];
-  for (const id in instances)
+  for (const id in instances) {
     found.push({ id: id, users: instances[id].userCount });
+  }
   return found;
 }

@@ -22,7 +22,6 @@ import {
  */
 export const ProseMirrorCollabBasic = () => {
   const editorContainer = useRef<HTMLDivElement>();
-  const initialContentContainer = useRef<HTMLDivElement>();
   const usernamesContainer = useRef<HTMLSpanElement>();
   const docNameContainer = useRef<HTMLSpanElement>();
   // const view = useRef<EditorView>(null);
@@ -47,9 +46,11 @@ export const ProseMirrorCollabBasic = () => {
           usernamesContainer.current,
         );
         window['connection'] = connection.current;
-        connection.current.request.then(() => connection.current.view.focus());
+        connection.current.request?.then(() => connection.current.view.focus());
         return true;
       }
+
+      return false;
     }
 
     connectFromHash() || (location.hash = '#edit-Example');
@@ -74,14 +75,6 @@ export const ProseMirrorCollabBasic = () => {
             Change
           </button> */}
         </span>
-      </div>
-
-      {/* 👇🏻 剩下的全是默认隐藏的编辑器初始数据 */}
-      <div ref={initialContentContainer} style={{ display: 'none' }}>
-        <h3>prosemirror-collab basic example</h3>
-        <p>
-          Select some text to see a tooltip with the size of your selection.
-        </p>
       </div>
     </StyledDemoContainer>
   );

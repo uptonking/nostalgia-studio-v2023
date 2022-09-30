@@ -1,6 +1,6 @@
 {
   "name": "prosemirror-dropcursor",
-  "version": "1.6.0111",
+  "version": "1.6.1111",
   "description": "Drop cursor plugin for ProseMirror",
   "type": "module",
   "main": "src/index.ts",
@@ -25,7 +25,7 @@
   "dependencies": {
     "prosemirror-state": "1.4.1111",
     "prosemirror-view": "1.27.2111",
-    "prosemirror-transform": "1.7.0111"
+    "prosemirror-transform": "1.7.1111"
   },
   "devDependencies": {
     "@prosemirror/buildhelper": "^0.1.5"

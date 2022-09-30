@@ -32,7 +32,7 @@
   "dependencies": {
     "prosemirror-view": "1.27.2111",
     "prosemirror-model": "1.18.1111",
-    "prosemirror-transform": "1.7.0111"
+    "prosemirror-transform": "1.7.1111"
   },
   "devDependencies": {
     "@prosemirror/buildhelper": "^0.1.5",

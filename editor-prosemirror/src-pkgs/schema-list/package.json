@@ -25,7 +25,7 @@
   "dependencies": {
     "prosemirror-state": "1.4.1111",
     "prosemirror-model": "1.18.1111",
-    "prosemirror-transform": "1.7.0111"
+    "prosemirror-transform": "1.7.1111"
   },
   "devDependencies": {
     "prosemirror-state": "^1.0.0",

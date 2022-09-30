@@ -33,7 +33,7 @@
     "prosemirror-state": "1.4.1111",
     "prosemirror-view": "1.27.2111",
     "prosemirror-model": "1.18.1111",
-    "prosemirror-keymap": "1.2.0111"
+    "prosemirror-keymap": "1.2.1111"
   },
   "devDependencies": {
     "@prosemirror/buildhelper": "^0.1.5"

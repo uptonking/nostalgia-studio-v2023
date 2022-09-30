@@ -26,9 +26,7 @@
     "orderedmap": "2.0.1111"
   },
   "devDependencies": {
-    "@prosemirror/buildhelper": "^0.1.5",
-    "jsdom": "^10.1.0",
-    "prosemirror-test-builder": "^1.0.0"
+    "prosemirror-test-builder": "1.1.0111"
   },
   "scripts": {
     "test": "pm-runtests",

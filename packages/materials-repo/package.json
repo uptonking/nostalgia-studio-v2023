@@ -44,7 +44,7 @@
     "react-router-dom": "^6.3.0",
     "react-use": "^17.3.1",
     "reactstrap": "^8.10.0",
-    "rich-markdown-editor": "^11.17.8",
+    "rich-markdown-editor": "^11.21.3",
     "svg-captcha": "^1.4.0",
     "tocbot": "^4.13.4",
     "ws": "^8.2.2"
@@ -61,6 +61,6 @@
     "@types/mime-types": "^2.1.1",
     "@types/multer": "^1.4.7",
     "@types/ws": "^7.4.7",
-    "ts-node-dev": "^1.1.8"
+    "ts-node-dev": "^2.0.0"
   }
 }

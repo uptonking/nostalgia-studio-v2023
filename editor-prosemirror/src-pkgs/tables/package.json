@@ -32,13 +32,11 @@
   "dependencies": {
     "prosemirror-state": "1.4.1111",
     "prosemirror-view": "1.27.2111",
-    "prosemirror-keymap": "1.2.0111",
+    "prosemirror-keymap": "1.2.1111",
     "prosemirror-model": "1.18.1111",
-    "prosemirror-transform": "1.7.0111"
+    "prosemirror-transform": "1.7.1111"
   },
   "devDependencies": {
-    "@types/prosemirror-model": "^1.7.0",
-    "@types/prosemirror-state": "^1.2.0",
     "builddocs": "^1.0.3",
     "ist": "^1.1.1",
     "mocha": "^10.0.0",

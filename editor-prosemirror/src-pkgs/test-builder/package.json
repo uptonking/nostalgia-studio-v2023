@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "prosemirror-model": "1.18.1111",
-    "prosemirror-schema-basic": "1.2.0111",
+    "prosemirror-schema-basic": "1.2.1111",
     "prosemirror-schema-list": "1.2.1111"
   },
   "devDependencies": {

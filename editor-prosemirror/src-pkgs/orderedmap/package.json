@@ -33,7 +33,5 @@
     "watch": "rollup -c -w",
     "prepare1": "npm run build"
   },
-  "devDependencies": {
-    "rollup": "^1.26.3"
-  }
+  "devDependencies": {}
 }

@@ -59,7 +59,7 @@
     "@atlaskit/tooltip": "^17.3.0",
     "@atlaskit/width-detector": "^3.0.0",
     "@babel/runtime": "^7.0.0",
-    "@emotion/core": "^10.0.9",
+    "@emotion/core": "^10.3.1",
     "blueimp-load-image": "2.19.0",
     "bytes": "^2.4.0",
     "exenv": "^1.2.2",

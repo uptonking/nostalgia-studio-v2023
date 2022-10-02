@@ -37,7 +37,7 @@ function badVersion(err) {
 }
 
 /** editorState + 变更标记 */
-class State {
+class TaggedState {
   edit: EditorState;
   // comm: 'poll' | 'recover' | 'detached' | 'send';
   comm: string;
@@ -47,18 +47,20 @@ class State {
   }
 }
 
-/** 创建pm-EditorView对象，并建立到服务器的连接来接收服务端发来的更改。
+/** ✨️ 创建pm-EditorView对象，连接服务器来接收服务端发来的op，并且支持协作评论。
  * - 轮询服务端的变更通过在服务端等待response.setTimeout实现，
- * - 在所有客户端都无操作时，客户端每次请求都会等待N秒才会受到请求空结果返回，然后客户端会立即再次发起请求
- *
+ *    - 当所有客户端都无操作时，客户端每次请求都会等待N秒才会收到请求返回的空结果，然后客户端会立即再次发起请求
+ * - 分析编辑操作的发送与接收： 1.初始化； 2.本地输入触发op； 3.服务端发来op； 4.服务端处理多个op
+ * - ❓️ usernamesDOM的内容偶尔会变成 undefined，线上也存在此问题
+ * - ❓️ undo只能撤回一次op
  */
 export class EditorConnection {
   /** 用来显示/隐藏操作成功/失败的消息 */
-  report: Reporter;
-  /** 代表当前文档地址的url */
+  reporter: Reporter;
+  /** 代表当前文档服务端操作api的url */
   url: string;
   /** 带标记的editorState */
-  state: State;
+  state: TaggedState;
   /** 当前正在执行的异步请求 */
   request: Promise<any>;
   /**  */
@@ -68,9 +70,9 @@ export class EditorConnection {
   usernamesDOM: HTMLDivElement;
 
   constructor(report: Reporter, url: string, editorViewDOM, usernamesDOM) {
-    this.report = report;
+    this.reporter = report;
     this.url = url;
-    this.state = new State(null, 'start');
+    this.state = new TaggedState(null, 'start');
     this.request = null;
     this.backOff = 0;
     this.view = null;
@@ -86,7 +88,7 @@ export class EditorConnection {
     this.run(GET(this.url)).then(
       (data) => {
         data = JSON.parse(data);
-        this.report.success();
+        this.reporter.success();
         this.backOff = 0;
         this.dispatch({
           type: 'loaded',
@@ -97,12 +99,14 @@ export class EditorConnection {
         });
       },
       (err) => {
-        this.report.failure(err);
+        this.reporter.failure(err);
       },
     );
   }
 
-  /** All state changes go through this */
+  /** All state changes go through this.
+   * - 全局的事件/状态处理器，这个方法自身会传入new EditorView的dispatch属性伴随编辑器更新
+   */
   dispatch(action: {
     type: string;
     transaction?: Transaction;
@@ -135,24 +139,24 @@ export class EditorConnection {
         // @ts-expect-error ❓ 为什么传了个自定义参数
         comments: action.comments,
       });
-      this.state = new State(editState, 'poll');
+      this.state = new TaggedState(editState, 'poll');
       this.poll();
     }
 
     if (action.type === 'restart') {
-      this.state = new State(null, 'start');
+      this.state = new TaggedState(null, 'start');
       this.start();
     }
     if (action.type === 'poll') {
-      this.state = new State(this.state.edit, 'poll');
+      this.state = new TaggedState(this.state.edit, 'poll');
       this.poll();
     }
     if (action.type === 'recover') {
       if (action.error.status && action.error.status < 500) {
-        this.report.failure(action.error);
-        this.state = new State(null, null);
+        this.reporter.failure(action.error);
+        this.state = new TaggedState(null, null);
       } else {
-        this.state = new State(this.state.edit, 'recover');
+        this.state = new TaggedState(this.state.edit, 'recover');
         this.recover(action.error);
       }
     }
@@ -161,32 +165,24 @@ export class EditorConnection {
     }
 
     if (newEditState) {
-      let sendable: {
-        steps: {
-          version: number;
-          steps: readonly Step[];
-          clientID: string | number;
-          origins: readonly Transaction[];
-        };
-        comments: any;
-      };
-      if (newEditState.doc.content.size > 40000) {
+      let sendable;
+      if (newEditState.doc.content.size > 500) {
         if (this.state.comm !== 'detached') {
-          this.report.failure('Document too big. Detached.');
+          this.reporter.failure('Document too big. Detached.');
         }
-        this.state = new State(newEditState, 'detached');
+        this.state = new TaggedState(newEditState, 'detached');
       } else if (
         (this.state.comm === 'poll' || action.requestDone) &&
         (sendable = this.sendable(newEditState))
       ) {
         this.closeRequest();
-        this.state = new State(newEditState, 'send');
+        this.state = new TaggedState(newEditState, 'send');
         this.send(newEditState, sendable);
       } else if (action.requestDone) {
-        this.state = new State(newEditState, 'poll');
+        this.state = new TaggedState(newEditState, 'poll');
         this.poll();
       } else {
-        this.state = new State(newEditState, this.state.comm);
+        this.state = new TaggedState(newEditState, this.state.comm);
       }
     }
 
@@ -221,10 +217,10 @@ export class EditorConnection {
       '&commentVersion=' +
       commentPlugin.getState(this.state.edit).version;
 
-    // 注意服务端处理这个请求时，若无变更则会先等待N秒，在获取请求结果后立即再次poll()就实现了轮询
+    // 注意服务端处理这个请求时，若无变更则会先等待N秒再返回，在then拿到结果后立即再次poll()就实现了轮询
     this.run(GET(this.url + '/events?' + query)).then(
       (data) => {
-        this.report.success();
+        this.reporter.success();
         data = JSON.parse(data);
         this.backOff = 0;
         console.log(
@@ -262,7 +258,7 @@ export class EditorConnection {
 
         if (err.status === 410 || badVersion(err)) {
           // Too far behind. Revert to server state
-          this.report.failure(err);
+          this.reporter.failure(err);
           this.dispatch({ type: 'restart' });
         } else if (err) {
           this.dispatch({ type: 'recover', error: err });
@@ -274,7 +270,9 @@ export class EditorConnection {
   sendable(editState: EditorState) {
     const steps = sendableSteps(editState);
     const comments = commentPlugin.getState(editState).unsentEvents();
-    if (steps || comments.length) return { steps, comments };
+    if (steps || comments.length) {
+      return { steps, comments };
+    }
   }
 
   /** 基于POST请求 Send the given steps to the server */
@@ -291,7 +289,7 @@ export class EditorConnection {
       (data) => {
         console.log(';;postSteps-ok ', data);
 
-        this.report.success();
+        this.reporter.success();
         this.backOff = 0;
         const tr = steps
           ? receiveTransaction(
@@ -312,28 +310,28 @@ export class EditorConnection {
           requestDone: true,
         });
       },
-      (err) => {
-        console.log(';;postSteps-err, ', err);
+        (err) => {
+          console.log(';;postSteps-err, ', err);
 
-        if (err.status === 409) {
-          // The client's document conflicts with the server's version.
-          // Poll for changes and then try again.
-          this.backOff = 0;
-          this.dispatch({ type: 'poll' });
-        } else if (badVersion(err)) {
-          this.report.failure(err);
-          this.dispatch({ type: 'restart' });
-        } else {
-          this.dispatch({ type: 'recover', error: err });
+          if (err.status === 409) {
+            // The client's document conflicts with the server's version.
+            // Poll for changes and then try again.
+            this.backOff = 0;
+            this.dispatch({ type: 'poll' });
+          } else if (badVersion(err)) {
+            this.reporter.failure(err);
+            this.dispatch({ type: 'restart' });
+          } else {
+            this.dispatch({ type: 'recover', error: err });
+          }
         }
-      },
     );
   }
 
   /** Try to recover from an error */
   recover(err) {
     const newBackOff = this.backOff ? Math.min(this.backOff * 2, 6e4) : 200;
-    if (newBackOff > 1000 && this.backOff < 1000) this.report.delay(err);
+    if (newBackOff > 1000 && this.backOff < 1000) this.reporter.delay(err);
     this.backOff = newBackOff;
     setTimeout(() => {
       if (this.state.comm == 'recover') this.dispatch({ type: 'poll' });

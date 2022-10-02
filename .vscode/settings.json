@@ -1,11 +1,4 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "markdownFormatter.enable": true,
   "markdownFormatter.fullWidthTurnHalfWidth": "auto",
   "markdownFormatter.codeAreaToBlock": "",
@@ -33,7 +26,6 @@
     "editor.defaultFormatter": "mervin.markdown-formatter"
   },
   "bookmarks.saveBookmarksInProject": true,
-  "editor.formatOnSaveMode": "modifications",
   "maptz.regionfolder": {
     "[markdown]": {
       "defaultFoldStartRegex": "\\<!--[\\s]*#region[\\s]+/folded[\\s]*(.*)",
@@ -92,10 +84,9 @@
       "foldEndRegex": "//[\\s]*#endregion(.*)"
     }
   },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "sort-imports.default-sort-style": "module-scoped",
   "sort-imports.on-save": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "files.autoSave": "onFocusChange"
 }

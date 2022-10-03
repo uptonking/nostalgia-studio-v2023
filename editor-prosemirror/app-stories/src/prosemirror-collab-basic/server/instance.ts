@@ -1,5 +1,5 @@
 import { readFileSync, writeFile } from 'node:fs';
-import { Mapping } from 'prosemirror-transform';
+import { Mapping, Step } from 'prosemirror-transform';
 import { type Node } from 'prosemirror-model';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
@@ -7,23 +7,31 @@ import { dirname } from 'node:path';
 import { Comment, Comments } from './comments';
 import { populateDefaultInstances } from './defaultinstances';
 import { schema } from './schema';
+import type { Waiting } from './server';
 
 /** max steps/operations on server */
 const MAX_STEP_HISTORY = 10000;
 
-/** A collaborative editing document instance.
+/** 处理协作op的中心服务，决定op顺序。A collaborative editing document instance.
  * - ❓ 虽然能work，但控制台都是invalid version的异常信息
+ * - ❓️ 如何在接收一个op后，拒绝另一个op
+ *    - 接收一个op后，检查version变化
+ * - ❓️ 服务端为什么要保存最新文档实例 this.doc?
+ *    - 用来让后连接的客户端立即获取最新文档作为初始文档
  */
 export class Instance {
   id: number;
+  /** 中心服务存放的当前最新文档实例 */
   doc: Node;
-  steps: any[];
-  comments: any;
+  /** 中心服务存放的当前文档版本。version number of the document instance. */
   version: number;
+  /** op操作记录，本示例只放在内存而未持久化，有个默认最大的记录数量 */
+  steps: (Step & { clientID: number })[];
+  comments: any;
   lastActive: number;
   users: any;
   userCount: number;
-  waiting: any[];
+  waitings: Waiting[];
   collecting: any;
 
   constructor(id, doc, comments) {
@@ -38,24 +46,33 @@ export class Instance {
         ]),
       ]);
     this.comments = comments || new Comments();
-    // The version number of the document instance.
     this.version = 0;
     this.steps = [];
     this.lastActive = Date.now();
     this.users = Object.create(null);
     this.userCount = 0;
-    this.waiting = [];
+    this.waitings = [];
 
     this.collecting = null;
   }
 
   stop() {
-    if (this.collecting != null) clearInterval(this.collecting);
+    if (this.collecting != null) {
+      clearInterval(this.collecting);
+    }
   }
 
-  addEvents(version, steps, comments, clientID) {
+  /** 接收编辑steps，然后apply到this.doc
+   * - 对应文档示例中的 receiveSteps，客户端提交更改op后会执行这里
+   */
+  addEvents(
+    version: number,
+    steps: (Step & { clientID: number })[],
+    comments,
+    clientID: number,
+  ) {
     this.checkVersion(version);
-    if (this.version != version) return false;
+    if (this.version !== version) return false;
     let doc = this.doc;
     const maps = [];
     for (let i = 0; i < steps.length; i++) {
@@ -65,30 +82,38 @@ export class Instance {
       maps.push(steps[i].getMap());
     }
     this.doc = doc;
-    this.version += steps.length;
     this.steps = this.steps.concat(steps);
-    if (this.steps.length > MAX_STEP_HISTORY)
+    this.version += steps.length;
+    if (this.steps.length > MAX_STEP_HISTORY) {
       this.steps = this.steps.slice(this.steps.length - MAX_STEP_HISTORY);
+    }
 
     this.comments.mapThrough(new Mapping(maps));
-    if (comments)
+    if (comments) {
       for (let i = 0; i < comments.length; i++) {
         const event = comments[i];
         if (event.type == 'delete') this.comments.deleted(event.id);
         else this.comments.created(event);
       }
+    }
 
+    // 将steps发送到所有客户端
     this.sendUpdates();
+    // 持久化最新文档内容到本地json文件
     scheduleSave();
+    // 客户端拿到返回数据可根据version跳过自身修改
     return { version: this.version, commentVersion: this.comments.version };
   }
 
+  /** 返回客户端的请求 */
   sendUpdates() {
-    while (this.waiting.length) this.waiting.pop().finish();
+    while (this.waitings.length) {
+      this.waitings.pop().finish();
+    }
   }
 
-  /** : (Number)
-   * Check if a document version number relates to an existing
+  /** : (Number) 检查版本号必须在 `[0, this.version]` 闭区间
+   * - Check if a document version number relates to an existing
    * document version.
    */
   checkVersion(version: number) {
@@ -100,11 +125,12 @@ export class Instance {
     }
   }
 
-  /** : (Number, Number)
-   * Get events between a given document version and
+  /**
+   * - Get events between a given document version and
    * the current document version.
+   * - 对应文档中的stepsSince
    */
-  getEvents(version, commentVersion) {
+  getEvents(version: number, commentVersion: number) {
     this.checkVersion(version);
     const startIndex = this.steps.length - (this.version - version);
     if (startIndex < 0) return false;
@@ -124,8 +150,8 @@ export class Instance {
     this.users = Object.create(null);
     this.userCount = 0;
     this.collecting = null;
-    for (let i = 0; i < this.waiting.length; i++)
-      this._registerUser(this.waiting[i].ip);
+    for (let i = 0; i < this.waitings.length; i++)
+      this._registerUser(this.waitings[i].ip);
     if (this.userCount != oldUserCount) this.sendUpdates();
   }
 
@@ -178,7 +204,10 @@ if (json) {
 }
 
 let saveTimeout = null;
+/** 每个10s持久化一次文档实例 */
 const saveEvery = 1e4;
+
+/** 每个10s持久化一次文档实例到本地。json文件 */
 function scheduleSave() {
   if (saveTimeout != null) return;
   saveTimeout = setTimeout(doSave, saveEvery);

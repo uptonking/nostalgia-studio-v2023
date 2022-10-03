@@ -61,8 +61,8 @@ class CollabState {
      * was enabled.
      */
     readonly version: number,
-    /** The local steps that havent been successfully sent to the
-     * server yet.
+    /** The local steps that havent been successfully sent to the server yet.
+     * - 被服务器拒绝后会保持unconfirmed
      */
     readonly unconfirmed: readonly Rebaseable[],
   ) {}
@@ -84,8 +84,7 @@ function unconfirmedFrom(transform: Transform) {
 const collabKey = new PluginKey('collab');
 
 type CollabConfig = {
-  /** The starting version number of the collaborative editing.
-   * Defaults to 0.
+  /** The starting version number of the collaborative editing. Defaults to 0.
    */
   version?: number;
 
@@ -97,30 +96,31 @@ type CollabConfig = {
 
 /** Creates a plugin that enables the collaborative editing framework
  * for the editor.
+ * - 文档变化时会更新 CollabState，
  */
 export function collab(config: CollabConfig = {}): Plugin {
   const conf: Required<CollabConfig> = {
     version: config.version || 0,
     clientID:
       config.clientID == null
-        ? Math.floor(Math.random() * 0xffffffff)
+        ? // ? Math.floor(Math.random() * 0xffffffff)
+          new Date().toISOString().replace(/\D/g, '')
         : config.clientID,
   };
 
   return new Plugin({
     key: collabKey,
-
     state: {
       init: () => new CollabState(conf.version, []),
-      apply(tr, collab) {
+      apply(tr, collabState) {
         const newState = tr.getMeta(collabKey);
         if (newState) return newState;
         if (tr.docChanged)
           return new CollabState(
-            collab.version,
-            collab.unconfirmed.concat(unconfirmedFrom(tr)),
+            collabState.version,
+            collabState.unconfirmed.concat(unconfirmedFrom(tr)),
           );
-        return collab;
+        return collabState;
       },
     },
 

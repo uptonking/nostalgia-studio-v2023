@@ -4,6 +4,9 @@ import { Mappable, StepMap } from './map';
 import { Step, StepResult } from './step';
 
 /** Replace a part of the document with a slice of new content.
+ * - my initial impulse was to split ReplaceStep up into steps that remove and insert content.
+ *    - But because the position map created by a replace step needs to treat the step as atomic (positions have to be pushed out of all replaced content), I got better results with making it a single step.
+ * - https://marijnhaverbeke.nl/blog/collaborative-editing.html
  */
 export class ReplaceStep extends Step {
   /** The given `slice` should fit the 'gap' between `from` and

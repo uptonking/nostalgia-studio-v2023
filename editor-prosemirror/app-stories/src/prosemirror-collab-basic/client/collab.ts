@@ -51,15 +51,19 @@ class TaggedState {
  * - 轮询服务端的变更通过在服务端等待response.setTimeout实现，
  *    - 当所有客户端都无操作时，客户端每次请求都会等待N秒才会收到请求返回的空结果，然后客户端会立即再次发起请求
  * - 分析编辑操作的发送与接收： 1.初始化； 2.本地输入触发op； 3.服务端发来op； 4.服务端处理多个op
+ *
  * - ❓️ usernamesDOM的内容偶尔会变成 undefined，线上也存在此问题
  * - ❓️ undo只能撤回一次op
+ *
+ * - 设计问题
+ *    - 客户端过多时，op更改网络传输次数过多
  */
 export class EditorConnection {
   /** 用来显示/隐藏操作成功/失败的消息 */
   reporter: Reporter;
   /** 代表当前文档服务端操作api的url */
   url: string;
-  /** 带标记的editorState */
+  /** 带标记的editorState，始终是最新的editorState */
   state: TaggedState;
   /** 当前正在执行的异步请求 */
   request: Promise<any>;
@@ -117,7 +121,6 @@ export class EditorConnection {
     requestDone?: any;
     error?: any;
   }) {
-    let newEditState: EditorState = null;
     console.log(';; dispatch', action.type, action);
 
     if (action.type === 'loaded') {
@@ -160,11 +163,14 @@ export class EditorConnection {
         this.recover(action.error);
       }
     }
+
+    let newEditState: EditorState = null;
     if (action.type === 'transaction') {
       newEditState = this.state.edit.apply(action.transaction);
     }
 
     if (newEditState) {
+      // 编辑器首次初始化时不会执行这里
       let sendable;
       if (newEditState.doc.content.size > 500) {
         if (this.state.comm !== 'detached') {
@@ -177,6 +183,7 @@ export class EditorConnection {
       ) {
         this.closeRequest();
         this.state = new TaggedState(newEditState, 'send');
+        // 👇🏻️ 发送更改op
         this.send(newEditState, sendable);
       } else if (action.requestDone) {
         this.state = new TaggedState(newEditState, 'poll');
@@ -191,13 +198,12 @@ export class EditorConnection {
       if (this.view) {
         this.view.updateState(this.state.edit);
       } else {
-        this.setView(
-          new EditorView(this.editorViewDOM, {
-            state: this.state.edit,
-            dispatchTransaction: (transaction) =>
-              this.dispatch({ type: 'transaction', transaction }),
-          }),
-        );
+        const editorView = new EditorView(this.editorViewDOM, {
+          state: this.state.edit,
+          dispatchTransaction: (transaction) =>
+            this.dispatch({ type: 'transaction', transaction }),
+        });
+        this.setView(editorView);
       }
     } else {
       this.setView(null);
@@ -208,7 +214,9 @@ export class EditorConnection {
    * of the document that the client knows about. This request waits
    * for a new version of the document to be created if the client
    * is already up-to-date.
+   * - 轮询发送请求获取服务端更改
    * - 在所有客户端都无操作时，客户端每次请求都会等待N秒才会受到请求空结果返回，然后客户端会立即再次发起请求
+   * - 收到更改op时，就会创建tr然后apply到本地editorState.doc
    */
   poll() {
     const query =
@@ -267,12 +275,17 @@ export class EditorConnection {
     );
   }
 
+  /** 计算出未发送的steps */
   sendable(editState: EditorState) {
     const steps = sendableSteps(editState);
     const comments = commentPlugin.getState(editState).unsentEvents();
+    console.log(';; 计算sendable ', steps);
+
     if (steps || comments.length) {
       return { steps, comments };
     }
+
+    return null;
   }
 
   /** 基于POST请求 Send the given steps to the server */
@@ -310,21 +323,21 @@ export class EditorConnection {
           requestDone: true,
         });
       },
-        (err) => {
-          console.log(';;postSteps-err, ', err);
+      (err) => {
+        console.log(';;postSteps-err, ', err);
 
-          if (err.status === 409) {
-            // The client's document conflicts with the server's version.
-            // Poll for changes and then try again.
-            this.backOff = 0;
-            this.dispatch({ type: 'poll' });
-          } else if (badVersion(err)) {
-            this.reporter.failure(err);
-            this.dispatch({ type: 'restart' });
-          } else {
-            this.dispatch({ type: 'recover', error: err });
-          }
+        if (err.status === 409) {
+          // The client's document conflicts with the server's version.
+          // Poll for changes and then try again.
+          this.backOff = 0;
+          this.dispatch({ type: 'poll' });
+        } else if (badVersion(err)) {
+          this.reporter.failure(err);
+          this.dispatch({ type: 'restart' });
+        } else {
+          this.dispatch({ type: 'recover', error: err });
         }
+      },
     );
   }
 

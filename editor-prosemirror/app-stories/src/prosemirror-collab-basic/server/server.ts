@@ -134,7 +134,7 @@ function nonNegInteger(str: string) {
  * instance to publish a new version before sending the version
  * event data to the client.
  */
-class Waiting {
+export class Waiting {
   resp: ServerResponse<IncomingMessage>;
   inst: Instance;
   ip: any;
@@ -154,8 +154,8 @@ class Waiting {
   }
 
   abort() {
-    const found = this.inst.waiting.indexOf(this);
-    if (found > -1) this.inst.waiting.splice(found, 1);
+    const found = this.inst.waitings.indexOf(this);
+    if (found > -1) this.inst.waitings.splice(found, 1);
   }
 
   send(output: Output) {
@@ -203,7 +203,7 @@ handle(
     const wait = new Waiting(resp, inst, reqIP(req), () => {
       wait.send(outputEvents(inst, inst.getEvents(version, commentVersion)));
     });
-    inst.waiting.push(wait);
+    inst.waitings.push(wait);
     resp.on('close', () => wait.abort());
   },
 );

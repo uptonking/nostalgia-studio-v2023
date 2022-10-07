@@ -1084,6 +1084,7 @@ export interface EditorProps<P = any> {
 
 /** The props object given directly to the editor view supports some
  * fields that can't be used in plugins:
+ * - `EditorView`构造函数的参数类型
  * - 比`EditorProps`多了3个成员：state、plugins、dispatchTransaction
  */
 export interface DirectEditorProps extends EditorProps {

@@ -41,8 +41,9 @@ module.exports = function (api) {
     //     fileName: true,
     //   },
     // ],
-    // ['@babel/plugin-proposal-class-properties', { loose: false }],
     // '@babel/proposal-object-rest-spread',
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
+    ['@babel/plugin-proposal-class-properties', { loose: false }],
     isEnvReactHotReload && 'react-refresh/babel',
   ].filter(Boolean);
 

@@ -1,0 +1,34 @@
+{
+  "name": "@example/types",
+  "version": "0.0.1111",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "type": "module",
+  "types": "src/index.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "types"
+  ],
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "format": "prettier --write \"*.+(js|json|yml|yaml|ts|md|graphql|mdx)\" src/",
+    "lint": "eslint --cache --ext .js,.ts, ./src ./types",
+    "lint:fix": "eslint --fix --ext .js,.ts, ./src ./types",
+    "watch": "rollup -cw"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "prosemirror-state": "1.4.1111",
+    "prosemirror-transform": "1.7.1111"
+  }
+}

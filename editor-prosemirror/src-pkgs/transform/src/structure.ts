@@ -20,9 +20,9 @@ function canCut(node: Node, start: number, end: number) {
 }
 
 /** Try to find a target depth to which the content in the given range
-* can be lifted. Will not go across
-* [isolating](#model.NodeSpec.isolating) parent nodes.
-*/
+ * can be lifted. Will not go across
+ * [isolating](#model.NodeSpec.isolating) parent nodes.
+ */
 export function liftTarget(range: NodeRange): number | null {
   const parent = range.parent;
   const content = parent.content.cutByIndex(range.startIndex, range.endIndex);
@@ -208,8 +208,8 @@ function canChangeType(doc: Node, pos: number, type: NodeType) {
 }
 
 /** Change the type, attributes, and/or marks of the node at `pos`.
-* When `type` isn't given, the existing node type is preserved,
-*/
+ * When `type` isn't given, the existing node type is preserved,
+ */
 export function setNodeMarkup(
   tr: Transform,
   pos: number,
@@ -317,8 +317,8 @@ export function split(
 }
 
 /** Test whether the blocks before and after a given position can be
-* joined.
-*/
+ * joined.
+ */
 export function canJoin(doc: Node, pos: number): boolean {
   const $pos = doc.resolve(pos);
   const index = $pos.index();
@@ -333,9 +333,9 @@ function joinable(a: Node | null, b: Node | null) {
 }
 
 /** Find an ancestor of the given position that can be joined to the
-* block before (or after if `dir` is positive). Returns the joinable
-* point, if any.
-*/
+ * block before (or after if `dir` is positive). Returns the joinable
+ * point, if any.
+ */
 export function joinPoint(doc: Node, pos: number, dir = -1) {
   const $pos = doc.resolve(pos);
   for (let d = $pos.depth; ; d--) {
@@ -371,10 +371,10 @@ export function join(tr: Transform, pos: number, depth: number) {
 }
 
 /** Try to find a point where a node of the given type can be inserted
-* near `pos`, by searching up the node hierarchy when `pos` itself
-* isn't a valid place but is at the start or end of a node. Return
-* null if no position was found.
-*/
+ * near `pos`, by searching up the node hierarchy when `pos` itself
+ * isn't a valid place but is at the start or end of a node. Return
+ * null if no position was found.
+ */
 export function insertPoint(
   doc: Node,
   pos: number,
@@ -402,10 +402,10 @@ export function insertPoint(
 }
 
 /** Finds a position at or around the given position where the given
-* slice can be inserted. Will look at parent nodes' nearest boundary
-* and try there, even if the original position wasn't directly at the
-* start or end of that node. Returns null when no position was found.
-*/
+ * slice can be inserted. Will look at parent nodes' nearest boundary
+ * and try there, even if the original position wasn't directly at the
+ * start or end of that node. Returns null when no position was found.
+ */
 export function dropPoint(doc: Node, pos: number, slice: Slice): number | null {
   const $pos = doc.resolve(pos);
   if (!slice.content.size) return pos;

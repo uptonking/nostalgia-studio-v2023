@@ -17,7 +17,7 @@ interface DropCursorOptions {
  * - Create a plugin that, when added to a ProseMirror instance,
  * causes a decoration to show up at the drop position when something
  * is dragged over the editor.
-* - 使用时无需import外部.css文件
+ * - 使用时无需import外部.css文件
  *
  * - Nodes may add a `disableDropCursor` property to their spec to
  * control the showing of a drop cursor inside them. This may be a

@@ -10,16 +10,14 @@
   "author": "Michael Darr",
   "license": "MIT",
   "devDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "slate": "0.78.0111",
     "slate-react": "0.79.0111",
     "leyden": "0.32.0111"
   },
   "peerDependencies": {
     "leyden": "0.32.0111",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
     "slate": "0.78.0111",
     "slate-react": "0.79.0111"
   },

@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "react-app-polyfill": "^1.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "alias": {
     "@dnd-kit/accessibility": "3.0.0111",
@@ -20,8 +20,8 @@
     "@dnd-kit/utilities": "3.1.0111"
   },
   "devDependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.9",
+    "@types/react": "^18.0.6",
+    "@types/react-dom": "^18.0.6",
     "parcel": "^1.12.3"
   }
 }

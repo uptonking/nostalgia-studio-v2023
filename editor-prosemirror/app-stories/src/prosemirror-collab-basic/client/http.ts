@@ -31,7 +31,14 @@ export function ajax(options: AjaxOptions): Promise<unknown> {
       }
     });
     xhr.addEventListener('error', () => {
-      if (!aborted) reject(new Error('Network error'));
+      if (!aborted) {
+        // reject(new Error('Network error xhr'));
+        // reject('Network error xhr');
+        const err = new Error('Network error xhr');
+        // @ts-expect-error custom-api
+        err.status = 500;
+        reject('Network error xhr');
+      }
     });
     if (options.headers) {
       // eslint-disable-next-line guard-for-in

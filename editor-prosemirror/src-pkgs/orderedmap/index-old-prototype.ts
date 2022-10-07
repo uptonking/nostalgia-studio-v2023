@@ -32,7 +32,7 @@ OrderedMap.prototype = {
   update: function (key, value, newKey) {
     const self = newKey && newKey != key ? this.remove(newKey) : this;
     const found = self.find(key);
-      const content = self.content.slice();
+    const content = self.content.slice();
     if (found == -1) {
       content.push(newKey || key, value);
     } else {
@@ -75,7 +75,7 @@ OrderedMap.prototype = {
    */
   addBefore: function (place, key, value) {
     const without = this.remove(key);
-      const content = without.content.slice();
+    const content = without.content.slice();
     const found = without.find(place);
     content.splice(found == -1 ? content.length : found, 0, key, value);
     return new OrderedMap(content);

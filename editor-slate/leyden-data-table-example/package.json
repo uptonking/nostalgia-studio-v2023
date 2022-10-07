@@ -14,12 +14,12 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.9",
+    "@types/react": "^18.0.6",
+    "@types/react-dom": "^18.0.6",
     "leyden": "0.32.0111",
     "leyden-react": "0.32.0111",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "slate": "0.78.0111",
     "slate-history": "0.66.0111",
     "slate-react": "0.79.0111"

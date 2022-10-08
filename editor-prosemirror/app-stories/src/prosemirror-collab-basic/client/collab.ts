@@ -169,6 +169,7 @@ export class EditorConnection {
 
     let newEditState: EditorState = null;
     if (action.type === 'transaction') {
+      // 👇🏻️ 每次收到服务端发来的op，就会创建tr然后通过oldState.apply(tr)创建新state
       newEditState = this.state.edit.apply(action.transaction);
     }
 
@@ -219,7 +220,7 @@ export class EditorConnection {
    * is already up-to-date.
    * - 轮询发送请求获取服务端更改
    * - 在所有客户端都无操作时，客户端每次请求都会等待N秒才会受到请求空结果返回，然后客户端会立即再次发起请求
-   * - 收到更改op时，就会创建tr然后apply到本地editorState.doc
+   * - 👉🏻️ 收到更改op时，就会创建tr然后准备apply到本地ediState.doc，而不是直接替换state/doc
    */
   poll() {
     const query =
@@ -464,7 +465,7 @@ const infoEle = {
   editor: document.querySelector('#editor'),
 };
 
-let connection: EditorConnection = null;
+const connection: EditorConnection = null;
 
 function connectFromHash() {
   // const isID = /^#edit-(.+)/.exec(location.hash);

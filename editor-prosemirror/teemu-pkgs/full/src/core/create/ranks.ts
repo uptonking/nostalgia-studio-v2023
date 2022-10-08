@@ -30,7 +30,7 @@ const ranks = {
     'indentation',
     'annotation',
 
-    //Unsupported mark
+    // Unsupported mark
     'unsupportedMark',
     'unsupportedNodeAttribute',
   ],

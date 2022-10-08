@@ -1,5 +1,4 @@
-import React from 'react';
-import { ComponentClass, FunctionComponent, PureComponent } from 'react';
+import React, { ComponentClass, FunctionComponent, PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 
 type SimpleEventHandler<T> = (event: T) => void;

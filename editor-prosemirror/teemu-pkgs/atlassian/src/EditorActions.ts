@@ -36,7 +36,7 @@ export class EditorActions<T = any> implements EditorActionsOptions<T> {
     return editorActions;
   }
 
-  //#region private
+  // #region private
   // This method needs to be public for context based helper components.
   _privateGetEditorView(): EditorView | undefined {
     return this.editorView;
@@ -92,7 +92,7 @@ export class EditorActions<T = any> implements EditorActionsOptions<T> {
   _privateUnsubscribe(cb: ContextUpdateHandler): void {
     this.listeners = this.listeners.filter((c) => c !== cb);
   }
-  //#endregion
+  // #endregion
 
   focus(): boolean {
     if (!this.editorView || this.editorView.hasFocus()) {

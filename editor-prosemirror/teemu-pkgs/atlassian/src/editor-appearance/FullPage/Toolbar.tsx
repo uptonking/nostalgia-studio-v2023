@@ -27,7 +27,7 @@ export function Toolbar(props: IProps) {
   // Iterate over primaryToolbarComponents here
   return (
     <Container>
-      <TopRow></TopRow>
+      <TopRow />
     </Container>
   );
 }

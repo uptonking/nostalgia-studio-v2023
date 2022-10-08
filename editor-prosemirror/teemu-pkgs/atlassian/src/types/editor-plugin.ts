@@ -1,11 +1,10 @@
-import { ToolbarUIComponentFactory } from './editor-ui';
+import { ToolbarUIComponentFactory , UIComponentFactory } from './editor-ui';
 import { PMPlugin } from './pm-plugin';
 import { MarkConfig, NodeConfig } from './pm-config';
 
 import { QuickInsertHandler } from '../plugins/quick-insert/types';
 import { TypeAheadHandler } from '../plugins/type-ahead/types';
 
-import { UIComponentFactory } from './editor-ui';
 
 export type PluginsOptions = {
   [pluginName: string]: any;

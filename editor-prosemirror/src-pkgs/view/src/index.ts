@@ -228,6 +228,7 @@ export class EditorView {
 
   /** Update the editor's `state` prop, without touching any of the other props.
    * - 直接执行 updateStateInner()，只更新state，不更新props
+   * - 会调用`docView.update`更新视图
    */
   updateState(state: EditorState) {
     this.updateStateInner(state, this._props);
@@ -631,7 +632,7 @@ export class EditorView {
    * [`updateState`](#view.EditorView.updateState) with the result.
    * This method is bound to the view instance, so that it can be
    * easily passed around.
-   * - 若提供了dispatchTransaction则执行，否则会执行view.updateState
+   * - 若提供了dispatchTransaction则执行，否则会执行view.updateState(newState)
    */
   dispatch(tr: Transaction) {
     const dispatchTransaction = this._props.dispatchTransaction;

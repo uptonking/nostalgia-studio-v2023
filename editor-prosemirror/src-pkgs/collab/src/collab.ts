@@ -212,7 +212,8 @@ export function receiveTransaction(
  */
 export function sendableSteps(state: EditorState): {
   version: number;
-  steps: readonly Step[];
+  // steps: readonly Step[];
+  steps: Step[];
   clientID: number | string;
   origins: readonly Transaction[];
 } | null {

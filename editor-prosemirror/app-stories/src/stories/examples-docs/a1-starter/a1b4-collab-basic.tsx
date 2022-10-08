@@ -70,7 +70,7 @@ export const ProseMirrorCollabBasic = () => {
           <span id='docname' ref={docNameContainer}>
             None
           </span>
-          <span id='users' ref={usernamesContainer}></span>
+          <span id='users' ref={usernamesContainer} />
           {/* <button type='button' id='changedoc'>
             Change
           </button> */}

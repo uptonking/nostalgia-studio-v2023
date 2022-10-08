@@ -1,9 +1,9 @@
 {
   "name": "@examples-hub/prosemirror-app-stories",
   "version": "0.0.1111",
+  "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
-  "type": "module",
   "scripts": {
     "build": "rimraf dist && npm run build:prod",
     "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
@@ -11,9 +11,10 @@
     "build:types": "",
     "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.cjs",
     "demo2": "run-p demo dev:collab-basic-server",
-    "dev:collab-basic-server": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./src/prosemirror-collab-basic/run.ts",
+    "server:collab-basic": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./src/prosemirror-collab-basic/run.ts",
+    "server:collab-minimal": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./src/prosemirror-collab-minimal/server/server.ts",
+    "server": "npm run server:collab-minimal",
     "start": "npm run demo",
-    "server": "npm run dev:collab-basic-server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
   },
@@ -23,7 +24,9 @@
     "@emotion/styled": "^11.10.4",
     "@faker-js/faker": "^7.5.0",
     "classnames": "^2.3.1",
+    "cors": "^2.8.5",
     "crelt": "1.0.5",
+    "express": "^4.17.1",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.2",
     "prosemirror-collab": "1.3.1111",
@@ -45,7 +48,9 @@
     "prosemirror-transform": "1.7.1111",
     "prosemirror-view": "1.27.2111",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "socket.io": "^4.5.2",
+    "socket.io-client": "^4.5.2"
   },
   "devDependencies": {
     "@types/is-url": "^1.2.30",

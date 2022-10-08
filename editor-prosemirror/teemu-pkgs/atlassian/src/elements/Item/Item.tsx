@@ -108,7 +108,7 @@ export default class Item extends React.Component<Props> {
 
   componentDidMount() {
     if (this.ref && this.props.autoFocus) {
-      //@ts-ignore
+      // @ts-ignore
       this.ref!.focus();
     }
   }

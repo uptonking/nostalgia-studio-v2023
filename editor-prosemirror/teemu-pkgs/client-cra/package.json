@@ -22,9 +22,6 @@
       "last 1 safari version"
     ]
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "dependencies": {
     "@atlaskit/icon": "^21.10.7",
     "@example/full-v2": "0.0.1111",

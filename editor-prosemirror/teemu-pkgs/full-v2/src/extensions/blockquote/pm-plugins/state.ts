@@ -1,5 +1,5 @@
 import { EditorState, Plugin } from 'prosemirror-state';
-import { PluginKey , CommandDispatch } from '../../../core';
+import { PluginKey, CommandDispatch } from '../../../core';
 
 export interface BlockQuoteState {
   blockQuoteActive: boolean;

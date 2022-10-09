@@ -1,1 +1,28 @@
-{"editedDocs":[["46844cf2-1aad-48ea-baaa-ead5919044c1",{"users":[],"ownerId":"96ee7b03-c995-45a2-b865-60cd42b2099e","visibility":"global"}],["2ab778dc-7855-4614-bb76-cd5c492d93e5",{"users":[],"ownerId":"96ee7b03-c995-45a2-b865-60cd42b2099e","visibility":"private"}],["5109026b-eca4-4793-9fbe-65c2188c986f",{"users":["96ee7b03-c995-45a2-b865-60cd42b2099e"],"ownerId":"96ee7b03-c995-45a2-b865-60cd42b2099e","visibility":"private"}]]}
+{
+  "editedDocs": [
+    [
+      "46844cf2-1aad-48ea-baaa-ead5919044c1",
+      {
+        "users": [],
+        "ownerId": "96ee7b03-c995-45a2-b865-60cd42b2099e",
+        "visibility": "global"
+      }
+    ],
+    [
+      "2ab778dc-7855-4614-bb76-cd5c492d93e5",
+      {
+        "users": [],
+        "ownerId": "96ee7b03-c995-45a2-b865-60cd42b2099e",
+        "visibility": "private"
+      }
+    ],
+    [
+      "5109026b-eca4-4793-9fbe-65c2188c986f",
+      {
+        "users": ["96ee7b03-c995-45a2-b865-60cd42b2099e"],
+        "ownerId": "96ee7b03-c995-45a2-b865-60cd42b2099e",
+        "visibility": "private"
+      }
+    ]
+  ]
+}

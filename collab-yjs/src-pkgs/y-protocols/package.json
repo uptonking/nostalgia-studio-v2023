@@ -1,0 +1,61 @@
+{
+  "name": "y-protocols",
+  "version": "1.0.5111",
+  "description": "Yjs encoding protocols",
+  "keywords": [
+    "Yjs"
+  ],
+  "homepage": "https://github.com/yjs/y-protocols#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yjs/y-protocols.git"
+  },
+  "license": "MIT",
+  "author": "Kevin Jahns <kevin.jahns@protonmail.com>",
+  "type": "module",
+  "exports": {
+    "./package.json": "./package.json",
+    "./sync.ts": "./sync.ts",
+    "./sync": {
+      "import": "./sync.ts",
+      "require": "./sync.ts"
+    },
+    "./awareness.ts": "./awareness.ts",
+    "./awareness": {
+      "import": "./awareness.ts",
+      "require": "./awareness.ts"
+    },
+    "./auth.ts": "./auth.ts",
+    "./auth": {
+      "import": "./auth.ts",
+      "require": "./auth.ts"
+    }
+  },
+  "files": [
+    "dist/*",
+    "auth.*",
+    "sync.*",
+    "awareness.*"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist *.d.ts */*.d.ts *.d.ts.map */*.d.ts.map",
+    "debug": "rollup -c && concurrently 'rollup -wc' 'http-server -o test.html'",
+    "dist": "rm -rf dist && rollup -c",
+    "lint": "standard && tsc",
+    "postpublish": "npm run clean",
+    "test": "npm run lint && npm run dist && node dist/test.cjs",
+    "types": "tsc --outDir .",
+    "preversion": "npm run dist && npm run test && npm run types"
+  },
+  "dependencies": {
+    "lib0": "^0.2.42",
+    "yjs": "13.5.4111"
+  },
+  "devDependencies": {},
+  "standard": {
+    "ignore": [
+      "/dist",
+      "/node_modules"
+    ]
+  }
+}

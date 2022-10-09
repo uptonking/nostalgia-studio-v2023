@@ -1,0 +1,62 @@
+{
+  "name": "y-websocket",
+  "version": "1.4.5111",
+  "description": "Websockets provider for Yjs",
+  "keywords": [
+    "Yjs"
+  ],
+  "homepage": "https://github.com/yjs/y-websocket#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yjs/y-websocket.git"
+  },
+  "license": "MIT",
+  "author": "Kevin Jahns <kevin.jahns@protonmail.com>",
+  "sideEffects": false,
+  "exports": {
+    "./package.json": "./package.json",
+    "./bin/utils": "./bin/utils.ts",
+    "./bin/callback": "./bin/callback.ts",
+    ".": {
+      "import": "./y-websocket.ts",
+      "require": "./y-websocket.ts"
+    }
+  },
+  "main": "./y-websocket.ts",
+  "module": "./y-websocket.ts",
+  "types": "./y-websocket.ts",
+  "bin": {
+    "y-websocket": "./bin/server.ts",
+    "y-websocket-server": "./bin/server.ts"
+  },
+  "files": [
+    "dist/*",
+    "bin/*",
+    "src/*"
+  ],
+  "scripts": {
+    "dist": "rm -rf dist && rollup -c && tsc",
+    "lint": "standard && tsc",
+    "start": "node ./bin/server.js",
+    "test": "npm run lint",
+    "preversion": "npm run lint && npm run dist && test -e dist/src/y-websocket.d.ts && test -e dist/y-websocket.cjs"
+  },
+  "dependencies": {
+    "lib0": "^0.2.52",
+    "lodash.debounce": "^4.0.8",
+    "y-protocols": "1.0.5111",
+    "yjs": "13.5.4111"
+  },
+  "devDependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {
+    "ws": "^6.2.1",
+    "y-leveldb": "^0.1.0"
+  },
+  "standard": {
+    "ignore": [
+      "/dist",
+      "/node_modules"
+    ]
+  }
+}

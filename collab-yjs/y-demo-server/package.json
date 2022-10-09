@@ -1,0 +1,28 @@
+{
+  "name": "yjs-demos-server",
+  "version": "1.0.1111",
+  "private": true,
+  "description": "Demo server that serves the static assets and provides a shared websocket backend.",
+  "license": "MIT",
+  "author": "Kevin Jahns <kevin.jahns@protonmail.com",
+  "scripts": {
+    "start": "export PRODUCTION=1; node ./demo-server.js"
+  },
+  "dependencies": {
+    "node-static": "^0.7.11",
+    "serve": "^11.3.1",
+    "ws": "^7.4.2",
+    "y-protocols": "1.0.5111",
+    "y-websocket": "1.4.5111",
+    "yjs": "13.5.4111"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
+  },
+  "standard": {
+    "ignore": [
+      "/dist",
+      "/node_modules"
+    ]
+  }
+}

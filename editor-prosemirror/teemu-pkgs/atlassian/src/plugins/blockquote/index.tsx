@@ -92,7 +92,7 @@ export const blockQuotePlugin = (
         description: 'Quote some text',
         priority: 1300,
         keyshortcut: keymaps.tooltip(keymaps.toggleBlockQuote),
-        icon: () => <IconQuote label="Quote" />,
+        icon: () => <IconQuote label='Quote' />,
         action(insert: QuickInsertActionInsert, state: EditorState) {
           const tr = insert(
             state.schema.nodes.blockquote.createChecked(

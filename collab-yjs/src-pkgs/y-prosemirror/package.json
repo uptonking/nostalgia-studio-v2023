@@ -1,0 +1,61 @@
+{
+  "name": "y-prosemirror",
+  "version": "1.2.1111",
+  "description": "Prosemirror bindings for Yjs",
+  "main": "./y-prosemirror.ts",
+  "module": "./y-prosemirror.ts",
+  "type": "module",
+  "types": "./y-prosemirror.ts",
+  "sideEffects": false,
+  "scripts": {
+    "dist": "rm -rf dist && rollup -c && tsc",
+    "test": "npm run lint && rollup -c && node dist/test.cjs",
+    "lint": "standard && tsc",
+    "watch": "rollup -wc",
+    "debug": "concurrently 'http-server -o test.html' 'npm run watch'",
+    "preversion": "npm run lint && npm run dist && npm run test",
+    "start": "concurrently 'http-server -o demo/prosemirror.html' 'npm run watch'"
+  },
+  "exports": {
+    ".": {
+      "import": "./y-prosemirror.ts",
+      "require": "./y-prosemirror.ts"
+    }
+  },
+  "files": [
+    "dist/*",
+    "!dist/test.*",
+    "src/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yjs/y-prosemirror.git"
+  },
+  "keywords": [
+    "Yjs"
+  ],
+  "author": "Kevin Jahns <kevin.jahns@protonmail.com>",
+  "license": "MIT",
+  "standard": {
+    "ignore": [
+      "/dist",
+      "/node_modules",
+      "/docs"
+    ]
+  },
+  "homepage": "https://github.com/yjs/y-prosemirror#readme",
+  "dependencies": {
+    "lib0": "^0.2.42",
+    "prosemirror-state": "1.4.1111",
+    "prosemirror-view": "1.27.2111",
+    "prosemirror-model": "1.18.1111",
+    "yjs": "13.5.4111",
+    "y-protocols": "1.0.5111"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "prosemirror-example-setup": "1.2.1111",
+    "prosemirror-schema-basic": "1.2.1111",
+    "prosemirror-transform": "1.7.1111"
+  }
+}

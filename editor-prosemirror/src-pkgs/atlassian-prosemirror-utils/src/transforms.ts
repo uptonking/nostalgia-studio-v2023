@@ -220,7 +220,7 @@ export const setParentNodeMarkup = (nodeType, type, attrs, marks) => (tr) => {
       tr.setNodeMarkup(
         parent.pos,
         type,
-        { ...parent.node.attrs, ...attrs},
+        { ...parent.node.attrs, ...attrs },
         marks,
       ),
     );

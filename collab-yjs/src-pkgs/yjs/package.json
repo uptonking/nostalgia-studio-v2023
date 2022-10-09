@@ -1,0 +1,73 @@
+{
+  "name": "yjs",
+  "version": "13.5.4111",
+  "description": "Shared Editing Library",
+  "keywords": [
+    "CRDT",
+    "offline-first",
+    "collaboration"
+  ],
+  "homepage": "https://docs.yjs.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yjs/yjs.git"
+  },
+  "license": "MIT",
+  "author": "Kevin Jahns",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./src/index.ts": "./src/index.ts",
+    "./tests/testHelper.js": "./tests/testHelper.js",
+    "./testHelper": "./dist/testHelper.mjs",
+    "./package.json": "./package.json"
+  },
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "files": [
+    "dist/yjs.*",
+    "dist/src",
+    "src",
+    "tests/testHelper.js",
+    "dist/testHelper.mjs",
+    "sponsor-y.js"
+  ],
+  "scripts": {
+    "debug": "concurrently 'http-server -o test.html' 'npm run watch'",
+    "dist": "rm -rf dist && rollup -c && tsc",
+    "docs": "rm -rf docs; jsdoc --configure ./.jsdoc.json --verbose --readme ./README.md --package ./package.json || true",
+    "lint": "markdownlint README.md && standard && tsc",
+    "serve-docs": "npm run docs && http-server ./docs/",
+    "test": "npm run dist && node ./dist/tests.cjs --repetition-time 50",
+    "test-extensive": "npm run lint && npm run dist && node ./dist/tests.cjs --production --repetition-time 10000",
+    "trace-deopt": "clear && rollup -c  && node --trace-deopt dist/test.cjs",
+    "trace-opt": "clear && rollup -c  && node --trace-opt dist/test.cjs",
+    "preversion": "npm run lint && PRODUCTION=1 npm run dist && npm run docs && node ./dist/tests.cjs --repetition-time 1000 && test -e dist/src/index.d.ts && test -e dist/yjs.cjs && test -e dist/yjs.cjs",
+    "watch": "rollup -wc"
+  },
+  "dependencies": {
+    "lib0": "^0.2.49"
+  },
+  "devDependencies": {
+    "http-server": "^0.12.3",
+    "jsdoc": "^3.6.7",
+    "y-protocols": "1.0.5111"
+  },
+  "dictionaries": {
+    "test": "tests"
+  },
+  "email": "kevin.jahns@protonmail.com",
+  "standard": {
+    "ignore": [
+      "/dist",
+      "/node_modules",
+      "/docs"
+    ]
+  }
+}

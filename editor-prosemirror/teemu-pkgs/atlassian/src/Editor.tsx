@@ -112,7 +112,7 @@ export function Editor(props: EditorProps) {
             <PortalRenderer portalProviderAPI={portalProviderAPI} />
           </>
         )}
-       />
+      />
     </EditorContext>
   );
 }

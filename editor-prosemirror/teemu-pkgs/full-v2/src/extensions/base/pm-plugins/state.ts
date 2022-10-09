@@ -1,6 +1,6 @@
 import { EditorState } from 'prosemirror-state';
 
-import { PluginKey , CommandDispatch } from '../../../core';
+import { PluginKey, CommandDispatch } from '../../../core';
 
 export interface BaseState {
   activeNodes: string[];

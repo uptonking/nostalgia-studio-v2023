@@ -1,4 +1,4 @@
-import { ToolbarUIComponentFactory , UIComponentFactory } from './editor-ui';
+import { ToolbarUIComponentFactory, UIComponentFactory } from './editor-ui';
 
 // TODO: Check if this circular dependency is still needed or is just legacy
 // eslint-disable-next-line import/no-cycle

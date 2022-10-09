@@ -1,0 +1,27 @@
+{
+  "name": "yjs-prosemirror-versions",
+  "version": "1.0.0",
+  "description": "Yjs ❤ ProseMirror + versioning support",
+  "scripts": {
+    "dist": "webpack --mode=production",
+    "start": "webpack-dev-server --open-page prosemirror-versions.html"
+  },
+  "author": "Kevin Jahns <kevin.jahns@pm.me>",
+  "license": "UNLICENSE",
+  "dependencies": {
+    "lit-html": "^1.4.1",
+    "prosemirror-example-setup": "1.2.1111",
+    "prosemirror-state": "1.4.1111",
+    "prosemirror-view": "1.27.2111",
+    "prosemirror-model": "1.18.1111",
+    "yjs": "13.5.4111",
+    "y-websocket": "1.4.5111",
+    "y-prosemirror": "1.2.1111"
+  },
+  "devDependencies": {
+    "serve": "^11.3.2",
+    "webpack": "^4.45.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.1"
+  }
+}

@@ -52,7 +52,7 @@ if (typeof persistenceDir === 'string') {
  * @param {{bindState: function(string,WSSharedDoc):void,
  * writeState:function(string,WSSharedDoc):Promise<any>,provider:any}|null} persistence_
  */
-exports.setPersistence = (persistence_) => {
+export const setPersistence = (persistence_) => {
   persistence = persistence_;
 };
 
@@ -60,14 +60,15 @@ exports.setPersistence = (persistence_) => {
  * @return {null|{bindState: function(string,WSSharedDoc):void,
  * writeState:function(string,WSSharedDoc):Promise<any>}|null} used persistence layer
  */
-exports.getPersistence = () => persistence;
+export const getPersistence = () => persistence;
 
 /**
  * @type {Map<string,WSSharedDoc>}
  */
 const docs = new Map();
 // exporting docs so that others can use it
-exports.docs = docs;
+// export const docs = docs;
+export { docs };
 
 const messageSync = 0;
 const messageAwareness = 1;
@@ -164,7 +165,8 @@ const getYDoc = (docname, gc = true) =>
     return doc;
   });
 
-exports.getYDoc = getYDoc;
+// export const getYDoc = getYDoc;
+export { getYDoc };
 
 /**
  * @param {any} conn
@@ -262,7 +264,7 @@ const pingTimeout = 30000;
  * @param {any} req
  * @param {any} opts
  */
-exports.setupWSConnection = (
+export const setupWSConnection = (
   conn,
   req,
   { docName = req.url.slice(1).split('?')[0], gc = true } = {},

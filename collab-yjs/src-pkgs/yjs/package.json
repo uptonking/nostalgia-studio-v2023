@@ -52,11 +52,10 @@
     "watch": "rollup -wc"
   },
   "dependencies": {
-    "lib0": "^0.2.49"
+    "lib0": "0.2.5211"
   },
   "devDependencies": {
     "http-server": "^0.12.3",
-    "jsdoc": "^3.6.7",
     "y-protocols": "1.0.5111"
   },
   "dictionaries": {

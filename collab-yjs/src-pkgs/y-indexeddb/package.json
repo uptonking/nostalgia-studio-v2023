@@ -32,12 +32,11 @@
     "preversion": "npm run clean && npm run lint && npm run dist"
   },
   "dependencies": {
-    "lib0": "^0.2.35",
+    "lib0": "0.2.5211",
     "yjs": "13.5.4111"
   },
   "devDependencies": {
     "http-server": "^0.12.3",
-    "jsdoc": "^3.6.6",
     "y-protocols": "1.0.5111"
   },
   "peerDependencies": {},

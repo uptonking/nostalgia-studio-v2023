@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "node-static": "^0.7.11",
-    "serve": "^11.3.1",
     "ws": "^7.4.2",
     "y-protocols": "1.0.5111",
     "y-websocket": "1.4.5111",

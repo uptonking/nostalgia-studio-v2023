@@ -67,6 +67,7 @@
       ],
       "orderedmap": ["editor-prosemirror/src-pkgs/orderedmap/"],
       "yjs": ["collab-yjs/src-pkgs/yjs/src"],
+      "lib0": ["collab-yjs/src-pkgs/yjs-lib0"],
       "y-protocols": ["collab-yjs/src-pkgs/y-protocols"],
       "y-websocket": ["collab-yjs/src-pkgs/y-websocket"],
       "y-indexeddb": ["collab-yjs/src-pkgs/y-indexeddb"],

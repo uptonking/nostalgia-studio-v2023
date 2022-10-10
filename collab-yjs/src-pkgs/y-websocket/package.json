@@ -42,7 +42,7 @@
     "preversion": "npm run lint && npm run dist && test -e dist/src/y-websocket.d.ts && test -e dist/y-websocket.cjs"
   },
   "dependencies": {
-    "lib0": "^0.2.52",
+    "lib0": "0.2.5211",
     "lodash.debounce": "^4.0.8",
     "y-protocols": "1.0.5111",
     "yjs": "13.5.4111"

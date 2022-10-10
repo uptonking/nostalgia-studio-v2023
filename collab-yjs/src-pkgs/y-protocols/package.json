@@ -48,7 +48,7 @@
     "preversion": "npm run dist && npm run test && npm run types"
   },
   "dependencies": {
-    "lib0": "^0.2.42",
+    "lib0": "0.2.5211",
     "yjs": "13.5.4111"
   },
   "devDependencies": {},

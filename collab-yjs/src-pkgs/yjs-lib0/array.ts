@@ -11,20 +11,20 @@
  * @param {Array<L>} arr
  * @return {L}
  */
-export const last = arr => arr[arr.length - 1]
+export const last = (arr) => arr[arr.length - 1];
 
 /**
  * @template C
  * @return {Array<C>}
  */
-export const create = () => /** @type {Array<C>} */ ([])
+export const create = () => /** @type {Array<C>} */ [];
 
 /**
  * @template D
  * @param {Array<D>} a
  * @return {Array<D>}
  */
-export const copy = a => /** @type {Array<D>} */ (a.slice())
+export const copy = (a) => /** @type {Array<D>} */ a.slice();
 
 /**
  * Append elements from src to dest
@@ -35,9 +35,9 @@ export const copy = a => /** @type {Array<D>} */ (a.slice())
  */
 export const appendTo = (dest, src) => {
   for (let i = 0; i < src.length; i++) {
-    dest.push(src[i])
+    dest.push(src[i]);
   }
-}
+};
 
 /**
  * Transforms something array-like to an actual Array.
@@ -47,7 +47,7 @@ export const appendTo = (dest, src) => {
  * @param {ArrayLike<T>|Iterable<T>} arraylike
  * @return {T}
  */
-export const from = Array.from
+export const from = Array.from;
 
 /**
  * True iff condition holds on every element in the Array.
@@ -59,7 +59,7 @@ export const from = Array.from
  * @param {function(ITEM, number, Array<ITEM>):boolean} f
  * @return {boolean}
  */
-export const every = (arr, f) => arr.every(f)
+export const every = (arr, f) => arr.every(f);
 
 /**
  * True iff condition holds on some element in the Array.
@@ -70,7 +70,7 @@ export const every = (arr, f) => arr.every(f)
  * @param {function(S, number, Array<S>):boolean} f
  * @return {boolean}
  */
-export const some = (arr, f) => arr.some(f)
+export const some = (arr, f) => arr.some(f);
 
 /**
  * @template ELEM
@@ -79,13 +79,14 @@ export const some = (arr, f) => arr.some(f)
  * @param {Array<ELEM>} b
  * @return {boolean}
  */
-export const equalFlat = (a, b) => a.length === b.length && every(a, (item, index) => item === b[index])
+export const equalFlat = (a, b) =>
+  a.length === b.length && every(a, (item, index) => item === b[index]);
 
 /**
  * @template ELEM
  * @param {Array<Array<ELEM>>} arr
  * @return {Array<ELEM>}
  */
-export const flatten = arr => arr.reduce((acc, val) => acc.concat(val), [])
+export const flatten = (arr) => arr.reduce((acc, val) => acc.concat(val), []);
 
-export const isArray = Array.isArray
+export const isArray = Array.isArray;

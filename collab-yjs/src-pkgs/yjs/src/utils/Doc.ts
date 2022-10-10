@@ -40,6 +40,23 @@ export const generateNewClientId = random.uint32;
  * @extends Observable<string>
  */
 export class Doc extends Observable {
+  gc: boolean;
+  gcFilter: () => true;
+  clientID: number;
+  guid: any;
+  collectionid: null;
+  share: Map<any, any>;
+  store: StructStore;
+  _transaction: null;
+  _transactionCleanups: never[];
+  subdocs: Set<unknown>;
+  _item: null;
+  shouldLoad: boolean;
+  autoLoad: boolean;
+  meta: null;
+  isLoaded: boolean;
+  whenLoaded: Promise<unknown>;
+
   /**
    * @param {DocOpts} [opts] configuration
    */

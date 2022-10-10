@@ -1,23 +1,22 @@
-
 export class QueueNode {
-  constructor () {
+  constructor() {
     /**
      * @type {QueueNode|null}
      */
-    this.next = null
+    this.next = null;
   }
 }
 
 export class Queue {
-  constructor () {
+  constructor() {
     /**
      * @type {QueueNode | null}
      */
-    this.start = null
+    this.start = null;
     /**
      * @type {QueueNode | null}
      */
-    this.end = null
+    this.end = null;
   }
 }
 
@@ -27,12 +26,12 @@ export class Queue {
  *
  * @return {Queue}
  */
-export const create = () => new Queue()
+export const create = () => new Queue();
 
 /**
  * @param {Queue} queue
  */
-export const isEmpty = queue => queue.start === null
+export const isEmpty = (queue) => queue.start === null;
 
 /**
  * @param {Queue} queue
@@ -40,27 +39,27 @@ export const isEmpty = queue => queue.start === null
  */
 export const enqueue = (queue, n) => {
   if (queue.end !== null) {
-    queue.end.next = n
-    queue.end = n
+    queue.end.next = n;
+    queue.end = n;
   } else {
-    queue.end = n
-    queue.start = n
+    queue.end = n;
+    queue.start = n;
   }
-}
+};
 
 /**
  * @param {Queue} queue
  * @return {QueueNode | null}
  */
-export const dequeue = queue => {
-  const n = queue.start
+export const dequeue = (queue) => {
+  const n = queue.start;
   if (n !== null) {
     // @ts-ignore
-    queue.start = n.next
+    queue.start = n.next;
     if (queue.start === null) {
-      queue.end = null
+      queue.end = null;
     }
-    return n
+    return n;
   }
-  return null
-}
+  return null;
+};

@@ -1,5 +1,5 @@
-import * as binary from 'lib0/binary';
-import * as error from 'lib0/error';
+import * as binary from 'lib0/binary'
+import * as error from 'lib0/error'
 
 import {
   AbstractStruct,
@@ -35,8 +35,8 @@ import {
   readContentJSON,
   readContentString,
   readContentType,
-  replaceStruct,
-} from '../internals';
+  replaceStruct
+} from '../internals'
 
 /**
  * @todo This should return several items
@@ -49,22 +49,21 @@ export const followRedone = (store, id) => {
   /**
    * @type {ID|null}
    */
-  let nextID = id;
-  let diff = 0;
-  let item;
+  let nextID = id
+  let diff = 0
+  let item
   do {
     if (diff > 0) {
-      nextID = createID(nextID.client, nextID.clock + diff);
+      nextID = createID(nextID.client, nextID.clock + diff)
     }
-    item = getItem(store, nextID);
-    diff = nextID.clock - item.id.clock;
-    nextID = item.redone;
-  } while (nextID !== null && item instanceof Item);
+    item = getItem(store, nextID)
+    diff = nextID.clock - item.id.clock
+    nextID = item.redone
+  } while (nextID !== null && item instanceof Item)
   return {
-    item,
-    diff,
-  };
-};
+    item, diff
+  }
+}
 
 /**
  * Make sure that neither item nor any of its parents is ever deleted.
@@ -77,10 +76,10 @@ export const followRedone = (store, id) => {
  */
 export const keepItem = (item, keep) => {
   while (item !== null && item.keep !== keep) {
-    item.keep = keep;
-    item = /** @type {AbstractType<any>} */ item.parent._item;
+    item.keep = keep
+    item = /** @type {AbstractType<any>} */ (item.parent)._item
   }
-};
+}
 
 /**
  * Split leftItem into two items
@@ -94,7 +93,7 @@ export const keepItem = (item, keep) => {
  */
 export const splitItem = (transaction, leftItem, diff) => {
   // create rightItem
-  const { client, clock } = leftItem.id;
+  const { client, clock } = leftItem.id
   const rightItem = new Item(
     createID(client, clock + diff),
     leftItem,
@@ -103,38 +102,33 @@ export const splitItem = (transaction, leftItem, diff) => {
     leftItem.rightOrigin,
     leftItem.parent,
     leftItem.parentSub,
-    leftItem.content.splice(diff),
-  );
+    leftItem.content.splice(diff)
+  )
   if (leftItem.deleted) {
-    rightItem.markDeleted();
+    rightItem.markDeleted()
   }
   if (leftItem.keep) {
-    rightItem.keep = true;
+    rightItem.keep = true
   }
   if (leftItem.redone !== null) {
-    rightItem.redone = createID(
-      leftItem.redone.client,
-      leftItem.redone.clock + diff,
-    );
+    rightItem.redone = createID(leftItem.redone.client, leftItem.redone.clock + diff)
   }
   // update left (do not set leftItem.rightOrigin as it will lead to problems when syncing)
-  leftItem.right = rightItem;
+  leftItem.right = rightItem
   // update right
   if (rightItem.right !== null) {
-    rightItem.right.left = rightItem;
+    // @ts-ignore
+    rightItem.right.left = rightItem
   }
   // right is more specific.
-  transaction._mergeStructs.push(rightItem);
+  transaction._mergeStructs.push(rightItem)
   // update parent._map
   if (rightItem.parentSub !== null && rightItem.right === null) {
-    /** @type {AbstractType<any>} */ rightItem.parent._map.set(
-      rightItem.parentSub,
-      rightItem,
-    );
+    /** @type {AbstractType<any>} */ (rightItem.parent)._map.set(rightItem.parentSub, rightItem)
   }
-  leftItem.length = diff;
-  return rightItem;
-};
+  leftItem.length = diff
+  return rightItem
+}
 
 /**
  * Redoes the effect of this operation.
@@ -149,156 +143,126 @@ export const splitItem = (transaction, leftItem, diff) => {
  *
  * @private
  */
-export const redoItem = (
-  transaction,
-  item,
-  redoitems,
-  itemsToDelete,
-  ignoreRemoteMapChanges,
-) => {
-  const doc = transaction.doc;
-  const store = doc.store;
-  const ownClientID = doc.clientID;
-  const redone = item.redone;
+export const redoItem = (transaction, item, redoitems, itemsToDelete, ignoreRemoteMapChanges) => {
+  const doc = transaction.doc
+  const store = doc.store
+  const ownClientID = doc.clientID
+  const redone = item.redone
   if (redone !== null) {
-    return getItemCleanStart(transaction, redone);
+    return getItemCleanStart(transaction, redone)
   }
-  let parentItem = /** @type {AbstractType<any>} */ item.parent._item;
+  let parentItem = /** @type {AbstractType<any>} */ (item.parent)._item
   /**
    * @type {Item|null}
    */
-  let left = null;
+  let left = null as any
   /**
    * @type {Item|null}
    */
-  let right;
+  let right: any
   // make sure that parent is redone
   if (parentItem !== null && parentItem.deleted === true) {
     // try to undo parent if it will be undone anyway
-    if (
-      parentItem.redone === null &&
-      (!redoitems.has(parentItem) ||
-        redoItem(
-          transaction,
-          parentItem,
-          redoitems,
-          itemsToDelete,
-          ignoreRemoteMapChanges,
-        ) === null)
-    ) {
-      return null;
+    if (parentItem.redone === null && (!redoitems.has(parentItem) || redoItem(transaction, parentItem, redoitems, itemsToDelete, ignoreRemoteMapChanges) === null)) {
+      return null
     }
     while (parentItem.redone !== null) {
-      parentItem = getItemCleanStart(transaction, parentItem.redone);
+      parentItem = getItemCleanStart(transaction, parentItem.redone)
     }
   }
-  const parentType =
-    parentItem === null
-      ? /** @type {AbstractType<any>} */ item.parent
-      : /** @type {ContentType} */ parentItem.content.type;
+  const parentType = parentItem === null ? /** @type {AbstractType<any>} */ (item.parent) : /** @type {ContentType} */ (parentItem.content).type
 
   if (item.parentSub === null) {
     // Is an array item. Insert at the old position
-    left = item.left;
-    right = item;
+    left = item.left
+    right = item
     // find next cloned_redo items
     while (left !== null) {
       /**
        * @type {Item|null}
        */
-      let leftTrace = left;
+      let leftTrace = left
       // trace redone until parent matches
-      while (
-        leftTrace !== null &&
-        /** @type {AbstractType<any>} */ leftTrace.parent._item !== parentItem
-      ) {
-        leftTrace =
-          leftTrace.redone === null
-            ? null
-            : getItemCleanStart(transaction, leftTrace.redone);
+      while (leftTrace !== null && /** @type {AbstractType<any>} */ (leftTrace.parent)._item !== parentItem) {
+        leftTrace = leftTrace.redone === null ? null : getItemCleanStart(transaction, leftTrace.redone)
       }
-      if (
-        leftTrace !== null &&
-        /** @type {AbstractType<any>} */ leftTrace.parent._item === parentItem
-      ) {
-        left = leftTrace;
-        break;
+      if (leftTrace !== null && /** @type {AbstractType<any>} */ (leftTrace.parent)._item === parentItem) {
+        left = leftTrace
+        break
       }
-      left = left.left;
+      left = left.left
     }
     while (right !== null) {
       /**
        * @type {Item|null}
        */
-      let rightTrace = right;
+      let rightTrace = right
       // trace redone until parent matches
-      while (
-        rightTrace !== null &&
-        /** @type {AbstractType<any>} */ rightTrace.parent._item !== parentItem
-      ) {
-        rightTrace =
-          rightTrace.redone === null
-            ? null
-            : getItemCleanStart(transaction, rightTrace.redone);
+      while (rightTrace !== null && /** @type {AbstractType<any>} */ (rightTrace.parent)._item !== parentItem) {
+        rightTrace = rightTrace.redone === null ? null : getItemCleanStart(transaction, rightTrace.redone)
       }
-      if (
-        rightTrace !== null &&
-        /** @type {AbstractType<any>} */ rightTrace.parent._item === parentItem
-      ) {
-        right = rightTrace;
-        break;
+      if (rightTrace !== null && /** @type {AbstractType<any>} */ (rightTrace.parent)._item === parentItem) {
+        right = rightTrace
+        break
       }
-      right = right.right;
+      right = right.right
     }
   } else {
-    right = null;
+    right = null
     if (item.right && !ignoreRemoteMapChanges) {
-      left = item;
+      left = item
       // Iterate right while right is in itemsToDelete
       // If it is intended to delete right while item is redone, we can expect that item should replace right.
-      while (
-        left !== null &&
-        left.right !== null &&
-        isDeleted(itemsToDelete, left.right.id)
-      ) {
-        left = left.right;
+      while (left !== null && left.right !== null && isDeleted(itemsToDelete, left.right.id)) {
+        left = left.right
       }
       // follow redone
       // trace redone until parent matches
       while (left !== null && left.redone !== null) {
-        left = getItemCleanStart(transaction, left.redone);
+        left = getItemCleanStart(transaction, left.redone)
       }
       if (left && left.right !== null) {
         // It is not possible to redo this item because it conflicts with a
         // change from another client
-        return null;
+        return null
       }
     } else {
-      left = parentType._map.get(item.parentSub) || null;
+      left = parentType._map.get(item.parentSub) || null
     }
   }
-  const nextClock = getState(store, ownClientID);
-  const nextId = createID(ownClientID, nextClock);
+  const nextClock = getState(store, ownClientID)
+  const nextId = createID(ownClientID, nextClock)
   const redoneItem = new Item(
     nextId,
-    left,
-    left && left.lastId,
-    right,
-    right && right.id,
+    left, left && left.lastId,
+    right, right && right.id,
     parentType,
     item.parentSub,
-    item.content.copy(),
-  );
-  item.redone = nextId;
-  keepItem(redoneItem, true);
-  redoneItem.integrate(transaction, 0);
-  return redoneItem;
-};
+    item.content.copy()
+  )
+  item.redone = nextId
+  keepItem(redoneItem, true)
+  redoneItem.integrate(transaction, 0)
+  return redoneItem
+}
 
 /**
  * Abstract class that represents any content.
  */
 export class Item extends AbstractStruct {
+  redone: ID | null
+  right: null
+  parentSub: null
+  parent: any
+  origin: any
+  left: any
+  rightOrigin: any
+  content: any
+  info: number
+  id: any
+  length: any
+
+
   /**
    * @param {ID} id
    * @param {Item | null} left
@@ -309,41 +273,32 @@ export class Item extends AbstractStruct {
    * @param {string | null} parentSub
    * @param {AbstractContent} content
    */
-  constructor(
-    id,
-    left,
-    origin,
-    right,
-    rightOrigin,
-    parent,
-    parentSub,
-    content,
-  ) {
-    super(id, content.getLength());
+  constructor(id, left, origin, right, rightOrigin, parent, parentSub, content) {
+    super(id, content.getLength())
     /**
      * The item that was originally to the left of this item.
      * @type {ID | null}
      */
-    this.origin = origin;
+    this.origin = origin
     /**
      * The item that is currently to the left of this item.
      * @type {Item | null}
      */
-    this.left = left;
+    this.left = left
     /**
      * The item that is currently to the right of this item.
      * @type {Item | null}
      */
-    this.right = right;
+    this.right = right
     /**
      * The item that was originally to the right of this item.
      * @type {ID | null}
      */
-    this.rightOrigin = rightOrigin;
+    this.rightOrigin = rightOrigin
     /**
      * @type {AbstractType<any>|ID|null}
      */
-    this.parent = parent;
+    this.parent = parent
     /**
      * If the parent refers to this item with some kind of key (e.g. YMap, the
      * key is specified here. The key is then used to refer to the list in which
@@ -351,17 +306,17 @@ export class Item extends AbstractStruct {
      * which to insert to. Otherwise it is `parent._map`.
      * @type {String | null}
      */
-    this.parentSub = parentSub;
+    this.parentSub = parentSub
     /**
      * If this type's effect is redone this type refers to the type that undid
      * this operation.
      * @type {ID | null}
      */
-    this.redone = null;
+    this.redone = null
     /**
      * @type {AbstractContent}
      */
-    this.content = content;
+    this.content = content
     /**
      * bit1: keep
      * bit2: countable
@@ -369,7 +324,7 @@ export class Item extends AbstractStruct {
      * bit4: mark - mark node as fast-search-marker
      * @type {number} byte
      */
-    this.info = this.content.isCountable() ? binary.BIT2 : 0;
+    this.info = this.content.isCountable() ? binary.BIT2 : 0
   }
 
   /**
@@ -378,30 +333,30 @@ export class Item extends AbstractStruct {
    * @type {boolean}
    */
   set marker(isMarked) {
-    if ((this.info & binary.BIT4) > 0 !== isMarked) {
-      this.info ^= binary.BIT4;
+    if (((this.info & binary.BIT4) > 0) !== isMarked) {
+      this.info ^= binary.BIT4
     }
   }
 
   get marker() {
-    return (this.info & binary.BIT4) > 0;
+    return (this.info & binary.BIT4) > 0
   }
 
   /**
    * If true, do not garbage collect this Item.
    */
   get keep() {
-    return (this.info & binary.BIT1) > 0;
+    return (this.info & binary.BIT1) > 0
   }
 
   set keep(doKeep) {
     if (this.keep !== doKeep) {
-      this.info ^= binary.BIT1;
+      this.info ^= binary.BIT1
     }
   }
 
   get countable() {
-    return (this.info & binary.BIT2) > 0;
+    return (this.info & binary.BIT2) > 0
   }
 
   /**
@@ -409,17 +364,17 @@ export class Item extends AbstractStruct {
    * @type {Boolean}
    */
   get deleted() {
-    return (this.info & binary.BIT3) > 0;
+    return (this.info & binary.BIT3) > 0
   }
 
   set deleted(doDelete) {
     if (this.deleted !== doDelete) {
-      this.info ^= binary.BIT3;
+      this.info ^= binary.BIT3
     }
   }
 
   markDeleted() {
-    this.info |= binary.BIT3;
+    this.info |= binary.BIT3
   }
 
   /**
@@ -430,64 +385,55 @@ export class Item extends AbstractStruct {
    * @return {null | number}
    */
   getMissing(transaction, store) {
-    if (
-      this.origin &&
-      this.origin.client !== this.id.client &&
-      this.origin.clock >= getState(store, this.origin.client)
-    ) {
-      return this.origin.client;
+    if (this.origin && this.origin.client !== this.id.client && this.origin.clock >= getState(store, this.origin.client)) {
+      return this.origin.client
     }
-    if (
-      this.rightOrigin &&
-      this.rightOrigin.client !== this.id.client &&
-      this.rightOrigin.clock >= getState(store, this.rightOrigin.client)
-    ) {
-      return this.rightOrigin.client;
+    if (this.rightOrigin && this.rightOrigin.client !== this.id.client && this.rightOrigin.clock >= getState(store, this.rightOrigin.client)) {
+      return this.rightOrigin.client
     }
-    if (
-      this.parent &&
-      this.parent.constructor === ID &&
-      this.id.client !== this.parent.client &&
-      this.parent.clock >= getState(store, this.parent.client)
-    ) {
-      return this.parent.client;
+    // @ts-ignore
+    if (this.parent && this.parent.constructor === ID && this.id.client !== this.parent.client && this.parent.clock >= getState(store, this.parent.client)) {
+      // @ts-ignore
+      return this.parent.client
     }
 
     // We have all missing ids, now find the items
 
     if (this.origin) {
-      this.left = getItemCleanEnd(transaction, store, this.origin);
-      this.origin = this.left.lastId;
+      this.left = getItemCleanEnd(transaction, store, this.origin)
+      this.origin = this.left.lastId
     }
     if (this.rightOrigin) {
-      this.right = getItemCleanStart(transaction, this.rightOrigin);
-      this.rightOrigin = this.right.id;
+      this.right = getItemCleanStart(transaction, this.rightOrigin)
+      // @ts-ignore
+      this.rightOrigin = this.right.id
     }
-    if (
-      (this.left && this.left.constructor === GC) ||
-      (this.right && this.right.constructor === GC)
-    ) {
-      this.parent = null;
+    // @ts-ignore
+    if ((this.left && this.left.constructor === GC) || (this.right && this.right.constructor === GC)) {
+      this.parent = null
     }
     // only set parent if this shouldn't be garbage collected
     if (!this.parent) {
       if (this.left && this.left.constructor === Item) {
-        this.parent = this.left.parent;
-        this.parentSub = this.left.parentSub;
+        this.parent = this.left.parent
+        this.parentSub = this.left.parentSub
       }
+      // @ts-ignore
       if (this.right && this.right.constructor === Item) {
-        this.parent = this.right.parent;
-        this.parentSub = this.right.parentSub;
+        // @ts-ignore
+        this.parent = this.right.parent
+        // @ts-ignore
+        this.parentSub = this.right.parentSub
       }
     } else if (this.parent.constructor === ID) {
-      const parentItem = getItem(store, this.parent);
+      const parentItem = getItem(store, this.parent)
       if (parentItem.constructor === GC) {
-        this.parent = null;
+        this.parent = null
       } else {
-        this.parent = /** @type {ContentType} */ parentItem.content.type;
+        this.parent = /** @type {ContentType} */ (parentItem.content).type
       }
     }
-    return null;
+    return null
   }
 
   /**
@@ -496,147 +442,119 @@ export class Item extends AbstractStruct {
    */
   integrate(transaction, offset) {
     if (offset > 0) {
-      this.id.clock += offset;
-      this.left = getItemCleanEnd(
-        transaction,
-        transaction.doc.store,
-        createID(this.id.client, this.id.clock - 1),
-      );
-      this.origin = this.left.lastId;
-      this.content = this.content.splice(offset);
-      this.length -= offset;
+      this.id.clock += offset
+      this.left = getItemCleanEnd(transaction, transaction.doc.store, createID(this.id.client, this.id.clock - 1))
+      this.origin = this.left.lastId
+      this.content = this.content.splice(offset)
+      this.length -= offset
     }
 
     if (this.parent) {
-      if (
-        (!this.left && (!this.right || this.right.left !== null)) ||
-        (this.left && this.left.right !== this.right)
-      ) {
+      // @ts-ignore
+      if ((!this.left && (!this.right || this.right.left !== null)) || (this.left && this.left.right !== this.right)) {
         /**
          * @type {Item|null}
          */
-        let left = this.left;
+        let left = this.left
 
         /**
          * @type {Item|null}
          */
-        let o;
+        let o
         // set o to the first conflicting item
         if (left !== null) {
-          o = left.right;
+          o = left.right
         } else if (this.parentSub !== null) {
-          o =
-            /** @type {AbstractType<any>} */ this.parent._map.get(
-              this.parentSub,
-            ) || null;
+          o = /** @type {AbstractType<any>} */ (this.parent)._map.get(this.parentSub) || null
           while (o !== null && o.left !== null) {
-            o = o.left;
+            o = o.left
           }
         } else {
-          o = /** @type {AbstractType<any>} */ this.parent._start;
+          o = /** @type {AbstractType<any>} */ (this.parent)._start
         }
         // TODO: use something like DeleteSet here (a tree implementation would be best)
         // @todo use global set definitions
         /**
          * @type {Set<Item>}
          */
-        const conflictingItems = new Set();
+        const conflictingItems = new Set()
         /**
          * @type {Set<Item>}
          */
-        const itemsBeforeOrigin = new Set();
+        const itemsBeforeOrigin = new Set()
         // Let c in conflictingItems, b in itemsBeforeOrigin
         // ***{origin}bbbb{this}{c,b}{c,b}{o}***
         // Note that conflictingItems is a subset of itemsBeforeOrigin
         while (o !== null && o !== this.right) {
-          itemsBeforeOrigin.add(o);
-          conflictingItems.add(o);
+          itemsBeforeOrigin.add(o)
+          conflictingItems.add(o)
           if (compareIDs(this.origin, o.origin)) {
             // case 1
             if (o.id.client < this.id.client) {
-              left = o;
-              conflictingItems.clear();
+              left = o
+              conflictingItems.clear()
             } else if (compareIDs(this.rightOrigin, o.rightOrigin)) {
               // this and o are conflicting and point to the same integration points. The id decides which item comes first.
               // Since this is to the left of o, we can break here
-              break;
+              break
             } // else, o might be integrated before an item that this conflicts with. If so, we will find it in the next iterations
-          } else if (
-            o.origin !== null &&
-            itemsBeforeOrigin.has(getItem(transaction.doc.store, o.origin))
-          ) {
-            // use getItem instead of getItemCleanEnd because we don't want / need to split items.
+          } else if (o.origin !== null && itemsBeforeOrigin.has(getItem(transaction.doc.store, o.origin))) { // use getItem instead of getItemCleanEnd because we don't want / need to split items.
             // case 2
-            if (
-              !conflictingItems.has(getItem(transaction.doc.store, o.origin))
-            ) {
-              left = o;
-              conflictingItems.clear();
+            if (!conflictingItems.has(getItem(transaction.doc.store, o.origin))) {
+              left = o
+              conflictingItems.clear()
             }
           } else {
-            break;
+            break
           }
-          o = o.right;
+          o = o.right
         }
-        this.left = left;
+        this.left = left
       }
       // reconnect left/right + update parent map/start if necessary
       if (this.left !== null) {
-        const right = this.left.right;
-        this.right = right;
-        this.left.right = this;
+        const right = this.left.right
+        this.right = right
+        this.left.right = this
       } else {
-        let r;
+        let r
         if (this.parentSub !== null) {
-          r =
-            /** @type {AbstractType<any>} */ this.parent._map.get(
-              this.parentSub,
-            ) || null;
+          r = /** @type {AbstractType<any>} */ (this.parent)._map.get(this.parentSub) || null
           while (r !== null && r.left !== null) {
-            r = r.left;
+            r = r.left
           }
         } else {
-          r = /** @type {AbstractType<any>} */ this.parent._start;
-          /** @type {AbstractType<any>} */ this.parent._start = this;
+          r = /** @type {AbstractType<any>} */ (this.parent)._start
+            ;/** @type {AbstractType<any>} */ (this.parent)._start = this
         }
-        this.right = r;
+        this.right = r
       }
       if (this.right !== null) {
-        this.right.left = this;
+        // @ts-ignore
+        this.right.left = this
       } else if (this.parentSub !== null) {
         // set as current parent value if right === null and this is parentSub
-        /** @type {AbstractType<any>} */ this.parent._map.set(
-          this.parentSub,
-          this,
-        );
+        /** @type {AbstractType<any>} */ (this.parent)._map.set(this.parentSub, this)
         if (this.left !== null) {
           // this is the current attribute value of parent. delete right
-          this.left.delete(transaction);
+          this.left.delete(transaction)
         }
       }
       // adjust length of parent
       if (this.parentSub === null && this.countable && !this.deleted) {
-        /** @type {AbstractType<any>} */ this.parent._length += this.length;
+        /** @type {AbstractType<any>} */ (this.parent)._length += this.length
       }
-      addStruct(transaction.doc.store, this);
-      this.content.integrate(transaction, this);
+      addStruct(transaction.doc.store, this)
+      this.content.integrate(transaction, this)
       // add parent to transaction.changed
-      addChangedTypeToTransaction(
-        transaction,
-        /** @type {AbstractType<any>} */ this.parent,
-        this.parentSub,
-      );
-      if (
-        /** @type {AbstractType<any>} */ (this.parent._item !== null &&
-          /** @type {AbstractType<any>} */ this.parent._item.deleted) ||
-        (this.parentSub !== null && this.right !== null)
-      ) {
+      addChangedTypeToTransaction(transaction, /** @type {AbstractType<any>} */(this.parent), this.parentSub)
+      if ((/** @type {AbstractType<any>} */ (this.parent)._item !== null && /** @type {AbstractType<any>} */ (this.parent)._item.deleted) || (this.parentSub !== null && this.right !== null)) {
         // delete if parent is deleted or if this is not the current attribute value of parent
-        this.delete(transaction);
+        this.delete(transaction)
       }
     } else {
       // parent is not defined. Integrate GC struct instead
-      new GC(this.id, this.length).integrate(transaction, 0);
+      new GC(this.id, this.length).integrate(transaction, 0)
     }
   }
 
@@ -644,22 +562,22 @@ export class Item extends AbstractStruct {
    * Returns the next non-deleted item
    */
   get next() {
-    let n = this.right;
+    let n = this.right as any
     while (n !== null && n.deleted) {
-      n = n.right;
+      n = n.right
     }
-    return n;
+    return n
   }
 
   /**
    * Returns the previous non-deleted item
    */
   get prev() {
-    let n = this.left;
+    let n = this.left
     while (n !== null && n.deleted) {
-      n = n.left;
+      n = n.left
     }
-    return n;
+    return n
   }
 
   /**
@@ -667,9 +585,7 @@ export class Item extends AbstractStruct {
    */
   get lastId() {
     // allocating ids is pretty costly because of the amount of ids created, so we try to reuse whenever possible
-    return this.length === 1
-      ? this.id
-      : createID(this.id.client, this.id.clock + this.length - 1);
+    return this.length === 1 ? this.id : createID(this.id.client, this.id.clock + this.length - 1)
   }
 
   /**
@@ -692,31 +608,31 @@ export class Item extends AbstractStruct {
       this.content.constructor === right.content.constructor &&
       this.content.mergeWith(right.content)
     ) {
-      const searchMarker =
-        /** @type {AbstractType<any>} */ this.parent._searchMarker;
+      const searchMarker = /** @type {AbstractType<any>} */ (this.parent)._searchMarker
       if (searchMarker) {
-        searchMarker.forEach((marker) => {
+        searchMarker.forEach(marker => {
           if (marker.p === right) {
             // right is going to be "forgotten" so we need to update the marker
-            marker.p = this;
+            marker.p = this
             // adjust marker index
             if (!this.deleted && this.countable) {
-              marker.index -= this.length;
+              marker.index -= this.length
             }
           }
-        });
+        })
       }
       if (right.keep) {
-        this.keep = true;
+        this.keep = true
       }
-      this.right = right.right;
+      this.right = right.right
       if (this.right !== null) {
-        this.right.left = this;
+        // @ts-ignore
+        this.right.left = this
       }
-      this.length += right.length;
-      return true;
+      this.length += right.length
+      return true
     }
-    return false;
+    return false
   }
 
   /**
@@ -726,20 +642,15 @@ export class Item extends AbstractStruct {
    */
   delete(transaction) {
     if (!this.deleted) {
-      const parent = /** @type {AbstractType<any>} */ this.parent;
+      const parent = /** @type {AbstractType<any>} */ (this.parent)
       // adjust the length of parent
       if (this.countable && this.parentSub === null) {
-        parent._length -= this.length;
+        parent._length -= this.length
       }
-      this.markDeleted();
-      addToDeleteSet(
-        transaction.deleteSet,
-        this.id.client,
-        this.id.clock,
-        this.length,
-      );
-      addChangedTypeToTransaction(transaction, parent, this.parentSub);
-      this.content.delete(transaction);
+      this.markDeleted()
+      addToDeleteSet(transaction.deleteSet, this.id.client, this.id.clock, this.length)
+      addChangedTypeToTransaction(transaction, parent, this.parentSub)
+      this.content.delete(transaction)
     }
   }
 
@@ -749,13 +660,13 @@ export class Item extends AbstractStruct {
    */
   gc(store, parentGCd) {
     if (!this.deleted) {
-      throw error.unexpectedCase();
+      throw error.unexpectedCase()
     }
-    this.content.gc(store);
+    this.content.gc(store)
     if (parentGCd) {
-      replaceStruct(store, this, new GC(this.id, this.length));
+      replaceStruct(store, this, new GC(this.id, this.length))
     } else {
-      this.content = new ContentDeleted(this.length);
+      this.content = new ContentDeleted(this.length)
     }
   }
 
@@ -769,53 +680,48 @@ export class Item extends AbstractStruct {
    * @param {number} offset
    */
   write(encoder, offset) {
-    const origin =
-      offset > 0
-        ? createID(this.id.client, this.id.clock + offset - 1)
-        : this.origin;
-    const rightOrigin = this.rightOrigin;
-    const parentSub = this.parentSub;
-    const info =
-      (this.content.getRef() & binary.BITS5) |
+    const origin = offset > 0 ? createID(this.id.client, this.id.clock + offset - 1) : this.origin
+    const rightOrigin = this.rightOrigin
+    const parentSub = this.parentSub
+    const info = (this.content.getRef() & binary.BITS5) |
       (origin === null ? 0 : binary.BIT8) | // origin is defined
       (rightOrigin === null ? 0 : binary.BIT7) | // right origin is defined
-      (parentSub === null ? 0 : binary.BIT6); // parentSub is non-null
-    encoder.writeInfo(info);
+      (parentSub === null ? 0 : binary.BIT6) // parentSub is non-null
+    encoder.writeInfo(info)
     if (origin !== null) {
-      encoder.writeLeftID(origin);
+      encoder.writeLeftID(origin)
     }
     if (rightOrigin !== null) {
-      encoder.writeRightID(rightOrigin);
+      encoder.writeRightID(rightOrigin)
     }
     if (origin === null && rightOrigin === null) {
-      const parent = /** @type {AbstractType<any>} */ this.parent;
+      const parent = /** @type {AbstractType<any>} */ (this.parent)
       if (parent._item !== undefined) {
-        const parentItem = parent._item;
+        const parentItem = parent._item
         if (parentItem === null) {
           // parent type on y._map
           // find the correct key
-          const ykey = findRootTypeKey(parent);
-          encoder.writeParentInfo(true); // write parentYKey
-          encoder.writeString(ykey);
+          const ykey = findRootTypeKey(parent)
+          encoder.writeParentInfo(true) // write parentYKey
+          encoder.writeString(ykey)
         } else {
-          encoder.writeParentInfo(false); // write parent id
-          encoder.writeLeftID(parentItem.id);
+          encoder.writeParentInfo(false) // write parent id
+          encoder.writeLeftID(parentItem.id)
         }
-      } else if (parent.constructor === String) {
-        // this edge case was added by differential updates
-        encoder.writeParentInfo(true); // write parentYKey
-        encoder.writeString(parent);
+      } else if (parent.constructor === String) { // this edge case was added by differential updates
+        encoder.writeParentInfo(true) // write parentYKey
+        encoder.writeString(parent)
       } else if (parent.constructor === ID) {
-        encoder.writeParentInfo(false); // write parent id
-        encoder.writeLeftID(parent);
+        encoder.writeParentInfo(false) // write parent id
+        encoder.writeLeftID(parent)
       } else {
-        error.unexpectedCase();
+        error.unexpectedCase()
       }
       if (parentSub !== null) {
-        encoder.writeString(parentSub);
+        encoder.writeString(parentSub)
       }
     }
-    this.content.write(encoder, offset);
+    this.content.write(encoder, offset)
   }
 }
 
@@ -823,8 +729,7 @@ export class Item extends AbstractStruct {
  * @param {UpdateDecoderV1 | UpdateDecoderV2} decoder
  * @param {number} info
  */
-export const readItemContent = (decoder, info) =>
-  contentRefs[info & binary.BITS5](decoder);
+export const readItemContent = (decoder, info) => contentRefs[info & binary.BITS5](decoder)
 
 /**
  * A lookup map for reading Item content.
@@ -832,9 +737,7 @@ export const readItemContent = (decoder, info) =>
  * @type {Array<function(UpdateDecoderV1 | UpdateDecoderV2):AbstractContent>}
  */
 export const contentRefs = [
-  () => {
-    error.unexpectedCase();
-  }, // GC is not ItemContent
+  () => { error.unexpectedCase() }, // GC is not ItemContent
   readContentDeleted, // 1
   readContentJSON, // 2
   readContentBinary, // 3
@@ -844,10 +747,8 @@ export const contentRefs = [
   readContentType, // 7
   readContentAny, // 8
   readContentDoc, // 9
-  () => {
-    error.unexpectedCase();
-  }, // 10 - Skip is not ItemContent
-];
+  () => { error.unexpectedCase() } // 10 - Skip is not ItemContent
+]
 
 /**
  * Do not implement this class!
@@ -857,14 +758,14 @@ export class AbstractContent {
    * @return {number}
    */
   getLength() {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
    * @return {Array<any>}
    */
   getContent() {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
@@ -877,14 +778,14 @@ export class AbstractContent {
    * @return {boolean}
    */
   isCountable() {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
    * @return {AbstractContent}
    */
   copy() {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
@@ -892,7 +793,7 @@ export class AbstractContent {
    * @return {AbstractContent}
    */
   splice(offset) {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
@@ -900,7 +801,7 @@ export class AbstractContent {
    * @return {boolean}
    */
   mergeWith(right) {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
@@ -908,21 +809,21 @@ export class AbstractContent {
    * @param {Item} item
    */
   integrate(transaction, item) {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
    * @param {Transaction} transaction
    */
   delete(transaction) {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
    * @param {StructStore} store
    */
   gc(store) {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
@@ -930,13 +831,13 @@ export class AbstractContent {
    * @param {number} offset
    */
   write(encoder, offset) {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 
   /**
    * @return {number}
    */
   getRef() {
-    throw error.methodUnimplemented();
+    throw error.methodUnimplemented()
   }
 }

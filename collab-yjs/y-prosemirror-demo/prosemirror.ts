@@ -1,5 +1,3 @@
-/* eslint-env browser */
-
 import { exampleSetup } from 'prosemirror-example-setup';
 import { keymap } from 'prosemirror-keymap';
 import { EditorState } from 'prosemirror-state';
@@ -16,6 +14,8 @@ import * as Y from 'yjs';
 
 import { schema } from './schema';
 
+// /本文件全部逻辑都是注册load回调函数，里面包含初始化逻辑
+
 window.addEventListener('load', () => {
   const ydoc = new Y.Doc();
   const provider = new WebsocketProvider(
@@ -25,11 +25,12 @@ window.addEventListener('load', () => {
   );
   const yXmlFragment = ydoc.getXmlFragment('prosemirror');
 
-  const editor = document.createElement('div');
-  editor.setAttribute('id', 'editor');
   const editorContainer = document.createElement('div');
-  editorContainer.insertBefore(editor, null);
-  const prosemirrorView = new EditorView(editor, {
+  const editorEle = document.createElement('div');
+  editorEle.setAttribute('id', 'editor');
+  editorContainer.insertBefore(editorEle, null);
+
+  const prosemirrorView = new EditorView(editorEle, {
     state: EditorState.create({
       schema,
       plugins: [
@@ -46,10 +47,8 @@ window.addEventListener('load', () => {
   });
   document.body.insertBefore(editorContainer, null);
 
-  const connectBtn = /** @type {HTMLElement} */ (
-    document.getElementById('y-connect-btn')
-  );
-  connectBtn.addEventListener('click', () => {
+  const connectBtn = document.getElementById('y-connect-btn');
+  connectBtn?.addEventListener('click', () => {
     if (provider.shouldConnect) {
       provider.disconnect();
       connectBtn.textContent = 'Connect';
@@ -59,6 +58,5 @@ window.addEventListener('load', () => {
     }
   });
 
-  // @ts-ignore
-  window.example = { provider, ydoc, yXmlFragment, prosemirrorView };
+  window['example'] = { provider, ydoc, yXmlFragment, prosemirrorView };
 });

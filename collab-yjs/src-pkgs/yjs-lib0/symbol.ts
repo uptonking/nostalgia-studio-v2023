@@ -9,10 +9,10 @@
  *
  * @return {Symbol}
  */
-export const create = Symbol
+export const create = Symbol;
 
 /**
  * @param {any} s
  * @return {boolean}
  */
-export const isSymbol = s => typeof s === 'symbol'
+export const isSymbol = (s) => typeof s === 'symbol';

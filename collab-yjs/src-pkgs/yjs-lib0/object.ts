@@ -7,17 +7,17 @@
 /**
  * @return {Object<string,any>} obj
  */
-export const create = () => Object.create(null)
+export const create = () => Object.create(null);
 
 /**
  * Object.assign
  */
-export const assign = Object.assign
+export const assign = Object.assign;
 
 /**
  * @param {Object<string,any>} obj
  */
-export const keys = Object.keys
+export const keys = Object.keys;
 
 /**
  * @param {Object<string,any>} obj
@@ -25,9 +25,9 @@ export const keys = Object.keys
  */
 export const forEach = (obj, f) => {
   for (const key in obj) {
-    f(obj[key], key)
+    f(obj[key], key);
   }
-}
+};
 
 /**
  * @template R
@@ -36,18 +36,18 @@ export const forEach = (obj, f) => {
  * @return {Array<R>}
  */
 export const map = (obj, f) => {
-  const results = []
+  const results = [];
   for (const key in obj) {
-    results.push(f(obj[key], key))
+    results.push(f(obj[key], key));
   }
-  return results
-}
+  return results;
+};
 
 /**
  * @param {Object<string,any>} obj
  * @return {number}
  */
-export const length = obj => keys(obj).length
+export const length = (obj) => keys(obj).length;
 
 /**
  * @param {Object<string,any>} obj
@@ -57,11 +57,11 @@ export const length = obj => keys(obj).length
 export const some = (obj, f) => {
   for (const key in obj) {
     if (f(obj[key], key)) {
-      return true
+      return true;
     }
   }
-  return false
-}
+  return false;
+};
 
 /**
  * @param {Object<string,any>} obj
@@ -71,11 +71,11 @@ export const some = (obj, f) => {
 export const every = (obj, f) => {
   for (const key in obj) {
     if (!f(obj[key], key)) {
-      return false
+      return false;
     }
   }
-  return true
-}
+  return true;
+};
 
 /**
  * Calls `Object.prototype.hasOwnProperty`.
@@ -84,11 +84,18 @@ export const every = (obj, f) => {
  * @param {string|symbol} key
  * @return {boolean}
  */
-export const hasProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key)
+export const hasProperty = (obj, key) => Object.hasOwn(obj, key);
 
 /**
  * @param {Object<string,any>} a
  * @param {Object<string,any>} b
  * @return {boolean}
  */
-export const equalFlat = (a, b) => a === b || (length(a) === length(b) && every(a, (val, key) => (val !== undefined || hasProperty(b, key)) && b[key] === val))
+export const equalFlat = (a, b) =>
+  a === b ||
+  (length(a) === length(b) &&
+    every(
+      a,
+      (val, key) =>
+        (val !== undefined || hasProperty(b, key)) && b[key] === val,
+    ));

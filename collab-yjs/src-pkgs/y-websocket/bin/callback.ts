@@ -8,7 +8,7 @@ const CALLBACK_OBJECTS = process.env.CALLBACK_OBJECTS
   ? JSON.parse(process.env.CALLBACK_OBJECTS)
   : {};
 
-exports.isCallbackSet = !!CALLBACK_URL;
+exports.isCallbackSet = Boolean(CALLBACK_URL);
 
 /**
  * @param {Uint8Array} update

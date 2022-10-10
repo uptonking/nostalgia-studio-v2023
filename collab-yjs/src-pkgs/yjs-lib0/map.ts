@@ -12,7 +12,7 @@
  *
  * @function
  */
-export const create = () => new Map()
+export const create = () => new Map();
 
 /**
  * Copy a Map object into a fresh Map object.
@@ -22,11 +22,13 @@ export const create = () => new Map()
  * @param {Map<X,Y>} m
  * @return {Map<X,Y>}
  */
-export const copy = m => {
-  const r = create()
-  m.forEach((v, k) => { r.set(k, v) })
-  return r
-}
+export const copy = (m) => {
+  const r = create();
+  m.forEach((v, k) => {
+    r.set(k, v);
+  });
+  return r;
+};
 
 /**
  * Get map property. Create T if property is undefined and set T on map.
@@ -44,12 +46,12 @@ export const copy = m => {
  * @return {T}
  */
 export const setIfUndefined = (map, key, createT) => {
-  let set = map.get(key)
+  let set = map.get(key);
   if (set === undefined) {
-    map.set(key, set = createT())
+    map.set(key, (set = createT()));
   }
-  return set
-}
+  return set;
+};
 
 /**
  * Creates an Array and populates it with the content of all key-value pairs using the `f(value, key)` function.
@@ -63,12 +65,12 @@ export const setIfUndefined = (map, key, createT) => {
  * @return {Array<R>}
  */
 export const map = (m, f) => {
-  const res = []
+  const res = [];
   for (const [key, value] of m) {
-    res.push(f(value, key))
+    res.push(f(value, key));
   }
-  return res
-}
+  return res;
+};
 
 /**
  * Tests whether any key-value pairs pass the test implemented by `f(value, key)`.
@@ -85,11 +87,11 @@ export const map = (m, f) => {
 export const any = (m, f) => {
   for (const [key, value] of m) {
     if (f(value, key)) {
-      return true
+      return true;
     }
   }
-  return false
-}
+  return false;
+};
 
 /**
  * Tests whether all key-value pairs pass the test implemented by `f(value, key)`.
@@ -104,8 +106,8 @@ export const any = (m, f) => {
 export const all = (m, f) => {
   for (const [key, value] of m) {
     if (!f(value, key)) {
-      return false
+      return false;
     }
   }
-  return true
-}
+  return true;
+};

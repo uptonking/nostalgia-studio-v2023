@@ -1,9 +1,15 @@
-import { Schema } from 'prosemirror-model';
+import {
+  Schema,
+  type NodeSpec,
+  type MarkSpec,
+  type DOMOutputSpec,
+} from 'prosemirror-model';
 
-const brDOM = ['br'];
-
-const calcYchangeDomAttrs = (attrs, domAttrs = {}) => {
-  domAttrs = { ...domAttrs};
+const calcYchangeDomAttrs = (
+  attrs: Record<string, any>,
+  domAttrs: Record<string, any> = {},
+) => {
+  domAttrs = { ...domAttrs };
   if (attrs.ychange !== null) {
     domAttrs.ychange_user = attrs.ychange.user;
     domAttrs.ychange_state = attrs.ychange.state;
@@ -11,13 +17,16 @@ const calcYchangeDomAttrs = (attrs, domAttrs = {}) => {
   return domAttrs;
 };
 
+/** ['br'] */
+const brDOM: DOMOutputSpec = ['br'];
+
 // :: Object
 // [Specs](#model.NodeSpec) for the nodes defined in this schema.
 export const nodes = {
   // :: NodeSpec The top level document node.
   doc: {
     content: 'block+',
-  },
+  } as NodeSpec,
 
   // :: NodeSpec A plain paragraph textblock. Represented in the DOM
   // as a `<p>` element.
@@ -29,7 +38,7 @@ export const nodes = {
     toDOM(node) {
       return ['p', calcYchangeDomAttrs(node.attrs), 0];
     },
-  },
+  } as NodeSpec,
 
   // :: NodeSpec A blockquote (`<blockquote>`) wrapping one or more blocks.
   blockquote: {
@@ -41,7 +50,7 @@ export const nodes = {
     toDOM(node) {
       return ['blockquote', calcYchangeDomAttrs(node.attrs), 0];
     },
-  },
+  } as NodeSpec,
 
   // :: NodeSpec A horizontal rule (`<hr>`).
   horizontal_rule: {
@@ -51,7 +60,7 @@ export const nodes = {
     toDOM(node) {
       return ['hr', calcYchangeDomAttrs(node.attrs)];
     },
-  },
+  } as NodeSpec,
 
   // :: NodeSpec A heading textblock, with a `level` attribute that
   // should hold the number 1 to 6. Parsed and serialized as `<h1>` to
@@ -75,7 +84,7 @@ export const nodes = {
     toDOM(node) {
       return ['h' + node.attrs.level, calcYchangeDomAttrs(node.attrs), 0];
     },
-  },
+  } as NodeSpec,
 
   // :: NodeSpec A code listing. Disallows marks or non-text inline
   // nodes by default. Represented as a `<pre>` element with a
@@ -91,12 +100,12 @@ export const nodes = {
     toDOM(node) {
       return ['pre', calcYchangeDomAttrs(node.attrs), ['code', 0]];
     },
-  },
+  } as NodeSpec,
 
   // :: NodeSpec The text node.
   text: {
     group: 'inline',
-  },
+  } as NodeSpec,
 
   // :: NodeSpec An inline image (`<img>`) node. Supports `src`,
   // `alt`, and `href` attributes. The latter two default to the empty
@@ -115,11 +124,13 @@ export const nodes = {
       {
         tag: 'img[src]',
         getAttrs(dom) {
-          return {
-            src: dom.getAttribute('src'),
-            title: dom.getAttribute('title'),
-            alt: dom.getAttribute('alt'),
-          };
+          return dom instanceof HTMLElement
+            ? {
+                src: dom.getAttribute('src'),
+                title: dom.getAttribute('title'),
+                alt: dom.getAttribute('alt'),
+              }
+            : null;
         },
       },
     ],
@@ -131,7 +142,7 @@ export const nodes = {
       };
       return ['img', calcYchangeDomAttrs(node.attrs, domAttrs)];
     },
-  },
+  } as NodeSpec,
 
   // :: NodeSpec A hard line break, represented in the DOM as `<br>`.
   hard_break: {
@@ -142,12 +153,12 @@ export const nodes = {
     toDOM() {
       return brDOM;
     },
-  },
+  } as NodeSpec,
 };
 
-const emDOM = ['em', 0];
-const strongDOM = ['strong', 0];
-const codeDOM = ['code', 0];
+const emDOM: DOMOutputSpec = ['em', 0];
+const strongDOM: DOMOutputSpec = ['strong', 0];
+const codeDOM: DOMOutputSpec = ['code', 0];
 
 // :: Object [Specs](#model.MarkSpec) for the marks in the schema.
 export const marks = {
@@ -164,17 +175,19 @@ export const marks = {
       {
         tag: 'a[href]',
         getAttrs(dom) {
-          return {
-            href: dom.getAttribute('href'),
-            title: dom.getAttribute('title'),
-          };
+          return dom instanceof HTMLElement
+            ? {
+                href: dom.getAttribute('href'),
+                title: dom.getAttribute('title'),
+              }
+            : null;
         },
       },
     ],
     toDOM(node) {
       return ['a', node.attrs, 0];
     },
-  },
+  } as MarkSpec,
 
   // :: MarkSpec An emphasis mark. Rendered as an `<em>` element.
   // Has parse rules that also match `<i>` and `font-style: italic`.
@@ -183,7 +196,7 @@ export const marks = {
     toDOM() {
       return emDOM;
     },
-  },
+  } as MarkSpec,
 
   // :: MarkSpec A strong mark. Rendered as `<strong>`, parse rules
   // also match `<b>` and `font-weight: bold`.
@@ -195,17 +208,23 @@ export const marks = {
       // tags with a font-weight normal.
       {
         tag: 'b',
-        getAttrs: (node) => node.style.fontWeight !== 'normal' && null,
+        getAttrs: (node) =>
+          node instanceof HTMLElement &&
+          node.style.fontWeight !== 'normal' &&
+          null,
       },
       {
         style: 'font-weight',
-        getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null,
+        getAttrs: (value) =>
+          typeof value === 'string' &&
+          /^(bold(er)?|[5-9]\d{2,})$/.test(value) &&
+          null,
       },
     ],
     toDOM() {
       return strongDOM;
     },
-  },
+  } as MarkSpec,
 
   // :: MarkSpec Code font mark. Represented as a `<code>` element.
   code: {
@@ -213,7 +232,7 @@ export const marks = {
     toDOM() {
       return codeDOM;
     },
-  },
+  } as MarkSpec,
   ychange: {
     attrs: {
       user: { default: null },
@@ -228,7 +247,7 @@ export const marks = {
         0,
       ];
     },
-  },
+  } as MarkSpec,
 };
 
 // :: Schema

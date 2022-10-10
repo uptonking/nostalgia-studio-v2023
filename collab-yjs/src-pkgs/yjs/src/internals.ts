@@ -16,6 +16,8 @@ export * from './utils/Transaction';
 export * from './utils/UndoManager';
 export * from './utils/updates';
 export * from './utils/YEvent';
+// export * from './utils/hack-circular';
+
 
 export * from './types/AbstractType';
 export * from './types/YArray';

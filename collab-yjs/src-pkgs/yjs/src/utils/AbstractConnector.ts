@@ -1,6 +1,6 @@
 import { Observable } from 'lib0/observable';
 
-import { Doc } from '../internals';
+import type { Doc } from '../internals';
 
 /**
  * This is an abstract interface that all Connectors should implement to keep them interchangeable.
@@ -11,6 +11,10 @@ import { Doc } from '../internals';
  * @extends {Observable<any>}
  */
 export class AbstractConnector extends Observable {
+  doc: Doc;
+  awareness: any;
+
+
   /**
    * @param {Doc} ydoc
    * @param {any} awareness

@@ -10,23 +10,23 @@
 
 /* istanbul ignore next */
 class VarStoragePolyfill {
-  constructor () {
-    this.map = new Map()
+  constructor() {
+    this.map = new Map();
   }
 
   /**
    * @param {string} key
    * @param {any} newValue
    */
-  setItem (key, newValue) {
-    this.map.set(key, newValue)
+  setItem(key, newValue) {
+    this.map.set(key, newValue);
   }
 
   /**
    * @param {string} key
    */
-  getItem (key) {
-    return this.map.get(key)
+  getItem(key) {
+    return this.map.get(key);
   }
 }
 
@@ -34,23 +34,23 @@ class VarStoragePolyfill {
 /**
  * @type {any}
  */
-let _localStorage = new VarStoragePolyfill()
-let usePolyfill = true
+let _localStorage = new VarStoragePolyfill();
+let usePolyfill = true;
 
 try {
   // if the same-origin rule is violated, accessing localStorage might thrown an error
   /* istanbul ignore next */
   if (typeof localStorage !== 'undefined') {
-    _localStorage = localStorage
-    usePolyfill = false
+    _localStorage = localStorage;
+    usePolyfill = false;
   }
-} catch (e) { }
+} catch (e) {}
 
 /* istanbul ignore next */
 /**
  * This is basically localStorage in browser, or a polyfill in nodejs
  */
-export const varStorage = _localStorage
+export const varStorage = _localStorage;
 
 /* istanbul ignore next */
 /**
@@ -59,4 +59,5 @@ export const varStorage = _localStorage
  * @param {function({ key: string, newValue: string, oldValue: string }): void} eventHandler
  * @function
  */
-export const onChange = eventHandler => usePolyfill || addEventListener('storage', /** @type {any} */ (eventHandler))
+export const onChange = (eventHandler) =>
+  usePolyfill || addEventListener('storage', /** @type {any} */ eventHandler);

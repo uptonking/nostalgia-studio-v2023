@@ -1,40 +1,39 @@
-import { runTests } from './testing.js'
-import * as array from './array.test.js'
-import * as logging from './logging.test.js'
-import * as string from './string.test.js'
-import * as encoding from './encoding.test.js'
-import * as diff from './diff.test.js'
-import * as testing from './testing.test.js'
-import * as indexeddb from './indexeddb.test.js'
-import * as prng from './prng.test.js'
-import * as log from './logging.js'
-import * as statistics from './statistics.test.js'
-import * as binary from './binary.test.js'
-import * as random from './random.test.js'
-import * as promise from './promise.test.js'
-import * as queue from './queue.test.js'
-import * as map from './map.test.js'
-import * as eventloop from './eventloop.test.js'
-import * as time from './time.test.js'
-import * as pair from './pair.test.js'
-import * as object from './object.test.js'
-import * as math from './math.test.js'
-import * as number from './number.test.js'
-import * as buffer from './buffer.test.js'
-import * as set from './set.test.js'
-import * as sort from './sort.test.js'
-import * as url from './url.test.js'
-import * as metric from './metric.test.js'
-import * as func from './function.test.js'
-import * as storage from './storage.test.js'
-import * as list from './list.test.js'
-import * as cache from './cache.test.js'
-
-import { isBrowser, isNode } from './environment.js'
+import * as array from './array.test';
+import * as binary from './binary.test';
+import * as buffer from './buffer.test';
+import * as cache from './cache.test';
+import * as diff from './diff.test';
+import * as encoding from './encoding.test';
+import { isBrowser, isNode } from './environment';
+import * as eventloop from './eventloop.test';
+import * as func from './function.test';
+import * as indexeddb from './indexeddb.test';
+import * as list from './list.test';
+import * as log from './logging';
+import * as logging from './logging.test';
+import * as map from './map.test';
+import * as math from './math.test';
+import * as metric from './metric.test';
+import * as number from './number.test';
+import * as object from './object.test';
+import * as pair from './pair.test';
+import * as prng from './prng.test';
+import * as promise from './promise.test';
+import * as queue from './queue.test';
+import * as random from './random.test';
+import * as set from './set.test';
+import * as sort from './sort.test';
+import * as statistics from './statistics.test';
+import * as storage from './storage.test';
+import * as string from './string.test';
+import { runTests } from './testing';
+import * as testing from './testing.test';
+import * as time from './time.test';
+import * as url from './url.test';
 
 /* istanbul ignore if */
 if (isBrowser) {
-  log.createVConsole(document.body)
+  log.createVConsole(document.body);
 }
 
 runTests({
@@ -66,10 +65,10 @@ runTests({
   func,
   storage,
   list,
-  cache
-}).then(success => {
+  cache,
+}).then((success) => {
   /* istanbul ignore next */
   if (isNode) {
-    process.exit(success ? 0 : 1)
+    process.exit(success ? 0 : 1);
   }
-})
+});

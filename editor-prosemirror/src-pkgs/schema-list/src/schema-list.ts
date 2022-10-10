@@ -31,7 +31,7 @@ const liDOM: DOMOutputSpec = ['li', 0];
  * starts counting, and defaults to 1. Represented as an `<ol>`
  * element.
  */
-export const orderedList = {
+export const orderedList: NodeSpec = {
   attrs: { order: { default: 1 } },
   parseDOM: [
     {
@@ -50,7 +50,7 @@ export const orderedList = {
       ? olDOM
       : ['ol', { start: node.attrs.order }, 0];
   },
-} as NodeSpec;
+};
 
 /** A bullet list node spec, represented in the DOM as `<ul>`. */
 export const bulletList: NodeSpec = {

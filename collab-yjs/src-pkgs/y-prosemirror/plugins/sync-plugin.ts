@@ -126,7 +126,7 @@ export const ySyncPlugin = (
       apply: (tr, pluginState) => {
         const change = tr.getMeta(ySyncPluginKey);
         if (change !== undefined) {
-          pluginState = { ...pluginState};
+          pluginState = { ...pluginState };
           for (const key in change) {
             pluginState[key] = change[key];
           }
@@ -134,11 +134,11 @@ export const ySyncPlugin = (
         pluginState.addToHistory = tr.getMeta('addToHistory') !== false;
         // always set isChangeOrigin. If undefined, this is not change origin.
         pluginState.isChangeOrigin =
-          change !== undefined && !!change.isChangeOrigin;
+          change !== undefined && Boolean(change.isChangeOrigin);
         pluginState.isUndoRedoOperation =
           change !== undefined &&
-          !!change.isChangeOrigin &&
-          !!change.isUndoRedoOperation;
+          Boolean(change.isChangeOrigin) &&
+          Boolean(change.isUndoRedoOperation);
         if (pluginState.binding !== null) {
           if (
             change !== undefined &&
@@ -986,7 +986,7 @@ const updateYText = (ytext, ptexts, mapping) => {
   const { nAttrs, str } = ytextTrans(ytext);
   const content = ptexts.map((p) => ({
     insert: /** @type {any} */ p.text,
-    attributes: { ...nAttrs, ...marksToAttributes(p.marks)},
+    attributes: { ...nAttrs, ...marksToAttributes(p.marks) },
   }));
   const { insert, remove, index } = simpleDiff(
     str,

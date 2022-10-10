@@ -27,17 +27,17 @@
  * @public
  */
 export const createMutex = () => {
-  let token = true
+  let token = true;
   return (f, g) => {
     if (token) {
-      token = false
+      token = false;
       try {
-        f()
+        f();
       } finally {
-        token = true
+        token = true;
       }
     } else if (g !== undefined) {
-      g()
+      g();
     }
-  }
-}
+  };
+};

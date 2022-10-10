@@ -1,16 +1,16 @@
-import { id } from './function.js'
-import * as error from './error.js'
+import * as error from './error';
+import { id } from './function';
 
 export class ListNode {
-  constructor () {
+  constructor() {
     /**
      * @type {this|null}
      */
-    this.next = null
+    this.next = null;
     /**
      * @type {this|null}
      */
-    this.prev = null
+    this.prev = null;
   }
 }
 
@@ -18,16 +18,16 @@ export class ListNode {
  * @template {ListNode} N
  */
 export class List {
-  constructor () {
+  constructor() {
     /**
      * @type {N | null}
      */
-    this.start = null
+    this.start = null;
     /**
      * @type {N | null}
      */
-    this.end = null
-    this.len = 0
+    this.end = null;
+    this.len = 0;
   }
 }
 
@@ -39,14 +39,14 @@ export class List {
  *
  * @return {List<N>}
  */
-export const create = () => new List()
+export const create = () => new List();
 
 /**
  * @template {ListNode} N
  *
  * @param {List<N>} queue
  */
-export const isEmpty = queue => queue.start === null
+export const isEmpty = (queue) => queue.start === null;
 
 /**
  * Remove a single node from the queue. Only works with Queues that operate on Doubly-linked lists of nodes.
@@ -57,26 +57,26 @@ export const isEmpty = queue => queue.start === null
  * @param {N} node
  */
 export const remove = (queue, node) => {
-  const prev = node.prev
-  const next = node.next
+  const prev = node.prev;
+  const next = node.next;
   if (prev) {
-    prev.next = next
+    prev.next = next;
   } else {
-    queue.start = next
+    queue.start = next;
   }
   if (next) {
-    next.prev = prev
+    next.prev = prev;
   } else {
-    queue.end = prev
+    queue.end = prev;
   }
-  queue.len--
-  return node
-}
+  queue.len--;
+  return node;
+};
 
 /**
  * @deprecated @todo remove in next major release
  */
-export const removeNode = remove
+export const removeNode = remove;
 
 /**
  * @template {ListNode} N
@@ -89,22 +89,22 @@ export const removeNode = remove
 export const insertBetween = (queue, left, right, node) => {
   /* istanbul ignore if */
   if (left != null && left.next !== right) {
-    throw error.unexpectedCase()
+    throw error.unexpectedCase();
   }
   if (left) {
-    left.next = node
+    left.next = node;
   } else {
-    queue.start = node
+    queue.start = node;
   }
   if (right) {
-    right.prev = node
+    right.prev = node;
   } else {
-    queue.end = node
+    queue.end = node;
   }
-  node.prev = left
-  node.next = right
-  queue.len++
-}
+  node.prev = left;
+  node.next = right;
+  queue.len++;
+};
 
 /**
  * Remove a single node from the queue. Only works with Queues that operate on Doubly-linked lists of nodes.
@@ -116,9 +116,9 @@ export const insertBetween = (queue, left, right, node) => {
  * @param {N} newNode
  */
 export const replace = (queue, node, newNode) => {
-  insertBetween(queue, node, node.next, newNode)
-  remove(queue, node)
-}
+  insertBetween(queue, node, node.next, newNode);
+  remove(queue, node);
+};
 
 /**
  * @template {ListNode} N
@@ -126,8 +126,7 @@ export const replace = (queue, node, newNode) => {
  * @param {List<N>} queue
  * @param {N} n
  */
-export const pushEnd = (queue, n) =>
-  insertBetween(queue, queue.end, null, n)
+export const pushEnd = (queue, n) => insertBetween(queue, queue.end, null, n);
 
 /**
  * @template {ListNode} N
@@ -136,7 +135,7 @@ export const pushEnd = (queue, n) =>
  * @param {N} n
  */
 export const pushFront = (queue, n) =>
-  insertBetween(queue, null, queue.start, n)
+  insertBetween(queue, null, queue.start, n);
 
 /**
  * @template {ListNode} N
@@ -144,8 +143,8 @@ export const pushFront = (queue, n) =>
  * @param {List<N>} list
  * @return {N| null}
  */
-export const popFront = list =>
-  list.start ? removeNode(list, list.start) : null
+export const popFront = (list) =>
+  list.start ? removeNode(list, list.start) : null;
 
 /**
  * @template {ListNode} N
@@ -153,8 +152,7 @@ export const popFront = list =>
  * @param {List<N>} list
  * @return {N| null}
  */
-export const popEnd = list =>
-  list.end ? removeNode(list, list.end) : null
+export const popEnd = (list) => (list.end ? removeNode(list, list.end) : null);
 
 /**
  * @template {ListNode} N
@@ -168,21 +166,21 @@ export const map = (list, f) => {
   /**
    * @type {Array<M>}
    */
-  const arr = []
-  let n = list.start
+  const arr = [];
+  let n = list.start;
   while (n) {
-    arr.push(f(n))
-    n = n.next
+    arr.push(f(n));
+    n = n.next;
   }
-  return arr
-}
+  return arr;
+};
 
 /**
  * @template {ListNode} N
  *
  * @param {List<N>} list
  */
-export const toArray = list => map(list, id)
+export const toArray = (list) => map(list, id);
 
 /**
  * @template {ListNode} N
@@ -192,9 +190,9 @@ export const toArray = list => map(list, id)
  * @param {function(N):M} f
  */
 export const forEach = (list, f) => {
-  let n = list.start
+  let n = list.start;
   while (n) {
-    f(n)
-    n = n.next
+    f(n);
+    n = n.next;
   }
-}
+};

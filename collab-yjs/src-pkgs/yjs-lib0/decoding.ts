@@ -26,11 +26,11 @@
  * @module decoding
  */
 
-import * as buffer from './buffer.js'
-import * as binary from './binary.js'
-import * as math from './math.js'
-import * as number from './number.js'
-import * as string from './string.js'
+import * as binary from './binary';
+import { createUint8ArrayViewFromArrayBuffer } from './buffer';
+import * as math from './math';
+import * as number from './number';
+import * as string from './string';
 
 /**
  * A Decoder handles the decoding of an Uint8Array.
@@ -39,19 +39,19 @@ export class Decoder {
   /**
    * @param {Uint8Array} uint8Array Binary data to decode
    */
-  constructor (uint8Array) {
+  constructor(uint8Array) {
     /**
      * Decoding target.
      *
      * @type {Uint8Array}
      */
-    this.arr = uint8Array
+    this.arr = uint8Array;
     /**
      * Current decoding position.
      *
      * @type {number}
      */
-    this.pos = 0
+    this.pos = 0;
   }
 }
 
@@ -60,14 +60,14 @@ export class Decoder {
  * @param {Uint8Array} uint8Array
  * @return {Decoder}
  */
-export const createDecoder = uint8Array => new Decoder(uint8Array)
+export const createDecoder = (uint8Array) => new Decoder(uint8Array);
 
 /**
  * @function
  * @param {Decoder} decoder
  * @return {boolean}
  */
-export const hasContent = decoder => decoder.pos !== decoder.arr.length
+export const hasContent = (decoder) => decoder.pos !== decoder.arr.length;
 
 /**
  * Clone a decoder instance.
@@ -79,10 +79,10 @@ export const hasContent = decoder => decoder.pos !== decoder.arr.length
  * @return {Decoder} A clone of `decoder`
  */
 export const clone = (decoder, newPos = decoder.pos) => {
-  const _decoder = createDecoder(decoder.arr)
-  _decoder.pos = newPos
-  return _decoder
-}
+  const _decoder = createDecoder(decoder.arr);
+  _decoder.pos = newPos;
+  return _decoder;
+};
 
 /**
  * Create an Uint8Array view of the next `len` bytes and advance the position by `len`.
@@ -96,10 +96,14 @@ export const clone = (decoder, newPos = decoder.pos) => {
  * @return {Uint8Array}
  */
 export const readUint8Array = (decoder, len) => {
-  const view = buffer.createUint8ArrayViewFromArrayBuffer(decoder.arr.buffer, decoder.pos + decoder.arr.byteOffset, len)
-  decoder.pos += len
-  return view
-}
+  const view = createUint8ArrayViewFromArrayBuffer(
+    decoder.arr.buffer,
+    decoder.pos + decoder.arr.byteOffset,
+    len,
+  );
+  decoder.pos += len;
+  return view;
+};
 
 /**
  * Read variable length Uint8Array.
@@ -111,7 +115,8 @@ export const readUint8Array = (decoder, len) => {
  * @param {Decoder} decoder
  * @return {Uint8Array}
  */
-export const readVarUint8Array = decoder => readUint8Array(decoder, readVarUint(decoder))
+export const readVarUint8Array = (decoder) =>
+  readUint8Array(decoder, readVarUint(decoder));
 
 /**
  * Read the rest of the content as an ArrayBuffer
@@ -119,7 +124,8 @@ export const readVarUint8Array = decoder => readUint8Array(decoder, readVarUint(
  * @param {Decoder} decoder
  * @return {Uint8Array}
  */
-export const readTailAsUint8Array = decoder => readUint8Array(decoder, decoder.arr.length - decoder.pos)
+export const readTailAsUint8Array = (decoder) =>
+  readUint8Array(decoder, decoder.arr.length - decoder.pos);
 
 /**
  * Skip one byte, jump to the next position.
@@ -127,7 +133,7 @@ export const readTailAsUint8Array = decoder => readUint8Array(decoder, decoder.a
  * @param {Decoder} decoder The decoder instance
  * @return {number} The next position
  */
-export const skip8 = decoder => decoder.pos++
+export const skip8 = (decoder) => decoder.pos++;
 
 /**
  * Read one byte as unsigned integer.
@@ -135,7 +141,7 @@ export const skip8 = decoder => decoder.pos++
  * @param {Decoder} decoder The decoder instance
  * @return {number} Unsigned 8-bit integer
  */
-export const readUint8 = decoder => decoder.arr[decoder.pos++]
+export const readUint8 = (decoder) => decoder.arr[decoder.pos++];
 
 /**
  * Read 2 bytes as unsigned integer.
@@ -144,13 +150,11 @@ export const readUint8 = decoder => decoder.arr[decoder.pos++]
  * @param {Decoder} decoder
  * @return {number} An unsigned integer.
  */
-export const readUint16 = decoder => {
-  const uint =
-    decoder.arr[decoder.pos] +
-    (decoder.arr[decoder.pos + 1] << 8)
-  decoder.pos += 2
-  return uint
-}
+export const readUint16 = (decoder) => {
+  const uint = decoder.arr[decoder.pos] + (decoder.arr[decoder.pos + 1] << 8);
+  decoder.pos += 2;
+  return uint;
+};
 
 /**
  * Read 4 bytes as unsigned integer.
@@ -159,15 +163,16 @@ export const readUint16 = decoder => {
  * @param {Decoder} decoder
  * @return {number} An unsigned integer.
  */
-export const readUint32 = decoder => {
+export const readUint32 = (decoder) => {
   const uint =
     (decoder.arr[decoder.pos] +
-    (decoder.arr[decoder.pos + 1] << 8) +
-    (decoder.arr[decoder.pos + 2] << 16) +
-    (decoder.arr[decoder.pos + 3] << 24)) >>> 0
-  decoder.pos += 4
-  return uint
-}
+      (decoder.arr[decoder.pos + 1] << 8) +
+      (decoder.arr[decoder.pos + 2] << 16) +
+      (decoder.arr[decoder.pos + 3] << 24)) >>>
+    0;
+  decoder.pos += 4;
+  return uint;
+};
 
 /**
  * Read 4 bytes as unsigned integer in big endian order.
@@ -177,15 +182,16 @@ export const readUint32 = decoder => {
  * @param {Decoder} decoder
  * @return {number} An unsigned integer.
  */
-export const readUint32BigEndian = decoder => {
+export const readUint32BigEndian = (decoder) => {
   const uint =
     (decoder.arr[decoder.pos + 3] +
-    (decoder.arr[decoder.pos + 2] << 8) +
-    (decoder.arr[decoder.pos + 1] << 16) +
-    (decoder.arr[decoder.pos] << 24)) >>> 0
-  decoder.pos += 4
-  return uint
-}
+      (decoder.arr[decoder.pos + 2] << 8) +
+      (decoder.arr[decoder.pos + 1] << 16) +
+      (decoder.arr[decoder.pos] << 24)) >>>
+    0;
+  decoder.pos += 4;
+  return uint;
+};
 
 /**
  * Look ahead without incrementing the position
@@ -195,7 +201,7 @@ export const readUint32BigEndian = decoder => {
  * @param {Decoder} decoder
  * @return {number} An unsigned integer.
  */
-export const peekUint8 = decoder => decoder.arr[decoder.pos]
+export const peekUint8 = (decoder) => decoder.arr[decoder.pos];
 
 /**
  * Look ahead without incrementing the position
@@ -205,9 +211,8 @@ export const peekUint8 = decoder => decoder.arr[decoder.pos]
  * @param {Decoder} decoder
  * @return {number} An unsigned integer.
  */
-export const peekUint16 = decoder =>
-  decoder.arr[decoder.pos] +
-  (decoder.arr[decoder.pos + 1] << 8)
+export const peekUint16 = (decoder) =>
+  decoder.arr[decoder.pos] + (decoder.arr[decoder.pos + 1] << 8);
 
 /**
  * Look ahead without incrementing the position
@@ -217,12 +222,12 @@ export const peekUint16 = decoder =>
  * @param {Decoder} decoder
  * @return {number} An unsigned integer.
  */
-export const peekUint32 = decoder => (
-  decoder.arr[decoder.pos] +
-  (decoder.arr[decoder.pos + 1] << 8) +
-  (decoder.arr[decoder.pos + 2] << 16) +
-  (decoder.arr[decoder.pos + 3] << 24)
-) >>> 0
+export const peekUint32 = (decoder) =>
+  (decoder.arr[decoder.pos] +
+    (decoder.arr[decoder.pos + 1] << 8) +
+    (decoder.arr[decoder.pos + 2] << 16) +
+    (decoder.arr[decoder.pos + 3] << 24)) >>>
+  0;
 
 /**
  * Read unsigned integer (32bit) with variable length.
@@ -234,23 +239,23 @@ export const peekUint32 = decoder => (
  * @param {Decoder} decoder
  * @return {number} An unsigned integer.length
  */
-export const readVarUint = decoder => {
-  let num = 0
-  let mult = 1
+export const readVarUint = (decoder) => {
+  let num = 0;
+  let mult = 1;
   while (true) {
-    const r = decoder.arr[decoder.pos++]
+    const r = decoder.arr[decoder.pos++];
     // num = num | ((r & binary.BITS7) << len)
-    num = num + (r & binary.BITS7) * mult // shift $r << (7*#iterations) and add it to num
-    mult *= 128 // next iteration, shift 7 "more" to the left
+    num = num + (r & binary.BITS7) * mult; // shift $r << (7*#iterations) and add it to num
+    mult *= 128; // next iteration, shift 7 "more" to the left
     if (r < binary.BIT8) {
-      return num
+      return num;
     }
     /* istanbul ignore if */
     if (num > number.MAX_SAFE_INTEGER) {
-      throw new Error('Integer out of range!')
+      throw new Error('Integer out of range!');
     }
   }
-}
+};
 
 /**
  * Read signed integer (32bit) with variable length.
@@ -263,29 +268,29 @@ export const readVarUint = decoder => {
  * @param {Decoder} decoder
  * @return {number} An unsigned integer.length
  */
-export const readVarInt = decoder => {
-  let r = decoder.arr[decoder.pos++]
-  let num = r & binary.BITS6
-  let mult = 64
-  const sign = (r & binary.BIT7) > 0 ? -1 : 1
+export const readVarInt = (decoder) => {
+  let r = decoder.arr[decoder.pos++];
+  let num = r & binary.BITS6;
+  let mult = 64;
+  const sign = (r & binary.BIT7) > 0 ? -1 : 1;
   if ((r & binary.BIT8) === 0) {
     // don't continue reading
-    return sign * num
+    return sign * num;
   }
   while (true) {
-    r = decoder.arr[decoder.pos++]
+    r = decoder.arr[decoder.pos++];
     // num = num | ((r & binary.BITS7) << len)
-    num = num + (r & binary.BITS7) * mult
-    mult *= 128
+    num = num + (r & binary.BITS7) * mult;
+    mult *= 128;
     if (r < binary.BIT8) {
-      return sign * num
+      return sign * num;
     }
     /* istanbul ignore if */
     if (num > number.MAX_SAFE_INTEGER) {
-      throw new Error('Integer out of range!')
+      throw new Error('Integer out of range!');
     }
   }
-}
+};
 
 /**
  * Look ahead and read varUint without incrementing position
@@ -294,12 +299,12 @@ export const readVarInt = decoder => {
  * @param {Decoder} decoder
  * @return {number}
  */
-export const peekVarUint = decoder => {
-  const pos = decoder.pos
-  const s = readVarUint(decoder)
-  decoder.pos = pos
-  return s
-}
+export const peekVarUint = (decoder) => {
+  const pos = decoder.pos;
+  const s = readVarUint(decoder);
+  decoder.pos = pos;
+  return s;
+};
 
 /**
  * Look ahead and read varUint without incrementing position
@@ -308,12 +313,12 @@ export const peekVarUint = decoder => {
  * @param {Decoder} decoder
  * @return {number}
  */
-export const peekVarInt = decoder => {
-  const pos = decoder.pos
-  const s = readVarInt(decoder)
-  decoder.pos = pos
-  return s
-}
+export const peekVarInt = (decoder) => {
+  const pos = decoder.pos;
+  const s = readVarInt(decoder);
+  decoder.pos = pos;
+  return s;
+};
 
 /**
  * We don't test this function anymore as we use native decoding/encoding by default now.
@@ -329,38 +334,42 @@ export const peekVarInt = decoder => {
  * @return {String} The read String.
  */
 /* istanbul ignore next */
-export const _readVarStringPolyfill = decoder => {
-  let remainingLen = readVarUint(decoder)
+export const _readVarStringPolyfill = (decoder) => {
+  let remainingLen = readVarUint(decoder);
   if (remainingLen === 0) {
-    return ''
+    return '';
   } else {
-    let encodedString = String.fromCodePoint(readUint8(decoder)) // remember to decrease remainingLen
-    if (--remainingLen < 100) { // do not create a Uint8Array for small strings
+    let encodedString = String.fromCodePoint(readUint8(decoder)); // remember to decrease remainingLen
+    if (--remainingLen < 100) {
+      // do not create a Uint8Array for small strings
       while (remainingLen--) {
-        encodedString += String.fromCodePoint(readUint8(decoder))
+        encodedString += String.fromCodePoint(readUint8(decoder));
       }
     } else {
       while (remainingLen > 0) {
-        const nextLen = remainingLen < 10000 ? remainingLen : 10000
+        const nextLen = remainingLen < 10000 ? remainingLen : 10000;
         // this is dangerous, we create a fresh array view from the existing buffer
-        const bytes = decoder.arr.subarray(decoder.pos, decoder.pos + nextLen)
-        decoder.pos += nextLen
+        const bytes = decoder.arr.subarray(decoder.pos, decoder.pos + nextLen);
+        decoder.pos += nextLen;
         // Starting with ES5.1 we can supply a generic array-like object as arguments
-        encodedString += String.fromCodePoint.apply(null, /** @type {any} */ (bytes))
-        remainingLen -= nextLen
+        encodedString += String.fromCodePoint.apply(
+          null,
+          /** @type {any} */ bytes,
+        );
+        remainingLen -= nextLen;
       }
     }
-    return decodeURIComponent(escape(encodedString))
+    return decodeURIComponent(escape(encodedString));
   }
-}
+};
 
 /**
  * @function
  * @param {Decoder} decoder
  * @return {String} The read String
  */
-export const _readVarStringNative = decoder =>
-  /** @type any */ (string.utf8TextDecoder).decode(readVarUint8Array(decoder))
+export const _readVarStringNative = (decoder) =>
+  /** @type any */ string.utf8TextDecoder.decode(readVarUint8Array(decoder));
 
 /**
  * Read string of variable length
@@ -372,7 +381,9 @@ export const _readVarStringNative = decoder =>
  *
  */
 /* istanbul ignore next */
-export const readVarString = string.utf8TextDecoder ? _readVarStringNative : _readVarStringPolyfill
+export const readVarString = string.utf8TextDecoder
+  ? _readVarStringNative
+  : _readVarStringPolyfill;
 
 /**
  * Look ahead and read varString without incrementing position
@@ -381,12 +392,12 @@ export const readVarString = string.utf8TextDecoder ? _readVarStringNative : _re
  * @param {Decoder} decoder
  * @return {string}
  */
-export const peekVarString = decoder => {
-  const pos = decoder.pos
-  const s = readVarString(decoder)
-  decoder.pos = pos
-  return s
-}
+export const peekVarString = (decoder) => {
+  const pos = decoder.pos;
+  const s = readVarString(decoder);
+  decoder.pos = pos;
+  return s;
+};
 
 /**
  * @param {Decoder} decoder
@@ -394,71 +405,82 @@ export const peekVarString = decoder => {
  * @return {DataView}
  */
 export const readFromDataView = (decoder, len) => {
-  const dv = new DataView(decoder.arr.buffer, decoder.arr.byteOffset + decoder.pos, len)
-  decoder.pos += len
-  return dv
-}
+  const dv = new DataView(
+    decoder.arr.buffer,
+    decoder.arr.byteOffset + decoder.pos,
+    len,
+  );
+  decoder.pos += len;
+  return dv;
+};
 
 /**
  * @param {Decoder} decoder
  */
-export const readFloat32 = decoder => readFromDataView(decoder, 4).getFloat32(0, false)
+export const readFloat32 = (decoder) =>
+  readFromDataView(decoder, 4).getFloat32(0, false);
 
 /**
  * @param {Decoder} decoder
  */
-export const readFloat64 = decoder => readFromDataView(decoder, 8).getFloat64(0, false)
+export const readFloat64 = (decoder) =>
+  readFromDataView(decoder, 8).getFloat64(0, false);
 
 /**
  * @param {Decoder} decoder
  */
-export const readBigInt64 = decoder => /** @type {any} */ (readFromDataView(decoder, 8)).getBigInt64(0, false)
+export const readBigInt64 = (decoder) =>
+  /** @type {any} */ readFromDataView(decoder, 8).getBigInt64(0, false);
 
 /**
  * @param {Decoder} decoder
  */
-export const readBigUint64 = decoder => /** @type {any} */ (readFromDataView(decoder, 8)).getBigUint64(0, false)
+export const readBigUint64 = (decoder) =>
+  /** @type {any} */ readFromDataView(decoder, 8).getBigUint64(0, false);
 
 /**
  * @type {Array<function(Decoder):any>}
  */
 const readAnyLookupTable = [
-  decoder => undefined, // CASE 127: undefined
-  decoder => null, // CASE 126: null
+  (decoder) => undefined, // CASE 127: undefined
+  (decoder) => null, // CASE 126: null
   readVarInt, // CASE 125: integer
   readFloat32, // CASE 124: float32
   readFloat64, // CASE 123: float64
   readBigInt64, // CASE 122: bigint
-  decoder => false, // CASE 121: boolean (false)
-  decoder => true, // CASE 120: boolean (true)
+  (decoder) => false, // CASE 121: boolean (false)
+  (decoder) => true, // CASE 120: boolean (true)
   readVarString, // CASE 119: string
-  decoder => { // CASE 118: object<string,any>
-    const len = readVarUint(decoder)
+  (decoder) => {
+    // CASE 118: object<string,any>
+    const len = readVarUint(decoder);
     /**
      * @type {Object<string,any>}
      */
-    const obj = {}
+    const obj = {};
     for (let i = 0; i < len; i++) {
-      const key = readVarString(decoder)
-      obj[key] = readAny(decoder)
+      const key = readVarString(decoder);
+      obj[key] = readAny(decoder);
     }
-    return obj
+    return obj;
   },
-  decoder => { // CASE 117: array<any>
-    const len = readVarUint(decoder)
-    const arr = []
+  (decoder) => {
+    // CASE 117: array<any>
+    const len = readVarUint(decoder);
+    const arr = [];
     for (let i = 0; i < len; i++) {
-      arr.push(readAny(decoder))
+      arr.push(readAny(decoder));
     }
-    return arr
+    return arr;
   },
-  readVarUint8Array // CASE 116: Uint8Array
-]
+  readVarUint8Array, // CASE 116: Uint8Array
+];
 
 /**
  * @param {Decoder} decoder
  */
-export const readAny = decoder => readAnyLookupTable[127 - readUint8(decoder)](decoder)
+export const readAny = (decoder) =>
+  readAnyLookupTable[127 - readUint8(decoder)](decoder);
 
 /**
  * T must not be null.
@@ -470,31 +492,31 @@ export class RleDecoder extends Decoder {
    * @param {Uint8Array} uint8Array
    * @param {function(Decoder):T} reader
    */
-  constructor (uint8Array, reader) {
-    super(uint8Array)
+  constructor(uint8Array, reader) {
+    super(uint8Array);
     /**
      * The reader
      */
-    this.reader = reader
+    this.reader = reader;
     /**
      * Current state
      * @type {T|null}
      */
-    this.s = null
-    this.count = 0
+    this.s = null;
+    this.count = 0;
   }
 
-  read () {
+  read() {
     if (this.count === 0) {
-      this.s = this.reader(this)
+      this.s = this.reader(this);
       if (hasContent(this)) {
-        this.count = readVarUint(this) + 1 // see encoder implementation for the reason why this is incremented
+        this.count = readVarUint(this) + 1; // see encoder implementation for the reason why this is incremented
       } else {
-        this.count = -1 // read the current value forever
+        this.count = -1; // read the current value forever
       }
     }
-    this.count--
-    return /** @type {T} */ (this.s)
+    this.count--;
+    return /** @type {T} */ this.s;
   }
 }
 
@@ -503,21 +525,21 @@ export class IntDiffDecoder extends Decoder {
    * @param {Uint8Array} uint8Array
    * @param {number} start
    */
-  constructor (uint8Array, start) {
-    super(uint8Array)
+  constructor(uint8Array, start) {
+    super(uint8Array);
     /**
      * Current state
      * @type {number}
      */
-    this.s = start
+    this.s = start;
   }
 
   /**
    * @return {number}
    */
-  read () {
-    this.s += readVarInt(this)
-    return this.s
+  read() {
+    this.s += readVarInt(this);
+    return this.s;
   }
 }
 
@@ -526,30 +548,30 @@ export class RleIntDiffDecoder extends Decoder {
    * @param {Uint8Array} uint8Array
    * @param {number} start
    */
-  constructor (uint8Array, start) {
-    super(uint8Array)
+  constructor(uint8Array, start) {
+    super(uint8Array);
     /**
      * Current state
      * @type {number}
      */
-    this.s = start
-    this.count = 0
+    this.s = start;
+    this.count = 0;
   }
 
   /**
    * @return {number}
    */
-  read () {
+  read() {
     if (this.count === 0) {
-      this.s += readVarInt(this)
+      this.s += readVarInt(this);
       if (hasContent(this)) {
-        this.count = readVarUint(this) + 1 // see encoder implementation for the reason why this is incremented
+        this.count = readVarUint(this) + 1; // see encoder implementation for the reason why this is incremented
       } else {
-        this.count = -1 // read the current value forever
+        this.count = -1; // read the current value forever
       }
     }
-    this.count--
-    return /** @type {number} */ (this.s)
+    this.count--;
+    return /** @type {number} */ this.s;
   }
 }
 
@@ -557,28 +579,28 @@ export class UintOptRleDecoder extends Decoder {
   /**
    * @param {Uint8Array} uint8Array
    */
-  constructor (uint8Array) {
-    super(uint8Array)
+  constructor(uint8Array) {
+    super(uint8Array);
     /**
      * @type {number}
      */
-    this.s = 0
-    this.count = 0
+    this.s = 0;
+    this.count = 0;
   }
 
-  read () {
+  read() {
     if (this.count === 0) {
-      this.s = readVarInt(this)
+      this.s = readVarInt(this);
       // if the sign is negative, we read the count too, otherwise count is 1
-      const isNegative = math.isNegativeZero(this.s)
-      this.count = 1
+      const isNegative = math.isNegativeZero(this.s);
+      this.count = 1;
       if (isNegative) {
-        this.s = -this.s
-        this.count = readVarUint(this) + 2
+        this.s = -this.s;
+        this.count = readVarUint(this) + 2;
       }
     }
-    this.count--
-    return /** @type {number} */ (this.s)
+    this.count--;
+    return /** @type {number} */ this.s;
   }
 }
 
@@ -586,28 +608,28 @@ export class IncUintOptRleDecoder extends Decoder {
   /**
    * @param {Uint8Array} uint8Array
    */
-  constructor (uint8Array) {
-    super(uint8Array)
+  constructor(uint8Array) {
+    super(uint8Array);
     /**
      * @type {number}
      */
-    this.s = 0
-    this.count = 0
+    this.s = 0;
+    this.count = 0;
   }
 
-  read () {
+  read() {
     if (this.count === 0) {
-      this.s = readVarInt(this)
+      this.s = readVarInt(this);
       // if the sign is negative, we read the count too, otherwise count is 1
-      const isNegative = math.isNegativeZero(this.s)
-      this.count = 1
+      const isNegative = math.isNegativeZero(this.s);
+      this.count = 1;
       if (isNegative) {
-        this.s = -this.s
-        this.count = readVarUint(this) + 2
+        this.s = -this.s;
+        this.count = readVarUint(this) + 2;
       }
     }
-    this.count--
-    return /** @type {number} */ (this.s++)
+    this.count--;
+    return /** @type {number} */ this.s++;
   }
 }
 
@@ -615,33 +637,33 @@ export class IntDiffOptRleDecoder extends Decoder {
   /**
    * @param {Uint8Array} uint8Array
    */
-  constructor (uint8Array) {
-    super(uint8Array)
+  constructor(uint8Array) {
+    super(uint8Array);
     /**
      * @type {number}
      */
-    this.s = 0
-    this.count = 0
-    this.diff = 0
+    this.s = 0;
+    this.count = 0;
+    this.diff = 0;
   }
 
   /**
    * @return {number}
    */
-  read () {
+  read() {
     if (this.count === 0) {
-      const diff = readVarInt(this)
+      const diff = readVarInt(this);
       // if the first bit is set, we read more data
-      const hasCount = diff & 1
-      this.diff = math.floor(diff / 2) // shift >> 1
-      this.count = 1
+      const hasCount = diff & 1;
+      this.diff = math.floor(diff / 2); // shift >> 1
+      this.count = 1;
       if (hasCount) {
-        this.count = readVarUint(this) + 2
+        this.count = readVarUint(this) + 2;
       }
     }
-    this.s += this.diff
-    this.count--
-    return this.s
+    this.s += this.diff;
+    this.count--;
+    return this.s;
   }
 }
 
@@ -649,22 +671,22 @@ export class StringDecoder {
   /**
    * @param {Uint8Array} uint8Array
    */
-  constructor (uint8Array) {
-    this.decoder = new UintOptRleDecoder(uint8Array)
-    this.str = readVarString(this.decoder)
+  constructor(uint8Array) {
+    this.decoder = new UintOptRleDecoder(uint8Array);
+    this.str = readVarString(this.decoder);
     /**
      * @type {number}
      */
-    this.spos = 0
+    this.spos = 0;
   }
 
   /**
    * @return {string}
    */
-  read () {
-    const end = this.spos + this.decoder.read()
-    const res = this.str.slice(this.spos, end)
-    this.spos = end
-    return res
+  read() {
+    const end = this.spos + this.decoder.read();
+    const res = this.str.slice(this.spos, end);
+    this.spos = end;
+    return res;
   }
 }

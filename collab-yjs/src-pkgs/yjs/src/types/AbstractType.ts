@@ -15,9 +15,7 @@ import {
   Transaction,
   UpdateEncoderV1,
   UpdateEncoderV2,
-  YArray,
   YEvent,
-  YText,
   addEventHandlerListener,
   callEventHandlerListeners,
   createEventHandler,
@@ -280,6 +278,9 @@ export const callTypeObservers = (type, transaction, event) => {
  * Abstract Yjs Type class
  */
 export class AbstractType {
+  _map: any;
+  _start: any;
+  _length: any;
   constructor() {
     /**
      * @type {Item|null}

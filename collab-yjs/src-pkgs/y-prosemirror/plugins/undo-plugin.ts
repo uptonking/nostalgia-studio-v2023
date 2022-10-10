@@ -1,23 +1,25 @@
-import { Plugin } from 'prosemirror-state'; // eslint-disable-line
+import { Plugin, type Command } from 'prosemirror-state'; // eslint-disable-line
 import { ContentType, Item, Text, UndoManager, XmlElement } from 'yjs';
 
 import { ySyncPluginKey, yUndoPluginKey } from './keys';
 import { getRelativeSelection } from './sync-plugin';
 
-export const undo = (state) => {
+export const undo: Command = (state) => {
   const undoManager = yUndoPluginKey.getState(state).undoManager;
   if (undoManager != null) {
     undoManager.undo();
     return true;
   }
+  return false;
 };
 
-export const redo = (state) => {
+export const redo: Command = (state) => {
   const undoManager = yUndoPluginKey.getState(state).undoManager;
   if (undoManager != null) {
     undoManager.redo();
     return true;
   }
+  return false;
 };
 
 export const defaultProtectedNodes = new Set(['paragraph']);
@@ -74,8 +76,11 @@ export const yUndoPlugin = ({
           };
         } else {
           if (hasUndoOps !== val.hasUndoOps || hasRedoOps !== val.hasRedoOps) {
-            return { ...val, hasUndoOps: undoManager.undoStack.length > 0,
-              hasRedoOps: undoManager.redoStack.length > 0,};
+            return {
+              ...val,
+              hasUndoOps: undoManager.undoStack.length > 0,
+              hasRedoOps: undoManager.redoStack.length > 0,
+            };
           } else {
             // nothing changed
             return val;

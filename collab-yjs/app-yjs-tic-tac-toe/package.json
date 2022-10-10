@@ -1,0 +1,21 @@
+{
+  "name": "app-tic-tac-toe",
+  "version": "0.0.1111",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "demo": "cross-env APP_ENV=reacthot webpack serve  --config webpack/webpack.config.demo.cjs",
+    "start": "npm run demo",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "yjs": "13.5.4111",
+    "y-webrtc": "10.2.3111",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0"
+  }
+}

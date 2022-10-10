@@ -3,8 +3,8 @@
 /**
  * @type {any}
  */
-const WebSocket = require('ws');
 const http = require('http');
+const WebSocket = require('ws');
 const wss = new WebSocket.Server({ noServer: true });
 const setupWSConnection = require('./utils').setupWSConnection;
 

@@ -158,6 +158,9 @@ export class DSEncoderV2 {
 }
 
 export class UpdateEncoderV2 extends DSEncoderV2 {
+  restEncoder(restEncoder: any, arg1: number) {
+    throw new Error('Method not implemented.');
+  }
   constructor() {
     super();
     /**

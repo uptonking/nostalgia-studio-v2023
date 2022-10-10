@@ -9,7 +9,7 @@
  * @param {string} s
  * @return {Error}
  */
-export const create = s => new Error(s)
+export const create = (s) => new Error(s);
 
 /* istanbul ignore next */
 /**
@@ -17,8 +17,8 @@ export const create = s => new Error(s)
  * @return {never}
  */
 export const methodUnimplemented = () => {
-  throw create('Method unimplemented')
-}
+  throw create('Method unimplemented');
+};
 
 /* istanbul ignore next */
 /**
@@ -26,5 +26,5 @@ export const methodUnimplemented = () => {
  * @return {never}
  */
 export const unexpectedCase = () => {
-  throw create('Unexpected case')
-}
+  throw create('Unexpected case');
+};

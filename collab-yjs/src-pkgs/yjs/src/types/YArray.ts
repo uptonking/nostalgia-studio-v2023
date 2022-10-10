@@ -33,6 +33,7 @@ import { typeListSlice } from './AbstractType';
  * @extends YEvent<YArray<T>>
  */
 export class YArrayEvent extends YEvent {
+  _transaction: any;
   /**
    * @param {YArray<T>} yarray The changed type
    * @param {Transaction} transaction The transaction object
@@ -50,6 +51,10 @@ export class YArrayEvent extends YEvent {
  * @implements {Iterable<T>}
  */
 export class YArray extends AbstractType {
+  _prelimContent: any[];
+  _searchMarker: any[];
+  doc: any;
+
   constructor() {
     super();
     /**

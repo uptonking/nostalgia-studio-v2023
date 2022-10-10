@@ -17,9 +17,9 @@
 
 // @todo before next major: use Uint8Array instead as buffer object
 
-import * as map from './map.js'
-import * as buffer from './buffer.js'
-import * as storage from './storage.js'
+import * as buffer from './buffer';
+import * as map from './map';
+import * as storage from './storage';
 
 /**
  * @typedef {Object} Channel
@@ -30,48 +30,61 @@ import * as storage from './storage.js'
 /**
  * @type {Map<string, Channel>}
  */
-const channels = new Map()
+const channels = new Map();
 
 class LocalStoragePolyfill {
   /**
    * @param {string} room
    */
-  constructor (room) {
-    this.room = room
+  constructor(room) {
+    this.room = room;
     /**
      * @type {null|function({data:ArrayBuffer}):void}
      */
-    this.onmessage = null
-    storage.onChange(e => e.key === room && this.onmessage !== null && this.onmessage({ data: buffer.fromBase64(e.newValue || '') }))
+    this.onmessage = null;
+    storage.onChange(
+      (e) =>
+        e.key === room &&
+        this.onmessage !== null &&
+        this.onmessage({ data: buffer.fromBase64(e.newValue || '') }),
+    );
   }
 
   /**
    * @param {ArrayBuffer} buf
    */
-  postMessage (buf) {
-    storage.varStorage.setItem(this.room, buffer.toBase64(buffer.createUint8ArrayFromArrayBuffer(buf)))
+  postMessage(buf) {
+    storage.varStorage.setItem(
+      this.room,
+      buffer.toBase64(buffer.createUint8ArrayFromArrayBuffer(buf)),
+    );
   }
 }
 
 // Use BroadcastChannel or Polyfill
-const BC = typeof BroadcastChannel === 'undefined' ? LocalStoragePolyfill : BroadcastChannel
+const BC =
+  typeof BroadcastChannel === 'undefined'
+    ? LocalStoragePolyfill
+    : BroadcastChannel;
 
 /**
  * @param {string} room
  * @return {Channel}
  */
-const getChannel = room =>
+const getChannel = (room) =>
   map.setIfUndefined(channels, room, () => {
-    const subs = new Set()
-    const bc = new BC(room)
+    const subs = new Set();
+    const bc = new BC(room);
     /**
      * @param {{data:ArrayBuffer}} e
      */
-    bc.onmessage = e => subs.forEach(sub => sub(e.data, 'broadcastchannel'))
+    bc.onmessage = (e) =>
+      subs.forEach((sub) => sub(e.data, 'broadcastchannel'));
     return {
-      bc, subs
-    }
-  })
+      bc,
+      subs,
+    };
+  });
 
 /**
  * Subscribe to global `publish` events.
@@ -80,7 +93,7 @@ const getChannel = room =>
  * @param {string} room
  * @param {function(any, any):any} f
  */
-export const subscribe = (room, f) => getChannel(room).subs.add(f)
+export const subscribe = (room, f) => getChannel(room).subs.add(f);
 
 /**
  * Unsubscribe from `publish` global events.
@@ -89,7 +102,7 @@ export const subscribe = (room, f) => getChannel(room).subs.add(f)
  * @param {string} room
  * @param {function(any, any):any} f
  */
-export const unsubscribe = (room, f) => getChannel(room).subs.delete(f)
+export const unsubscribe = (room, f) => getChannel(room).subs.delete(f);
 
 /**
  * Publish data to all subscribers (including subscribers on this tab)
@@ -100,7 +113,7 @@ export const unsubscribe = (room, f) => getChannel(room).subs.delete(f)
  * @param {any} [origin]
  */
 export const publish = (room, data, origin = null) => {
-  const c = getChannel(room)
-  c.bc.postMessage(data)
-  c.subs.forEach(sub => sub(data, origin))
-}
+  const c = getChannel(room);
+  c.bc.postMessage(data);
+  c.subs.forEach((sub) => sub(data, origin));
+};

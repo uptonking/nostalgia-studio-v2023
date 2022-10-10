@@ -14,7 +14,7 @@ const calcYChangeStyle = (ychange) => {
 };
 
 const calcYchangeDomAttrs = (attrs, domAttrs = {}) => {
-  domAttrs = { ...domAttrs};
+  domAttrs = { ...domAttrs };
   if (attrs.ychange !== null) {
     domAttrs.ychange_user = attrs.ychange.user;
     domAttrs.ychange_type = attrs.ychange.type;

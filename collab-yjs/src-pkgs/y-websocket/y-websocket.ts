@@ -4,17 +4,17 @@
 
 /* eslint-env browser */
 
-import * as Y from 'yjs'; // eslint-disable-line
 import * as bc from 'lib0/broadcastchannel';
-import * as time from 'lib0/time';
-import * as encoding from 'lib0/encoding';
 import * as decoding from 'lib0/decoding';
-import * as syncProtocol from 'y-protocols/sync';
+import * as encoding from 'lib0/encoding';
+import * as math from 'lib0/math';
+import { Observable } from 'lib0/observable';
+import * as time from 'lib0/time';
+import * as url from 'lib0/url';
 import * as authProtocol from 'y-protocols/auth';
 import * as awarenessProtocol from 'y-protocols/awareness';
-import { Observable } from 'lib0/observable';
-import * as math from 'lib0/math';
-import * as url from 'lib0/url';
+import * as syncProtocol from 'y-protocols/sync';
+import * as Y from 'yjs'; // eslint-disable-line
 
 export const messageSync = 0;
 export const messageQueryAwareness = 3;
@@ -25,7 +25,7 @@ export const messageAuth = 2;
  *                       encoder,          decoder,          provider,          emitSynced, messageType
  * @type {Array<function(encoding.Encoder, decoding.Decoder, WebsocketProvider, boolean,    number):void>}
  */
-const messageHandlers = [];
+const messageHandlers = [] as Record<string, any>[];
 
 messageHandlers[messageSync] = (
   encoder,
@@ -242,6 +242,43 @@ const broadcastMessage = (provider, buf) => {
  * @extends {Observable<string>}
  */
 export class WebsocketProvider extends Observable {
+  maxBackoffTime: number;
+  bcChannel: string;
+  url: string;
+  roomname: any;
+  doc: any;
+  _WS: {
+    new (
+      url: string | URL,
+      protocols?: string | string[] | undefined,
+    ): WebSocket;
+    prototype: WebSocket;
+    readonly CLOSED: number;
+    readonly CLOSING: number;
+    readonly CONNECTING: number;
+    readonly OPEN: number;
+  };
+  awareness: awarenessProtocol.Awareness;
+  wsconnected: boolean;
+  wsconnecting: boolean;
+  bcconnected: boolean;
+  disableBc: boolean;
+  wsUnsuccessfulReconnects: number;
+  messageHandlers: Record<string, any>[];
+  _synced: boolean;
+  ws: null;
+  wsLastMessageReceived: number;
+  shouldConnect: boolean;
+  _resyncInterval: number;
+  _bcSubscriber: (data: any, origin: any) => void;
+  _updateHandler: (update: any, origin: any) => void;
+  _awarenessUpdateHandler: (
+    { added, updated, removed }: { added: any; updated: any; removed: any },
+    _origin: any,
+  ) => void;
+  _unloadHandler: () => void;
+  _checkInterval: NodeJS.Timer;
+
   /**
    * @param {string} serverUrl
    * @param {string} roomname

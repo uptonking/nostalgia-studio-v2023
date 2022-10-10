@@ -19,11 +19,10 @@ const CALLBACK_DEBOUNCE_MAXWAIT =
 const wsReadyStateConnecting = 0;
 const wsReadyStateOpen = 1;
 const wsReadyStateClosing = 2; // eslint-disable-line
-const wsReadyStateClosed = 3; // eslint-disable-line
-
-// disable gc when using snapshots!
-const gcEnabled = process.env.GC !== 'false' && process.env.GC !== '0';
-const persistenceDir = process.env.YPERSISTENCE;
+const wsReadyStateClosed = 3, // eslint-disable-line
+  // disable gc when using snapshots!
+  gcEnabled = process.env.GC !== 'false' && process.env.GC !== '0',
+  persistenceDir = process.env.YPERSISTENCE;
 /**
  * @type {{bindState: function(string,WSSharedDoc):void, writeState:function(string,WSSharedDoc):Promise<any>, provider: any}|null}
  */

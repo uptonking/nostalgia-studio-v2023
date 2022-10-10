@@ -4,7 +4,7 @@
  * @module diff
  */
 
-import { equalityStrict } from './function.js'
+import { equalityStrict } from './function';
 
 /**
  * A SimpleDiff describes a change on a String.
@@ -39,26 +39,30 @@ import { equalityStrict } from './function.js'
  * @return {SimpleDiff<string>} The diff description.
  */
 export const simpleDiffString = (a, b) => {
-  let left = 0 // number of same characters counting from left
-  let right = 0 // number of same characters counting from right
+  let left = 0; // number of same characters counting from left
+  let right = 0; // number of same characters counting from right
   while (left < a.length && left < b.length && a[left] === b[left]) {
-    left++
+    left++;
   }
-  while (right + left < a.length && right + left < b.length && a[a.length - right - 1] === b[b.length - right - 1]) {
-    right++
+  while (
+    right + left < a.length &&
+    right + left < b.length &&
+    a[a.length - right - 1] === b[b.length - right - 1]
+  ) {
+    right++;
   }
   return {
     index: left,
     remove: a.length - left - right,
-    insert: b.slice(left, b.length - right)
-  }
-}
+    insert: b.slice(left, b.length - right),
+  };
+};
 
 /**
  * @todo Remove in favor of simpleDiffString
  * @deprecated
  */
-export const simpleDiff = simpleDiffString
+export const simpleDiff = simpleDiffString;
 
 /**
  * Create a diff between two arrays. This diff implementation is highly
@@ -76,20 +80,24 @@ export const simpleDiff = simpleDiffString
  * @return {SimpleDiff<Array<T>>} The diff description.
  */
 export const simpleDiffArray = (a, b, compare = equalityStrict) => {
-  let left = 0 // number of same characters counting from left
-  let right = 0 // number of same characters counting from right
+  let left = 0; // number of same characters counting from left
+  let right = 0; // number of same characters counting from right
   while (left < a.length && left < b.length && compare(a[left], b[left])) {
-    left++
+    left++;
   }
-  while (right + left < a.length && right + left < b.length && compare(a[a.length - right - 1], b[b.length - right - 1])) {
-    right++
+  while (
+    right + left < a.length &&
+    right + left < b.length &&
+    compare(a[a.length - right - 1], b[b.length - right - 1])
+  ) {
+    right++;
   }
   return {
     index: left,
     remove: a.length - left - right,
-    insert: b.slice(left, b.length - right)
-  }
-}
+    insert: b.slice(left, b.length - right),
+  };
+};
 
 /**
  * Diff text and try to diff at the current cursor position.
@@ -99,8 +107,8 @@ export const simpleDiffArray = (a, b, compare = equalityStrict) => {
  * @param {number} cursor This should refer to the current left cursor-range position
  */
 export const simpleDiffStringWithCursor = (a, b, cursor) => {
-  let left = 0 // number of same characters counting from left
-  let right = 0 // number of same characters counting from right
+  let left = 0; // number of same characters counting from left
+  let right = 0; // number of same characters counting from right
   // Iterate left to the right until we find a changed character
   // First iteration considers the current cursor position
   while (
@@ -109,7 +117,7 @@ export const simpleDiffStringWithCursor = (a, b, cursor) => {
     a[left] === b[left] &&
     left < cursor
   ) {
-    left++
+    left++;
   }
   // Iterate right to the left until we find a changed character
   while (
@@ -117,7 +125,7 @@ export const simpleDiffStringWithCursor = (a, b, cursor) => {
     right + left < b.length &&
     a[a.length - right - 1] === b[b.length - right - 1]
   ) {
-    right++
+    right++;
   }
   // Try to iterate left further to the right without caring about the current cursor position
   while (
@@ -125,11 +133,11 @@ export const simpleDiffStringWithCursor = (a, b, cursor) => {
     right + left < b.length &&
     a[left] === b[left]
   ) {
-    left++
+    left++;
   }
   return {
     index: left,
     remove: a.length - left - right,
-    insert: b.slice(left, b.length - right)
-  }
-}
+    insert: b.slice(left, b.length - right),
+  };
+};

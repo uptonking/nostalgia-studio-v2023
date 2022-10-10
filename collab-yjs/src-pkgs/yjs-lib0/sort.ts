@@ -7,7 +7,7 @@
  * @module sort
  */
 
-import * as math from './math.js'
+import * as math from './math';
 
 /**
  * @template T
@@ -19,12 +19,12 @@ import * as math from './math.js'
 export const _insertionSort = (arr, lo, hi, compare) => {
   for (let i = lo + 1; i <= hi; i++) {
     for (let j = i; j > 0 && compare(arr[j - 1], arr[j]) > 0; j--) {
-      const tmp = arr[j]
-      arr[j] = arr[j - 1]
-      arr[j - 1] = tmp
+      const tmp = arr[j];
+      arr[j] = arr[j - 1];
+      arr[j - 1] = tmp;
     }
   }
-}
+};
 
 /**
  * @template T
@@ -33,8 +33,8 @@ export const _insertionSort = (arr, lo, hi, compare) => {
  * @return {void}
  */
 export const insertionSort = (arr, compare) => {
-  _insertionSort(arr, 0, arr.length - 1, compare)
-}
+  _insertionSort(arr, 0, arr.length - 1, compare);
+};
 
 /**
  * @template T
@@ -45,31 +45,31 @@ export const insertionSort = (arr, compare) => {
  */
 const _quickSort = (arr, lo, hi, compare) => {
   if (hi - lo < 42) {
-    _insertionSort(arr, lo, hi, compare)
+    _insertionSort(arr, lo, hi, compare);
   } else {
-    const pivot = arr[math.floor((lo + hi) / 2)]
-    let i = lo
-    let j = hi
+    const pivot = arr[math.floor((lo + hi) / 2)];
+    let i = lo;
+    let j = hi;
     while (true) {
       while (compare(pivot, arr[i]) > 0) {
-        i++
+        i++;
       }
       while (compare(arr[j], pivot) > 0) {
-        j--
+        j--;
       }
       if (i >= j) {
-        break
+        break;
       }
       // swap arr[i] with arr[j]
       // and increment i and j
-      const arri = arr[i]
-      arr[i++] = arr[j]
-      arr[j--] = arri
+      const arri = arr[i];
+      arr[i++] = arr[j];
+      arr[j--] = arri;
     }
-    _quickSort(arr, lo, j, compare)
-    _quickSort(arr, j + 1, hi, compare)
+    _quickSort(arr, lo, j, compare);
+    _quickSort(arr, j + 1, hi, compare);
   }
-}
+};
 
 /**
  * This algorithm beats Array.prototype.sort in Chrome only with arrays with 10 million entries.
@@ -84,5 +84,5 @@ const _quickSort = (arr, lo, hi, compare) => {
  * @return {void}
  */
 export const quicksort = (arr, compare) => {
-  _quickSort(arr, 0, arr.length - 1, compare)
-}
+  _quickSort(arr, 0, arr.length - 1, compare);
+};

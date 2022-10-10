@@ -1,6 +1,6 @@
-import * as prng from './prng.js'
-import * as t from './testing.js'
-import * as sort from './sort.js'
+import * as prng from './prng';
+import * as sort from './sort';
+import * as t from './testing';
 
 /**
  * @template T
@@ -10,24 +10,32 @@ import * as sort from './sort.js'
  * @param {function(T):number} getVal
  */
 const runSortTest = (tc, arr, compare, getVal) => {
-  const arrSort = arr
-  const arrQuicksort = arr.slice()
-  const arrInsertionsort = arr.slice()
+  const arrSort = arr;
+  const arrQuicksort = arr.slice();
+  const arrInsertionsort = arr.slice();
   t.measureTime('Array.constructor.sort', () => {
-    arrSort.sort(compare)
-  })
+    arrSort.sort(compare);
+  });
   if (arrInsertionsort.length <= 10000) {
     t.measureTime('Insertionsort', () => {
-      sort.insertionSort(arrInsertionsort, compare)
-    })
-    t.compareArrays(arrSort, arrInsertionsort, 'compare Insertionsort with expected result')
+      sort.insertionSort(arrInsertionsort, compare);
+    });
+    t.compareArrays(
+      arrSort,
+      arrInsertionsort,
+      'compare Insertionsort with expected result',
+    );
   }
   t.measureTime('Quicksort', () => {
-    sort.quicksort(arrQuicksort, compare)
-  })
+    sort.quicksort(arrQuicksort, compare);
+  });
   // quickSort is not stable
-  t.compareArrays(arrSort.map(getVal), arrQuicksort.map(getVal), 'compare Quicksort with expected result')
-}
+  t.compareArrays(
+    arrSort.map(getVal),
+    arrQuicksort.map(getVal),
+    'compare Quicksort with expected result',
+  );
+};
 
 /**
  * @template T
@@ -37,130 +45,132 @@ const runSortTest = (tc, arr, compare, getVal) => {
  * @param {function(T):number} getVal
  */
 const createSortTest = (tc, createArray, compare, getVal) => {
-  t.describe('sort 10 elements')
-  runSortTest(tc, createArray(10), compare, getVal)
-  t.describe('sort 10 elements')
-  runSortTest(tc, createArray(10), compare, getVal)
-  t.describe('sort 10 elements')
-  runSortTest(tc, createArray(10), compare, getVal)
-  t.describe('sort 50 elements')
-  runSortTest(tc, createArray(50), compare, getVal)
-  t.describe('sort 100 elements')
-  runSortTest(tc, createArray(100), compare, getVal)
-  t.describe('sort 500 elements')
-  runSortTest(tc, createArray(500), compare, getVal)
-  t.describe('sort 1k elements')
-  runSortTest(tc, createArray(1000), compare, getVal)
-  t.describe('sort 10k elements')
-  runSortTest(tc, createArray(10000), compare, getVal)
-  t.describe('sort 100k elements')
-  runSortTest(tc, createArray(100000), compare, getVal)
+  t.describe('sort 10 elements');
+  runSortTest(tc, createArray(10), compare, getVal);
+  t.describe('sort 10 elements');
+  runSortTest(tc, createArray(10), compare, getVal);
+  t.describe('sort 10 elements');
+  runSortTest(tc, createArray(10), compare, getVal);
+  t.describe('sort 50 elements');
+  runSortTest(tc, createArray(50), compare, getVal);
+  t.describe('sort 100 elements');
+  runSortTest(tc, createArray(100), compare, getVal);
+  t.describe('sort 500 elements');
+  runSortTest(tc, createArray(500), compare, getVal);
+  t.describe('sort 1k elements');
+  runSortTest(tc, createArray(1000), compare, getVal);
+  t.describe('sort 10k elements');
+  runSortTest(tc, createArray(10000), compare, getVal);
+  t.describe('sort 100k elements');
+  runSortTest(tc, createArray(100000), compare, getVal);
   if (t.extensive) {
-    t.describe('sort 1M elements')
-    runSortTest(tc, createArray(1000000), compare, getVal)
-    t.describe('sort 10M elements')
-    runSortTest(tc, createArray(10000000), compare, getVal)
+    t.describe('sort 1M elements');
+    runSortTest(tc, createArray(1000000), compare, getVal);
+    t.describe('sort 10M elements');
+    runSortTest(tc, createArray(10000000), compare, getVal);
   }
-}
+};
 
 /**
  * @param {t.TestCase} tc
  */
-export const testSortUint16 = tc => {
-  t.skip(!t.production)
+export const testSortUint16 = (tc) => {
+  t.skip(!t.production);
   /**
    * @param {number} i
    * @return {number}
    */
-  const getVal = i => i
+  const getVal = (i) => i;
   /**
    * @param {number} a
    * @param {number} b
    * @return {number}
    */
-  const compare = (a, b) => a - b
+  const compare = (a, b) => a - b;
   /**
    * @param {number} len
    * @return {Array<number>}
    */
-  const createArray = len => Array.from(new Uint16Array(prng.uint8Array(tc.prng, len * 2)))
-  createSortTest(tc, createArray, compare, getVal)
-}
+  const createArray = (len) =>
+    Array.from(new Uint16Array(prng.uint8Array(tc.prng, len * 2)));
+  createSortTest(tc, createArray, compare, getVal);
+};
 
 /**
  * @param {t.TestCase} tc
  */
-export const testSortUint32 = tc => {
-  t.skip(!t.production)
+export const testSortUint32 = (tc) => {
+  t.skip(!t.production);
   /**
    * @param {number} i
    * @return {number}
    */
-  const getVal = i => i
+  const getVal = (i) => i;
   /**
    * @param {number} a
    * @param {number} b
    * @return {number}
    */
-  const compare = (a, b) => a - b
+  const compare = (a, b) => a - b;
   /**
    * @param {number} len
    * @return {Array<number>}
    */
-  const createArray = len => Array.from(prng.uint32Array(tc.prng, len))
-  createSortTest(tc, createArray, compare, getVal)
-}
+  const createArray = (len) => Array.from(prng.uint32Array(tc.prng, len));
+  createSortTest(tc, createArray, compare, getVal);
+};
 
 /**
  * @param {t.TestCase} tc
  */
-export const testSortObjectUint32 = tc => {
+export const testSortObjectUint32 = (tc) => {
   /**
    * @param {{index:number}} obj
    * @return {number}
    */
-  const getVal = obj => obj.index
+  const getVal = (obj) => obj.index;
   /**
    * @param {{index:number}} a
    * @param {{index:number}} b
    * @return {number}
    */
-  const compare = (a, b) => a.index - b.index
+  const compare = (a, b) => a.index - b.index;
   /**
    * @param {number} len
    * @return {Array<{index:number}>}
    */
-  const createArray = len => Array.from(prng.uint32Array(tc.prng, len)).map(index => ({ index }))
-  createSortTest(tc, createArray, compare, getVal)
-}
+  const createArray = (len) =>
+    Array.from(prng.uint32Array(tc.prng, len)).map((index) => ({ index }));
+  createSortTest(tc, createArray, compare, getVal);
+};
 
 /**
  * @param {t.TestCase} tc
  */
-export const testListVsArrayPerformance = tc => {
+export const testListVsArrayPerformance = (tc) => {
   /**
    * @typedef {{ val: number }} Val
    * @typedef {{ val: Val, next: item }|null} item
    */
-  const len = 100000
+  const len = 100000;
   t.measureTime('array creation', () => {
     /**
      * @type {Array<Val>}
      */
-    const array = new Array(len)
+    const array = new Array(len);
     for (let i = 0; i < len; i++) {
-      array[i] = { val: i }
+      array[i] = { val: i };
     }
-  })
+  });
   t.measureTime('list creation', () => {
     /**
      * @type {item}
      */
-    const listStart = { val: { val: 0 }, next: null }
+    const listStart = { val: { val: 0 }, next: null };
     for (let i = 1, n = listStart; i < len; i++) {
-      const next = { val: { val: i }, next: null }
-      n.next = next
-      n = next
+      const next = { val: { val: i }, next: null };
+      n.next = next;
+      n = next;
     }
-  })
-}
+  });
+};

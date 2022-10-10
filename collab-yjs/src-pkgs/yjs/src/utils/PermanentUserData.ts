@@ -16,6 +16,8 @@ import {
 } from '../internals';
 import { isDeleted, mergeDeleteSets } from './DeleteSet';
 
+// import { isDeleted } from './hack-circular';
+
 export class PermanentUserData {
   /**
    * @param {Doc} doc
@@ -48,7 +50,7 @@ export class PermanentUserData {
       const addClientId = /** @param {number} clientid */ (clientid) =>
         this.clients.set(clientid, userDescription);
       ds.observe(
-        /** @param {YArrayEvent<any>} event */ (event) => {
+        /** @param {YArrayEvent<any>} event */(event) => {
           event.changes.added.forEach((item) => {
             item.content.getContent().forEach((encodedDs) => {
               if (encodedDs instanceof Uint8Array) {
@@ -75,7 +77,7 @@ export class PermanentUserData {
         ),
       );
       ids.observe(
-        /** @param {YArrayEvent<any>} event */ (event) =>
+        /** @param {YArrayEvent<any>} event */(event) =>
           event.changes.added.forEach((item) =>
             item.content.getContent().forEach(addClientId),
           ),
@@ -133,7 +135,7 @@ export class PermanentUserData {
     });
     doc.on(
       'afterTransaction',
-      /** @param {Transaction} transaction */ (transaction) => {
+      /** @param {Transaction} transaction */(transaction) => {
         setTimeout(() => {
           const yds = user.get('ds');
           const ds = transaction.deleteSet;

@@ -1,4 +1,3 @@
-
 /* eslint-env browser */
 
 /**
@@ -7,9 +6,9 @@
  * @module cache
  */
 
-import * as list from './list.js'
-import * as map from './map.js'
-import * as time from './time.js'
+import * as list from './list';
+import * as map from './map';
+import * as time from './time';
 
 /**
  * @template K, V
@@ -17,22 +16,27 @@ import * as time from './time.js'
  * @implements {list.ListNode}
  */
 class Entry {
+  prev: null;
+  next: null;
+  created: number;
+  val: any;
+  key: any;
   /**
    * @param {K} key
    * @param {V | Promise<V>} val
    */
-  constructor (key, val) {
+  constructor(key, val) {
     /**
      * @type {this | null}
      */
-    this.prev = null
+    this.prev = null;
     /**
      * @type {this | null}
      */
-    this.next = null
-    this.created = time.getUnixTime()
-    this.val = val
-    this.key = key
+    this.next = null;
+    this.created = time.getUnixTime();
+    this.val = val;
+    this.key = key;
   }
 }
 
@@ -40,19 +44,23 @@ class Entry {
  * @template K, V
  */
 export class Cache {
+  timeout: any;
+  _q: list.List;
+  _map: Map<any, any>;
+
   /**
    * @param {number} timeout
    */
-  constructor (timeout) {
-    this.timeout = timeout
+  constructor(timeout) {
+    this.timeout = timeout;
     /**
      * @type list.List<Entry<K, V>>
      */
-    this._q = list.create()
+    this._q = list.create();
     /**
      * @type {Map<K, Entry<K, V>>}
      */
-    this._map = map.create()
+    this._map = map.create();
   }
 }
 
@@ -62,15 +70,15 @@ export class Cache {
  * @param {Cache<K, V>} cache
  * @return {number} Returns the current timestamp
  */
-export const removeStale = cache => {
-  const now = time.getUnixTime()
-  const q = cache._q
+export const removeStale = (cache) => {
+  const now = time.getUnixTime();
+  const q = cache._q;
   while (q.start && now - q.start.created > cache.timeout) {
-    cache._map.delete(q.start.key)
-    list.popFront(q)
+    cache._map.delete(q.start.key);
+    list.popFront(q);
   }
-  return now
-}
+  return now;
+};
 
 /**
  * @template K, V
@@ -80,20 +88,20 @@ export const removeStale = cache => {
  * @param {V} value
  */
 export const set = (cache, key, value) => {
-  const now = removeStale(cache)
-  const q = cache._q
-  const n = cache._map.get(key)
+  const now = removeStale(cache);
+  const q = cache._q;
+  const n = cache._map.get(key);
   if (n) {
-    list.removeNode(q, n)
-    list.pushEnd(q, n)
-    n.created = now
-    n.val = value
+    list.removeNode(q, n);
+    list.pushEnd(q, n);
+    n.created = now;
+    n.val = value;
   } else {
-    const node = new Entry(key, value)
-    list.pushEnd(q, node)
-    cache._map.set(key, node)
+    const node = new Entry(key, value);
+    list.pushEnd(q, node);
+    cache._map.set(key, node);
   }
-}
+};
 
 /**
  * @template K, V
@@ -103,12 +111,12 @@ export const set = (cache, key, value) => {
  * @return {Entry<K, V> | undefined}
  */
 const getNode = (cache, key) => {
-  removeStale(cache)
-  const n = cache._map.get(key)
+  removeStale(cache);
+  const n = cache._map.get(key);
   if (n) {
-    return n
+    return n;
   }
-}
+};
 
 /**
  * @template K, V
@@ -118,9 +126,9 @@ const getNode = (cache, key) => {
  * @return {V | undefined}
  */
 export const get = (cache, key) => {
-  const n = getNode(cache, key)
-  return n && !(n.val instanceof Promise) ? n.val : undefined
-}
+  const n = getNode(cache, key);
+  return n && !(n.val instanceof Promise) ? n.val : undefined;
+};
 
 /**
  * @template K, V
@@ -129,15 +137,15 @@ export const get = (cache, key) => {
  * @param {K} key
  */
 export const refreshTimeout = (cache, key) => {
-  const now = time.getUnixTime()
-  const q = cache._q
-  const n = cache._map.get(key)
+  const now = time.getUnixTime();
+  const q = cache._q;
+  const n = cache._map.get(key);
   if (n) {
-    list.removeNode(q, n)
-    list.pushEnd(q, n)
-    n.created = now
+    list.removeNode(q, n);
+    list.pushEnd(q, n);
+    n.created = now;
   }
-}
+};
 
 /**
  * Works well in conjunktion with setIfUndefined which has an async init function.
@@ -150,9 +158,9 @@ export const refreshTimeout = (cache, key) => {
  * @return {V | Promise<V> | undefined}
  */
 export const getAsync = (cache, key) => {
-  const n = getNode(cache, key)
-  return n ? n.val : undefined
-}
+  const n = getNode(cache, key);
+  return n ? n.val : undefined;
+};
 
 /**
  * @template K, V
@@ -161,13 +169,13 @@ export const getAsync = (cache, key) => {
  * @param {K} key
  */
 export const remove = (cache, key) => {
-  const n = cache._map.get(key)
+  const n = cache._map.get(key);
   if (n) {
-    list.removeNode(cache._q, n)
-    cache._map.delete(key)
-    return n.val && !(n.val instanceof Promise) ? n.val : undefined
+    list.removeNode(cache._q, n);
+    cache._map.delete(key);
+    return n.val && !(n.val instanceof Promise) ? n.val : undefined;
   }
-}
+};
 
 /**
  * @template K, V
@@ -179,29 +187,29 @@ export const remove = (cache, key) => {
  * @return {Promise<V> | V}
  */
 export const setIfUndefined = (cache, key, init, removeNull = false) => {
-  removeStale(cache)
-  const q = cache._q
-  const n = cache._map.get(key)
+  removeStale(cache);
+  const q = cache._q;
+  const n = cache._map.get(key);
   if (n) {
-    return n.val
+    return n.val;
   } else {
-    const p = init()
-    const node = new Entry(key, p)
-    list.pushEnd(q, node)
-    cache._map.set(key, node)
-    p.then(v => {
+    const p = init();
+    const node = new Entry(key, p);
+    list.pushEnd(q, node);
+    cache._map.set(key, node);
+    p.then((v) => {
       if (p === node.val) {
-        node.val = v
+        node.val = v;
       }
       if (removeNull && v == null) {
-        remove(cache, key)
+        remove(cache, key);
       }
-    })
-    return p
+    });
+    return p;
   }
-}
+};
 
 /**
  * @param {number} timeout
  */
-export const create = timeout => new Cache(timeout)
+export const create = (timeout) => new Cache(timeout);

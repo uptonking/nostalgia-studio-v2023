@@ -8,6 +8,10 @@ import {
 } from '../internals';
 
 export class AbstractStruct {
+  id: any;
+  length: any;
+
+
   /**
    * @param {ID} id
    * @param {number} length
@@ -22,6 +26,7 @@ export class AbstractStruct {
    */
   get deleted() {
     throw error.methodUnimplemented();
+    return false;
   }
 
   /**

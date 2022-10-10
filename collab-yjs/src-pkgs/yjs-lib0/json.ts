@@ -10,7 +10,7 @@
  * @param {any} object
  * @return {string}
  */
-export const stringify = JSON.stringify
+export const stringify = JSON.stringify;
 
 /**
  * Parse JSON object.
@@ -18,4 +18,4 @@ export const stringify = JSON.stringify
  * @param {string} json
  * @return {any}
  */
-export const parse = JSON.parse
+export const parse = JSON.parse;

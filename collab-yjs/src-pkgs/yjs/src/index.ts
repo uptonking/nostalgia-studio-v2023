@@ -1,5 +1,3 @@
-/** yjs v13.5.41 */
-
 import * as array from 'lib0/array';
 import * as binary from 'lib0/binary';
 import * as buffer from 'lib0/buffer';
@@ -19,364 +17,20 @@ import * as random from 'lib0/random';
 import * as set from 'lib0/set';
 import * as time from 'lib0/time';
 
-/**
- * This is an abstract interface that all Connectors should implement to keep them interchangeable.
- *
- * @note This interface is experimental and it is not advised to actually inherit this class.
- *       It just serves as typing information.
- *
- * @extends {Observable<any>}
- */
-class AbstractConnector extends Observable {
-  doc: any;
-  awareness: any;
-  /**
-   * @param {Doc} ydoc
-   * @param {any} awareness
-   */
-  constructor(ydoc, awareness) {
-    super();
-    this.doc = ydoc;
-    this.awareness = awareness;
-  }
-}
+import {
+  AbstractConnector,
+  AbstractStruct,
+  DeleteItem,
+  DeleteSet,
+  EventHandler,
+  ID,
+  StructStore,
+} from './modules/concepts-structures';
 
-class DeleteItem {
-  clock: any;
-  len: any;
-  /**
-   * @param {number} clock
-   * @param {number} len
-   */
-  constructor(clock, len) {
-    /**
-     * @type {number}
-     */
-    this.clock = clock;
-    /**
-     * @type {number}
-     */
-    this.len = len;
-  }
-}
+// import { iterateDeletedStructs } from './modules/utils'
+// import { iterateDeletedStructs } from './modules/base-models'
 
-/**
- * We no longer maintain a DeleteStore. DeleteSet is a temporary object that is created when needed.
- * - When created in a transaction, it must only be accessed after sorting, and merging
- *   - This DeleteSet is send to other clients
- * - We do not create a DeleteSet when we send a sync message. The DeleteSet message is created directly from StructStore
- * - We read a DeleteSet as part of a sync/update message. In this case the DeleteSet is already sorted and merged.
- */
-class DeleteSet {
-  clients: Map<any, any>;
-  constructor() {
-    /**
-     * @type {Map<number,Array<DeleteItem>>}
-     */
-    this.clients = new Map();
-  }
-}
-
-/**
- * Iterate over all structs that the DeleteSet gc's.
- *
- * @param {Transaction} transaction
- * @param {DeleteSet} ds
- * @param {function(GC|Item):void} f
- *
- * @function
- */
-const iterateDeletedStructs = (transaction, ds, f) =>
-  ds.clients.forEach((deletes, clientid) => {
-    const structs =
-      /** @type {Array<GC|Item>} */ transaction.doc.store.clients.get(clientid);
-    for (let i = 0; i < deletes.length; i++) {
-      const del = deletes[i];
-      iterateStructs(transaction, structs, del.clock, del.len, f);
-    }
-  });
-
-/**
- * @param {Array<DeleteItem>} dis
- * @param {number} clock
- * @return {number|null}
- *
- * @private
- * @function
- */
-const findIndexDS = (dis, clock) => {
-  let left = 0;
-  let right = dis.length - 1;
-  while (left <= right) {
-    const midindex = math.floor((left + right) / 2);
-    const mid = dis[midindex];
-    const midclock = mid.clock;
-    if (midclock <= clock) {
-      if (clock < midclock + mid.len) {
-        return midindex;
-      }
-      left = midindex + 1;
-    } else {
-      right = midindex - 1;
-    }
-  }
-  return null;
-};
-
-/**
- * @param {DeleteSet} ds
- * @param {ID} id
- * @return {boolean}
- *
- * @private
- * @function
- */
-const isDeleted = (ds, id) => {
-  const dis = ds.clients.get(id.client);
-  return dis !== undefined && findIndexDS(dis, id.clock) !== null;
-};
-
-/**
- * @param {DeleteSet} ds
- *
- * @private
- * @function
- */
-const sortAndMergeDeleteSet = (ds) => {
-  ds.clients.forEach((dels) => {
-    dels.sort((a, b) => a.clock - b.clock);
-    // merge items without filtering or splicing the array
-    // i is the current pointer
-    // j refers to the current insert position for the pointed item
-    // try to merge dels[i] into dels[j-1] or set dels[j]=dels[i]
-    let i, j;
-    for (i = 1, j = 1; i < dels.length; i++) {
-      const left = dels[j - 1];
-      const right = dels[i];
-      if (left.clock + left.len >= right.clock) {
-        left.len = math.max(left.len, right.clock + right.len - left.clock);
-      } else {
-        if (j < i) {
-          dels[j] = right;
-        }
-        j++;
-      }
-    }
-    dels.length = j;
-  });
-};
-
-/**
- * @param {Array<DeleteSet>} dss
- * @return {DeleteSet} A fresh DeleteSet
- */
-const mergeDeleteSets = (dss) => {
-  const merged = new DeleteSet();
-  for (let dssI = 0; dssI < dss.length; dssI++) {
-    dss[dssI].clients.forEach((delsLeft, client) => {
-      if (!merged.clients.has(client)) {
-        // Write all missing keys from current ds and all following.
-        // If merged already contains `client` current ds has already been added.
-        /**
-         * @type {Array<DeleteItem>}
-         */
-        const dels = delsLeft.slice();
-        for (let i = dssI + 1; i < dss.length; i++) {
-          array.appendTo(dels, dss[i].clients.get(client) || []);
-        }
-        merged.clients.set(client, dels);
-      }
-    });
-  }
-  sortAndMergeDeleteSet(merged);
-  return merged;
-};
-
-/**
- * @param {DeleteSet} ds
- * @param {number} client
- * @param {number} clock
- * @param {number} length
- *
- * @private
- * @function
- */
-const addToDeleteSet = (ds, client, clock, length) => {
-  map
-    .setIfUndefined(ds.clients, client, () => [])
-    .push(new DeleteItem(clock, length));
-};
-
-const createDeleteSet = () => new DeleteSet();
-
-/**
- * @param {StructStore} ss
- * @return {DeleteSet} Merged and sorted DeleteSet
- *
- * @private
- * @function
- */
-const createDeleteSetFromStructStore = (ss) => {
-  const ds = createDeleteSet();
-  ss.clients.forEach((structs, client) => {
-    /**
-     * @type {Array<DeleteItem>}
-     */
-    const dsitems: DeleteItem[] = [];
-    for (let i = 0; i < structs.length; i++) {
-      const struct = structs[i];
-      if (struct.deleted) {
-        const clock = struct.id.clock;
-        let len = struct.length;
-        if (i + 1 < structs.length) {
-          for (
-            let next = structs[i + 1];
-            i + 1 < structs.length && next.deleted;
-            next = structs[++i + 1]
-          ) {
-            len += next.length;
-          }
-        }
-        dsitems.push(new DeleteItem(clock, len));
-      }
-    }
-    if (dsitems.length > 0) {
-      ds.clients.set(client, dsitems);
-    }
-  });
-  return ds;
-};
-
-/**
- * @param {DSEncoderV1 | DSEncoderV2} encoder
- * @param {DeleteSet} ds
- *
- * @private
- * @function
- */
-const writeDeleteSet = (encoder, ds) => {
-  encoding.writeVarUint(encoder.restEncoder, ds.clients.size);
-  ds.clients.forEach((dsitems, client) => {
-    encoder.resetDsCurVal();
-    encoding.writeVarUint(encoder.restEncoder, client);
-    const len = dsitems.length;
-    encoding.writeVarUint(encoder.restEncoder, len);
-    for (let i = 0; i < len; i++) {
-      const item = dsitems[i];
-      encoder.writeDsClock(item.clock);
-      encoder.writeDsLen(item.len);
-    }
-  });
-};
-
-/**
- * @param {DSDecoderV1 | DSDecoderV2} decoder
- * @return {DeleteSet}
- *
- * @private
- * @function
- */
-const readDeleteSet = (decoder) => {
-  const ds = new DeleteSet();
-  const numClients = decoding.readVarUint(decoder.restDecoder);
-  for (let i = 0; i < numClients; i++) {
-    decoder.resetDsCurVal();
-    const client = decoding.readVarUint(decoder.restDecoder);
-    const numberOfDeletes = decoding.readVarUint(decoder.restDecoder);
-    if (numberOfDeletes > 0) {
-      const dsField = map.setIfUndefined(ds.clients, client, () => []);
-      for (let i = 0; i < numberOfDeletes; i++) {
-        dsField.push(
-          new DeleteItem(decoder.readDsClock(), decoder.readDsLen()),
-        );
-      }
-    }
-  }
-  return ds;
-};
-
-/**
- * @todo YDecoder also contains references to String and other Decoders. Would make sense to exchange YDecoder.toUint8Array for YDecoder.DsToUint8Array()..
- */
-
-/**
- * @param {DSDecoderV1 | DSDecoderV2} decoder
- * @param {Transaction} transaction
- * @param {StructStore} store
- * @return {Uint8Array|null} Returns a v2 update containing all deletes that couldn't be applied yet; or null if all deletes were applied successfully.
- *
- * @private
- * @function
- */
-const readAndApplyDeleteSet = (decoder, transaction, store) => {
-  const unappliedDS = new DeleteSet();
-  const numClients = decoding.readVarUint(decoder.restDecoder);
-  for (let i = 0; i < numClients; i++) {
-    decoder.resetDsCurVal();
-    const client = decoding.readVarUint(decoder.restDecoder);
-    const numberOfDeletes = decoding.readVarUint(decoder.restDecoder);
-    const structs = store.clients.get(client) || [];
-    const state = getState(store, client);
-    for (let i = 0; i < numberOfDeletes; i++) {
-      const clock = decoder.readDsClock();
-      const clockEnd = clock + decoder.readDsLen();
-      if (clock < state) {
-        if (state < clockEnd) {
-          addToDeleteSet(unappliedDS, client, state, clockEnd - state);
-        }
-        let index = findIndexSS(structs, clock);
-        /**
-         * We can ignore the case of GC and Delete structs, because we are going to skip them
-         * @type {Item}
-         */
-        // @ts-ignore
-        let struct = structs[index];
-        // split the first item if necessary
-        if (!struct.deleted && struct.id.clock < clock) {
-          structs.splice(
-            index + 1,
-            0,
-            splitItem(transaction, struct, clock - struct.id.clock),
-          );
-          index++; // increase we now want to use the next struct
-        }
-        while (index < structs.length) {
-          // @ts-ignore
-          struct = structs[index++];
-          if (struct.id.clock < clockEnd) {
-            if (!struct.deleted) {
-              if (clockEnd < struct.id.clock + struct.length) {
-                structs.splice(
-                  index,
-                  0,
-                  splitItem(transaction, struct, clockEnd - struct.id.clock),
-                );
-              }
-              struct.delete(transaction);
-            }
-          } else {
-            break;
-          }
-        }
-      } else {
-        addToDeleteSet(unappliedDS, client, clock, clockEnd - clock);
-      }
-    }
-  }
-  if (unappliedDS.clients.size > 0) {
-    const ds = new UpdateEncoderV2();
-    encoding.writeVarUint(ds.restEncoder, 0); // encode 0 structs
-    writeDeleteSet(ds, unappliedDS);
-    return ds.toUint8Array();
-  }
-  return null;
-};
-
-/**
- * @module Y
- */
-
-const generateNewClientId = random.uint32;
+export const generateNewClientId = random.uint32;
 
 /**
  * @typedef {Object} DocOpts
@@ -388,28 +42,28 @@ const generateNewClientId = random.uint32;
  * @property {boolean} [DocOpts.autoLoad] If a subdocument, automatically load document. If this is a subdocument, remote peers will load the document as well automatically.
  * @property {boolean} [DocOpts.shouldLoad] Whether the document should be synced by the provider now. This is toggled to true when you call ydoc.load()
  */
-
 /**
  * A Yjs instance handles the state of shared data.
  * @extends Observable<string>
  */
 class Doc extends Observable {
   gc: boolean;
-  gcFilter: () => true;
+  gcFilter: (x?: Item) => boolean;
   clientID: number;
-  guid: any;
-  collectionid: null;
-  share: Map<any, any>;
+  guid: string;
+  collectionid: string | null;
+  share: Map<string, AbstractType>;
   store: StructStore;
-  _transaction: null;
-  _transactionCleanups: never[];
-  subdocs: Set<unknown>;
-  _item: null;
+  _transaction: Transaction | null;
+  _transactionCleanups: Transaction[];
+  subdocs: Set<Doc>;
+  _item: Item | null;
+  meta: any;
   shouldLoad: boolean;
   autoLoad: boolean;
-  meta: null;
   isLoaded: boolean;
-  whenLoaded: Promise<unknown>;
+  whenLoaded: Promise<any>;
+
   /**
    * @param {DocOpts} [opts] configuration
    */
@@ -470,9 +124,10 @@ class Doc extends Observable {
    * It is safe to call `load()` multiple times.
    */
   load() {
-    const item = this._item as any;
+    const item = this._item;
     if (item !== null && !this.shouldLoad) {
       transact(
+        // @ts-ignore
         /** @type {any} */ item.parent.doc,
         (transaction) => {
           transaction.subdocsLoaded.add(this);
@@ -489,7 +144,7 @@ class Doc extends Observable {
   }
 
   getSubdocGuids() {
-    return new Set(Array.from(this.subdocs).map((doc: any) => doc.guid));
+    return new Set(Array.from(this.subdocs).map((doc) => doc.guid));
   }
 
   /**
@@ -547,7 +202,7 @@ class Doc extends Observable {
         const t = new TypeConstructor();
         t._map = type._map;
         type._map.forEach(
-          /** @param {Item?} n */(n) => {
+          /** @param {Item?} n */ (n) => {
             for (; n !== null; n = n.left) {
               // @ts-ignore
               n.parent = t;
@@ -642,8 +297,8 @@ class Doc extends Observable {
    * Emit `destroy` event and unregister all event handlers.
    */
   destroy() {
-    array.from(this.subdocs).forEach((subdoc: any) => subdoc.destroy());
-    const item = this._item as any;
+    array.from(this.subdocs).forEach((subdoc) => subdoc.destroy());
+    const item = this._item;
     if (item !== null) {
       this._item = null;
       const content = /** @type {ContentDoc} */ item.content;
@@ -654,7 +309,8 @@ class Doc extends Observable {
       });
       content.doc._item = item;
       transact(
-        /** @type {any} */ item.parent.doc,
+        // @ts-ignore
+        /** @type {any} */ item.parent?.doc,
         (transaction) => {
           const doc = content.doc;
           if (!item.deleted) {
@@ -688,8 +344,1789 @@ class Doc extends Observable {
   }
 }
 
+/**
+ * A unique timestamp that identifies each marker.
+ *
+ * Time is relative,.. this is more like an ever-increasing clock.
+ *
+ * @type {number}
+ */
+let globalSearchMarkerTimestamp = 0;
+
+class ArraySearchMarker {
+  p: any;
+  index: number;
+  timestamp: number;
+  /**
+   * @param {Item} p
+   * @param {number} index
+   */
+  constructor(p, index) {
+    p.marker = true;
+    this.p = p;
+    this.index = index;
+    this.timestamp = globalSearchMarkerTimestamp++;
+  }
+}
+
+/**
+ * @template EventType
+ * Abstract Yjs Type class
+ */
+class AbstractType {
+  _map: Map<string, any>;
+  _start: null | any;
+  _length: any;
+  _item: null | any;
+  doc: null | Doc;
+  _eH: EventHandler;
+  _dEH: EventHandler;
+  _searchMarker: null | ArraySearchMarker[];
+
+  constructor() {
+    /**
+     * @type {Item|null}
+     */
+    this._item = null;
+    /**
+     * @type {Map<string,Item>}
+     */
+    this._map = new Map();
+    /**
+     * @type {Item|null}
+     */
+    this._start = null;
+    /**
+     * @type {Doc|null}
+     */
+    this.doc = null;
+    this._length = 0;
+    /**
+     * Event handlers
+     * @type {EventHandler<EventType,Transaction>}
+     */
+    this._eH = createEventHandler();
+    /**
+     * Deep event handlers
+     * @type {EventHandler<Array<YEvent<any>>,Transaction>}
+     */
+    this._dEH = createEventHandler();
+    /**
+     * @type {null | Array<ArraySearchMarker>}
+     */
+    this._searchMarker = null;
+  }
+
+  /**
+   * @return {AbstractType<any>|null}
+   */
+  get parent() {
+    return this._item
+      ? /** @type {AbstractType<any>} */ this._item.parent
+      : null;
+  }
+
+  /**
+   * Integrate this type into the Yjs instance.
+   *
+   * * Save this struct in the os
+   * * This type is sent to other client
+   * * Observer functions are fired
+   *
+   * @param {Doc} y The Yjs instance
+   * @param {Item|null} item
+   */
+  _integrate(y, item) {
+    this.doc = y;
+    this._item = item;
+  }
+
+  /**
+   * @return {AbstractType<EventType>}
+   */
+  _copy() {
+    throw error.methodUnimplemented();
+  }
+
+  /**
+   * @return {AbstractType<EventType>}
+   */
+  clone() {
+    throw error.methodUnimplemented();
+  }
+
+  /**
+   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
+   */
+  _write(encoder) {}
+
+  /**
+   * The first non-deleted item
+   */
+  get _first() {
+    let n = this._start;
+    while (n !== null && n.deleted) {
+      n = n.right;
+    }
+    return n;
+  }
+
+  /**
+   * Creates YEvent and calls all type observers.
+   * Must be implemented by each type.
+   *
+   * @param {Transaction} transaction
+   * @param {Set<null|string>} parentSubs Keys changed on this type. `null` if list was modified.
+   */
+  _callObserver(transaction, parentSubs) {
+    if (!transaction.local && this._searchMarker) {
+      this._searchMarker.length = 0;
+    }
+  }
+
+  /**
+   * Observe all events that are created on this type.
+   *
+   * @param {function(EventType, Transaction):void} f Observer function
+   */
+  observe(f) {
+    addEventHandlerListener(this._eH, f);
+  }
+
+  /**
+   * Observe all events that are created by this type and its children.
+   *
+   * @param {function(Array<YEvent<any>>,Transaction):void} f Observer function
+   */
+  observeDeep(f) {
+    addEventHandlerListener(this._dEH, f);
+  }
+
+  /**
+   * Unregister an observer function.
+   *
+   * @param {function(EventType,Transaction):void} f Observer function
+   */
+  unobserve(f) {
+    removeEventHandlerListener(this._eH, f);
+  }
+
+  /**
+   * Unregister an observer function.
+   *
+   * @param {function(Array<YEvent<any>>,Transaction):void} f Observer function
+   */
+  unobserveDeep(f) {
+    removeEventHandlerListener(this._dEH, f);
+  }
+
+  /**
+   * @abstract
+   * @return {any}
+   */
+  toJSON() {}
+}
+
+/**
+ * @template {AbstractType<any>} T
+ * YEvent describes the changes on a YType.
+ */
+class YEvent {
+  target: any;
+  currentTarget: any;
+  transaction: any;
+  _changes: null | Record<string, any>;
+  _keys: null | Map<string, any>;
+  _delta: null | any[];
+  /**
+   * @param {T} target The changed type.
+   * @param {Transaction} transaction
+   */
+  constructor(target, transaction) {
+    /**
+     * The type on which this event was created on.
+     * @type {T}
+     */
+    this.target = target;
+    /**
+     * The current target on which the observe callback is called.
+     * @type {AbstractType<any>}
+     */
+    this.currentTarget = target;
+    /**
+     * The transaction that triggered this event.
+     * @type {Transaction}
+     */
+    this.transaction = transaction;
+    /**
+     * @type {Object|null}
+     */
+    this._changes = null;
+    /**
+     * @type {null | Map<string, { action: 'add' | 'update' | 'delete', oldValue: any, newValue: any }>}
+     */
+    this._keys = null;
+    /**
+     * @type {null | Array<{ insert?: string | Array<any> | object | AbstractType<any>, retain?: number, delete?: number, attributes?: Object<string, any> }>}
+     */
+    this._delta = null;
+  }
+
+  /**
+   * Computes the path from `y` to the changed type.
+   *
+   * @todo v14 should standardize on path: Array<{parent, index}> because that is easier to work with.
+   *
+   * The following property holds:
+   * @example
+   *   let type = y
+   *   event.path.forEach(dir => {
+   *     type = type.get(dir)
+   *   })
+   *   type === event.target // => true
+   */
+  get path() {
+    // @ts-ignore _item is defined because target is integrated
+    return getPathTo(this.currentTarget, this.target);
+  }
+
+  /**
+   * Check if a struct is deleted by this event.
+   *
+   * In contrast to change.deleted, this method also returns true if the struct was added and then deleted.
+   *
+   * @param {AbstractStruct} struct
+   * @return {boolean}
+   */
+  deletes(struct) {
+    return isDeleted(this.transaction.deleteSet, struct.id);
+  }
+
+  /**
+   * @type {Map<string, { action: 'add' | 'update' | 'delete', oldValue: any, newValue: any }>}
+   */
+  get keys() {
+    if (this._keys === null) {
+      const keys = new Map();
+      const target = this.target;
+      const changed =
+        /** @type Set<string|null> */ this.transaction.changed.get(target);
+      changed.forEach((key) => {
+        if (key !== null) {
+          const item = /** @type {Item} */ target._map.get(key);
+          /**
+           * @type {'delete' | 'add' | 'update'}
+           */
+          let action;
+          let oldValue;
+          if (this.adds(item)) {
+            let prev = item.left;
+            while (prev !== null && this.adds(prev)) {
+              prev = prev.left;
+            }
+            if (this.deletes(item)) {
+              if (prev !== null && this.deletes(prev)) {
+                action = 'delete';
+                oldValue = array.last(prev.content.getContent());
+              } else {
+                return;
+              }
+            } else {
+              if (prev !== null && this.deletes(prev)) {
+                action = 'update';
+                oldValue = array.last(prev.content.getContent());
+              } else {
+                action = 'add';
+                oldValue = undefined;
+              }
+            }
+          } else {
+            if (this.deletes(item)) {
+              action = 'delete';
+              oldValue = array.last(
+                /** @type {Item} */ item.content.getContent(),
+              );
+            } else {
+              return; // nop
+            }
+          }
+          keys.set(key, { action, oldValue });
+        }
+      });
+      this._keys = keys;
+    }
+    return this._keys;
+  }
+
+  /**
+   * @type {Array<{insert?: string | Array<any> | object | AbstractType<any>, retain?: number, delete?: number, attributes?: Object<string, any>}>}
+   */
+  get delta() {
+    return this.changes.delta;
+  }
+
+  /**
+   * Check if a struct is added by this event.
+   *
+   * In contrast to change.deleted, this method also returns true if the struct was added and then deleted.
+   *
+   * @param {AbstractStruct} struct
+   * @return {boolean}
+   */
+  adds(struct) {
+    return (
+      struct.id.clock >=
+      (this.transaction.beforeState.get(struct.id.client) || 0)
+    );
+  }
+
+  /**
+   * @type {{added:Set<Item>,deleted:Set<Item>,keys:Map<string,{action:'add'|'update'|'delete',oldValue:any}>,delta:Array<{insert?:Array<any>|string, delete?:number, retain?:number}>}}
+   */
+  get changes() {
+    let changes = this._changes;
+    if (changes === null) {
+      const target = this.target;
+      const added = set.create();
+      const deleted = set.create();
+      /**
+       * @type {Array<{insert:Array<any>}|{delete:number}|{retain:number}>}
+       */
+      const delta = [] as any[];
+      changes = {
+        added,
+        deleted,
+        delta,
+        keys: this.keys,
+      };
+      const changed =
+        /** @type Set<string|null> */ this.transaction.changed.get(target);
+      if (changed.has(null)) {
+        /**
+         * @type {any}
+         */
+        let lastOp = null as any;
+        const packOp = () => {
+          if (lastOp) {
+            delta.push(lastOp);
+          }
+        };
+        for (let item = target._start; item !== null; item = item.right) {
+          if (item.deleted) {
+            if (this.deletes(item) && !this.adds(item)) {
+              if (lastOp === null || lastOp.delete === undefined) {
+                packOp();
+                lastOp = { delete: 0 };
+              }
+              lastOp.delete += item.length;
+              deleted.add(item);
+            } // else nop
+          } else {
+            if (this.adds(item)) {
+              if (lastOp === null || lastOp.insert === undefined) {
+                packOp();
+                lastOp = { insert: [] };
+              }
+              lastOp.insert = lastOp.insert.concat(item.content.getContent());
+              added.add(item);
+            } else {
+              if (lastOp === null || lastOp.retain === undefined) {
+                packOp();
+                lastOp = { retain: 0 };
+              }
+              lastOp.retain += item.length;
+            }
+          }
+        }
+        if (lastOp !== null && lastOp.retain === undefined) {
+          packOp();
+        }
+      }
+      this._changes = changes;
+    }
+    return /** @type {any} */ changes;
+  }
+}
+
+/**
+ * @module YArray
+ */
+
+/**
+ * Event that describes the changes on a YArray
+ * @template T
+ * @extends YEvent<YArray<T>>
+ */
+class YArrayEvent extends YEvent {
+  _transaction: any;
+  /**
+   * @param {YArray<T>} yarray The changed type
+   * @param {Transaction} transaction The transaction object
+   */
+  constructor(yarray, transaction) {
+    super(yarray, transaction);
+    this._transaction = transaction;
+  }
+}
+
+/**
+ * A shared Array implementation.
+ * @template T
+ * @extends AbstractType<YArrayEvent<T>>
+ * @implements {Iterable<T>}
+ */
+class YArray extends AbstractType {
+  _prelimContent: null | any[];
+  constructor() {
+    super();
+    /**
+     * @type {Array<any>?}
+     * @private
+     */
+    this._prelimContent = [];
+    /**
+     * @type {Array<ArraySearchMarker>}
+     */
+    this._searchMarker = [];
+  }
+
+  /**
+   * Construct a new YArray containing the specified items.
+   * @template T
+   * @param {Array<T>} items
+   * @return {YArray<T>}
+   */
+  static from(items) {
+    const a = new YArray();
+    a.push(items);
+    return a;
+  }
+
+  /**
+   * Integrate this type into the Yjs instance.
+   *
+   * * Save this struct in the os
+   * * This type is sent to other client
+   * * Observer functions are fired
+   *
+   * @param {Doc} y The Yjs instance
+   * @param {Item} item
+   */
+  _integrate(y, item) {
+    super._integrate(y, item);
+    this.insert(0, /** @type {Array<any>} */ this._prelimContent);
+    this._prelimContent = null;
+  }
+
+  _copy() {
+    return new YArray();
+  }
+
+  /**
+   * @return {YArray<T>}
+   */
+  clone() {
+    const arr = new YArray();
+    arr.insert(
+      0,
+      this.toArray().map((el) =>
+        el instanceof AbstractType ? el.clone() : el,
+      ),
+    );
+    return arr;
+  }
+
+  get length() {
+    return this._prelimContent === null
+      ? this._length
+      : this._prelimContent.length;
+  }
+
+  /**
+   * Creates YArrayEvent and calls observers.
+   *
+   * @param {Transaction} transaction
+   * @param {Set<null|string>} parentSubs Keys changed on this type. `null` if list was modified.
+   */
+  _callObserver(transaction, parentSubs) {
+    super._callObserver(transaction, parentSubs);
+    callTypeObservers(this, transaction, new YArrayEvent(this, transaction));
+  }
+
+  /**
+   * Inserts new content at an index.
+   *
+   * Important: This function expects an array of content. Not just a content
+   * object. The reason for this "weirdness" is that inserting several elements
+   * is very efficient when it is done as a single operation.
+   *
+   * @example
+   *  // Insert character 'a' at position 0
+   *  yarray.insert(0, ['a'])
+   *  // Insert numbers 1, 2 at position 1
+   *  yarray.insert(1, [1, 2])
+   *
+   * @param {number} index The index to insert content at.
+   * @param {Array<T>} content The array of content
+   */
+  insert(index, content) {
+    if (this.doc !== null) {
+      transact(this.doc, (transaction) => {
+        typeListInsertGenerics(transaction, this, index, content);
+      });
+    } else {
+      /** @type {Array<any>} */ this._prelimContent?.splice(
+        index,
+        0,
+        ...content,
+      );
+    }
+  }
+
+  /**
+   * Appends content to this YArray.
+   *
+   * @param {Array<T>} content Array of content to append.
+   *
+   * @todo Use the following implementation in all types.
+   */
+  push(content) {
+    if (this.doc !== null) {
+      transact(this.doc, (transaction) => {
+        typeListPushGenerics(transaction, this, content);
+      });
+    } else {
+      /** @type {Array<any>} */ this._prelimContent?.push(...content);
+    }
+  }
+
+  /**
+   * Preppends content to this YArray.
+   *
+   * @param {Array<T>} content Array of content to preppend.
+   */
+  unshift(content) {
+    this.insert(0, content);
+  }
+
+  /**
+   * Deletes elements starting from an index.
+   *
+   * @param {number} index Index at which to start deleting elements
+   * @param {number} length The number of elements to remove. Defaults to 1.
+   */
+  delete(index, length = 1) {
+    if (this.doc !== null) {
+      transact(this.doc, (transaction) => {
+        typeListDelete(transaction, this, index, length);
+      });
+    } else {
+      /** @type {Array<any>} */ this._prelimContent?.splice(index, length);
+    }
+  }
+
+  /**
+   * Returns the i-th element from a YArray.
+   *
+   * @param {number} index The index of the element to return from the YArray
+   * @return {T}
+   */
+  get(index) {
+    return typeListGet(this, index);
+  }
+
+  /**
+   * Transforms this YArray to a JavaScript Array.
+   *
+   * @return {Array<T>}
+   */
+  toArray() {
+    return typeListToArray(this);
+  }
+
+  /**
+   * Transforms this YArray to a JavaScript Array.
+   *
+   * @param {number} [start]
+   * @param {number} [end]
+   * @return {Array<T>}
+   */
+  slice(start = 0, end = this.length) {
+    return typeListSlice(this, start, end);
+  }
+
+  /**
+   * Transforms this Shared Type to a JSON object.
+   *
+   * @return {Array<any>}
+   */
+  toJSON() {
+    return this.map((c) => (c instanceof AbstractType ? c.toJSON() : c));
+  }
+
+  /**
+   * Returns an Array with the result of calling a provided function on every
+   * element of this YArray.
+   *
+   * @template M
+   * @param {function(T,number,YArray<T>):M} f Function that produces an element of the new Array
+   * @return {Array<M>} A new array with each element being the result of the
+   *                 callback function
+   */
+  map(f) {
+    return typeListMap(this, /** @type {any} */ f);
+  }
+
+  /**
+   * Executes a provided function on once on overy element of this YArray.
+   *
+   * @param {function(T,number,YArray<T>):void} f A function to execute on every element of this YArray.
+   */
+  forEach(f) {
+    typeListForEach(this, f);
+  }
+
+  /**
+   * @return {IterableIterator<T>}
+   */
+  [Symbol.iterator]() {
+    return typeListCreateIterator(this);
+  }
+
+  /**
+   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
+   */
+  _write(encoder) {
+    encoder.writeTypeRef(YArrayRefID);
+  }
+}
+
+/**
+ * @template T
+ * @extends YEvent<YMap<T>>
+ * Event that describes the changes on a YMap.
+ */
+class YMapEvent extends YEvent {
+  keysChanged: any;
+  /**
+   * @param {YMap<T>} ymap The YArray that changed.
+   * @param {Transaction} transaction
+   * @param {Set<any>} subs The keys that changed.
+   */
+  constructor(ymap, transaction, subs) {
+    super(ymap, transaction);
+    this.keysChanged = subs;
+  }
+}
+
+/**
+ * @template MapType
+ * A shared Map implementation.
+ *
+ * @extends AbstractType<YMapEvent<MapType>>
+ * @implements {Iterable<MapType>}
+ */
+class YMap extends AbstractType {
+  _prelimContent: null | Map<string, any>;
+  /**
+   *
+   * @param {Iterable<readonly [string, any]>=} entries - an optional iterable to initialize the YMap
+   */
+  constructor(entries?: any) {
+    super();
+    /**
+     * @type {Map<string,any>?}
+     * @private
+     */
+    this._prelimContent = null;
+
+    if (entries === undefined) {
+      this._prelimContent = new Map();
+    } else {
+      this._prelimContent = new Map(entries);
+    }
+  }
+
+  /**
+   * Integrate this type into the Yjs instance.
+   *
+   * * Save this struct in the os
+   * * This type is sent to other client
+   * * Observer functions are fired
+   *
+   * @param {Doc} y The Yjs instance
+   * @param {Item} item
+   */
+  _integrate(y, item) {
+    super._integrate(y, item);
+    /** @type {Map<string, any>} */ this._prelimContent?.forEach(
+      (value, key) => {
+        this.set(key, value);
+      },
+    );
+    this._prelimContent = null;
+  }
+
+  _copy() {
+    return new YMap();
+  }
+
+  /**
+   * @return {YMap<MapType>}
+   */
+  clone() {
+    const map = new YMap();
+    this.forEach((value, key) => {
+      map.set(key, value instanceof AbstractType ? value.clone() : value);
+    });
+    return map;
+  }
+
+  /**
+   * Creates YMapEvent and calls observers.
+   *
+   * @param {Transaction} transaction
+   * @param {Set<null|string>} parentSubs Keys changed on this type. `null` if list was modified.
+   */
+  _callObserver(transaction, parentSubs) {
+    callTypeObservers(
+      this,
+      transaction,
+      new YMapEvent(this, transaction, parentSubs),
+    );
+  }
+
+  /**
+   * Transforms this Shared Type to a JSON object.
+   *
+   * @return {Object<string,any>}
+   */
+  toJSON() {
+    /**
+     * @type {Object<string,MapType>}
+     */
+    const map = {};
+    this._map.forEach((item, key) => {
+      if (!item.deleted) {
+        const v = item.content.getContent()[item.length - 1];
+        map[key] = v instanceof AbstractType ? v.toJSON() : v;
+      }
+    });
+    return map;
+  }
+
+  /**
+   * Returns the size of the YMap (count of key/value pairs)
+   *
+   * @return {number}
+   */
+  get size() {
+    return [...createMapIterator(this._map)].length;
+  }
+
+  /**
+   * Returns the keys for each element in the YMap Type.
+   *
+   * @return {IterableIterator<string>}
+   */
+  keys() {
+    return iterator.iteratorMap(
+      createMapIterator(this._map),
+      /** @param {any} v */ (v) => v[0],
+    );
+  }
+
+  /**
+   * Returns the values for each element in the YMap Type.
+   *
+   * @return {IterableIterator<any>}
+   */
+  values() {
+    return iterator.iteratorMap(
+      createMapIterator(this._map),
+      /** @param {any} v */ (v) => v[1].content.getContent()[v[1].length - 1],
+    );
+  }
+
+  /**
+   * Returns an Iterator of [key, value] pairs
+   *
+   * @return {IterableIterator<any>}
+   */
+  entries() {
+    return iterator.iteratorMap(
+      createMapIterator(this._map),
+      /** @param {any} v */ (v) => [
+        v[0],
+        v[1].content.getContent()[v[1].length - 1],
+      ],
+    );
+  }
+
+  /**
+   * Executes a provided function on once on every key-value pair.
+   *
+   * @param {function(MapType,string,YMap<MapType>):void} f A function to execute on every element of this YArray.
+   */
+  forEach(f) {
+    /**
+     * @type {Object<string,MapType>}
+     */
+    const map = {};
+    this._map.forEach((item, key) => {
+      if (!item.deleted) {
+        f(item.content.getContent()[item.length - 1], key, this);
+      }
+    });
+    return map;
+  }
+
+  /**
+   * Returns an Iterator of [key, value] pairs
+   *
+   * @return {IterableIterator<any>}
+   */
+  [Symbol.iterator]() {
+    return this.entries();
+  }
+
+  /**
+   * Remove a specified element from this YMap.
+   *
+   * @param {string} key The key of the element to remove.
+   */
+  delete(key) {
+    if (this.doc !== null) {
+      transact(this.doc, (transaction) => {
+        typeMapDelete(transaction, this, key);
+      });
+    } else {
+      /** @type {Map<string, any>} */ this._prelimContent?.delete(key);
+    }
+  }
+
+  /**
+   * Adds or updates an element with a specified key and value.
+   *
+   * @param {string} key The key of the element to add to this YMap
+   * @param {MapType} value The value of the element to add
+   */
+  set(key, value) {
+    if (this.doc !== null) {
+      transact(this.doc, (transaction) => {
+        typeMapSet(transaction, this, key, value);
+      });
+    } else {
+      /** @type {Map<string, any>} */ this._prelimContent?.set(key, value);
+    }
+    return value;
+  }
+
+  /**
+   * Returns a specified element from this YMap.
+   *
+   * @param {string} key
+   * @return {MapType|undefined}
+   */
+  get(key) {
+    return /** @type {any} */ typeMapGet(this, key);
+  }
+
+  /**
+   * Returns a boolean indicating whether the specified key exists or not.
+   *
+   * @param {string} key The key to test.
+   * @return {boolean}
+   */
+  has(key) {
+    return typeMapHas(this, key);
+  }
+
+  /**
+   * Removes all elements from this YMap.
+   */
+  clear() {
+    if (this.doc !== null) {
+      transact(this.doc, (transaction) => {
+        this.forEach(function (value, key, map) {
+          typeMapDelete(transaction, map, key);
+        });
+      });
+    } else {
+      /** @type {Map<string, any>} */ this._prelimContent?.clear();
+    }
+  }
+
+  /**
+   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
+   */
+  _write(encoder) {
+    encoder.writeTypeRef(YMapRefID);
+  }
+}
+
+/**
+ * Abstract class that represents any content.
+ */
+class Item extends AbstractStruct {
+  parent: AbstractType | ID | null;
+  left: Item | null;
+  // content: typeof ContentType;
+  content: AbstractContent;
+  parentSub: string | null;
+  redone: ID | null;
+  right: Item | null;
+  origin: ID | null;
+  rightOrigin: ID | null;
+  info: number;
+
+  /**
+   * @param {ID} id
+   * @param {Item | null} left
+   * @param {ID | null} origin
+   * @param {Item | null} right
+   * @param {ID | null} rightOrigin
+   * @param {AbstractType<any>|ID|null} parent Is a type if integrated, is null if it is possible to copy parent from left or right, is ID before integration to search for it.
+   * @param {string | null} parentSub
+   * @param {AbstractContent} content
+   */
+  constructor(
+    id,
+    left,
+    origin,
+    right,
+    rightOrigin,
+    parent,
+    parentSub,
+    content,
+  ) {
+    super(id, content.getLength());
+    /**
+     * The item that was originally to the left of this item.
+     * @type {ID | null}
+     */
+    this.origin = origin;
+    /**
+     * The item that is currently to the left of this item.
+     * @type {Item | null}
+     */
+    this.left = left;
+    /**
+     * The item that is currently to the right of this item.
+     * @type {Item | null}
+     */
+    this.right = right;
+    /**
+     * The item that was originally to the right of this item.
+     * @type {ID | null}
+     */
+    this.rightOrigin = rightOrigin;
+    /**
+     * @type {AbstractType<any>|ID|null}
+     */
+    this.parent = parent;
+    /**
+     * If the parent refers to this item with some kind of key (e.g. YMap, the
+     * key is specified here. The key is then used to refer to the list in which
+     * to insert this item. If `parentSub = null` type._start is the list in
+     * which to insert to. Otherwise it is `parent._map`.
+     * @type {String | null}
+     */
+    this.parentSub = parentSub;
+    /**
+     * If this type's effect is redone this type refers to the type that undid
+     * this operation.
+     * @type {ID | null}
+     */
+    this.redone = null;
+    /**
+     * @type {AbstractContent}
+     */
+    this.content = content;
+    /**
+     * bit1: keep
+     * bit2: countable
+     * bit3: deleted
+     * bit4: mark - mark node as fast-search-marker
+     * @type {number} byte
+     */
+    // @ts-ignore
+    this.info = this.content.isCountable() ? binary.BIT2 : 0;
+  }
+
+  /**
+   * This is used to mark the item as an indexed fast-search marker
+   *
+   * @type {boolean}
+   */
+  set marker(isMarked) {
+    if ((this.info & binary.BIT4) > 0 !== isMarked) {
+      this.info ^= binary.BIT4;
+    }
+  }
+
+  get marker() {
+    return (this.info & binary.BIT4) > 0;
+  }
+
+  /**
+   * If true, do not garbage collect this Item.
+   */
+  get keep() {
+    return (this.info & binary.BIT1) > 0;
+  }
+
+  set keep(doKeep) {
+    if (this.keep !== doKeep) {
+      this.info ^= binary.BIT1;
+    }
+  }
+
+  get countable() {
+    return (this.info & binary.BIT2) > 0;
+  }
+
+  /**
+   * Whether this item was deleted or not.
+   * @type {Boolean}
+   */
+  // @ts-ignore
+  get deleted() {
+    return (this.info & binary.BIT3) > 0;
+  }
+
+  // @ts-ignore
+  set deleted(doDelete) {
+    if (this.deleted !== doDelete) {
+      this.info ^= binary.BIT3;
+    }
+  }
+
+  markDeleted() {
+    this.info |= binary.BIT3;
+  }
+
+  /**
+   * Return the creator clientID of the missing op or define missing items and return null.
+   *
+   * @param {Transaction} transaction
+   * @param {StructStore} store
+   * @return {null | number}
+   */
+  getMissing(transaction, store) {
+    if (
+      this.origin &&
+      this.origin.client !== this.id.client &&
+      this.origin.clock >= getState(store, this.origin.client)
+    ) {
+      return this.origin.client;
+    }
+    if (
+      this.rightOrigin &&
+      this.rightOrigin.client !== this.id.client &&
+      this.rightOrigin.clock >= getState(store, this.rightOrigin.client)
+    ) {
+      return this.rightOrigin.client;
+    }
+    if (
+      this.parent &&
+      this.parent.constructor === ID &&
+      this.id.client !== this.parent.client &&
+      this.parent.clock >= getState(store, this.parent.client)
+    ) {
+      return this.parent.client;
+    }
+
+    // We have all missing ids, now find the items
+
+    if (this.origin) {
+      this.left = getItemCleanEnd(transaction, store, this.origin);
+      this.origin = this.left?.lastId!;
+    }
+    if (this.rightOrigin) {
+      this.right = getItemCleanStart(transaction, this.rightOrigin);
+      this.rightOrigin = this.right?.id!;
+    }
+    if (
+      (this.left && this.left.constructor === GC) ||
+      (this.right && this.right.constructor === GC)
+    ) {
+      this.parent = null;
+    }
+    // only set parent if this shouldn't be garbage collected
+    if (!this.parent) {
+      if (this.left && this.left.constructor === Item) {
+        this.parent = this.left.parent;
+        this.parentSub = this.left.parentSub;
+      }
+      if (this.right && this.right.constructor === Item) {
+        this.parent = this.right.parent;
+        this.parentSub = this.right.parentSub;
+      }
+    } else if (this.parent.constructor === ID) {
+      const parentItem = getItem(store, this.parent);
+      if (parentItem.constructor === GC) {
+        this.parent = null;
+      } else {
+        this.parent = /** @type {ContentType} */ parentItem.content.type;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * @param {Transaction} transaction
+   * @param {number} offset
+   */
+  integrate(transaction, offset) {
+    if (offset > 0) {
+      this.id.clock += offset;
+      this.left = getItemCleanEnd(
+        transaction,
+        transaction.doc.store,
+        createID(this.id.client, this.id.clock - 1),
+      );
+      this.origin = this.left?.lastId!;
+      // @ts-ignore
+      this.content = this.content.splice(offset);
+      this.length -= offset;
+    }
+
+    if (this.parent) {
+      if (
+        (!this.left && (!this.right || this.right.left !== null)) ||
+        (this.left && this.left.right !== this.right)
+      ) {
+        /**
+         * @type {Item|null}
+         */
+        let left = this.left;
+
+        /**
+         * @type {Item|null}
+         */
+        let o;
+        // set o to the first conflicting item
+        if (left !== null) {
+          o = left.right;
+        } else if (this.parentSub !== null) {
+          o =
+            // @ts-ignore
+            /** @type {AbstractType<any>} */ this.parent._map.get(
+              this.parentSub,
+            ) || null;
+          while (o !== null && o.left !== null) {
+            o = o.left;
+          }
+        } else {
+          // @ts-ignore
+          o = /** @type {AbstractType<any>} */ this.parent._start;
+        }
+        // TODO: use something like DeleteSet here (a tree implementation would be best)
+        // @todo use global set definitions
+        /**
+         * @type {Set<Item>}
+         */
+        const conflictingItems = new Set();
+        /**
+         * @type {Set<Item>}
+         */
+        const itemsBeforeOrigin = new Set();
+        // Let c in conflictingItems, b in itemsBeforeOrigin
+        // ***{origin}bbbb{this}{c,b}{c,b}{o}***
+        // Note that conflictingItems is a subset of itemsBeforeOrigin
+        while (o !== null && o !== this.right) {
+          itemsBeforeOrigin.add(o);
+          conflictingItems.add(o);
+          if (compareIDs(this.origin, o.origin)) {
+            // case 1
+            if (o.id.client < this.id.client) {
+              left = o;
+              conflictingItems.clear();
+            } else if (compareIDs(this.rightOrigin, o.rightOrigin)) {
+              // this and o are conflicting and point to the same integration points. The id decides which item comes first.
+              // Since this is to the left of o, we can break here
+              break;
+            } // else, o might be integrated before an item that this conflicts with. If so, we will find it in the next iterations
+          } else if (
+            o.origin !== null &&
+            itemsBeforeOrigin.has(getItem(transaction.doc.store, o.origin))
+          ) {
+            // use getItem instead of getItemCleanEnd because we don't want / need to split items.
+            // case 2
+            if (
+              !conflictingItems.has(getItem(transaction.doc.store, o.origin))
+            ) {
+              left = o;
+              conflictingItems.clear();
+            }
+          } else {
+            break;
+          }
+          o = o.right;
+        }
+        this.left = left;
+      }
+      // reconnect left/right + update parent map/start if necessary
+      if (this.left !== null) {
+        const right = this.left.right;
+        this.right = right;
+        this.left.right = this;
+      } else {
+        let r;
+        if (this.parentSub !== null) {
+          r =
+            // @ts-ignore
+            /** @type {AbstractType<any>} */ this.parent._map.get(
+              this.parentSub,
+            ) || null;
+          while (r !== null && r.left !== null) {
+            r = r.left;
+          }
+        } else {
+          // @ts-ignore
+          r = /** @type {AbstractType<any>} */ this.parent._start;
+          // @ts-ignore
+          /** @type {AbstractType<any>} */ this.parent._start = this;
+        }
+        this.right = r;
+      }
+      if (this.right !== null) {
+        this.right.left = this;
+      } else if (this.parentSub !== null) {
+        // set as current parent value if right === null and this is parentSub
+        // @ts-ignore
+        /** @type {AbstractType<any>} */ this.parent._map.set(
+          this.parentSub,
+          this,
+        );
+        if (this.left !== null) {
+          // this is the current attribute value of parent. delete right
+          this.left.delete(transaction);
+        }
+      }
+      // adjust length of parent
+      if (this.parentSub === null && this.countable && !this.deleted) {
+        // @ts-ignore
+        /** @type {AbstractType<any>} */ this.parent._length += this.length;
+      }
+      addStruct(transaction.doc.store, this);
+      // @ts-ignore
+      this.content.integrate(transaction, this);
+      // add parent to transaction.changed
+      addChangedTypeToTransaction(
+        transaction,
+        /** @type {AbstractType<any>} */ this.parent,
+        this.parentSub,
+      );
+      if (
+        // @ts-ignore
+        /** @type {AbstractType<any>} */ (this.parent._item !== null &&
+          // @ts-ignore
+          /** @type {AbstractType<any>} */ this.parent._item.deleted) ||
+        (this.parentSub !== null && this.right !== null)
+      ) {
+        // delete if parent is deleted or if this is not the current attribute value of parent
+        this.delete(transaction);
+      }
+    } else {
+      // parent is not defined. Integrate GC struct instead
+      new GC(this.id, this.length).integrate(transaction, 0);
+    }
+  }
+
+  /**
+   * Returns the next non-deleted item
+   */
+  get next() {
+    let n = this.right;
+    while (n !== null && n.deleted) {
+      n = n.right;
+    }
+    return n;
+  }
+
+  /**
+   * Returns the previous non-deleted item
+   */
+  get prev() {
+    let n = this.left;
+    while (n !== null && n.deleted) {
+      n = n.left;
+    }
+    return n;
+  }
+
+  /**
+   * Computes the last content address of this Item.
+   */
+  get lastId() {
+    // allocating ids is pretty costly because of the amount of ids created, so we try to reuse whenever possible
+    return this.length === 1
+      ? this.id
+      : createID(this.id.client, this.id.clock + this.length - 1);
+  }
+
+  /**
+   * Try to merge two items
+   *
+   * @param {Item} right
+   * @return {boolean}
+   */
+  mergeWith(right) {
+    if (
+      this.constructor === right.constructor &&
+      compareIDs(right.origin, this.lastId) &&
+      this.right === right &&
+      compareIDs(this.rightOrigin, right.rightOrigin) &&
+      this.id.client === right.id.client &&
+      this.id.clock + this.length === right.id.clock &&
+      this.deleted === right.deleted &&
+      this.redone === null &&
+      right.redone === null &&
+      this.content.constructor === right.content.constructor &&
+      // @ts-ignore
+      this.content.mergeWith(right.content)
+    ) {
+      const searchMarker =
+        // @ts-ignore
+        /** @type {AbstractType<any>} */ this.parent._searchMarker;
+      if (searchMarker) {
+        searchMarker.forEach((marker) => {
+          if (marker.p === right) {
+            // right is going to be "forgotten" so we need to update the marker
+            marker.p = this;
+            // adjust marker index
+            if (!this.deleted && this.countable) {
+              marker.index -= this.length;
+            }
+          }
+        });
+      }
+      if (right.keep) {
+        this.keep = true;
+      }
+      this.right = right.right;
+      if (this.right !== null) {
+        this.right.left = this;
+      }
+      this.length += right.length;
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Mark this Item as deleted.
+   *
+   * @param {Transaction} transaction
+   */
+  delete(transaction) {
+    if (!this.deleted) {
+      const parent = /** @type {AbstractType<any>} */ this.parent;
+      // adjust the length of parent
+      if (this.countable && this.parentSub === null) {
+        // @ts-ignore
+        parent._length -= this.length;
+      }
+      this.markDeleted();
+      addToDeleteSet(
+        transaction.deleteSet,
+        this.id.client,
+        this.id.clock,
+        this.length,
+      );
+      addChangedTypeToTransaction(transaction, parent, this.parentSub);
+      // @ts-ignore
+      this.content.delete(transaction);
+    }
+  }
+
+  /**
+   * @param {StructStore} store
+   * @param {boolean} parentGCd
+   */
+  gc(store, parentGCd) {
+    if (!this.deleted) {
+      throw error.unexpectedCase();
+    }
+    // @ts-ignore
+    this.content.gc(store);
+    if (parentGCd) {
+      replaceStruct(store, this, new GC(this.id, this.length));
+    } else {
+      // @ts-ignore
+
+      this.content = new ContentDeleted(this.length);
+    }
+  }
+
+  /**
+   * Transform the properties of this type to binary and write it to an
+   * BinaryEncoder.
+   *
+   * This is called when this Item is sent to a remote peer.
+   *
+   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder The encoder to write data to.
+   * @param {number} offset
+   */
+  write(encoder, offset) {
+    const origin =
+      offset > 0
+        ? createID(this.id.client, this.id.clock + offset - 1)
+        : this.origin;
+    const rightOrigin = this.rightOrigin;
+    const parentSub = this.parentSub;
+    const info =
+      // @ts-ignore
+      (this.content.getRef() & binary.BITS5) |
+      (origin === null ? 0 : binary.BIT8) | // origin is defined
+      (rightOrigin === null ? 0 : binary.BIT7) | // right origin is defined
+      (parentSub === null ? 0 : binary.BIT6); // parentSub is non-null
+    encoder.writeInfo(info);
+    if (origin !== null) {
+      encoder.writeLeftID(origin);
+    }
+    if (rightOrigin !== null) {
+      encoder.writeRightID(rightOrigin);
+    }
+    if (origin === null && rightOrigin === null) {
+      const parent = /** @type {AbstractType<any>} */ this
+        .parent as AbstractType;
+
+      if (parent._item !== undefined) {
+        const parentItem = parent._item;
+        if (parentItem === null) {
+          // parent type on y._map
+          // find the correct key
+          const ykey = findRootTypeKey(parent);
+          encoder.writeParentInfo(true); // write parentYKey
+          encoder.writeString(ykey);
+        } else {
+          encoder.writeParentInfo(false); // write parent id
+          encoder.writeLeftID(parentItem.id);
+        }
+      } else if (parent.constructor === String) {
+        // this edge case was added by differential updates
+        encoder.writeParentInfo(true); // write parentYKey
+        encoder.writeString(parent);
+      } else if (parent.constructor === ID) {
+        encoder.writeParentInfo(false); // write parent id
+        encoder.writeLeftID(parent);
+      } else {
+        error.unexpectedCase();
+      }
+      if (parentSub !== null) {
+        encoder.writeString(parentSub);
+      }
+    }
+    // @ts-ignore
+    this.content.write(encoder, offset);
+  }
+}
+
+/**
+ * Iterate over all structs that the DeleteSet gc's.
+ *
+ * @param {Transaction} transaction
+ * @param {DeleteSet} ds
+ * @param {function(GC|Item):void} f
+ *
+ * @function
+ */
+const iterateDeletedStructs = (transaction, ds: DeleteSet, f) =>
+  ds.clients.forEach((deletes, clientid) => {
+    const structs =
+      /** @type {Array<GC|Item>} */ transaction.doc.store.clients.get(clientid);
+    for (let i = 0; i < deletes.length; i++) {
+      const del = deletes[i];
+      iterateStructs(transaction, structs, del.clock, del.len, f);
+    }
+  });
+
+/**
+ * @param {Array<DeleteItem>} dis
+ * @param {number} clock
+ * @return {number|null}
+ *
+ * @private
+ * @function
+ */
+const findIndexDS = (dis: DeleteItem[], clock: number) => {
+  let left = 0;
+  let right = dis.length - 1;
+  while (left <= right) {
+    const midindex = math.floor((left + right) / 2);
+    const mid = dis[midindex];
+    const midclock = mid.clock;
+    if (midclock <= clock) {
+      if (clock < midclock + mid.len) {
+        return midindex;
+      }
+      left = midindex + 1;
+    } else {
+      right = midindex - 1;
+    }
+  }
+  return null;
+};
+
+/**
+ * @param {DeleteSet} ds
+ * @param {ID} id
+ * @return {boolean}
+ *
+ * @private
+ * @function
+ */
+const isDeleted = (ds: DeleteSet, id) => {
+  const dis = ds.clients.get(id.client);
+  return dis !== undefined && findIndexDS(dis, id.clock) !== null;
+};
+
+/**
+ * @param {DeleteSet} ds
+ *
+ * @private
+ * @function
+ */
+const sortAndMergeDeleteSet = (ds: DeleteSet) => {
+  ds.clients.forEach((dels) => {
+    dels.sort((a, b) => a.clock - b.clock);
+    // merge items without filtering or splicing the array
+    // i is the current pointer
+    // j refers to the current insert position for the pointed item
+    // try to merge dels[i] into dels[j-1] or set dels[j]=dels[i]
+    let i, j;
+    for (i = 1, j = 1; i < dels.length; i++) {
+      const left = dels[j - 1];
+      const right = dels[i];
+      if (left.clock + left.len >= right.clock) {
+        left.len = math.max(left.len, right.clock + right.len - left.clock);
+      } else {
+        if (j < i) {
+          dels[j] = right;
+        }
+        j++;
+      }
+    }
+    dels.length = j;
+  });
+};
+
+/**
+ * @param {Array<DeleteSet>} dss
+ * @return {DeleteSet} A fresh DeleteSet
+ */
+const mergeDeleteSets = (dss: DeleteSet[]) => {
+  const merged = new DeleteSet();
+  for (let dssI = 0; dssI < dss.length; dssI++) {
+    dss[dssI].clients.forEach((delsLeft, client) => {
+      if (!merged.clients.has(client)) {
+        // Write all missing keys from current ds and all following.
+        // If merged already contains `client` current ds has already been added.
+        /**
+         * @type {Array<DeleteItem>}
+         */
+        const dels = delsLeft.slice();
+        for (let i = dssI + 1; i < dss.length; i++) {
+          array.appendTo(dels, dss[i].clients.get(client) || []);
+        }
+        merged.clients.set(client, dels);
+      }
+    });
+  }
+  sortAndMergeDeleteSet(merged);
+  return merged;
+};
+
+/**
+ * @param {DeleteSet} ds
+ * @param {number} client
+ * @param {number} clock
+ * @param {number} length
+ *
+ * @private
+ * @function
+ */
+const addToDeleteSet = (ds: DeleteSet, client, clock, length) => {
+  map
+    .setIfUndefined(ds.clients, client, () => [])
+    .push(new DeleteItem(clock, length));
+};
+
+const createDeleteSet = () => new DeleteSet();
+
+/**
+ * @param {StructStore} ss
+ * @return {DeleteSet} Merged and sorted DeleteSet
+ *
+ * @private
+ * @function
+ */
+const createDeleteSetFromStructStore = (ss) => {
+  const ds = createDeleteSet();
+  ss.clients.forEach((structs, client) => {
+    /**
+     * @type {Array<DeleteItem>}
+     */
+    const dsitems: DeleteItem[] = [];
+    for (let i = 0; i < structs.length; i++) {
+      const struct = structs[i];
+      if (struct.deleted) {
+        const clock = struct.id.clock;
+        let len = struct.length;
+        if (i + 1 < structs.length) {
+          for (
+            let next = structs[i + 1];
+            i + 1 < structs.length && next.deleted;
+            next = structs[++i + 1]
+          ) {
+            len += next.length;
+          }
+        }
+        dsitems.push(new DeleteItem(clock, len));
+      }
+    }
+    if (dsitems.length > 0) {
+      ds.clients.set(client, dsitems);
+    }
+  });
+  return ds;
+};
+
+/**
+ * @param {DSEncoderV1 | DSEncoderV2} encoder
+ * @param {DeleteSet} ds
+ *
+ * @private
+ * @function
+ */
+const writeDeleteSet = (encoder, ds: DeleteSet) => {
+  encoding.writeVarUint(encoder.restEncoder, ds.clients.size);
+  ds.clients.forEach((dsitems, client) => {
+    encoder.resetDsCurVal();
+    encoding.writeVarUint(encoder.restEncoder, client);
+    const len = dsitems.length;
+    encoding.writeVarUint(encoder.restEncoder, len);
+    for (let i = 0; i < len; i++) {
+      const item = dsitems[i];
+      encoder.writeDsClock(item.clock);
+      encoder.writeDsLen(item.len);
+    }
+  });
+};
+
+/**
+ * @param {DSDecoderV1 | DSDecoderV2} decoder
+ * @return {DeleteSet}
+ *
+ * @private
+ * @function
+ */
+const readDeleteSet = (decoder) => {
+  const ds = new DeleteSet();
+  const numClients = decoding.readVarUint(decoder.restDecoder);
+  for (let i = 0; i < numClients; i++) {
+    decoder.resetDsCurVal();
+    const client = decoding.readVarUint(decoder.restDecoder);
+    const numberOfDeletes = decoding.readVarUint(decoder.restDecoder);
+    if (numberOfDeletes > 0) {
+      const dsField = map.setIfUndefined(ds.clients, client, () => []);
+      for (let i = 0; i < numberOfDeletes; i++) {
+        dsField.push(
+          new DeleteItem(decoder.readDsClock(), decoder.readDsLen()),
+        );
+      }
+    }
+  }
+  return ds;
+};
+
+/**
+ * @todo YDecoder also contains references to String and other Decoders.
+ * Would make sense to exchange YDecoder.toUint8Array for YDecoder.DsToUint8Array()..
+ */
+
+/**
+ * @param {DSDecoderV1 | DSDecoderV2} decoder
+ * @param {Transaction} transaction
+ * @param {StructStore} store
+ * @return {Uint8Array|null} Returns a v2 update containing all deletes that couldn't be applied yet; or null if all deletes were applied successfully.
+ *
+ * @private
+ * @function
+ */
+const readAndApplyDeleteSet = (decoder, transaction, store: StructStore) => {
+  const unappliedDS = new DeleteSet();
+  const numClients = decoding.readVarUint(decoder.restDecoder);
+  for (let i = 0; i < numClients; i++) {
+    decoder.resetDsCurVal();
+    const client = decoding.readVarUint(decoder.restDecoder);
+    const numberOfDeletes = decoding.readVarUint(decoder.restDecoder);
+    const structs = store.clients.get(client) || [];
+    const state = getState(store, client);
+    for (let i = 0; i < numberOfDeletes; i++) {
+      const clock = decoder.readDsClock();
+      const clockEnd = clock + decoder.readDsLen();
+      if (clock < state) {
+        if (state < clockEnd) {
+          addToDeleteSet(unappliedDS, client, state, clockEnd - state);
+        }
+        let index = findIndexSS(structs, clock);
+        /**
+         * We can ignore the case of GC and Delete structs, because we are going to skip them
+         * @type {Item}
+         */
+        // @ts-ignore
+        let struct = structs[index];
+        // split the first item if necessary
+        if (!struct.deleted && struct.id.clock < clock) {
+          structs.splice(
+            index + 1,
+            0,
+            splitItem(transaction, struct, clock - struct.id.clock),
+          );
+          index++; // increase we now want to use the next struct
+        }
+        while (index < structs.length) {
+          // @ts-ignore
+          struct = structs[index++];
+          if (struct.id.clock < clockEnd) {
+            if (!struct.deleted) {
+              if (clockEnd < struct.id.clock + struct.length) {
+                structs.splice(
+                  index,
+                  0,
+                  splitItem(transaction, struct, clockEnd - struct.id.clock),
+                );
+              }
+              struct.delete(transaction);
+            }
+          } else {
+            break;
+          }
+        }
+      } else {
+        addToDeleteSet(unappliedDS, client, clock, clockEnd - clock);
+      }
+    }
+  }
+  if (unappliedDS.clients.size > 0) {
+    const ds = new UpdateEncoderV2();
+    encoding.writeVarUint(ds.restEncoder, 0); // encode 0 structs
+    writeDeleteSet(ds, unappliedDS);
+    return ds.toUint8Array();
+  }
+  return null;
+};
+
+/**
+ * @module Y
+ */
+
 class DSDecoderV1 {
-  restDecoder: any;
+  restDecoder: decoding.Decoder;
   /**
    * @param {decoding.Decoder} decoder
    */
@@ -815,7 +2252,7 @@ class UpdateDecoderV1 extends DSDecoderV1 {
 
 class DSDecoderV2 {
   dsCurrVal: number;
-  restDecoder: any;
+  restDecoder: decoding.Decoder;
   /**
    * @param {decoding.Decoder} decoder
    */
@@ -850,7 +2287,7 @@ class DSDecoderV2 {
 }
 
 class UpdateDecoderV2 extends DSDecoderV2 {
-  keys: string[];
+  keys: any[];
   keyClockDecoder: decoding.IntDiffOptRleDecoder;
   clientDecoder: decoding.UintOptRleDecoder;
   leftClockDecoder: decoding.IntDiffOptRleDecoder;
@@ -1369,7 +2806,11 @@ const writeStructs = (encoder, structs, client, clock) => {
  * @private
  * @function
  */
-const writeClientsStructs = (encoder, store, _sm) => {
+const writeClientsStructs = (
+  encoder,
+  store: StructStore,
+  _sm: Map<number, number>,
+) => {
   // we filter all valid _sm entries into sm
   const sm = new Map();
   _sm.forEach((clock, client) => {
@@ -1403,7 +2844,7 @@ const writeClientsStructs = (encoder, store, _sm) => {
  * @private
  * @function
  */
-const readClientsStructRefs = (decoder, doc) => {
+const readClientsStructRefs = (decoder, doc: Doc) => {
   /**
    * @type {Map<number, { i: number, refs: Array<Item | GC> }>}
    */
@@ -1534,8 +2975,7 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
   const stack = [] as any[];
   // sort them so that we take the higher id first, in case of conflicts the lower id will probably not conflict with the id from the higher user.
   let clientsStructRefsIds = Array.from(clientsStructRefs.keys()).sort(
-    // @ts-ignore
-    (a, b) => a - b,
+    (a: any, b: any) => a - b,
   );
   if (clientsStructRefsIds.length === 0) {
     return null;
@@ -1546,15 +2986,15 @@ const integrateStructs = (transaction, store, clientsStructRefs) => {
     }
     let nextStructsTarget =
       /** @type {{i:number,refs:Array<GC|Item>}} */ clientsStructRefs.get(
-      clientsStructRefsIds[clientsStructRefsIds.length - 1],
-    );
+        clientsStructRefsIds[clientsStructRefsIds.length - 1],
+      );
     while (nextStructsTarget.refs.length === nextStructsTarget.i) {
       clientsStructRefsIds.pop();
       if (clientsStructRefsIds.length > 0) {
         nextStructsTarget =
           /** @type {{i:number,refs:Array<GC|Item>}} */ clientsStructRefs.get(
-          clientsStructRefsIds[clientsStructRefsIds.length - 1],
-        );
+            clientsStructRefsIds[clientsStructRefsIds.length - 1],
+          );
       } else {
         return null;
       }
@@ -1789,7 +3229,7 @@ const readUpdateV2 = (
         const update =
           /** @type {{update: Uint8Array}} */ store.pendingStructs.update;
         store.pendingStructs = null;
-        applyUpdateV2(transaction.doc, update, undefined, undefined);
+        applyUpdateV2(transaction.doc, update, undefined);
       }
     },
     transactionOrigin,
@@ -1808,8 +3248,12 @@ const readUpdateV2 = (
  * @function
  */
 const readUpdate = (decoder, ydoc, transactionOrigin) =>
-  // @ts-ignore
-  readUpdateV2(decoder, ydoc, transactionOrigin, new UpdateDecoderV1(decoder));
+  readUpdateV2(
+    decoder,
+    ydoc,
+    transactionOrigin,
+    new UpdateDecoderV1(decoder) as any as UpdateDecoderV2,
+  );
 
 /**
  * Apply a document update created by, for example, `y.on('update', update => ..)` or `update = encodeStateAsUpdate()`.
@@ -1845,8 +3289,7 @@ const applyUpdateV2 = (
  * @function
  */
 const applyUpdate = (ydoc, update, transactionOrigin) =>
-  // @ts-ignore
-  applyUpdateV2(ydoc, update, transactionOrigin, UpdateDecoderV1);
+  applyUpdateV2(ydoc, update, transactionOrigin, UpdateDecoderV1 as any);
 
 /**
  * Write all the document as a single update message. If you specify the state of the remote client (`targetStateVector`) it will
@@ -1920,8 +3363,11 @@ const encodeStateAsUpdateV2 = (
  * @function
  */
 const encodeStateAsUpdate = (doc, encodedTargetStateVector) =>
-  // @ts-ignore
-  encodeStateAsUpdateV2(doc, encodedTargetStateVector, new UpdateEncoderV1());
+  encodeStateAsUpdateV2(
+    doc,
+    encodedTargetStateVector,
+    new UpdateEncoderV1() as any as UpdateEncoderV2,
+  );
 
 /**
  * Read state vector from Decoder and return as Map
@@ -1968,12 +3414,10 @@ const decodeStateVector = (decodedState) =>
  * @param {Map<number,number>} sv
  * @function
  */
-const writeStateVector = (encoder, sv) => {
+const writeStateVector = (encoder, sv: Map<number, number>) => {
   encoding.writeVarUint(encoder.restEncoder, sv.size);
   Array.from(sv.entries())
-    // @ts-ignore
     .sort((a, b) => b[0] - a[0])
-    // @ts-ignore
     .forEach(([client, clock]) => {
       encoding.writeVarUint(encoder.restEncoder, client); // @todo use a special client decoder that is based on mapping
       encoding.writeVarUint(encoder.restEncoder, clock);
@@ -2016,25 +3460,8 @@ const encodeStateVectorV2 = (doc, encoder = new DSEncoderV2()) => {
  *
  * @function
  */
-// @ts-ignore
-const encodeStateVector = (doc) => encodeStateVectorV2(doc, new DSEncoderV1());
-
-/**
- * General event handler implementation.
- *
- * @template ARG0, ARG1
- *
- * @private
- */
-class EventHandler {
-  l: never[];
-  constructor() {
-    /**
-     * @type {Array<function(ARG0, ARG1):void>}
-     */
-    this.l = [];
-  }
-}
+const encodeStateVector = (doc) =>
+  encodeStateVectorV2(doc, new DSEncoderV1() as any as DSEncoderV2);
 
 /**
  * @template ARG0,ARG1
@@ -2056,7 +3483,8 @@ const createEventHandler = () => new EventHandler();
  * @private
  * @function
  */
-const addEventHandlerListener = (eventHandler, f) => eventHandler.l.push(f);
+const addEventHandlerListener = (eventHandler: EventHandler, f) =>
+  eventHandler.l.push(f);
 
 /**
  * Removes an event listener.
@@ -2069,7 +3497,7 @@ const addEventHandlerListener = (eventHandler, f) => eventHandler.l.push(f);
  * @private
  * @function
  */
-const removeEventHandlerListener = (eventHandler, f) => {
+const removeEventHandlerListener = (eventHandler: EventHandler, f) => {
   const l = eventHandler.l;
   const len = l.length;
   eventHandler.l = l.filter((g) => f !== g);
@@ -2090,29 +3518,8 @@ const removeEventHandlerListener = (eventHandler, f) => {
  * @private
  * @function
  */
-const callEventHandlerListeners = (eventHandler, arg0, arg1) =>
+const callEventHandlerListeners = (eventHandler: EventHandler, arg0, arg1) =>
   f.callAll(eventHandler.l, [arg0, arg1]);
-
-class ID {
-  client: any;
-  clock: any;
-  /**
-   * @param {number} client client id
-   * @param {number} clock unique per client id, continuous number
-   */
-  constructor(client, clock) {
-    /**
-     * Client id
-     * @type {number}
-     */
-    this.client = client;
-    /**
-     * unique per client id, continuous number
-     * @type {number}
-     */
-    this.clock = clock;
-  }
-}
 
 /**
  * @param {ID | null} a
@@ -2121,7 +3528,7 @@ class ID {
  *
  * @function
  */
-const compareIDs = (a, b) =>
+const compareIDs = (a: ID | null, b: ID | null) =>
   a === b ||
   (a !== null && b !== null && a.client === b.client && a.clock === b.clock);
 
@@ -2208,8 +3615,8 @@ const isParentOf = (parent, child) => {
  *
  * @param {AbstractType<any>} type
  */
-const logType = (type) => {
-  const res = [];
+const logType = (type: AbstractType) => {
+  const res = [] as any[];
   let n = type._start;
   while (n) {
     res.push(n);
@@ -2218,21 +3625,20 @@ const logType = (type) => {
   console.log('Children: ', res);
   console.log(
     'Children content: ',
-    // @ts-ignore
     res.filter((m) => !m.deleted).map((m) => m.content),
   );
 };
 
 class PermanentUserData {
   yusers: any;
-  doc: any;
-  clients: Map<any, any>;
-  dss: Map<any, any>;
+  doc: Doc;
+  clients: Map<number, string>;
+  dss: Map<string, DeleteSet>;
   /**
    * @param {Doc} doc
    * @param {YMap<any>} [storeType]
    */
-  constructor(doc, storeType = doc.getMap('users')) {
+  constructor(doc: Doc, storeType = doc.getMap('users')) {
     /**
      * @type {Map<string,DeleteSet>}
      */
@@ -2259,7 +3665,7 @@ class PermanentUserData {
       const addClientId = /** @param {number} clientid */ (clientid) =>
         this.clients.set(clientid, userDescription);
       ds.observe(
-        /** @param {YArrayEvent<any>} event */(event) => {
+        /** @param {YArrayEvent<any>} event */ (event) => {
           event.changes.added.forEach((item) => {
             item.content.getContent().forEach((encodedDs) => {
               if (encodedDs instanceof Uint8Array) {
@@ -2286,7 +3692,7 @@ class PermanentUserData {
         ),
       );
       ids.observe(
-        /** @param {YArrayEvent<any>} event */(event) =>
+        /** @param {YArrayEvent<any>} event */ (event) =>
           event.changes.added.forEach((item) =>
             item.content.getContent().forEach(addClientId),
           ),
@@ -2310,7 +3716,12 @@ class PermanentUserData {
    * @param {Object} [conf]
    * @param {function(Transaction, DeleteSet):boolean} [conf.filter]
    */
-  setUserMapping(doc, clientid, userDescription, { filter = () => true } = {}) {
+  setUserMapping(
+    doc,
+    clientid,
+    userDescription,
+    { filter = () => true }: { filter?: (...args: any) => boolean } = {},
+  ) {
     const users = this.yusers;
     let user = users.get(userDescription);
     if (!user) {
@@ -2344,7 +3755,7 @@ class PermanentUserData {
     });
     doc.on(
       'afterTransaction',
-      /** @param {Transaction} transaction */(transaction) => {
+      /** @param {Transaction} transaction */ (transaction) => {
         setTimeout(() => {
           const yds = user.get('ds');
           const ds = transaction.deleteSet;
@@ -2452,7 +3863,7 @@ class RelativePosition {
  * @return {any}
  */
 const relativePositionToJSON = (rpos) => {
-  const json = {};
+  const json = {} as any;
   if (rpos.type) {
     json.type = rpos.type;
   }
@@ -2522,7 +3933,7 @@ const createAbsolutePosition = (type, index, assoc = 0) =>
  * @function
  */
 const createRelativePosition = (type, item, assoc) => {
-  let typeid = null;
+  let typeid = null as null | ID;
   let tname = null;
   if (type._item === null) {
     tname = findRootTypeKey(type);
@@ -2615,9 +4026,9 @@ const encodeRelativePosition = (rpos) => {
  * @function
  */
 const readRelativePosition = (decoder) => {
-  let type = null;
-  let tname = null;
-  let itemID = null;
+  let type = null as null | ID;
+  let tname = null as null | string;
+  let itemID = null as null | ID;
   switch (decoding.readVarUint(decoder)) {
     case 0:
       // case 1: found position somewhere in the linked list
@@ -2650,13 +4061,16 @@ const decodeRelativePosition = (uint8Array) =>
  *
  * @function
  */
-const createAbsolutePositionFromRelativePosition = (rpos, doc) => {
+const createAbsolutePositionFromRelativePosition = (
+  rpos: RelativePosition,
+  doc: Doc,
+) => {
   const store = doc.store;
   const rightID = rpos.item;
   const typeID = rpos.type;
   const tname = rpos.tname;
   const assoc = rpos.assoc;
-  let type = null;
+  let type = null as null | any;
   let index = 0;
   if (rightID !== null) {
     if (getState(store, rightID.client) <= rightID.clock) {
@@ -2668,7 +4082,7 @@ const createAbsolutePositionFromRelativePosition = (rpos, doc) => {
       return null;
     }
     type = /** @type {AbstractType<any>} */ right.parent;
-    if (type._item === null || !type._item.deleted) {
+    if (type?._item === null || !type?._item.deleted) {
       index =
         right.deleted || !right.countable ? 0 : res.diff + (assoc >= 0 ? 0 : 1); // adjust position based on left association if necessary
       let n = right.left;
@@ -2792,7 +4206,7 @@ const encodeSnapshotV2 = (snapshot, encoder = new DSEncoderV2()) => {
  * @return {Uint8Array}
  */
 const encodeSnapshot = (snapshot) =>
-  encodeSnapshotV2(snapshot, new DSEncoderV1());
+  encodeSnapshotV2(snapshot, new DSEncoderV1() as any as DSEncoderV2);
 
 /**
  * @param {Uint8Array} buf
@@ -2811,7 +4225,10 @@ const decodeSnapshotV2 = (
  * @return {Snapshot}
  */
 const decodeSnapshot = (buf) =>
-  decodeSnapshotV2(buf, new DSDecoderV1(decoding.createDecoder(buf)));
+  decodeSnapshotV2(
+    buf,
+    new DSDecoderV1(decoding.createDecoder(buf)) as any as DSDecoderV2,
+  );
 
 /**
  * @param {DeleteSet} ds
@@ -2843,8 +4260,8 @@ const isVisible = (item, snapshot) =>
   snapshot === undefined
     ? !item.deleted
     : snapshot.sv.has(item.id.client) &&
-    (snapshot.sv.get(item.id.client) || 0) > item.id.clock &&
-    !isDeleted(snapshot.ds, item.id);
+      (snapshot.sv.get(item.id.client) || 0) > item.id.clock &&
+      !isDeleted(snapshot.ds, item.id);
 
 /**
  * @param {Transaction} transaction
@@ -2864,7 +4281,7 @@ const splitSnapshotAffectedStructs = (transaction, snapshot) => {
         getItemCleanStart(transaction, createID(client, clock));
       }
     });
-    iterateDeletedStructs(transaction, snapshot.ds, (item) => { });
+    iterateDeletedStructs(transaction, snapshot.ds, (item) => {});
     meta.add(snapshot);
   }
 };
@@ -2916,26 +4333,6 @@ const createDocFromSnapshot = (originDoc, snapshot, newDoc = new Doc()) => {
   applyUpdateV2(newDoc, encoder.toUint8Array(), 'snapshot');
   return newDoc;
 };
-
-class StructStore {
-  clients: any;
-  pendingStructs: null;
-  pendingDs: null;
-  constructor() {
-    /**
-     * @type {Map<number,Array<GC|Item>>}
-     */
-    this.clients = new Map();
-    /**
-     * @type {null | { missing: Map<number, number>, update: Uint8Array }}
-     */
-    this.pendingStructs = null;
-    /**
-     * @type {null | Uint8Array}
-     */
-    this.pendingDs = null;
-  }
-}
 
 /**
  * Return the states as a Map<client,clock>.
@@ -3195,19 +4592,19 @@ const iterateStructs = (transaction, structs, clockStart, len, f) => {
  * @public
  */
 class Transaction {
-  doc: any;
+  doc: Doc;
   deleteSet: DeleteSet;
-  beforeState: Map<any, any>;
-  afterState: Map<any, any>;
+  beforeState: Map<Number, Number>;
+  afterState: Map<Number, Number>;
   changed: Map<any, any>;
   changedParentTypes: Map<any, any>;
   _mergeStructs: never[];
   origin: any;
   meta: Map<any, any>;
   local: any;
-  subdocsAdded: Set<unknown>;
-  subdocsRemoved: Set<unknown>;
-  subdocsLoaded: Set<unknown>;
+  subdocsAdded: Set<any>;
+  subdocsRemoved: Set<any>;
+  subdocsLoaded: Set<any>;
   /**
    * @param {Doc} doc
    * @param {any} origin
@@ -3336,14 +4733,16 @@ const tryToMergeWithLeft = (structs, pos) => {
       if (
         right instanceof Item &&
         right.parentSub !== null &&
-        /** @type {AbstractType<any>} */ right.parent._map.get(
+        // @ts-ignore
+        /** @type {AbstractType<any>} */ right.parent?._map.get(
           right.parentSub,
         ) === right
       ) {
+        // @ts-ignore
         /** @type {AbstractType<any>} */ right.parent._map.set(
-        right.parentSub,
+          right.parentSub,
           /** @type {Item} */ left,
-      );
+        );
       }
     }
   }
@@ -3442,7 +4841,7 @@ const cleanupTransactions = (transactionCleanups, i) => {
        *
        * @type {Array<function():void>}
        */
-      const fs = [];
+      const fs = [] as Array<() => void>;
       // observe events on changed types
       transaction.changed.forEach((subs, itemtype) =>
         fs.push(() => {
@@ -3516,7 +4915,7 @@ const cleanupTransactions = (transactionCleanups, i) => {
       if (
         !transaction.local &&
         transaction.afterState.get(doc.clientID) !==
-        transaction.beforeState.get(doc.clientID)
+          transaction.beforeState.get(doc.clientID)
       ) {
         logging.print(
           logging.ORANGE,
@@ -3683,7 +5082,7 @@ const popStackItem = (undoManager, stack, eventType) => {
    * Keep a reference to the transaction so we can fire the event with the changedParentTypes
    * @type {any}
    */
-  let _tr = null;
+  let _tr = null as null | Transaction;
   const doc = undoManager.doc;
   const scope = undoManager.scope;
   transact(
@@ -3699,7 +5098,7 @@ const popStackItem = (undoManager, stack, eventType) => {
         /**
          * @type {Array<Item>}
          */
-        const itemsToDelete = [];
+        const itemsToDelete: Item[] = [];
         let performedChange = false;
         iterateDeletedStructs(transaction, stackItem.insertions, (struct) => {
           if (struct instanceof Item) {
@@ -3763,7 +5162,7 @@ const popStackItem = (undoManager, stack, eventType) => {
     undoManager,
   );
   if (result != null) {
-    const changedParentTypes = _tr.changedParentTypes;
+    const changedParentTypes = _tr?.changedParentTypes;
     undoManager.emit('stack-item-popped', [
       { stackItem: result, type: eventType, changedParentTypes },
       undoManager,
@@ -3795,12 +5194,12 @@ const popStackItem = (undoManager, stack, eventType) => {
  * @extends {Observable<'stack-item-added'|'stack-item-popped'|'stack-cleared'|'stack-item-updated'>}
  */
 class UndoManager extends Observable {
-  scope: never[];
+  scope: AbstractType[];
   deleteFilter: () => true;
-  trackedOrigins: Set<null>;
+  trackedOrigins: Set<any>;
   captureTransaction: (tr: any) => true;
-  undoStack: never[];
-  redoStack: never[];
+  undoStack: StackItem[];
+  redoStack: StackItem[];
   undoing: boolean;
   redoing: boolean;
   doc: any;
@@ -3831,7 +5230,7 @@ class UndoManager extends Observable {
     this.scope = [];
     this.addToScope(typeScope);
     this.deleteFilter = deleteFilter;
-    trackedOrigins.add(this);
+    trackedOrigins.add(this as any);
     this.trackedOrigins = trackedOrigins;
     this.captureTransaction = captureTransaction;
     /**
@@ -3910,7 +5309,7 @@ class UndoManager extends Observable {
       iterateDeletedStructs(
         transaction,
         transaction.deleteSet,
-        /** @param {Item|GC} item */(item) => {
+        /** @param {Item|GC} item */ (item) => {
           if (
             item instanceof Item &&
             this.scope.some((type) => isParentOf(type, item))
@@ -4127,7 +5526,7 @@ function* lazyStructReaderGenerator(decoder) {
 
 class LazyStructReader {
   gen: Generator<Skip | Item | GC, void, unknown>;
-  curr: null;
+  curr: null | any;
   done: boolean;
   filterSkips: any;
   /**
@@ -4165,7 +5564,8 @@ class LazyStructReader {
  * @param {Uint8Array} update
  *
  */
-const logUpdate = (update) => logUpdateV2(update, UpdateDecoderV1);
+const logUpdate = (update) =>
+  logUpdateV2(update, UpdateDecoderV1 as typeof UpdateDecoderV2);
 
 /**
  * @param {Uint8Array} update
@@ -4173,7 +5573,7 @@ const logUpdate = (update) => logUpdateV2(update, UpdateDecoderV1);
  *
  */
 const logUpdateV2 = (update, YDecoder = UpdateDecoderV2) => {
-  const structs = [];
+  const structs = [] as any[];
   const updateDecoder = new YDecoder(decoding.createDecoder(update));
   const lazyDecoder = new LazyStructReader(updateDecoder, false);
   for (let curr = lazyDecoder.curr; curr !== null; curr = lazyDecoder.next()) {
@@ -4188,7 +5588,8 @@ const logUpdateV2 = (update, YDecoder = UpdateDecoderV2) => {
  * @param {Uint8Array} update
  *
  */
-const decodeUpdate = (update) => decodeUpdateV2(update, UpdateDecoderV1);
+const decodeUpdate = (update) =>
+  decodeUpdateV2(update, UpdateDecoderV1 as typeof UpdateDecoderV2);
 
 /**
  * @param {Uint8Array} update
@@ -4196,7 +5597,7 @@ const decodeUpdate = (update) => decodeUpdateV2(update, UpdateDecoderV1);
  *
  */
 const decodeUpdateV2 = (update, YDecoder = UpdateDecoderV2) => {
-  const structs = [];
+  const structs = [] as any[];
   const updateDecoder = new YDecoder(decoding.createDecoder(update));
   const lazyDecoder = new LazyStructReader(updateDecoder, false);
   for (let curr = lazyDecoder.curr; curr !== null; curr = lazyDecoder.next()) {
@@ -4241,7 +5642,11 @@ class LazyStructWriter {
  * @return {Uint8Array}
  */
 const mergeUpdates = (updates) =>
-  mergeUpdatesV2(updates, UpdateDecoderV1, UpdateEncoderV1);
+  mergeUpdatesV2(
+    updates,
+    UpdateDecoderV1 as typeof UpdateDecoderV2,
+    UpdateEncoderV1 as typeof UpdateEncoderV2,
+  );
 
 /**
  * @param {Uint8Array} update
@@ -4309,7 +5714,11 @@ const encodeStateVectorFromUpdateV2 = (
  * @return {Uint8Array}
  */
 const encodeStateVectorFromUpdate = (update) =>
-  encodeStateVectorFromUpdateV2(update, DSEncoderV1, UpdateDecoderV1);
+  encodeStateVectorFromUpdateV2(
+    update,
+    DSEncoderV1 as typeof DSEncoderV2,
+    UpdateDecoderV1 as typeof UpdateDecoderV2,
+  );
 
 /**
  * @param {Uint8Array} update
@@ -4357,7 +5766,8 @@ const parseUpdateMetaV2 = (update, YDecoder = UpdateDecoderV2) => {
  * @param {Uint8Array} update
  * @return {{ from: Map<number,number>, to: Map<number,number> }}
  */
-const parseUpdateMeta = (update) => parseUpdateMetaV2(update, UpdateDecoderV1);
+const parseUpdateMeta = (update) =>
+  parseUpdateMetaV2(update, UpdateDecoderV1 as typeof UpdateDecoderV2);
 
 /**
  * This method is intended to slice any kind of struct and retrieve the right part.
@@ -4418,7 +5828,7 @@ const mergeUpdatesV2 = (
    * @todo we don't need offset because we always slice before
    * @type {null | { struct: Item | GC | Skip, offset: number }}
    */
-  let currWrite = null;
+  let currWrite = null as null | any;
 
   const updateEncoder = new YEncoder();
   // write structs lazily
@@ -4432,7 +5842,7 @@ const mergeUpdatesV2 = (
     // Write higher clients first ⇒ sort by clientID & clock and remove decoders without content
     lazyStructDecoders = lazyStructDecoders.filter((dec) => dec.curr !== null);
     lazyStructDecoders.sort(
-      /** @type {function(any,any):number} */(dec1, dec2) => {
+      /** @type {function(any,any):number} */ (dec1, dec2) => {
         if (dec1.curr.id.client === dec2.curr.id.client) {
           const clockDiff = dec1.curr.id.clock - dec2.curr.id.clock;
           if (clockDiff === 0) {
@@ -4440,8 +5850,8 @@ const mergeUpdatesV2 = (
             return dec1.curr.constructor === dec2.curr.constructor
               ? 0
               : dec1.curr.constructor === Skip
-                ? 1
-                : -1; // we are filtering skips anyway.
+              ? 1
+              : -1; // we are filtering skips anyway.
           } else {
             return clockDiff;
           }
@@ -4467,7 +5877,7 @@ const mergeUpdatesV2 = (
       while (
         curr !== null &&
         curr.id.clock + curr.length <=
-        currWrite.struct.id.clock + currWrite.struct.length &&
+          currWrite.struct.id.clock + currWrite.struct.length &&
         curr.id.client >= currWrite.struct.id.client
       ) {
         curr = currDecoder.next();
@@ -4644,7 +6054,12 @@ const diffUpdateV2 = (
  * @param {Uint8Array} sv
  */
 const diffUpdate = (update, sv) =>
-  diffUpdateV2(update, sv, UpdateDecoderV1, UpdateEncoderV1);
+  diffUpdateV2(
+    update,
+    sv,
+    UpdateDecoderV1 as typeof UpdateDecoderV2,
+    UpdateEncoderV1 as typeof UpdateEncoderV2,
+  );
 
 /**
  * @param {LazyStructWriter} lazyWriter
@@ -4749,227 +6164,6 @@ const convertUpdateFormatV2ToV1 = (update) =>
   convertUpdateFormat(update, UpdateDecoderV2, UpdateEncoderV1);
 
 /**
- * @template {AbstractType<any>} T
- * YEvent describes the changes on a YType.
- */
-class YEvent {
-  target: any;
-  currentTarget: any;
-  transaction: any;
-  _changes: null;
-  _keys: null;
-  _delta: null;
-  /**
-   * @param {T} target The changed type.
-   * @param {Transaction} transaction
-   */
-  constructor(target, transaction) {
-    /**
-     * The type on which this event was created on.
-     * @type {T}
-     */
-    this.target = target;
-    /**
-     * The current target on which the observe callback is called.
-     * @type {AbstractType<any>}
-     */
-    this.currentTarget = target;
-    /**
-     * The transaction that triggered this event.
-     * @type {Transaction}
-     */
-    this.transaction = transaction;
-    /**
-     * @type {Object|null}
-     */
-    this._changes = null;
-    /**
-     * @type {null | Map<string, { action: 'add' | 'update' | 'delete', oldValue: any, newValue: any }>}
-     */
-    this._keys = null;
-    /**
-     * @type {null | Array<{ insert?: string | Array<any> | object | AbstractType<any>, retain?: number, delete?: number, attributes?: Object<string, any> }>}
-     */
-    this._delta = null;
-  }
-
-  /**
-   * Computes the path from `y` to the changed type.
-   *
-   * @todo v14 should standardize on path: Array<{parent, index}> because that is easier to work with.
-   *
-   * The following property holds:
-   * @example
-   *   let type = y
-   *   event.path.forEach(dir => {
-   *     type = type.get(dir)
-   *   })
-   *   type === event.target // => true
-   */
-  get path() {
-    // @ts-ignore _item is defined because target is integrated
-    return getPathTo(this.currentTarget, this.target);
-  }
-
-  /**
-   * Check if a struct is deleted by this event.
-   *
-   * In contrast to change.deleted, this method also returns true if the struct was added and then deleted.
-   *
-   * @param {AbstractStruct} struct
-   * @return {boolean}
-   */
-  deletes(struct) {
-    return isDeleted(this.transaction.deleteSet, struct.id);
-  }
-
-  /**
-   * @type {Map<string, { action: 'add' | 'update' | 'delete', oldValue: any, newValue: any }>}
-   */
-  get keys() {
-    if (this._keys === null) {
-      const keys = new Map();
-      const target = this.target;
-      const changed =
-        /** @type Set<string|null> */ this.transaction.changed.get(target);
-      changed.forEach((key) => {
-        if (key !== null) {
-          const item = /** @type {Item} */ target._map.get(key);
-          /**
-           * @type {'delete' | 'add' | 'update'}
-           */
-          let action;
-          let oldValue;
-          if (this.adds(item)) {
-            let prev = item.left;
-            while (prev !== null && this.adds(prev)) {
-              prev = prev.left;
-            }
-            if (this.deletes(item)) {
-              if (prev !== null && this.deletes(prev)) {
-                action = 'delete';
-                oldValue = array.last(prev.content.getContent());
-              } else {
-                return;
-              }
-            } else {
-              if (prev !== null && this.deletes(prev)) {
-                action = 'update';
-                oldValue = array.last(prev.content.getContent());
-              } else {
-                action = 'add';
-                oldValue = undefined;
-              }
-            }
-          } else {
-            if (this.deletes(item)) {
-              action = 'delete';
-              oldValue = array.last(
-                /** @type {Item} */ item.content.getContent(),
-              );
-            } else {
-              return; // nop
-            }
-          }
-          keys.set(key, { action, oldValue });
-        }
-      });
-      this._keys = keys;
-    }
-    return this._keys;
-  }
-
-  /**
-   * @type {Array<{insert?: string | Array<any> | object | AbstractType<any>, retain?: number, delete?: number, attributes?: Object<string, any>}>}
-   */
-  get delta() {
-    return this.changes.delta;
-  }
-
-  /**
-   * Check if a struct is added by this event.
-   *
-   * In contrast to change.deleted, this method also returns true if the struct was added and then deleted.
-   *
-   * @param {AbstractStruct} struct
-   * @return {boolean}
-   */
-  adds(struct) {
-    return (
-      struct.id.clock >=
-      (this.transaction.beforeState.get(struct.id.client) || 0)
-    );
-  }
-
-  /**
-   * @type {{added:Set<Item>,deleted:Set<Item>,keys:Map<string,{action:'add'|'update'|'delete',oldValue:any}>,delta:Array<{insert?:Array<any>|string, delete?:number, retain?:number}>}}
-   */
-  get changes() {
-    let changes = this._changes;
-    if (changes === null) {
-      const target = this.target;
-      const added = set.create();
-      const deleted = set.create();
-      /**
-       * @type {Array<{insert:Array<any>}|{delete:number}|{retain:number}>}
-       */
-      const delta = [];
-      changes = {
-        added,
-        deleted,
-        delta,
-        keys: this.keys,
-      };
-      const changed =
-        /** @type Set<string|null> */ this.transaction.changed.get(target);
-      if (changed.has(null)) {
-        /**
-         * @type {any}
-         */
-        let lastOp = null;
-        const packOp = () => {
-          if (lastOp) {
-            delta.push(lastOp);
-          }
-        };
-        for (let item = target._start; item !== null; item = item.right) {
-          if (item.deleted) {
-            if (this.deletes(item) && !this.adds(item)) {
-              if (lastOp === null || lastOp.delete === undefined) {
-                packOp();
-                lastOp = { delete: 0 };
-              }
-              lastOp.delete += item.length;
-              deleted.add(item);
-            } // else nop
-          } else {
-            if (this.adds(item)) {
-              if (lastOp === null || lastOp.insert === undefined) {
-                packOp();
-                lastOp = { insert: [] };
-              }
-              lastOp.insert = lastOp.insert.concat(item.content.getContent());
-              added.add(item);
-            } else {
-              if (lastOp === null || lastOp.retain === undefined) {
-                packOp();
-                lastOp = { retain: 0 };
-              }
-              lastOp.retain += item.length;
-            }
-          }
-        }
-        if (lastOp !== null && lastOp.retain === undefined) {
-          packOp();
-        }
-      }
-      this._changes = changes;
-    }
-    return /** @type {any} */ changes;
-  }
-}
-
-/**
  * Compute the path from this type to the specified target.
  *
  * @example
@@ -4986,8 +6180,8 @@ class YEvent {
  * @private
  * @function
  */
-const getPathTo = (parent, child) => {
-  const path = [];
+const getPathTo = (parent: AbstractType, child: AbstractType) => {
+  const path = [] as Array<string | number>;
   while (child._item !== null && child !== parent) {
     if (child._item.parentSub !== null) {
       // parent is map-ish
@@ -5010,31 +6204,6 @@ const getPathTo = (parent, child) => {
 };
 
 const maxSearchMarker = 80;
-
-/**
- * A unique timestamp that identifies each marker.
- *
- * Time is relative,.. this is more like an ever-increasing clock.
- *
- * @type {number}
- */
-let globalSearchMarkerTimestamp = 0;
-
-class ArraySearchMarker {
-  p: any;
-  index: any;
-  timestamp: number;
-  /**
-   * @param {Item} p
-   * @param {number} index
-   */
-  constructor(p, index) {
-    p.marker = true;
-    this.p = p;
-    this.index = index;
-    this.timestamp = globalSearchMarkerTimestamp++;
-  }
-}
 
 /**
  * @param {ArraySearchMarker} marker
@@ -5099,8 +6268,8 @@ const findMarker = (yarray, index) => {
     yarray._searchMarker.length === 0
       ? null
       : yarray._searchMarker.reduce((a, b) =>
-        math.abs(index - a.index) < math.abs(index - b.index) ? a : b,
-      );
+          math.abs(index - a.index) < math.abs(index - b.index) ? a : b,
+        );
   let p = yarray._start;
   let pindex = 0;
   if (marker !== null) {
@@ -5226,9 +6395,9 @@ const updateMarkerChanges = (searchMarker, index, len) => {
  * @param {AbstractType<any>} t
  * @return {Array<Item>}
  */
-const getTypeChildren = (t) => {
+const getTypeChildren = (t: AbstractType) => {
   let s = t._start;
-  const arr = [];
+  const arr = [] as Item[];
   while (s) {
     arr.push(s);
     s = s.right;
@@ -5260,163 +6429,6 @@ const callTypeObservers = (type, transaction, event) => {
 };
 
 /**
- * @template EventType
- * Abstract Yjs Type class
- */
-class AbstractType {
-  _map: any;
-  _start: any;
-  _length: any;
-  _item: null;
-  doc: null;
-  _eH: EventHandler;
-  _dEH: EventHandler;
-  _searchMarker: null;
-  constructor() {
-    /**
-     * @type {Item|null}
-     */
-    this._item = null;
-    /**
-     * @type {Map<string,Item>}
-     */
-    this._map = new Map();
-    /**
-     * @type {Item|null}
-     */
-    this._start = null;
-    /**
-     * @type {Doc|null}
-     */
-    this.doc = null;
-    this._length = 0;
-    /**
-     * Event handlers
-     * @type {EventHandler<EventType,Transaction>}
-     */
-    this._eH = createEventHandler();
-    /**
-     * Deep event handlers
-     * @type {EventHandler<Array<YEvent<any>>,Transaction>}
-     */
-    this._dEH = createEventHandler();
-    /**
-     * @type {null | Array<ArraySearchMarker>}
-     */
-    this._searchMarker = null;
-  }
-
-  /**
-   * @return {AbstractType<any>|null}
-   */
-  get parent() {
-    return this._item
-      ? /** @type {AbstractType<any>} */ this._item.parent
-      : null;
-  }
-
-  /**
-   * Integrate this type into the Yjs instance.
-   *
-   * * Save this struct in the os
-   * * This type is sent to other client
-   * * Observer functions are fired
-   *
-   * @param {Doc} y The Yjs instance
-   * @param {Item|null} item
-   */
-  _integrate(y, item) {
-    this.doc = y;
-    this._item = item;
-  }
-
-  /**
-   * @return {AbstractType<EventType>}
-   */
-  _copy() {
-    throw error.methodUnimplemented();
-  }
-
-  /**
-   * @return {AbstractType<EventType>}
-   */
-  clone() {
-    throw error.methodUnimplemented();
-  }
-
-  /**
-   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
-   */
-  _write(encoder) { }
-
-  /**
-   * The first non-deleted item
-   */
-  get _first() {
-    let n = this._start;
-    while (n !== null && n.deleted) {
-      n = n.right;
-    }
-    return n;
-  }
-
-  /**
-   * Creates YEvent and calls all type observers.
-   * Must be implemented by each type.
-   *
-   * @param {Transaction} transaction
-   * @param {Set<null|string>} parentSubs Keys changed on this type. `null` if list was modified.
-   */
-  _callObserver(transaction, parentSubs) {
-    if (!transaction.local && this._searchMarker) {
-      this._searchMarker.length = 0;
-    }
-  }
-
-  /**
-   * Observe all events that are created on this type.
-   *
-   * @param {function(EventType, Transaction):void} f Observer function
-   */
-  observe(f) {
-    addEventHandlerListener(this._eH, f);
-  }
-
-  /**
-   * Observe all events that are created by this type and its children.
-   *
-   * @param {function(Array<YEvent<any>>,Transaction):void} f Observer function
-   */
-  observeDeep(f) {
-    addEventHandlerListener(this._dEH, f);
-  }
-
-  /**
-   * Unregister an observer function.
-   *
-   * @param {function(EventType,Transaction):void} f Observer function
-   */
-  unobserve(f) {
-    removeEventHandlerListener(this._eH, f);
-  }
-
-  /**
-   * Unregister an observer function.
-   *
-   * @param {function(Array<YEvent<any>>,Transaction):void} f Observer function
-   */
-  unobserveDeep(f) {
-    removeEventHandlerListener(this._dEH, f);
-  }
-
-  /**
-   * @abstract
-   * @return {any}
-   */
-  toJSON() { }
-}
-
-/**
  * @param {AbstractType<any>} type
  * @param {number} start
  * @param {number} end
@@ -5433,7 +6445,7 @@ const typeListSlice = (type, start, end) => {
     end = type._length + end;
   }
   let len = end - start;
-  const cs = [];
+  const cs = [] as any[];
   let n = type._start;
   while (n !== null && len > 0) {
     if (n.countable && !n.deleted) {
@@ -5460,8 +6472,8 @@ const typeListSlice = (type, start, end) => {
  * @private
  * @function
  */
-const typeListToArray = (type) => {
-  const cs = [];
+const typeListToArray = (type: AbstractType) => {
+  const cs = [] as any[];
   let n = type._start;
   while (n !== null) {
     if (n.countable && !n.deleted) {
@@ -5484,7 +6496,7 @@ const typeListToArray = (type) => {
  * @function
  */
 const typeListToArraySnapshot = (type, snapshot) => {
-  const cs = [];
+  const cs = [] as any[];
   let n = type._start;
   while (n !== null) {
     if (n.countable && isVisible(n, snapshot)) {
@@ -5534,7 +6546,7 @@ const typeListMap = (type, f) => {
   /**
    * @type {Array<any>}
    */
-  const result = [];
+  const result = [] as any[];
   typeListForEach(type, (c, i) => {
     result.push(f(c, i, type));
   });
@@ -5553,7 +6565,7 @@ const typeListCreateIterator = (type) => {
   /**
    * @type {Array<any>|null}
    */
-  let currentContent = null;
+  let currentContent = null as null | any[];
   let currentContentIndex = 0;
   return {
     [Symbol.iterator]() {
@@ -5577,9 +6589,12 @@ const typeListCreateIterator = (type) => {
         currentContentIndex = 0;
         n = n.right; // we used the content of n, now iterate to next
       }
-      const value = currentContent[currentContentIndex++];
+      const value = currentContent?.[currentContentIndex++];
       // check if we need to empty currentContent
-      if (currentContent.length <= currentContentIndex) {
+      if (
+        Array.isArray(currentContent) &&
+        currentContent.length <= currentContentIndex
+      ) {
         currentContent = null;
       }
       return {
@@ -5638,7 +6653,7 @@ const typeListInsertGenericsAfter = (
   /**
    * @type {Array<Object|Array<any>|number|null>}
    */
-  let jsonContent = [];
+  let jsonContent = [] as any[];
   const packJsonContent = () => {
     if (jsonContent.length > 0) {
       left = new Item(
@@ -6008,261 +7023,8 @@ const typeMapGetSnapshot = (parent, key, snapshot) => {
 const createMapIterator = (map) =>
   iterator.iteratorFilter(
     map.entries(),
-    /** @param {any} entry */(entry) => !entry[1].deleted,
+    /** @param {any} entry */ (entry) => !entry[1].deleted,
   );
-
-/**
- * @module YArray
- */
-
-/**
- * Event that describes the changes on a YArray
- * @template T
- * @extends YEvent<YArray<T>>
- */
-class YArrayEvent extends YEvent {
-  _transaction: any;
-  /**
-   * @param {YArray<T>} yarray The changed type
-   * @param {Transaction} transaction The transaction object
-   */
-  constructor(yarray, transaction) {
-    super(yarray, transaction);
-    this._transaction = transaction;
-  }
-}
-
-/**
- * A shared Array implementation.
- * @template T
- * @extends AbstractType<YArrayEvent<T>>
- * @implements {Iterable<T>}
- */
-class YArray extends AbstractType {
-  _prelimContent: never[];
-  constructor() {
-    super();
-    /**
-     * @type {Array<any>?}
-     * @private
-     */
-    this._prelimContent = [];
-    /**
-     * @type {Array<ArraySearchMarker>}
-     */
-    this._searchMarker = [];
-  }
-
-  /**
-   * Construct a new YArray containing the specified items.
-   * @template T
-   * @param {Array<T>} items
-   * @return {YArray<T>}
-   */
-  static from(items) {
-    const a = new YArray();
-    a.push(items);
-    return a;
-  }
-
-  /**
-   * Integrate this type into the Yjs instance.
-   *
-   * * Save this struct in the os
-   * * This type is sent to other client
-   * * Observer functions are fired
-   *
-   * @param {Doc} y The Yjs instance
-   * @param {Item} item
-   */
-  _integrate(y, item) {
-    super._integrate(y, item);
-    this.insert(0, /** @type {Array<any>} */ this._prelimContent);
-    this._prelimContent = null;
-  }
-
-  _copy() {
-    return new YArray();
-  }
-
-  /**
-   * @return {YArray<T>}
-   */
-  clone() {
-    const arr = new YArray();
-    arr.insert(
-      0,
-      this.toArray().map((el) =>
-        el instanceof AbstractType ? el.clone() : el,
-      ),
-    );
-    return arr;
-  }
-
-  get length() {
-    return this._prelimContent === null
-      ? this._length
-      : this._prelimContent.length;
-  }
-
-  /**
-   * Creates YArrayEvent and calls observers.
-   *
-   * @param {Transaction} transaction
-   * @param {Set<null|string>} parentSubs Keys changed on this type. `null` if list was modified.
-   */
-  _callObserver(transaction, parentSubs) {
-    super._callObserver(transaction, parentSubs);
-    callTypeObservers(this, transaction, new YArrayEvent(this, transaction));
-  }
-
-  /**
-   * Inserts new content at an index.
-   *
-   * Important: This function expects an array of content. Not just a content
-   * object. The reason for this "weirdness" is that inserting several elements
-   * is very efficient when it is done as a single operation.
-   *
-   * @example
-   *  // Insert character 'a' at position 0
-   *  yarray.insert(0, ['a'])
-   *  // Insert numbers 1, 2 at position 1
-   *  yarray.insert(1, [1, 2])
-   *
-   * @param {number} index The index to insert content at.
-   * @param {Array<T>} content The array of content
-   */
-  insert(index, content) {
-    if (this.doc !== null) {
-      transact(this.doc, (transaction) => {
-        typeListInsertGenerics(transaction, this, index, content);
-      });
-    } else {
-      /** @type {Array<any>} */ this._prelimContent.splice(
-      index,
-      0,
-      ...content,
-    );
-    }
-  }
-
-  /**
-   * Appends content to this YArray.
-   *
-   * @param {Array<T>} content Array of content to append.
-   *
-   * @todo Use the following implementation in all types.
-   */
-  push(content) {
-    if (this.doc !== null) {
-      transact(this.doc, (transaction) => {
-        typeListPushGenerics(transaction, this, content);
-      });
-    } else {
-      /** @type {Array<any>} */ this._prelimContent.push(...content);
-    }
-  }
-
-  /**
-   * Preppends content to this YArray.
-   *
-   * @param {Array<T>} content Array of content to preppend.
-   */
-  unshift(content) {
-    this.insert(0, content);
-  }
-
-  /**
-   * Deletes elements starting from an index.
-   *
-   * @param {number} index Index at which to start deleting elements
-   * @param {number} length The number of elements to remove. Defaults to 1.
-   */
-  delete(index, length = 1) {
-    if (this.doc !== null) {
-      transact(this.doc, (transaction) => {
-        typeListDelete(transaction, this, index, length);
-      });
-    } else {
-      /** @type {Array<any>} */ this._prelimContent.splice(index, length);
-    }
-  }
-
-  /**
-   * Returns the i-th element from a YArray.
-   *
-   * @param {number} index The index of the element to return from the YArray
-   * @return {T}
-   */
-  get(index) {
-    return typeListGet(this, index);
-  }
-
-  /**
-   * Transforms this YArray to a JavaScript Array.
-   *
-   * @return {Array<T>}
-   */
-  toArray() {
-    return typeListToArray(this);
-  }
-
-  /**
-   * Transforms this YArray to a JavaScript Array.
-   *
-   * @param {number} [start]
-   * @param {number} [end]
-   * @return {Array<T>}
-   */
-  slice(start = 0, end = this.length) {
-    return typeListSlice(this, start, end);
-  }
-
-  /**
-   * Transforms this Shared Type to a JSON object.
-   *
-   * @return {Array<any>}
-   */
-  toJSON() {
-    return this.map((c) => (c instanceof AbstractType ? c.toJSON() : c));
-  }
-
-  /**
-   * Returns an Array with the result of calling a provided function on every
-   * element of this YArray.
-   *
-   * @template M
-   * @param {function(T,number,YArray<T>):M} f Function that produces an element of the new Array
-   * @return {Array<M>} A new array with each element being the result of the
-   *                 callback function
-   */
-  map(f) {
-    return typeListMap(this, /** @type {any} */ f);
-  }
-
-  /**
-   * Executes a provided function on once on overy element of this YArray.
-   *
-   * @param {function(T,number,YArray<T>):void} f A function to execute on every element of this YArray.
-   */
-  forEach(f) {
-    typeListForEach(this, f);
-  }
-
-  /**
-   * @return {IterableIterator<T>}
-   */
-  [Symbol.iterator]() {
-    return typeListCreateIterator(this);
-  }
-
-  /**
-   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
-   */
-  _write(encoder) {
-    encoder.writeTypeRef(YArrayRefID);
-  }
-}
 
 /**
  * @param {UpdateDecoderV1 | UpdateDecoderV2} decoder
@@ -6271,270 +7033,6 @@ class YArray extends AbstractType {
  * @function
  */
 const readYArray = (decoder) => new YArray();
-
-/**
- * @template T
- * @extends YEvent<YMap<T>>
- * Event that describes the changes on a YMap.
- */
-class YMapEvent extends YEvent {
-  keysChanged: any;
-  /**
-   * @param {YMap<T>} ymap The YArray that changed.
-   * @param {Transaction} transaction
-   * @param {Set<any>} subs The keys that changed.
-   */
-  constructor(ymap, transaction, subs) {
-    super(ymap, transaction);
-    this.keysChanged = subs;
-  }
-}
-
-/**
- * @template MapType
- * A shared Map implementation.
- *
- * @extends AbstractType<YMapEvent<MapType>>
- * @implements {Iterable<MapType>}
- */
-class YMap extends AbstractType {
-  _prelimContent: null;
-  /**
-   *
-   * @param {Iterable<readonly [string, any]>=} entries - an optional iterable to initialize the YMap
-   */
-  constructor(entries?: any) {
-    super();
-    /**
-     * @type {Map<string,any>?}
-     * @private
-     */
-    this._prelimContent = null;
-
-    if (entries === undefined) {
-      this._prelimContent = new Map();
-    } else {
-      this._prelimContent = new Map(entries);
-    }
-  }
-
-  /**
-   * Integrate this type into the Yjs instance.
-   *
-   * * Save this struct in the os
-   * * This type is sent to other client
-   * * Observer functions are fired
-   *
-   * @param {Doc} y The Yjs instance
-   * @param {Item} item
-   */
-  _integrate(y, item) {
-    super._integrate(y, item);
-    /** @type {Map<string, any>} */ this._prelimContent.forEach(
-      (value, key) => {
-        this.set(key, value);
-      },
-    );
-    this._prelimContent = null;
-  }
-
-  _copy() {
-    return new YMap();
-  }
-
-  /**
-   * @return {YMap<MapType>}
-   */
-  clone() {
-    const map = new YMap();
-    this.forEach((value, key) => {
-      map.set(key, value instanceof AbstractType ? value.clone() : value);
-    });
-    return map;
-  }
-
-  /**
-   * Creates YMapEvent and calls observers.
-   *
-   * @param {Transaction} transaction
-   * @param {Set<null|string>} parentSubs Keys changed on this type. `null` if list was modified.
-   */
-  _callObserver(transaction, parentSubs) {
-    callTypeObservers(
-      this,
-      transaction,
-      new YMapEvent(this, transaction, parentSubs),
-    );
-  }
-
-  /**
-   * Transforms this Shared Type to a JSON object.
-   *
-   * @return {Object<string,any>}
-   */
-  toJSON() {
-    /**
-     * @type {Object<string,MapType>}
-     */
-    const map = {};
-    this._map.forEach((item, key) => {
-      if (!item.deleted) {
-        const v = item.content.getContent()[item.length - 1];
-        map[key] = v instanceof AbstractType ? v.toJSON() : v;
-      }
-    });
-    return map;
-  }
-
-  /**
-   * Returns the size of the YMap (count of key/value pairs)
-   *
-   * @return {number}
-   */
-  get size() {
-    return [...createMapIterator(this._map)].length;
-  }
-
-  /**
-   * Returns the keys for each element in the YMap Type.
-   *
-   * @return {IterableIterator<string>}
-   */
-  keys() {
-    return iterator.iteratorMap(
-      createMapIterator(this._map),
-      /** @param {any} v */(v) => v[0],
-    );
-  }
-
-  /**
-   * Returns the values for each element in the YMap Type.
-   *
-   * @return {IterableIterator<any>}
-   */
-  values() {
-    return iterator.iteratorMap(
-      createMapIterator(this._map),
-      /** @param {any} v */(v) => v[1].content.getContent()[v[1].length - 1],
-    );
-  }
-
-  /**
-   * Returns an Iterator of [key, value] pairs
-   *
-   * @return {IterableIterator<any>}
-   */
-  entries() {
-    return iterator.iteratorMap(
-      createMapIterator(this._map),
-      /** @param {any} v */(v) => [
-        v[0],
-        v[1].content.getContent()[v[1].length - 1],
-      ],
-    );
-  }
-
-  /**
-   * Executes a provided function on once on every key-value pair.
-   *
-   * @param {function(MapType,string,YMap<MapType>):void} f A function to execute on every element of this YArray.
-   */
-  forEach(f) {
-    /**
-     * @type {Object<string,MapType>}
-     */
-    const map = {};
-    this._map.forEach((item, key) => {
-      if (!item.deleted) {
-        f(item.content.getContent()[item.length - 1], key, this);
-      }
-    });
-    return map;
-  }
-
-  /**
-   * Returns an Iterator of [key, value] pairs
-   *
-   * @return {IterableIterator<any>}
-   */
-  [Symbol.iterator]() {
-    return this.entries();
-  }
-
-  /**
-   * Remove a specified element from this YMap.
-   *
-   * @param {string} key The key of the element to remove.
-   */
-  delete(key) {
-    if (this.doc !== null) {
-      transact(this.doc, (transaction) => {
-        typeMapDelete(transaction, this, key);
-      });
-    } else {
-      /** @type {Map<string, any>} */ this._prelimContent.delete(key);
-    }
-  }
-
-  /**
-   * Adds or updates an element with a specified key and value.
-   *
-   * @param {string} key The key of the element to add to this YMap
-   * @param {MapType} value The value of the element to add
-   */
-  set(key, value) {
-    if (this.doc !== null) {
-      transact(this.doc, (transaction) => {
-        typeMapSet(transaction, this, key, value);
-      });
-    } else {
-      /** @type {Map<string, any>} */ this._prelimContent.set(key, value);
-    }
-    return value;
-  }
-
-  /**
-   * Returns a specified element from this YMap.
-   *
-   * @param {string} key
-   * @return {MapType|undefined}
-   */
-  get(key) {
-    return /** @type {any} */ typeMapGet(this, key);
-  }
-
-  /**
-   * Returns a boolean indicating whether the specified key exists or not.
-   *
-   * @param {string} key The key to test.
-   * @return {boolean}
-   */
-  has(key) {
-    return typeMapHas(this, key);
-  }
-
-  /**
-   * Removes all elements from this YMap.
-   */
-  clear() {
-    if (this.doc !== null) {
-      transact(this.doc, (transaction) => {
-        this.forEach(function (value, key, map) {
-          typeMapDelete(transaction, map, key);
-        });
-      });
-    } else {
-      /** @type {Map<string, any>} */ this._prelimContent.clear();
-    }
-  }
-
-  /**
-   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
-   */
-  _write(encoder) {
-    encoder.writeTypeRef(YMapRefID);
-  }
-}
 
 /**
  * @param {UpdateDecoderV1 | UpdateDecoderV2} decoder
@@ -6764,11 +7262,11 @@ const minimizeAttributeChanges = (currPos, attributes) => {
       (currPos.right.content.constructor === ContentFormat &&
         equalAttrs(
           attributes[/** @type {ContentFormat} */ currPos.right.content.key] ||
-          null,
+            null,
           /** @type {ContentFormat} */ currPos.right.content.value,
         ))
-    );
-    else {
+    ) {
+    } else {
       break;
     }
     currPos.forward();
@@ -6844,8 +7342,8 @@ const insertText = (transaction, parent, currPos, text, attributes) => {
     text.constructor === String
       ? new ContentString(/** @type {string} */ text)
       : text instanceof AbstractType
-        ? new ContentType(text)
-        : new ContentEmbed(text);
+      ? new ContentType(text)
+      : new ContentEmbed(text);
   let { left, right, index } = currPos;
   if (parent._searchMarker) {
     updateMarkerChanges(
@@ -7253,7 +7751,7 @@ class YTextEvent extends YEvent {
       /**
        * @type {Array<{insert?:string|object|AbstractType<any>, delete?:number, retain?:number, attributes?: Object<string,any>}>}
        */
-      const delta = [];
+      const delta = [] as any[];
       transact(y, (transaction) => {
         const currentAttributes = new Map(); // saves all current attributes for insert
         const oldAttributes = new Map();
@@ -7261,7 +7759,7 @@ class YTextEvent extends YEvent {
         /**
          * @type {string?}
          */
-        let action = null;
+        let action = null as null | string;
         /**
          * @type {Object<string,any>}
          */
@@ -7445,11 +7943,12 @@ class YTextEvent extends YEvent {
  * @extends AbstractType<YTextEvent>
  */
 class YText extends AbstractType {
-  _pending: (() => void)[];
+  _pending: null | (() => void)[];
+
   /**
    * @param {String} [string] The initial value of the YText.
    */
-  constructor(string) {
+  constructor(string?: string) {
     super();
     /**
      * Array of pending operations on this type
@@ -7478,7 +7977,7 @@ class YText extends AbstractType {
   _integrate(y, item) {
     super._integrate(y, item);
     try {
-      /** @type {Array<function>} */ this._pending.forEach((f) => f());
+      /** @type {Array<function>} */ this._pending?.forEach((f) => f());
     } catch (e) {
       console.error(e);
     }
@@ -7634,10 +8133,10 @@ class YText extends AbstractType {
             // paragraphs, but nothing bad will happen.
             const ins =
               !sanitize &&
-                typeof op.insert === 'string' &&
-                i === delta.length - 1 &&
-                currPos.right === null &&
-                op.insert.slice(-1) === '\n'
+              typeof op.insert === 'string' &&
+              i === delta.length - 1 &&
+              currPos.right === null &&
+              op.insert.slice(-1) === '\n'
                 ? op.insert.slice(0, -1)
                 : op.insert;
             if (typeof ins !== 'string' || ins.length > 0) {
@@ -7657,9 +8156,9 @@ class YText extends AbstractType {
         }
       });
     } else {
-      /** @type {Array<function>} */ this._pending.push(() =>
-      this.applyDelta(delta),
-    );
+      /** @type {Array<function>} */ this._pending?.push(() =>
+        this.applyDelta(delta),
+      );
     }
   }
 
@@ -7673,11 +8172,15 @@ class YText extends AbstractType {
    *
    * @public
    */
-  toDelta(snapshot, prevSnapshot, computeYChange) {
+  toDelta(
+    snapshot?: Snapshot,
+    prevSnapshot?: Snapshot,
+    computeYChange?: (x: 'removed' | 'added', y: ID) => any,
+  ) {
     /**
      * @type{Array<any>}
      */
-    const ops = [];
+    const ops = [] as any[];
     const currentAttributes = new Map();
     const doc = /** @type {Doc} */ this.doc;
     let str = '';
@@ -7699,7 +8202,7 @@ class YText extends AbstractType {
          */
         const op = { insert: str };
         if (addAttributes) {
-          op.attributes = attributes;
+          op['attributes'] = attributes;
         }
         ops.push(op);
         str = '';
@@ -7773,7 +8276,7 @@ class YText extends AbstractType {
                 };
                 if (currentAttributes.size > 0) {
                   const attrs = /** @type {Object<string,any>} */ {};
-                  op.attributes = attrs;
+                  op['attributes'] = attrs;
                   currentAttributes.forEach((value, key) => {
                     attrs[key] = value;
                   });
@@ -7796,7 +8299,7 @@ class YText extends AbstractType {
         }
         packStr();
       },
-      splitSnapshotAffectedStructs,
+      splitSnapshotAffectedStructs as any,
     );
     return ops;
   }
@@ -7811,7 +8314,7 @@ class YText extends AbstractType {
    *                                    Text.
    * @public
    */
-  insert(index, text, attributes) {
+  insert(index, text, attributes?: any) {
     if (text.length <= 0) {
       return;
     }
@@ -7829,9 +8332,9 @@ class YText extends AbstractType {
         insertText(transaction, this, pos, text, attributes);
       });
     } else {
-      /** @type {Array<function>} */ this._pending.push(() =>
-      this.insert(index, text, attributes),
-    );
+      /** @type {Array<function>} */ this._pending?.push(() =>
+        this.insert(index, text, attributes),
+      );
     }
   }
 
@@ -7853,9 +8356,9 @@ class YText extends AbstractType {
         insertText(transaction, this, pos, embed, attributes);
       });
     } else {
-      /** @type {Array<function>} */ this._pending.push(() =>
-      this.insertEmbed(index, embed, attributes),
-    );
+      /** @type {Array<function>} */ this._pending?.push(() =>
+        this.insertEmbed(index, embed, attributes),
+      );
     }
   }
 
@@ -7877,9 +8380,9 @@ class YText extends AbstractType {
         deleteText(transaction, findPosition(transaction, this, index), length);
       });
     } else {
-      /** @type {Array<function>} */ this._pending.push(() =>
-      this.delete(index, length),
-    );
+      /** @type {Array<function>} */ this._pending?.push(() =>
+        this.delete(index, length),
+      );
     }
   }
 
@@ -7907,9 +8410,9 @@ class YText extends AbstractType {
         formatText(transaction, this, pos, length, attributes);
       });
     } else {
-      /** @type {Array<function>} */ this._pending.push(() =>
-      this.format(index, length, attributes),
-    );
+      /** @type {Array<function>} */ this._pending?.push(() =>
+        this.format(index, length, attributes),
+      );
     }
   }
 
@@ -7928,9 +8431,9 @@ class YText extends AbstractType {
         typeMapDelete(transaction, this, attributeName);
       });
     } else {
-      /** @type {Array<function>} */ this._pending.push(() =>
-      this.removeAttribute(attributeName),
-    );
+      /** @type {Array<function>} */ this._pending?.push(() =>
+        this.removeAttribute(attributeName),
+      );
     }
   }
 
@@ -7950,9 +8453,9 @@ class YText extends AbstractType {
         typeMapSet(transaction, this, attributeName, attributeValue);
       });
     } else {
-      /** @type {Array<function>} */ this._pending.push(() =>
-      this.setAttribute(attributeName, attributeValue),
-    );
+      /** @type {Array<function>} */ this._pending?.push(() =>
+        this.setAttribute(attributeName, attributeValue),
+      );
     }
   }
 
@@ -8037,7 +8540,7 @@ const readYText = (decoder) => new YText();
  * @implements {Iterable<YXmlElement|YXmlText|YXmlElement|YXmlHook>}
  */
 class YXmlTreeWalker {
-  _filter: () => boolean;
+  _filter: (...args: any) => boolean;
   _root: any;
   _currentNode: any;
   _firstCall: boolean;
@@ -8045,7 +8548,7 @@ class YXmlTreeWalker {
    * @param {YXmlFragment | YXmlElement} root
    * @param {function(AbstractType<any>):boolean} [f]
    */
-  constructor(root, f = () => true) {
+  constructor(root, f: (...args: any) => boolean = () => true) {
     this._filter = f;
     this._root = root;
     /**
@@ -8072,7 +8575,10 @@ class YXmlTreeWalker {
      */
     let n = this._currentNode;
     let type = n && n.content && /** @type {any} */ n.content.type;
-    if (n !== null && (!this._firstCall || n.deleted || !this._filter(type))) {
+    if (
+      n !== null &&
+      (!this._firstCall || n.deleted || !this._filter(type as any))
+    ) {
       // if first call, we check if we can use the first item
       do {
         type = /** @type {any} */ n.content.type;
@@ -8122,7 +8628,7 @@ class YXmlTreeWalker {
  * @extends AbstractType<YXmlEvent>
  */
 class YXmlFragment extends AbstractType {
-  _prelimContent: never[];
+  _prelimContent: null | any[];
   constructor() {
     super();
     /**
@@ -8349,11 +8855,12 @@ class YXmlFragment extends AbstractType {
       });
     } else {
       const pc = /** @type {Array<any>} */ this._prelimContent;
-      const index = ref === null ? 0 : pc.findIndex((el) => el === ref) + 1;
+      const index =
+        ref === null ? 0 : (pc?.findIndex((el) => el === ref) as number) + 1;
       if (index === 0 && ref !== null) {
         throw error.create('Reference item not found');
       }
-      pc.splice(index, 0, ...content);
+      pc?.splice(index, 0, ...content);
     }
   }
 
@@ -8462,7 +8969,7 @@ const readYXmlFragment = (decoder) => new YXmlFragment();
  */
 class YXmlElement extends YXmlFragment {
   nodeName: string;
-  _prelimAttrs: Map<any, any>;
+  _prelimAttrs: null | Map<string, any>;
   constructor(nodeName = 'UNDEFINED') {
     super();
     this.nodeName = nodeName;
@@ -8479,7 +8986,7 @@ class YXmlElement extends YXmlFragment {
     const n = this._item ? this._item.next : null;
     return n
       ? /** @type {YXmlElement|YXmlText} */ /** @type {ContentType} */ n.content
-        .type
+          .type
       : null;
   }
 
@@ -8490,7 +8997,7 @@ class YXmlElement extends YXmlFragment {
     const n = this._item ? this._item.prev : null;
     return n
       ? /** @type {YXmlElement|YXmlText} */ /** @type {ContentType} */ n.content
-        .type
+          .type
       : null;
   }
 
@@ -8506,8 +9013,8 @@ class YXmlElement extends YXmlFragment {
    */
   _integrate(y, item) {
     super._integrate(y, item);
-    this/** @type {Map<string, any>} */._prelimAttrs
-      .forEach((value, key) => {
+    this /** @type {Map<string, any>} */._prelimAttrs
+      ?.forEach((value, key) => {
         this.setAttribute(key, value);
       });
     this._prelimAttrs = null;
@@ -8518,6 +9025,7 @@ class YXmlElement extends YXmlFragment {
    *
    * @return {YXmlElement}
    */
+  // @ts-ignore
   _copy() {
     return new YXmlElement(this.nodeName);
   }
@@ -8525,6 +9033,7 @@ class YXmlElement extends YXmlFragment {
   /**
    * @return {YXmlElement}
    */
+  // @ts-ignore
   clone() {
     const el = new YXmlElement(this.nodeName);
     const attrs = this.getAttributes();
@@ -8552,8 +9061,8 @@ class YXmlElement extends YXmlFragment {
    */
   toString() {
     const attrs = this.getAttributes();
-    const stringBuilder = [];
-    const keys = [];
+    const stringBuilder = [] as string[];
+    const keys = [] as string[];
     for (const key in attrs) {
       keys.push(key);
     }
@@ -8582,7 +9091,7 @@ class YXmlElement extends YXmlFragment {
         typeMapDelete(transaction, this, attributeName);
       });
     } else {
-      /** @type {Map<string,any>} */ this._prelimAttrs.delete(attributeName);
+      /** @type {Map<string,any>} */ this._prelimAttrs?.delete(attributeName);
     }
   }
 
@@ -8600,10 +9109,10 @@ class YXmlElement extends YXmlFragment {
         typeMapSet(transaction, this, attributeName, attributeValue);
       });
     } else {
-      /** @type {Map<string, any>} */ this._prelimAttrs.set(
-      attributeName,
-      attributeValue,
-    );
+      /** @type {Map<string, any>} */ this._prelimAttrs?.set(
+        attributeName,
+        attributeValue,
+      );
     }
   }
 
@@ -8640,7 +9149,7 @@ class YXmlElement extends YXmlFragment {
    *
    * @public
    */
-  getAttributes(snapshot) {
+  getAttributes(snapshot?: Snapshot) {
     return typeMapGetAll(this);
   }
 
@@ -8659,6 +9168,7 @@ class YXmlElement extends YXmlFragment {
    *
    * @public
    */
+  // @ts-ignore
   toDOM(_document = document, hooks = {}, binding) {
     const dom = _document.createElement(this.nodeName);
     const attrs = this.getAttributes();
@@ -8834,7 +9344,7 @@ class YXmlText extends YText {
     const n = this._item ? this._item.next : null;
     return n
       ? /** @type {YXmlElement|YXmlText} */ /** @type {ContentType} */ n.content
-        .type
+          .type
       : null;
   }
 
@@ -8845,7 +9355,7 @@ class YXmlText extends YText {
     const n = this._item ? this._item.prev : null;
     return n
       ? /** @type {YXmlElement|YXmlText} */ /** @type {ContentType} */ n.content
-        .type
+          .type
       : null;
   }
 
@@ -8889,9 +9399,9 @@ class YXmlText extends YText {
     // @ts-ignore
     return this.toDelta()
       .map((delta) => {
-        const nestedNodes = [];
+        const nestedNodes = [] as any[];
         for (const nodeName in delta.attributes) {
-          const attrs = [];
+          const attrs = [] as any[];
           for (const key in delta.attributes[nodeName]) {
             attrs.push({ key, value: delta.attributes[nodeName][key] });
           }
@@ -8945,65 +9455,18 @@ class YXmlText extends YText {
  */
 const readYXmlText = (decoder) => new YXmlText();
 
-class AbstractStruct {
-  id: any;
-  length: any;
-  /**
-   * @param {ID} id
-   * @param {number} length
-   */
-  constructor(id, length) {
-    this.id = id;
-    this.length = length;
-  }
-
-  /**
-   * @type {boolean}
-   */
-  get deleted() {
-    throw error.methodUnimplemented();
-  }
-
-  /**
-   * Merge this struct with the item to the right.
-   * This method is already assuming that `this.id.clock + this.length === this.id.clock`.
-   * Also this method does *not* remove right from StructStore!
-   * @param {AbstractStruct} right
-   * @return {boolean} wether this merged with right
-   */
-  mergeWith(right) {
-    return false;
-  }
-
-  /**
-   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder The encoder to write data to.
-   * @param {number} offset
-   * @param {number} encodingRef
-   */
-  write(encoder, offset, encodingRef) {
-    throw error.methodUnimplemented();
-  }
-
-  /**
-   * @param {Transaction} transaction
-   * @param {number} offset
-   */
-  integrate(transaction, offset) {
-    throw error.methodUnimplemented();
-  }
-}
-
 const structGCRefNumber = 0;
 
 /**
  * @private
  */
 class GC extends AbstractStruct {
+  // @ts-ignore
   get deleted() {
     return true;
   }
 
-  delete() { }
+  delete() {}
 
   /**
    * @param {GC} right
@@ -9105,15 +9568,15 @@ class ContentBinary {
    * @param {Transaction} transaction
    * @param {Item} item
    */
-  integrate(transaction, item) { }
+  integrate(transaction, item) {}
   /**
    * @param {Transaction} transaction
    */
-  delete(transaction) { }
+  delete(transaction) {}
   /**
    * @param {StructStore} store
    */
-  gc(store) { }
+  gc(store) {}
   /**
    * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
    * @param {number} offset
@@ -9209,11 +9672,11 @@ class ContentDeleted {
   /**
    * @param {Transaction} transaction
    */
-  delete(transaction) { }
+  delete(transaction) {}
   /**
    * @param {StructStore} store
    */
-  gc(store) { }
+  gc(store) {}
   /**
    * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
    * @param {number} offset
@@ -9253,8 +9716,8 @@ const createDocFromOpts = (guid, opts) =>
  * @private
  */
 class ContentDoc {
-  doc: any;
-  opts: {};
+  doc: Doc;
+  opts: any;
   /**
    * @param {Doc} doc
    */
@@ -9271,7 +9734,7 @@ class ContentDoc {
     /**
      * @type {any}
      */
-    const opts = {};
+    const opts = {} as any;
     this.opts = opts;
     if (!doc.gc) {
       opts.gc = false;
@@ -9355,7 +9818,7 @@ class ContentDoc {
   /**
    * @param {StructStore} store
    */
-  gc(store) { }
+  gc(store) {}
 
   /**
    * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
@@ -9443,15 +9906,15 @@ class ContentEmbed {
    * @param {Transaction} transaction
    * @param {Item} item
    */
-  integrate(transaction, item) { }
+  integrate(transaction, item) {}
   /**
    * @param {Transaction} transaction
    */
-  delete(transaction) { }
+  delete(transaction) {}
   /**
    * @param {StructStore} store
    */
-  gc(store) { }
+  gc(store) {}
   /**
    * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
    * @param {number} offset
@@ -9547,11 +10010,11 @@ class ContentFormat {
   /**
    * @param {Transaction} transaction
    */
-  delete(transaction) { }
+  delete(transaction) {}
   /**
    * @param {StructStore} store
    */
-  gc(store) { }
+  gc(store) {}
   /**
    * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
    * @param {number} offset
@@ -9642,15 +10105,15 @@ class ContentJSON {
    * @param {Transaction} transaction
    * @param {Item} item
    */
-  integrate(transaction, item) { }
+  integrate(transaction, item) {}
   /**
    * @param {Transaction} transaction
    */
-  delete(transaction) { }
+  delete(transaction) {}
   /**
    * @param {StructStore} store
    */
-  gc(store) { }
+  gc(store) {}
   /**
    * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
    * @param {number} offset
@@ -9680,7 +10143,7 @@ class ContentJSON {
  */
 const readContentJSON = (decoder) => {
   const len = decoder.readLen();
-  const cs = [];
+  const cs = [] as any[];
   for (let i = 0; i < len; i++) {
     const c = decoder.readString();
     if (c === 'undefined') {
@@ -9755,15 +10218,15 @@ class ContentAny {
    * @param {Transaction} transaction
    * @param {Item} item
    */
-  integrate(transaction, item) { }
+  integrate(transaction, item) {}
   /**
    * @param {Transaction} transaction
    */
-  delete(transaction) { }
+  delete(transaction) {}
   /**
    * @param {StructStore} store
    */
-  gc(store) { }
+  gc(store) {}
   /**
    * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
    * @param {number} offset
@@ -9791,7 +10254,7 @@ class ContentAny {
  */
 const readContentAny = (decoder) => {
   const len = decoder.readLen();
-  const cs = [];
+  const cs = [] as any[];
   for (let i = 0; i < len; i++) {
     cs.push(decoder.readAny());
   }
@@ -9875,15 +10338,15 @@ class ContentString {
    * @param {Transaction} transaction
    * @param {Item} item
    */
-  integrate(transaction, item) { }
+  integrate(transaction, item) {}
   /**
    * @param {Transaction} transaction
    */
-  delete(transaction) { }
+  delete(transaction) {}
   /**
    * @param {StructStore} store
    */
-  gc(store) { }
+  gc(store) {}
   /**
    * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
    * @param {number} offset
@@ -10036,7 +10499,7 @@ class ContentType {
     }
     this.type._start = null;
     this.type._map.forEach(
-      /** @param {Item | null} item */(item) => {
+      /** @param {Item | null} item */ (item) => {
         while (item !== null) {
           item.gc(store, true);
           item = item.left;
@@ -10160,10 +10623,11 @@ const splitItem = (transaction, leftItem, diff) => {
   transaction._mergeStructs.push(rightItem);
   // update parent._map
   if (rightItem.parentSub !== null && rightItem.right === null) {
-    /** @type {AbstractType<any>} */ rightItem.parent._map.set(
-    rightItem.parentSub,
-    rightItem,
-  );
+    // @ts-ignore
+    /** @type {AbstractType<any>} */ rightItem.parent?._map.set(
+      rightItem.parentSub,
+      rightItem,
+    );
   }
   leftItem.length = diff;
   return rightItem;
@@ -10200,7 +10664,7 @@ const redoItem = (
   /**
    * @type {Item|null}
    */
-  let left = null;
+  let left = null as null | Item;
   /**
    * @type {Item|null}
    */
@@ -10239,7 +10703,7 @@ const redoItem = (
       /**
        * @type {Item|null}
        */
-      let leftTrace = left;
+      let leftTrace = left as any;
       // trace redone until parent matches
       while (
         leftTrace !== null &&
@@ -10329,535 +10793,96 @@ const redoItem = (
 };
 
 /**
- * Abstract class that represents any content.
+ * Do not implement this class! 只用作类型
  */
-class Item extends AbstractStruct {
-  parent: null;
-  left: any;
-  content: typeof ContentType;
-  parentSub: null;
-  redone: null;
-  right: null;
-  origin: any;
-  rightOrigin: any;
-  info: number;
+export class AbstractContent {
+  doc: Doc;
+  opts: any;
   /**
-   * @param {ID} id
-   * @param {Item | null} left
-   * @param {ID | null} origin
-   * @param {Item | null} right
-   * @param {ID | null} rightOrigin
-   * @param {AbstractType<any>|ID|null} parent Is a type if integrated, is null if it is possible to copy parent from left or right, is ID before integration to search for it.
-   * @param {string | null} parentSub
-   * @param {AbstractContent} content
+   * @return {number}
    */
-  constructor(
-    id,
-    left,
-    origin,
-    right,
-    rightOrigin,
-    parent,
-    parentSub,
-    content,
-  ) {
-    super(id, content.getLength());
-    /**
-     * The item that was originally to the left of this item.
-     * @type {ID | null}
-     */
-    this.origin = origin;
-    /**
-     * The item that is currently to the left of this item.
-     * @type {Item | null}
-     */
-    this.left = left;
-    /**
-     * The item that is currently to the right of this item.
-     * @type {Item | null}
-     */
-    this.right = right;
-    /**
-     * The item that was originally to the right of this item.
-     * @type {ID | null}
-     */
-    this.rightOrigin = rightOrigin;
-    /**
-     * @type {AbstractType<any>|ID|null}
-     */
-    this.parent = parent;
-    /**
-     * If the parent refers to this item with some kind of key (e.g. YMap, the
-     * key is specified here. The key is then used to refer to the list in which
-     * to insert this item. If `parentSub = null` type._start is the list in
-     * which to insert to. Otherwise it is `parent._map`.
-     * @type {String | null}
-     */
-    this.parentSub = parentSub;
-    /**
-     * If this type's effect is redone this type refers to the type that undid
-     * this operation.
-     * @type {ID | null}
-     */
-    this.redone = null;
-    /**
-     * @type {AbstractContent}
-     */
-    this.content = content;
-    /**
-     * bit1: keep
-     * bit2: countable
-     * bit3: deleted
-     * bit4: mark - mark node as fast-search-marker
-     * @type {number} byte
-     */
-    this.info = this.content.isCountable() ? binary.BIT2 : 0;
+  getLength() {
+    throw error.methodUnimplemented();
   }
 
   /**
-   * This is used to mark the item as an indexed fast-search marker
+   * @return {Array<any>}
+   */
+  getContent() {
+    throw error.methodUnimplemented();
+  }
+
+  /**
+   * Should return false if this Item is some kind of meta information
+   * (e.g. format information).
    *
-   * @type {boolean}
-   */
-  set marker(isMarked) {
-    if ((this.info & binary.BIT4) > 0 !== isMarked) {
-      this.info ^= binary.BIT4;
-    }
-  }
-
-  get marker() {
-    return (this.info & binary.BIT4) > 0;
-  }
-
-  /**
-   * If true, do not garbage collect this Item.
-   */
-  get keep() {
-    return (this.info & binary.BIT1) > 0;
-  }
-
-  set keep(doKeep) {
-    if (this.keep !== doKeep) {
-      this.info ^= binary.BIT1;
-    }
-  }
-
-  get countable() {
-    return (this.info & binary.BIT2) > 0;
-  }
-
-  /**
-   * Whether this item was deleted or not.
-   * @type {Boolean}
-   */
-  get deleted() {
-    return (this.info & binary.BIT3) > 0;
-  }
-
-  set deleted(doDelete) {
-    if (this.deleted !== doDelete) {
-      this.info ^= binary.BIT3;
-    }
-  }
-
-  markDeleted() {
-    this.info |= binary.BIT3;
-  }
-
-  /**
-   * Return the creator clientID of the missing op or define missing items and return null.
+   * * Whether this Item should be addressable via `yarray.get(i)`
+   * * Whether this Item should be counted when computing yarray.length
    *
-   * @param {Transaction} transaction
-   * @param {StructStore} store
-   * @return {null | number}
+   * @return {boolean}
    */
-  getMissing(transaction, store) {
-    if (
-      this.origin &&
-      this.origin.client !== this.id.client &&
-      this.origin.clock >= getState(store, this.origin.client)
-    ) {
-      return this.origin.client;
-    }
-    if (
-      this.rightOrigin &&
-      this.rightOrigin.client !== this.id.client &&
-      this.rightOrigin.clock >= getState(store, this.rightOrigin.client)
-    ) {
-      return this.rightOrigin.client;
-    }
-    if (
-      this.parent &&
-      this.parent.constructor === ID &&
-      this.id.client !== this.parent.client &&
-      this.parent.clock >= getState(store, this.parent.client)
-    ) {
-      return this.parent.client;
-    }
-
-    // We have all missing ids, now find the items
-
-    if (this.origin) {
-      this.left = getItemCleanEnd(transaction, store, this.origin);
-      this.origin = this.left.lastId;
-    }
-    if (this.rightOrigin) {
-      this.right = getItemCleanStart(transaction, this.rightOrigin);
-      this.rightOrigin = this.right.id;
-    }
-    if (
-      (this.left && this.left.constructor === GC) ||
-      (this.right && this.right.constructor === GC)
-    ) {
-      this.parent = null;
-    }
-    // only set parent if this shouldn't be garbage collected
-    if (!this.parent) {
-      if (this.left && this.left.constructor === Item) {
-        this.parent = this.left.parent;
-        this.parentSub = this.left.parentSub;
-      }
-      if (this.right && this.right.constructor === Item) {
-        this.parent = this.right.parent;
-        this.parentSub = this.right.parentSub;
-      }
-    } else if (this.parent.constructor === ID) {
-      const parentItem = getItem(store, this.parent);
-      if (parentItem.constructor === GC) {
-        this.parent = null;
-      } else {
-        this.parent = /** @type {ContentType} */ parentItem.content.type;
-      }
-    }
-    return null;
+  isCountable() {
+    throw error.methodUnimplemented();
   }
 
   /**
-   * @param {Transaction} transaction
+   * @return {AbstractContent}
+   */
+  copy() {
+    throw error.methodUnimplemented();
+  }
+
+  /**
    * @param {number} offset
+   * @return {AbstractContent}
    */
-  integrate(transaction, offset) {
-    if (offset > 0) {
-      this.id.clock += offset;
-      this.left = getItemCleanEnd(
-        transaction,
-        transaction.doc.store,
-        createID(this.id.client, this.id.clock - 1),
-      );
-      this.origin = this.left.lastId;
-      this.content = this.content.splice(offset);
-      this.length -= offset;
-    }
-
-    if (this.parent) {
-      if (
-        (!this.left && (!this.right || this.right.left !== null)) ||
-        (this.left && this.left.right !== this.right)
-      ) {
-        /**
-         * @type {Item|null}
-         */
-        let left = this.left;
-
-        /**
-         * @type {Item|null}
-         */
-        let o;
-        // set o to the first conflicting item
-        if (left !== null) {
-          o = left.right;
-        } else if (this.parentSub !== null) {
-          o =
-            /** @type {AbstractType<any>} */ this.parent._map.get(
-            this.parentSub,
-          ) || null;
-          while (o !== null && o.left !== null) {
-            o = o.left;
-          }
-        } else {
-          o = /** @type {AbstractType<any>} */ this.parent._start;
-        }
-        // TODO: use something like DeleteSet here (a tree implementation would be best)
-        // @todo use global set definitions
-        /**
-         * @type {Set<Item>}
-         */
-        const conflictingItems = new Set();
-        /**
-         * @type {Set<Item>}
-         */
-        const itemsBeforeOrigin = new Set();
-        // Let c in conflictingItems, b in itemsBeforeOrigin
-        // ***{origin}bbbb{this}{c,b}{c,b}{o}***
-        // Note that conflictingItems is a subset of itemsBeforeOrigin
-        while (o !== null && o !== this.right) {
-          itemsBeforeOrigin.add(o);
-          conflictingItems.add(o);
-          if (compareIDs(this.origin, o.origin)) {
-            // case 1
-            if (o.id.client < this.id.client) {
-              left = o;
-              conflictingItems.clear();
-            } else if (compareIDs(this.rightOrigin, o.rightOrigin)) {
-              // this and o are conflicting and point to the same integration points. The id decides which item comes first.
-              // Since this is to the left of o, we can break here
-              break;
-            } // else, o might be integrated before an item that this conflicts with. If so, we will find it in the next iterations
-          } else if (
-            o.origin !== null &&
-            itemsBeforeOrigin.has(getItem(transaction.doc.store, o.origin))
-          ) {
-            // use getItem instead of getItemCleanEnd because we don't want / need to split items.
-            // case 2
-            if (
-              !conflictingItems.has(getItem(transaction.doc.store, o.origin))
-            ) {
-              left = o;
-              conflictingItems.clear();
-            }
-          } else {
-            break;
-          }
-          o = o.right;
-        }
-        this.left = left;
-      }
-      // reconnect left/right + update parent map/start if necessary
-      if (this.left !== null) {
-        const right = this.left.right;
-        this.right = right;
-        this.left.right = this;
-      } else {
-        let r;
-        if (this.parentSub !== null) {
-          r =
-            /** @type {AbstractType<any>} */ this.parent._map.get(
-            this.parentSub,
-          ) || null;
-          while (r !== null && r.left !== null) {
-            r = r.left;
-          }
-        } else {
-          r = /** @type {AbstractType<any>} */ this.parent._start;
-          /** @type {AbstractType<any>} */ this.parent._start = this;
-        }
-        this.right = r;
-      }
-      if (this.right !== null) {
-        this.right.left = this;
-      } else if (this.parentSub !== null) {
-        // set as current parent value if right === null and this is parentSub
-        /** @type {AbstractType<any>} */ this.parent._map.set(
-        this.parentSub,
-        this,
-      );
-        if (this.left !== null) {
-          // this is the current attribute value of parent. delete right
-          this.left.delete(transaction);
-        }
-      }
-      // adjust length of parent
-      if (this.parentSub === null && this.countable && !this.deleted) {
-        /** @type {AbstractType<any>} */ this.parent._length += this.length;
-      }
-      addStruct(transaction.doc.store, this);
-      this.content.integrate(transaction, this);
-      // add parent to transaction.changed
-      addChangedTypeToTransaction(
-        transaction,
-        /** @type {AbstractType<any>} */ this.parent,
-        this.parentSub,
-      );
-      if (
-        /** @type {AbstractType<any>} */ (this.parent._item !== null &&
-          /** @type {AbstractType<any>} */ this.parent._item.deleted) ||
-        (this.parentSub !== null && this.right !== null)
-      ) {
-        // delete if parent is deleted or if this is not the current attribute value of parent
-        this.delete(transaction);
-      }
-    } else {
-      // parent is not defined. Integrate GC struct instead
-      new GC(this.id, this.length).integrate(transaction, 0);
-    }
+  splice(offset) {
+    throw error.methodUnimplemented();
   }
 
   /**
-   * Returns the next non-deleted item
-   */
-  get next() {
-    let n = this.right;
-    while (n !== null && n.deleted) {
-      n = n.right;
-    }
-    return n;
-  }
-
-  /**
-   * Returns the previous non-deleted item
-   */
-  get prev() {
-    let n = this.left;
-    while (n !== null && n.deleted) {
-      n = n.left;
-    }
-    return n;
-  }
-
-  /**
-   * Computes the last content address of this Item.
-   */
-  get lastId() {
-    // allocating ids is pretty costly because of the amount of ids created, so we try to reuse whenever possible
-    return this.length === 1
-      ? this.id
-      : createID(this.id.client, this.id.clock + this.length - 1);
-  }
-
-  /**
-   * Try to merge two items
-   *
-   * @param {Item} right
+   * @param {AbstractContent} right
    * @return {boolean}
    */
   mergeWith(right) {
-    if (
-      this.constructor === right.constructor &&
-      compareIDs(right.origin, this.lastId) &&
-      this.right === right &&
-      compareIDs(this.rightOrigin, right.rightOrigin) &&
-      this.id.client === right.id.client &&
-      this.id.clock + this.length === right.id.clock &&
-      this.deleted === right.deleted &&
-      this.redone === null &&
-      right.redone === null &&
-      this.content.constructor === right.content.constructor &&
-      this.content.mergeWith(right.content)
-    ) {
-      const searchMarker =
-        /** @type {AbstractType<any>} */ this.parent._searchMarker;
-      if (searchMarker) {
-        searchMarker.forEach((marker) => {
-          if (marker.p === right) {
-            // right is going to be "forgotten" so we need to update the marker
-            marker.p = this;
-            // adjust marker index
-            if (!this.deleted && this.countable) {
-              marker.index -= this.length;
-            }
-          }
-        });
-      }
-      if (right.keep) {
-        this.keep = true;
-      }
-      this.right = right.right;
-      if (this.right !== null) {
-        this.right.left = this;
-      }
-      this.length += right.length;
-      return true;
-    }
-    return false;
+    throw error.methodUnimplemented();
   }
 
   /**
-   * Mark this Item as deleted.
-   *
+   * @param {Transaction} transaction
+   * @param {Item} item
+   */
+  integrate(transaction, item) {
+    throw error.methodUnimplemented();
+  }
+
+  /**
    * @param {Transaction} transaction
    */
   delete(transaction) {
-    if (!this.deleted) {
-      const parent = /** @type {AbstractType<any>} */ this.parent;
-      // adjust the length of parent
-      if (this.countable && this.parentSub === null) {
-        parent._length -= this.length;
-      }
-      this.markDeleted();
-      addToDeleteSet(
-        transaction.deleteSet,
-        this.id.client,
-        this.id.clock,
-        this.length,
-      );
-      addChangedTypeToTransaction(transaction, parent, this.parentSub);
-      this.content.delete(transaction);
-    }
+    throw error.methodUnimplemented();
   }
 
   /**
    * @param {StructStore} store
-   * @param {boolean} parentGCd
    */
-  gc(store, parentGCd) {
-    if (!this.deleted) {
-      throw error.unexpectedCase();
-    }
-    this.content.gc(store);
-    if (parentGCd) {
-      replaceStruct(store, this, new GC(this.id, this.length));
-    } else {
-      this.content = new ContentDeleted(this.length);
-    }
+  gc(store) {
+    throw error.methodUnimplemented();
   }
 
   /**
-   * Transform the properties of this type to binary and write it to an
-   * BinaryEncoder.
-   *
-   * This is called when this Item is sent to a remote peer.
-   *
-   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder The encoder to write data to.
+   * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
    * @param {number} offset
    */
   write(encoder, offset) {
-    const origin =
-      offset > 0
-        ? createID(this.id.client, this.id.clock + offset - 1)
-        : this.origin;
-    const rightOrigin = this.rightOrigin;
-    const parentSub = this.parentSub;
-    const info =
-      (this.content.getRef() & binary.BITS5) |
-      (origin === null ? 0 : binary.BIT8) | // origin is defined
-      (rightOrigin === null ? 0 : binary.BIT7) | // right origin is defined
-      (parentSub === null ? 0 : binary.BIT6); // parentSub is non-null
-    encoder.writeInfo(info);
-    if (origin !== null) {
-      encoder.writeLeftID(origin);
-    }
-    if (rightOrigin !== null) {
-      encoder.writeRightID(rightOrigin);
-    }
-    if (origin === null && rightOrigin === null) {
-      const parent = /** @type {AbstractType<any>} */ this.parent;
-      if (parent._item !== undefined) {
-        const parentItem = parent._item;
-        if (parentItem === null) {
-          // parent type on y._map
-          // find the correct key
-          const ykey = findRootTypeKey(parent);
-          encoder.writeParentInfo(true); // write parentYKey
-          encoder.writeString(ykey);
-        } else {
-          encoder.writeParentInfo(false); // write parent id
-          encoder.writeLeftID(parentItem.id);
-        }
-      } else if (parent.constructor === String) {
-        // this edge case was added by differential updates
-        encoder.writeParentInfo(true); // write parentYKey
-        encoder.writeString(parent);
-      } else if (parent.constructor === ID) {
-        encoder.writeParentInfo(false); // write parent id
-        encoder.writeLeftID(parent);
-      } else {
-        error.unexpectedCase();
-      }
-      if (parentSub !== null) {
-        encoder.writeString(parentSub);
-      }
-    }
-    this.content.write(encoder, offset);
+    throw error.methodUnimplemented();
+  }
+
+  /**
+   * @return {number}
+   */
+  getRef() {
+    throw error.methodUnimplemented();
   }
 }
 
@@ -10897,11 +10922,12 @@ const structSkipRefNumber = 10;
  * @private
  */
 class Skip extends AbstractStruct {
+  // @ts-ignore
   get deleted() {
     return true;
   }
 
-  delete() { }
+  delete() {}
 
   /**
    * @param {Skip} right
@@ -10950,11 +10976,11 @@ const glo =
   /** @type {any} */ typeof globalThis !== 'undefined'
     ? globalThis
     : typeof window !== 'undefined'
-      ? window
-      : // @ts-ignore
-      typeof global !== 'undefined'
-        ? global
-        : {};
+    ? window
+    : // @ts-ignore
+    typeof global !== 'undefined'
+    ? global
+    : {};
 
 const importIdentifier = '__ $YJS$ __';
 
@@ -10993,8 +11019,8 @@ export {
   ContentJSON,
   ContentString,
   ContentType,
-  Doc,
   GC,
+  Doc,
   ID,
   Item,
   YMap as Map,
@@ -11071,3 +11097,7 @@ export {
   typeListToArraySnapshot,
   typeMapGetSnapshot,
 };
+
+// export {
+//   iterateDeletedStructs
+// } from './modules/concepts-structures'

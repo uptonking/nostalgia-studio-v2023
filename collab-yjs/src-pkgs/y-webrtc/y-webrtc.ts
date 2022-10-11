@@ -14,7 +14,7 @@ import * as ws from 'lib0/websocket';
 import Peer from 'simple-peer/simplepeer.min';
 import * as awarenessProtocol from 'y-protocols/awareness';
 import * as syncProtocol from 'y-protocols/sync';
-import * as Y from 'yjs'; // eslint-disable-line
+import * as Y from 'yjs';
 
 import * as cryptoutils from './crypto';
 
@@ -197,7 +197,7 @@ const sendWebrtcConn = (webrtcConn, encoder) => {
   );
   try {
     webrtcConn.peer.send(encoding.toUint8Array(encoder));
-  } catch (e) {}
+  } catch (e) { }
 };
 
 /**
@@ -209,7 +209,7 @@ const broadcastWebrtcConn = (room, m) => {
   room.webrtcConns.forEach((conn) => {
     try {
       conn.peer.send(m);
-    } catch (e) {}
+    } catch (e) { }
   });
 };
 
@@ -416,7 +416,7 @@ export class Room {
     this._bcSubscriber = (data) =>
       cryptoutils.decrypt(new Uint8Array(data), key).then((m) =>
         this.mux(() => {
-          const reply = readMessage(this, m, () => {});
+          const reply = readMessage(this, m, () => { });
           if (reply) {
             broadcastBcMessage(this, encoding.toUint8Array(reply));
           }
@@ -617,16 +617,16 @@ export class SignalingConn extends ws.WebsocketClient {
               return;
             }
             const emitPeerChange = webrtcConns.has(data.from)
-              ? () => {}
+              ? () => { }
               : () =>
-                  room.provider.emit('peers', [
-                    {
-                      removed: [],
-                      added: [data.from],
-                      webrtcPeers: Array.from(room.webrtcConns.keys()),
-                      bcPeers: Array.from(room.bcConns),
-                    },
-                  ]);
+                room.provider.emit('peers', [
+                  {
+                    removed: [],
+                    added: [data.from],
+                    webrtcPeers: Array.from(room.webrtcConns.keys()),
+                    bcPeers: Array.from(room.bcConns),
+                  },
+                ]);
             switch (data.type) {
               case 'announce':
                 if (webrtcConns.size < room.provider.maxConns) {

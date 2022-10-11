@@ -74,7 +74,7 @@ export class Observable {
     // copy all listeners to an array first to make sure that no event is emitted to listeners that are subscribed while the event handler is called.
     return array
       .from((this._observers.get(name) || map.create()).values())
-      .forEach((f) => f(...args));
+      .forEach((f: any) => f(...args));
   }
 
   destroy() {

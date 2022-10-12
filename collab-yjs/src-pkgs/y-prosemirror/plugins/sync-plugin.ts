@@ -30,9 +30,9 @@ export const isVisible = (item, snapshot) =>
   snapshot === undefined
     ? !item.deleted
     : snapshot.sv.has(item.id.client) &&
-      /** @type {number} */
-      snapshot.sv.get(item.id.client) > item.id.clock &&
-      !Y.isDeleted(snapshot.ds, item.id);
+    /** @type {number} */
+    snapshot.sv.get(item.id.client) > item.id.clock &&
+    !Y.isDeleted(snapshot.ds, item.id);
 
 /**
  * Either a node if type is YXmlElement or an Array of text nodes if YXmlText
@@ -91,7 +91,7 @@ export const ySyncPlugin = (
     colors = defaultColors,
     colorMapping = new Map(),
     permanentUserData = null,
-    onFirstRender = () => {},
+    onFirstRender = () => { },
   } = {},
 ) => {
   let changedInitialContent = false;
@@ -201,7 +201,7 @@ export const ySyncPlugin = (
             if (
               changedInitialContent ||
               view.state.doc.content.findDiffStart(
-                view.state.doc.type.createAndFill().content,
+                view.state.doc.type.createAndFill()?.content as any,
               ) !== null
             ) {
               changedInitialContent = true;
@@ -275,12 +275,31 @@ export const getRelativeSelection = (pmbinding, state) => ({
   ),
 });
 
+export type ProsemirrorMapping = Map<Y.AbstractType, PModel.Node | Array<PModel.Node>>;
+
 /**
  * Binding for prosemirror.
  *
  * @protected
  */
 export class ProsemirrorBinding {
+  mux: any
+  doc: any;
+  type: Y.XmlFragment;
+  isDestroyed: boolean;
+  prosemirrorView: any;
+  mapping: Map<any, any>;
+  // mapping: ProsemirrorMapping;
+  _observeFunction: any;
+  beforeTransactionSelection: {
+    anchor: any;
+    head: any;
+  } | null;
+  beforeAllTransactions: () => void;
+  afterAllTransactions: () => void;
+  _domSelectionInView: boolean | null;
+
+
   /**
    * @param {Y.XmlFragment} yXmlFragment The bind source
    * @param {any} prosemirrorView The target binding
@@ -363,13 +382,14 @@ export class ProsemirrorBinding {
     }
 
     const bounding = range.getBoundingClientRect();
+    // @ts-ignore
     const documentElement = dom.doc.documentElement;
 
     return (
       bounding.bottom >= 0 &&
       bounding.right >= 0 &&
       bounding.left <=
-        (window.innerWidth || documentElement.clientWidth || 0) &&
+      (window.innerWidth || documentElement.clientWidth || 0) &&
       bounding.top <= (window.innerHeight || documentElement.clientHeight || 0)
     );
   }
@@ -396,7 +416,7 @@ export class ProsemirrorBinding {
           createNodeFromYElement(
             /** @type {Y.XmlElement} */ t,
             this.prosemirrorView.state.schema,
-            this.mapping,
+            this.mapping, undefined, undefined, undefined
           ),
         )
         .filter((n) => n !== null);
@@ -420,7 +440,7 @@ export class ProsemirrorBinding {
           createNodeFromYElement(
             /** @type {Y.XmlElement} */ t,
             this.prosemirrorView.state.schema,
-            this.mapping,
+            this.mapping, undefined, undefined, undefined
           ),
         )
         .filter((n) => n !== null);
@@ -454,7 +474,7 @@ export class ProsemirrorBinding {
         const pud = pluginState.permanentUserData;
         if (pud) {
           pud.dss.forEach((ds) => {
-            Y.iterateDeletedStructs(transaction, ds, (_item) => {});
+            Y.iterateDeletedStructs(transaction, ds, (_item) => { });
           });
         }
         /**
@@ -554,7 +574,7 @@ export class ProsemirrorBinding {
           createNodeIfNotExists(
             /** @type {Y.XmlElement | Y.XmlHook} */ t,
             this.prosemirrorView.state.schema,
-            this.mapping,
+            this.mapping, undefined, undefined, undefined
           ),
         )
         .filter((n) => n !== null);
@@ -615,7 +635,7 @@ const createNodeIfNotExists = (
   prevSnapshot,
   computeYChange,
 ) => {
-  const node = /** @type {PModel.Node} */ mapping.get(el);
+  const node: PModel.Node = /** @type {PModel.Node} */ mapping.get(el);
   if (node === undefined) {
     if (el instanceof Y.XmlElement) {
       return createNodeFromYElement(
@@ -651,7 +671,7 @@ const createNodeFromYElement = (
   prevSnapshot,
   computeYChange,
 ) => {
-  const children = [];
+  const children: PModel.Node[] = [];
   const createChildren = (type) => {
     if (type.constructor === Y.XmlElement) {
       const n = createNodeIfNotExists(
@@ -735,12 +755,12 @@ const createTextNodesFromYText = (
   prevSnapshot,
   computeYChange,
 ) => {
-  const nodes = [];
+  const nodes = [] as any[];
   const deltas = text.toDelta(snapshot, prevSnapshot, computeYChange);
   try {
     for (let i = 0; i < deltas.length; i++) {
       const delta = deltas[i];
-      const marks = [];
+      const marks = [] as any[];
       for (const markName in delta.attributes) {
         marks.push(schema.mark(markName, delta.attributes[markName]));
       }
@@ -839,11 +859,11 @@ const equalAttrs = (pattrs, yattrs) => {
  */
 const normalizePNodeContent = (pnode) => {
   const c = pnode.content.content;
-  const res = [];
+  const res = [] as any[];
   for (let i = 0; i < c.length; i++) {
     const n = c[i];
     if (n.isText) {
-      const textNodes = [];
+      const textNodes = [] as any[];
       for (let tnode = c[i]; i < c.length && tnode.isText; tnode = c[++i]) {
         textNodes.push(tnode);
       }
@@ -1163,7 +1183,7 @@ export const updateYFragment = (y, yDomFragment, pNode, mapping) => {
       yDomFragment.delete(left, yDelLen);
     }
     if (left + right < pChildCnt) {
-      const ins = [];
+      const ins = [] as any[];
       for (let i = left; i < pChildCnt - right; i++) {
         ins.push(createTypeFromTextOrElementNode(pChildren[i], mapping));
       }

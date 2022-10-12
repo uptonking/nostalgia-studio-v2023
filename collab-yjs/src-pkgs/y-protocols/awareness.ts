@@ -2,13 +2,13 @@
  * @module awareness-protocol
  */
 
-import * as encoding from 'lib0/encoding';
 import * as decoding from 'lib0/decoding';
-import * as time from 'lib0/time';
+import * as encoding from 'lib0/encoding';
+import * as f from 'lib0/function';
 import * as math from 'lib0/math';
 import { Observable } from 'lib0/observable';
-import * as f from 'lib0/function';
-import * as Y from 'yjs'; // eslint-disable-line
+import * as time from 'lib0/time';
+import * as Y from 'yjs';
 
 export const outdatedTimeout = 30000;
 
@@ -17,6 +17,11 @@ export const outdatedTimeout = 30000;
  * @property {number} MetaClientState.clock
  * @property {number} MetaClientState.lastUpdated unix timestamp
  */
+
+type MetaClientState = {
+  clock: number;
+  lastUpdated: number;
+}
 
 /**
  * The Awareness class implements a simple shared state protocol that can be used for non-persistent data like awareness information
@@ -37,6 +42,13 @@ export const outdatedTimeout = 30000;
  * @extends {Observable<string>}
  */
 export class Awareness extends Observable {
+  doc: any;
+  clientID: number;
+  states: Map<number, {
+    [x: string]: any;
+  }>;
+  meta: Map<number, MetaClientState>;
+  _checkInterval: any;
   /**
    * @param {Y.Doc} doc
    */
@@ -61,9 +73,9 @@ export class Awareness extends Observable {
       if (
         this.getLocalState() !== null &&
         outdatedTimeout / 2 <=
-          now -
-            /** @type {{lastUpdated:number}} */ this.meta.get(this.clientID)
-              .lastUpdated
+        now -
+            /** @type {{lastUpdated:number}} */ this.meta.get(this.clientID)!
+          .lastUpdated
       ) {
         // renew local clock
         this.setLocalState(this.getLocalState());
@@ -71,7 +83,7 @@ export class Awareness extends Observable {
       /**
        * @type {Array<number>}
        */
-      const remove = [];
+      const remove = [] as number[];
       this.meta.forEach((meta, clientid) => {
         if (
           clientid !== this.clientID &&
@@ -122,10 +134,10 @@ export class Awareness extends Observable {
       clock,
       lastUpdated: time.getUnixTime(),
     });
-    const added = [];
-    const updated = [];
-    const filteredUpdated = [];
-    const removed = [];
+    const added: number[] = [];
+    const updated: number[] = [];
+    const filteredUpdated: number[] = [];
+    const removed: number[] = [];
     if (state === null) {
       removed.push(clientID);
     } else if (prevState == null) {
@@ -178,7 +190,7 @@ export class Awareness extends Observable {
  * @param {any} origin
  */
 export const removeAwarenessStates = (awareness, clients, origin) => {
-  const removed = [];
+  const removed: number[] = [];
   for (let i = 0; i < clients.length; i++) {
     const clientID = clients[i];
     if (awareness.states.has(clientID)) {
@@ -260,10 +272,10 @@ export const modifyAwarenessUpdate = (update, modify) => {
 export const applyAwarenessUpdate = (awareness, update, origin) => {
   const decoder = decoding.createDecoder(update);
   const timestamp = time.getUnixTime();
-  const added = [];
-  const updated = [];
-  const filteredUpdated = [];
-  const removed = [];
+  const added: number[] = [];
+  const updated: number[] = [];
+  const filteredUpdated: number[] = [];
+  const removed: number[] = [];
   const len = decoding.readVarUint(decoder);
   for (let i = 0; i < len; i++) {
     const clientID = decoding.readVarUint(decoder);

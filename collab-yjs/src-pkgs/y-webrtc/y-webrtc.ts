@@ -214,8 +214,8 @@ const broadcastWebrtcConn = (room, m) => {
 };
 
 export class WebrtcConn {
-  room: any;
-  remotePeerId: any;
+  room: Room;
+  remotePeerId: string;
   closed: boolean;
   connected: boolean;
   synced: boolean;
@@ -359,24 +359,26 @@ const broadcastBcPeerId = (room) => {
 };
 
 export class Room {
-  peerId: any;
+  peerId: string;
   doc: any;
   awareness: any;
-  provider: any;
+  provider: WebrtcProvider;
   synced: boolean;
-  name: any;
+  name: string;
   key: any;
-  webrtcConns: Map<any, any>;
-  bcConns: Set<unknown>;
+  webrtcConns: Map<string, WebrtcConn>;
+  bcConns: Set<string>;
   mux: (f: any, g: any) => void;
   bcconnected: boolean;
-  _bcSubscriber: (data: any) => Promise<any>;
-  _docUpdateHandler: (update: any, origin: any) => void;
+  _bcSubscriber: (data: ArrayBuffer) => Promise<any>;
+  _docUpdateHandler: (update: Uint8Array, origin: any) => void;
   _awarenessUpdateHandler: (
     { added, updated, removed }: { added: any; updated: any; removed: any },
     origin: any,
   ) => void;
   _beforeUnloadHandler: () => void;
+
+
   /**
    * @param {Y.Doc} doc
    * @param {WebrtcProvider} provider
@@ -420,7 +422,7 @@ export class Room {
           if (reply) {
             broadcastBcMessage(this, encoding.toUint8Array(reply));
           }
-        }),
+        }, undefined),
       );
     /**
      * Listens to Yjs updates and sends them to remote peers
@@ -487,7 +489,7 @@ export class Room {
     // broadcast local state
     const encoderState = encoding.createEncoder();
     encoding.writeVarUint(encoderState, messageSync);
-    syncProtocol.writeSyncStep2(encoderState, this.doc);
+    syncProtocol.writeSyncStep2(encoderState, this.doc, undefined);
     broadcastBcMessage(this, encoding.toUint8Array(encoderState));
     // write queryAwareness
     const encoderAwarenessQuery = encoding.createEncoder();
@@ -578,7 +580,7 @@ const publishSignalingMessage = (conn, room, data) => {
 };
 
 export class SignalingConn extends ws.WebsocketClient {
-  providers: Set<unknown>;
+  providers: Set<WebrtcProvider>;
   constructor(url) {
     super(url);
     /**
@@ -672,17 +674,17 @@ export class SignalingConn extends ws.WebsocketClient {
  * @extends Observable<string>
  */
 export class WebrtcProvider extends Observable {
-  roomName: any;
+  roomName: string;
   doc: any;
   filterBcConns: boolean;
   awareness: awarenessProtocol.Awareness;
   shouldConnect: boolean;
   signalingUrls: string[];
-  signalingConns: never[];
+  signalingConns: any[];
   maxConns: number;
-  peerOpts: {};
+  peerOpts: any;
   key: Promise<any>;
-  room: null;
+  room: Room | null;
 
   /**
    * @param {string} roomName
@@ -788,7 +790,7 @@ export class WebrtcProvider extends Observable {
     this.doc.off('destroy', this.destroy);
     // need to wait for key before deleting room
     this.key.then(() => {
-      /** @type {Room} */ this.room.destroy();
+      /** @type {Room} */ this.room?.destroy();
       rooms.delete(this.roomName);
     });
     super.destroy();

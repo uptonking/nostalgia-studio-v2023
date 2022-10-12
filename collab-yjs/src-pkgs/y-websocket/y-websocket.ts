@@ -1,9 +1,3 @@
-/**
- * @module provider/websocket
- */
-
-/* eslint-env browser */
-
 import * as bc from 'lib0/broadcastchannel';
 import * as decoding from 'lib0/decoding';
 import * as encoding from 'lib0/encoding';
@@ -245,13 +239,10 @@ export class WebsocketProvider extends Observable {
   maxBackoffTime: number;
   bcChannel: string;
   url: string;
-  roomname: any;
+  roomname: string;
   doc: any;
   _WS: {
-    new (
-      url: string | URL,
-      protocols?: string | string[] | undefined,
-    ): WebSocket;
+    new(url: string, protocols?: string | string[] | undefined): WebSocket;
     prototype: WebSocket;
     readonly CLOSED: number;
     readonly CLOSING: number;
@@ -264,20 +255,22 @@ export class WebsocketProvider extends Observable {
   bcconnected: boolean;
   disableBc: boolean;
   wsUnsuccessfulReconnects: number;
+  // messageHandlers: ((arg0: encoding.Encoder, arg1: decoding.Decoder, arg2: WebsocketProvider, arg3: boolean, arg4: number) => void)[];
   messageHandlers: Record<string, any>[];
   _synced: boolean;
-  ws: null;
+  ws: WebSocket | null;
   wsLastMessageReceived: number;
   shouldConnect: boolean;
   _resyncInterval: number;
-  _bcSubscriber: (data: any, origin: any) => void;
-  _updateHandler: (update: any, origin: any) => void;
+  _bcSubscriber: (data: ArrayBuffer, origin: any) => void;
+  _updateHandler: (update: Uint8Array, origin: any) => void;
   _awarenessUpdateHandler: (
     { added, updated, removed }: { added: any; updated: any; removed: any },
     _origin: any,
   ) => void;
   _unloadHandler: () => void;
-  _checkInterval: NodeJS.Timer;
+  // _checkInterval: NodeJS.Timer;
+  _checkInterval: any;
 
   /**
    * @param {string} serverUrl
@@ -349,7 +342,7 @@ export class WebsocketProvider extends Observable {
      */
     this._resyncInterval = 0;
     if (resyncInterval > 0) {
-      this._resyncInterval = /** @type {any} */ setInterval(() => {
+      this._resyncInterval = /** @type {any} */ window.setInterval(() => {
         if (this.ws && this.ws.readyState === WebSocket.OPEN) {
           // resend sync step 1
           const encoder = encoding.createEncoder();
@@ -368,7 +361,7 @@ export class WebsocketProvider extends Observable {
       if (origin !== this) {
         const encoder = readMessage(this, new Uint8Array(data), false);
         if (encoding.length(encoder) > 1) {
-          bc.publish(this.bcChannel, encoding.toUint8Array(encoder), this);
+          bc.publish(this.bcChannel, encoding.toUint8Array(encoder), this as any);
         }
       }
     };
@@ -417,11 +410,11 @@ export class WebsocketProvider extends Observable {
       if (
         this.wsconnected &&
         messageReconnectTimeout <
-          time.getUnixTime() - this.wsLastMessageReceived
+        time.getUnixTime() - this.wsLastMessageReceived
       ) {
         // no message received in a long time - not even your own awareness
         // updates (which are updated every 15 seconds)
-        /** @type {WebSocket} */ this.ws.close();
+        /** @type {WebSocket} */ this.ws?.close();
       }
     }, messageReconnectTimeout / 10);
     if (connect) {
@@ -473,19 +466,19 @@ export class WebsocketProvider extends Observable {
     const encoderSync = encoding.createEncoder();
     encoding.writeVarUint(encoderSync, messageSync);
     syncProtocol.writeSyncStep1(encoderSync, this.doc);
-    bc.publish(this.bcChannel, encoding.toUint8Array(encoderSync), this);
+    bc.publish(this.bcChannel, encoding.toUint8Array(encoderSync), this as any);
     // broadcast local state
     const encoderState = encoding.createEncoder();
     encoding.writeVarUint(encoderState, messageSync);
-    syncProtocol.writeSyncStep2(encoderState, this.doc);
-    bc.publish(this.bcChannel, encoding.toUint8Array(encoderState), this);
+    syncProtocol.writeSyncStep2(encoderState, this.doc, undefined);
+    bc.publish(this.bcChannel, encoding.toUint8Array(encoderState), this as any);
     // write queryAwareness
     const encoderAwarenessQuery = encoding.createEncoder();
     encoding.writeVarUint(encoderAwarenessQuery, messageQueryAwareness);
     bc.publish(
       this.bcChannel,
       encoding.toUint8Array(encoderAwarenessQuery),
-      this,
+      this as any,
     );
     // broadcast local awareness state
     const encoderAwarenessState = encoding.createEncoder();
@@ -499,7 +492,7 @@ export class WebsocketProvider extends Observable {
     bc.publish(
       this.bcChannel,
       encoding.toUint8Array(encoderAwarenessState),
-      this,
+      this as any,
     );
   }
 

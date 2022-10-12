@@ -42,8 +42,11 @@ export const generateNewClientId = random.uint32;
  * @property {boolean} [DocOpts.autoLoad] If a subdocument, automatically load document. If this is a subdocument, remote peers will load the document as well automatically.
  * @property {boolean} [DocOpts.shouldLoad] Whether the document should be synced by the provider now. This is toggled to true when you call ydoc.load()
  */
+
 /**
- * A Yjs instance handles the state of shared data.
+ * - Yjs documents are collections of shared objects that sync automatically.
+ * - A Yjs instance handles the state of shared data.
+ * - 难以分离出去作为单独的数据模型，因为依赖了比较复杂的外部方法 transact
  * @extends Observable<string>
  */
 class Doc extends Observable {
@@ -159,6 +162,7 @@ class Doc extends Observable {
    * @public
    */
   transact(f, origin = null) {
+    // 👇🏻 这里依赖的是外部方法
     transact(this, f, origin);
   }
 
@@ -346,12 +350,10 @@ class Doc extends Observable {
 
 /**
  * A unique timestamp that identifies each marker.
- *
- * Time is relative,.. this is more like an ever-increasing clock.
- *
+ * - Time is relative,.. this is more like an ever-increasing clock.
  * @type {number}
  */
-let globalSearchMarkerTimestamp = 0;
+let globalSearchMarkerTimestamp: number = 0;
 
 class ArraySearchMarker {
   p: any;
@@ -528,16 +530,36 @@ class AbstractType {
 }
 
 /**
- * @template {AbstractType<any>} T
  * YEvent describes the changes on a YType.
+ * @template {AbstractType<any>} T
  */
 class YEvent {
   target: any;
-  currentTarget: any;
-  transaction: any;
+  // currentTarget: any;
+  currentTarget: AbstractType;
+  transaction: Transaction;
   _changes: null | Record<string, any>;
-  _keys: null | Map<string, any>;
-  _delta: null | any[];
+  _keys: Map<
+    string,
+    {
+      action: 'add' | 'update' | 'delete';
+      oldValue: any;
+      newValue: any;
+    }
+  > | null;
+  _delta:
+    | {
+      insert?: string | object | any[] | AbstractType | undefined;
+      retain?: number | undefined;
+      delete?: number | undefined;
+      attributes?:
+      | {
+        [x: string]: any;
+      }
+      | undefined;
+    }[]
+    | null;
+
   /**
    * @param {T} target The changed type.
    * @param {Transaction} transaction
@@ -611,7 +633,7 @@ class YEvent {
       const target = this.target;
       const changed =
         /** @type Set<string|null> */ this.transaction.changed.get(target);
-      changed.forEach((key) => {
+      changed?.forEach((key) => {
         if (key !== null) {
           const item = /** @type {Item} */ target._map.get(key);
           /**
@@ -701,7 +723,7 @@ class YEvent {
       };
       const changed =
         /** @type Set<string|null> */ this.transaction.changed.get(target);
-      if (changed.has(null)) {
+      if (changed?.has(null)) {
         /**
          * @type {any}
          */
@@ -1822,6 +1844,119 @@ class Item extends AbstractStruct {
     }
     // @ts-ignore
     this.content.write(encoder, offset);
+  }
+}
+
+/**
+ * A transaction is created for every change on the Yjs model. It is possible
+ * to bundle changes on the Yjs model in a single transaction to
+ * minimize the number on messages sent and the number of observer calls.
+ * If possible the user of this library should bundle as many changes as
+ * possible. Here is an example to illustrate the advantages of bundling:
+ *
+ * @example
+ * const map = y.define('map', YMap)
+ * // Log content when change is triggered
+ * map.observe(() => {
+ *   console.log('change triggered')
+ * })
+ * // Each change on the map type triggers a log message:
+ * map.set('a', 0) // => "change triggered"
+ * map.set('b', 0) // => "change triggered"
+ * // When put in a transaction, it will trigger the log after the transaction:
+ * y.transact(() => {
+ *   map.set('a', 1)
+ *   map.set('b', 1)
+ * }) // => "change triggered"
+ *
+ * @public
+ */
+class Transaction {
+  doc: Doc;
+  deleteSet: DeleteSet;
+  beforeState: Map<number, number>;
+  afterState: Map<number, number>;
+  // changed: Map<any, any>;
+  changed: Map<AbstractType, Set<string | null>>;
+  // changedParentTypes: Map<any, any>;
+  changedParentTypes: Map<AbstractType, Array<YEvent>>;
+  _mergeStructs: AbstractStruct[];
+  origin: any;
+  meta: Map<any, any>;
+  local: boolean;
+  subdocsAdded: Set<Doc>;
+  subdocsRemoved: Set<Doc>;
+  subdocsLoaded: Set<Doc>;
+
+  /**
+   * @param {Doc} doc
+   * @param {any} origin
+   * @param {boolean} local
+   */
+  constructor(doc, origin, local) {
+    /**
+     * The Yjs instance.
+     * @type {Doc}
+     */
+    this.doc = doc;
+    /**
+     * Describes the set of deleted items by ids
+     * @type {DeleteSet}
+     */
+    this.deleteSet = new DeleteSet();
+    /**
+     * Holds the state before the transaction started.
+     * @type {Map<Number,Number>}
+     */
+    this.beforeState = getStateVector(doc.store);
+    /**
+     * Holds the state after the transaction.
+     * @type {Map<Number,Number>}
+     */
+    this.afterState = new Map();
+    /**
+     * All types that were directly modified (property added or child
+     * inserted/deleted). New types are not included in this Set.
+     * Maps from type to parentSubs (`item.parentSub = null` for YArray)
+     * @type {Map<AbstractType<YEvent<any>>,Set<String|null>>}
+     */
+    this.changed = new Map();
+    /**
+     * Stores the events for the types that observe also child elements.
+     * It is mainly used by `observeDeep`.
+     * @type {Map<AbstractType<YEvent<any>>,Array<YEvent<any>>>}
+     */
+    this.changedParentTypes = new Map();
+    /**
+     * @type {Array<AbstractStruct>}
+     */
+    this._mergeStructs = [];
+    /**
+     * @type {any}
+     */
+    this.origin = origin;
+    /**
+     * Stores meta information on the transaction
+     * @type {Map<any,any>}
+     */
+    this.meta = new Map();
+    /**
+     * Whether this change originates from this doc.
+     * @type {boolean}
+     */
+    this.local = local;
+    /**
+     * @type {Set<Doc>}
+     */
+    this.subdocsAdded = new Set();
+    /**
+     * @type {Set<Doc>}
+     */
+    this.subdocsRemoved = new Set();
+    /**
+     * @type {Set<Doc>}
+     */
+    this.subdocsLoaded = new Set();
   }
 }
 
@@ -4568,116 +4703,6 @@ const iterateStructs = (transaction, structs, clockStart, len, f) => {
 };
 
 /**
- * A transaction is created for every change on the Yjs model. It is possible
- * to bundle changes on the Yjs model in a single transaction to
- * minimize the number on messages sent and the number of observer calls.
- * If possible the user of this library should bundle as many changes as
- * possible. Here is an example to illustrate the advantages of bundling:
- *
- * @example
- * const map = y.define('map', YMap)
- * // Log content when change is triggered
- * map.observe(() => {
- *   console.log('change triggered')
- * })
- * // Each change on the map type triggers a log message:
- * map.set('a', 0) // => "change triggered"
- * map.set('b', 0) // => "change triggered"
- * // When put in a transaction, it will trigger the log after the transaction:
- * y.transact(() => {
- *   map.set('a', 1)
- *   map.set('b', 1)
- * }) // => "change triggered"
- *
- * @public
- */
-class Transaction {
-  doc: Doc;
-  deleteSet: DeleteSet;
-  beforeState: Map<Number, Number>;
-  afterState: Map<Number, Number>;
-  changed: Map<any, any>;
-  changedParentTypes: Map<any, any>;
-  _mergeStructs: never[];
-  origin: any;
-  meta: Map<any, any>;
-  local: any;
-  subdocsAdded: Set<any>;
-  subdocsRemoved: Set<any>;
-  subdocsLoaded: Set<any>;
-  /**
-   * @param {Doc} doc
-   * @param {any} origin
-   * @param {boolean} local
-   */
-  constructor(doc, origin, local) {
-    /**
-     * The Yjs instance.
-     * @type {Doc}
-     */
-    this.doc = doc;
-    /**
-     * Describes the set of deleted items by ids
-     * @type {DeleteSet}
-     */
-    this.deleteSet = new DeleteSet();
-    /**
-     * Holds the state before the transaction started.
-     * @type {Map<Number,Number>}
-     */
-    this.beforeState = getStateVector(doc.store);
-    /**
-     * Holds the state after the transaction.
-     * @type {Map<Number,Number>}
-     */
-    this.afterState = new Map();
-    /**
-     * All types that were directly modified (property added or child
-     * inserted/deleted). New types are not included in this Set.
-     * Maps from type to parentSubs (`item.parentSub = null` for YArray)
-     * @type {Map<AbstractType<YEvent<any>>,Set<String|null>>}
-     */
-    this.changed = new Map();
-    /**
-     * Stores the events for the types that observe also child elements.
-     * It is mainly used by `observeDeep`.
-     * @type {Map<AbstractType<YEvent<any>>,Array<YEvent<any>>>}
-     */
-    this.changedParentTypes = new Map();
-    /**
-     * @type {Array<AbstractStruct>}
-     */
-    this._mergeStructs = [];
-    /**
-     * @type {any}
-     */
-    this.origin = origin;
-    /**
-     * Stores meta information on the transaction
-     * @type {Map<any,any>}
-     */
-    this.meta = new Map();
-    /**
-     * Whether this change originates from this doc.
-     * @type {boolean}
-     */
-    this.local = local;
-    /**
-     * @type {Set<Doc>}
-     */
-    this.subdocsAdded = new Set();
-    /**
-     * @type {Set<Doc>}
-     */
-    this.subdocsRemoved = new Set();
-    /**
-     * @type {Set<Doc>}
-     */
-    this.subdocsLoaded = new Set();
-  }
-}
-
-/**
  * @param {UpdateEncoderV1 | UpdateEncoderV2} encoder
  * @param {Transaction} transaction
  * @return {boolean} Whether data was written.
@@ -5195,17 +5220,17 @@ const popStackItem = (undoManager, stack, eventType) => {
  */
 class UndoManager extends Observable {
   scope: AbstractType[];
-  deleteFilter: () => true;
+  deleteFilter: (x?: Item) => boolean;
   trackedOrigins: Set<any>;
-  captureTransaction: (tr: any) => true;
+  captureTransaction: (tr: Transaction) => boolean;
   undoStack: StackItem[];
   redoStack: StackItem[];
   undoing: boolean;
   redoing: boolean;
-  doc: any;
+  doc: Doc;
   lastChange: number;
   ignoreRemoteMapChanges: boolean;
-  afterTransactionHandler: (transaction: any) => void;
+  afterTransactionHandler: (transaction: Transaction) => void;
   /**
    * @param {AbstractType<any>|Array<AbstractType<any>>} typeScope Accepts either a single type, or an array of types
    * @param {UndoManagerOptions} options
@@ -5277,7 +5302,8 @@ class UndoManager extends Observable {
       const insertions = new DeleteSet();
       transaction.afterState.forEach((endClock, client) => {
         const startClock = transaction.beforeState.get(client) || 0;
-        const len = endClock - startClock;
+        // const len = endClock - startClock;
+        const len = Number(endClock) - Number(startClock);
         if (len > 0) {
           addToDeleteSet(insertions, client, startClock, len);
         }
@@ -10796,6 +10822,7 @@ const redoItem = (
  * Do not implement this class! 只用作类型
  */
 export class AbstractContent {
+  type: any;
   doc: Doc;
   opts: any;
   /**

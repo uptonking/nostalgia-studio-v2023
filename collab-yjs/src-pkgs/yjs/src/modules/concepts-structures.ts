@@ -17,51 +17,10 @@ import * as random from 'lib0/random';
 import * as set from 'lib0/set';
 import * as time from 'lib0/time';
 
-/**
- *
- */
-export class StructStore {
-  clients: Map<number, any[]>;
-  pendingStructs: null | { missing: Map<number, number>, update: Uint8Array };
-  pendingDs: null | Uint8Array;
-  constructor() {
-    /**
-     * @type {Map<number,Array<GC|Item>>}
-     */
-    this.clients = new Map();
-    /**
-     * @type {null | { missing: Map<number, number>, update: Uint8Array }}
-     */
-    this.pendingStructs = null;
-    /**
-     * @type {null | Uint8Array}
-     */
-    this.pendingDs = null;
-  }
-}
-
-/**
- * General event handler implementation.
- *
- * @template ARG0, ARG1
- *
- * @private
- */
-export class EventHandler {
-  l: Array<(...args: any) => void>;
-
-
-  constructor() {
-    /**
-     * @type {Array<function(ARG0, ARG1):void>}
-     */
-    this.l = [];
-  }
-}
-
 export class ID {
   client: number;
   clock: number;
+
   /**
    * @param {number} client client id
    * @param {number} clock unique per client id, continuous number
@@ -80,46 +39,35 @@ export class ID {
   }
 }
 
-
-export class DeleteItem {
-  clock: number;
-  len: number;
-  /**
-   * @param {number} clock
-   * @param {number} len
-   */
-  constructor(clock, len) {
-    /**
-     * @type {number}
-     */
-    this.clock = clock;
-    /**
-     * @type {number}
-     */
-    this.len = len;
-  }
-}
-
 /**
- * We no longer maintain a DeleteStore. DeleteSet is a temporary object that is created when needed.
- * - When created in a transaction, it must only be accessed after sorting, and merging
- *   - This DeleteSet is send to other clients
- * - We do not create a DeleteSet when we send a sync message. The DeleteSet message is created directly from StructStore
- * - We read a DeleteSet as part of a sync/update message. In this case the DeleteSet is already sorted and merged.
+ *
  */
-export class DeleteSet {
-  clients: Map<number, DeleteItem[]>;
+export class StructStore {
+  // clients: Map<number, Array<GC | Item>>;
+  clients: Map<number, any[]>;
+  pendingStructs: null | { missing: Map<number, number>; update: Uint8Array };
+  pendingDs: null | Uint8Array;
+
   constructor() {
     /**
-     * @type {Map<number,Array<DeleteItem>>}
+     * @type {Map<number,Array<GC|Item>>}
      */
     this.clients = new Map();
+    /**
+     * @type {null | { missing: Map<number, number>, update: Uint8Array }}
+     */
+    this.pendingStructs = null;
+    /**
+     * @type {null | Uint8Array}
+     */
+    this.pendingDs = null;
   }
 }
 
 export class AbstractStruct {
   id: ID;
   length: number;
+
   /**
    * @param {ID} id
    * @param {number} length
@@ -162,6 +110,63 @@ export class AbstractStruct {
    */
   integrate(transaction, offset) {
     throw error.methodUnimplemented();
+  }
+}
+
+export class DeleteItem {
+  clock: number;
+  len: number;
+
+  /**
+   * @param {number} clock
+   * @param {number} len
+   */
+  constructor(clock, len) {
+    /**
+     * @type {number}
+     */
+    this.clock = clock;
+    /**
+     * @type {number}
+     */
+    this.len = len;
+  }
+}
+
+/**
+ * We no longer maintain a DeleteStore.
+ * - DeleteSet is a temporary object that is created when needed.
+ * - When created in a transaction, it must only be accessed after sorting, and merging
+ *   - This DeleteSet is send to other clients
+ * - We do not create a DeleteSet when we send a sync message. The DeleteSet message is created directly from StructStore
+ * - We read a DeleteSet as part of a sync/update message. In this case the DeleteSet is already sorted and merged.
+ */
+export class DeleteSet {
+  clients: Map<number, DeleteItem[]>;
+
+  constructor() {
+    /**
+     * @type {Map<number,Array<DeleteItem>>}
+     */
+    this.clients = new Map();
+  }
+}
+
+/**
+ * General event handler implementation.
+ *
+ * @template ARG0, ARG1
+ *
+ * @private
+ */
+export class EventHandler {
+  l: Array<(...args: any[]) => void>;
+
+  constructor() {
+    /**
+     * @type {Array<function(ARG0, ARG1):void>}
+     */
+    this.l = [];
   }
 }
 

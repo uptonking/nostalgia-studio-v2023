@@ -13,7 +13,7 @@ export const PREFERRED_TRIM_SIZE = 500;
  */
 export const fetchUpdates = (
   idbPersistence,
-  beforeApplyUpdatesCallback = () => {},
+  beforeApplyUpdatesCallback: (...args: any[]) => any = () => { },
 ) => {
   const [updatesStore] = idb.transact(
     /** @type {IDBDatabase} */ idbPersistence.db,
@@ -24,12 +24,12 @@ export const fetchUpdates = (
       updatesStore,
       idb.createIDBKeyRangeLowerBound(idbPersistence._dbref, false),
     )
-    .then((updates) => {
-      beforeApplyUpdatesCallback(updatesStore);
+    .then((updates: any) => {
+      beforeApplyUpdatesCallback(updatesStore, undefined);
       Y.transact(
         idbPersistence.doc,
         () => {
-          updates.forEach((val) => Y.applyUpdate(idbPersistence.doc, val));
+          updates.forEach((val) => Y.applyUpdate(idbPersistence.doc, val, undefined));
         },
         idbPersistence,
         false,
@@ -37,11 +37,11 @@ export const fetchUpdates = (
     })
     .then(() =>
       idb.getLastKey(updatesStore).then((lastKey) => {
-        idbPersistence._dbref = lastKey + 1;
+        idbPersistence._dbref = Number(lastKey) + 1;
       }),
     )
     .then(() =>
-      idb.count(updatesStore).then((cnt) => {
+      idb.count(updatesStore, undefined).then((cnt) => {
         idbPersistence._dbsize = cnt;
       }),
     )
@@ -56,7 +56,7 @@ export const storeState = (idbPersistence, forceStore = true) =>
   fetchUpdates(idbPersistence).then((updatesStore) => {
     if (forceStore || idbPersistence._dbsize >= PREFERRED_TRIM_SIZE) {
       idb
-        .addAutoKey(updatesStore, Y.encodeStateAsUpdate(idbPersistence.doc))
+        .addAutoKey(updatesStore, Y.encodeStateAsUpdate(idbPersistence.doc, undefined))
         .then(() =>
           idb.del(
             updatesStore,
@@ -64,7 +64,7 @@ export const storeState = (idbPersistence, forceStore = true) =>
           ),
         )
         .then(() =>
-          idb.count(updatesStore).then((cnt) => {
+          idb.count(updatesStore, undefined).then((cnt) => {
             idbPersistence._dbsize = cnt;
           }),
         );
@@ -80,6 +80,20 @@ export const clearDocument = (name) => idb.deleteDB(name);
  * @extends Observable<string>
  */
 export class IndexeddbPersistence extends Observable {
+  doc: any;
+  name: string;
+  _dbref: number;
+  _dbsize: number;
+  _destroyed: boolean;
+  db: IDBDatabase | null;
+  synced: boolean;
+  _db: Promise<IDBDatabase>;
+  whenSynced: Promise<IndexeddbPersistence>;
+  _storeTimeout: number;
+  _storeTimeoutId: any;
+  _storeUpdate: (update: Uint8Array, origin: any) => void;
+
+
   /**
    * @param {string} name
    * @param {Y.Doc} doc
@@ -98,7 +112,7 @@ export class IndexeddbPersistence extends Observable {
     this.synced = false;
     this._db = idb.openDB(name, (db) =>
       idb.createStores(db, [['updates', { autoIncrement: true }], ['custom']]),
-    );
+    ) as Promise<IDBDatabase>;
     /**
      * @type {Promise<IndexeddbPersistence>}
      */
@@ -108,7 +122,7 @@ export class IndexeddbPersistence extends Observable {
        * @param {IDBObjectStore} updatesStore
        */
       const beforeApplyUpdatesCallback = (updatesStore) =>
-        idb.addAutoKey(updatesStore, Y.encodeStateAsUpdate(doc));
+        idb.addAutoKey(updatesStore, Y.encodeStateAsUpdate(doc, undefined));
       return fetchUpdates(this, beforeApplyUpdatesCallback).then(() => {
         if (this._destroyed) return this;
         this.emit('synced', [this]);

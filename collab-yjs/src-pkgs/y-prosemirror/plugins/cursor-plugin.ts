@@ -62,7 +62,7 @@ export const createDecorations = (
 ) => {
   const ystate = ySyncPluginKey.getState(state);
   const y = ystate.doc;
-  const decorations = [];
+  const decorations: Decoration[] = [];
   if (
     ystate.snapshot != null ||
     ystate.prevSnapshot != null ||
@@ -103,7 +103,7 @@ export const createDecorations = (
         anchor = math.min(anchor, maxsize);
         head = math.min(head, maxsize);
         decorations.push(
-          Decoration.widget(head, () => createCursor(user), {
+          Decoration.widget(head!, () => createCursor(user), {
             key: String(clientId),
             side: 10,
           }),

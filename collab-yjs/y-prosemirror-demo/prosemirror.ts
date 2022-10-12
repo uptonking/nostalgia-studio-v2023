@@ -9,6 +9,7 @@ import {
   ySyncPlugin,
   yUndoPlugin,
 } from 'y-prosemirror';
+import { WebrtcProvider } from "y-webrtc";
 import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
@@ -18,11 +19,12 @@ import { schema } from './schema';
 
 window.addEventListener('load', () => {
   const ydoc = new Y.Doc();
-  const provider = new WebsocketProvider(
-    'wss://demos.yjs.dev',
-    'prosemirror-demo',
-    ydoc,
-  );
+  const provider = new WebrtcProvider("prosemirror-debug", ydoc);
+  // const provider = new WebsocketProvider(
+  //   'wss://demos.yjs.dev',
+  //   'prosemirror-demo',
+  //   ydoc,
+  // );
   const yXmlFragment = ydoc.getXmlFragment('prosemirror');
 
   const editorContainer = document.createElement('div');

@@ -1,8 +1,8 @@
 import * as error from 'lib0/error';
 import * as eventloop from 'lib0/eventloop';
 import * as map from 'lib0/map';
-import { Node, Schema } from 'prosemirror-model'; // eslint-disable-line
-import { EditorView } from 'prosemirror-view'; // eslint-disable-line
+import { Node, type Schema } from 'prosemirror-model'; // eslint-disable-line
+import type { EditorView } from 'prosemirror-view';
 import * as Y from 'yjs';
 
 import { ySyncPluginKey } from './plugins/keys';
@@ -19,12 +19,12 @@ import { updateYFragment } from './plugins/sync-plugin'; // eslint-disable-line
  * Maps from view
  * @type {Map<EditorView, Map<any, any>>|null}
  */
-let viewsToUpdate = null;
+let viewsToUpdate = null as Map<EditorView, Map<any, any>> | null;
 
 const updateMetas = () => {
   const ups = /** @type {Map<EditorView, Map<any, any>>} */ viewsToUpdate;
   viewsToUpdate = null;
-  ups.forEach((metas, view) => {
+  ups?.forEach((metas, view) => {
     const tr = view.state.tr;
     const syncState = ySyncPluginKey.getState(view.state);
     if (syncState && syncState.binding && !syncState.binding.isDestroyed) {
@@ -145,8 +145,8 @@ export const absolutePositionToRelativePosition = (pos, type, mapping) => {
 };
 
 const createRelativePosition = (type, item) => {
-  let typeid = null;
-  let tname = null;
+  let typeid = null as any;
+  let tname = null as string | null;
   if (type._item === null) {
     tname = Y.findRootTypeKey(type);
   } else {
@@ -348,6 +348,11 @@ export function yDocToProsemirrorJSON(ydoc, xmlFragment = 'prosemirror') {
   return yXmlFragmentToProsemirrorJSON(ydoc.getXmlFragment(xmlFragment));
 }
 
+type NodeObject = {
+  type: string;
+  attrs?: Record<string, string>;
+  content?: NodeObject[];
+};
 /**
  * Utility method to convert a Y.Doc to Prosemirror compatible JSON.
  *
@@ -364,7 +369,7 @@ export function yXmlFragmentToProsemirrorJSON(xmlFragment) {
      * @property {Record<string, string>=} NodeObject.attrs
      * @property {Array<NodeObject>=} NodeObject.content
      */
-    let response;
+    let response: NodeObject;
 
     // TODO: Must be a better way to detect text nodes than this
     if (!item.nodeName) {
@@ -373,14 +378,14 @@ export function yXmlFragmentToProsemirrorJSON(xmlFragment) {
         const text = {
           type: 'text',
           text: d.insert,
-        };
+        } as any;
 
         if (d.attributes) {
           text.marks = Object.keys(d.attributes).map((type) => {
             const attrs = d.attributes[type];
             const mark = {
               type,
-            };
+            } as any;
 
             if (Object.keys(attrs)) {
               mark.attrs = attrs;

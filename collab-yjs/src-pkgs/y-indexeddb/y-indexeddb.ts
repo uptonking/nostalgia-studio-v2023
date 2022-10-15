@@ -13,7 +13,7 @@ export const PREFERRED_TRIM_SIZE = 500;
  */
 export const fetchUpdates = (
   idbPersistence,
-  beforeApplyUpdatesCallback: (...args: any[]) => any = () => { },
+  beforeApplyUpdatesCallback: (...args: any[]) => any = () => {},
 ) => {
   const [updatesStore] = idb.transact(
     /** @type {IDBDatabase} */ idbPersistence.db,
@@ -29,7 +29,9 @@ export const fetchUpdates = (
       Y.transact(
         idbPersistence.doc,
         () => {
-          updates.forEach((val) => Y.applyUpdate(idbPersistence.doc, val, undefined));
+          updates.forEach((val) =>
+            Y.applyUpdate(idbPersistence.doc, val, undefined),
+          );
         },
         idbPersistence,
         false,
@@ -56,7 +58,10 @@ export const storeState = (idbPersistence, forceStore = true) =>
   fetchUpdates(idbPersistence).then((updatesStore) => {
     if (forceStore || idbPersistence._dbsize >= PREFERRED_TRIM_SIZE) {
       idb
-        .addAutoKey(updatesStore, Y.encodeStateAsUpdate(idbPersistence.doc, undefined))
+        .addAutoKey(
+          updatesStore,
+          Y.encodeStateAsUpdate(idbPersistence.doc, undefined),
+        )
         .then(() =>
           idb.del(
             updatesStore,
@@ -92,7 +97,6 @@ export class IndexeddbPersistence extends Observable {
   _storeTimeout: number;
   _storeTimeoutId: any;
   _storeUpdate: (update: Uint8Array, origin: any) => void;
-
 
   /**
    * @param {string} name

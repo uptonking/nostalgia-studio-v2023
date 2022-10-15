@@ -242,7 +242,7 @@ export class WebsocketProvider extends Observable {
   roomname: string;
   doc: any;
   _WS: {
-    new(url: string, protocols?: string | string[] | undefined): WebSocket;
+    new (url: string, protocols?: string | string[] | undefined): WebSocket;
     prototype: WebSocket;
     readonly CLOSED: number;
     readonly CLOSING: number;
@@ -361,7 +361,11 @@ export class WebsocketProvider extends Observable {
       if (origin !== this) {
         const encoder = readMessage(this, new Uint8Array(data), false);
         if (encoding.length(encoder) > 1) {
-          bc.publish(this.bcChannel, encoding.toUint8Array(encoder), this as any);
+          bc.publish(
+            this.bcChannel,
+            encoding.toUint8Array(encoder),
+            this as any,
+          );
         }
       }
     };
@@ -410,7 +414,7 @@ export class WebsocketProvider extends Observable {
       if (
         this.wsconnected &&
         messageReconnectTimeout <
-        time.getUnixTime() - this.wsLastMessageReceived
+          time.getUnixTime() - this.wsLastMessageReceived
       ) {
         // no message received in a long time - not even your own awareness
         // updates (which are updated every 15 seconds)
@@ -471,7 +475,11 @@ export class WebsocketProvider extends Observable {
     const encoderState = encoding.createEncoder();
     encoding.writeVarUint(encoderState, messageSync);
     syncProtocol.writeSyncStep2(encoderState, this.doc, undefined);
-    bc.publish(this.bcChannel, encoding.toUint8Array(encoderState), this as any);
+    bc.publish(
+      this.bcChannel,
+      encoding.toUint8Array(encoderState),
+      this as any,
+    );
     // write queryAwareness
     const encoderAwarenessQuery = encoding.createEncoder();
     encoding.writeVarUint(encoderAwarenessQuery, messageQueryAwareness);

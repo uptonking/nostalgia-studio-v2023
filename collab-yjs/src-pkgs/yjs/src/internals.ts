@@ -18,7 +18,6 @@ export * from './utils/updates';
 export * from './utils/YEvent';
 // export * from './utils/hack-circular';
 
-
 export * from './types/AbstractType';
 export * from './types/YArray';
 export * from './types/YMap';

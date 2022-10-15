@@ -14,7 +14,6 @@ export class AbstractConnector extends Observable {
   doc: Doc;
   awareness: any;
 
-
   /**
    * @param {Doc} ydoc
    * @param {any} awareness

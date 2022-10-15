@@ -11,7 +11,7 @@ import { addListNodes } from 'prosemirror-schema-list';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import React, { useEffect } from 'react';
-import { Socket, io } from 'socket.io-client';
+import { io, type Socket } from 'socket.io-client';
 import type { Step } from 'prosemirror-transform';
 
 import { Authority } from './central-authority';

@@ -21,7 +21,7 @@ export const outdatedTimeout = 30000;
 type MetaClientState = {
   clock: number;
   lastUpdated: number;
-}
+};
 
 /**
  * The Awareness class implements a simple shared state protocol that can be used for non-persistent data like awareness information
@@ -44,9 +44,12 @@ type MetaClientState = {
 export class Awareness extends Observable {
   doc: any;
   clientID: number;
-  states: Map<number, {
-    [x: string]: any;
-  }>;
+  states: Map<
+    number,
+    {
+      [x: string]: any;
+    }
+  >;
   meta: Map<number, MetaClientState>;
   _checkInterval: any;
   /**
@@ -73,9 +76,9 @@ export class Awareness extends Observable {
       if (
         this.getLocalState() !== null &&
         outdatedTimeout / 2 <=
-        now -
+          now -
             /** @type {{lastUpdated:number}} */ this.meta.get(this.clientID)!
-          .lastUpdated
+              .lastUpdated
       ) {
         // renew local clock
         this.setLocalState(this.getLocalState());

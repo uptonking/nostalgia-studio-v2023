@@ -11,7 +11,6 @@ export class AbstractStruct {
   id: any;
   length: any;
 
-
   /**
    * @param {ID} id
    * @param {number} length

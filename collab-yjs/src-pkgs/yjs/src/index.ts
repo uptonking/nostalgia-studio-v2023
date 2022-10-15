@@ -549,15 +549,15 @@ class YEvent {
   > | null;
   _delta:
     | {
-      insert?: string | object | any[] | AbstractType | undefined;
-      retain?: number | undefined;
-      delete?: number | undefined;
-      attributes?:
-      | {
-        [x: string]: any;
-      }
-      | undefined;
-    }[]
+        insert?: string | object | any[] | AbstractType | undefined;
+        retain?: number | undefined;
+        delete?: number | undefined;
+        attributes?:
+          | {
+              [x: string]: any;
+            }
+          | undefined;
+      }[]
     | null;
 
   /**

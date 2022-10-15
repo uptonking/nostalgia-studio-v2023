@@ -12,8 +12,6 @@ import { GlobalProvider } from './store';
 
 // import './index.scss';
 
-
-
 // faking makes app work without backend api services.
 // configureFakeBackend();
 

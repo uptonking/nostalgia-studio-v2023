@@ -1,5 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+
 import { App } from './App';
 
 const render = (Component) => {
@@ -9,7 +10,7 @@ const render = (Component) => {
 render(App);
 
 if (module.hot) {
-  module.hot.accept('./App.js', () => {
+  module.hot.accept('./app.js', () => {
     render(App);
   });
 }

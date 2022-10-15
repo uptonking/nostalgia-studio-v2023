@@ -9,4 +9,3 @@ export function TicTacToeApp() {
 }
 
 export default TicTacToeApp;
-

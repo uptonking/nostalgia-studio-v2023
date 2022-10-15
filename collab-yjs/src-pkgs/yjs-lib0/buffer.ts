@@ -96,6 +96,3 @@ export const copyUint8Array = (uint8Array) => {
   newBuf.set(uint8Array);
   return newBuf;
 };
-
-
-

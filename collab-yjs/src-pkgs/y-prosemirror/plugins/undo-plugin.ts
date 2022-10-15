@@ -48,7 +48,9 @@ export const yUndoPlugin = ({
         const _undoManager =
           undoManager ||
           new UndoManager(ystate.type, {
-            trackedOrigins: new Set([ySyncPluginKey].concat(trackedOrigins)) as any,
+            trackedOrigins: new Set(
+              [ySyncPluginKey].concat(trackedOrigins),
+            ) as any,
             // @ts-ignore
             deleteFilter: (item) => defaultDeleteFilter(item, protectedNodes),
             // @ts-ignore

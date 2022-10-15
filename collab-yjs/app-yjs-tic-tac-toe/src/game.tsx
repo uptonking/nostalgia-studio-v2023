@@ -8,6 +8,10 @@ import { calculateWinner } from './calculate-winner';
 const ydoc = new Y.Doc();
 const provider = new WebrtcProvider(`tutorial-tic-tac-toe`, ydoc);
 
+/**
+ * - 井字棋游戏app，仅此文件使用了yjs，其他文件都是普通js逻辑
+ * - https://blog.tooljet.com/multiplayer-tic-tac-toe-using-react-crdt-yjs/
+ */
 export class Game extends React.Component<
   Record<string, any>,
   Record<string, any>

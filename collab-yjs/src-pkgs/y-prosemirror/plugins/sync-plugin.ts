@@ -30,9 +30,9 @@ export const isVisible = (item, snapshot) =>
   snapshot === undefined
     ? !item.deleted
     : snapshot.sv.has(item.id.client) &&
-    /** @type {number} */
-    snapshot.sv.get(item.id.client) > item.id.clock &&
-    !Y.isDeleted(snapshot.ds, item.id);
+      /** @type {number} */
+      snapshot.sv.get(item.id.client) > item.id.clock &&
+      !Y.isDeleted(snapshot.ds, item.id);
 
 /**
  * Either a node if type is YXmlElement or an Array of text nodes if YXmlText
@@ -91,7 +91,7 @@ export const ySyncPlugin = (
     colors = defaultColors,
     colorMapping = new Map(),
     permanentUserData = null,
-    onFirstRender = () => { },
+    onFirstRender = () => {},
   } = {},
 ) => {
   let changedInitialContent = false;
@@ -275,7 +275,10 @@ export const getRelativeSelection = (pmbinding, state) => ({
   ),
 });
 
-export type ProsemirrorMapping = Map<Y.AbstractType, PModel.Node | Array<PModel.Node>>;
+export type ProsemirrorMapping = Map<
+  Y.AbstractType,
+  PModel.Node | Array<PModel.Node>
+>;
 
 /**
  * Binding for prosemirror.
@@ -283,7 +286,7 @@ export type ProsemirrorMapping = Map<Y.AbstractType, PModel.Node | Array<PModel.
  * @protected
  */
 export class ProsemirrorBinding {
-  mux: any
+  mux: any;
   doc: any;
   type: Y.XmlFragment;
   isDestroyed: boolean;
@@ -298,7 +301,6 @@ export class ProsemirrorBinding {
   beforeAllTransactions: () => void;
   afterAllTransactions: () => void;
   _domSelectionInView: boolean | null;
-
 
   /**
    * @param {Y.XmlFragment} yXmlFragment The bind source
@@ -389,7 +391,7 @@ export class ProsemirrorBinding {
       bounding.bottom >= 0 &&
       bounding.right >= 0 &&
       bounding.left <=
-      (window.innerWidth || documentElement.clientWidth || 0) &&
+        (window.innerWidth || documentElement.clientWidth || 0) &&
       bounding.top <= (window.innerHeight || documentElement.clientHeight || 0)
     );
   }
@@ -416,7 +418,10 @@ export class ProsemirrorBinding {
           createNodeFromYElement(
             /** @type {Y.XmlElement} */ t,
             this.prosemirrorView.state.schema,
-            this.mapping, undefined, undefined, undefined
+            this.mapping,
+            undefined,
+            undefined,
+            undefined,
           ),
         )
         .filter((n) => n !== null);
@@ -440,7 +445,10 @@ export class ProsemirrorBinding {
           createNodeFromYElement(
             /** @type {Y.XmlElement} */ t,
             this.prosemirrorView.state.schema,
-            this.mapping, undefined, undefined, undefined
+            this.mapping,
+            undefined,
+            undefined,
+            undefined,
           ),
         )
         .filter((n) => n !== null);
@@ -474,7 +482,7 @@ export class ProsemirrorBinding {
         const pud = pluginState.permanentUserData;
         if (pud) {
           pud.dss.forEach((ds) => {
-            Y.iterateDeletedStructs(transaction, ds, (_item) => { });
+            Y.iterateDeletedStructs(transaction, ds, (_item) => {});
           });
         }
         /**
@@ -574,7 +582,10 @@ export class ProsemirrorBinding {
           createNodeIfNotExists(
             /** @type {Y.XmlElement | Y.XmlHook} */ t,
             this.prosemirrorView.state.schema,
-            this.mapping, undefined, undefined, undefined
+            this.mapping,
+            undefined,
+            undefined,
+            undefined,
           ),
         )
         .filter((n) => n !== null);

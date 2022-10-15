@@ -1,7 +1,7 @@
-import './App';
+import './app';
 
 if (module.hot) {
-  module.hot.accept('./App.js', () => {
-    import('./App');
+  module.hot.accept('./app.js', () => {
+    import('./app');
   });
 }

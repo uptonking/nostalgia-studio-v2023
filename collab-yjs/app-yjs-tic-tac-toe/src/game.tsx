@@ -35,7 +35,7 @@ export class Game extends React.Component<
       this.setState({
         ...ymap.get('state'),
       });
-      console.log('helo', ymap.get('state'));
+      console.log('hello', ymap.get('state'));
     });
   }
 

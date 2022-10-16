@@ -11,7 +11,7 @@ const addStyleRule = (function () {
     .appendChild(styleElement);
   const styleSheet = styleElement.sheet;
 
-  return function (css) {
+  return function insertCssToStyleTag(css: string) {
     if (added[css]) {
       return;
     }

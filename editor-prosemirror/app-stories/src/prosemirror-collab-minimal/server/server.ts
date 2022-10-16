@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import http from 'node:http';
-import { Server } from 'socket.io';
+import { Server as SocketIOServer } from 'socket.io';
 
 import { router } from './routes';
 
@@ -18,7 +18,7 @@ const httpServer = http.createServer(app);
 let currentDoc;
 
 // 基于socket实现的服务端只负责转发数据，无计算逻辑
-const io = new Server(httpServer, {
+const io = new SocketIOServer(httpServer, {
   cors: {
     origin: 'http://localhost:8999',
     methods: ['GET', 'POST'],
@@ -50,4 +50,6 @@ io.on('connection', (socket) => {
   });
 });
 
-httpServer.listen(port, () => console.log(`Listening on port ${port}`));
+httpServer.listen(port, () =>
+  console.log(`server is listening on http://localhost:${port}`),
+);

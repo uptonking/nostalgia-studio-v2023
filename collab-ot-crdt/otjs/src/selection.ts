@@ -57,14 +57,6 @@ export class Selection {
     this.ranges = ranges || [];
   }
 
-  fromJSON(obj) {
-    const objRanges = obj.ranges || obj;
-    for (var i = 0, ranges = []; i < objRanges.length; i++) {
-      ranges[i] = Range.fromJSON(objRanges[i]);
-    }
-    return new Selection(ranges);
-  }
-
   equals(other) {
     if (this.position !== other.position) {
       return false;
@@ -94,14 +86,22 @@ export class Selection {
     return other;
   }
 
-  static createCursor(position) {
-    return new Selection([new Range(position, position)]);
-  }
-
   transform(other) {
     for (var i = 0, newRanges = []; i < this.ranges.length; i++) {
       newRanges[i] = this.ranges[i].transform(other);
     }
     return new Selection(newRanges);
+  }
+
+  static createCursor(position) {
+    return new Selection([new Range(position, position)]);
+  }
+
+  static fromJSON(obj) {
+    const objRanges = obj.ranges || obj;
+    for (var i = 0, ranges = []; i < objRanges.length; i++) {
+      ranges[i] = Range.fromJSON(objRanges[i]);
+    }
+    return new Selection(ranges);
   }
 }

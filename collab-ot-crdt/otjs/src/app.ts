@@ -5,10 +5,14 @@ import { CodeMirror5Adapter } from './codemirror5-adapter';
 import { EditorClient } from './editor-client';
 import { SocketIOAdapter } from './socketio-adapter';
 
-const socket = io();
+const COLLAB_BASE_URL = 'http://localhost:4001';
+
+const socket = io(COLLAB_BASE_URL);
+
+const editorEle = document.querySelector('#note') as HTMLTextAreaElement;
 
 socket.on('doc', (data: any) => {
-  const editorEle = document.querySelector('#note') as HTMLTextAreaElement;
+  // 👇🏻 每次协作服务端发来新数据，都会替换codeMirror实例的value
   const cm5 = CodeMirror.fromTextArea(editorEle, { lineNumbers: true });
   cm5.setValue(data.str);
   const editorAdapter = new CodeMirror5Adapter(cm5);

@@ -1,17 +1,24 @@
+import { TextOperation } from './text-operation';
+
 /**
  * A WrappedOperation contains an operation and corresponding metadata.
  */
 export class WrappedOperation {
-  wrapped: any;
+  /** 对应的基础TextOperation */
+  wrapped: TextOperation;
   meta: any;
 
-  constructor(operation, meta) {
+  constructor(operation: TextOperation, meta) {
     this.wrapped = operation;
     this.meta = meta;
   }
 
-  apply() {
-    return this.wrapped.apply.apply(this.wrapped, arguments);
+  // apply() {
+  //   return this.wrapped.apply.apply(this.wrapped, arguments);
+  // }
+
+  apply(str: string) {
+    return this.wrapped.apply.apply(this.wrapped, str);
   }
 
   invert() {
@@ -24,15 +31,16 @@ export class WrappedOperation {
     );
   }
 
-  compose(other) {
+  compose(other: WrappedOperation) {
     return new WrappedOperation(
       this.wrapped.compose(other.wrapped),
       composeMeta(this.meta, other.meta),
     );
   }
 
-  static transform(a, b) {
-    const transform = a.wrapped.constructor.transform;
+  static transform(a: WrappedOperation, b: WrappedOperation) {
+    // const transform = a.wrapped.constructor.transform;
+    const transform = TextOperation.transform;
     const pair = transform(a.wrapped, b.wrapped);
     return [
       new WrappedOperation(pair[0], transformMeta(a.meta, b.wrapped)),
@@ -42,7 +50,7 @@ export class WrappedOperation {
 }
 
 /** Copy all properties from source to target. */
-function copy(source, target) {
+function copy(source: Record<string, any>, target: Record<string, any>) {
   for (const key in source) {
     if (source.hasOwnProperty(key)) {
       target[key] = source[key];
@@ -60,6 +68,7 @@ function composeMeta(a, b) {
     copy(b, meta);
     return meta;
   }
+
   return b;
 }
 

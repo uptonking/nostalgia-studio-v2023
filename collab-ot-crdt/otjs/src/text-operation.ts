@@ -236,9 +236,9 @@ export class TextOperation {
       } else {
         throw new Error(
           "This shouldn't happen: op1: " +
-            JSON.stringify(op1) +
-            ', op2: ' +
-            JSON.stringify(op2),
+          JSON.stringify(op1) +
+          ', op2: ' +
+          JSON.stringify(op2),
         );
       }
     }
@@ -352,7 +352,7 @@ export class TextOperation {
     return false;
   }
 
-  static transform(operation1, operation2) {
+  static transform(operation1: TextOperation, operation2: TextOperation) {
     if (operation1.baseLength !== operation2.baseLength) {
       throw new Error('Both operations have to have the same base length');
     }

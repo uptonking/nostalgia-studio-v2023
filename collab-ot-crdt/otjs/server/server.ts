@@ -20,18 +20,11 @@ const io = new SocketIOServer(httpServer, {
   },
 });
 
-const server = new EditorSocketIOServer('', [], 1);
+const server = new EditorSocketIOServer('', [], '1');
 
 io.on('connection', (socket) => {
   server.addClient(socket);
 });
-
-// app.get('/', function (req, res) {
-//   res.sendFile(__dirname + '/index.html');
-// });
-// app.use('/node_modules', express.static('node_modules'));
-// app.use('/ot.js', express.static('ot.js'));
-// app.use('/dist', express.static('dist'));
 
 httpServer.listen(port, () => {
   console.log(`server is listening on http://localhost:${port}`);

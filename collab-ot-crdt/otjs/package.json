@@ -11,6 +11,8 @@
     "build:types": "",
     "demo": "webpack serve --hot --config webpack/webpack.config.demo.cjs",
     "start": "npm run demo",
+    "server:otjs-server": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./server/server.ts",
+    "server": "npm run server:otjs-server",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
   },
@@ -24,6 +26,9 @@
     "socket.io-client": "^4.5.2"
   },
   "devDependencies": {
-    "@types/codemirror": "^5.60.5"
+    "@types/codemirror": "^5.60.5",
+    "nodemon": "^2.0.19",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.9.1"
   }
 }

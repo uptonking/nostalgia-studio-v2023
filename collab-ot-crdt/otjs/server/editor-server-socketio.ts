@@ -6,11 +6,16 @@ import { WrappedOperation } from '../src/wrapped-operation';
 import { Orchestrator } from './orchestrator';
 
 export class EditorSocketIOServer extends Orchestrator {
-  users: Record<string, any>;
-  docId: any;
+  users: Record<string, Record<'selection' | 'name', any>>;
+  docId: string;
   mayWrite: (_: any, fn: (args: any) => void) => void;
 
-  constructor(document, operations, docId, mayWrite?: any) {
+  constructor(
+    document: string,
+    operations: WrappedOperation[],
+    docId: string,
+    mayWrite?: any,
+  ) {
     super(document, operations);
     this.users = {};
     this.docId = docId;
@@ -23,7 +28,7 @@ export class EditorSocketIOServer extends Orchestrator {
 
   addClient(socket: Socket) {
     const self = this;
-    // socket.join(this.docId)
+    socket.join(this.docId);
     socket.emit('doc', {
       str: this.document,
       revision: this.operations.length,
@@ -52,21 +57,20 @@ export class EditorSocketIOServer extends Orchestrator {
 
     socket.on('disconnect', function () {
       console.log('socket disconnect ', socket.id);
-      // socket.leave(self.docId);
+      socket.leave(self.docId);
       self.onDisconnect(socket);
-      // if (
-      //   (socket.manager &&
-      //     socket.manager.sockets.clients(self.docId).length === 0) || // socket.io <= 0.9
-      //   (socket.ns && Object.keys(socket.ns.connected).length === 0) // socket.io >= 1.0
-      // ) {
-      //   self.emit('empty-room');
-      // }
+      if (
+        // (socket.ns && Object.keys(socket.ns.connected).length === 0) // socket.io >= 1.0
+        socket.rooms.size === 0
+      ) {
+        self.emit('empty-room');
+      }
     });
   }
 
-  // 处理操作接收
-  onOperation(socket, revision, operation, selection) {
-    let wrapped;
+  /** 处理操作接收 */
+  onOperation(socket: Socket, revision: number, operation, selection) {
+    let wrapped: WrappedOperation;
     try {
       // 转换成一个wrap格式的操作数据结构
       wrapped = new WrappedOperation(
@@ -97,7 +101,7 @@ export class EditorSocketIOServer extends Orchestrator {
     }
   }
 
-  updateSelection(socket, selection) {
+  updateSelection(socket: Socket, selection) {
     const clientId = socket.id;
     if (selection) {
       this.getClient(clientId).selection = selection;
@@ -107,14 +111,14 @@ export class EditorSocketIOServer extends Orchestrator {
     socket.broadcast.to(this.docId).emit('selection', clientId, selection);
   }
 
-  setName(socket, name) {
+  setName(socket: Socket, name) {
     const clientId = socket.id;
     this.getClient(clientId).name = name;
     socket.broadcast.to(this.docId).emit('set_name', clientId, name);
   }
 
-  getClient(clientId) {
-    return this.users[clientId] || (this.users[clientId] = {});
+  getClient(clientId: string) {
+    return this.users[clientId] || (this.users[clientId] = {} as any);
   }
 
   onDisconnect(socket: Socket) {

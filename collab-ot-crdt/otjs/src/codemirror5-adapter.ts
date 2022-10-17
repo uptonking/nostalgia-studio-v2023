@@ -1,28 +1,29 @@
 import type { Editor } from 'codemirror';
 
-import { Selection } from './selection';
+import { Range, Selection } from './selection';
 import { TextOperation } from './text-operation';
 
-const addStyleRule = (function () {
-  const added = {};
-  const styleElement = document.createElement('style');
-  document.documentElement
-    .getElementsByTagName('head')[0]
-    .appendChild(styleElement);
-  const styleSheet = styleElement.sheet;
+const addedCssRules = {};
+let styleSheet: CSSStyleSheet;
 
-  return function insertCssToStyleTag(css: string) {
-    if (added[css]) {
-      return;
-    }
-    added[css] = true;
-    styleSheet.insertRule(
-      css,
-      (styleSheet.cssRules || styleSheet.rules).length,
-    );
-  };
-})();
+const addStyleRule = (css: string) => {
+  if (addedCssRules[css]) {
+    return;
+  }
+  if (!styleSheet) {
+    const htmlStyleElement = document.createElement('style');
+    document.documentElement
+      .getElementsByTagName('head')[0]
+      .appendChild(htmlStyleElement);
+    styleSheet = htmlStyleElement.sheet;
+  }
+  addedCssRules[css] = true;
+  styleSheet.insertRule(css, (styleSheet.cssRules || styleSheet.rules).length);
+};
 
+/**
+ * CodeMirror changes <==> 自定义text-operations
+ */
 export class CodeMirror5Adapter {
   cm: Editor;
   ignoreNextChange: boolean;
@@ -30,20 +31,17 @@ export class CodeMirror5Adapter {
   selectionChanged: boolean;
   callbacks: any;
 
-  static operationFromCodeMirrorChange =
-    CodeMirror5Adapter.operationFromCodeMirrorChanges;
-
   constructor(cm: Editor) {
     this.cm = cm;
     this.ignoreNextChange = false;
     this.changeInProgress = false;
     this.selectionChanged = false;
 
-    // bind(this, 'onChanges');
-    // bind(this, 'onChange');
-    // bind(this, 'onCursorActivity');
-    // bind(this, 'onFocus');
-    // bind(this, 'onBlur');
+    this.onChange = this.onChange.bind(this);
+    this.onChanges = this.onChanges.bind(this);
+    this.onCursorActivity = this.onCursorActivity.bind(this);
+    this.onFocus = this.onFocus.bind(this);
+    this.onBlur = this.onBlur.bind(this);
 
     cm.on('changes', this.onChanges);
     cm.on('change', this.onChange);
@@ -64,6 +62,7 @@ export class CodeMirror5Adapter {
     this.callbacks = cb;
   }
 
+  /** 简单执行 `this.changeInProgress = true;` */
   onChange() {
     // By default, CodeMirror's event order is the following:
     // 1. 'change', 2. 'cursorActivity', 3. 'changes'.
@@ -113,21 +112,23 @@ export class CodeMirror5Adapter {
     return this.cm.getValue();
   }
 
+  /** 根据cm选区计算自定义选区对象 */
   getSelection() {
     const cm = this.cm;
 
     const selectionList = cm.listSelections();
     const ranges = [];
     for (let i = 0; i < selectionList.length; i++) {
-      ranges[i] = new Selection.Range(
+      ranges[i] = new Range(
         cm.indexFromPos(selectionList[i].anchor),
         cm.indexFromPos(selectionList[i].head),
       );
     }
+
     return new Selection(ranges);
   }
 
-  setSelection(selection) {
+  setSelection(selection: Selection) {
     const ranges = [];
     for (let i = 0; i < selection.ranges.length; i++) {
       const range = selection.ranges[i];
@@ -211,6 +212,7 @@ export class CodeMirror5Adapter {
     }
   }
 
+  /** 调用 CodeMirror5Adapter.applyOperationToCodeMirror */
   applyOperation(operation) {
     this.ignoreNextChange = true;
     CodeMirror5Adapter.applyOperationToCodeMirror(operation, this.cm);
@@ -224,6 +226,11 @@ export class CodeMirror5Adapter {
     this.cm.redo = redoFn;
   }
 
+  /** Converts a CodeMirror change array (as obtained from the 'changes' event
+   * in CodeMirror v4) or single change or linked list of changes (as returned
+   * by the 'change' event in CodeMirror prior to version 4) into a
+   * TextOperation and its inverse and returns them as a two-element array.
+   */
   static operationFromCodeMirrorChanges(changes, doc) {
     // Approach: Replay the changes, beginning with the most recent one, and
     // construct the operation and its inverse. We have to convert the position
@@ -326,6 +333,13 @@ export class CodeMirror5Adapter {
     return [operation, inverse];
   }
 
+  /** Singular form for backwards compatibility */
+  static operationFromCodeMirrorChange(changes, doc) {
+    CodeMirror5Adapter.operationFromCodeMirrorChanges(changes, doc);
+  }
+
+  /** Apply an operation to a CodeMirror instance.
+   */
   static applyOperationToCodeMirror(operation, cm) {
     cm.operation(function () {
       const ops = operation.ops;

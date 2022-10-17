@@ -18,7 +18,7 @@ export class WrappedOperation {
   // }
 
   apply(str: string) {
-    return this.wrapped.apply.apply(this.wrapped, str);
+    return this.wrapped.apply(str);
   }
 
   invert() {

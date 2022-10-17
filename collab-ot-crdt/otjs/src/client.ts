@@ -150,15 +150,18 @@ class Synchronized {
 }
 
 /** Singleton */
-var synchronized_ = new Synchronized();
+const synchronized_ = new Synchronized();
 
+/**
+ * 处理客户端的同步状态，包括 Synchronized、AwaitingConfirm、AwaitingWithBuffer
+ */
 export class Client {
-  revision: any;
+  /** the next expected revision number */
+  revision: number;
   state: Synchronized;
-  static AwaitingWithBuffer: Synchronized;
 
-  constructor(revision) {
-    this.revision = revision; // the next expected revision number
+  constructor(revision: number) {
+    this.revision = revision;
     this.state = synchronized_; // start state
   }
 

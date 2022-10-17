@@ -1,10 +1,16 @@
 import type { Socket } from 'socket.io-client';
 
+import type { Selection } from './selection';
+
+/**
+ * 在客户端初始化监听服务端发来的socket事件，然后执行已注册的对应函数
+ */
 export class SocketIOAdapter {
   socket: Socket;
-  callbacks: any;
+  /** 存放服务端发来消息后，在客户端待执行的事件函数 */
+  callbacks: Record<string, (...args: any[]) => void>;
 
-  constructor(socket) {
+  constructor(socket: Socket) {
     this.socket = socket;
 
     const self = this;
@@ -35,14 +41,16 @@ export class SocketIOAdapter {
 
   // 发送本地操作
   sendOperation(revision, operation, selection) {
-    // console.log('socket.client.sendOperation ->', {
-    //   revision, operation, selection,
-    // });
+    console.log('soc.sendOperation, ', {
+      revision,
+      operation,
+      selection,
+    });
     this.socket.emit('operation', revision, operation, selection);
   }
 
   // 发送当前光标所处位置
-  sendSelection(selection) {
+  sendSelection(selection: Selection) {
     // console.log('socket.client.sendSelection ->', {
     //   selection,
     // });
@@ -54,13 +62,22 @@ export class SocketIOAdapter {
     this.callbacks = cb;
   }
 
-  // 分发不同的远端Client操作给对应方法处理
-  trigger(event, ...rest) {
-    const args = Array.prototype.slice.call(arguments, 1);
-    // console.log('SocketIOAdapter.trigger ->', event, args);
-    const action = this.callbacks && this.callbacks[event];
-    if (action) {
-      action.apply(this, args);
+  // trigger(event, ...rest) {
+  //   const args = Array.prototype.slice.call(arguments, 1);
+  //   // console.log('SocketIOAdapter.trigger ->', event, args);
+  //   const cb = this.callbacks && this.callbacks[event];
+  //   if (cb) {
+  //     cb.apply(this, args);
+  //   }
+  // }
+
+  /**
+   * 触发执行已注册的event类型的cb
+   */
+  trigger(event: string, ...restArgs: any[]) {
+    const cb = this.callbacks && this.callbacks[event];
+    if (cb) {
+      cb.apply(this, restArgs);
     }
   }
 }

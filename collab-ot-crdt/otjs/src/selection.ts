@@ -1,8 +1,8 @@
 import { TextOperation } from './text-operation';
 
 export class Range {
-  anchor: any;
-  head: any;
+  anchor: number;
+  head: number;
 
   constructor(anchor, head) {
     this.anchor = anchor;
@@ -51,7 +51,7 @@ export class Range {
 export class Selection {
   ranges: Range[];
   position: any;
-  static Range: any;
+  // static Range: any;
 
   constructor(ranges) {
     this.ranges = ranges || [];

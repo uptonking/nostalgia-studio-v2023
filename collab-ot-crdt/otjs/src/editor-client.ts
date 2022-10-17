@@ -1,5 +1,7 @@
 import { AwaitingWithBuffer, Client } from './client';
+import { CodeMirror5Adapter } from './codemirror5-adapter';
 import { Selection } from './selection';
+import { SocketIOAdapter } from './socketio-adapter';
 import { TextOperation } from './text-operation';
 import { UndoManager } from './undo-manager';
 import { WrappedOperation } from './wrapped-operation';
@@ -25,30 +27,6 @@ class SelfMeta {
     return new SelfMeta(
       this.selectionBefore.transform(operation),
       this.selectionAfter.transform(operation),
-    );
-  }
-}
-
-class OtherMeta {
-  clientId: any;
-  selection: any;
-
-  constructor(clientId, selection) {
-    this.clientId = clientId;
-    this.selection = selection;
-  }
-
-  transform(operation) {
-    return new OtherMeta(
-      this.clientId,
-      this.selection && this.selection.transform(operation),
-    );
-  }
-
-  static fromJSON(obj) {
-    return new OtherMeta(
-      obj.clientId,
-      obj.selection && Selection.fromJSON(obj.selection),
     );
   }
 }
@@ -134,23 +112,30 @@ class OtherClient {
   }
 }
 
+/**
+ * 注册callbacks到editorAdapter和serverAdapter
+ */
 export class EditorClient extends Client {
-  serverAdapter: any;
-  editorAdapter: any;
+  serverAdapter: SocketIOAdapter;
+  editorAdapter: CodeMirror5Adapter;
   undoManager: UndoManager;
-  clients: any;
-  clientListEl: any;
-  selection: any;
+  clients: Record<string, OtherClient>;
+  /** 显示客户端数量的dom元素 */
+  clientListEl: HTMLElement;
+  selection: Selection;
 
-  constructor(revision, clients, serverAdapter, editorAdapter) {
+  constructor(
+    revision: number,
+    clients: Record<string, Record<'selection' | 'name', any>>,
+    serverAdapter: SocketIOAdapter,
+    editorAdapter: CodeMirror5Adapter,
+  ) {
     super(revision);
-    // Client.call(this, revision);
-    console.log('EditorClient.this ->', this);
     this.serverAdapter = serverAdapter;
     this.editorAdapter = editorAdapter;
     this.undoManager = new UndoManager();
 
-    this.initializeClientList();
+    this.initializeClientListView();
     this.initializeClients(clients);
 
     const self = this;
@@ -236,7 +221,10 @@ export class EditorClient extends Client {
     });
   }
 
-  addClient(clientId, clientObj) {
+  addClient(
+    clientId: string,
+    clientObj: { name: string; selection: Selection },
+  ) {
     this.clients[clientId] = new OtherClient(
       clientId,
       this.clientListEl,
@@ -246,7 +234,9 @@ export class EditorClient extends Client {
     );
   }
 
-  initializeClients(clients) {
+  initializeClients(
+    clients: Record<string, Record<'selection' | 'name', any>>,
+  ) {
     this.clients = {};
     for (const clientId in clients) {
       if (clients.hasOwnProperty(clientId)) {
@@ -278,11 +268,12 @@ export class EditorClient extends Client {
     delete this.clients[clientId];
   }
 
-  initializeClientList() {
+  initializeClientListView() {
     this.clientListEl = document.createElement('ul');
   }
 
-  applyUnredo(operation) {
+  /**  */
+  applyUnRedo(operation) {
     this.undoManager.add(
       operation.invert(this.editorAdapter.getValue()),
       undefined,
@@ -299,7 +290,7 @@ export class EditorClient extends Client {
       return;
     }
     this.undoManager.performUndo(function (o) {
-      self.applyUnredo(o);
+      self.applyUnRedo(o);
     });
   }
 
@@ -309,7 +300,7 @@ export class EditorClient extends Client {
       return;
     }
     this.undoManager.performRedo(function (o) {
-      self.applyUnredo(o);
+      self.applyUnRedo(o);
     });
   }
 
@@ -321,7 +312,7 @@ export class EditorClient extends Client {
     const compose =
       this.undoManager.undoStack.length > 0 &&
       inverse.shouldBeComposedWithInverted(
-        last(this.undoManager.undoStack).wrapped,
+        getLastElement(this.undoManager.undoStack).wrapped,
       );
     const inverseMeta = new SelfMeta(this.selection, selectionBefore);
     this.undoManager.add(new WrappedOperation(inverse, inverseMeta), compose);
@@ -346,13 +337,14 @@ export class EditorClient extends Client {
     this.sendSelection(null);
   }
 
-  sendSelection(selection) {
+  sendSelection(selection: Selection) {
     if (this.state instanceof AwaitingWithBuffer) {
       return;
     }
     this.serverAdapter.sendSelection(selection);
   }
 
+  /** 未使用 */
   sendOperation(revision, operation) {
     this.serverAdapter.sendOperation(
       revision,
@@ -361,6 +353,7 @@ export class EditorClient extends Client {
     );
   }
 
+  /** 未使用 */
   applyOperation(operation) {
     this.editorAdapter.applyOperation(operation);
     this.updateSelection();
@@ -411,21 +404,48 @@ function hueFromName(name) {
   return a / 360;
 }
 
-// Set Const.prototype.__proto__ to Super.prototype
-function inherit(Const, Super) {
-  function F() {}
-  F.prototype = Super.prototype;
-  Const.prototype = new F();
-  Const.prototype.constructor = Const;
-}
-
-function last(arr) {
+function getLastElement(arr: any[]) {
   return arr[arr.length - 1];
 }
 
-// Remove an element from the DOM.
-function removeElement(el) {
+/** Remove an element from the `el` DOM. */
+function removeElement(el: HTMLElement) {
   if (el.parentNode) {
     el.parentNode.removeChild(el);
+  }
+}
+
+/** 手动实现继承: Set Child.prototype.__proto__ to Super.prototype */
+function inherit(Child, Super) {
+  function F() {}
+  F.prototype = Super.prototype;
+  Child.prototype = new F();
+  Child.prototype.constructor = Child;
+}
+
+/**
+ * @deprecated 未使用，待移除
+ */
+class OtherMeta {
+  clientId: any;
+  selection: any;
+
+  constructor(clientId, selection) {
+    this.clientId = clientId;
+    this.selection = selection;
+  }
+
+  transform(operation) {
+    return new OtherMeta(
+      this.clientId,
+      this.selection && this.selection.transform(operation),
+    );
+  }
+
+  static fromJSON(obj) {
+    return new OtherMeta(
+      obj.clientId,
+      obj.selection && Selection.fromJSON(obj.selection),
+    );
   }
 }

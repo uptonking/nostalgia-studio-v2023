@@ -57,8 +57,8 @@ export class SocketIOAdapter {
     this.socket.emit('selection', selection);
   }
 
-  // 注册远端Client操作的处理事件
-  registerCallbacks(cb) {
+  /** 注册cb到当前类，缺点是只能注册一次，不能添加、删除、修改 */
+  registerCallbacks(cb: Record<string, (...args: any[]) => void>) {
     this.callbacks = cb;
   }
 

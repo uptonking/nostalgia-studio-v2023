@@ -1,4 +1,4 @@
-import { AwaitingWithBuffer, Client } from './client';
+import { AwaitingWithBuffer, OperationClient } from './client';
 import { CodeMirror5Adapter } from './codemirror5-adapter';
 import { Selection } from './selection';
 import { SocketIOAdapter } from './socketio-adapter';
@@ -6,11 +6,12 @@ import { TextOperation } from './text-operation';
 import { UndoManager } from './undo-manager';
 import { WrappedOperation } from './wrapped-operation';
 
+/** 一个operation相关的选区数据 */
 class SelfMeta {
-  selectionBefore: any;
-  selectionAfter: any;
+  selectionBefore: Selection;
+  selectionAfter: Selection;
 
-  constructor(selectionBefore, selectionAfter) {
+  constructor(selectionBefore: Selection, selectionAfter: Selection) {
     this.selectionBefore = selectionBefore;
     this.selectionAfter = selectionAfter;
   }
@@ -19,11 +20,11 @@ class SelfMeta {
     return new SelfMeta(this.selectionAfter, this.selectionBefore);
   }
 
-  compose(other) {
+  compose(other: SelfMeta) {
     return new SelfMeta(this.selectionBefore, other.selectionAfter);
   }
 
-  transform(operation) {
+  transform(operation: TextOperation) {
     return new SelfMeta(
       this.selectionBefore.transform(operation),
       this.selectionAfter.transform(operation),
@@ -31,20 +32,27 @@ class SelfMeta {
   }
 }
 
+/** 除自己外其他客户端的视图相关的数据 */
 class OtherClient {
   /** 当前服务端维持的文本变更版本号（version） */
-  id: any;
-  listEl: any;
-  editorAdapter: any;
-  name: any;
+  id: string;
+  listEl: HTMLElement;
   li: HTMLLIElement;
-  hue: any;
+  editorAdapter: CodeMirror5Adapter;
+  name: string;
+  hue: string;
   color: string;
   lightColor: string;
-  selection: any;
-  mark: any;
+  selection: Selection;
+  mark: { clear: () => void };
 
-  constructor(id, listEl, editorAdapter, name?: string, selection?: Selection) {
+  constructor(
+    id: string,
+    listEl: HTMLElement,
+    editorAdapter: CodeMirror5Adapter,
+    name?: string,
+    selection?: Selection,
+  ) {
     this.id = id;
     this.listEl = listEl;
     this.editorAdapter = editorAdapter;
@@ -115,12 +123,12 @@ class OtherClient {
 /**
  * 注册callbacks到editorAdapter和serverAdapter
  */
-export class EditorClient extends Client {
+export class EditorClient extends OperationClient {
   serverAdapter: SocketIOAdapter;
   editorAdapter: CodeMirror5Adapter;
   undoManager: UndoManager;
   clients: Record<string, OtherClient>;
-  /** 显示客户端数量的dom元素 */
+  /** 显示客户端元数据的dom元素 */
   clientListEl: HTMLElement;
   selection: Selection;
 
@@ -138,67 +146,80 @@ export class EditorClient extends Client {
     this.initializeClientListView();
     this.initializeClients(clients);
 
-    const self = this;
+    this.onChange = this.onChange.bind(this);
+    this.onSelectionChange = this.onSelectionChange.bind(this);
+    this.onBlur = this.onBlur.bind(this);
+    this.undo = this.undo.bind(this);
+    this.redo = this.redo.bind(this);
+    this.onClientLeft = this.onClientLeft.bind(this);
+    this.getClientObject = this.getClientObject.bind(this);
+    this.serverAck = this.serverAck.bind(this);
+    this.applyServer = this.applyServer.bind(this);
+    this.transformSelection = this.transformSelection.bind(this);
+    this.serverReconnect = this.serverReconnect.bind(this);
+    this.applyUnRedo = this.applyUnRedo.bind(this);
+
+    // / 会注册到editorAdapter的cb
 
     this.editorAdapter.registerCallbacks({
       // 本地文本有变更
-      change: function (operation, inverse) {
-        self.onChange(operation, inverse);
+      change: (operation: TextOperation, inverse: TextOperation) => {
+        this.onChange(operation, inverse);
       },
       // 本地光标位置有变更
-      selectionChange: function () {
-        self.onSelectionChange();
+      selectionChange: () => {
+        this.onSelectionChange();
       },
       // 编辑器失焦
-      blur: function () {
-        self.onBlur();
+      blur: () => {
+        this.onBlur();
       },
     });
-    this.editorAdapter.registerUndo(function () {
-      self.undo();
+    this.editorAdapter.registerUndo(() => {
+      this.undo();
     });
-    this.editorAdapter.registerRedo(function () {
-      self.redo();
+    this.editorAdapter.registerRedo(() => {
+      this.redo();
     });
 
+    // /会注册到serverAdapter的cb
+
     this.serverAdapter.registerCallbacks({
-      client_left: function (clientId) {
-        self.onClientLeft(clientId);
+      client_left: (clientId) => {
+        this.onClientLeft(clientId);
       },
-      set_name: function (clientId, name) {
-        self.getClientObject(clientId).setName(name);
+      set_name: (clientId, name) => {
+        this.getClientObject(clientId).setName(name);
       },
-      ack: function () {
-        self.serverAck();
+      ack: () => {
+        this.serverAck();
       },
-      operation: function (operation) {
-        self.applyServer(TextOperation.fromJSON(operation));
+      operation: (operation) => {
+        this.applyServer(TextOperation.fromJSON(operation));
       },
-      selection: function (clientId, selection) {
+      selection: (clientId, selection) => {
         if (selection) {
-          self
-            .getClientObject(clientId)
-            .updateSelection(
-              self.transformSelection(Selection.fromJSON(selection)),
-            );
+          this.getClientObject(clientId).updateSelection(
+            this.transformSelection(Selection.fromJSON(selection)),
+          );
         } else {
-          self.getClientObject(clientId).removeSelection();
+          this.getClientObject(clientId).removeSelection();
         }
       },
-      clients: function (clients) {
+      clients: (clients) => {
         let clientId;
-        for (clientId in self.clients) {
+        for (clientId in this.clients) {
           if (
-            self.clients.hasOwnProperty(clientId) &&
+            this.clients.hasOwnProperty(clientId) &&
             !clients.hasOwnProperty(clientId)
           ) {
-            self.onClientLeft(clientId);
+            this.onClientLeft(clientId);
           }
         }
 
         for (clientId in clients) {
           if (clients.hasOwnProperty(clientId)) {
-            const clientObject = self.getClientObject(clientId);
+            const clientObject = this.getClientObject(clientId);
 
             if (clients[clientId].name) {
               clientObject.setName(clients[clientId].name);
@@ -206,17 +227,17 @@ export class EditorClient extends Client {
 
             const selection = clients[clientId].selection;
             if (selection) {
-              self.clients[clientId].updateSelection(
-                self.transformSelection(Selection.fromJSON(selection)),
+              this.clients[clientId].updateSelection(
+                this.transformSelection(Selection.fromJSON(selection)),
               );
             } else {
-              self.clients[clientId].removeSelection();
+              this.clients[clientId].removeSelection();
             }
           }
         }
       },
-      reconnect: function () {
-        self.serverReconnect();
+      reconnect: () => {
+        this.serverReconnect();
       },
     });
   }
@@ -234,6 +255,7 @@ export class EditorClient extends Client {
     );
   }
 
+  /** 将clients信息封装成 OtherClient对象 */
   initializeClients(
     clients: Record<string, Record<'selection' | 'name', any>>,
   ) {
@@ -285,40 +307,44 @@ export class EditorClient extends Client {
   }
 
   undo() {
-    const self = this;
     if (!this.undoManager.canUndo()) {
       return;
     }
-    this.undoManager.performUndo(function (o) {
-      self.applyUnRedo(o);
+    this.undoManager.performUndo((o) => {
+      this.applyUnRedo(o);
     });
   }
 
   redo() {
-    const self = this;
     if (!this.undoManager.canRedo()) {
       return;
     }
-    this.undoManager.performRedo(function (o) {
-      self.applyUnRedo(o);
+    this.undoManager.performRedo((o) => {
+      this.applyUnRedo(o);
     });
   }
 
-  onChange(textOperation, inverse) {
+  /** 将operation添加到undoManager，然后发送operation到服务端，然后立即在本地执行op */
+  onChange(textOperation: TextOperation, inverse: TextOperation) {
     const selectionBefore = this.selection;
     this.updateSelection();
-    const meta = new SelfMeta(selectionBefore, this.selection);
-    const operation = new WrappedOperation(textOperation, meta);
-    const compose =
+    // const meta = new SelfMeta(selectionBefore, this.selection);
+    // const operation = new WrappedOperation(textOperation, meta);
+    const shouldCompose =
       this.undoManager.undoStack.length > 0 &&
       inverse.shouldBeComposedWithInverted(
         getLastElement(this.undoManager.undoStack).wrapped,
       );
     const inverseMeta = new SelfMeta(this.selection, selectionBefore);
-    this.undoManager.add(new WrappedOperation(inverse, inverseMeta), compose);
+    this.undoManager.add(
+      new WrappedOperation(inverse, inverseMeta),
+      shouldCompose,
+    );
+    // 将operation发送到服务端，然后在本地编辑器客户端执行
     this.applyClient(textOperation);
   }
 
+  /** 根据cm选区计算自定义选区对象 */
   updateSelection() {
     this.selection = this.editorAdapter.getSelection();
   }
@@ -344,8 +370,8 @@ export class EditorClient extends Client {
     this.serverAdapter.sendSelection(selection);
   }
 
-  /** 未使用 */
-  sendOperation(revision, operation) {
+  /** 实现父类OperationClient定义的方法，通过server发送op */
+  sendOperation(revision: number, operation: TextOperation) {
     this.serverAdapter.sendOperation(
       revision,
       operation.toJSON(),
@@ -353,7 +379,7 @@ export class EditorClient extends Client {
     );
   }
 
-  /** 未使用 */
+  /** 实现父类OperationClient定义的方法 */
   applyOperation(operation) {
     this.editorAdapter.applyOperation(operation);
     this.updateSelection();

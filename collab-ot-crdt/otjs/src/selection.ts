@@ -51,9 +51,8 @@ export class Range {
 export class Selection {
   ranges: Range[];
   position: any;
-  // static Range: any;
 
-  constructor(ranges) {
+  constructor(ranges?: Range[]) {
     this.ranges = ranges || [];
   }
 
@@ -86,8 +85,9 @@ export class Selection {
     return other;
   }
 
-  transform(other) {
-    for (var i = 0, newRanges = []; i < this.ranges.length; i++) {
+  transform(other: TextOperation) {
+    const newRanges: Range[] = [];
+    for (let i = 0; i < this.ranges.length; i++) {
       newRanges[i] = this.ranges[i].transform(other);
     }
     return new Selection(newRanges);

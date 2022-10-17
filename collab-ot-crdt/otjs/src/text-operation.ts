@@ -236,9 +236,9 @@ export class TextOperation {
       } else {
         throw new Error(
           "This shouldn't happen: op1: " +
-            JSON.stringify(op1) +
-            ', op2: ' +
-            JSON.stringify(op2),
+          JSON.stringify(op1) +
+          ', op2: ' +
+          JSON.stringify(op2),
         );
       }
     }
@@ -291,6 +291,7 @@ export class TextOperation {
       .join(', ');
   }
 
+  /** 注意返回值不是字符串，而是数组。Converts operation into a JSON value. */
   toJSON() {
     return this.ops;
   }

@@ -16,10 +16,12 @@ socket.on('doc', (data: any) => {
   // 👇🏻 待优化，每次协作服务端发来新数据，都会替换codeMirror实例，试试只更新属性而不是替换实例
   const cm5 = CodeMirror.fromTextArea(editorEle, { lineNumbers: true });
   cm5.setValue(data.str);
+  // 对codeMirror实例注册事件函数
   const editorAdapter = new CodeMirror5Adapter(cm5);
 
   const serverAdapter = new SocketIOAdapter(socket);
 
+  // 注册callbacks到editorAdapter和serverAdapter
   const client = new EditorClient(
     data.revision,
     data.clients,

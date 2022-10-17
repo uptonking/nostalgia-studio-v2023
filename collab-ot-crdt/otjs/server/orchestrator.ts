@@ -8,8 +8,9 @@ import { WrappedOperation } from '../src/wrapped-operation';
  * - 这里继承nodejs内置的EventEmitter是为了给子类用，子类不能多继承
  */
 export class Orchestrator extends EventEmitter {
-  /** 放在内存中的全局文档，未持久化 */
+  /** 放在内存中的全局文档内容字符串，未持久化，方便新加入客户端能直接获取到最新内容 */
   document: string;
+  /** 全局文档的编辑操作记录，注意内存溢出问题 */
   operations: WrappedOperation[];
 
   constructor(document: string, operations: WrappedOperation[]) {

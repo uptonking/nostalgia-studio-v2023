@@ -29,7 +29,7 @@ export class CodeMirror5Adapter {
   ignoreNextChange: boolean;
   changeInProgress: boolean;
   selectionChanged: boolean;
-  callbacks: any;
+  callbacks: Record<string, (...args: any[]) => void>;
 
   constructor(cm: Editor) {
     this.cm = cm;
@@ -58,10 +58,6 @@ export class CodeMirror5Adapter {
     this.cm.off('blur', this.onBlur);
   }
 
-  registerCallbacks(cb) {
-    this.callbacks = cb;
-  }
-
   /** 简单执行 `this.changeInProgress = true;` */
   onChange() {
     // By default, CodeMirror's event order is the following:
@@ -73,8 +69,13 @@ export class CodeMirror5Adapter {
     this.changeInProgress = true;
   }
 
+  /**
+   * 从codemirror内容的变化计算出TextOperation，再执行外部注册的change/selectionChange
+   * @param _
+   * @param changes CodeMirror changeObj array {from, to, text, removed, origin}[]
+   */
   onChanges(_, changes) {
-    // console.log('changes ->', changes);
+    console.log('changes ->', changes);
     if (!this.ignoreNextChange) {
       const pair = CodeMirror5Adapter.operationFromCodeMirrorChanges(
         changes,
@@ -83,6 +84,7 @@ export class CodeMirror5Adapter {
       // [operation, inverse]
       this.trigger('change', pair[0], pair[1]);
     }
+
     if (this.selectionChanged) {
       this.trigger('selectionChange');
     }
@@ -196,20 +198,12 @@ export class CodeMirror5Adapter {
       }
     }
     return {
-      clear: function () {
+      clear: () => {
         for (let i = 0; i < selectionObjects.length; i++) {
           selectionObjects[i].clear();
         }
       },
     };
-  }
-
-  trigger(event, ...rest) {
-    const args = Array.prototype.slice.call(arguments, 1);
-    const action = this.callbacks && this.callbacks[event];
-    if (action) {
-      action.apply(this, args);
-    }
   }
 
   /** 调用 CodeMirror5Adapter.applyOperationToCodeMirror */
@@ -226,12 +220,34 @@ export class CodeMirror5Adapter {
     this.cm.redo = redoFn;
   }
 
-  /** Converts a CodeMirror change array (as obtained from the 'changes' event
-   * in CodeMirror v4) or single change or linked list of changes (as returned
-   * by the 'change' event in CodeMirror prior to version 4) into a
-   * TextOperation and its inverse and returns them as a two-element array.
+  /** 注册cb到当前类，缺点是只能注册一次，不能添加、删除、修改 */
+  registerCallbacks(cb: Record<string, (...args: any[]) => void>) {
+    this.callbacks = cb;
+  }
+
+  // trigger(event, ...rest) {
+  //   const args = Array.prototype.slice.call(arguments, 1);
+  //   const action = this.callbacks && this.callbacks[event];
+  //   if (action) {
+  //     action.apply(this, args);
+  //   }
+  // }
+
+  trigger(event: string, ...restArgs: any[]) {
+    const cb = this.callbacks && this.callbacks[event];
+    if (cb) {
+      cb.apply(this, restArgs);
+    }
+  }
+
+  /** Converts a CodeMirror change array ( from 'changes' event ) or single change
+   * or linked list of changes (as returned by the 'change' event in CodeMirror prior to v4)
+   * into a TextOperation and its inverse, and returns them as a two-element array.
    */
-  static operationFromCodeMirrorChanges(changes, doc) {
+  static operationFromCodeMirrorChanges(
+    changes: string | any[],
+    doc: Editor,
+  ): [TextOperation, TextOperation] {
     // Approach: Replay the changes, beginning with the most recent one, and
     // construct the operation and its inverse. We have to convert the position
     // in the pre-change coordinate system to an index. We have a method to
@@ -247,9 +263,7 @@ export class CodeMirror5Adapter {
     let operation = new TextOperation().retain(docEndLength);
     let inverse = new TextOperation().retain(docEndLength);
 
-    let indexFromPos = function (pos) {
-      return doc.indexFromPos(pos);
-    };
+    let indexFromPos = (pos) => doc.indexFromPos(pos)
 
     function last(arr) {
       return arr[arr.length - 1];
@@ -390,7 +404,7 @@ function maxPos(a, b) {
   return posLe(a, b) ? b : a;
 }
 
-function codemirrorDocLength(doc) {
+function codemirrorDocLength(doc: Editor) {
   return (
     doc.indexFromPos({ line: doc.lastLine(), ch: 0 }) +
     doc.getLine(doc.lastLine()).length

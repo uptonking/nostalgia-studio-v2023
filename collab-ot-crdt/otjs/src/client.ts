@@ -6,7 +6,9 @@ import { TextOperation } from './text-operation';
  * - 等待服务端 ack，同时缓存本地的新操作
  */
 export class AwaitingWithBuffer {
+  /** 已发送但未收到服务端确认的 */
   outstanding: TextOperation;
+  /** 因为未收到服务端确认，而积压在本地的未发送但可组合的op */
   buffer: TextOperation;
 
   constructor(outstanding: TextOperation, buffer: TextOperation) {
@@ -72,7 +74,7 @@ export class AwaitingWithBuffer {
  * - 本地已发送操作至服务端，正在等待回应，且本地没有其他操作
  */
 class AwaitingConfirm {
-  /** Save the pending operation */
+  /** Save the pending operation，已发送但未收到服务端确认的 */
   outstanding: TextOperation;
 
   constructor(outstanding: TextOperation) {

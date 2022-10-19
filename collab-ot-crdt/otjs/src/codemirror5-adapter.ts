@@ -263,7 +263,7 @@ export class CodeMirror5Adapter {
     let operation = new TextOperation().retain(docEndLength);
     let inverse = new TextOperation().retain(docEndLength);
 
-    let indexFromPos = (pos) => doc.indexFromPos(pos)
+    let indexFromPos = (pos) => doc.indexFromPos(pos);
 
     function last(arr) {
       return arr[arr.length - 1];

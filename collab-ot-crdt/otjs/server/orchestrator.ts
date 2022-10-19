@@ -36,7 +36,7 @@ export class Orchestrator extends EventEmitter {
       operation = transform(operation, concurrentOperations[i])[0];
     }
 
-    // ... and apply that on the document.
+    // ... and apply that on the document. 得到服务端最新且正确的文档
     this.document = operation.apply(this.document);
     // Store operation in history.
     this.operations.push(operation);

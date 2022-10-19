@@ -52,7 +52,7 @@ module.exports = {
     'no-constant-condition': 1,
     'no-prototype-builtins': 1,
     eqeqeq: 1,
-    'one-var': [0, 'never'],
+    'one-var': [2, 'never'],
     'guard-for-in': 1,
     complexity: 0,
     'prefer-const': 1,

@@ -121,7 +121,9 @@ class OtherClient {
 }
 
 /**
- * 注册callbacks到editorAdapter和serverAdapter
+ * - 编辑文档的每一个操作对应一次版本号顺序递增，客户端和服务端各自维持一个版本号
+ * - 客户端版本号始终小于等于服务端版本号
+ * - 注册callbacks到editorAdapter和serverAdapter
  */
 export class EditorClient extends OperationClient {
   serverAdapter: SocketIOAdapter;

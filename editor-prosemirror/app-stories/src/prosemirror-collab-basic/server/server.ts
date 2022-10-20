@@ -146,7 +146,7 @@ export class Waiting {
     this.ip = ip;
     this.finish = finish;
     this.done = false;
-    /** 👇🏻 每个waiting对象都会使请求的response进入等待状态 */
+    /** 👇🏻 每个waiting对象都会使请求的response进入等待状态，默认等待N分钟*/
     resp.setTimeout(1000 * 60 * 0.5, () => {
       this.abort();
       this.send(Output.json({}));
@@ -198,7 +198,7 @@ handle(
     // return the data immediately.
     if (data.steps.length || data.comment.length)
       return outputEvents(inst, data);
-    // If the server version matches the given version,
+    // 👉🏻 If the server version matches the given version,
     // wait until a new version is published to return the event data.
     const wait = new Waiting(resp, inst, reqIP(req), () => {
       wait.send(outputEvents(inst, inst.getEvents(version, commentVersion)));

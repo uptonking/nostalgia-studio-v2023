@@ -68,7 +68,7 @@ export class EditorSocketIOServer extends Orchestrator {
     });
   }
 
-  /** 处理操作接收 */
+  /** 处理operation接收 */
   onOperation(socket: Socket, revision: number, operation, selection) {
     let wrapped: WrappedOperation;
     try {
@@ -84,6 +84,7 @@ export class EditorSocketIOServer extends Orchestrator {
 
     try {
       const clientId = socket.id;
+      // 👇🏻 拿到发来操作oA对应的服务端执行形式 oA'，并转发给其他客户端，其他客户端可直接执行而不必ot
       const wrappedPrime = this.receiveOperation(revision, wrapped);
       console.log('new operation: ' + JSON.stringify(wrapped));
       this.getClient(clientId).selection = wrappedPrime.meta;

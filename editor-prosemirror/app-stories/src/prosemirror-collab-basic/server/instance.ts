@@ -72,6 +72,8 @@ export class Instance {
     clientID: number,
   ) {
     this.checkVersion(version);
+    // 👇🏻 客户端v1和服务端v1，服务端才会接收step；
+    // 若其他客户端op落后了，则忽略而等待resend，以此保证所有客户端都和服务端同步
     if (this.version !== version) return false;
     let doc = this.doc;
     const maps = [];
@@ -82,6 +84,7 @@ export class Instance {
       maps.push(steps[i].getMap());
     }
     this.doc = doc;
+    // 将新steps保存到服务端，更新this.version
     this.steps = this.steps.concat(steps);
     this.version += steps.length;
     if (this.steps.length > MAX_STEP_HISTORY) {

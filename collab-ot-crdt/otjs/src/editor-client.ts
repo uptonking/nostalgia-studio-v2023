@@ -24,6 +24,7 @@ class SelfMeta {
     return new SelfMeta(this.selectionBefore, other.selectionAfter);
   }
 
+  /** 执行转换selection */
   transform(operation: TextOperation) {
     return new SelfMeta(
       this.selectionBefore.transform(operation),
@@ -383,6 +384,7 @@ export class EditorClient extends OperationClient {
 
   /** 实现父类OperationClient定义的方法 */
   applyOperation(operation) {
+    // 不考虑undo、redo时，服务端发来其他客户端操作oA'是可以直接执行的
     this.editorAdapter.applyOperation(operation);
     this.updateSelection();
     this.undoManager.transform(new WrappedOperation(operation, null));
@@ -451,29 +453,3 @@ function inherit(Child, Super) {
   Child.prototype.constructor = Child;
 }
 
-/**
- * @deprecated 未使用，待移除
- */
-class OtherMeta {
-  clientId: any;
-  selection: any;
-
-  constructor(clientId, selection) {
-    this.clientId = clientId;
-    this.selection = selection;
-  }
-
-  transform(operation) {
-    return new OtherMeta(
-      this.clientId,
-      this.selection && this.selection.transform(operation),
-    );
-  }
-
-  static fromJSON(obj) {
-    return new OtherMeta(
-      obj.clientId,
-      obj.selection && Selection.fromJSON(obj.selection),
-    );
-  }
-}

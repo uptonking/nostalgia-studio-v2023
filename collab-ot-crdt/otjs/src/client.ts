@@ -100,7 +100,7 @@ class AwaitingConfirm implements ClientServerMessenger {
     return new AwaitingWithBuffer(this.outstanding, operation);
   }
 
-  /** 收到服务端新op，转换后再apply到本地
+  /** 在等待确认阶段，收到服务端新op，ot转换后再apply到本地
    */
   applyServer(client, operation: TextOperation) {
     // This is another client's operation. Visualization:
@@ -182,7 +182,9 @@ const synchronized_ = new Synchronized();
  * 处理客户端的同步状态，包括 Synchronized、AwaitingConfirm、AwaitingWithBuffer
  */
 export class OperationClient implements ClientServerMessenger {
-  /** the next expected revision number */
+  /** the next expected revision number.
+  * - 只在收到服务端的ack和发来的op时才加1
+   */
   revision: number;
   /** 客户端operation的状态  */
   state: Synchronized | AwaitingConfirm | AwaitingWithBuffer;

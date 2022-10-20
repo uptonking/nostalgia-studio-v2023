@@ -35,7 +35,9 @@ io.on('connection', (socket) => {
     socket.emit('init', currentDoc);
   });
 
-  // 👇🏻️ 服务端只接收编辑操作数据steps并转发，自身并没有处理逻辑
+  // 👇🏻️ 服务端只接收编辑操作数据steps并转发，自身并没有处理逻辑和transform逻辑
+  // ❌ 不应该每次发送全量doc
+  // ❓ 协同编辑情况下，是否缺少应该接收一个versionA的op1，忽略另一个versionA的op2
   socket.on('update', (data) => {
     const { version, steps, clientId, doc } = data;
     console.log(';; ver-clientId-steps ', version, clientId, steps);

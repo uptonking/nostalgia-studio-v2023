@@ -196,7 +196,7 @@ export class EditorClient extends OperationClient {
       ack: () => {
         this.serverAck();
       },
-      operation: (operation) => {
+      operation: (operation) => { // 收到服务端发来的新op
         this.applyServer(TextOperation.fromJSON(operation));
       },
       selection: (clientId, selection) => {
@@ -326,7 +326,7 @@ export class EditorClient extends OperationClient {
     });
   }
 
-  /** 将operation添加到undoManager，然后发送operation到服务端，然后立即在本地执行op */
+  /** 将operation添加到undoManager，根据client状态，可能发送operation到服务端，可能在本地合并op */
   onChange(textOperation: TextOperation, inverse: TextOperation) {
     const selectionBefore = this.selection;
     this.updateSelection();
@@ -342,7 +342,7 @@ export class EditorClient extends OperationClient {
       new WrappedOperation(inverse, inverseMeta),
       shouldCompose,
     );
-    // 将operation发送到服务端，然后在本地编辑器客户端执行
+    // 根据client的状态，可能将operation发送到服务端，也可能转换状态，可能和本地积压的op合并
     this.applyClient(textOperation);
   }
 

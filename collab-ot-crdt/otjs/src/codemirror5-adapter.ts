@@ -75,7 +75,7 @@ export class CodeMirror5Adapter {
    * @param changes CodeMirror changeObj array {from, to, text, removed, origin}[]
    */
   onChanges(_, changes) {
-    console.log('changes ->', changes);
+    console.log('cm-changes ->', changes);
     if (!this.ignoreNextChange) {
       const pair = CodeMirror5Adapter.operationFromCodeMirrorChanges(
         changes,
@@ -245,7 +245,7 @@ export class CodeMirror5Adapter {
    * into a TextOperation and its inverse, and returns them as a two-element array.
    */
   static operationFromCodeMirrorChanges(
-    changes: string | any[],
+    changes: any[],
     doc: Editor,
   ): [TextOperation, TextOperation] {
     // Approach: Replay the changes, beginning with the most recent one, and
@@ -265,11 +265,9 @@ export class CodeMirror5Adapter {
 
     let indexFromPos = (pos) => doc.indexFromPos(pos);
 
-    function last(arr) {
-      return arr[arr.length - 1];
-    }
+    const last = (arr) => arr[arr.length - 1];
 
-    function sumLengths(strArr) {
+    function sumLengths(strArr: string[]) {
       if (strArr.length === 0) {
         return 0;
       }
@@ -277,7 +275,7 @@ export class CodeMirror5Adapter {
       for (let i = 0; i < strArr.length; i++) {
         sum += strArr[i].length;
       }
-      return sum + strArr.length - 1;
+      return sum + strArr.length - 1; // ❓ 为什么减一
     }
 
     function updateIndexFromPos(indexFromPos, change) {
@@ -346,6 +344,7 @@ export class CodeMirror5Adapter {
 
     return [operation, inverse];
   }
+  // ---- end for operationFromCodeMirrorChanges
 
   /** Singular form for backwards compatibility */
   static operationFromCodeMirrorChange(changes, doc) {

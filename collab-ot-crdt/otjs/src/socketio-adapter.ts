@@ -28,6 +28,7 @@ export class SocketIOAdapter {
         self.trigger('ack');
       })
       .on('operation', function (clientId, operation, selection) {
+        // 第三个参数服务端name是meta
         self.trigger('operation', operation);
         self.trigger('selection', clientId, selection);
       })
@@ -41,11 +42,11 @@ export class SocketIOAdapter {
 
   // 发送本地操作
   sendOperation(revision, operation, selection) {
-    console.log('soc.sendOperation, ', {
-      revision,
-      operation,
-      selection,
-    });
+    // console.log('soc.sendOperation, ', {
+    //   revision,
+    //   operation,
+    //   selection,
+    // });
     this.socket.emit('operation', revision, operation, selection);
   }
 

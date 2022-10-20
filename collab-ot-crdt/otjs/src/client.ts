@@ -1,14 +1,22 @@
 import { TextOperation } from './text-operation';
 
+/** 客户端、服务端通信时要执行的操作 */
+interface ClientServerMessenger {
+  applyClient: (client, operation: TextOperation) => any;
+  applyServer: (client, operation: TextOperation) => any;
+  serverAck: (client) => any;
+  transformSelection: (selection) => any;
+}
+
 /**
  * In the 'AwaitingWithBuffer' state, the client is waiting for an operation
  * to be acknowledged by the server while buffering the edits the user makes
  * - 等待服务端 ack，同时缓存本地的新操作
  */
-export class AwaitingWithBuffer {
-  /** 已发送但未收到服务端确认的 */
+export class AwaitingWithBuffer implements ClientServerMessenger {
+  /** 已发送但未收到服务端确认的op */
   outstanding: TextOperation;
-  /** 因为未收到服务端确认，而积压在本地的未发送但可组合的op */
+  /** 因为未收到服务端确认，而积压在本地的未发送但可合并的op */
   buffer: TextOperation;
 
   constructor(outstanding: TextOperation, buffer: TextOperation) {
@@ -17,17 +25,19 @@ export class AwaitingWithBuffer {
     this.buffer = buffer;
   }
 
-  // 只要没收到服务端 ack，会一直缓存本地新增的操作
+  /** 若未收到服务端ack，就会一直缓存本地新增的操作 */
   applyClient(client, operation: TextOperation) {
     // Compose the user's changes onto the buffer
     const newBuffer = this.buffer.compose(operation);
     return new AwaitingWithBuffer(this.outstanding, newBuffer);
   }
 
+  /** 收到服务端新op，转换后再apply到本地
+   */
   applyServer(client, operation: TextOperation) {
     // Operation comes from another client
     //
-    //                       /\
+    //         本地           /\   服务端
     //     this.outstanding /  \ operation
     //                     /    \
     //                    /\    /
@@ -50,9 +60,11 @@ export class AwaitingWithBuffer {
     return new AwaitingWithBuffer(pair1[0], pair2[0]);
   }
 
+  /** The pending operation has been acknowledged
+   * => send buffer
+   * - 发送缓存在客户端的buffer，设置状态为AwaitingConfirm，版本号加1
+   */
   serverAck(client) {
-    // The pending operation has been acknowledged
-    // => send buffer
     client.sendOperation(client.revision, this.buffer);
     return new AwaitingConfirm(this.buffer);
   }
@@ -73,7 +85,7 @@ export class AwaitingWithBuffer {
  * to the server and is still waiting for an acknowledgement.
  * - 本地已发送操作至服务端，正在等待回应，且本地没有其他操作
  */
-class AwaitingConfirm {
+class AwaitingConfirm implements ClientServerMessenger {
   /** Save the pending operation，已发送但未收到服务端确认的 */
   outstanding: TextOperation;
 
@@ -81,16 +93,19 @@ class AwaitingConfirm {
     this.outstanding = outstanding;
   }
 
+  /** 客户端新op会缓存，转换状态 */
   applyClient(client, operation: TextOperation) {
     // When the user makes an edit, don't send the operation immediately,
     // instead switch to 'AwaitingWithBuffer' state
     return new AwaitingWithBuffer(this.outstanding, operation);
   }
 
+  /** 收到服务端新op，转换后再apply到本地
+   */
   applyServer(client, operation: TextOperation) {
     // This is another client's operation. Visualization:
     //
-    //                   /\
+    //      本地          /\   服务端
     // this.outstanding /  \ operation
     //                 /    \
     //                 \    /
@@ -104,9 +119,10 @@ class AwaitingConfirm {
     return new AwaitingConfirm(pair[0]);
   }
 
+  /** The client's operation has been acknowledged
+   * => switch to synchronized state
+   */
   serverAck(client) {
-    // The client's operation has been acknowledged
-    // => switch to synchronized state
     return synchronized_;
   }
 
@@ -114,9 +130,10 @@ class AwaitingConfirm {
     return selection.transform(this.outstanding);
   }
 
+  /** The confirm didn't come because the client was disconnected.
+   * Now that it has reconnected, we resend the outstanding operation.
+   */
   resend(client) {
-    // The confirm didn't come because the client was disconnected.
-    // Now that it has reconnected, we resend the outstanding operation.
     client.sendOperation(client.revision, this.outstanding);
   }
 }
@@ -124,9 +141,9 @@ class AwaitingConfirm {
 /**
  * In the 'Synchronized' state, there is no pending operation that the client
  * has sent to the server.
- * - 此时本地文档状态与服务端一致
+ * - 此时本地文档与服务端一致，且无本地新op和服务端新op
  */
-class Synchronized {
+class Synchronized implements ClientServerMessenger {
   /** 发送op，转换为 AwaitingConfirm 状态等待服务端回应
    */
   applyClient(client: OperationClient, operation: TextOperation) {
@@ -145,14 +162,13 @@ class Synchronized {
     return this;
   }
 
-  /** Synchronized 状态下不会收到 ack
-   */
+  /** Synchronized 状态下不会收到 ack */
   serverAck(client) {
     throw new Error('There is no pending operation.');
   }
 
   /** Nothing to do because the latest server state and client state are the same.
-   * Synchronized 状态下本地光标位置与服务端一致
+   * - Synchronized 状态下本地光标位置与服务端一致
    */
   transformSelection(x) {
     return x;
@@ -165,7 +181,7 @@ const synchronized_ = new Synchronized();
 /**
  * 处理客户端的同步状态，包括 Synchronized、AwaitingConfirm、AwaitingWithBuffer
  */
-export class OperationClient {
+export class OperationClient implements ClientServerMessenger {
   /** the next expected revision number */
   revision: number;
   /** 客户端operation的状态  */
@@ -184,7 +200,6 @@ export class OperationClient {
    * - 本地有操作变化时触发，3种state都有实现 applyClient 同名方法
    */
   applyClient(operation: TextOperation) {
-    // console.log(';;');
     const newState = this.state.applyClient(this, operation);
     this.setState(newState);
   }

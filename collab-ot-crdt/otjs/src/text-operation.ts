@@ -18,12 +18,12 @@ export class TextOperation {
    */
   // ops: Array<string | number>;
   ops: any[];
-  /** 在输入字符串上指针是否移动。
+  /** 在输入字符串上指针移动的长度/距离。
    * - An operation's baseLength is the length of every string the operation
    * can be applied to.
    */
   baseLength: number;
-  /** 结果字符串是否增长。
+  /** 结果字符串的长度。
    * - The targetLength is the length of every string that results from applying
    * the operation on a valid input string.
    */
@@ -112,6 +112,7 @@ export class TextOperation {
   /** Delete ops: Delete the next n characters at the current position.
    * - Represented by negative ints.
    * - baseLength右移N，targetLength不变
+   * - 参数可为正，但添加到指令数组ops中的delete操作为负数
    */
   delete(n: string | number): TextOperation {
     if (typeof n === 'string') {
@@ -213,123 +214,6 @@ export class TextOperation {
       }
     }
     return inverse;
-  }
-
-  /** 🤔 将operation2和当前operation对象合并。
-   * - compose的实现和transform类似，罗列两个OP所有的组合可能性，分别作出对应的逻辑处理
-   * - Compose merges two consecutive operations into one operation, that
-   * preserves the changes of both. Or, in other words, for each input string S
-   * and a pair of consecutive operations A and B,
-   * `apply(apply(S, A), B) = apply(S, compose(A, B))` must hold.
-   */
-  compose(operation2: TextOperation): TextOperation {
-    const operation1 = this;
-    if (operation1.targetLength !== operation2.baseLength) {
-      throw new Error(
-        'The base length of the second operation has to be the target length of the first operation',
-      );
-    }
-    /** the combined operation to return */
-    const combinedOperation = new TextOperation();
-    const ops1 = operation1.ops;
-    const ops2 = operation2.ops; // for fast access
-    let i1 = 0;
-    let i2 = 0;
-    // current ops
-    let op1 = ops1[i1++];
-    let op2 = ops2[i2++];
-    while (true) {
-      // Dispatch on the type of op1 and op2
-      if (typeof op1 === 'undefined' && typeof op2 === 'undefined') {
-        // end condition: both ops1 and ops2 have been processed
-        break;
-      }
-
-      if (TextOperation.isDelete(op1)) {
-        combinedOperation.delete(op1);
-        op1 = ops1[i1++];
-        continue;
-      }
-      if (TextOperation.isInsert(op2)) {
-        combinedOperation.insert(op2);
-        op2 = ops2[i2++];
-        continue;
-      }
-
-      if (typeof op1 === 'undefined') {
-        throw new Error(
-          'Cannot compose operations: first operation is too short.',
-        );
-      }
-      if (typeof op2 === 'undefined') {
-        throw new Error(
-          'Cannot compose operations: first operation is too long.',
-        );
-      }
-
-      if (TextOperation.isRetain(op1) && TextOperation.isRetain(op2)) {
-        if (op1 > op2) {
-          combinedOperation.retain(op2);
-          op1 = op1 - op2;
-          op2 = ops2[i2++];
-        } else if (op1 === op2) {
-          combinedOperation.retain(op1);
-          op1 = ops1[i1++];
-          op2 = ops2[i2++];
-        } else {
-          combinedOperation.retain(op1);
-          op2 = op2 - op1;
-          op1 = ops1[i1++];
-        }
-      } else if (TextOperation.isInsert(op1) && TextOperation.isDelete(op2)) {
-        if (op1.length > -op2) {
-          op1 = op1.slice(-op2);
-          op2 = ops2[i2++];
-        } else if (op1.length === -op2) {
-          op1 = ops1[i1++];
-          op2 = ops2[i2++];
-        } else {
-          op2 = op2 + op1.length;
-          op1 = ops1[i1++];
-        }
-      } else if (TextOperation.isInsert(op1) && TextOperation.isRetain(op2)) {
-        if (op1.length > op2) {
-          combinedOperation.insert(op1.slice(0, op2));
-          op1 = op1.slice(op2);
-          op2 = ops2[i2++];
-        } else if (op1.length === op2) {
-          combinedOperation.insert(op1);
-          op1 = ops1[i1++];
-          op2 = ops2[i2++];
-        } else {
-          combinedOperation.insert(op1);
-          op2 = op2 - op1.length;
-          op1 = ops1[i1++];
-        }
-      } else if (TextOperation.isRetain(op1) && TextOperation.isDelete(op2)) {
-        if (op1 > -op2) {
-          combinedOperation.delete(op2);
-          op1 = op1 + op2;
-          op2 = ops2[i2++];
-        } else if (op1 === -op2) {
-          combinedOperation.delete(op2);
-          op1 = ops1[i1++];
-          op2 = ops2[i2++];
-        } else {
-          combinedOperation.delete(op1);
-          op2 = op2 + op1;
-          op1 = ops1[i1++];
-        }
-      } else {
-        throw new Error(
-          "This shouldn't happen: op1: " +
-          JSON.stringify(op1) +
-          ', op2: ' +
-          JSON.stringify(op2),
-        );
-      }
-    }
-    return combinedOperation;
   }
 
   equals(other: TextOperation) {
@@ -441,6 +325,143 @@ export class TextOperation {
     return false;
   }
 
+  /** 🤔 将operation2和当前op对象合并，注意操作有序 op1 -> op2，前提 op1.targetLength === op2.baseLength。
+   * - compose的实现和transform类似，罗列两个OP所有的组合可能性，分别作出对应的逻辑处理
+   * - 在合并过程中，始终要保证a和b是对当前字符串同一位置所进行的操作。
+   * - compose一般是同一用户的两个操作且参数有序，transform一般是不同用户的两个操作且参数可无序
+   * - Compose merges two consecutive operations into one operation, that
+   * preserves the changes of both. Or, in other words, for each input string S
+   * and a pair of consecutive operations A and B,
+   * `apply(apply(S, A), B) = apply(S, compose(A, B))` must hold.
+   */
+  compose(operation2: TextOperation): TextOperation {
+    const operation1 = this;
+    if (operation1.targetLength !== operation2.baseLength) {
+      throw new Error(
+        'The base length of the second operation has to be the target length of the first operation',
+      );
+    }
+    /** the combined operation to return */
+    const combinedOperation = new TextOperation();
+    const ops1 = operation1.ops;
+    const ops2 = operation2.ops; // for fast access
+    let i1 = 0;
+    let i2 = 0;
+    // current ops
+    let op1 = ops1[i1++];
+    let op2 = ops2[i2++];
+    while (true) {
+      // 👉🏻 👀 思路：合并A-B指令时，A-del和B-ins优先，插入和删除相同长度后结果为空故不输出指令
+      // - A-retain和B-retain只保留retain公共长度，剩余的长度从insert、delete中计算
+      // Dispatch on the type of op1 and op2
+      if (typeof op1 === 'undefined' && typeof op2 === 'undefined') {
+        // end condition: both ops1 and ops2 have been processed
+        break;
+      }
+
+      // /处理2个优先指令，A-del和B-ins，这在合并后一定会保留
+      if (TextOperation.isDelete(op1)) {
+        // a的删除操作是第一优先级，因为b的3操作(r/i/d)是基于a的操作之后进行的动作，因此需要先执行a的删除操作。
+        combinedOperation.delete(op1);
+        op1 = ops1[i1++];
+        continue;
+      }
+      if (TextOperation.isInsert(op2)) {
+        // b的插入操作是第二优先级，在相同位置下，b的添加操作，从结果上看，都是先于a的保留或者添加的。
+        combinedOperation.insert(op2);
+        op2 = ops2[i2++];
+        continue;
+      }
+
+      if (typeof op1 === 'undefined') {
+        throw new Error(
+          'Cannot compose operations: first operation is too short.',
+        );
+      }
+      if (typeof op2 === 'undefined') {
+        throw new Error(
+          'Cannot compose operations: first operation is too long.',
+        );
+      }
+
+      // /去掉2个优先指令，还剩2x2=4种情况，A-i/r，B-d/r
+      if (TextOperation.isRetain(op1) && TextOperation.isRetain(op2)) {
+        // 如果A-retain/B-retain，retain两个op的公共长度
+        if (op1 > op2) {
+          combinedOperation.retain(op2);
+          op1 = op1 - op2;
+          op2 = ops2[i2++];
+        } else if (op1 === op2) {
+          combinedOperation.retain(op1);
+          op1 = ops1[i1++];
+          op2 = ops2[i2++];
+        } else {
+          combinedOperation.retain(op1);
+          op2 = op2 - op1;
+          op1 = ops1[i1++];
+        }
+      } else if (TextOperation.isInsert(op1) && TextOperation.isDelete(op2)) {
+        // 如果A-insert/B-delete，那合并后的公共长度会为0，不输出指令，继续处理剩下的指令
+        if (op1.length > -op2) {
+          op1 = op1.slice(-op2); // 'abc'.slice(1) => 'bc'
+          op2 = ops2[i2++];
+        } else if (op1.length === -op2) {
+          op1 = ops1[i1++];
+          op2 = ops2[i2++];
+        } else {
+          op2 = op2 + op1.length;
+          op1 = ops1[i1++];
+        }
+      } else if (TextOperation.isInsert(op1) && TextOperation.isRetain(op2)) {
+        // 如果A-insert/B-retain，那么我们就插入两个操作的公共长度，保留操作长度更长的部分，继续遍历
+        if (op1.length > op2) {
+          combinedOperation.insert(op1.slice(0, op2));
+          op1 = op1.slice(op2);
+          op2 = ops2[i2++];
+        } else if (op1.length === op2) {
+          combinedOperation.insert(op1);
+          op1 = ops1[i1++];
+          op2 = ops2[i2++];
+        } else {
+          combinedOperation.insert(op1);
+          op2 = op2 - op1.length;
+          op1 = ops1[i1++];
+        }
+      } else if (TextOperation.isRetain(op1) && TextOperation.isDelete(op2)) {
+        // 如果A-retain/B-delete，那么我们就删除两个操作的公共长度，保留操作长度更长的剩余部分，继续遍历
+        if (op1 > -op2) {
+          combinedOperation.delete(op2);
+          op1 = op1 + op2;
+          op2 = ops2[i2++];
+        } else if (op1 === -op2) {
+          combinedOperation.delete(op2);
+          op1 = ops1[i1++];
+          op2 = ops2[i2++];
+        } else {
+          combinedOperation.delete(op1);
+          op2 = op2 + op1;
+          op1 = ops1[i1++];
+        }
+      } else {
+        throw new Error(
+          "This shouldn't happen: op1: " +
+          JSON.stringify(op1) +
+          ', op2: ' +
+          JSON.stringify(op2),
+        );
+      }
+    }
+
+    return combinedOperation;
+  }
+
+  /** `Util.transform(a, b)`  ===  `a.transform(b)`
+   * - (oA, oB) => [oA', oB']
+   */
+  transform(operation2: TextOperation): [TextOperation, TextOperation] {
+    return TextOperation.transform(this, operation2);
+  }
+
   //   OT算法核心transform
   //       docM      两客户端文档内容相同
   //     /      \
@@ -451,11 +472,11 @@ export class TextOperation {
   //     \      /
   //       docV      两客户端文档内容相同
 
-  /** ot核心算法 (oA, oB) => [oA', oB']
+  /** ot核心算法 (oA, oB) => [oA', oB']，前提是两操作的baseLength长度相同，版本也相同
    * - oB'.apply(oA.apply(str))  ===  oA'.apply(oB.apply(str)) 最终一致
    * - 核心原理是通过循环去将两个操作重新进行排列组合，按照操作的类型作出不同的逻辑处理
    * - 原子指令只有3种，组合起来最多9种情况
-   * - 每个operation的baseLength必须和输入字符串相等，通过每轮循环虚拟指针移动相同长度实现
+   * - 每个operation的baseLength必须和输入字符串相等，通过每轮循环虚拟指针移动相同距离实现
    * - Transform takes two operations A and B that happened concurrently and
    * produces two operations A' and B' (in an array) such that
    * `apply(apply(S, A), B') = apply(apply(S, B), A')`.
@@ -464,8 +485,9 @@ export class TextOperation {
   static transform(
     operation1: TextOperation,
     operation2: TextOperation,
-  ): TextOperation[] {
+  ): [TextOperation, TextOperation] {
     if (operation1.baseLength !== operation2.baseLength) {
+      // 必须保证操作的输入字符串长度相同
       throw new Error('Both operations have to have the same base length');
     }
 
@@ -479,22 +501,24 @@ export class TextOperation {
     let op1 = ops1[i1++];
     let op2 = ops2[i2++];
     while (true) {
+      // 👉🏻 👀 原理：每次循环的起点，两op在输入字符串的虚拟指针位置相同，每轮虚拟指针移动距离也相同
+      // 思路小结，两op的insert和公共retain长度不变，然后计算新的retain和delete
       // At every iteration of the loop, the imaginary cursor that both
       // operation1 and operation2 have that operates on the input string must
       // have the same position in the input string.
-      // 👉🏻 原理：每次循环的起点，两op在输入字符串的虚拟指针位置相同，每轮虚拟指针移动距离也相同
 
       if (typeof op1 === 'undefined' && typeof op2 === 'undefined') {
         // end condition: both ops1 and ops2 have been processed
         break;
       }
 
-      // 如果oA/oB中至少一个是插入指令，就插入一个，忽略另一个
+      // 优先插入指令，如果oA/oB中至少一个是插入指令，就执行一个插入，另一个直接retain移动光标；
+      // 还剩下2x2=4种情况，A-r/d，B-r/d
       // next two cases: one or both ops are insert ops
       // => insert the string in the corresponding prime operation, skip it in
       // the other one. If both op1 and op2 are insert ops, prefer op1.
       if (TextOperation.isInsert(op1)) {
-        // 若oA是插入，则oA'一定也是插入，此时oB'👀只移动，因为oB'肯定不是删除，本轮虚指针要移动相同距离
+        // 若oA是插入，则oA'一定也是插入，此时oB'👀只移动，因为oB'肯定不是删除，要保证本轮虚指针移动相同距离
         operation1prime.insert(op1);
         operation2prime.retain(op1.length);
         op1 = ops1[i1++];
@@ -520,7 +544,7 @@ export class TextOperation {
 
       let minLen: number;
       if (TextOperation.isRetain(op1) && TextOperation.isRetain(op2)) {
-        // Simple case: retain/retain
+        // A-retain/B-retain，则retain公共长度
         if (op1 > op2) {
           minLen = op2;
           op1 = op1 - op2;
@@ -537,6 +561,7 @@ export class TextOperation {
         operation1prime.retain(minLen);
         operation2prime.retain(minLen);
       } else if (TextOperation.isDelete(op1) && TextOperation.isDelete(op2)) {
+        // A-delete/B-delete，因为前面insert占用了长度，公共的删除就不产生指令
         // Both operations delete the same string at the same position. We don't
         // need to produce any operations, we just skip over the delete ops and
         // handle the case that one operation deletes more than the other.
@@ -550,8 +575,8 @@ export class TextOperation {
           op2 = op2 - op1;
           op1 = ops1[i1++];
         }
-        // next two cases: delete/retain and retain/delete
       } else if (TextOperation.isDelete(op1) && TextOperation.isRetain(op2)) {
+        // A-delete/B-retain，A'应该删除，B'因为insert占用了retain，此时B'不retain
         if (-op1 > op2) {
           minLen = op2;
           op1 = op1 + op2;
@@ -567,6 +592,7 @@ export class TextOperation {
         }
         operation1prime.delete(minLen);
       } else if (TextOperation.isRetain(op1) && TextOperation.isDelete(op2)) {
+        // A-retain/B-delete，B'应该删除，A'因为insert占用了retain，此时A'不retain
         if (op1 > -op2) {
           minLen = -op2;
           op1 = op1 + op2;

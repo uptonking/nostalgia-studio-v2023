@@ -1,8 +1,8 @@
 const baseConfig = require('../../config/jest.base');
 const pkgConfig = {
-  displayName: 'sample-react-app-ts',
-  rootDir: '../..',
-  setupFilesAfterEnv: ['<rootDir>/config/setupTests.js'],
+  displayName: 'sample-react-comp',
+  rootDir: '.',
+  // setupFilesAfterEnv: ['<rootDir>/config/setupTests.js'],
 };
 
 module.exports = {

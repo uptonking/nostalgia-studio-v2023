@@ -183,7 +183,7 @@ const synchronized_ = new Synchronized();
  */
 export class OperationClient implements ClientServerMessenger {
   /** the next expected revision number.
-  * - 只在收到服务端的ack和发来的op时才加1
+   * - 只在收到服务端的ack和发来的op时才加1
    */
   revision: number;
   /** 客户端operation的状态  */

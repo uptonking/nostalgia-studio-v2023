@@ -445,9 +445,9 @@ export class TextOperation {
       } else {
         throw new Error(
           "This shouldn't happen: op1: " +
-          JSON.stringify(op1) +
-          ', op2: ' +
-          JSON.stringify(op2),
+            JSON.stringify(op1) +
+            ', op2: ' +
+            JSON.stringify(op2),
         );
       }
     }

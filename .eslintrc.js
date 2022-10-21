@@ -51,6 +51,7 @@ module.exports = {
     'no-cond-assign': 1,
     'no-constant-condition': 1,
     'no-prototype-builtins': 1,
+    'no-case-declarations': 1,
     eqeqeq: 1,
     'one-var': [2, 'never'],
     'guard-for-in': 1,

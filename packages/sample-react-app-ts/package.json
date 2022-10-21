@@ -1,6 +1,7 @@
 {
   "name": "@examples-hub/sample-react-app-ts",
   "version": "1.1.1111",
+  "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "scripts": {
@@ -10,11 +11,12 @@
     "build:types": "",
     "demo": "cross-env APP_ENV=reactfresh webpack serve --hot --config webpack/webpack.config.demo.js",
     "start": "npm run demo",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test1": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@examples-hub/sample-react-components-ts": "1.0.0",
+    "@examples-hub/sample-react-components-ts": "1.1.1111",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

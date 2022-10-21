@@ -197,7 +197,8 @@ export class EditorClient extends OperationClient {
       ack: () => {
         this.serverAck();
       },
-      operation: (operation) => { // 收到服务端发来的新op
+      operation: (operation) => {
+        // 收到服务端发来的新op
         this.applyServer(TextOperation.fromJSON(operation));
       },
       selection: (clientId, selection) => {
@@ -452,4 +453,3 @@ function inherit(Child, Super) {
   Child.prototype = new F();
   Child.prototype.constructor = Child;
 }
-

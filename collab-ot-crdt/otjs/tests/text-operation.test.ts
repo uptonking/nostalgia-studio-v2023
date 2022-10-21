@@ -120,6 +120,6 @@ describe('TextOperation', () => {
       const afterBaPrime = baPrime.apply(str);
       expect(abPrime.equals(baPrime)).toBe(true);
       expect(afterAbPrime).toBe(afterBaPrime);
-    })
+    }),
   );
 });

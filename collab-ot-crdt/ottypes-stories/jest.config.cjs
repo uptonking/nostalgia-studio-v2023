@@ -1,7 +1,7 @@
 const baseConfig = require('../../config/jest.base');
 const pkgConfig = {
-  displayName: 'sample-vanilla-es6',
-  rootDir: '../..',
+  displayName: 'ottypes-examples-stories',
+  rootDir: '.',
   // setupFilesAfterEnv: ['<rootDir>/config/setupTests.js'],
 };
 

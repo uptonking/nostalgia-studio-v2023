@@ -1,78 +1,67 @@
 import { type } from 'ot-json0';
 
-const render = (state) => {
+type AppDoc = {
+  title: string;
+  ticker: number;
+  content: string;
+};
+
+/** render state to dom */
+const render = (state: AppDoc) => {
   const title = document.getElementById('title');
   title!.innerText = state.title;
-  const div = document.getElementById('number');
-  div!.innerText = state.ticker;
+  const number = document.getElementById('number');
+  number!.innerText = state.ticker + '';
   const content = document.getElementById('content');
   if (state.content != null) {
-    return (div!.innerHTML = state.content);
+    content!.innerHTML = state.content;
   }
 };
 
-const flush = () => {
-  if (inflight || pending == null) {
-    return;
-  }
-  inflight = pending;
-  pending = null;
-  return ws.send(
-    JSON.stringify({
-      a: 'op',
-      op: inflight,
-      v: version,
-    }),
-  );
-};
+const COLLAB_BASE_URL = 'localhost:4001';
+const wsUrl = 'ws://' + COLLAB_BASE_URL;
+const ws = new WebSocket(wsUrl);
 
-const ws = new WebSocket(
-  'ws://' + window.location.host + window.location.pathname,
-);
-
-ws.onerror = function (err) {
-  return console.error(err);
-};
-
-let state = null;
+let state: AppDoc | null = null;
 let version = 0;
+/** 本地客户端一个新产生的op，初始状态是pending，然后可转换成inflight */
 let pending = null;
+/** 已发送到服务端，但未收到ack的op */
 let inflight = null;
 
-ws.onmessage = function (msg: any) {
+/** 收到服务端发来的消息，只有3种类型，init/ack/op */
+ws.onmessage = (event) => {
   let op;
-  let _ref;
-  let _ref1;
-  msg = JSON.parse(msg.data);
-  console.log('websocket msg', msg);
+  const msg = JSON.parse(event.data);
+  console.log(';; ws-data', msg);
+
   switch (msg.a) {
-    case 'i':
+    case 'i': // initial data
       state = msg.initial;
-      return render(state);
+      version = msg.v;
+      state && render(state);
+      break;
     case 'ack':
       version++;
       inflight = null;
-      return flush();
+      flush();
+      break;
     case 'op':
       if (msg.v > version) {
-        console.warn('Future operation !?');
+        console.warn('Future operation ? msg.v/local.v ', msg.v, version);
         return;
       }
       op = msg.op;
       if (inflight) {
-        (_ref = type.transformX(inflight, op)),
-          (inflight = _ref[0]),
-          (op = _ref[1]);
+        [inflight, op] = type.transformX(inflight, op);
       }
       if (pending) {
-        (_ref1 = type.transformX(pending, op)),
-          (pending = _ref1[0]),
-          (op = _ref1[1]);
+        [pending, op] = type.transformX(pending, op);
       }
       version++;
       state = type.apply(state, op);
-      render(state);
-      return ws.send(
+      state && render(state);
+      ws.send(
         JSON.stringify({
           a: 'ack',
           v: msg.v,
@@ -81,20 +70,88 @@ ws.onmessage = function (msg: any) {
   }
 };
 
-ws.onopen = function () {
-  return console.log('connected');
+ws.onopen = () => {
+  console.log('connected');
+};
+ws.onclose = () => {
+  console.log('disconnected');
+};
+ws.onerror = (err) => {
+  console.error(err);
 };
 
-// const submit = (op) => {
-//   type.checkValidOp(op);
-//   state = type.apply(state, op);
-//   if (pending) {
-//     pending = type.compose(pending, op);
-//   } else {
-//     pending = op;
-//   }
-//   setTimeout(function () {
-//     return flush();
-//   }, 0);
-//   return render(state);
-// };
+/** 发送op到服务端，将pending转为inflight，然后清空pending */
+const flush = () => {
+  if (inflight || !pending) {
+    // 若已发送而等待ack，则不必；若不存在新op，则也不必
+    return;
+  }
+  inflight = pending;
+  pending = null;
+  ws.send(
+    JSON.stringify({
+      a: 'op',
+      op: inflight,
+      v: version,
+    }),
+  );
+};
+
+/** 用来模拟在本地客户端产生一个新op时触发的逻辑 */
+const submit = (op) => {
+  type.checkValidOp(op);
+  state = type.apply(state, op);
+  if (pending) {
+    pending = type.compose(pending, op);
+  } else {
+    pending = op;
+  }
+
+  // Allow other ops to be composed together during this event frame
+  setTimeout(() => {
+    flush();
+  }, 0);
+
+  state && render(state);
+};
+
+const mockSubmit = () => {
+  submit([
+    {
+      p: ['ticker'],
+      na: 1,
+    },
+    {
+      p: ['content'],
+      od: state?.content,
+      oi: 'Some <b>html</b> ' + Math.random(),
+    },
+  ]);
+};
+const mockSubmit1 = () => {
+  submit([
+    {
+      p: ['ticker'],
+      na: 1,
+    },
+  ]);
+};
+const mockSubmit2 = () => {
+  submit([
+    {
+      p: ['content'],
+      od: state?.content,
+      oi: 'Some <b>html</b> ' + Math.random().toString(36).slice(-2),
+    },
+  ]);
+};
+
+document.querySelector('.idNewOp1')?.addEventListener('click', () => {
+  // mockSubmit1();
+  setInterval(() => mockSubmit1(), 2000);
+});
+document.querySelector('.idNewOp2')?.addEventListener('click', () => {
+  // mockSubmit2();
+  setInterval(() => mockSubmit2(), 2000);
+});
+

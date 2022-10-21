@@ -89,6 +89,7 @@ export class EditorSocketIOServer extends Orchestrator {
       console.log('new operation: ' + JSON.stringify(wrapped));
       this.getClient(clientId).selection = wrappedPrime.meta;
       socket.emit('ack');
+      // 👇🏻 将转换后的oA'转发给除sender外的其他所有clients
       socket.broadcast
         .to(this.docId)
         .emit(

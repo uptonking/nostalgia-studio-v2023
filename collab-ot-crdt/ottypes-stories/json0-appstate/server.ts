@@ -1,74 +1,86 @@
+import cors from 'cors';
 import express from 'express';
 import http from 'node:http';
-import repl from 'node:repl';
 import { type } from 'ot-json0';
-import { WebSocketServer } from 'ws';
+import Websocket, { WebSocketServer } from 'ws';
+
+const port = process.env.PORT || 4001;
 
 const app = express();
-// app.use(express["static"]("" + __dirname));
+app.use(cors());
+app.set('port', port);
 
 const httpServer = http.createServer(app);
 const wss = new WebSocketServer({
   server: httpServer,
 });
 
-const replSrv = repl.start({
-  useGlobal: true,
-});
 
-replSrv.context.wss = wss;
+type AppDoc = {
+  loc: string;
+  title: string;
+  ticker: number;
+  content: string;
+};
+
+/** 全局文档内容，未持久化 */
+let state: AppDoc = {
+  loc: 'inbox',
+  title: 'hi json0',
+  ticker: 0,
+  content: 'initial 初始内容',
+};
+/** 全局文档对应的版本 */
+let version = 0;
+/** 映射表，保存未被客户端ack的op，[version, op] */
+const inflight: Record<number, any> = {};
 
 wss.on('connection', function (client) {
-  let inflight;
-  let send;
-  let state;
-  let submit;
-  let timer;
-  let version;
-  console.warn('client connected');
-  state = {
-    loc: 'inbox',
-    title: 'oh hi',
-    ticker: 0,
-    content: '',
-  };
+  console.log('== client connected ', wss.clients.size);
 
-  version = 0;
-  inflight = {};
-  send = (msg) => client.send(JSON.stringify(msg));
+  const send = (msg) => client.send(JSON.stringify(msg));
+  const broadcast = (msg) => {
+    wss.clients.forEach(client1 => {
+      if (client1 !== client && client1.readyState === Websocket.OPEN) {
+        client1.send(JSON.stringify(msg))
+      }
+    })
+  }
 
   send({
     a: 'i',
     initial: state,
+    v: version
   });
 
   client.on('close', function () {
-    return console.warn('client went away');
+    return console.log('== client disconnected');
   });
   client.on('error', function (e) {
     return console.warn('Error in websocket client: ', e.stack);
   });
 
-  client.on('message', function (msg: any) {
-    let e;
+  client.on('message', function (data, isBinary) {
+    console.log(';; on-msg-binary', isBinary, data);
     let op;
     let other;
-    let v;
-    msg = JSON.parse(msg);
-    console.warn('message from client', msg);
+    // @ts-expect-error
+    const msg = JSON.parse(data);
+    // 👇🏻 客户端向服务端发送的消息只有2种，op和ack
     switch (msg.a) {
       case 'op':
-        console.warn('op', msg);
+        // console.log('op', msg);
         try {
           op = msg.op;
           type.checkValidOp(op);
-          v = msg.v;
+          let v = msg.v;
           while (v < version) {
             other = inflight[v];
             if (other == null) {
               console.error('Could not find server op ' + op.v);
               break;
             }
+            // 👇🏻 得到的是转换后的op，注意被转发的不是原op了
             op = type.transform(op, other, 'right');
             v++;
           }
@@ -77,18 +89,22 @@ wss.on('connection', function (client) {
             a: 'ack',
             v: version,
           });
-          return version++;
+          broadcast({
+            a: 'op',
+            v: version,
+            op
+          });
+          version++;
         } catch (_error) {
-          e = _error;
-          return console.error('Could not absorb op frmo client', op, e);
+          console.error('Could not absorb op from client', op, _error);
         }
         break;
       case 'ack':
-        return delete inflight[msg.v];
+        delete inflight[msg.v];
     }
   });
 
-  submit = function (op) {
+  const submit = (op) => {
     type.checkValidOp(op);
     state = type.apply(state, op);
     inflight[version] = op;
@@ -100,34 +116,25 @@ wss.on('connection', function (client) {
     return version++;
   };
 
-  timer = setInterval(function () {
-    return submit([
-      {
-        p: ['ticker'],
-        na: 1,
-      },
-      {
-        p: ['content'],
-        od: state.content,
-        oi: 'Some <b>html</b> ' + Math.random(),
-      },
-    ]);
-  }, 1000);
+  // 👉🏻 仅用于测试，每隔N秒向客户端发送一个op
+  // let timer = setInterval(() => {
+  //   submit([
+  //     {
+  //       p: ['ticker'],
+  //       na: 1,
+  //     },
+  //     {
+  //       p: ['content'],
+  //       od: state.content,
+  //       oi: 'Some <b>html</b> ' + Math.random(),
+  //     },
+  //   ]);
+  // }, 2000);
 
-  replSrv.context.client = client;
-  replSrv.context.submit = submit;
-  replSrv.context.state = state;
-  replSrv.context.version = version;
-  replSrv.context.inflight = inflight;
-  return (replSrv.context.send = send);
 });
 
-const port = 8222;
-
-httpServer.listen(port);
-
-console.warn('server is listening on http://localhost: ' + port + '\n');
-
-replSrv.once('exit', function () {
-  return httpServer.close();
+httpServer.listen(port, () => {
+  console.log('server is listening on http://localhost:' + port + '\n');
 });
+
+

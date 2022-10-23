@@ -1,0 +1,32 @@
+{
+  "name": "@examples-hub/crdt-tories",
+  "version": "1.1.1111",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "build": "rimraf dist && npm run build:prod",
+    "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
+    "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "build:types": "",
+    "demo": "webpack serve --hot --config webpack/webpack.config.demo.cjs",
+    "start": "npm run demo",
+    "server:otjs-server": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./json0-appstate/server.ts",
+    "server": "npm run server:otjs-server",
+    "test": "jest",
+    "test:log": "node index.js --name nested-a"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "polka": "^0.5.2",
+    "sirv": "^2.0.2",
+    "ws": "^8.9.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.3",
+    "nodemon": "^2.0.19",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.9.1"
+  }
+}

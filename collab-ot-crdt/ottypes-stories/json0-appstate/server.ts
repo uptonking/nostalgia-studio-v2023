@@ -15,7 +15,6 @@ const wss = new WebSocketServer({
   server: httpServer,
 });
 
-
 type AppDoc = {
   loc: string;
   title: string;
@@ -40,17 +39,17 @@ wss.on('connection', function (client) {
 
   const send = (msg) => client.send(JSON.stringify(msg));
   const broadcast = (msg) => {
-    wss.clients.forEach(client1 => {
+    wss.clients.forEach((client1) => {
       if (client1 !== client && client1.readyState === Websocket.OPEN) {
-        client1.send(JSON.stringify(msg))
+        client1.send(JSON.stringify(msg));
       }
-    })
-  }
+    });
+  };
 
   send({
     a: 'i',
     initial: state,
-    v: version
+    v: version,
   });
 
   client.on('close', function () {
@@ -92,7 +91,7 @@ wss.on('connection', function (client) {
           broadcast({
             a: 'op',
             v: version,
-            op
+            op,
           });
           version++;
         } catch (_error) {
@@ -130,11 +129,8 @@ wss.on('connection', function (client) {
   //     },
   //   ]);
   // }, 2000);
-
 });
 
 httpServer.listen(port, () => {
   console.log('server is listening on http://localhost:' + port + '\n');
 });
-
-

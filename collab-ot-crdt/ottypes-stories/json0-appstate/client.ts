@@ -11,7 +11,7 @@ const render = (state: AppDoc) => {
   const title = document.getElementById('title');
   title!.innerText = state.title;
   const number = document.getElementById('number');
-  number!.innerText = state.ticker + '';
+  number!.innerText = String(state.ticker);
   const content = document.getElementById('content');
   if (state.content != null) {
     content!.innerHTML = state.content;
@@ -154,4 +154,3 @@ document.querySelector('.idNewOp2')?.addEventListener('click', () => {
   // mockSubmit2();
   setInterval(() => mockSubmit2(), 2000);
 });
-

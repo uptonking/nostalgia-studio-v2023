@@ -88,5 +88,10 @@
   "sort-imports.on-save": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSaveMode": "modificationsIfAvailable",
-  "files.autoSave": "onFocusChange"
+  "files.autoSave": "onFocusChange",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.test.ts,${capture}.spec.ts",
+    "*.js": "${capture}.test.js,${capture}.spec.js"
+  }
 }

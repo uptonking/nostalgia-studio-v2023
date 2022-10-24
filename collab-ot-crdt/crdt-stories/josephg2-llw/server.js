@@ -1,47 +1,48 @@
-import * as crdt from './crdt.js'
-import polka from 'polka'
-import sirv from 'sirv'
-import {WebSocketServer} from 'ws'
-import http from 'http'
-import fs from 'fs'
-import path from 'path'
+import * as crdt from './crdt.js';
+import polka from 'polka';
+import sirv from 'sirv';
+import { WebSocketServer } from 'ws';
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
 
-const dir = path.dirname(new URL(import.meta.url).pathname)
-const app = polka()
-.use(sirv(dir, {
-  dev: true
-}))
+const dir = path.dirname(new URL(import.meta.url).pathname);
+const app = polka().use(
+  sirv(dir, {
+    dev: true,
+  }),
+);
 
-const DB_FILE = 'db2.json'
+const DB_FILE = 'db2.json';
 
 let db = (() => {
   try {
-    const bytes = fs.readFileSync(DB_FILE, 'utf8')
-    return JSON.parse(bytes)
+    const bytes = fs.readFileSync(DB_FILE, 'utf8');
+    return JSON.parse(bytes);
   } catch (e) {
-    if (e.code !== 'ENOENT') throw e
+    if (e.code !== 'ENOENT') throw e;
 
-    console.log('Using new database file')
-    return crdt.create ? crdt.create() : {}
+    console.log('Using new database file');
+    return crdt.create ? crdt.create() : {};
   }
-})()
+})();
 
-console.dir(db, {depth: null})
+console.dir(db, { depth: null });
 
-const clients = new Set()
+const clients = new Set();
 
 const broadcastOp = (op, exclude) => {
-  console.log('broadcast', op)
+  console.log('broadcast', op);
 
   for (const c of clients) {
     if (c !== exclude) {
-      c.send(JSON.stringify(op))
+      c.send(JSON.stringify(op));
     }
   }
-}
+};
 
-const server = http.createServer(app.handler)
-const wss = new WebSocketServer({server})
+const server = http.createServer(app.handler);
+const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws) => {
   console.log(';; ws-clients-num ', wss.clients.size);

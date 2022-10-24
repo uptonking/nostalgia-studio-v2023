@@ -22,7 +22,7 @@ const rerender = () => {
   rawElem.innerText = `
 Internal: ${JSON.stringify(db, null, 2)}
 `;
-};;
+};
 
 /** 👇🏻 每次提交时，先本地执行op，然后每次发送全量数据到服务端 */
 form.onsubmit = (e) => {

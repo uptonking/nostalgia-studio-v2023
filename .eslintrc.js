@@ -32,6 +32,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
   ],
+  // ignorePatterns: ['src/test/*'],
   // 自定义规则，可以覆盖掉extends的配置, 0-off, 1-warn, 2-error
   rules: {
     'no-param-reassign': 1,

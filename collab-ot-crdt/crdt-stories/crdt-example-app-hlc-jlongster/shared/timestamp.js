@@ -237,5 +237,5 @@ export { Timestamp, MutableTimestamp };
 globalThis['Timestamp'] = Timestamp;
 globalThis['MutableTimestamp'] = MutableTimestamp;
 
-console.log(';;murmur ', globalThis['murmur']);
+// console.log(';;murmur ', globalThis['murmur']);
 // console.log(';;win ', window && window['Timestamp']);

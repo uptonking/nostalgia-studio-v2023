@@ -1,10 +1,13 @@
+/** 放在内存的op消息数组 */
 const _messages = [];
+/** 放在内存的本地数据副本，本地主要数据源 */
 const _data = {
   todos: [],
   todoTypes: [],
   todoTypeMapping: [],
 };
 
+/** ui上添加列表项操作会触发执行，根据操作数据生成op-msg */
 function insert(table, row) {
   // This is roughly comparable to assigning a primary key value to the row if
   // it were in a RDBMS.

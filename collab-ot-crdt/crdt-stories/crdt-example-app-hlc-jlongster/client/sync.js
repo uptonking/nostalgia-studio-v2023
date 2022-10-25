@@ -84,6 +84,7 @@ function mapIncomingToLocalMessagesForField(incomingMessages) {
   return incomingFieldMsgToLocalFieldMsgMap;
 }
 
+/** 根据hlc执行crdt更新本地数据 */
 function applyMessages(incomingMessages) {
   const incomingToLocalMsgsForField =
     mapIncomingToLocalMessagesForField(incomingMessages);
@@ -142,6 +143,7 @@ function applyMessages(incomingMessages) {
   _onSync && _onSync();
 }
 
+/** 先在本地执行msg，再广播 */
 function sendMessages(messages) {
   applyMessages(messages);
   sync(messages);
@@ -159,6 +161,7 @@ function onSync(func) {
   _onSync = func;
 }
 
+/** 通过post请求发送msg到服务端 */
 async function sync(initialMessages = [], since = null) {
   if (!_syncEnabled) {
     return;

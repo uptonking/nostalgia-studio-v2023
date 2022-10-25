@@ -1,3 +1,6 @@
+// https://gist.github.com/jed/982883
+// a random v4 UUID of the form xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx
+// Format: {8 chars}-{4 chars}-{4 chars}-{4 chars}-{12 chars}
 !(function (e) {
   if ('object' === typeof exports && 'undefined' !== typeof module)
     module.exports = e();

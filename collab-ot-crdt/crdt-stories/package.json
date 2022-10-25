@@ -10,7 +10,8 @@
     "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
     "build:types": "",
     "demo": "webpack serve --hot --config webpack/webpack.config.demo.cjs",
-    "start": "npm run demo",
+    "demo:crdt-hlc": "serve ./crdt-example-app-hlc-jlongster",
+    "start": "npm run demo:crdt-hlc",
     "server:crdt-hlc": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./crdt-example-app-hlc-jlongster/server/index.js",
     "server": "npm run server:crdt-hlc",
     "test": "jest",
@@ -24,6 +25,7 @@
     "polka": "^0.5.2",
     "sirv": "^2.0.2",
     "ws": "^8.9.0",
+    "serve": "^14.0.1",
     "murmurhash": "^0.0.2",
     "uuid": "^8.0.0"
   },

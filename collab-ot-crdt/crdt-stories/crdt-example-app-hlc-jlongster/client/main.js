@@ -1,10 +1,12 @@
 const qs = document.querySelector.bind(document);
 const qsa = document.querySelectorAll.bind(document);
 
+/** 简单清空内容 qs('#root').innerHTML = '' */
 function clear() {
   qs('#root').innerHTML = '';
 }
 
+/** append str to root element */
 function append(str, root = qs('#root')) {
   const tpl = document.createElement('template');
   tpl.innerHTML = str;
@@ -46,14 +48,20 @@ function getColor(name) {
   return 'bg-gray-100';
 }
 
+/** 全局状态 */
 const uiState = {
   offline: false,
+  /** 控制编辑列表项的弹窗 */
   editingTodo: null,
+  /** 控制添加列表项类型的弹窗 */
   isAddingType: false,
   isDeletingType: false,
 };
 
 let _syncTimer = null;
+/** 在页面无focus的情况下，每隔N=4秒同步一次数据，会触发执行sync()方法
+ * - 这里会初始化clock
+ */
 function backgroundSync() {
   _syncTimer = setInterval(async () => {
     // Don't sync if an input is focused, otherwise if changes come in
@@ -97,6 +105,7 @@ function restoreScroll() {
 }
 
 let _activeElement = null;
+/** 保存document.activeElement的id或className */
 function saveActiveElement() {
   const el = document.activeElement;
   _activeElement = el.id
@@ -117,6 +126,7 @@ function restoreActiveElement() {
   }
 }
 
+/** 列表项类型的下拉多选表单 */
 function renderTodoTypes({ className = '', showBlank } = {}) {
   return `
     <select class="${className} mr-2 bg-transparent shadow border border-gray-300">
@@ -128,6 +138,7 @@ function renderTodoTypes({ className = '', showBlank } = {}) {
   `;
 }
 
+/** 列表项视图 */
 function renderTodos({ root, todos, isDeleted = false }) {
   todos.forEach((todo) => {
     append(
@@ -148,6 +159,7 @@ function renderTodos({ root, todos, isDeleted = false }) {
   });
 }
 
+/** 渲染uiState+数据到dom，添加dom事件函数，恢复滚动位置或高亮元素 */
 function render() {
   document.documentElement.style.height = '100%';
   document.body.style.height = '100%';
@@ -191,13 +203,17 @@ function render() {
 
       <div class="flex flex-col items-center relative border-t">
         <div class="relative">
-          <button id="btn-sync" class="m-4 mr-6 ${offline ? 'bg-red-600' : 'bg-blue-600'} text-white rounded p-2">
+          <button id="btn-sync" class="m-4 mr-6 ${
+            offline ? 'bg-red-600' : 'bg-blue-600'
+          } text-white rounded p-2">
             Sync ${offline ? '(offline)' : ''}
-          </button>
+          </button>="="
         </div>
 
         <div class="absolute left-0 top-0 bottom-0 flex items-center pr-4 text-sm">
-          <button id="btn-offline-simulate" class="text-sm hover:bg-gray-300 px-2 py-1 rounded ${offline ? 'text-blue-700' : 'text-red-700'}">${offline ? 'Go online' : 'Simulate offline'}</button>
+          <button id="btn-offline-simulate" class="text-sm hover:bg-gray-300 px-2 py-1 rounded ${
+            offline ? 'text-blue-700' : 'text-red-700'
+          }">${offline ? 'Go online' : 'Simulate offline'}</button>
         </div>
 
         <div class="absolute right-0 top-0 bottom-0 flex items-center pr-4 text-sm">
@@ -276,10 +292,12 @@ function render() {
   }
 
   addEventHandlers();
+
   restoreScroll();
   restoreActiveElement();
 }
 
+/** ui上所有交互相关事件，初始化和rerender都会执行 */
 function addEventHandlers() {
   qs('#add-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -417,10 +435,12 @@ function addEventHandlers() {
   }
 }
 
+// 触发首次渲染，rerender是在事件函数里面触发
 render();
 
 let _syncMessageTimer = null;
 
+// 每次同步时显示toast消息
 onSync((hasChanged) => {
   render();
 
@@ -442,4 +462,5 @@ sync().then(() => {
     insertTodoType({ name: 'Work', color: 'blue' });
   }
 });
+
 backgroundSync();

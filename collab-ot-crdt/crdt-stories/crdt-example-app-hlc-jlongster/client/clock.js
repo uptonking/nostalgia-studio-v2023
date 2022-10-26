@@ -1,3 +1,6 @@
+/** 本地逻辑时钟
+ * - { timestamp: MutableTimestamp,  merkle: string }
+ */
 let _clock = null;
 
 function setClock(clock) {

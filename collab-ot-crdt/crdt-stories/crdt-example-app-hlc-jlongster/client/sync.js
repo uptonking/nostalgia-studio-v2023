@@ -1,7 +1,9 @@
 // console.log(';;sync ', window && window['Timestamp']);
 
+// 首次执行时，会初始化本地全局_clock对象
 window.setClock(makeClock(new window.Timestamp(0, 0, makeClientId())));
 
+/** applyMessages方法体中在本地执行完op后会执行的回调，由外部注册 */
 let _onSync = null;
 let _syncEnabled = true;
 
@@ -9,6 +11,7 @@ function setSyncingEnabled(flag) {
   _syncEnabled = flag;
 }
 
+/** 通过fetch发送post请求 */
 async function post(data) {
   // let res = await fetch('https://crdt.jlongster.com/server/sync', {
   let res = await fetch('http://localhost:8006/sync', {
@@ -29,9 +32,10 @@ async function post(data) {
 /**
  * Apply the data operation contained in a message to our local data store
  * (i.e., set a new property value for a secified dataset/table/row/column).
+* - 根据op-msg，更新全局数据`_data`
  */
 function apply(msg) {
-  const table = _data[msg.dataset];
+  const table = _data[msg.dataset]; // 旧数据
   if (!table) {
     throw new Error('Unknown dataset: ' + msg.dataset);
   }
@@ -49,8 +53,10 @@ function apply(msg) {
  * _incoming_ message for a specific field (i.e., dataset + row + column) and
  * the value is the most recent _local_ message for that same field (if one
  * exists). If none exists, it will map to `undefined`.
+ * @param {Object[]} incomingMessages
  */
 function mapIncomingToLocalMessagesForField(incomingMessages) {
+  /** 最后返回的map，{ 参数msg: 本地key同名的msg } */
   const incomingFieldMsgToLocalFieldMsgMap = new Map();
 
   // We are going to be searching for the _most recent_ local message for
@@ -58,6 +64,7 @@ function mapIncomingToLocalMessagesForField(incomingMessages) {
   // first.
   const sortedLocalMessages = [..._messages].sort((m1, m2) => {
     if (m1.timestamp < m2.timestamp) {
+      // 👇🏻 注意是这里是降序排列，时间最大的在最前面
       return 1;
     } else if (m1.timestamp > m2.timestamp) {
       return -1;
@@ -77,14 +84,18 @@ function mapIncomingToLocalMessagesForField(incomingMessages) {
     );
 
     // Note that the incoming message OBJECT is being used as a key here
-    // (something you couldn't do if an Object were used insteaad of a Map)
+    // (something you couldn't do if an Object were used instead of a Map)
     incomingFieldMsgToLocalFieldMsgMap.set(incomingMsg, mostRecentLocalMsg);
   });
 
   return incomingFieldMsgToLocalFieldMsgMap;
 }
 
-/** 根据hlc执行crdt更新本地数据 */
+/** 根据hlc执行lww-crdt更新本地数据，
+ * - 然后将实参incomingMessages保存到本地全局_messages，并更新merkle，
+ * - 然后执行注册过的onSync，本例中是执行render方法+显示同步成功的消息
+ * @param {Object[]} incomingMessages
+ */
 function applyMessages(incomingMessages) {
   const incomingToLocalMsgsForField =
     mapIncomingToLocalMessagesForField(incomingMessages);
@@ -107,10 +118,10 @@ function applyMessages(incomingMessages) {
     // unknown incoming message), OR the incoming message is "newer" than the
     // one we have, apply the incoming message to our local data store.
     //
-    // Note that althought `.timestamp` references an object (i.e., an instance
+    // Note that although `.timestamp` references an object (i.e., an instance
     // of Timestamp), the JS engine is going to implicitly call the instance's
     // `.valueOf()` method when doing these comparisons. The Timestamp class has
-    // a custom implementation of valueOf() that retuns a string. So, in effect,
+    // a custom implementation of valueOf() that returns a string. So, in effect,
     // comparing timestamps below is comparing the toString() value of the
     // Timestamp objects.
     if (
@@ -143,12 +154,16 @@ function applyMessages(incomingMessages) {
   _onSync && _onSync();
 }
 
-/** 先在本地执行msg，再广播 */
+/** 先在本地执行msg，再基于post广播消息
+ * @param {Object[]} messages
+ */
 function sendMessages(messages) {
   applyMessages(messages);
+  // 若post返回了新msg，applyMsg
   sync(messages);
 }
 
+/** Timestamp.recv + 执行 applyMessages */
 function receiveMessages(messages) {
   messages.forEach((msg) =>
     Timestamp.recv(getClock(), Timestamp.parse(msg.timestamp)),
@@ -157,11 +172,12 @@ function receiveMessages(messages) {
   applyMessages(messages);
 }
 
+/** 暴露给外部注册 */
 function onSync(func) {
   _onSync = func;
 }
 
-/** 通过post请求发送msg到服务端 */
+/** 通过post请求发送msg到服务端，若返回了新msg，则执行receiveMessages > applyMsg */
 async function sync(initialMessages = [], since = null) {
   if (!_syncEnabled) {
     return;
@@ -199,10 +215,12 @@ async function sync(initialMessages = [], since = null) {
 
   if (diffTime) {
     if (since && since === diffTime) {
+      const errMsg = `since === diffTime: ${diffTime}; `;
       throw new Error(
+        errMsg +
         'A bug happened while syncing and the client ' +
-          'was unable to get in sync with the server. ' +
-          "This is an internal error that shouldn't happen",
+        'was unable to get in sync with the server. ' +
+        "This is an internal error that shouldn't happen",
       );
     }
 
@@ -216,8 +234,6 @@ window['sync'] = sync;
 window['setSyncingEnabled'] = setSyncingEnabled;
 window['post'] = post;
 window['apply'] = apply;
-window['mapIncomingToLocalMessagesForField'] =
-  mapIncomingToLocalMessagesForField;
 window['applyMessages'] = applyMessages;
 window['sendMessages'] = sendMessages;
 window['receiveMessages'] = receiveMessages;

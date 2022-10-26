@@ -1,6 +1,6 @@
 const config = {
   // Maximum physical clock drift allowed, in ms. In other words, if we
-  // receive a message from another node and that node's time differes from
+  // receive a message from another node and that node's time differs from
   // ours by more than this many milliseconds, throw an error.
   maxDrift: 60000,
 };
@@ -10,6 +10,7 @@ class Timestamp {
     this._state = {
       millis: millis,
       counter: counter,
+      // node存放客户端id
       node: node,
     };
   }
@@ -39,9 +40,7 @@ class Timestamp {
   }
 
   hash() {
-    return globalThis['murmur']
-      ? globalThis['murmur'](this.toString()) // for browser
-      : 'murmur_hash_error'; // for nodejs
+    return globalThis['murmur']; // 确保之前注册过了，要检查import顺序
   }
 }
 
@@ -67,9 +66,10 @@ MutableTimestamp.from = (timestamp) => {
   );
 };
 
-// Timestamp generator initialization
-// * sets the node ID to an arbitrary value
-// * useful for mocking/unit testing
+/** Timestamp generator initialization
+ * * sets the node ID to an arbitrary value
+ * * useful for mocking/unit testing
+ */
 Timestamp.init = function (options = {}) {
   if (options.maxDrift) {
     config.maxDrift = options.maxDrift;
@@ -126,9 +126,10 @@ Timestamp.send = function (clock) {
   );
 };
 
-// Timestamp receive. Parses and merges a timestamp from a remote
-// system with the local timeglobal uniqueness and monotonicity are
-// preserved
+/** Timestamp receive. Parses and merges a timestamp from a remote
+ * system with the local timeglobal uniqueness and monotonicity are
+ * preserved
+ */
 Timestamp.recv = function (clock, msg) {
   const phys = Date.now();
 

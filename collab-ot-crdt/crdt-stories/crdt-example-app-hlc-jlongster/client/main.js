@@ -1,7 +1,7 @@
 const qs = document.querySelector.bind(document);
 const qsa = document.querySelectorAll.bind(document);
 
-/** 简单清空内容 qs('#root').innerHTML = '' */
+/** 简单清空内容, `qs('#root').innerHTML = ''` */
 function clear() {
   qs('#root').innerHTML = '';
 }
@@ -48,7 +48,7 @@ function getColor(name) {
   return 'bg-gray-100';
 }
 
-/** 全局状态 */
+/** 全局ui相关状态，数据相关状态在db.js文件并挂载到window._data */
 const uiState = {
   offline: false,
   /** 控制编辑列表项的弹窗 */
@@ -58,12 +58,12 @@ const uiState = {
   isDeletingType: false,
 };
 
-let _syncTimer = null;
-/** 在页面无focus的情况下，每隔N=4秒同步一次数据，会触发执行sync()方法
- * - 这里会初始化clock
+let _syncByPollingTimer = null;
+/** 在页面focus为body而不是input的情况下，每隔N=4秒同步一次数据
+ * - 👉🏻 轮询执行sync()方法，导致初始化clock
  */
-function backgroundSync() {
-  _syncTimer = setInterval(async () => {
+function backgroundSyncByPolling() {
+  _syncByPollingTimer = setInterval(async () => {
     // Don't sync if an input is focused, otherwise if changes come in
     // we will clear the input (since everything is rerendered :))
     if (document.activeElement === document.body) {
@@ -111,8 +111,8 @@ function saveActiveElement() {
   _activeElement = el.id
     ? '#' + el.id
     : el.className
-    ? '.' + el.className.replace(/ ?hover\:[^ ]*/g, '').replace(/ /g, '.')
-    : null;
+      ? '.' + el.className.replace(/ ?hover\:[^ ]*/g, '').replace(/ /g, '.')
+      : null;
 }
 
 function restoreActiveElement() {
@@ -126,7 +126,7 @@ function restoreActiveElement() {
   }
 }
 
-/** 列表项类型的下拉多选表单 */
+/** 选择列表项类型的下拉多选表单 */
 function renderTodoTypes({ className = '', showBlank } = {}) {
   return `
     <select class="${className} mr-2 bg-transparent shadow border border-gray-300">
@@ -196,24 +196,23 @@ function render() {
 
         <div id="up-to-date" class="fixed flex items-center mb-2 rounded bg-gray-800 px-4 py-3" style="opacity: 0; bottom: 80px">
           <div class="flex flex-row items-center text-green-200 text-sm">
-            <img src="check.svg" class="mr-1" style="width: 13px; height: 13px;" /> Up to date
+            <img src="check.svg" class="mr-1" style="width: 13px; height: 13px;" />
+            Up to date
           </div>
         </div>
       </div>
 
       <div class="flex flex-col items-center relative border-t">
-        <div class="relative">
-          <button id="btn-sync" class="m-4 mr-6 ${
-            offline ? 'bg-red-600' : 'bg-blue-600'
-          } text-white rounded p-2">
-            Sync ${offline ? '(offline)' : ''}
-          </button>="="
-        </div>
+      <div class="relative">
+        <button id="btn-sync" class="m-4 mr-6 ${offline ? 'bg-red-600' : 'bg-blue-600'
+    } text-white rounded p-2">
+          Sync ${offline ? '(offline)' : ''}
+        </button>
+      </div>
 
         <div class="absolute left-0 top-0 bottom-0 flex items-center pr-4 text-sm">
-          <button id="btn-offline-simulate" class="text-sm hover:bg-gray-300 px-2 py-1 rounded ${
-            offline ? 'text-blue-700' : 'text-red-700'
-          }">${offline ? 'Go online' : 'Simulate offline'}</button>
+          <button id="btn-offline-simulate" class="text-sm hover:bg-gray-300 px-2 py-1 rounded ${offline ? 'text-blue-700' : 'text-red-700'
+    }">${offline ? 'Go online' : 'Simulate offline'}</button>
         </div>
 
         <div class="absolute right-0 top-0 bottom-0 flex items-center pr-4 text-sm">
@@ -244,11 +243,10 @@ function render() {
             <button id="btn-edit-cancel" class="rounded p-2 bg-gray-200">Cancel</button>
           </div>
 
-          ${
-            editingTodo.tombstone === 1
-              ? '<button id="btn-edit-undelete" class="pt-4 text-sm">Undelete</button>'
-              : ''
-          }
+          ${editingTodo.tombstone === 1
+        ? '<button id="btn-edit-undelete" class="pt-4 text-sm">Undelete</button>'
+        : ''
+      }
         </div>
       <div>
     `);
@@ -297,10 +295,12 @@ function render() {
   restoreActiveElement();
 }
 
-/** ui上所有交互相关事件，初始化和rerender都会执行 */
+/** 注册ui上所有交互相关的事件函数，在初始化和rerender时都会执行注册 */
 function addEventHandlers() {
   qs('#add-form').addEventListener('submit', async (e) => {
     e.preventDefault();
+    // HTMLFormElement.elements的值是array-like类型，并不是array
+    // 这里依次获取到 列表项输入内容、列表项类型
     const [nameNode, typeNode] = e.target.elements;
     // console.log(';; nameNode, typeNode ', nameNode, typeNode);
     const name = nameNode.value;
@@ -310,7 +310,7 @@ function addEventHandlers() {
     typeNode.selectedIndex = 0;
 
     if (name === '') {
-      alert("Todo can't be blank. C'mon!");
+      alert("Todo can't be blank!");
       return;
     }
 
@@ -318,16 +318,16 @@ function addEventHandlers() {
   });
 
   qs('#btn-sync').addEventListener('click', async (e) => {
-    sync();
+    sync(); // 手动触发同步数据请求
   });
 
   qs('#btn-offline-simulate').addEventListener('click', () => {
     if (uiState.offline) {
       setOffline(false);
-      backgroundSync();
+      backgroundSyncByPolling();
     } else {
       setOffline(true);
-      clearInterval(_syncTimer);
+      clearInterval(_syncByPollingTimer);
     }
   });
 
@@ -341,13 +341,13 @@ function addEventHandlers() {
     render();
   });
 
+  // 给所有待办项及删除项添加click事件
   for (const todoNode of qsa('.todo-item')) {
     todoNode.addEventListener('click', (e) => {
       let todo = getTodos().find((t) => t.id === todoNode.dataset.id);
       if (!todo) {
-        // Search the deleted todos (this could be large, so only
-        // searching the existing todos first which is the common case
-        // is faster
+        // Search the deleted todos (this could be large, so only searching the
+        // existing todos first which is the common case is faster
         todo = getAllTodos().find((t) => t.id === todoNode.dataset.id);
       }
 
@@ -378,12 +378,14 @@ function addEventHandlers() {
         const input = e.target.parentNode.querySelector('input');
         const value = input.value;
 
+        // 👇🏻 删除使用的是墓碑标记
         update('todos', { id: uiState.editingTodo.id, tombstone: 0 });
         uiState.editingTodo = null;
         render();
       });
     }
-  } else if (uiState.isAddingType) {
+  }
+  if (uiState.isAddingType) {
     qs('#btn-edit-save').addEventListener('click', (e) => {
       const input = e.target.parentNode.querySelector('input');
       const value = input.value;
@@ -406,7 +408,8 @@ function addEventHandlers() {
       uiState.isAddingType = false;
       render();
     });
-  } else if (uiState.isDeletingType) {
+  }
+  if (uiState.isDeletingType) {
     qs('#btn-edit-delete').addEventListener('click', (e) => {
       const modal = e.target.parentNode;
       const selected = qs('select.selected').selectedOptions[0].value;
@@ -438,9 +441,9 @@ function addEventHandlers() {
 // 触发首次渲染，rerender是在事件函数里面触发
 render();
 
-let _syncMessageTimer = null;
+let _syncApplyMessageTimer = null;
 
-// 每次同步时显示toast消息
+// 每次更新本地数据时会执行这里，更新dom，显示toast消息
 onSync((hasChanged) => {
   render();
 
@@ -448,13 +451,14 @@ onSync((hasChanged) => {
   message.style.transition = 'none';
   message.style.opacity = 1;
 
-  clearTimeout(_syncMessageTimer);
-  _syncMessageTimer = setTimeout(() => {
+  clearTimeout(_syncApplyMessageTimer);
+  _syncApplyMessageTimer = setTimeout(() => {
     message.style.transition = 'opacity .7s';
     message.style.opacity = 0;
   }, 1000);
 });
 
+// 首次初始化时添加类型
 sync().then(() => {
   if (getTodoTypes().length === 0) {
     // Insert some default types
@@ -463,4 +467,4 @@ sync().then(() => {
   }
 });
 
-backgroundSync();
+backgroundSyncByPolling();

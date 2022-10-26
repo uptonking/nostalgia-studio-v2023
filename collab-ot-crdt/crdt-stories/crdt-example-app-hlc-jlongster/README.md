@@ -1,4 +1,3 @@
-
 This is a demo app used for my dotJS 2019 talk ["CRDTs for Mortals"](https://www.youtube.com/watch?v=DEcwa68f-jY).
 
 Slides here: https://jlongster.com/s/dotjs-crdt-slides.pdf
@@ -8,6 +7,7 @@ View this app here: https://crdt.jlongster.com
 It contains a full implementation of [hybrid logical clocks](https://cse.buffalo.edu/tech-reports/2014-04.pdf) to generate timestamp for causal ordering of messages. Using these timestamps, CRDTs can be easily used to change local data that also syncs to multiple devices. This also contains an implementation of a merkle tree to check consistency of the data to make sure all clients are in sync.
 
 It provides a server to store and retrieve messages, so that clients don't have to connect peer-to-peer.
+
 > 普通http服务器，未使用websocket，
 
 The entire implementation is tiny, but provides a robust mechanism for writing distributed apps:
@@ -17,6 +17,9 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 
 (This does not include `main.js` in the client which is the implementation of the app. This is just showing the tiny size of everything needed to build an app)
 
+- 本示例要点
+  - 本示例协作的粒度是对象属性，所以可能存在输入内容被全部替换，而不是合并操作A和B
+  - 本地存放地op-msg历史数据_messages可能内存溢出
 
 Links:
 
@@ -25,12 +28,11 @@ Links:
 * CRDTs: https://bit.ly/2DMk0AD
 * Live app: https://crdt.jlongster.com/
 
-
 ## How to Run
 
-You can just open `client/index.html` in a browser (i.e., access via `file://` URI). Alternatively, you can serve it from a web server (e.g., `npx serve` and open `http://localhost:5000/client/`).
+You can just open `client/index.html` in a browser (i.e., access via `file://` URI). Alternatively, you can serve it from a web server (e.g., `npx serve` and open `http://localhost:5000/client/` ).
 
-By default, the UI will sync with the data hosted at `https://crdt.jlongster.com/server/sync`. See instructions below for syncing with your own local server.
+By default, the UI will sync with the data hosted at `https://crdt.jlongster.com/server/sync` . See instructions below for syncing with your own local server.
 
 ### Optional: Run the server to sync with your own database
 

@@ -113,6 +113,10 @@ function saveActiveElement() {
     : el.className
       ? '.' + el.className.replace(/ ?hover\:[^ ]*/g, '').replace(/ /g, '.')
       : null;
+
+  if (_activeElement && _activeElement.endsWith('.')) {
+    _activeElement = _activeElement.slice(0, _activeElement.length - 1);
+  }
 }
 
 function restoreActiveElement() {
@@ -206,7 +210,7 @@ function render() {
       <div class="relative">
         <button id="btn-sync" class="m-4 mr-6 ${offline ? 'bg-red-600' : 'bg-blue-600'
     } text-white rounded p-2">
-          Sync ${offline ? '(offline)' : ''}
+          当前状态   ${offline ? 'Offline' : 'Sync'}
         </button>
       </div>
 
@@ -447,6 +451,7 @@ let _syncApplyMessageTimer = null;
 onSync((hasChanged) => {
   render();
 
+  console.log(';; after-sync ');
   const message = qs('#up-to-date');
   message.style.transition = 'none';
   message.style.opacity = 1;
@@ -467,4 +472,5 @@ sync().then(() => {
   }
 });
 
+// 轮询服务端新数据
 backgroundSyncByPolling();

@@ -31,7 +31,7 @@ bak/
 repos-caches/
 
 # temp/test files
-collab-ot-crdt/crdt-stories/db.sqlite
+collab-ot-crdt/crdt-stories/crdt-example-app-hlc-jlongster/db.sqlite
 
 # below Created by https://www.gitignore.io/api/node
 

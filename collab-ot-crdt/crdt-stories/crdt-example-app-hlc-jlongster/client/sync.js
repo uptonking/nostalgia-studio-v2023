@@ -32,7 +32,8 @@ async function post(data) {
 /**
  * Apply the data operation contained in a message to our local data store
  * (i.e., set a new property value for a secified dataset/table/row/column).
-* - 根据op-msg，更新全局数据`_data`
+ * - 根据op-msg，更新全局数据`_data`
+ * - 对于ui上的crud操作，create对应这里的push，update/delete对应属性赋值
  */
 function apply(msg) {
   const table = _data[msg.dataset]; // 旧数据
@@ -207,6 +208,7 @@ async function sync(initialMessages = [], since = null) {
     throw new Error('network-failure');
   }
 
+  console.log(';; fetch-ops ', result.messages, result);
   if (result.messages.length > 0) {
     receiveMessages(result.messages);
   }

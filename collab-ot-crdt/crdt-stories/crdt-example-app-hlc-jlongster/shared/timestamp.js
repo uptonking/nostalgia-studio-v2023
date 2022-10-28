@@ -1,7 +1,8 @@
 const config = {
-  // Maximum physical clock drift allowed, in ms. In other words, if we
-  // receive a message from another node and that node's time differs from
-  // ours by more than this many milliseconds, throw an error.
+  /** Maximum physical clock drift allowed, in ms. In other words, if we
+  * receive a message from another node and that node's time differs from
+  * ours by more than this many milliseconds, throw an error.
+  */
   maxDrift: 60000,
 };
 
@@ -10,7 +11,7 @@ class Timestamp {
     this._state = {
       millis: millis,
       counter: counter,
-      // node存放客户端id
+      /** 存放客户端id */
       node: node,
     };
   }
@@ -40,7 +41,7 @@ class Timestamp {
   }
 
   hash() {
-    return globalThis['murmur']; // 确保之前注册过了，要检查import顺序
+    return globalThis['murmur']; // 确保murmur之前注册过了，要检查import顺序
   }
 }
 
@@ -67,8 +68,8 @@ MutableTimestamp.from = (timestamp) => {
 };
 
 /** Timestamp generator initialization
- * * sets the node ID to an arbitrary value
- * * useful for mocking/unit testing
+ * - sets the node ID to an arbitrary value
+ * - useful for mocking/unit testing
  */
 Timestamp.init = function (options = {}) {
   if (options.maxDrift) {
@@ -77,7 +78,7 @@ Timestamp.init = function (options = {}) {
 };
 
 /**
- * Timestamp send. Generates a unique, monotonic timestamp suitable
+ * Timestamp send. Generates a unique, monotonic(单调的) timestamp suitable
  * for transmission to another system in string format
  */
 Timestamp.send = function (clock) {
@@ -89,8 +90,8 @@ Timestamp.send = function (clock) {
   const cOld = clock.timestamp.counter();
 
   // Calculate the next logical time and counter
-  // * ensure that the logical time never goes backward
-  // * increment the counter if phys time does not advance
+  // ensure that the logical time never goes backward
+  // increment the counter if phys time does not advance
   const lNew = Math.max(lOld, phys);
   const cNew = lOld === lNew ? cOld + 1 : 0;
 
@@ -127,7 +128,7 @@ Timestamp.send = function (clock) {
 };
 
 /** Timestamp receive. Parses and merges a timestamp from a remote
- * system with the local timeglobal uniqueness and monotonicity are
+ * system with the local time. global uniqueness and monotonicity are
  * preserved
  */
 Timestamp.recv = function (clock, msg) {
@@ -164,10 +165,10 @@ Timestamp.recv = function (clock, msg) {
     lNew === lOld && lNew === lMsg
       ? Math.max(cOld, cMsg) + 1
       : lNew === lOld
-      ? cOld + 1
-      : lNew === lMsg
-      ? cMsg + 1
-      : 0;
+        ? cOld + 1
+        : lNew === lMsg
+          ? cMsg + 1
+          : 0;
 
   // Check the result for drift and counter overflow
   if (lNew - phys > config.maxDrift) {
@@ -205,6 +206,7 @@ Timestamp.parse = function (timestamp) {
   return null;
 };
 
+/** ？ */
 Timestamp.since = (isoString) => {
   return isoString + '-0000-0000000000000000';
 };

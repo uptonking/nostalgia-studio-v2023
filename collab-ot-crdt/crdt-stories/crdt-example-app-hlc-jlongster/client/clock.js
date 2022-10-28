@@ -34,6 +34,7 @@ function makeClientId() {
   return uuidv4().replace(/-/g, '').slice(-16);
 }
 
+window['_clock'] = _clock;
 window['setClock'] = setClock;
 window['getClock'] = getClock;
 window['makeClock'] = makeClock;

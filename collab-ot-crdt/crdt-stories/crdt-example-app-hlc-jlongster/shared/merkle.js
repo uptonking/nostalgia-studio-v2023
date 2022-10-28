@@ -134,8 +134,8 @@ function build(timestamps) {
 /**
  *
  * @param {*} trie1
- * @returns
- * @param {*} trie2
+* @param {*} trie2
+* @returns 相等时返回null
  */
 function diff(trie1, trie2) {
   if (trie1.hash === trie2.hash) {

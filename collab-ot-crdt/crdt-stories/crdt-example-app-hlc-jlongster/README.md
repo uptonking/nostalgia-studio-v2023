@@ -17,9 +17,21 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 
 (This does not include `main.js` in the client which is the implementation of the app. This is just showing the tiny size of everything needed to build an app)
 
+- 问题
+  - 客户端的op被服务端入库后，另一个客户端为什么收不到，diffTime始终为null？
+
+- 本示例缺点
+  - app初始数据由db的messages表所有op记录apply到本地计算得到，全表传输加本地计算可能导致性能问题
+  - 本地存放的op-msg历史数据全局对象_messages可能内存溢出
+    - 每个客户端都会保存所有op记录到内存，从db表获取到的记录一直在本地_messages
+
 - 本示例要点
+  - app业务数据模型定义在前端，sqlite数据库只记录历史操作，服务端并不直接处理业务模型的crud
   - 本示例协作的粒度是对象属性，所以可能存在输入内容被全部替换，而不是合并操作A和B
-  - 本地存放地op-msg历史数据_messages可能内存溢出
+  - 客户端op操作基本数据： some-client did something/op at sometime
+
+- 离线重连的流程
+  - 本地离线时
 
 Links:
 

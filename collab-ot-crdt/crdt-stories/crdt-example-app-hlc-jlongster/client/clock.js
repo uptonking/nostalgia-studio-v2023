@@ -1,5 +1,12 @@
-/** 本地逻辑时钟
- * - { timestamp: MutableTimestamp,  merkle: string }
+/** 每个客户端本地都有自己的 hybrid logic clock
+ * @typedef {Object} HLCClock
+ * @property {import('../shared/timestamp.js').MutableTimestamp} timestamp
+ * @property {string} merkle
+ */
+
+/** 本地逻辑时钟，每次同步事件执行sync时都会更新
+ * - "incremented" every time a message is sent or received
+ * @type {HLCClock}
  */
 let _clock = null;
 
@@ -7,6 +14,9 @@ function setClock(clock) {
   _clock = clock;
 }
 
+/**
+ * @return {HLCClock} local hybrid logic clock
+ */
 function getClock() {
   return _clock;
 }

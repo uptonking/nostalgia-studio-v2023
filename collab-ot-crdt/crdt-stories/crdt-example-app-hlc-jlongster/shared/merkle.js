@@ -12,6 +12,12 @@ function keyToTimestamp(key) {
   return parseInt(fullkey, 3) * 1000 * 60;
 }
 
+/**
+ *
+ * @param {*} trie
+ * @param {*} timestamp
+ * @returns
+ */
 function insert(trie, timestamp) {
   const hash = timestamp.hash();
 
@@ -131,11 +137,12 @@ function build(timestamps) {
   return trie;
 }
 
-/**
- *
+/** algorithm for finding the last known "time of equality"
+ * - the mechanism isn't going to result in only unknown messages being sync'ed; there will be dupes.
+ * - But the trade-off for complete efficiency is speed.
  * @param {*} trie1
-* @param {*} trie2
-* @returns 相等时返回null
+ * @param {*} trie2
+ * @returns 相等时返回null
  */
 function diff(trie1, trie2) {
   if (trie1.hash === trie2.hash) {
@@ -225,6 +232,12 @@ function debug(trie, k = '', indent = 0) {
   );
 }
 
+/** merkle tree only stores what it needs to answer the question
+ * "what is the last time at which the collections had the same messages?":
+ * time (as keys) and hashes (as values) made from all known messages at those times.
+ * - 每个op消息msg都拥有的hlc时钟，可作为msg的唯一标识，所以merkle-tree节点保存的是时间戳的hash
+ * - merkle-tree的节点是完全三叉树
+ */
 export const merkle = {
   getKeys,
   keyToTimestamp,

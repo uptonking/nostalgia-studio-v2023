@@ -1,6 +1,45 @@
-/** 放在内存的历史op消息数组，👀可能会内存溢出 */
+/** 对应数据库的messages表模型
+ * @typedef {Object} MessageItem
+ * @property {string} group_id
+ * @property {string} dataset
+ * @property {string} row
+ * @property {string} column
+ * @property {string} value
+ * @property {string} timestamp  a hybrid logical clock timestamp
+ */
+
+/** 放在内存的历史op数据，每个客户端都保存了所有客户端的op记录，👀可能会内存溢出
+ * - 完全复刻数据库messages表的数据，用来对业务模型数据_data进行crud
+ * - 模拟分布式数据库，通过轮询同步
+ * - 客户端op操作基本数据： some-client did something/op at sometime
+ * @type {MessageItem[]}
+ */
 const _messages = [];
-/** 放在内存的本地数据副本，本地主要数据源，类似于数据库的表 */
+
+/**
+ * @typedef {Object} TodoTypeMappingItem
+ * @property {string} id
+ * @property {string} targetId
+ */
+/**
+ * @typedef {Object} TodoTypesItem
+ * @property {string} id
+ * @property {string} name
+ * @property {string} color
+ */
+/**
+ * @typedef {Object} TodoItem
+ * @property {string} id
+ * @property {string} name
+ * @property {string} type
+ * @property {number} order
+ * @property {number} tombstone
+ */
+
+/** 放在内存的本地业务模型数据，本地主要数据源
+ * - ui触发的crud并不直接修改这里的业务模型数据对象，而是通过op记录apply到本对象
+ * @type { {todos: TodoItem[], todoTypes: TodoTypesItem[], todoTypeMapping: TodoTypeMappingItem[]}}
+ */
 const _data = {
   todos: [],
   todoTypes: [],
@@ -38,7 +77,7 @@ function insert(table, row) {
 }
 
 /** 处理数据项的更新和删除，删除使用墓碑标记
- *
+ * - 每个op对应的message都会带有hybrid logic clock时间戳
  * @param {string} table
  * @param {Object} params
  */

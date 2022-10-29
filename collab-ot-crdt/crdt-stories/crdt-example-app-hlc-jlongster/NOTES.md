@@ -81,7 +81,7 @@ In a nutshell, the UI sits on top of a distributed database that is kept in sync
 
 ### Clocks
 
-The main goal with clocks as they pertain to distributed databases is to be able to _order_ events. In other words, knowing which event was the _last_ to happen is more of a concern than knowing exactly _when_ they happened, because in this context, the question being asked is: what is the _most recent_ message that set a value for a field?
+The main goal with clocks as they pertain(存在；适用) to distributed databases is to be able to _order_ events. In other words, knowing which event was the _last_ to happen is more of a concern than knowing exactly _when_ they happened, because in this context, the question being asked is: what is the _most recent_ message that set a value for a field?
 
 #### Logical clocks and the Lamport timestamp/clock
 
@@ -126,12 +126,12 @@ function receive(message, time_stamp) {
 An HLC combines both a _physical_ and _logical_ clock. It was designed to provide one-way (as with LC rather than VC) causality detection while maintaining a clock value close to the physical clock, so one can use HLC timestamp as a drop-in replacement for a physical clock timestamp. Rules:
 
   1. Each node maintain its own monotonic counter, `c` (just like with logical clocks)
-  1. Each node keeps track of the largest physical time it has encountered so far
+  2. Each node keeps track of the largest physical time it has encountered so far
     - this is called the "logical" time (`l`)
-  1. When a message is received:
-    - The receiving node updates its own logical lock to ensure that it moves forward by picking whichever of the following is greater:
-       a. the current physical time (e.g., `Date.now()`), or
-       b. the logical time stored in the message
+  3. When a message is received:
+    - The receiving node updates its own logical clock to ensure that it moves forward by picking whichever of the following is greater:
+       - a. the current physical time (e.g., `Date.now()`), or
+       - b. the logical time stored in the message
     - If the logical times are all equal, increment the counter (`c`)
 
 In other words, if the physical clocks on all nodes are in perfect sync, then the counter is the only thing that gets incremented each time a message is received. However, it's more common that a node is always going to reset its logical time and counter each time a message is received.

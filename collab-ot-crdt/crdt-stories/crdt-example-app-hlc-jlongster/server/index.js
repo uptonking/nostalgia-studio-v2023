@@ -124,10 +124,12 @@ app.post('/sync', (req, res) => {
     // messages "forked." In other words, at this point in time, something
     // changed (e.g., one collection inserted a message that the other lacks)
     // which resulted in differing hashes.
+    // 计算服务端节点的merkle-tree和客户端节点的merkle-tree最后相同的时间戳，之后开始不同
     const diffTime = merkle.diff(trie, clientMerkle);
     console.log(';;client_id-diffTime ', client_id.slice(-2), diffTime);
     if (diffTime) {
       const diffTimestamp = new Timestamp(diffTime, 0, '0').toString();
+      // 对于当前客户端，可能会收到自己最新的op，重复消息，
       newMessagesForClient = queryAll(
         `SELECT * FROM messages WHERE group_id = ? AND timestamp > ? AND timestamp NOT LIKE '%' || ? ORDER BY timestamp`,
         [group_id, diffTimestamp, client_id],

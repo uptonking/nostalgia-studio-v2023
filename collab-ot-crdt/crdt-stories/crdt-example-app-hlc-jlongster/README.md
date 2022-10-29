@@ -19,6 +19,7 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 
 - 问题
   - 客户端的op被服务端入库后，另一个客户端为什么收不到，diffTime始终为null？
+  - `SELECT * FROM messages WHERE timestamp > ? AND timestamp NOT LIKE '%' || ? ORDER BY timestamp` 中的`||`什么意思？
 
 - 本示例缺点
   - app初始数据由db的messages表所有op记录apply到本地计算得到，全表传输加本地计算可能导致性能问题
@@ -29,9 +30,12 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
   - app业务数据模型定义在前端，sqlite数据库只记录历史操作，服务端并不直接处理业务模型的crud
   - 本示例协作的粒度是对象属性，所以可能存在输入内容被全部替换，而不是合并操作A和B
   - 客户端op操作基本数据： some-client did something/op at sometime
+  - merkle-tree的作用是，快速查找需要同步的op消息
+    - merkle tree only stores what it needs to answer the question "what is the last time at which the collections had the same messages?": time (as keys) and hashes (as values) made from all known messages at those times.
+  - 本示例使用了中心服务器，所有节点都会和服务端同步，但若改为无中心化架构逻辑也相同
 
 - 离线重连的流程
-  - 本地离线时
+  - 离线时，本地_messages历史表会继续增加
 
 Links:
 
@@ -52,4 +56,4 @@ By default, the UI will sync with the data hosted at `https://crdt.jlongster.com
 2. `./run` to start the server (this will create `server/db.sqlite`).
 3. Open `server/db.sqlite` in a SQLite client and run `server/init.sql` to create the schema.
 4. Modify the UI to sync with your local server: edit `client/sync.js:post()` to use `http://localhost:8006/sync` instead of `https://crdt.jlongster.com/server/sync`.
-    
+

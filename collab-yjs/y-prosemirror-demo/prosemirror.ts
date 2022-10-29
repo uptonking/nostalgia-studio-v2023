@@ -25,6 +25,7 @@ window.addEventListener('load', () => {
   //   'prosemirror-demo',
   //   ydoc,
   // );
+
   const yXmlFragment = ydoc.getXmlFragment('prosemirror');
 
   const editorContainer = document.createElement('div');

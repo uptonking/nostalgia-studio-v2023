@@ -48,7 +48,9 @@ function getColor(name) {
   return 'bg-gray-100';
 }
 
-/** 全局ui相关状态，数据相关状态在db.js文件并挂载到window._data */
+/** 全局ui相关状态，数据相关状态在db.js文件并挂载到window._data
+* @type {{ offline:boolean, editingTodo:Object, isAddingType:boolean, isDeletingType:boolean  }}
+*/
 const uiState = {
   offline: false,
   /** 控制编辑列表项的弹窗 */
@@ -69,8 +71,10 @@ function backgroundSyncByPolling() {
     if (document.activeElement === document.body) {
       try {
         await sync();
+        console.log(';; sync1 ');
         setOffline(false);
       } catch (e) {
+        console.log(';; sync2 ', e);
         if (e.message === 'network-failure') {
           setOffline(true);
         } else {
@@ -447,7 +451,7 @@ render();
 
 let _syncApplyMessageTimer = null;
 
-// 每次更新本地数据时会执行这里，更新dom，显示toast消息
+// 每次applyMessages更新本地数据时会执行这里，更新dom，显示toast消息
 onSync((hasChanged) => {
   render();
 

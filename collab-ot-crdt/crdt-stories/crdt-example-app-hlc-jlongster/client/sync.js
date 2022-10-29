@@ -11,9 +11,10 @@ function setSyncingEnabled(flag) {
   _syncEnabled = flag;
 }
 
-/** 通过fetch发送post请求 */
+/** 每次同步都是通过这里的fetch发送post请求
+ * @param { {group_id:string, client_id:string, messages:Array, merkle:string} } data
+*/
 async function post(data) {
-  // let res = await fetch('https://crdt.jlongster.com/server/sync', {
   let res = await fetch('http://localhost:8006/sync', {
     method: 'POST',
     body: JSON.stringify(data),
@@ -54,7 +55,8 @@ function apply(msg) {
  * _incoming_ message for a specific field (i.e., dataset + row + column) and
  * the value is the most recent _local_ message for that same field (if one
  * exists). If none exists, it will map to `undefined`.
- * @param {Object[]} incomingMessages
+ * - 对于相同字段属性的op，只保留最新的，方法是对按时间降序排序过的数组取第一个
+ * @param {Array} incomingMessages
  */
 function mapIncomingToLocalMessagesForField(incomingMessages) {
   /** 最后返回的map，{ 参数msg: 本地key同名的msg } */
@@ -92,10 +94,12 @@ function mapIncomingToLocalMessagesForField(incomingMessages) {
   return incomingFieldMsgToLocalFieldMsgMap;
 }
 
-/** 根据hlc执行lww-crdt更新本地数据，
+/** 根据hlc执行lww-crdt更新本地业务模型数据，
  * - 然后将实参incomingMessages保存到本地全局_messages，并更新merkle，
  * - 然后执行注册过的onSync，本例中是执行render方法+显示同步成功的消息
- * @param {Object[]} incomingMessages
+ * - 👀 参数的消息可能是本地op，也可能是服务端op，此方法支持中心服务器也支持务无中心的p2p版本
+ * - 对于当前客户端，可能会收到服务端op但本地已执行过，因为merkle-tree作用是快速查找而不是精确
+ * @param {Array} incomingMessages
  */
 function applyMessages(incomingMessages) {
   const incomingToLocalMsgsForField =
@@ -131,6 +135,7 @@ function applyMessages(incomingMessages) {
     ) {
       // `apply()` means that we're going to actually update our local data
       // store with the operation contained in the message.
+      // 可能会执行重复消息，但执行重复的最新消息的结果是一致的
       apply(incomingMsgForField);
     }
 
@@ -164,7 +169,7 @@ function sendMessages(messages) {
   sync(messages);
 }
 
-/** Timestamp.recv + 执行 applyMessages */
+/** Timestamp.recv + 执行 applyMessages，每次收到op都会更新本地logic clock为更大的 */
 function receiveMessages(messages) {
   messages.forEach((msg) =>
     Timestamp.recv(getClock(), Timestamp.parse(msg.timestamp)),

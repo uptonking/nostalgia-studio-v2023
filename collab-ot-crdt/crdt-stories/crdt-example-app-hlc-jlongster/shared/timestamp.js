@@ -1,17 +1,37 @@
 const config = {
   /** Maximum physical clock drift allowed, in ms. In other words, if we
-  * receive a message from another node and that node's time differs from
-  * ours by more than this many milliseconds, throw an error.
-  */
+   * receive a message from another node and that node's time differs from
+   * ours by more than this many milliseconds, throw an error.
+   */
   maxDrift: 60000,
 };
 
+/**
+ * @typedef {Object} TimestampState
+ * @property {number} millis time in milliseconds
+ * @property {number} counter
+ * @property {string} node client id，存放客户端id
+ */
+
+/** hybrid logic clock，只读时间戳，修改需要使用子类
+ * - An HLC combines both a physical and logical clock.
+ * - It was designed to provide one-way causality detection while maintaining a clock value close to the physical clock,
+ *  so one can use HLC timestamp as a drop-in replacement for a physical clock timestamp
+ * - 👉🏻 Rules
+ * - Each node maintain its own monotonic counter, c (just like with logical clocks)
+ * - Each node keeps track of the largest physical time it has encountered so far - this is called the "logical" time (l)
+ * - When a message is received: The receiving node updates its own logical clock to ensure that it moves forward by picking whichever of the following is greater
+ * -
+ * -
+ */
 class Timestamp {
   constructor(millis, counter, node) {
+    /**
+     * @type {TimestampState}
+     */
     this._state = {
       millis: millis,
       counter: counter,
-      /** 存放客户端id */
       node: node,
     };
   }
@@ -20,6 +40,10 @@ class Timestamp {
     return this.toString();
   }
 
+  /**
+   * - 序列化Timestamp，date为毫秒，counter用16进制4位表示
+   * @return stringified timestamps are FIXED LENGTH in the format `<date/time>-<counter>-<client ID>`
+   */
   toString() {
     return [
       new Date(this.millis()).toISOString(),
@@ -45,6 +69,9 @@ class Timestamp {
   }
 }
 
+/** 只包含修改方法
+ * @extends Timestamp
+ */
 class MutableTimestamp extends Timestamp {
   setMillis(n) {
     this._state.millis = n;
@@ -77,8 +104,9 @@ Timestamp.init = function (options = {}) {
   }
 };
 
-/**
- * Timestamp send. Generates a unique, monotonic(单调的) timestamp suitable
+/** 创建一个新的hybrid logic clock时间戳。
+ * - create a new timestamp every time a message is sent (i.e., every time a database CRUD operation causes a new message to be created/sent)
+ * - Timestamp send. Generates a unique, monotonic(单调的) timestamp suitable
  * for transmission to another system in string format
  */
 Timestamp.send = function (clock) {
@@ -104,7 +132,6 @@ Timestamp.send = function (clock) {
     // We don't support counters greater than 65535 because we need to ensure
     // that, when converted to a hex string, it doesn't use more than 4 chars
     // (see Timestamp.toString). For example:
-    //   (65533).toString(16) -> fffd
     //   (65534).toString(16) -> fffe
     //   (65535).toString(16) -> ffff
     //   (65536).toString(16) -> 10000 -- oops, this is 5 chars
@@ -127,7 +154,8 @@ Timestamp.send = function (clock) {
   );
 };
 
-/** Timestamp receive. Parses and merges a timestamp from a remote
+/** 每次收到op都会更新本地logic clock为更大的
+ * - Timestamp receive. Parses and merges a timestamp from a remote
  * system with the local time. global uniqueness and monotonicity are
  * preserved
  */
@@ -161,6 +189,7 @@ Timestamp.recv = function (clock, msg) {
   // * if max = messsage > old, increment message counter,
   // * otherwise, clocks are monotonic, reset counter
   const lNew = Math.max(Math.max(lOld, phys), lMsg);
+  // 如果logic time相同，就只会增加counter
   const cNew =
     lNew === lOld && lNew === lMsg
       ? Math.max(cOld, cMsg) + 1
@@ -191,6 +220,7 @@ Timestamp.recv = function (clock, msg) {
 
 /**
  * Converts a fixed-length string timestamp to the structured value
+ * - sets this to elapsed msecs since 1/1/70 (e.g., when receiving a message)
  */
 Timestamp.parse = function (timestamp) {
   if (typeof timestamp === 'string') {

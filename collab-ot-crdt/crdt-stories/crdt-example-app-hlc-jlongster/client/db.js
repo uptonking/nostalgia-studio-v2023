@@ -38,6 +38,8 @@ const _messages = [];
 
 /** 放在内存的本地业务模型数据，本地主要数据源
  * - ui触发的crud并不直接修改这里的业务模型数据对象，而是通过op记录apply到本对象
+ * - Each data store prop is comparable to a database table
+ * - one might use something like IndexedDB or SQLite as the underlying storage mechanism
  * @type { {todos: TodoItem[], todoTypes: TodoTypesItem[], todoTypeMapping: TodoTypeMappingItem[]}}
  */
 const _data = {
@@ -46,8 +48,8 @@ const _data = {
   todoTypeMapping: [], // targetId 默认指向 id自身，用来删除待办类型时指向其他类型
 };
 
-/** ui上添加列表项操作会触发执行这里，会根据操作数据生成op-msg
- * - ui上操作得到的直接数据是对象row，但这里将对象row转换成了多条消息，消息会按时间戳替换而不是合并
+/** ui上所有插入操作会触发执行这里，会根据操作数据生成op-msg，插入会创建并返回一个uuid，类似db插入
+ * - ui上插入得到的直接数据是对象row，但这里将对象row转换成了多条消息，消息会按时间戳替换而不是合并
  * @param table 名称
  */
 function insert(table, row) {
@@ -76,7 +78,7 @@ function insert(table, row) {
   return id;
 }
 
-/** 处理数据项的更新和删除，删除使用墓碑标记
+/** 处理数据项的更新，删除使用墓碑标记
  * - 每个op对应的message都会带有hybrid logic clock时间戳
  * @param {string} table
  * @param {Object} params
@@ -100,7 +102,7 @@ function update(table, params) {
   );
 }
 
-/** 添加墓碑标记 */
+/** 处理数据项的删除，直接添加墓碑标记 */
 function delete_(table, id) {
   sendMessages([
     {
@@ -135,7 +137,7 @@ function _resolveTodos(todos) {
   return todos;
 }
 
-/** 计算不带有墓碑标记的数据项 */
+/** 计算不带有墓碑标记的数据项，类似数据库表的scan */
 function getTodos() {
   return _resolveTodos(_data.todos.filter((todo) => todo.tombstone !== 1));
 }
@@ -172,7 +174,6 @@ function getTodoTypes() {
 
 function insertTodoType({ name, color }) {
   const id = insert('todoTypes', { name, color });
-
   // Create an entry in the mapping table that points it to itself
   insert('todoTypeMapping', { id, targetId: id });
 }

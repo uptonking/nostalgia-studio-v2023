@@ -12,10 +12,10 @@ function keyToTimestamp(key) {
   return parseInt(fullkey, 3) * 1000 * 60;
 }
 
-/**
+/** 更新merkle-tree，每次客户端applyMessages会触发
  *
- * @param {*} trie
- * @param {*} timestamp
+ * @param {Object} trie
+ * @param { import('./timestamp.js').Timestamp } timestamp hlc对象，但只用了hash
  * @returns
  */
 function insert(trie, timestamp) {
@@ -77,11 +77,10 @@ function insert(trie, timestamp) {
  *   }
  * }
  *
- * @param {*} currentTrie
- * @param {*} key
- * @param {*} timestampHash
- * @returns an object like:
- * { hash: string; '0': object; '1': object; '2': object }
+ * @param {Object} currentTrie
+ * @param {string} key
+ * @param {number} timestampHash
+ * @returns an object， { hash: string; '0': object; '1': object; '2': object }
  */
 function insertKey(currentTrie, key, timestampHash) {
   if (key.length === 0) {
@@ -123,12 +122,15 @@ function insertKey(currentTrie, key, timestampHash) {
   // Create a new sub-tree object, copying in the existing true, but...
   return {
     ...currentTrie,
-    // ...set a new node value for the current key path char (e.g., { 0: ...,
-    // 1: ..., 2: ... }).
+    // ...set a new node value for the current key path char
+    // (e.g., { 0: ..., 1: ..., 2: ... }).
     [childKey]: newChild,
   };
 }
 
+/** 创建merkle-tree，并没有使用msg实际内容，因为msg的时间戳是唯一的，可代表msg；
+ * - unused
+ */
 function build(timestamps) {
   const trie = {};
   for (const timestamp of timestamps) {
@@ -140,8 +142,9 @@ function build(timestamps) {
 /** algorithm for finding the last known "time of equality"
  * - the mechanism isn't going to result in only unknown messages being sync'ed; there will be dupes.
  * - But the trade-off for complete efficiency is speed.
- * @param {*} trie1
- * @param {*} trie2
+ * - 使用场景：客户端离线恢复时计算需要发送的msg，服务端发送给客户端的必要msg
+ * @param {Object} trie1
+ * @param {Object} trie2
  * @returns 相等时返回null
  */
 function diff(trie1, trie2) {
@@ -236,7 +239,12 @@ function debug(trie, k = '', indent = 0) {
  * "what is the last time at which the collections had the same messages?":
  * time (as keys) and hashes (as values) made from all known messages at those times.
  * - 每个op消息msg都拥有的hlc时钟，可作为msg的唯一标识，所以merkle-tree节点保存的是时间戳的hash
- * - merkle-tree的节点是完全三叉树
+ * - merkle-tree的节点是完全三叉树，核心方法是 insert和diff
+ * - rolling hash only tells you if the clients have encountered the same messages (i.e., if their rolling hashes were derived from the same set of message hashes);
+ *    - it doesn't help you figure out how the collections differ.
+ * - merkle tree is a data structure for quickly comparing collections to see if they have the same items.
+ *    - merkle tree in this app indexes rolling hashes of "known messages" by the times for those messages.
+ *    - This means you can quickly compare two merkle trees, and if they differ, find the most recent "message time" when they were the same.
  */
 export const merkle = {
   getKeys,

@@ -71,10 +71,10 @@ function backgroundSyncByPolling() {
     if (document.activeElement === document.body) {
       try {
         await sync();
-        console.log(';; sync1 ');
-        setOffline(false);
+        // console.log(';; sync1 ');
+        setOffline(false); // 👀 就算服务端未启动，也会执行这里，会产生一种跳跃感
       } catch (e) {
-        console.log(';; sync2 ', e);
+        console.log(';; sync-err ', e);
         if (e.message === 'network-failure') {
           setOffline(true);
         } else {
@@ -85,6 +85,7 @@ function backgroundSyncByPolling() {
   }, 4000);
 }
 
+/** 离线时，本地_messages历史表会继续增加，但不会触发post同步 */
 function setOffline(flag) {
   if (flag !== uiState.offline) {
     uiState.offline = flag;
@@ -159,7 +160,7 @@ function renderTodos({ root, todos, isDeleted = false }) {
               ${todo.type ? sanitize(todo.type.name) : ''}
             </div>
           </div>
-          <button class="btn-delete hover:bg-gray-400 px-2 rounded ${isDeleted ? 'hidden' : ''}" data-id="${todo.id}">X</button>
+          <button class="btn-delete hover:bg-gray-400 px-2 rounded " data-id="${todo.id}">${isDeleted ? 'Restore' : 'X'}</button>
         </div>
       `,
       root,
@@ -367,7 +368,11 @@ function addEventHandlers() {
   for (const btn of qsa('.btn-delete')) {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      delete_('todos', e.target.dataset.id);
+      if (btn.textContent === 'Restore') {
+        update('todos', { id: e.target.dataset.id, tombstone: 0 });
+      } else {
+        delete_('todos', e.target.dataset.id);
+      }
     });
   }
 
@@ -376,6 +381,7 @@ function addEventHandlers() {
       const input = e.target.parentNode.querySelector('input');
       const value = input.value;
 
+      // 👇🏻 删除使用的是墓碑标记，删除操作需要传入id
       update('todos', { id: uiState.editingTodo.id, name: value });
       uiState.editingTodo = null;
       render();
@@ -386,7 +392,7 @@ function addEventHandlers() {
         const input = e.target.parentNode.querySelector('input');
         const value = input.value;
 
-        // 👇🏻 删除使用的是墓碑标记
+        // 👇🏻 删除恢复使用的是墓碑标记
         update('todos', { id: uiState.editingTodo.id, tombstone: 0 });
         uiState.editingTodo = null;
         render();
@@ -455,7 +461,7 @@ let _syncApplyMessageTimer = null;
 onSync((hasChanged) => {
   render();
 
-  console.log(';; after-sync ');
+  // console.log(';; after-sync ');
   const message = qs('#up-to-date');
   message.style.transition = 'none';
   message.style.opacity = 1;

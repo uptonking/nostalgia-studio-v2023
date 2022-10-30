@@ -1,10 +1,11 @@
 /** 每个客户端本地都有自己的 hybrid logic clock
  * @typedef {Object} HLCClock
  * @property {import('../shared/timestamp.js').MutableTimestamp} timestamp
- * @property {string} merkle
+ * @property {Object} merkle
  */
 
-/** 本地逻辑时钟，每次同步事件执行sync时都会更新
+/** hybrid logical clock per device，每次同步事件执行sync时都会更新
+ * - The main goal with clocks as they pertain to distributed databases is to be able to order events.
  * - "incremented" every time a message is sent or received
  * @type {HLCClock}
  */
@@ -15,7 +16,7 @@ function setClock(clock) {
 }
 
 /**
- * @return {HLCClock} local hybrid logic clock
+ * @return {HLCClock} local hybrid logical clock
  */
 function getClock() {
   return _clock;

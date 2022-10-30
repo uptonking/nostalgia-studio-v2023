@@ -1,6 +1,6 @@
 // console.log(';;sync ', window && window['Timestamp']);
 
-// 首次执行时，会初始化本地全局_clock对象
+// 首次执行时，会初始化本地全局_clock对象，time会被op更新，merkle初始为空对象
 window.setClock(makeClock(new window.Timestamp(0, 0, makeClientId())));
 
 /** applyMessages方法体中在本地执行完op后会执行的回调，由外部注册 */
@@ -13,7 +13,7 @@ function setSyncingEnabled(flag) {
 
 /** 每次同步都是通过这里的fetch发送post请求
  * @param { {group_id:string, client_id:string, messages:Array, merkle:string} } data
-*/
+ */
 async function post(data) {
   let res = await fetch('http://localhost:8006/sync', {
     method: 'POST',
@@ -105,6 +105,8 @@ function applyMessages(incomingMessages) {
   const incomingToLocalMsgsForField =
     mapIncomingToLocalMessagesForField(incomingMessages);
   const clock = getClock();
+  // 只在同步其他客户端的op时才显示同步成功，自己的op不显示； 实现有问题，没写对
+  let shouldToastSyncSuccess = false;
 
   // Look at each incoming message. If it's new to us (i.e., we don't have it in
   // our local store), or is newer than the message we have for the same field
@@ -154,13 +156,16 @@ function applyMessages(incomingMessages) {
 
       // Add the message to our collection...
       _messages.push(incomingMsgForField);
+      // shouldToastSyncSuccess = true;
     }
   });
 
-  _onSync && _onSync();
+  if (_onSync) {
+    _onSync();
+  }
 }
 
-/** 先在本地执行msg，再基于post广播消息
+/** 先在本地执行msg并保存到本地op记录，再基于post同步消息
  * @param {Object[]} messages
  */
 function sendMessages(messages) {
@@ -169,7 +174,7 @@ function sendMessages(messages) {
   sync(messages);
 }
 
-/** Timestamp.recv + 执行 applyMessages，每次收到op都会更新本地logic clock为更大的 */
+/** Timestamp.recv + 执行 applyMessages，每次收到服务端op都会更新本地logic clock为更大的 */
 function receiveMessages(messages) {
   messages.forEach((msg) =>
     Timestamp.recv(getClock(), Timestamp.parse(msg.timestamp)),
@@ -183,15 +188,17 @@ function onSync(func) {
   _onSync = func;
 }
 
-/** 通过post请求发送msg到服务端，若返回了新msg，则执行receiveMessages > applyMsg */
+/** 通过post请求发送msg到服务端，若返回了新msg，则执行receiveMessages > applyMsg
+ * - 离线时会立即结束
+ */
 async function sync(initialMessages = [], since = null) {
   if (!_syncEnabled) {
     return;
   }
-
   let messages = initialMessages;
 
   if (since) {
+    // /离线后恢复在线时，会将counter置0
     const timestamp = new Timestamp(since, 0, '0').toString();
     messages = _messages.filter((msg) => msg.timestamp >= timestamp);
   }
@@ -202,7 +209,6 @@ async function sync(initialMessages = [], since = null) {
       group_id: 'my-group',
       client_id: getClock().timestamp.node(),
       messages,
-
       // Post our entire merkle tree. At a high level, this is a data structure
       // that makes it easy to see which messages we (the client) know about
       // for given timestamps. The other node (server) will use this to quickly
@@ -213,13 +219,13 @@ async function sync(initialMessages = [], since = null) {
     throw new Error('network-failure');
   }
 
-  console.log(';; fetch-ops ', result.messages, result);
+  // console.log(';; fetch-ops-len ', result.messages.length, result);
   if (result.messages.length > 0) {
-    receiveMessages(result.messages);
+    receiveMessages(result.messages); // 触发 applyMessages
   }
 
+  // 👇🏻 离线后恢复在线，就会执行下面计算时间，再次同步
   const diffTime = merkle.diff(result.merkle, getClock().merkle);
-
   if (diffTime) {
     if (since && since === diffTime) {
       const errMsg = `since === diffTime: ${diffTime}; `;
@@ -231,6 +237,7 @@ async function sync(initialMessages = [], since = null) {
       );
     }
 
+    console.log(';; sync2-in-sync ', new Date(diffTime).toISOString());
     return sync([], diffTime);
   }
 }

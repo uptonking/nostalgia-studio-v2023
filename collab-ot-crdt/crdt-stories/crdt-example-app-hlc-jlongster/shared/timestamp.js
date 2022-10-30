@@ -9,11 +9,12 @@ const config = {
 /**
  * @typedef {Object} TimestampState
  * @property {number} millis time in milliseconds
- * @property {number} counter
+ * @property {number} counter grow-only counter
  * @property {string} node client id，存放客户端id
  */
 
-/** hybrid logic clock，只读时间戳，修改需要使用子类
+/** hybrid logical clock，只读时间戳，修改操作需要使用子类方法，核心方法是send/recv
+ * - `<datetime>-<counter>-<client ID>`
  * - An HLC combines both a physical and logical clock.
  * - It was designed to provide one-way causality detection while maintaining a clock value close to the physical clock,
  *  so one can use HLC timestamp as a drop-in replacement for a physical clock timestamp
@@ -21,8 +22,6 @@ const config = {
  * - Each node maintain its own monotonic counter, c (just like with logical clocks)
  * - Each node keeps track of the largest physical time it has encountered so far - this is called the "logical" time (l)
  * - When a message is received: The receiving node updates its own logical clock to ensure that it moves forward by picking whichever of the following is greater
- * -
- * -
  */
 class Timestamp {
   constructor(millis, counter, node) {
@@ -42,7 +41,9 @@ class Timestamp {
 
   /**
    * - 序列化Timestamp，date为毫秒，counter用16进制4位表示
-   * @return stringified timestamps are FIXED LENGTH in the format `<date/time>-<counter>-<client ID>`
+   * - counter is a hexadecimal encoded version of the counter, always 4 chars in length
+   *    - 👉🏻 ensuring that we never have more that 4 chars means there is a limit to how big the counter can be: 65535. (2^16=65536)
+   * @return stringified timestamps are FIXED LENGTH in the format `<datetime>-<counter>-<client ID>`
    */
   toString() {
     return [
@@ -64,8 +65,9 @@ class Timestamp {
     return this._state.node;
   }
 
+  /** 用来构建merkle-tree，时间戳具有唯一性可代表op-msg，但构建时用的只是hash值 */
   hash() {
-    return globalThis['murmur']; // 确保murmur之前注册过了，要检查import顺序
+    return globalThis['murmur'](this.toString()); // 确保murmur之前注册过了，要检查import顺序
   }
 }
 
@@ -104,9 +106,10 @@ Timestamp.init = function (options = {}) {
   }
 };
 
-/** 创建一个新的hybrid logic clock时间戳。
- * - create a new timestamp every time a message is sent (i.e., every time a database CRUD operation causes a new message to be created/sent)
- * - Timestamp send. Generates a unique, monotonic(单调的) timestamp suitable
+/** 创建并返回一个新的hybrid logical clock时间戳对象。 每次crud操作都会带有一个新时间戳。
+ * - create a new timestamp every time a message is sent
+ *  (i.e., every time a database CRUD operation causes a new message to be created/sent)
+ * - Generates a unique, monotonic(单调的) timestamp suitable
  * for transmission to another system in string format
  */
 Timestamp.send = function (clock) {
@@ -154,7 +157,7 @@ Timestamp.send = function (clock) {
   );
 };
 
-/** 每次收到op都会更新本地logic clock为更大的
+/** 更新本地logic clock为更大的，每次收到服务端op都会执行，离线的本地操作不执行这里。
  * - Timestamp receive. Parses and merges a timestamp from a remote
  * system with the local time. global uniqueness and monotonicity are
  * preserved
@@ -218,9 +221,9 @@ Timestamp.recv = function (clock, msg) {
   );
 };
 
-/**
- * Converts a fixed-length string timestamp to the structured value
+/** Converts a fixed-length string timestamp to the structured value. 用来merkle插入
  * - sets this to elapsed msecs since 1/1/70 (e.g., when receiving a message)
+* @param {string} timestamp 类似 2022-10-30T14:23:11.112Z-0000-a02156e53043eaab
  */
 Timestamp.parse = function (timestamp) {
   if (typeof timestamp === 'string') {

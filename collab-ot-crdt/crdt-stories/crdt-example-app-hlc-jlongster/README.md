@@ -18,8 +18,10 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 (This does not include `main.js` in the client which is the implementation of the app. This is just showing the tiny size of everything needed to build an app)
 
 - 问题
-  - 客户端的op被服务端入库后，另一个客户端为什么收不到，diffTime始终为null？
-  - `SELECT * FROM messages WHERE timestamp > ? AND timestamp NOT LIKE '%' || ? ORDER BY timestamp` 中的`||`什么意思？
+  - [ ] 每个客户端的merkle-tree是否可替换为一个代表本客户端上次同步iso时间的简单字符串
+  - [ ] `SELECT * FROM messages WHERE timestamp > ? AND timestamp NOT LIKE '%' || ? ORDER BY timestamp` 中的`||`什么意思？
+  - [x] 客户端的op被服务端入库后，另一个客户端为什么收不到，diffTime始终为null？
+    - 因为原始代码被意外修改了，timestamp.hash()未返回合法哈希值
 
 - 本示例缺点
   - app初始数据由db的messages表所有op记录apply到本地计算得到，全表传输加本地计算可能导致性能问题
@@ -35,7 +37,8 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
   - 本示例使用了中心服务器，所有节点都会和服务端同步，但若改为无中心化架构逻辑也相同
 
 - 离线重连的流程
-  - 离线时，本地_messages历史表会继续增加
+  - 离线时，本地_messages历史表会继续增加，但不会触发post同步
+  - 恢复在线时，post执行一次空op后，会比较返回的clock和本地的clock，再次post本地有效op
 
 Links:
 
@@ -56,4 +59,3 @@ By default, the UI will sync with the data hosted at `https://crdt.jlongster.com
 2. `./run` to start the server (this will create `server/db.sqlite`).
 3. Open `server/db.sqlite` in a SQLite client and run `server/init.sql` to create the schema.
 4. Modify the UI to sync with your local server: edit `client/sync.js:post()` to use `http://localhost:8006/sync` instead of `https://crdt.jlongster.com/server/sync`.
-

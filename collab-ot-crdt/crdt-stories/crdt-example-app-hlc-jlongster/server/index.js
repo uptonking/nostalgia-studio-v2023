@@ -158,4 +158,14 @@ app.get('/ping', (req, res) => {
   res.send('ok');
 });
 
+// 首次执行时初始化数据库
+// const initSql = fs.readFileSync(path.resolve('./init.sql'), 'utf-8').split(';');
+// initSql.forEach(sql => {
+//   console.log(sql);
+//   try{
+//     let result = queryRun(`${sql};`);
+//     console.log(result);
+//   }catch(e){console.log('already created', e)}
+// });
+
 app.listen(8006);

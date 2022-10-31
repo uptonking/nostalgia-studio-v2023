@@ -1,3 +1,4 @@
+/* global globalThis */
 const config = {
   /** Maximum physical clock drift allowed, in ms. In other words, if we
    * receive a message from another node and that node's time differs from
@@ -197,10 +198,10 @@ Timestamp.recv = function (clock, msg) {
     lNew === lOld && lNew === lMsg
       ? Math.max(cOld, cMsg) + 1
       : lNew === lOld
-        ? cOld + 1
-        : lNew === lMsg
-          ? cMsg + 1
-          : 0;
+      ? cOld + 1
+      : lNew === lMsg
+      ? cMsg + 1
+      : 0;
 
   // Check the result for drift and counter overflow
   if (lNew - phys > config.maxDrift) {
@@ -223,7 +224,7 @@ Timestamp.recv = function (clock, msg) {
 
 /** Converts a fixed-length string timestamp to the structured value. 用来merkle插入
  * - sets this to elapsed msecs since 1/1/70 (e.g., when receiving a message)
-* @param {string} timestamp 类似 2022-10-30T14:23:11.112Z-0000-a02156e53043eaab
+ * @param {string} timestamp 类似 2022-10-30T14:23:11.112Z-0000-a02156e53043eaab
  */
 Timestamp.parse = function (timestamp) {
   if (typeof timestamp === 'string') {

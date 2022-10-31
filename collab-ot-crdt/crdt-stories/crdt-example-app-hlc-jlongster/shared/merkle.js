@@ -1,3 +1,5 @@
+/* global globalThis */
+
 function getKeys(trie) {
   return Object.keys(trie).filter((x) => x !== 'hash');
 }
@@ -266,7 +268,7 @@ export const merkle = {
 
 globalThis['merkle'] = merkle;
 globalThis['md'] = debug;
-globalThis['mgetKeys'] = getKeys;
+// globalThis['mgetKeys'] = getKeys;
 
 /** 首次渲染后填充完预置数据和添加一个待办项后的_clock.merkle */
 const mockMerkle = {
@@ -336,5 +338,5 @@ const mockMerkle = {
   hash: -953457433,
 };
 
-console.log(debug(mockMerkle))
-console.log(getKeys(mockMerkle))
+console.log(debug(mockMerkle));
+console.log(getKeys(mockMerkle));

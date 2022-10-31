@@ -1,5 +1,4 @@
-// console.log(';;sync ', window && window['Timestamp']);
-
+/* eslint-disable */
 // 首次执行时，会初始化本地全局_clock对象，time会被op更新，merkle初始为空对象
 window.setClock(makeClock(new window.Timestamp(0, 0, makeClientId())));
 
@@ -106,7 +105,7 @@ function applyMessages(incomingMessages) {
     mapIncomingToLocalMessagesForField(incomingMessages);
   const clock = getClock();
   // 只在同步其他客户端的op时才显示同步成功，自己的op不显示； 实现有问题，没写对
-  let shouldToastSyncSuccess = false;
+  const shouldToastSyncSuccess = false;
 
   // Look at each incoming message. If it's new to us (i.e., we don't have it in
   // our local store), or is newer than the message we have for the same field
@@ -231,9 +230,9 @@ async function sync(initialMessages = [], since = null) {
       const errMsg = `since === diffTime: ${diffTime}; `;
       throw new Error(
         errMsg +
-        'A bug happened while syncing and the client ' +
-        'was unable to get in sync with the server. ' +
-        "This is an internal error that shouldn't happen",
+          'A bug happened while syncing and the client ' +
+          'was unable to get in sync with the server. ' +
+          "This is an internal error that shouldn't happen",
       );
     }
 

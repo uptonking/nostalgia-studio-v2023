@@ -19,7 +19,7 @@ tomcat.**
 *.log
 
 dist/
-lib/
+# lib/
 
 
 # hidden files

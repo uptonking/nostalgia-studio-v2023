@@ -1,3 +1,4 @@
+/* eslint-disable */
 /** 每个客户端本地都有自己的 hybrid logic clock
  * @typedef {Object} HLCClock
  * @property {import('../shared/timestamp.js').MutableTimestamp} timestamp

@@ -1,3 +1,4 @@
+/* eslint-disable */
 const qs = document.querySelector.bind(document);
 const qsa = document.querySelectorAll.bind(document);
 
@@ -49,8 +50,8 @@ function getColor(name) {
 }
 
 /** 全局ui相关状态，数据相关状态在db.js文件并挂载到window._data
-* @type {{ offline:boolean, editingTodo:Object, isAddingType:boolean, isDeletingType:boolean  }}
-*/
+ * @type {{ offline:boolean, editingTodo:Object, isAddingType:boolean, isDeletingType:boolean  }}
+ */
 const uiState = {
   offline: false,
   /** 控制编辑列表项的弹窗 */
@@ -116,8 +117,8 @@ function saveActiveElement() {
   _activeElement = el.id
     ? '#' + el.id
     : el.className
-      ? '.' + el.className.replace(/ ?hover\:[^ ]*/g, '').replace(/ /g, '.')
-      : null;
+    ? '.' + el.className.replace(/ ?hover\:[^ ]*/g, '').replace(/ /g, '.')
+    : null;
 
   if (_activeElement && _activeElement.endsWith('.')) {
     _activeElement = _activeElement.slice(0, _activeElement.length - 1);
@@ -252,10 +253,11 @@ function render() {
             <button id="btn-edit-cancel" class="rounded p-2 bg-gray-200">Cancel</button>
           </div>
 
-          ${editingTodo.tombstone === 1
-        ? '<button id="btn-edit-undelete" class="pt-4 text-sm">Undelete</button>'
-        : ''
-      }
+          ${
+            editingTodo.tombstone === 1
+              ? '<button id="btn-edit-undelete" class="pt-4 text-sm">Undelete</button>'
+              : ''
+          }
         </div>
       <div>
     `);

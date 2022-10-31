@@ -11,12 +11,13 @@
       // "internalConsoleOptions": "neverOpen",
       "name": "crdt-hlc-server-nodemon",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
-      "runtimeArgs": ["--experimental-specifier-resolution=node","--loader=ts-node/esm/transpile-only"],
+      "runtimeArgs": [
+        "--experimental-specifier-resolution=node",
+        "--loader=ts-node/esm/transpile-only"
+      ],
       "program": "${workspaceFolder}/collab-ot-crdt/crdt-stories/crdt-example-app-hlc-jlongster/server/index.js",
       "restart": true,
-        "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"]
     },
     {
       "type": "node",
@@ -26,13 +27,9 @@
       // "runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
 
       "console": "integratedTerminal",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/collab-ot-crdt/crdt-stories/crdt-example-app-hlc-jlongster/server/index.js",
-      "outFiles": [
-        "${workspaceFolder}/**/*.js"
-      ]
+      "outFiles": ["${workspaceFolder}/**/*.js"]
     }
   ]
 }

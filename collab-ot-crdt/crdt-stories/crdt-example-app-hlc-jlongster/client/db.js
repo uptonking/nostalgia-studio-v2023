@@ -1,3 +1,4 @@
+/* eslint-disable */
 /** 对应数据库的messages表模型
  * @typedef {Object} MessageItem
  * @property {string} group_id

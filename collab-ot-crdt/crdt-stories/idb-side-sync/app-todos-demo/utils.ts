@@ -1,3 +1,5 @@
+import type { AppMainStateType } from "./types";
+
 export const qs = document.querySelector.bind(document);
 export const qsa = document.querySelectorAll.bind(document);
 
@@ -48,6 +50,7 @@ export function getColor(name) {
 
 export const buttonClasses =
   'h-12 sm:h-10 px-8 rounded focus:ring-2 focus:ring-blue-600 text-white';
+
 export const classes = {
   buttonPrimary: `${buttonClasses} bg-blue-600`,
   buttonSecondary: `${buttonClasses} bg-gray-400`,
@@ -59,3 +62,23 @@ export const classes = {
   modalContainer: 'flex-grow max-w-sm mx-4 p-4 bg-white rounded shadow-xl',
   modalTitle: 'text-lg font-bold mb-4 ext-lg font-bold mb-4',
 };
+
+
+export function defaultUiState() {
+  return {
+    editingTodo: null,
+    activeProfileName: null,
+    modal: null,
+    waitModalMessage: null,
+    errorMsg: null,
+    gdrive: {
+      email: null,
+      loginError: null,
+    },
+    sync: {
+      enabled: false,
+      inProgress: false,
+      message: null,
+    },
+  } as unknown as AppMainStateType;
+}

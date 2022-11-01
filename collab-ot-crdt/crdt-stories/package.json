@@ -12,6 +12,7 @@
     "demo": "webpack serve --hot --config webpack/webpack.config.demo.cjs",
     "demo:idbsync": "webpack serve --hot --config webpack/webpack.config.idbsync.cjs",
     "demo:crdt-hlc": "serve ./crdt-example-app-hlc-jlongster",
+    "demo:gdrive": "cd public && serve -C -l 8999",
     "start": "npm run demo:idbsync",
     "server:crdt-hlc": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./crdt-example-app-hlc-jlongster/server/index.js",
     "server": "npm run server:crdt-hlc",

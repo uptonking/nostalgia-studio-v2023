@@ -1,14 +1,10 @@
-import {
-  getSyncProfiles,
-  plugins,
-  registerSyncPlugin,
-  sync,
-} from '../idbsidesync';
+import { getSyncProfiles, registerSyncPlugin, sync } from '../idbsidesync';
+import { GoogleDrivePlugin } from '../plugins/google-drive/GoogleDrivePlugin';
 import {
   addProfileName,
   addTodo,
   addTodoType,
-  deleteDb,
+  deleteDB,
   deleteTodo,
   deleteTodoType,
   getActiveProfileName,
@@ -26,10 +22,20 @@ import {
   updateFontSizeSetting,
   updateTodo,
 } from './db';
-import { append, classes, clear, getColor, qs, qsa, sanitize } from './utils';
-// import { GoogleDrivePlugin } from '../plugins/google-drive/GoogleDrivePlugin';
+import type { AppMainStateType } from './types';
+import {
+  append,
+  classes,
+  clear,
+  defaultUiState,
+  getColor,
+  qs,
+  qsa,
+  sanitize,
+} from './utils';
 
-let uiState = defaultUiState() as any;
+/** app主要状态，大多ui相关状态 */
+let uiState: AppMainStateType = defaultUiState();
 
 let _scrollTop = 0;
 function saveScroll() {
@@ -51,15 +57,14 @@ function saveActiveElement() {
   _activeElement = el?.id
     ? '#' + el.id
     : el?.className
-    ? '.' +
+      ? '.' +
       el.className
         .replace(/ ?hover:[^ ]*/g, '')
         .replace(/ /g, '.')
         .replace(/:/g, '\\:')
         .replace(/.$/, '')
-    : null;
+      : null;
 }
-
 function restoreActiveElement() {
   const autofocusElements = qsa('[autofocus]');
   if (autofocusElements && autofocusElements.length === 1) {
@@ -74,39 +79,41 @@ function restoreActiveElement() {
   }
 }
 
-async function renderTodoTypes({ className = '', showBlank = true } = {}) {
-  return `
-    <select
-      name="types"
-      class="flex-grow ${classes.select} mx-1 sm:mx-2 mb-3 ${className}"
-    >
-      ${showBlank ? '<option value="">Select type...</option>' : ''}
-      ${(await getTodoTypes()).map(
-        (type) => `<option value="${type.id}">${type.name}</option>`,
-      )}
-      <option value="add-type">Add type...</option>
-      <option value="delete-type">Delete type...</option>
-    </select>
-  `;
-}
-
 async function renderProfileNames() {
   return `
     <label for="profiles" class="flex justify-between items-center mb-4 mr-7">
       <span class="text-gray-500 flex-grow">Theme:</span>
-      <select name="profiles" onchange="onStyleProfileChange()" class="${
-        classes.select
-      }">
+      <select name="profiles" onchange="onStyleProfileChange()" class="${classes.select
+    }">
         ${(await getAllProfileNames()).map(
           (profile) =>
-            `<option ${
-              uiState.activeProfileName === profile.name ? 'selected' : ''
+            `<option ${uiState.activeProfileName === profile.name ? 'selected' : ''
             }>${profile.name}</option>`,
         )}
         <option value="add-new-profile">Add new theme...</option>
       </select>
     </label>
 
+  `;
+}
+
+function renderTodoTypes({
+  todoTypes = [],
+  className = '',
+  showBlank = true,
+} = {}) {
+  return `
+    <select
+      name="types"
+      class="flex-grow ${classes.select} mx-1 sm:mx-2 mb-3 ${className}"
+    >
+      ${showBlank ? '<option value="">Select type...</option>' : ''}
+      ${todoTypes.map(
+    (type) => `<option value="${type['id']}">${type['name']}</option>`,
+  )}
+      <option value="add-type">Add type...</option>
+      <option value="delete-type">Delete type...</option>
+    </select>
   `;
 }
 
@@ -132,9 +139,11 @@ function renderTodos({ root, todos, isDeleted = false }) {
   });
 }
 
+let renderCount = 0;
 async function render() {
   document.documentElement.style.height = '100%';
   document.body.style.height = '100%';
+  console.log(';; ==renderCount ', renderCount++);
 
   saveScroll();
   saveActiveElement();
@@ -143,12 +152,11 @@ async function render() {
   root.style.height = '100%';
 
   const { editingTodo } = uiState;
-
   clear();
 
   const disableSyncBtn = uiState.sync.inProgress || !uiState.sync.enabled;
 
-  // prettier-ignore
+  // prettier-ignore 顶部导航条
   append(`
     <div class="flex flex-col h-full">
       <div
@@ -165,7 +173,7 @@ async function render() {
               <line x1="11" y1="12" x2="20" y2="12" />
               <line x1="11" y1="18" x2="20" y2="18" />
             </svg>
-            <h3 class="ml-1">IDBSideSync: To-Do Test/Demo</h3>
+            <h3 class="ml-1">IDBSideSync: Test/Demo</h3>
           </div>
           <button id="btn-show-style-modal">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="#fff" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -187,7 +195,7 @@ async function render() {
               placeholder="Enter todo..."
               class="flex-grow mb-3 mx-1 sm:mx-2 ${classes.textInput}"
             />
-            ${await renderTodoTypes()}
+            ${renderTodoTypes({ todoTypes: await getTodoTypes() })}
             <button
               id="btn-add-todo"
               class="flex-grow sm:flex-grow-0 h-12 mx-1 sm:mx-2 px-4 sm:px-8 bg-green-600 text-white rounded shadow
@@ -210,7 +218,8 @@ async function render() {
           <button
             ${disableSyncBtn ? 'disabled' : ''}
             onclick="syncNow()"
-            class="m-4 mr-6 text-white rounded p-2 bg-blue-${disableSyncBtn ? '300 cursor-default' : '600'}"
+            class="m-4 mr-6 text-white rounded p-2 bg-blue-${disableSyncBtn ? '300 cursor-default' : '600'
+    }"
           >Sync${uiState.sync.inProgress ? 'ing...' : ''}</button>
 
           <button
@@ -229,8 +238,8 @@ async function render() {
 
   renderTodos({ root: qs('#todos'), todos: await getAllTodos() });
   renderTodos({
-    root: qs('#deleted-todos'),
     todos: await getAllTodos(true),
+    root: qs('#deleted-todos'),
     isDeleted: true,
   });
 
@@ -240,15 +249,12 @@ async function render() {
         <div class="${classes.modalContainer}">
           <h2 class="${classes.modalTitle}">Edit To-Do</h2>
           <div class="flex flex-col">
-            <input value="${sanitize(editingTodo.name)}" class="${
-      classes.textInput
-    }" />
-            <button id="btn-edit-save" class="${
-              classes.buttonPrimary
-            } mt-4 mb-4">Save</button>
-            <button id="btn-edit-cancel" class="${
-              classes.buttonSecondary
-            }">Cancel</button>
+            <input value="${sanitize(editingTodo.name)}" class="${classes.textInput
+      }" />
+            <button id="btn-edit-save" class="${classes.buttonPrimary
+      } mt-4 mb-4">Save</button>
+            <button id="btn-edit-cancel" class="${classes.buttonSecondary
+      }">Cancel</button>
           </div>
         </div>
       </div>
@@ -268,11 +274,10 @@ async function render() {
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            ${
-              uiState.waitModalMessage
-                ? `<div class="my-4">${uiState.waitModalMessage}</div>`
-                : ''
-            }
+            ${uiState.waitModalMessage
+        ? `<div class="my-4">${uiState.waitModalMessage}</div>`
+        : ''
+      }
           </div>
         </div>
       </div>
@@ -443,12 +448,10 @@ async function render() {
           </div>
 
           <div class="flex mt-2">
-            <button id="btn-edit-delete" class="${
-              classes.buttonDanger
-            }  p-2 mr-2">Delete</button>
-            <button id="btn-edit-cancel" class="${
-              classes.buttonSecondary
-            } p-2">Cancel</button>
+            <button id="btn-edit-delete" class="${classes.buttonDanger
+      }  p-2 mr-2">Delete</button>
+            <button id="btn-edit-cancel" class="${classes.buttonSecondary
+      } p-2">Cancel</button>
           </div>
         </div>
       </div>
@@ -484,9 +487,8 @@ async function render() {
               />
               <span class="ml-2" onclick="onFontSizeSettingClick()">✏️</span>
             </label>
-            <button onClick="closeModal()" class="${
-              classes.buttonPrimary
-            } mt-4">Done</button>
+            <button onClick="closeModal()" class="${classes.buttonPrimary
+      } mt-4">Done</button>
           </div>
         </div>
       </div>
@@ -513,7 +515,7 @@ function addEventHandlers() {
     typeNode.selectedIndex = 0;
 
     if (name === '') {
-      alert("Todo can't be blank. C'mon!");
+      alert("Todo can't be blank!");
       return;
     }
 
@@ -647,25 +649,6 @@ async function onStyleProfileChange(e) {
   render();
 }
 
-function defaultUiState() {
-  return {
-    editingTodo: null,
-    activeProfileName: null,
-    modal: null,
-    waitModalMessage: null,
-    errorMsg: null,
-    gdrive: {
-      email: null,
-      loginError: null,
-    },
-    sync: {
-      enabled: false,
-      inProgress: false,
-      message: null,
-    },
-  };
-}
-
 function closeModal() {
   uiState = {
     ...uiState,
@@ -674,20 +657,18 @@ function closeModal() {
 
   render();
 }
-
 function showWaitModal(optionalMessage) {
   uiState.modal = 'please-wait';
   uiState.waitModalMessage = optionalMessage;
   render();
 }
-
 function showResetWarningModal() {
   uiState.modal = 'reset-warning';
   render();
 }
 
 async function onResetDataBtnClick() {
-  await deleteDb();
+  await deleteDB();
   window.location.reload();
 }
 
@@ -696,16 +677,17 @@ function onSyncSettingsBtnClick() {
   render();
 }
 
-const googleDrivePlugin = null as any;
+let googleDrivePlugin: GoogleDrivePlugin | null = null;
 
 async function loadGoogleDrivePlugin() {
-  // googleDrivePlugin = new GoogleDrivePlugin({
-  //   googleAppClientId:
-  //     '1004853515655-8qhi3kf64cllut2no4trescfq3p6jknm.apps.googleusercontent.com',
-  //   defaultFolderName: 'IDBSideSync ToDo App',
-  //   onSignInChange: onGoogleSignInChange,
-  // });
-  // await registerSyncPlugin(googleDrivePlugin);
+  googleDrivePlugin = new GoogleDrivePlugin({
+    googleAppKey: 'AIzaSyAA2HnDSahUz3uNpiEfQWXlTW4EqMKgpvg',
+    googleAppClientId:
+      '783995687622-kdf2g1v3kqq9413nji37a0p5d4teogrr.apps.googleusercontent.com',
+    defaultFolderName: 'IDBSideSync App',
+    onSignInChange: onGoogleSignInChange,
+  });
+  await registerSyncPlugin(googleDrivePlugin);
 }
 
 async function onGDriveSettingsBtnClick() {
@@ -764,7 +746,7 @@ function showGDriveLoginFailedModal(errorMessage) {
 }
 
 function onGDriveLogoutBtnClick() {
-  // googleDrivePlugin.signOut();
+  googleDrivePlugin?.signOut();
   uiState.modal = 'sync-settings/main-menu';
 }
 
@@ -812,8 +794,11 @@ async function applyProfileSettings() {
   setFontSize(await getFontSizeSetting(uiState.activeProfileName));
 }
 
-async function loadAndApplyProfileSettings() {
+/** 获取已有的或创建新的profileName */
+export async function loadAndApplyProfileSettings() {
+  console.log(';; init-user ', 1);
   const activeProfileName = await getActiveProfileName();
+  // console.log(';; init-user ', 2);
   if (activeProfileName) {
     uiState.activeProfileName = activeProfileName;
     // If a profile exists, try loading profile-specific settings
@@ -831,24 +816,23 @@ let syncTimer;
 function startSyncTimer() {
   syncTimer = setInterval(syncNow, 15000);
 }
-
 function stopSyncTimer() {
   clearInterval(syncTimer);
 }
 
-async function setupSync() {
+/** 初始化indexeddb，加载sync相关插件，render */
+export async function setupSync() {
+  // console.log(';; init-sync ', 1);
   // Don't attempt to set up syncing until IDBSideSync has been initialized...
   await getDB();
+  // console.log(';; init-sync ', 2);
   for (const syncProfile of getSyncProfiles()) {
-    if (
-      // syncProfile.pluginId === GoogleDrivePlugin.PLUGIN_ID
-      false
-    ) {
+    if (syncProfile.pluginId === GoogleDrivePlugin.PLUGIN_ID) {
       try {
         console.log('Attempting to load the google drive plugin...');
         await loadGoogleDrivePlugin();
         uiState.gdrive.currentUser = syncProfile.userProfile;
-        uiState.gdrive.settings = syncProfile.settings;
+        uiState.gdrive.settings = syncProfile.settings as any;
         uiState.sync.enabled = true;
       } catch (error) {
         console.error('Failed to load Google Drive plugin:', error);
@@ -875,9 +859,8 @@ async function setupSync() {
   render();
 }
 
-// Delay the sync setup a bit to avoid taking resources away from getting the app to a usable state.
-setTimeout(setupSync, 1000);
 
+/** 同步前后都会执行render */
 async function syncNow(forceFullSync) {
   uiState.sync.inProgress = true;
   render();
@@ -887,16 +870,14 @@ async function syncNow(forceFullSync) {
   render();
 }
 
-loadAndApplyProfileSettings();
-
-async function initDefaultTodoTypes() {
+/** 添加系统预置的事件类型 */
+export async function initDefaultTodoTypes() {
+  // console.log(';; init-todo-type ', 1);
   const types = await getTodoTypes();
-
+  // console.log(';; init-todo-type ', 2);
   if (types.length === 0) {
-    // Insert some default types
-    addTodoType({ name: 'Groceries', color: 'green' });
-    addTodoType({ name: 'Chores', color: 'blue' });
+    addTodoType({ name: 'Important', color: 'green' });
+    addTodoType({ name: 'Urgent', color: 'orange' });
   }
 }
 
-initDefaultTodoTypes();

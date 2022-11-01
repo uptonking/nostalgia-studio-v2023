@@ -10,7 +10,7 @@ const TODO_TYPES_BY_DELETED_INDEX = 'todo_types-index_by_deleted';
 const TODO_ITEMS = 'todo_items';
 const TODO_ITEMS_BY_DELETED_INDEX = 'todo_items-index_by_deleted';
 const DELETED_PROP = 'deleted';
-const DB_NAME = 'todo-app';
+const DB_NAME = 'idb-todo-app';
 
 let db;
 
@@ -21,15 +21,22 @@ if (!indexedDB) {
 }
 
 /**
- * Convenience function for getting a (cached/singleton) reference to an IndexedDB database via Promise. Mostly copied
- * from https://preview.tinyurl.com/yaoxc9cl).
+ * Get a (cached/singleton) reference to an IndexedDB database via Promise.
+ * - Mostly copied from https://github.com/jakearchibald/svgomg/blob/main/src/js/utils/storage.js).
  *
  * @returns a Promise that eventually resolves to the database.
  */
 export function getDB() {
   if (!db) {
     db = new Promise((resolve, reject) => {
-      const openreq = indexedDB.open(DB_NAME, 1);
+      const openreq = window.indexedDB.open(DB_NAME, 1);
+
+      openreq.onsuccess = () => {
+        (async () => {
+          await init(openreq.result);
+          resolve(openreq.result);
+        })();
+      };
 
       openreq.onerror = () => {
         let errorMsg = `🦖 Whoopsie, the app can't run if it can't open an IndexedDB database!`;
@@ -47,8 +54,9 @@ export function getDB() {
         reject(openreq.error);
       };
 
+      /** open a database with a version number higher than its current version. */
       openreq.onupgradeneeded = (event) => {
-        // @ts-ignore
+        // @ts-expect-error ❓ result属性为何不在类型上
         const db = event.target!.result;
         onupgradeneeded(event);
         const todoTypeStore = db.createObjectStore(TODO_TYPES, {
@@ -101,19 +109,12 @@ export function getDB() {
           keyPath: ['profileName', 'settingName'],
         });
       };
-
-      openreq.onsuccess = () => {
-        (async () => {
-          await init(openreq.result);
-          resolve(openreq.result);
-        })();
-      };
     });
   }
   return db;
 }
 
-export function deleteDb() {
+export function deleteDB() {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
       console.log('db:', db);
@@ -133,18 +134,17 @@ export function deleteDb() {
         resolve(undefined);
       };
       // @ts-ignore
-      deleteReq.oncomplete = () => {
-        console.log('oncomplete deleted database');
-        resolve(undefined);
-      };
+      // deleteReq.oncomplete = () => {
+      //   console.log('oncomplete deleted database');
+      //   resolve(undefined);
+      // };
     });
   });
 }
 
 /**
- * Convenience function for initiating an IndexedDB transaction and getting a reference to an object store. Mostly
- * copied from https://preview.tinyurl.com/yaoxc9cl). Makes it possible to use promise/async/await to "wait" for a
- * transaction to complete. Example:
+ * Convenience function for initiating an IndexedDB transaction and getting a reference to an object store.
+ * - Makes it possible to use promise/async/await to "wait" for a transaction to complete. Example:
  *
  * @example
  * ```
@@ -167,16 +167,19 @@ export function deleteDb() {
  *
  * @returns a Promise that will resolve once the transaction completes successfully.
  */
-async function txWithStore(storeName, mode, callback) {
+async function txWithStore(
+  storeName: string,
+  mode: string,
+  callback: (...args: any) => void,
+) {
   const db = await getDB();
   return new Promise((resolve, reject) => {
     const transactionRequest = db.transaction([storeName, OPLOG_STORE], mode);
     transactionRequest.oncomplete = () => resolve(undefined);
     transactionRequest.onerror = () => reject(transactionRequest.error);
 
-    // Note that the object store is immediately available (i.e., this is synchronous).
+    // 👇🏻 object store is immediately available (i.e., this is synchronous).
     const store = transactionRequest.objectStore(storeName);
-
     const proxiedStore = proxyStore(store);
     callback(proxiedStore);
   });
@@ -244,7 +247,8 @@ export async function getAllTodos(deleted = false) {
     : req.result;
 }
 
-async function resolveTodos(todos) {
+/** 遍历参数todos，先添加type属性，再排序 */
+async function resolveTodos(todos: any[]) {
   const resolvedTodos = [] as any[];
   for (const todo of todos) {
     const type = todo.type ? await getTodoType(todo.type) : null;
@@ -350,6 +354,7 @@ export async function getAllProfileNames() {
   return req.result;
 }
 
+/** 从db中读取设置 */
 export async function getActiveProfileName() {
   let activeProfileName;
   await txWithStore(SHARED_SETTINGS, 'readonly', (store) => {

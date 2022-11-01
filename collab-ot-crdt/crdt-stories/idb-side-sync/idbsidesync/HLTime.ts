@@ -1,13 +1,30 @@
 import * as murmurhash from 'murmurhash';
 
 /**
- * This class is used to model immutable instances of time as measured by a Hybrid Logical Clock, which combines both a
- * "physical" clock time and a "logical" monotonic counter.
+ * This class is used to model immutable instances of time as measured by a Hybrid Logical Clock,
+ *   which combines both a "physical" clock time and a "logical" monotonic counter.
  */
 export class HLTime {
   public static readonly STRING_PARTS_DELIMITER = '_';
   public static readonly COUNTER_PART_STR_LENGTH = 4;
   public static readonly NODE_PART_STR_LENGTH = 16;
+
+  protected _state: {
+    /** human-friendly "physical clock time" part of the hybrid logical clock (usually msecs since 1970) */
+    millis: number;
+    /** the monotonic counter part of the hybrid logical clock. */
+    counter: number;
+    /** identifies the client, or node, that created the timestamp. */
+    node: string;
+  };
+
+  constructor(millis: number, counter: number, node: string) {
+    this._state = {
+      millis: millis,
+      counter: counter,
+      node: node,
+    };
+  }
 
   /**
    * Converts an HLC time string to a HLTime instance.
@@ -47,25 +64,6 @@ export class HLTime {
     }
 
     return new HLTime(millis, counter, node);
-  }
-
-  protected _state: {
-    millis: number;
-    counter: number;
-    node: string;
-  };
-
-  /**
-   * @param millis - human-friendly "physical clock time" part of the hybrid logical clock (usually msecs since 1970)
-   * @param counter - the monotonic counter part of the hybrid logical clock.
-   * @param node - identifies the client, or node, that created the timestamp.
-   */
-  constructor(millis: number, counter: number, node: string) {
-    this._state = {
-      millis: millis,
-      counter: counter,
-      node: node,
-    };
   }
 
   /**
@@ -125,6 +123,7 @@ export class HLTime {
   }
 
   hash() {
+    // @ts-expect-error
     return murmurhash.default.v3(this.toString());
   }
 
@@ -133,7 +132,7 @@ export class HLTime {
     constructor(invalidTimestampStr: unknown, reason: unknown) {
       super(
         `Invalid HLTime string; ${reason}: ` +
-          JSON.stringify(invalidTimestampStr),
+        JSON.stringify(invalidTimestampStr),
       );
       Object.setPrototypeOf(this, ParseError.prototype); // https://git.io/vHLlu
     }

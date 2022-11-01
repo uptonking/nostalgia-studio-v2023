@@ -15,13 +15,22 @@
     <pre id="content" style="white-space: pre-wrap"></pre>
 
     <h3>📁 Folders:</h3>
-    <div style="display: flex">
+    <div style="display: flex; gap: 4px;">
       <button id="refresh_folder_btn" style="display: none">
         Refresh Folder
       </button>
       <button id="create_folder_btn" style="display: none">
         Create Folder
       </button>
+      <div style="display: inline-block">
+        <label for="folderId">Folder Id:&nbsp;</label>
+        <input
+          id="folderId"
+          type="text"
+          value=""
+          style="width: 300px; font-family: monospace"
+        />
+      </div>
     </div>
     <pre
       id="folderOut"
@@ -29,29 +38,32 @@
     ></pre>
 
     <h3>📖 Files:</h3>
-    <label for="folderId">Parent Folder:&nbsp;</label>
-    <input
-      id="folderId"
-      type="text"
-      value=""
-      style="width: 300px; font-family: monospace"
-    />
+    <div style="display: flex; gap: 4px;">
+      <button id="list_files_btn" style="display: none">Fetch Files</button>
+      <button id="create_file_btn" style="display: none">Create File</button>
+      <div style="display: inline-block">
+        <label for="ParentFolderId">Parent Folder:&nbsp;</label>
+        <input
+          id="parentFolderId"
+          type="text"
+          value=""
+          style="width: 300px; font-family: monospace"
+        />
+      </div>
+    </div>
     <span style="font-style: italic; font-size: 0.85rem">
-      &nbsp;(If empty, files will be listed from / created in you "My Drive"
-      root)
+      &nbsp;(If empty, files will be listed from "My Drive" root)
     </span>
     <pre
       id="fileOut"
       style="white-space: pre-wrap; border: 1px solid #d0d0d0; padding: 20px"
     ></pre>
 
-    <button id="list_files_btn" style="display: none">List Files</button>
+    <button id="update_file_btn" style="display: none">Update File</button>
     <button id="files_next_page_btn" style="display: none">
       Get Next Page of Files
     </button>
     <button id="download_file_btn" style="display: none">Download File</button>
-    <button id="create_file_btn" style="display: none">Create File</button>
-    <button id="update_file_btn" style="display: none">Update File</button>
 
     <script type="text/javascript">
       const qs = document.querySelector.bind(document);
@@ -68,12 +80,11 @@
       const CLIENT_ID =
         '783995687622-kdf2g1v3kqq9413nji37a0p5d4teogrr.apps.googleusercontent.com';
       const API_KEY = 'AIzaSyAA2HnDSahUz3uNpiEfQWXlTW4EqMKgpvg';
-      // Discovery doc URL for APIs used by the quickstart
       const DISCOVERY_DOC =
         'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/drive.file';
+      const SCOPES = 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata';
 
       let tokenClient;
       let gapiInited = false;
@@ -102,15 +113,13 @@
           client_id: CLIENT_ID,
           scope: SCOPES,
           callback: (res) => {
-            // function that handles returned token response.
-            console.log(';; init-gapi.client, ', res);
+            console.log(';; init-gis-oauth2, ', res);
           },
         });
 
         gisInited = true;
         maybeEnableButtons();
       }
-      /** Enables user interaction after all libraries are loaded.  */
       function maybeEnableButtons() {
         if (gapiInited && gisInited) {
           authorizeButton.style.display = 'block';
@@ -136,8 +145,7 @@
         updateFileBtn.onclick = onUpdateFileBtnClick;
       }
 
-      /**
-       *  Sign in the user upon button click.
+      /** Sign in the user upon button click.
        */
       function handleAuthClick(event) {
         tokenClient.callback = async (resp) => {
@@ -166,8 +174,7 @@
         }
       }
 
-      /**
-       *  Sign out the user upon button click.
+      /** Sign out the user upon button click.
        */
       function handleSignoutClick(event) {
         const token = gapi.client.getToken();
@@ -176,21 +183,29 @@
           gapi.client.setToken('');
           qs('#content').innerText = '';
           qs('#authorize_button').innerText = 'Authorize';
-          qs('#signout_button').style.visibility = 'hidden';
+          qs('#signout_button').style.display = 'none';
         }
       }
 
       function onCreateFolderBtnClick() {
         const folderName = prompt('Enter folder name:');
         console.log('folderName:', folderName);
+
+        const requestParams = {
+          name: folderName,
+          // For full list of drive's supported MIME types: https://developers.google.com/drive/api/v3/mime-types
+          mimeType: 'application/vnd.google-apps.folder',
+          // parents: [PARENT_FOLDER_ID], // If not specified, the file will be placed directly in the user's My Drive folder.
+        };
+        const parentFolderId = qs('input#folderId').value;
+        if (parentFolderId.trim() !== '') {
+          requestParams.parents = [parentFolderId];
+        }else{
+          requestParams.parents = ['appDataFolder'];
+        }
         gapi.client.drive.files
           .create({
-            resource: {
-              name: folderName,
-              // For full list of drive's supported MIME types: https://developers.google.com/drive/api/v3/mime-types
-              mimeType: 'application/vnd.google-apps.folder',
-              // parents: [PARENT_FOLDER_ID], // If not specified, the file will be placed directly in the user's My Drive folder.
-            },
+            resource: { ...requestParams },
             fields: 'id',
           })
           .then(function (response) {
@@ -233,7 +248,7 @@
           mimeType: 'text/plain',
           createdTime: '2022-10-04T12:00:00.215Z', // this would be set oplog entry time
         };
-        const parentFolderId = qs('input#folderId').value;
+        const parentFolderId = qs('input#parentFolderId').value;
         if (parentFolderId.trim() !== '') {
           metadata.parents = [parentFolderId];
         }
@@ -308,6 +323,7 @@
             alt: 'media',
           })
           .then(function (response) {
+            // 这里未实现下载，而是简单打印
             console.log('Get file response.result', response.result);
           });
       }
@@ -327,19 +343,28 @@
       function formatName(name, fixedLength = 24) {
         return name.length < fixedLength + 1
           ? name + ' '.repeat(fixedLength - name.length)
-          : name.slice(0, fixedLength);
+          : name.slice(0, fixedLength - 3) + '...';
       }
 
-      /**
-       * Print folders.
-       */
       async function listFolders() {
-        let response;
-        response = await gapi.client.drive.files.list({
-          q: "mimeType='application/vnd.google-apps.folder'",
-          pageSize: 12,
+        const conditions = [];
+        conditions.push("mimeType='application/vnd.google-apps.folder'");
+        const requestParams = {
+          pageSize: 8,
           // See https://developers.google.com/drive/api/v3/reference/files for list of all the file properties
           // fields: 'nextPageToken, files(*)',
+          fields: 'files(*)',
+        };
+        const parentFolderId = qs('input#folderId').value;
+        if (parentFolderId.trim() !== '') {
+          conditions.push(`'${parentFolderId}' in parents`);
+        }
+        console.log(';; queries ', conditions.join(' and '));
+
+        let response;
+        response = await gapi.client.drive.files.list({
+          q: conditions.join(' and '),
+          ...requestParams,
         });
         const files = response.result.files;
         console.log(';; folders ', files);
@@ -348,7 +373,12 @@
           for (let i = 0; i < files.length; i++) {
             const folder = files[i];
             appendPre(
-              formatName(folder.name) + ' 👀 ' + folder.id + '',
+              formatName(folder.name) +
+                ' 👀 ' +
+                folder.modifiedTime +
+                ' 👀 ' +
+                folder.id +
+                '',
               'folderOut',
             );
             // console.log('folder:', file);
@@ -358,11 +388,11 @@
         }
       }
 
+      /** 参考 https://developers.google.com/drive/api/guides/search-files
+       */
       async function listFiles() {
-        const parentFolderId = qs('input#folderId').value;
-        // https://developers.google.com/drive/api/v3/reference/query-ref#fields
         const conditions = [];
-        conditions.push("mimeType != 'application/vnd.google-apps.folder'");
+        conditions.push("mimeType!='application/vnd.google-apps.folder'");
         // conditions.push("mimeType='text/plain'");
         // conditions.push("createdTime > '2011-06-04T12:00:00'");
 
@@ -383,18 +413,20 @@
         // conditions.push("(name contains 'beep')");
         // conditions.push("name = '108_even_boop_2021-03-25T19:39:43.508Z.json'");
 
+        const parentFolderId = qs('input#parentFolderId').value;
         if (parentFolderId) {
           conditions.push(`'${parentFolderId}' in parents`);
         }
 
-        console.log(conditions.join(' and '));
+        console.log(';; queries ', conditions.join(' and '));
         const response = await gapi.client.drive.files.list({
           q: conditions.join(' and '),
           orderBy: 'createdTime',
-          pageSize: 3,
-          pageToken: filesNextPageToken,
+          pageSize: 8,
+          // pageToken: filesNextPageToken,
           // See https://developers.google.com/drive/api/v3/reference/files for list of all the file properties
-          fields: 'nextPageToken, files(*)',
+          // fields: 'nextPageToken, files(*)',
+          fields: 'files(*)',
         });
         const files = response.result.files;
         console.log(';; files', files);
@@ -405,7 +437,7 @@
             appendPre(
               formatName(file.name) +
                 ' 👀' +
-                file.createdTime +
+                file.modifiedTime +
                 ' 👀 ' +
                 file.id,
               'fileOut',
@@ -415,10 +447,10 @@
           appendPre('  No files found.', 'fileOut');
         }
 
-        filesNextPageToken = response.result.nextPageToken;
-        getFilesNextPageBtn.style.display = filesNextPageToken
-          ? 'block'
-          : 'None';
+        // filesNextPageToken = response.result.nextPageToken;
+        // getFilesNextPageBtn.style.display = filesNextPageToken
+        //   ? 'block'
+        //   : 'None';
       }
     </script>
 

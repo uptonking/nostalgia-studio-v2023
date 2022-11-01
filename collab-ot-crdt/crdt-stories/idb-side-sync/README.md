@@ -1,6 +1,6 @@
 ## Overview
 
-> forked from https://github.com/clintharris/IDBSideSync
+> forked from https://github.com/clintharris/IDBSideSync /MIT
 
 IDBSideSync is an experimental JavaScript library that makes it possible to sync browser-based IndexedDB databases using [CRDT](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type) concepts.
 

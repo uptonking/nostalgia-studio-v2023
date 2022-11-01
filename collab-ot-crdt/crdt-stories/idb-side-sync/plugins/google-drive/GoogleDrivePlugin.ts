@@ -6,7 +6,7 @@ import type {
   SyncProfileSettings,
   UserProfile,
 } from '../../types/main';
-import { GoogleFile } from './types';
+import type { GoogleFile } from './types';
 import {
   FILENAME_PART,
   FileDownloadError,
@@ -39,6 +39,7 @@ const gapi = window.gapi;
 export class GoogleDrivePlugin implements SyncPlugin {
   public static PLUGIN_ID = libName;
 
+  private googleAppKey: string;
   private googleAppClientId: string;
   private remoteFolderName: string;
   private remoteFolderId?: string;
@@ -48,10 +49,11 @@ export class GoogleDrivePlugin implements SyncPlugin {
   private listeners: {
     signInChange: SignInChangeHandler[];
   } = {
-    signInChange: [],
-  };
+      signInChange: [],
+    };
 
   constructor(options: {
+    googleAppKey: string;
     googleAppClientId: string;
     defaultFolderName: string;
     remoteFolderId?: string;
@@ -63,6 +65,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
       throw new Error(`[${libName}] ${errMsg}`);
     }
 
+    this.googleAppKey = options.googleAppKey;
     this.googleAppClientId = options.googleAppClientId;
     this.remoteFolderName = options.defaultFolderName;
 
@@ -80,7 +83,12 @@ export class GoogleDrivePlugin implements SyncPlugin {
   }
 
   public isLoaded(): boolean {
-    return window.gapi !== undefined && window.gapi.client !== undefined;
+    return (
+      window.gapi &&
+      window.gapi.client &&
+      window.google &&
+      window.google.accounts
+    );
   }
 
   public load(): Promise<void> {
@@ -93,23 +101,37 @@ export class GoogleDrivePlugin implements SyncPlugin {
         return resolve('skipped-script-injection');
       }
       debug && log.debug(`Loading GAPI <script>...`);
-      const script = document.createElement('script');
-      script.onload = resolve;
-      script.onerror = reject;
-      script.src = 'https://apis.google.com/js/api.js';
-      document.head.appendChild(script);
+      const script1 = document.createElement('script');
+      script1.onload = resolve;
+      script1.onerror = reject;
+      script1.src = 'https://apis.google.com/js/api.js';
+      const script2 = document.createElement('script');
+      script2.onload = resolve;
+      script2.onerror = reject;
+      script2.src = 'https://accounts.google.com/gsi/client';
+
+      document.head.appendChild(script1);
+      document.head.appendChild(script2);
     })
       .then((result) => {
         return new Promise((resolve) => {
           if (result !== 'skipped-script-injection') {
             debug && log.debug(`GAPI <script> successfully loaded.`);
           }
-          if (gapi.auth2 && gapi.client.drive) {
+          if (window.google.accounts.oauth2 && gapi.client.drive) {
             return resolve('skipped-module-load');
           }
-          debug && log.debug(`Loading GAPI library modules...`);
-          // Warning: passing a config object as the second argument to `gapi.load()` does NOT work in Safari.
-          gapi.load('client:auth2', resolve);
+          debug &&
+            log.debug(`Loading GAPI library modules... `, gapi, window.google);
+          window.ggTokenClient = window.google.accounts.oauth2.initTokenClient({
+            client_id: this.googleAppClientId,
+            scope: 'https://www.googleapis.com/auth/drive.file',
+            callback: (res) => {
+              // function that handles returned token response.
+              console.log(';; init-gapi.client, ', res);
+            },
+          });
+          gapi.load('client', resolve);
         });
       })
       .catch((error) => {
@@ -123,7 +145,6 @@ export class GoogleDrivePlugin implements SyncPlugin {
           let errorMsg =
             'Failed to load the Google API JavaScript library. This may be happening due to your browser being ' +
             'configured to use content blocking.';
-
           if (ua.includes('safari') && ua.includes('mobile')) {
             errorMsg +=
               `\n\nTap on the "aA" shown on the left side of Safari's address bar and select "Turn off ` +
@@ -139,29 +160,22 @@ export class GoogleDrivePlugin implements SyncPlugin {
           debug && log.debug(`GAPI library modules successfully loaded.`);
         }
         debug && log.debug(`Initializing GAPI client...`);
-        return window.gapi.client
-          .init({
-            // Note that `apiKey` is NOT specified here, only the (OAuth) Client ID. When setting up app credentials in
-            // the Google Developer Console via "Create Credentials > Help Me Choose" the console explains that it's not
-            // safe to use some creds in certain contexts. If you select Google Drive, indicate that the app will run in
-            // a browser, and specify that the application will access user data, it states that only the clientId can
-            // be used securely. See https://developer.okta.com/blog/2019/01/22/oauth-api-keys-arent-safe-in-mobile-apps
-            // for more info on why including the API key in a browser app is a bad idea.
-            clientId: this.googleAppClientId,
-            discoveryDocs: [
-              'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
-            ],
-            scope: 'https://www.googleapis.com/auth/drive.file',
-          })
-          .then(() => {
-            debug && log.debug(`GAPI client successfully initialized.`);
-            debug && log.debug(`Setting up GAPI auth change listeners.`);
-            const authInstance = gapi.auth2.getAuthInstance();
-            authInstance.isSignedIn.listen(this.onSignInChange.bind(this));
-            authInstance.currentUser.listen(
-              this.onCurrentUserChange.bind(this),
-            );
-          });
+        // 👇🏻 挂载gapi到全局
+        return window.gapi.client.init({
+          apiKey: this.googleAppKey,
+          discoveryDocs: [
+            'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
+          ],
+        });
+        // .then(() => {
+        //   debug && log.debug(`GAPI client successfully initialized.`);
+        //   debug && log.debug(`Setting up GAPI auth change listeners.`);
+        //   const authInstance = gapi.auth2.getAuthInstance();
+        //   authInstance.isSignedIn.listen(this.onSignInChange.bind(this));
+        //   authInstance.currentUser.listen(
+        //     this.onCurrentUserChange.bind(this),
+        //   );
+        // });
       });
   }
 
@@ -191,41 +205,84 @@ export class GoogleDrivePlugin implements SyncPlugin {
   }
 
   public isSignedIn(): boolean {
-    return gapi.auth2.getAuthInstance().isSignedIn.get();
+    // return gapi.auth2.getAuthInstance().isSignedIn.get();
+    return gapi.client.getToken() != null;
   }
 
   public signIn(): Promise<void> {
     return new Promise((resolve, reject) => {
-      gapi.auth2
-        .getAuthInstance()
-        .signIn({ fetch_basic_profile: false, ux_mode: 'popup' })
-        .then(() => {
-          debug && log.debug(`GAPI client sign-in completed successfully.`);
-          resolve();
-        })
-        .catch((error) => {
+      window.ggTokenClient.callback = async (resp) => {
+        if (resp.error !== undefined) {
+          let error = resp.error;
           log.error(`GAPI client sign-in failed:`, error);
           let errorMsg = `Google sign-in process failed.`;
           if (error && error.error === 'popup_blocked_by_browser') {
             errorMsg += ` Please try disabling pop-up blocking for this site.`;
           }
           reject(new Error(errorMsg));
-        });
+          throw resp;
+        }
+      };
+
+      if (gapi.client.getToken() === null) {
+        // Prompt the user to select a Google Account and ask for consent to share their data
+        // when establishing a new session.
+        window.ggTokenClient.requestAccessToken({ prompt: 'consent' });
+      } else {
+        // Skip display of account chooser and consent dialog for an existing session.
+        window.ggTokenClient.requestAccessToken({ prompt: '' });
+      }
+
+      debug && log.debug(`GAPI client sign-in completed successfully.`);
+      resolve();
+
+      // gapi.auth2
+      //   .getAuthInstance()
+      //   .signIn({ fetch_basic_profile: false, ux_mode: 'popup' })
+      //   .then(() => {
+      //     debug && log.debug(`GAPI client sign-in completed successfully.`);
+      //     resolve();
+      //   })
+      //   .catch((error) => {
+      //     log.error(`GAPI client sign-in failed:`, error);
+      //     let errorMsg = `Google sign-in process failed.`;
+      //     if (error && error.error === 'popup_blocked_by_browser') {
+      //       errorMsg += ` Please try disabling pop-up blocking for this site.`;
+      //     }
+      //     reject(new Error(errorMsg));
+      //   });
     });
   }
 
   public signOut(): void {
-    gapi.auth2.getAuthInstance().signOut();
+    // gapi.auth2.getAuthInstance().signOut();
+    const token = gapi.client.getToken();
+    if (token !== null) {
+      window.google.accounts.oauth2.revoke(token.access_token);
+      gapi.client.setToken('');
+    }
   }
 
   public getUserProfile(): UserProfile {
-    const googleUserProfile = gapi.auth2
-      .getAuthInstance()
-      .currentUser.get()
-      .getBasicProfile();
-    return this.convertGoogleUserProfileToStandardUserProfile(
-      googleUserProfile,
-    );
+    // const googleUserProfile = gapi.auth2
+    //   .getAuthInstance()
+    //   .currentUser.get()
+    //   .getBasicProfile();
+
+    // google.accounts.id.initialize({
+    //   client_id: 'YOUR_GOOGLE_CLIENT_ID',
+    //   callback: handleCredentialResponse
+    // });
+
+    // return this.convertGoogleUserProfileToStandardUserProfile(
+    //   googleUserProfile,
+    // );
+
+    return {
+      email: 'hello@qq.com',
+      firstName: 'Usr1',
+      lastName: 'Super',
+    };
   }
 
   public getSettings(): SyncProfileSettings {
@@ -382,7 +439,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
   // @ts-ignore
   public getFile(fileId: string): Promise<gapi.client.drive.File> {
     return new Promise((resolve, reject) => {
-      // debug && log.debug(`Attempting to get Google Drive file with ID '${fileId}'...`);
+      debug && log.debug(`Attempting to get Google Drive file with ID '${fileId}'...`);
       gapi.client.drive.files
         .get({
           fileId: fileId,
@@ -418,8 +475,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
     const queryParts = [] as any[];
     queryParts.push(
       'mimeType ' +
-        (filter.type === 'folders' ? '=' : '!=') +
-        ` '${GAPI_FOLDER_MIME_TYPE}'`,
+      (filter.type === 'folders' ? '=' : '!=') +
+      ` '${GAPI_FOLDER_MIME_TYPE}'`,
     );
 
     if (typeof filter.exactName === 'string') {
@@ -496,7 +553,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     try {
       // For more info on 'list' operation see https://developers.google.com/drive/api/v3/reference/files/list
       const response = await gapi.client.drive.files.list(listParams);
-      // debug && log.debug('GAPI files.list() response:', response);
+      debug && log.debug('GAPI files.list() response:', response);
       return {
         files: Array.isArray(response.result.files)
           ? (response.result.files as GoogleFile[])
@@ -582,14 +639,14 @@ export class GoogleDrivePlugin implements SyncPlugin {
 
     const nameContains = Array.isArray(filter.includeClientIds)
       ? filter.includeClientIds.map(
-          (clientId) => clientId + FILENAME_PART.clientInfoExt,
-        )
+        (clientId) => clientId + FILENAME_PART.clientInfoExt,
+      )
       : [FILENAME_PART.clientInfoExt];
 
     const nameNotContains = Array.isArray(filter.excludeClientIds)
       ? filter.excludeClientIds.map(
-          (clientId) => clientId + FILENAME_PART.clientInfoExt,
-        )
+        (clientId) => clientId + FILENAME_PART.clientInfoExt,
+      )
       : undefined;
 
     let pageResults;
@@ -606,8 +663,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
       pageToken = pageResults.nextPageToken;
 
       log.debug(
-        `Found ${pageResults.files.length} client record files (${
-          pageToken ? '' : 'no '
+        `Found ${pageResults.files.length} client record files (${pageToken ? '' : 'no '
         }more pages exist).`,
       );
 
@@ -663,8 +719,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
       pageToken = pageResults.nextPageToken;
 
       log.debug(
-        `Found ${pageResults.files.length} oplog entry files (${
-          pageToken ? '' : 'no '
+        `Found ${pageResults.files.length} oplog entry files (${pageToken ? '' : 'no '
         }more pages exist).`,
       );
 
@@ -828,10 +883,10 @@ export class GoogleDrivePlugin implements SyncPlugin {
     const metadata: Record<string, unknown> = params.fileId
       ? {}
       : {
-          name: params.fileName,
-          mimeType: contentType,
-          parents: [this.remoteFolderId],
-        };
+        name: params.fileName,
+        mimeType: contentType,
+        parents: [this.remoteFolderId],
+      };
 
     if (!params.fileId && typeof params.createdTime === 'string') {
       metadata.createdTime = params.createdTime;
@@ -889,5 +944,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
 declare global {
   interface Window {
     gapi: any;
+    google: any;
+    ggTokenClient: any;
   }
 }

@@ -5,7 +5,7 @@ import { HLTime } from './HLTime';
 
 export { v4 as uuid } from 'uuid';
 
-export const libName = 'IDBSideSync';
+export const LIB_NAME = 'IDBSideSync';
 export let debug = process.env.NODE_ENV !== 'production';
 export function setDebug(isEnabled: boolean) {
   debug = isEnabled === true;
@@ -137,7 +137,7 @@ export function isEventWithTargetError(
 }
 
 /* eslint-disable no-console */
-export const logPrefix = '[' + libName + ']';
+export const logPrefix = '[' + LIB_NAME + ']';
 export const log = {
   log: console.log.bind(console, logPrefix),
   todo: console.log.bind(console, '%c[TODO]', 'color:blue;font-weight:bold;'),

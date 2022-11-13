@@ -10,9 +10,10 @@ const TODO_TYPES_BY_DELETED_INDEX = 'todo_types-index_by_deleted';
 const TODO_ITEMS = 'todo_items';
 const TODO_ITEMS_BY_DELETED_INDEX = 'todo_items-index_by_deleted';
 const DELETED_PROP = 'deleted';
-const DB_NAME = 'idb-todo-app';
+const DB_NAME = 'IDBSyncApp';
 
-let db;
+/** 全局单例的indexeddb实例 */
+let db: Promise<IDBDatabase>;
 
 if (!indexedDB) {
   alert(
@@ -20,8 +21,7 @@ if (!indexedDB) {
   );
 }
 
-/**
- * Get a (cached/singleton) reference to an IndexedDB database via Promise.
+/** Get a (cached/singleton) reference to an IndexedDB database via Promise.
  * - Mostly copied from https://github.com/jakearchibald/svgomg/blob/main/src/js/utils/storage.js).
  *
  * @returns a Promise that eventually resolves to the database.
@@ -33,7 +33,7 @@ export function getDB() {
 
       openreq.onsuccess = () => {
         (async () => {
-          await init(openreq.result);
+          await init(openreq.result); // 👉🏻 初始化全局设置和hlc逻辑时钟
           resolve(openreq.result);
         })();
       };
@@ -54,18 +54,18 @@ export function getDB() {
         reject(openreq.error);
       };
 
-      /** open a database with a version number higher than its current version. */
+      /** trigger when you create a new database or increase the version number of an existing database */
       openreq.onupgradeneeded = (event) => {
         // @ts-expect-error ❓ result属性为何不在类型上
-        const db = event.target!.result;
+        const db = event.target!.result as IDBDatabase;
         onupgradeneeded(event);
+
         const todoTypeStore = db.createObjectStore(TODO_TYPES, {
           keyPath: 'id',
         });
-
         // Create an index so we can quickly query for non-deleted types using an IDBKeyRange. Note that we'll need to
         // A) ensure that non-deleted objects have a value for this prop, and B) we use something other than booleans
-        // for the values, since you can't use bools as keys / index them (we'll use 0 | 1 to indicate deleted).
+        // for the values, since you can't use boolean as keys / index them (we'll use 0/1 to indicate deleted).
         todoTypeStore.createIndex(TODO_TYPES_BY_DELETED_INDEX, DELETED_PROP, {
           unique: false,
         });
@@ -80,7 +80,7 @@ export function getDB() {
         // The todo type "mappings" store maps the IDs of todo types to "current" type IDs. You can think of it as a
         // symbolic link or shortcut... The todo items each have a "type" field set to the key of a record in this
         // store. This store, in turn, has that key pointing to the ID of the actual todo type. So you might have
-        // todos like `{ id: 'buy milk', type: 'symlinkKey1' }` and then have todo type symlink store that looks like
+        // a todo like `{ id: 'buy milk', type: 'symlinkKey1' }` and then have todo type symlink store that looks like
         // `{ symlinkKey1: 'todoTypeAAA', symlinkKey2: 'todoTypeBBB' }`.
         //
         // This extra degree of separation between the todos and the actual types is done so that when a todo type is
@@ -111,6 +111,7 @@ export function getDB() {
       };
     });
   }
+
   return db;
 }
 
@@ -123,7 +124,7 @@ export function deleteDB() {
       console.log('Attempting to delete database...');
       const deleteReq = indexedDB.deleteDatabase(DB_NAME);
       deleteReq.onblocked = () => {
-        console.log('Blocked');
+        console.log('deleting idb gets blocked');
       };
       deleteReq.onerror = (event) => {
         console.error('Failed to delete database');
@@ -133,7 +134,7 @@ export function deleteDB() {
         console.log('onsuccess deleted database');
         resolve(undefined);
       };
-      // @ts-ignore
+      // @ts-ignore Property 'oncomplete' does not exist on type 'IDBOpenDBRequest'.
       // deleteReq.oncomplete = () => {
       //   console.log('oncomplete deleted database');
       //   resolve(undefined);
@@ -152,7 +153,8 @@ export function deleteDB() {
  *
  * // "Waits" until the entire transaction completes
  * await txWithStore('myStore', 'readwrite', (store) => {
- *   store.add(myThing).onsuccess = (event) => {
+ *   const getOrUpdateReq = store.add(myThing);
+ *   getOrUpdateReq.onsuccess = (event) => {
  *     result = event.target.result;
  *   }
  * });
@@ -169,37 +171,35 @@ export function deleteDB() {
  */
 async function txWithStore(
   storeName: string,
-  mode: string,
-  callback: (...args: any) => void,
+  mode: 'readonly' | 'readwrite',
+  callback: (args: IDBObjectStore) => void,
 ) {
   const db = await getDB();
   return new Promise((resolve, reject) => {
-    const transactionRequest = db.transaction([storeName, OPLOG_STORE], mode);
-    transactionRequest.oncomplete = () => resolve(undefined);
-    transactionRequest.onerror = () => reject(transactionRequest.error);
+    const trRequest = db.transaction([storeName, OPLOG_STORE], mode);
+    trRequest.oncomplete = () => resolve(undefined);
+    trRequest.onerror = () => reject(trRequest.error);
 
     // 👇🏻 object store is immediately available (i.e., this is synchronous).
-    const store = transactionRequest.objectStore(storeName);
+    const store = trRequest.objectStore(storeName);
     const proxiedStore = proxyStore(store);
     callback(proxiedStore);
   });
 }
 
-async function txWithStores(storeNames, mode, callback) {
+async function txWithStores(
+  storeNames: string[],
+  mode: 'readonly' | 'readwrite',
+  callback: (...args: any[]) => void,
+) {
   const db = await getDB();
   return new Promise((resolve, reject) => {
-    const transactionRequest = db.transaction(
-      [...storeNames, OPLOG_STORE],
-      mode,
-    );
-    transactionRequest.oncomplete = () => resolve(undefined);
-    transactionRequest.onerror = () => reject(transactionRequest.error);
+    const trRequest = db.transaction([...storeNames, OPLOG_STORE], mode);
+    trRequest.oncomplete = () => resolve(undefined);
+    trRequest.onerror = () => reject(trRequest.error);
 
     // Note that the object stores are immediately available (i.e., this is synchronous).
-    const stores = storeNames.map((name) =>
-      transactionRequest.objectStore(name),
-    );
-
+    const stores = storeNames.map((name) => trRequest.objectStore(name));
     const proxiedStores = stores.map((store) => proxyStore(store));
     callback(...proxiedStores);
   });
@@ -314,7 +314,7 @@ export async function addTodoType({ name, color }) {
     'readwrite',
     (typeStore, typeSymlinkStore) => {
       // Ensure that non-deleted objects have a "false" value for the "deleted" prop, and use numeric value instead of a
-      // boolean (since you can't use bools as keys / index them).
+      // boolean (since you can't use boolean as keys / index them).
       typeStore.add({ id: typeId, name, color, [DELETED_PROP]: 0 });
       typeSymlinkStore.add(typeId, typeId); // symlink ID -> target ID. We can re-use the target ID at first.
     },
@@ -354,7 +354,7 @@ export async function getAllProfileNames() {
   return req.result;
 }
 
-/** 从db中读取设置 */
+/** 从db中读取设置项 */
 export async function getActiveProfileName() {
   let activeProfileName;
   await txWithStore(SHARED_SETTINGS, 'readonly', (store) => {
@@ -377,7 +377,8 @@ export async function getBgColorSetting(profileName) {
   await txWithStore(PROFILE_SETTINGS, 'readonly', (store) => {
     const req = store.get([profileName, 'bgColor']);
     req.onsuccess = (event) => {
-      bgColor = event.target.result ? event.target.result.value : null;
+      // @ts-ignore
+      bgColor = event!.target!.result ? event.target.result.value : null;
     };
   });
   return bgColor;
@@ -404,6 +405,7 @@ export async function getFontSizeSetting(profileName) {
   await txWithStore(PROFILE_SETTINGS, 'readonly', (store) => {
     const req = store.get([profileName, 'fontSize']);
     req.onsuccess = (event) => {
+      // @ts-ignore
       fontSize = event.target.result ? event.target.result.value : 16;
     };
   });
@@ -425,6 +427,7 @@ export async function printOpLog() {
   txWithStore(OPLOG_STORE, 'readonly', (store) => {
     const req = store.getAll();
     req.onsuccess = (event) => {
+      // @ts-ignore
       console.log('All oplog entries:', event.target.result);
     };
   });

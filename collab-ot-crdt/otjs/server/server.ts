@@ -26,6 +26,10 @@ io.on('connection', (socket) => {
   server.addClient(socket);
 });
 
+// app.get('/', function(req, res){
+//   res.sendFile(__dirname + '/index.html');
+// });
+
 httpServer.listen(port, () => {
   console.log(`server is listening on http://localhost:${port}`);
 });

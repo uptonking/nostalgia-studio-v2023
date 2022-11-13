@@ -1,7 +1,6 @@
 import * as murmurhash from 'murmurhash';
 
-/**
- * This class is used to model immutable instances of time as measured by a Hybrid Logical Clock,
+/** This class is used to model immutable instances of time as measured by a Hybrid Logical Clock,
  *   which combines both a "physical" clock time and a "logical" monotonic counter.
  */
 export class HLTime {
@@ -123,7 +122,6 @@ export class HLTime {
   }
 
   hash() {
-    // @ts-expect-error
     return murmurhash.default.v3(this.toString());
   }
 

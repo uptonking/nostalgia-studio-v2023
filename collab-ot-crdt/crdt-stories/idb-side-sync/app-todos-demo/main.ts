@@ -79,6 +79,9 @@ function restoreActiveElement() {
   }
 }
 
+/**
+ * todo 去掉副作用
+ */
 async function renderProfileNames() {
   return `
     <label for="profiles" class="flex justify-between items-center mb-4 mr-7">
@@ -155,8 +158,9 @@ async function render() {
   clear();
 
   const disableSyncBtn = uiState.sync.inProgress || !uiState.sync.enabled;
+  const todoTypes = await getTodoTypes();
 
-  // prettier-ignore 顶部导航条
+  // prettier-ignore 渲染整体页面结构，顶部导航条、列表、同步设置项；👀 注意onclick里面有字符串函数
   append(`
     <div class="flex flex-col h-full">
       <div
@@ -195,7 +199,7 @@ async function render() {
               placeholder="Enter todo..."
               class="flex-grow mb-3 mx-1 sm:mx-2 ${classes.textInput}"
             />
-            ${renderTodoTypes({ todoTypes: await getTodoTypes() })}
+            ${renderTodoTypes({ todoTypes: todoTypes })}
             <button
               id="btn-add-todo"
               class="flex-grow sm:flex-grow-0 h-12 mx-1 sm:mx-2 px-4 sm:px-8 bg-green-600 text-white rounded shadow
@@ -215,18 +219,17 @@ async function render() {
 
       <div class="fixed w-screen bottom-0 flex justify-center bg-gray-200 border-gray-400 border-t">
         <div class="max-w-screen-md">
+          <!-- 👀 点击函数是str -->
           <button
             ${disableSyncBtn ? 'disabled' : ''}
             onclick="syncNow()"
             class="m-4 mr-6 text-white rounded p-2 bg-blue-${disableSyncBtn ? '300 cursor-default' : '600'
     }"
           >Sync${uiState.sync.inProgress ? 'ing...' : ''}</button>
-
           <button
             onclick="onSyncSettingsBtnClick()"
             class="m-4 mr-6 bg-blue-600 text-white rounded p-2"
           >Sync Settings</button>
-
           <button
             onclick="showResetWarningModal()"
             class="m-4 mr-6 bg-red-500 text-white rounded p-2"
@@ -313,6 +316,7 @@ async function render() {
           <div class="text-sm">Looks like something went wrong...</div>
           <div class="text-xs text-red-700 font-mono m-2 p-2">${uiState.errorMsg}</div>
           <div class="flex flex-col">
+            <!-- 👀 点击函数是str -->
             <button onClick="closeModal()" class="${classes.buttonPrimary}">OK</button>
           </div>
         </div>
@@ -329,6 +333,7 @@ async function render() {
             This will delete all locally-stored data, including sync login settings. It will NOT delete anything stored remotely.
           </div>
           <div class="flex flex-col">
+            <!-- 👀 点击函数是str -->
             <button
               onClick="onResetDataBtnClick()"
               class="${classes.buttonDanger} mt-6 mb-4">Yes, Reset Local Data</button>
@@ -349,9 +354,10 @@ async function render() {
             your desktop), you'll need to set up a remote file storage service. This will be used as a common location where each browser you use can upload and download the changes it makes (i.e., CRDT operation messages).
           </div>
           <div class="flex flex-col">
+            <!-- 👀 点击函数是str -->
             <button
-              onClick="onGDriveSettingsBtnClick()"
-              class="${classes.buttonPrimary} mt-6 mb-4">Google Drive</button>
+            class="${classes.buttonPrimary} mt-6 mb-4">Google Drive</button>
+            onClick="onGDriveSettingsBtnClick()"
             <button onClick="closeModal()" class="${classes.buttonSecondary}">Done</button>
           </div>
         </div>
@@ -373,6 +379,7 @@ async function render() {
             </a>.
           </div>
           <div class="flex flex-col">
+            <!-- 👀 点击函数是str -->
             <button onClick="onGDriveLogoutBtnClick()" class="${classes.buttonPrimary} mt-6 mb-4">Sign Out</button>
             <button onClick="closeModal()" class="${classes.buttonSecondary}">Close</button>
           </div>
@@ -392,6 +399,7 @@ async function render() {
             folders that it has created in your Google Drive.
           </p>
           <div class="flex flex-col">
+            <!-- 👀 点击函数是str -->
             <button onClick="onGDriveLoginBtnClick()" class="${classes.buttonPrimary} mt-6 mb-4">
               Launch Google Sign-In
             </button>
@@ -412,6 +420,7 @@ async function render() {
             process, that pop-up will close and this screen will update with your new status.
           </div>
           <div class="flex flex-col">
+            <!-- 👀 点击函数是str -->
             <button onClick="closeModal()" class="${classes.buttonSecondary}">Cancel</button>
           </div>
         </div>
@@ -427,6 +436,7 @@ async function render() {
           <div class="text-sm">Oops, the Google sign-in failed:</div>
           <div class="text-xs text-red-700 font-mono m-2 p-2">${uiState.gdrive.loginError}</div>
           <div class="flex flex-col">
+            <!-- 👀 点击函数是str -->
             <button onClick="closeModal()" class="${classes.buttonPrimary}">OK</button>
           </div>
         </div>
@@ -474,6 +484,7 @@ async function render() {
                 class="${classes.select} w-32"
                 disabled
               />
+              <!-- 👀 点击函数是str -->
               <span class="ml-2" onclick="onBgColorSettingClick()">✏️</span>
             </label>
             <label for="font-size-setting" class="flex justify-between items-center mb-4">
@@ -485,6 +496,7 @@ async function render() {
                 class="${classes.select} w-32"
                 disabled
               />
+              <!-- 👀 点击函数是str -->
               <span class="ml-2" onclick="onFontSizeSettingClick()">✏️</span>
             </label>
             <button onClick="closeModal()" class="${classes.buttonPrimary
@@ -627,6 +639,8 @@ function addEventHandlers() {
   });
 }
 
+/** 🚨 下面的方法以字符串形式设置在了html的事件属性 */
+
 async function onStyleProfileChange(e) {
   const selection = qs('select[name=profiles]').value;
   if (selection === 'add-new-profile') {
@@ -648,7 +662,6 @@ async function onStyleProfileChange(e) {
 
   render();
 }
-
 function closeModal() {
   uiState = {
     ...uiState,
@@ -666,12 +679,10 @@ function showResetWarningModal() {
   uiState.modal = 'reset-warning';
   render();
 }
-
 async function onResetDataBtnClick() {
   await deleteDB();
   window.location.reload();
 }
-
 function onSyncSettingsBtnClick() {
   uiState.modal = 'sync-settings/main-menu';
   render();
@@ -796,9 +807,9 @@ async function applyProfileSettings() {
 
 /** 获取已有的或创建新的profileName */
 export async function loadAndApplyProfileSettings() {
-  console.log(';; init-user ', 1);
+  // console.log(';; init-setting ', 1);
   const activeProfileName = await getActiveProfileName();
-  // console.log(';; init-user ', 2);
+  // console.log(';; init-setting ', 2);
   if (activeProfileName) {
     uiState.activeProfileName = activeProfileName;
     // If a profile exists, try loading profile-specific settings
@@ -811,10 +822,10 @@ export async function loadAndApplyProfileSettings() {
   }
 }
 
+/** setInterval返回的轮询同步的timer */
 let syncTimer;
-
 function startSyncTimer() {
-  syncTimer = setInterval(syncNow, 15000);
+  syncTimer = window.setInterval(syncNow, 15000);
 }
 function stopSyncTimer() {
   clearInterval(syncTimer);
@@ -822,10 +833,10 @@ function stopSyncTimer() {
 
 /** 初始化indexeddb，加载sync相关插件，render */
 export async function setupSync() {
-  // console.log(';; init-sync ', 1);
+  console.log(';; init-sync ', 1);
   // Don't attempt to set up syncing until IDBSideSync has been initialized...
   await getDB();
-  // console.log(';; init-sync ', 2);
+  console.log(';; init-sync ', 2);
   for (const syncProfile of getSyncProfiles()) {
     if (syncProfile.pluginId === GoogleDrivePlugin.PLUGIN_ID) {
       try {
@@ -859,9 +870,9 @@ export async function setupSync() {
   render();
 }
 
-
 /** 同步前后都会执行render */
 async function syncNow(forceFullSync) {
+  console.log(';; syncNow ');
   uiState.sync.inProgress = true;
   render();
   await sync({ forceFullSync });
@@ -872,12 +883,11 @@ async function syncNow(forceFullSync) {
 
 /** 添加系统预置的事件类型 */
 export async function initDefaultTodoTypes() {
-  // console.log(';; init-todo-type ', 1);
+  // console.log(';; init-todo-types ', 1);
   const types = await getTodoTypes();
-  // console.log(';; init-todo-type ', 2);
+  // console.log(';; init-todo-types ', 2);
   if (types.length === 0) {
-    addTodoType({ name: 'Important', color: 'green' });
-    addTodoType({ name: 'Urgent', color: 'orange' });
+    addTodoType({ name: 'Important', color: 'orange' });
+    addTodoType({ name: 'Urgent', color: 'tomato' });
   }
 }
-

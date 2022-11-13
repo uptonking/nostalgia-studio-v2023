@@ -1,7 +1,7 @@
 import type { SyncPlugin, SyncProfile, UserProfile } from '../types/main';
 import { HLTime } from './HLTime';
 import * as db from './db';
-import { debug, libName, log } from './utils';
+import { LIB_NAME, debug, log } from './utils';
 
 export const plugins: SyncPlugin[] = [];
 
@@ -106,7 +106,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
 export async function registerSyncPlugin(plugin: SyncPlugin) {
   if (!isSyncPlugin(plugin)) {
     throw new Error(
-      `${libName}: argument does not properly implement the SyncPlugin interface`,
+      `${LIB_NAME}: argument does not properly implement the SyncPlugin interface`,
     );
   }
 

@@ -1,5 +1,5 @@
 import { HLTime } from './HLTime';
-import { libName } from './utils';
+import { LIB_NAME } from './utils';
 
 /** 静态类，客户端的时间操作工具 */
 export class HLClock {
@@ -188,7 +188,7 @@ export class HLClock {
 
   static TimeNotSetError = class TimeNotSetError extends Error {
     constructor() {
-      super(libName + ': Clock time has not been set.');
+      super(LIB_NAME + ': Clock time has not been set.');
       Object.setPrototypeOf(this, TimeNotSetError.prototype); // https://git.io/vHLlu
     }
   };
@@ -196,14 +196,14 @@ export class HLClock {
   static ClockDriftError = class ClockDriftError extends Error {
     // Constructor param must be of type `unknown` to avoid TypeScript/Jest error: https://git.io/JqCDN
     constructor(message: unknown) {
-      super(libName + ': ' + JSON.stringify(message));
+      super(LIB_NAME + ': ' + JSON.stringify(message));
       Object.setPrototypeOf(this, ClockDriftError.prototype); // https://git.io/vHLlu
     }
   };
 
   static OverflowError = class OverflowError extends Error {
     constructor() {
-      super(`${libName}: timestamp counter overflow`);
+      super(`${LIB_NAME}: timestamp counter overflow`);
       Object.setPrototypeOf(this, OverflowError.prototype); // https://git.io/vHLlu
     }
   };

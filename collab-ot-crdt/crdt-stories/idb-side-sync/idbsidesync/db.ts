@@ -2,10 +2,10 @@ import type { OpLogEntry, Settings } from '../types/main';
 import { HLClock } from './HLClock';
 import { HLTime } from './HLTime';
 import {
+  LIB_NAME,
   debug,
   isEventWithTargetError,
   isValidSideSyncSettings,
-  libName,
   log,
   makeClientId,
   throwIfInvalidOpLogEntry,
@@ -94,33 +94,34 @@ export function onupgradeneeded(event: IDBVersionChangeEvent): void {
   );
 }
 
-/**
- * Allow IDBSideSync to initialize itself with the provided IndexedDB database.
+/** Allow IDBSideSync to initialize itself with the provided IndexedDB database.
+ * - 向idb写入全局设置信息，如clientId
+ * - 初始化逻辑时钟hlc
  */
 export async function init(db: IDBDatabase): Promise<void> {
   debug && log.debug('init()');
   if (!db || !db.createObjectStore) {
     throw new TypeError(
-      `${libName}.init(): 'db' arg must be an instance of IDBDatabase.`,
+      `${LIB_NAME}.init(): 'db' arg must be an instance of IDBDatabase.`,
     );
   }
   cachedDb = db;
-  const settings = await initSettings();
+  const settings = await initSettings(); // 向idb写入全局设置信息，如clientId
   HLClock.setTime(new HLTime(0, 0, settings.nodeId));
 }
 
 export function getSettings(): Settings {
   if (!cachedSettings) {
     throw new Error(
-      `${libName} hasn't been initialized. Please call init() first.`,
+      `${LIB_NAME} hasn't been initialized. Please call init() first.`,
     );
   }
   return cachedSettings;
 }
 
-/**
- * Ensures that IDBSideSync has required settings in its own IndexedDB store (e.g., a unique node ID that identifies
- * all the oplog entries created by the application instance).
+/** Ensures that IDBSideSync has required settings in its own IndexedDB store
+ * (e.g., a unique node ID that identifies all the oplog entries created by the application instance).
+ * - 向idb写入全局设置信息，如clientId
  */
 export function initSettings(): Promise<typeof cachedSettings> {
   return new Promise((resolve, reject) => {
@@ -131,7 +132,7 @@ export function initSettings(): Promise<typeof cachedSettings> {
         ? event.target.error
         : txReq.error;
       log.error('Failed to init settings:', error);
-      reject(new Error(`${libName} Failed to init settings`));
+      reject(new Error(`${LIB_NAME} Failed to init settings`));
     };
 
     const metaStore = txReq.objectStore(STORE_NAME.META);
@@ -152,6 +153,7 @@ export function initSettings(): Promise<typeof cachedSettings> {
           log.debug(
             'No valid settings found in database; initializing new settings...',
           );
+        // 👇🏻 初始化客户端id
         cachedSettings = { nodeId: makeClientId(), syncProfiles: [] };
         const putReq = metaStore.put(cachedSettings, CACHED_SETTINGS_OBJ_KEY);
         putReq.onsuccess = () => {
@@ -173,7 +175,7 @@ export function saveSettings(newSettings: Settings): Promise<Settings> {
         ? event.target.error
         : txReq.error;
       log.error('Failed to save settings:', error);
-      reject(new Error(`${libName} Failed to save settings`));
+      reject(new Error(`${LIB_NAME} Failed to save settings`));
     };
 
     const metaStore = txReq.objectStore(STORE_NAME.META);
@@ -356,7 +358,7 @@ export function getEntriesByTimePage(
 
     if (store.keyPath !== OPLOG_ENTRY_HLC_TIME_PROP_NAME) {
       throw new Error(
-        `${libName} getEntries() can't return oplog entries in reliable order; ${OPLOG_STORE} isn't using ` +
+        `${LIB_NAME} getEntries() can't return oplog entries in reliable order; ${OPLOG_STORE} isn't using ` +
           `${OPLOG_ENTRY_HLC_TIME_PROP_NAME} as its keyPath and therefore entries aren't sorted by HLC time.`,
       );
     }
@@ -623,7 +625,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
       }
 
       oplogPutReq.onerror = (event) => {
-        const errMsg = `${libName} encountered an error while attempting to add an object to "${OPLOG_STORE}".`;
+        const errMsg = `${LIB_NAME} encountered an error while attempting to add an object to "${OPLOG_STORE}".`;
         log.error(errMsg, event);
         // By calling reject() here we are preventing txReq.onabort or txReq.onerror from rejecting; this allows
         // the calling code to catch our custom error vs. a generic the DOMException from IDB
@@ -734,7 +736,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
 
       existingObjReq.onerror = (event) => {
         const errMsg =
-          `${libName} encountered an error while trying to retrieve an object from "${targetStore.name}"  as part ` +
+          `${LIB_NAME} encountered an error while trying to retrieve an object from "${targetStore.name}"  as part ` +
           `of applying an oplog entry change to that object.`;
         log.error(errMsg, event);
         reject(new Error(errMsg));
@@ -742,7 +744,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
     };
 
     idxCursorReq.onerror = (event) => {
-      const errMsg = `${libName} encountered an error while trying to open a cursor on the "${OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME}" index.`;
+      const errMsg = `${LIB_NAME} encountered an error while trying to open a cursor on the "${OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME}" index.`;
       log.error(errMsg, event);
       reject(new Error(errMsg));
     };
@@ -752,7 +754,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
 class UnexpectedOpLogEntryError extends Error {
   constructor(noun: keyof OpLogEntry, expected: string, actual: string) {
     super(
-      `${libName}: invalid "most recent oplog entry"; expected '${noun}' value of '${expected}' but got ` +
+      `${LIB_NAME}: invalid "most recent oplog entry"; expected '${noun}' value of '${expected}' but got ` +
         `'${actual}'. (This might mean there's a problem with the IDBKeyRange used to iterate over ${OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME}.)`,
     );
     Object.setPrototypeOf(this, UnexpectedOpLogEntryError.prototype); // https://git.io/vHLlu
@@ -762,7 +764,7 @@ class UnexpectedOpLogEntryError extends Error {
 export class ApplyPutError extends Error {
   constructor(storeName: string, error: unknown) {
     super(
-      `${libName}: error on attempt to apply oplog entry that adds/updates object in "${storeName}": ` +
+      `${LIB_NAME}: error on attempt to apply oplog entry that adds/updates object in "${storeName}": ` +
         error,
     );
     Object.setPrototypeOf(this, ApplyPutError.prototype); // https://git.io/vHLlu
@@ -771,7 +773,7 @@ export class ApplyPutError extends Error {
 
 export class TransactionAbortedError extends Error {
   constructor(error: unknown) {
-    super(`${libName}: transaction aborted with error: ` + error);
+    super(`${LIB_NAME}: transaction aborted with error: ` + error);
     Object.setPrototypeOf(this, TransactionAbortedError.prototype); // https://git.io/vHLlu
   }
 }

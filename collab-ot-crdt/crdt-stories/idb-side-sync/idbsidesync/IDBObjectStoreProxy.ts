@@ -2,44 +2,50 @@ import type { OpLogEntry } from '../types/main';
 import { HLClock } from './HLClock';
 import { proxyPutRequest } from './IDBUpsertRequestProxy';
 import { STORE_NAME } from './db';
-import { libName } from './utils';
+import { LIB_NAME } from './utils';
 
+/** 返回代理对象 `return new Proxy(target, IDBObjectStoreProxy)`
+ */
 export function proxyStore(target: IDBObjectStore): IDBObjectStore {
   const storeNames = target.transaction.objectStoreNames;
   if (storeNames && !storeNames.contains(STORE_NAME.OPLOG)) {
     throw new Error(
-      `Transaction was opened without including ${libName}.OPLOG_STORE as one of the stores.`,
+      `Transaction was opened without including ${LIB_NAME}.OPLOG_STORE as one of the stores.`,
     );
   }
   const proxy = new IDBObjectStoreProxy(target);
   return new Proxy(target, proxy);
 }
 
+/** 用作IDBObjectStore的代理对象
+ * - 不支持store的keyPath为点号连接的嵌套路径
+ * - 只代理了几个方法：IDBObjectStore.add/put
+ */
 export class IDBObjectStoreProxy {
   target: IDBObjectStore;
 
-  constructor(target: IDBObjectStore) {
-    if (target.autoIncrement) {
+  constructor(target_: IDBObjectStore) {
+    if (target_.autoIncrement) {
       // If the store has autoIncrement enabled, then it's possible for different nodes to create objects with the same
       // keys. In that scenario, there's no safe way to share and apply oplog entries (i.e., CRDT messages) since they
       // might describe mutations that _appear_ to be relevant to the same object but actually could refer to different
       // objects that have the same key/ID.
       throw new Error(
-        `${libName} can't work with object stores whose .autoIncrement property is set to true.`,
+        `${LIB_NAME} can't work with object stores whose .autoIncrement property is set to true.`,
       );
-    } else if (target.keyPath) {
-      for (const keyPath of Array.isArray(target.keyPath)
-        ? target.keyPath
-        : [target.keyPath]) {
+    } else if (target_.keyPath) {
+      for (const keyPath of Array.isArray(target_.keyPath)
+        ? target_.keyPath
+        : [target_.keyPath]) {
         if (keyPath.includes('.')) {
           throw new Error(
-            `${libName} doesn't support stores with a nested keyPath values (i.e., keyPath with dot-notation strings)`,
+            `${LIB_NAME} doesn't support stores with a nested keyPath values (i.e., keyPath with dot-notation strings)`,
           );
         }
       }
     }
 
-    this.target = target;
+    this.target = target_;
   }
 
   get(target: IDBObjectStore, prop: keyof IDBObjectStore, receiver: unknown) {
@@ -117,9 +123,9 @@ export class IDBObjectStoreProxy {
       // same field exists only applies to syncing.
       const resolvedValue =
         value &&
-        typeof value === 'object' &&
-        existingObjReq.result &&
-        typeof existingObjReq.result === 'object'
+          typeof value === 'object' &&
+          existingObjReq.result &&
+          typeof existingObjReq.result === 'object'
           ? { ...existingObjReq.result, ...value } // "Merge" the new object with the existing object
           : value;
 
@@ -133,7 +139,7 @@ export class IDBObjectStoreProxy {
           // of the object is what ends up being persisted when the transaction is complete).
           if (!tempPutCompleted) {
             throw new Error(
-              `${libName}: "final" put() with merged value ran BEFORE the "temp" put.`,
+              `${LIB_NAME}: "final" put() with merged value ran BEFORE the "temp" put.`,
             );
           }
         };
@@ -156,7 +162,7 @@ export class IDBObjectStoreProxy {
               throw new PutWithoutKeyError(this.target);
             } else if (!Array.isArray(key)) {
               throw new Error(
-                `${libName}: The key passed to "${this.target.name}.put(obj, key)" should be an array.`,
+                `${LIB_NAME}: The key passed to "${this.target.name}.put(obj, key)" should be an array.`,
               );
             }
             tempValue[keyProp] = key[i];
@@ -292,7 +298,7 @@ export class IDBObjectStoreProxy {
       oplogStore = this.target.transaction.objectStore(STORE_NAME.OPLOG);
     } catch (error) {
       const errorMsg =
-        `${libName}: Error ocurred when attempting to get reference to the "${STORE_NAME.OPLOG}" store (this may ` +
+        `${LIB_NAME}: Error ocurred when attempting to get reference to the "${STORE_NAME.OPLOG}" store (this may ` +
         `have happened because "${STORE_NAME.OPLOG}" wasn't included when the transaction was created): ` +
         error.toString();
       throw new Error(errorMsg);
@@ -304,8 +310,7 @@ export class IDBObjectStoreProxy {
   };
 }
 
-/**
- * A utility function for deriving a key value that can be used to retrieve an object from an IDBObjectStore.
+/** A utility function for deriving a key value that can be used to retrieve an object from an IDBObjectStore.
  */
 export function resolveKey(
   store: IDBObjectStore,
@@ -337,9 +342,9 @@ export class PutWithoutKeyError extends Error {
       ? store.keyPath.join('", "')
       : `"${store.keyPath}"`;
     super(
-      `${libName}: The object passed to ${store.name}.put(...) lacks properties from ${store.name}.keyPath and no ` +
-        `"key" arg was specified. Either call put() with a key arg (e.g., store.put(obj, key)) or make sure the ` +
-        `object has the following properties set to valid values: ${formattedKeyNames}`,
+      `${LIB_NAME}: The object passed to ${store.name}.put(...) lacks properties from ${store.name}.keyPath and no ` +
+      `"key" arg was specified. Either call put() with a key arg (e.g., store.put(obj, key)) or make sure the ` +
+      `object has the following properties set to valid values: ${formattedKeyNames}`,
     );
     Object.setPrototypeOf(this, PutWithoutKeyError.prototype); // https://git.io/vHLlu
   }
@@ -348,8 +353,8 @@ export class PutWithoutKeyError extends Error {
 export class TempPutError extends Error {
   constructor(storeName: string, error: unknown) {
     super(
-      `${libName}: error while attempting to "temporarily" put() something into "${storeName}": ` +
-        error,
+      `${LIB_NAME}: error while attempting to "temporarily" put() something into "${storeName}": ` +
+      error,
     );
     Object.setPrototypeOf(this, TempPutError.prototype); // https://git.io/vHLlu
   }
@@ -358,8 +363,8 @@ export class TempPutError extends Error {
 export class FinalPutError extends Error {
   constructor(storeName: string, error: unknown) {
     super(
-      `${libName}: error while attempting to put() final/merged version of object into "${storeName}": ` +
-        error,
+      `${LIB_NAME}: error while attempting to put() final/merged version of object into "${storeName}": ` +
+      error,
     );
     Object.setPrototypeOf(this, FinalPutError.prototype); // https://git.io/vHLlu
   }
@@ -368,7 +373,7 @@ export class FinalPutError extends Error {
 export class MissingKeyParamError extends Error {
   constructor(fcnName: string) {
     super(
-      `${libName}: You must specify the "key" param when calling ${fcnName}() on a store without a keyPath.`,
+      `${LIB_NAME}: You must specify the "key" param when calling ${fcnName}() on a store without a keyPath.`,
     );
     Object.setPrototypeOf(this, MissingKeyParamError.prototype); // https://git.io/vHLlu
   }
@@ -377,7 +382,7 @@ export class MissingKeyParamError extends Error {
 export class UnknownObjectKeyError extends Error {
   constructor() {
     super(
-      `${libName}: failed to establish a key for retrieving object before updating it.'`,
+      `${LIB_NAME}: failed to establish a key for retrieving object before updating it.'`,
     );
     Object.setPrototypeOf(this, UnknownObjectKeyError.prototype); // https://git.io/vHLlu
   }

@@ -69,6 +69,7 @@ export class IDBObjectStoreProxy {
     return Reflect.get(target, prop, receiver);
   }
 
+  /** 在idbObjStore.add前 recordOperation */
   proxiedAdd = (
     value: any,
     key?: IDBValidKey,
@@ -88,6 +89,9 @@ export class IDBObjectStoreProxy {
     return this.target.add(value, key);
   };
 
+  /** 在idbObjStore.put前 recordOperation
+   * - 更新前先获取key对应的已有值
+   */
   proxiedPut = (
     value: any,
     key?: IDBValidKey,
@@ -111,6 +115,8 @@ export class IDBObjectStoreProxy {
 
     let tempPutCompleted = false;
 
+    // 如果值存在就合并新属性到已有值
+    // TODO 使用await重构嵌套的回调函数
     existingObjReq.onsuccess = () => {
       // Figure out what the new value for the object will be--either a merger of its existing props with new ones (in
       // the case that it's an object), or a new primitive value (e.g., you can't merge numbers, dates, etc.).
@@ -150,8 +156,8 @@ export class IDBObjectStoreProxy {
 
     let tempValue = value;
 
-    // Ensure that the object has all the properties it needs, per the store's `keyPath`. If it doesn't, try to get
-    // them from the `key` arg.
+    // Ensure that the object has all the properties it needs, per the store's `keyPath`.
+    // If it doesn't, try to get them from the `key` arg.
     if (keyPath) {
       tempValue = { ...value };
       if (Array.isArray(keyPath)) {
@@ -192,7 +198,7 @@ export class IDBObjectStoreProxy {
       // could be tricky and include its own hacky baggage, however; we'll stick with the current approach (which seems
       // to work) for now.
       //
-      // When calling the actual object store's `put()` method it's important to NOT include a `key` param if the store
+      // When calling the actual object store's `put()` method, it's important to NOT include a `key` param if the store
       // has a `keyPath`. Doing so would cause an error (e.g., "[...] object store uses in-line keys and the key
       // parameter was provided" in Chrome).
       const tempPutReq = keyPath

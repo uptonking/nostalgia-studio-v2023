@@ -3,6 +3,8 @@ export interface IDBUpsertRequestProxyOptions {
   onError?: (event: Event) => void;
 }
 
+/** 返回代理对象 `return new Proxy(target, IDBUpsertRequestProxy)`
+ */
 export function proxyPutRequest(
   target: IDBRequest<IDBValidKey>,
   options: IDBUpsertRequestProxyOptions,

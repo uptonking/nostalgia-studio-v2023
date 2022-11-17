@@ -13,8 +13,8 @@ export function proxyPutRequest(
   return new Proxy(target, proxy);
 }
 
-/**
- * Use this class as a proxy/wrapper for IDBRequest objects resulting from object store calls to `put()` and `add()`.
+/** Use this class as a proxy/wrapper for IDBRequest objects resulting from object store calls to `put()` and `add()`.
+ * - 让onsuccess支持upstreamOnSuccess
  */
 export class IDBUpsertRequestProxy {
   target: IDBRequest<IDBValidKey>;
@@ -28,6 +28,7 @@ export class IDBUpsertRequestProxy {
   ) {
     this.target = target;
     this.options = options;
+    // 👇🏻 request对象初始化时就设置好了success方法，参数传过来的suc会在里面被执行
     this.target.onsuccess = this.onSuccess;
     this.target.onerror = this.onError;
   }
@@ -55,7 +56,7 @@ export class IDBUpsertRequestProxy {
     receiver: unknown,
   ) => {
     if (prop === 'onsuccess' && typeof value === 'function') {
-      // Upstream developer is attempting to assign theor own `onsuccess` handler to the request object; however, we're
+      // Upstream developer is attempting to assign their own `onsuccess` handler to the request object; however, we're
       // going to just capture their handler function and not actually allow it to be assigned. We have already assigned
       // an `onsuccess` handler to the request (myOnSuccess), and that will call the upstream developer's handler.
       this.upstreamOnSuccess = value.bind(target);

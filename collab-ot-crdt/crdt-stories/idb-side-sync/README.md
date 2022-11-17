@@ -8,6 +8,12 @@ You could use this library to, for example, build an HTML/JavaScript app that al
 
 The concept that IDBSideSync is attempting to prove is: local-first, browser-based apps can be built with support for sync and collaboration using CRDTs and remote stores that users have more control over--especially ones that can be managed via a user-friendly, file-system-like interface. An app that needs to handle a ton of data or support real-time collaboration among many users probably needs a more traditional backend or [DBaaS](https://en.wikipedia.org/wiki/Cloud_database). But there's a [category of end-user software](https://www.inkandswitch.com/local-first.html) where things can work primarily offline, without real-time sync, that might be improved by allowing users to "keep" their own data--that's probably a better fit for for something like IDBSideSync.
 
+### codebase
+
+- ❓ 为什么更新idb数据的proxiedPut方法中，要执行2次put
+  - 只是因为代理put方法需要立即返回一个IDBRequest，
+  - 若不在后面添加一个临时的put，因为前面一个put需要在onsuccess中操作数据，则代理方法就没有一个合法的返回值
+
 ## How it works
 
 - You have an HTML/JavaScript app that uses IndexedDB.
@@ -37,7 +43,7 @@ Try opening the site in a couple of browsers and creating some tasks. Then, in e
 
 After clicking the "Sync" button in both browsers, you'll see a folder in your Google Drive called `IDBSideSync ToDo App` where you can access all the oplog entries and other sync-related files. Each time you click "Sync", the browser will upload any new changes to this folder, and download any new changes made from other browsers.
 
-The demo source can be found in [`app_demos/plainjs_todos`](./app_demos/plainjs_todos). Take a look at `main.js` and `db.js`, in particular, to see how things work.
+The demo source can be found in [ `app_demos/plainjs_todos` ](./app_demos/plainjs_todos). Take a look at `main.js` and `db.js` , in particular, to see how things work.
 
 Lastly, note that the goal of the "plain JS" app is to provide a "framework agnostic" testing and development tool, and an example of how to use IDBSideSync, without requiring prior understanding of other libraries like React. It's not meant to be efficient or very pretty--but hopefully it's easy for other developers to understand and modify (and credit for the super-simple approach goes to James).
 
@@ -45,7 +51,7 @@ Lastly, note that the goal of the "plain JS" app is to provide a "framework agno
 
 ### Setup
 
-First, you'll need to add a few lines to your existing IndexedDB setup code for initializing `IDBSideSync`:
+First, you'll need to add a few lines to your existing IndexedDB setup code for initializing `IDBSideSync` :
 
 ```javascript
 const openRequest = indexedDB.open("todo-app", 1);
@@ -91,7 +97,7 @@ todoStore.add({ id: todoId, title: "Buy milk" }); // { id: 123, title: "Buy milk
 
 ### Updating objects
 
-IDBSideSync, acting as a [JavaScript proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) to the standard [`IDBObjectStore.put()`](https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/put) function, modifies the default behavior of `put()` so that it no longer completely replaces any existing object with the value you pass to it. Instead, you now have the ability to pass in "partial updates"--objects with only a subset of properties--that will be applied to any existing object. (You can still pass in complete objects with all properties if you want, of course.)
+IDBSideSync, acting as a [JavaScript proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy) to the standard [ `IDBObjectStore.put()` ](https://developer.mozilla.org/en-US/docs/Web/API/IDBObjectStore/put) function, modifies the default behavior of `put()` so that it no longer completely replaces any existing object with the value you pass to it. Instead, you now have the ability to pass in "partial updates"--objects with only a subset of properties--that will be applied to any existing object. (You can still pass in complete objects with all properties if you want, of course.)
 
 ```javascript
 // Given a "full" todo object of `{ id: 123, title: "Buy cookies", priority: "low", done: false }`,
@@ -132,14 +138,14 @@ const todoStore = IDBSideSync.proxyStore(txRequest.objectStore("todos"));
 todoStore.delete(todoId); // ❌
 
 // ...or this
-todoStore.openCursor().onsuccess = function (event) {
+todoStore.openCursor().onsuccess = function(event) {
   const cursor = event.target.result;
   cursor.delete(); // ❌
 };
 
 // ...or this
 const todoIndex = todoStore.index("todos_indxed_by_title");
-todoIndex.openCursor().onsuccess = function (event) {
+todoIndex.openCursor().onsuccess = function(event) {
   const cursor = event.target.result;
   cursor.delete(); // ❌
 };
@@ -147,17 +153,17 @@ todoIndex.openCursor().onsuccess = function (event) {
 
 In fact, IDBSideSync might be modified at some point to throw errors if you do any of the stuff shown above to help prevent problems.
 
-As a recommended alternative, do "soft" deletion of objects instead. In other words, update them with some sort of property that indicates they should be _treated_ as if they were deleted (e.g., `{ name: 'foo', deleted: 1 }`). Note that a nice benefit of this approach is that it's easy to support undo when objecs are "deleted".
+As a recommended alternative, do "soft" deletion of objects instead. In other words, update them with some sort of property that indicates they should be _treated_ as if they were deleted (e.g., `{ name: 'foo', deleted: 1 }` ). Note that a nice benefit of this approach is that it's easy to support undo when objecs are "deleted".
 
 ### Syncing
 
 As described in the "How it works" section above, the idea with syncing is to copy oplog entries from one client to some other place where those entries can be downloaded by another client that would then apply the CRDT state changes to its own IndexedDB object stores. For example, a user might log in to your app on their phone's browser, upload their oplog entries to Google Drive, and then download and "replay" those changes from Google Drive when they use your app in a browser on their laptop.
 
-The core IDBSideSync library doesn't know how to copy the oplog entries around; it relies on one or more plugins--separate JavaScript objects that implement a standard interface--to handle things like uploading/downloading oplog entries. For an example, see the Google Drive plugin in [`plugins/googledrive/`](./plugins/googledrive).
+The core IDBSideSync library doesn't know how to copy the oplog entries around; it relies on one or more plugins--separate JavaScript objects that implement a standard interface--to handle things like uploading/downloading oplog entries. For an example, see the Google Drive plugin in [ `plugins/googledrive/` ](./plugins/googledrive).
 
 > Interested in adding plugins to support additional remote stores? Please take a look through the "Issues" section (e.g., [Dropbox support](https://github.com/clintharris/IDBSideSync/issues/6)) or submit a pull request! While adding support for "more common" storage services (i.e., places where more users may already have an account) may be prioritized, there's also potential to develop plugins that sync with more interesting data stores, such as IPFS, [HTTP-accessible email](https://github.com/clintharris/IDBSideSync/issues/13), or even file import/export. The main limitation is that the data store be accessible via browser APIs.
 
-Your app is responsible for registering sync plugins. Here's an example, copied from [`main.js`](app_demos/plainjs_todos/main.js) in the "ToDo" demo app:
+Your app is responsible for registering sync plugins. Here's an example, copied from [ `main.js` ](app_demos/plainjs_todos/main.js) in the "ToDo" demo app:
 
 ```javascript
 // Instantiate and register the Google Drive plugin
@@ -172,7 +178,7 @@ await IDBSideSync.registerSyncPlugin(googleDrivePlugin);
 await IDBSideSync.sync();
 ```
 
-Although a plugin doesn't have to be implemented in TypeScript, the `SyncPlugin` interface in [`main.d.ts`](types/common/main.d.ts) defines the functions that a plugin needs to implement. For example, a plugin needs to implement a `getRemoteEntriesForClient()` function, which is used as follows in the `sync()` function of the core library's [`sync.ts`](lib/src/sync.ts) file:
+Although a plugin doesn't have to be implemented in TypeScript, the `SyncPlugin` interface in [ `main.d.ts` ](types/common/main.d.ts) defines the functions that a plugin needs to implement. For example, a plugin needs to implement a `getRemoteEntriesForClient()` function, which is used as follows in the `sync()` function of the core library's [ `sync.ts` ](lib/src/sync.ts) file:
 
 ```javascript
 let downloadCounter = 0;
@@ -208,9 +214,9 @@ That said, agreed: the IndexedDB's API isn't nearly as convenient as many popula
 
 ### Q: What types of object stores does it work with?
 
-IDBSideSync does not support object stores that use `autoIncrement`. If IndexedDB is auto-assigning the object IDs, then it's possible for two separate clients to create an object with the same key/ID. In that scenario, there's no safe way to share and apply oplog entries (i.e., CRDT messages) since they might describe mutations that _appear_ to be relevant to the same object but actually could refer to different objects that have the same key/ID.
+IDBSideSync does not support object stores that use `autoIncrement` . If IndexedDB is auto-assigning the object IDs, then it's possible for two separate clients to create an object with the same key/ID. In that scenario, there's no safe way to share and apply oplog entries (i.e., CRDT messages) since they might describe mutations that _appear_ to be relevant to the same object but actually could refer to different objects that have the same key/ID.
 
-Also, IDBSideSync currently doesn't support `add(value, key)` or `put(value, key)` calls when `key` is of type `ArrayBuffer` or `DataView`.
+Also, IDBSideSync currently doesn't support `add(value, key)` or `put(value, key)` calls when `key` is of type `ArrayBuffer` or `DataView` .
 
 ### Q: What happens if the same oplog/change message is "ingested" more than once?
 

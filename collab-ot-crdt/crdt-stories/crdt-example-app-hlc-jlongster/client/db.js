@@ -52,6 +52,7 @@ const _data = {
 /** ui上所有插入操作会触发执行这里，会根据操作数据生成op-msg，插入会创建并返回一个uuid，类似db插入
  * - ui上插入得到的直接数据是对象row，但这里将对象row转换成了多条消息，消息会按时间戳替换而不是合并
  * @param table 名称
+ * @param row 业务对象
  */
 function insert(table, row) {
   // This is roughly comparable to assigning a primary key value to the row if

@@ -104,7 +104,7 @@ export class IDBObjectStoreProxy {
     }
 
     try {
-      this.recordOperation(value, key);
+      this.recordOperation(value, key); // 记录操作到idb，catch中可回滚
     } catch (error) {
       this.target.transaction.abort();
       throw error;
@@ -123,7 +123,8 @@ export class IDBObjectStoreProxy {
       //
       // Note that this operation does not involve checking the collection of oplog entries to see if newer values
       // exist. That's only a concern when 1+ oplog entries are being applied outside of normal application CRUD calls
-      // on a proxied object store. In other words, it's assumed that when an application calls `store.put()`, the
+      // on a proxied object store.
+      // In other words, it's assumed that when an application calls `store.put()`, the
       // passed-in value is most recent known value at that point in time--there is no need to check for a newer value.
       // The concern with ensuring that an "old" oplog entry is not used to set a value when a NEWER oplog entry for the
       // same field exists only applies to syncing.
@@ -134,6 +135,7 @@ export class IDBObjectStoreProxy {
           typeof existingObjReq.result === 'object'
           ? { ...existingObjReq.result, ...value } // "Merge" the new object with the existing object
           : value;
+      console.log(';; existingObjReq.onsuccess ', resolvedValue);
 
       try {
         const mergedPutReq = keyPath
@@ -148,6 +150,7 @@ export class IDBObjectStoreProxy {
               `${LIB_NAME}: "final" put() with merged value ran BEFORE the "temp" put.`,
             );
           }
+          console.log(';; mergedPutReq.onsuccess ', tempPutCompleted);
         };
       } catch (error) {
         throw new FinalPutError(this.target.name, error);
@@ -158,6 +161,7 @@ export class IDBObjectStoreProxy {
 
     // Ensure that the object has all the properties it needs, per the store's `keyPath`.
     // If it doesn't, try to get them from the `key` arg.
+    // 尝试在tempValue添加key属性
     if (keyPath) {
       tempValue = { ...value };
       if (Array.isArray(keyPath)) {
@@ -194,13 +198,14 @@ export class IDBObjectStoreProxy {
       //
       // If at some point issues are found with how final the final value is resolved when the transaction is committed,
       // another solution will be needed. For example, maybe some sort of "manually-built", totally synthetic object
-      // that implements the IDBRequest<IDBValidKey> interface is returned below. Returning a fake request seems like it
-      // could be tricky and include its own hacky baggage, however; we'll stick with the current approach (which seems
+      // that implements the IDBRequest<IDBValidKey> interface is returned below.
+      // Returning a fake request seems like it could be tricky and include its own hacky baggage, however; we'll stick with the current approach (which seems
       // to work) for now.
       //
       // When calling the actual object store's `put()` method, it's important to NOT include a `key` param if the store
       // has a `keyPath`. Doing so would cause an error (e.g., "[...] object store uses in-line keys and the key
       // parameter was provided" in Chrome).
+      // 作用，代理的put方法需要返回一个IDBRequest对象
       const tempPutReq = keyPath
         ? this.target.put(tempValue)
         : this.target.put(tempValue, key);
@@ -208,6 +213,7 @@ export class IDBObjectStoreProxy {
       const proxyPutReq = proxyPutRequest(tempPutReq, {
         onSuccess: () => {
           tempPutCompleted = true;
+          console.log(';; proxyPutReq.onsuccess ', tempPutCompleted);
         },
         onError: () => {
           this.target.transaction.abort();
@@ -221,17 +227,17 @@ export class IDBObjectStoreProxy {
     }
   };
 
-  /**
-   * This method is used to convert an object that was just "put" into an object store into 1+ oplog entries that can be
+  /** 记录idb的add/put操作到oplog表，可覆盖业务开发中的crud，会复用transaction
+   * - This method is used to convert an object that was just "put" into an object store into 1+ oplog entries that can be
    * recorded and shared so the operation can be replicated on other nodes. It should be called as part of the same
    * transaction used to perform the actual add()/put() so that if operation fails--or if the attempt to add an object
    * to the oplog store fails--all of the operations are rolled back.
    *
-   * The optional `key` arg should only exist if the proxied object store was created without a `keyPath`. For a nice
+   * - The optional `key` arg should only exist if the proxied object store was created without a `keyPath`. For a nice
    * summary of possible `keyPath` and `autoIncrement` permutations, and what that means for the object store, see
    * https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB#Structuring_the_database.
    *
-   * Note that we're declaring it as a class property initialized to an arrow function to ensure that `this` will
+   * - Note that we're declaring it as a class property initialized to an arrow function to ensure that `this` will
    * resolve correctly (an alternative to re-binding a class method to `this` in the constructor).
    */
   recordOperation = (newValue: any, key?: IDBValidKey) => {
@@ -264,12 +270,13 @@ export class IDBObjectStoreProxy {
       throw error;
     }
 
+    /** value值对应的操作 */
     const entries: OpLogEntry[] = [];
 
     if (typeof newValue === 'object') {
       // Convert each property in the `value` to an OpLogEntry.
       for (const property in newValue) {
-        const hlTime = HLClock.tick();
+        const hlTime = HLClock.tick(); // 每次操作都会更新时钟
         entries.push({
           clientId: hlTime.node(),
           hlcTime: hlTime.toString(),
@@ -296,7 +303,7 @@ export class IDBObjectStoreProxy {
       });
     }
 
-    let oplogStore;
+    let oplogStore: IDBObjectStore;
     try {
       // When getting a reference to our own object store where the operation will be recorded, it's important that we
       // reuse the existing transaction. By doing so, both recording the operation and performing the operation are part

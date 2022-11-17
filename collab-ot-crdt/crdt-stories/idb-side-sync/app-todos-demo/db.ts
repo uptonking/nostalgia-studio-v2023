@@ -1,6 +1,7 @@
 import { OPLOG_STORE, init, onupgradeneeded, proxyStore } from '../idbsidesync';
 import { uuid } from '../idbsidesync/utils';
 
+// /存放在前端的业务表
 const SHARED_SETTINGS = 'shared_settings';
 const PROFILE_SETTINGS = 'profile_settings';
 const PROFILES = 'profiles';

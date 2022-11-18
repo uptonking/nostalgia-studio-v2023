@@ -55,7 +55,8 @@ export function getDB() {
         reject(openreq.error);
       };
 
-      /** trigger when you create a new database or increase the version number of an existing database */
+      /** 👇🏻 trigger when you create a new database or increase the version number of an existing database */
+      // 在客户端定义了整个数据库的结构，类似所有表的定义
       openreq.onupgradeneeded = (event) => {
         // @ts-expect-error ❓ result属性为何不在类型上
         const db = event.target!.result as IDBDatabase;
@@ -144,8 +145,8 @@ export function deleteDB() {
   });
 }
 
-/**
- * Convenience function for initiating an IndexedDB transaction and getting a reference to an object store.
+/** 先拿到storeName在idb对应的对象，然后传给callback执行
+ * - Convenience function for initiating an IndexedDB transaction and getting a reference to an object store.
  * - Makes it possible to use promise/async/await to "wait" for a transaction to complete. Example:
  *
  * @example

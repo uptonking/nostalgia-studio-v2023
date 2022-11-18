@@ -10,6 +10,8 @@ The concept that IDBSideSync is attempting to prove is: local-first, browser-bas
 
 ### codebase
 
+- 在修改内存view层数据的同时，将修改操作保存到数据库，基于proxy代理模式实现
+
 - ❓ 为什么更新idb数据的proxiedPut方法中，要执行2次put
   - 只是因为代理put方法需要立即返回一个IDBRequest，
   - 若不在后面添加一个临时的put，因为前面一个put需要在onsuccess中操作数据，则代理方法就没有一个合法的返回值

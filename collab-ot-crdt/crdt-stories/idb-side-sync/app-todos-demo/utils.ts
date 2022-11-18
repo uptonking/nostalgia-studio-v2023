@@ -64,7 +64,7 @@ export const classes = {
 };
 
 
-export function defaultUiState() {
+export function initDefaultUiState() {
   return {
     editingTodo: null,
     activeProfileName: null,

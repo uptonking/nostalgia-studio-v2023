@@ -27,15 +27,15 @@ import {
   append,
   classes,
   clear,
-  defaultUiState,
   getColor,
+  initDefaultUiState,
   qs,
   qsa,
   sanitize,
 } from './utils';
 
 /** app主要状态，大多ui相关状态 */
-let uiState: AppMainStateType = defaultUiState();
+let uiState: AppMainStateType = initDefaultUiState();
 
 let _scrollTop = 0;
 function saveScroll() {
@@ -657,7 +657,7 @@ async function onStyleProfileChange(e) {
   } else {
     await updateActiveProfileName(selection);
     uiState.activeProfileName = selection;
-    await applyProfileSettings();
+    await renderProfileSettings();
   }
 
   render();
@@ -800,7 +800,8 @@ function setFontSize(size) {
   qs('html').style.fontSize = `${size}px`;
 }
 
-async function applyProfileSettings() {
+/** 从数据库获取profile相关数据，并渲染到dom  */
+async function renderProfileSettings() {
   setBgColor((await getBgColorSetting(uiState.activeProfileName)) || 'white');
   setFontSize(await getFontSizeSetting(uiState.activeProfileName));
 }
@@ -813,7 +814,7 @@ export async function loadAndApplyProfileSettings() {
   if (activeProfileName) {
     uiState.activeProfileName = activeProfileName;
     // If a profile exists, try loading profile-specific settings
-    await applyProfileSettings();
+    await renderProfileSettings();
   } else {
     const defaultProfileName = 'Default';
     await addProfileName(defaultProfileName);

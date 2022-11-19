@@ -10,7 +10,18 @@ The concept that IDBSideSync is attempting to prove is: local-first, browser-bas
 
 ### codebase
 
-- 在修改内存view层数据的同时，将修改操作保存到数据库，基于proxy代理模式实现
+- roadmap
+  - 清理无用的op，以减少存储空间
+  - render方法中存在大量异步计算，当在1个frame的计算量过大时，如何优化
+
+- 在修改view层数据(不一定在内存)的同时，创建修改操作op并保存到idb，这一逻辑基于proxy代理模式实现
+  - dom的更新 ~~通过轮询新数据然后rerender实现~~
+    - 通过在触发更新的事件中，先更新idb数据，然后从idb读取最新数据执行rerender来更新dom
+
+- ❓❓ 如何使web应用在 纯内存数据源(如redux单例状态) 和 外部数据源(如idb/sqlite) 间切换
+  - 首先获取view层数据的逻辑改成async
+  - 将获取数据的逻辑，从取state.prop1改为 idb.tr.objectStore1
+  - 参考stoxy-js
 
 - ❓ 为什么更新idb数据的proxiedPut方法中，要执行2次put
   - 只是因为代理put方法需要立即返回一个IDBRequest，

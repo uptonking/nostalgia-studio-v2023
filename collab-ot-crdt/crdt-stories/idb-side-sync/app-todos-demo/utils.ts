@@ -39,7 +39,7 @@ export function getColor(name) {
     case 'yellow':
       return 'bg-yellow-300';
     case 'teal':
-      return 'bg-teal-300';
+      return 'bg-indigo-300'; // 因为teal在本地tailwind.utilities.css中不存在
     case 'purple':
       return 'bg-purple-300';
     case 'pink':

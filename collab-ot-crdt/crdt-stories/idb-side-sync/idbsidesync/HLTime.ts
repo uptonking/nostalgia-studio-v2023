@@ -122,6 +122,7 @@ export class HLTime {
   }
 
   hash() {
+    // @ts-expect-error 3rd-types
     return murmurhash.default.v3(this.toString());
   }
 

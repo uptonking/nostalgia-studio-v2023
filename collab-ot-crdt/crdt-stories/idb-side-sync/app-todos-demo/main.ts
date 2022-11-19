@@ -158,7 +158,10 @@ async function render() {
   clear();
 
   const disableSyncBtn = uiState.sync.inProgress || !uiState.sync.enabled;
+
   const todoTypes = await getTodoTypes();
+  const allTodos = await getAllTodos();
+  const deletedTodos = await getAllTodos(true)
 
   // prettier-ignore 渲染整体页面结构，顶部导航条、列表、同步设置项；👀 注意onclick里面有字符串函数
   append(`
@@ -208,10 +211,10 @@ async function render() {
           </form>
 
           <div class="px-2">
-            <h2 class="text-lg mt-2">To Do:</h2>
+            <h2 class="text-lg mt-2">To Do (# ${allTodos.length} ):</h2>
             <div id="todos"></div>
 
-            <h2 class="text-lg mt-6">Deleted:</h2>
+            <h2 class="text-lg mt-6">Deleted (# ${deletedTodos.length} ):</h2>
             <div class="mt-8" id="deleted-todos"></div>
           </div>
         </div>
@@ -239,9 +242,9 @@ async function render() {
     </div>
   `);
 
-  renderTodos({ root: qs('#todos'), todos: await getAllTodos() });
+  renderTodos({ root: qs('#todos'), todos: allTodos });
   renderTodos({
-    todos: await getAllTodos(true),
+    todos: deletedTodos,
     root: qs('#deleted-todos'),
     isDeleted: true,
   });
@@ -888,7 +891,7 @@ export async function initDefaultTodoTypes() {
   const types = await getTodoTypes();
   // console.log(';; init-todo-types ', 2);
   if (types.length === 0) {
-    addTodoType({ name: 'Important', color: 'orange' });
-    addTodoType({ name: 'Urgent', color: 'tomato' });
+    addTodoType({ name: 'Important', color: 'teal' });
+    addTodoType({ name: 'Urgent', color: 'blue' });
   }
 }

@@ -15,7 +15,7 @@
     <pre id="content" style="white-space: pre-wrap"></pre>
 
     <h3>📁 Folders:</h3>
-    <div style="display: flex; gap: 4px;">
+    <div style="display: flex; gap: 4px">
       <button id="refresh_folder_btn" style="display: none">
         Refresh Folder
       </button>
@@ -38,7 +38,7 @@
     ></pre>
 
     <h3>📖 Files:</h3>
-    <div style="display: flex; gap: 4px;">
+    <div style="display: flex; gap: 4px">
       <button id="list_files_btn" style="display: none">Fetch Files</button>
       <button id="create_file_btn" style="display: none">Create File</button>
       <div style="display: inline-block">
@@ -77,6 +77,8 @@
       const updateFileBtn = qs('#update_file_btn');
       const listFilesBtn = qs('#list_files_btn');
 
+      // example from https://developers.google.com/drive/api/quickstart/js
+
       const CLIENT_ID =
         '783995687622-kdf2g1v3kqq9413nji37a0p5d4teogrr.apps.googleusercontent.com';
       const API_KEY = 'AIzaSyAA2HnDSahUz3uNpiEfQWXlTW4EqMKgpvg';
@@ -84,7 +86,8 @@
         'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
       // Authorization scopes required by the API; multiple scopes can be
       // included, separated by spaces.
-      const SCOPES = 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata';
+      const SCOPES =
+        'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata';
 
       let tokenClient;
       let gapiInited = false;
@@ -165,6 +168,7 @@
         };
 
         if (gapi.client.getToken() === null) {
+          // /👉🏻 这里可作为检测或保持登录状态的一种方法
           // Prompt the user to select a Google Account and ask for consent to share their data
           // when establishing a new session.
           tokenClient.requestAccessToken({ prompt: 'consent' });
@@ -200,7 +204,7 @@
         const parentFolderId = qs('input#folderId').value;
         if (parentFolderId.trim() !== '') {
           requestParams.parents = [parentFolderId];
-        }else{
+        } else {
           requestParams.parents = ['appDataFolder'];
         }
         gapi.client.drive.files
@@ -221,6 +225,7 @@
           });
       }
 
+      /** 先创建文件内容，再更新服务端数据 */
       async function onCreateFileBtnClick() {
         const date = new Date();
         const evenOdd =
@@ -258,6 +263,7 @@
         listFiles();
       }
 
+      /** 和创建文件流程类似，但不需输入文件名 */
       function onUpdateFileBtnClick() {
         const fileId = prompt(
           'Enter file ID (17X3ICG9xkKiNpVxSCgL5iw6Yqui0axxx):',
@@ -266,6 +272,7 @@
         saveFile({ metadata: {}, data: { stuff: newFileContents }, fileId });
       }
 
+      /** patch或post文件内容 */
       async function saveFile(params) {
         const fileData = JSON.stringify(params.data);
         const contentType = 'text/plain';
@@ -313,6 +320,7 @@
         console.log('Save file response:', response);
       }
 
+      /** 先请求文件内容字符串，再打印而不是下载 */
       function onDownloadFileBtnClick() {
         const fileId = prompt(
           'Enter file ID (17X3ICG9xkKiNpVxSCgL5iw6Yqui0axxx):',
@@ -346,6 +354,7 @@
           : name.slice(0, fixedLength - 3) + '...';
       }
 
+      /** 查询(某个文件夹下的)所有文件夹 */
       async function listFolders() {
         const conditions = [];
         conditions.push("mimeType='application/vnd.google-apps.folder'");
@@ -389,6 +398,7 @@
       }
 
       /** 参考 https://developers.google.com/drive/api/guides/search-files
+       * - 查询(某个文件夹下的)所有文件
        */
       async function listFiles() {
         const conditions = [];

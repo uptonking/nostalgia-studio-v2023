@@ -22,7 +22,7 @@ export const OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME =
   'Indexed by: store, objectKey, prop, hlcTime';
 export const OPLOG_INDEX_BY_CLIENTID_TIME = 'Indexed by: client ID, hlcTime';
 export const CACHED_SETTINGS_OBJ_KEY = 'settings';
-export const OPLOG_MERKLE_OBJ_KEY = 'oplogMerkle';
+// export const OPLOG_MERKLE_OBJ_KEY = 'oplogMerkle';
 export const DEFAULT_ENTRY_PAGE_SIZE = 100;
 
 // This is technically unnecessary, but a nice way to help make sure we're always referencing a valid OpLogEntry
@@ -95,7 +95,8 @@ export function onupgradeneeded(event: IDBVersionChangeEvent): void {
 }
 
 /** Allow IDBSideSync to initialize itself with the provided IndexedDB database.
- * - 向idb写入全局设置信息，如clientId
+ * - 将idb缓存到cachedDb
+ * - 向idb写入全局设置信息，如clientId;
  * - 初始化逻辑时钟hlc
  */
 export async function init(db: IDBDatabase): Promise<void> {

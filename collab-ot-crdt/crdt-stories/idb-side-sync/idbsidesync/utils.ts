@@ -5,7 +5,7 @@ import { HLTime } from './HLTime';
 
 export { v4 as uuid } from 'uuid';
 
-export const LIB_NAME = 'IDBSideSync';
+export const LIB_NAME = 'IDBSync';
 export let debug = process.env.NODE_ENV !== 'production';
 export function setDebug(isEnabled: boolean) {
   debug = isEnabled === true;

@@ -178,6 +178,7 @@ export function getSyncProfileForPlugin(
   return getSyncProfiles().find((existing) => existing.pluginId === pluginId);
 }
 
+/** 从缓存中获取设置项 */
 export function getSyncProfiles(): SyncProfile[] {
   const settings = db.getSettings();
   return Array.isArray(settings?.syncProfiles) ? settings.syncProfiles : [];

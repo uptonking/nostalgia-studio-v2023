@@ -34,7 +34,7 @@ import {
   sanitize,
 } from './utils';
 
-/** app主要状态，大多ui相关状态 */
+/** app主要状态，大多ui相关状态，放在内存 */
 let uiState: AppMainStateType = initDefaultUiState();
 
 let _scrollTop = 0;
@@ -161,7 +161,7 @@ async function render() {
 
   const todoTypes = await getTodoTypes();
   const allTodos = await getAllTodos();
-  const deletedTodos = await getAllTodos(true)
+  const deletedTodos = await getAllTodos(true);
 
   // prettier-ignore 渲染整体页面结构，顶部导航条、列表、同步设置项；👀 注意onclick里面有字符串函数
   append(`
@@ -230,7 +230,7 @@ async function render() {
     }"
           >Sync${uiState.sync.inProgress ? 'ing...' : ''}</button>
           <button
-            onclick="onSyncSettingsBtnClick()"
+            id="configSyncSettings"
             class="m-4 mr-6 bg-blue-600 text-white rounded p-2"
           >Sync Settings</button>
           <button
@@ -347,6 +347,7 @@ async function render() {
     `);
   }
 
+  // 打开连接云存储的通用界面
   if (uiState.modal === 'sync-settings/main-menu') {
     append(`
       <div class="${classes.modalBackground}">
@@ -359,8 +360,8 @@ async function render() {
           <div class="flex flex-col">
             <!-- 👀 点击函数是str -->
             <button
+            id="gDriveLogin"
             class="${classes.buttonPrimary} mt-6 mb-4">Google Drive</button>
-            onClick="onGDriveSettingsBtnClick()"
             <button onClick="closeModal()" class="${classes.buttonSecondary}">Done</button>
           </div>
         </div>
@@ -383,7 +384,7 @@ async function render() {
           </div>
           <div class="flex flex-col">
             <!-- 👀 点击函数是str -->
-            <button onClick="onGDriveLogoutBtnClick()" class="${classes.buttonPrimary} mt-6 mb-4">Sign Out</button>
+            <button id="gDriveLogout" class="${classes.buttonPrimary} mt-6 mb-4">Sign Out</button>
             <button onClick="closeModal()" class="${classes.buttonSecondary}">Close</button>
           </div>
         </div>
@@ -391,6 +392,7 @@ async function render() {
     `);
   }
 
+  // 准备登录google
   if (uiState.modal === 'sync-settings/gdrive/sign-in') {
     append(`
       <div class="${classes.modalBackground}">
@@ -403,7 +405,7 @@ async function render() {
           </p>
           <div class="flex flex-col">
             <!-- 👀 点击函数是str -->
-            <button onClick="onGDriveLoginBtnClick()" class="${classes.buttonPrimary} mt-6 mb-4">
+            <button id="gDriveLoginStart" class="${classes.buttonPrimary} mt-6 mb-4">
               Launch Google Sign-In
             </button>
             <button onClick="closeModal()" class="${classes.buttonSecondary}">Cancel</button>
@@ -413,14 +415,15 @@ async function render() {
     `);
   }
 
+  //
   if (uiState.modal === 'sync-settings/gdrive/sign-in/in-progress') {
     append(`
       <div class="${classes.modalBackground}">
         <div class="${classes.modalContainer}">
           <h2 class="${classes.modalTitle}">Google Sign-In in Progress...</h2>
           <div class="mb-4 text-sm">
-            The Google sign-in screen should have opened in a pop-up or new window/tab. Once you complete the sign-in
-            process, that pop-up will close and this screen will update with your new status.
+            The Google sign-in screen should have opened in a pop-up or new window/tab.
+            Once you complete the sign-in process, that pop-up will close and this screen will update with your new status.
           </div>
           <div class="flex flex-col">
             <!-- 👀 点击函数是str -->
@@ -537,6 +540,11 @@ function addEventHandlers() {
     await addTodo({ name, type, order: await getNumTodos() });
     render();
   });
+
+  qs('#configSyncSettings').addEventListener('click', onSyncSettingsBtnClick);
+  qs('#gDriveLogin')?.addEventListener('click', onGDriveSettingsBtnClick);
+  qs('#gDriveLoginStart')?.addEventListener('click', onGDriveLoginBtnClick);
+  qs('#gDriveLogout')?.addEventListener('click', onGDriveLogoutBtnClick);
 
   for (const editBtn of qsa('.todo-item .btn-edit')) {
     editBtn.addEventListener('click', async (e) => {
@@ -665,12 +673,12 @@ async function onStyleProfileChange(e) {
 
   render();
 }
+/** 简单修改ui状态 */
 function closeModal() {
   uiState = {
     ...uiState,
     modal: null,
   };
-
   render();
 }
 function showWaitModal(optionalMessage) {
@@ -686,6 +694,7 @@ async function onResetDataBtnClick() {
   await deleteDB();
   window.location.reload();
 }
+
 function onSyncSettingsBtnClick() {
   uiState.modal = 'sync-settings/main-menu';
   render();
@@ -693,19 +702,22 @@ function onSyncSettingsBtnClick() {
 
 let googleDrivePlugin: GoogleDrivePlugin | null = null;
 
+/** 加载 gdrive sdk 相关配置，这里会注册登录成功时会执行的onSignInChange */
 async function loadGoogleDrivePlugin() {
   googleDrivePlugin = new GoogleDrivePlugin({
     googleAppKey: 'AIzaSyAA2HnDSahUz3uNpiEfQWXlTW4EqMKgpvg',
     googleAppClientId:
       '783995687622-kdf2g1v3kqq9413nji37a0p5d4teogrr.apps.googleusercontent.com',
-    defaultFolderName: 'IDBSideSync App',
+    defaultFolderName: 'IDBSideSyncApp',
     onSignInChange: onGoogleSignInChange,
   });
+
   await registerSyncPlugin(googleDrivePlugin);
 }
 
+/** 连接到云存储的入口页 */
 async function onGDriveSettingsBtnClick() {
-  // Ensure that the Google Drive plugin is loaded (i.e., that the Google API client library is loaded).
+  // Ensure that Google Drive plugin is loaded (i.e., that the Google API client library is loaded).
   if (!googleDrivePlugin) {
     showWaitModal('Loading IDBSideSync Google Drive plugin.');
 
@@ -719,12 +731,14 @@ async function onGDriveSettingsBtnClick() {
     }
   }
 
+  console.log(';; gg-login ', uiState.gdrive.currentUser);
   uiState.modal = uiState.gdrive.currentUser
     ? 'sync-settings/gdrive'
     : 'sync-settings/gdrive/sign-in';
   render();
 }
 
+/** 开始登录google */
 async function onGDriveLoginBtnClick() {
   uiState.modal = 'sync-settings/gdrive/sign-in/in-progress';
   render();
@@ -733,13 +747,14 @@ async function onGDriveLoginBtnClick() {
     // The sync profile includes info about which sync plugin was set up (so that it can automatically be loaded when
     // the app starts up in the future), which remote folder should be used for storage, and some basic user info. It
     // will also trigger a sign-in change event, which causes the "onGoogleSignInChange()" handler to be called.
-    // googleDrivePlugin.signIn();
+    googleDrivePlugin?.signIn();
   } catch (error) {
     console.error('Google sign-in failed:', error);
     showGDriveLoginFailedModal(JSON.stringify(error));
   }
 }
 
+/** 登录成功时会执行，会注册到loadGDrive */
 function onGoogleSignInChange(googleUser, settings) {
   uiState.gdrive.currentUser = googleUser;
   uiState.gdrive.settings = settings;
@@ -841,7 +856,9 @@ export async function setupSync() {
   // Don't attempt to set up syncing until IDBSideSync has been initialized...
   await getDB();
   console.log(';; init-sync ', 2);
-  for (const syncProfile of getSyncProfiles()) {
+  const syncProfiles = getSyncProfiles();
+  console.log(';; syncProfile ', syncProfiles);
+  for (const syncProfile of syncProfiles) {
     if (syncProfile.pluginId === GoogleDrivePlugin.PLUGIN_ID) {
       try {
         console.log('Attempting to load the google drive plugin...');
@@ -895,3 +912,5 @@ export async function initDefaultTodoTypes() {
     addTodoType({ name: 'Urgent', color: 'blue' });
   }
 }
+
+window['closeModal'] = closeModal;

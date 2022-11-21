@@ -58,7 +58,7 @@ export function getDB() {
       /** 👇🏻 trigger when you create a new database or increase the version number of an existing database */
       // 在客户端定义了整个数据库的结构，类似所有表的定义
       openreq.onupgradeneeded = (event) => {
-        // @ts-expect-error ❓ result属性为何不在类型上
+        // @ts-expect-error ❓ result属性为何不在类型上，陈年bug
         const db = event.target!.result as IDBDatabase;
         onupgradeneeded(event);
 

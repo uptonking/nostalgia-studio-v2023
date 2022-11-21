@@ -5,6 +5,9 @@ import { LIB_NAME, debug, log } from './utils';
 
 export const plugins: SyncPlugin[] = [];
 
+/** 同步数据
+ * - 先上传op数据到云端，然后从云端下载op数据
+ */
 export async function sync(options: { forceFullSync?: boolean } = {}) {
   const { nodeId: localClientId } = db.getSettings();
 
@@ -17,6 +20,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
           `Attempting to sync with remote storage using '${pluginId}' plugin.`,
         );
 
+      // ❓ 为何先上传一次空数据
       await plugin.saveRemoteClientRecord(localClientId);
 
       // Which of this client's own oplog entries needs to be uploaded to the server?
@@ -32,7 +36,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
         log.debug(`Uploading ALL local entries.`);
       }
 
-      // Upload own oplog entries that are missing from the server.
+      // 👉🏻 上传到云端 Upload own oplog entries that are missing from the server.
       let ownEntryUploadCounter = 0;
       for await (const localEntry of db.getEntriesByClient(localClientId, {
         afterTime: mostRecentUploadedEntryTime,
@@ -82,7 +86,8 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
           clientId: remoteClientId,
           afterTime: mostRecentKnownOplogTimeForRemoteClient,
         })) {
-          db.applyOplogEntry(remoteEntry); // Note that this will increment the local HLC time.
+          // 👀 that this will increment the local HLC time.
+          db.applyOplogEntry(remoteEntry);
           remoteEntryDownloadCounter++;
         }
         log.debug(

@@ -34,16 +34,16 @@ export const DEFAULT_GAPI_FILE_LIST_PARAMS = {
   fields: `nextPageToken, files(${GAPI_FILE_FIELDS})`,
 };
 
-const gapi = window.gapi;
-
 export class GoogleDrivePlugin implements SyncPlugin {
   public static PLUGIN_ID = libName;
 
   private googleAppKey: string;
   private googleAppClientId: string;
+  private accountToken: string;
   private remoteFolderName: string;
   private remoteFolderId?: string;
   private remoteFolderLink?: string;
+  /** 记录本地上传时间 */
   private mostRecentUploadedEntryTimeMsec: number = 0;
 
   private listeners: {
@@ -57,6 +57,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     googleAppClientId: string;
     defaultFolderName: string;
     remoteFolderId?: string;
+    /** 将登录后的用户信息设置到全局state */
     onSignInChange?: SignInChangeHandler;
   }) {
     if (!options || typeof options.googleAppClientId !== 'string') {
@@ -72,7 +73,6 @@ export class GoogleDrivePlugin implements SyncPlugin {
     if (typeof options.remoteFolderId === 'string') {
       this.remoteFolderId = options.remoteFolderId;
     }
-
     if (options.onSignInChange instanceof Function) {
       this.addSignInChangeListener(options.onSignInChange);
     }
@@ -110,10 +110,11 @@ export class GoogleDrivePlugin implements SyncPlugin {
         reject();
       };
       script.onload = () => {
-        gapi.load('client', async () => {
-          await gapi.client.init({
+        window.gapi.load('client', async () => {
+          await window.gapi.client.init({
             apiKey: this.googleAppKey,
             discoveryDocs: [
+              'https://www.googleapis.com/discovery/v1/apis/people/v1/rest',
               'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
             ],
           });
@@ -133,7 +134,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
       script.onload = () => {
         window.ggTokenClient = window.google.accounts.oauth2.initTokenClient({
           client_id: this.googleAppClientId,
-          scope: 'https://www.googleapis.com/auth/drive.file',
+          scope:
+            'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata',
           callback: (res) => {
             console.log(';; init-gapi.client, ', res);
           },
@@ -145,88 +147,6 @@ export class GoogleDrivePlugin implements SyncPlugin {
     return Promise.all([loadGAPI, loadGIS]).catch((err) => {
       log.error(err);
     });
-  }
-
-  public load11(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (this.isLoaded()) {
-        debug &&
-          log.debug(
-            `Skipping <script> injections for Google API Client .js file; window.gapi already exists.`,
-          );
-        return resolve('skipped-script-injection');
-      }
-      debug && log.debug(`Loading GAPI <script>...`);
-      const script = document.createElement('script');
-      script.onload = resolve;
-      script.onerror = reject;
-      script.src = 'https://apis.google.com/js/api.js';
-      document.head.appendChild(script);
-    })
-      .then((result) => {
-        return new Promise((resolve) => {
-          if (result !== 'skipped-script-injection') {
-            debug && log.debug(`GAPI <script> successfully loaded.`);
-          }
-          if (gapi.auth2 && gapi.client.drive) {
-            return resolve('skipped-module-load');
-          }
-          debug && log.debug(`Loading GAPI library modules...`);
-          // Warning: passing a config object as the second argument to `gapi.load()` does NOT work in Safari.
-          gapi.load('client:auth2', resolve);
-        });
-      })
-      .catch((error) => {
-        if (
-          error &&
-          error.type === 'error' &&
-          error.target &&
-          error.target.nodeName === 'SCRIPT'
-        ) {
-          const ua = navigator.userAgent.toLowerCase();
-          let errorMsg =
-            'Failed to load the Google API JavaScript library. This may be happening due to your browser being ' +
-            'configured to use content blocking.';
-
-          if (ua.includes('safari') && ua.includes('mobile')) {
-            errorMsg +=
-              `\n\nTap on the "aA" shown on the left side of Safari's address bar and select "Turn off ` +
-              'Content Blockers", then refresh the app to try again.';
-          }
-          log.error(errorMsg, error);
-          throw new Error(`[${libName}] ${errorMsg}`);
-        }
-        throw error;
-      })
-      .then((result) => {
-        if (result !== 'skipped-module-load') {
-          debug && log.debug(`GAPI library modules successfully loaded.`);
-        }
-        debug && log.debug(`Initializing GAPI client...`);
-        return window.gapi.client
-          .init({
-            // Note that `apiKey` is NOT specified here, only the (OAuth) Client ID. When setting up app credentials in
-            // the Google Developer Console via "Create Credentials > Help Me Choose" the console explains that it's not
-            // safe to use some creds in certain contexts. If you select Google Drive, indicate that the app will run in
-            // a browser, and specify that the application will access user data, it states that only the clientId can
-            // be used securely. See https://developer.okta.com/blog/2019/01/22/oauth-api-keys-arent-safe-in-mobile-apps
-            // for more info on why including the API key in a browser app is a bad idea.
-            clientId: this.googleAppClientId,
-            discoveryDocs: [
-              'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
-            ],
-            scope: 'https://www.googleapis.com/auth/drive.file',
-          })
-          .then(() => {
-            debug && log.debug(`GAPI client successfully initialized.`);
-            debug && log.debug(`Setting up GAPI auth change listeners.`);
-            const authInstance = gapi.auth2.getAuthInstance();
-            authInstance.isSignedIn.listen(this.onSignInChange.bind(this));
-            authInstance.currentUser.listen(
-              this.onCurrentUserChange.bind(this),
-            );
-          });
-      });
   }
 
   public addSignInChangeListener(handlerFcn: SignInChangeHandler) {
@@ -273,10 +193,15 @@ export class GoogleDrivePlugin implements SyncPlugin {
         }
 
         debug && log.debug(`GAPI client sign-in completed successfully.`);
-        resolve();
+        console.log(';; 登录成功 ', resp);
+
+        await this.onSignInChange(true);
+        await this.onCurrentUserChange();
+
+        resolve(resp);
       };
 
-      if (gapi.client.getToken() === null) {
+      if (window.gapi.client.getToken() === null) {
         // Prompt the user to select a Google Account and ask for consent to share their data
         // when establishing a new session.
         window.ggTokenClient.requestAccessToken({ prompt: 'consent' });
@@ -284,54 +209,34 @@ export class GoogleDrivePlugin implements SyncPlugin {
         // Skip display of account chooser and consent dialog for an existing session.
         window.ggTokenClient.requestAccessToken({ prompt: '' });
       }
-
-      // gapi.auth2
-      //   .getAuthInstance()
-      //   .signIn({ fetch_basic_profile: false, ux_mode: 'popup' })
-      //   .then(() => {
-      //     debug && log.debug(`GAPI client sign-in completed successfully.`);
-      //     resolve();
-      //   })
-      //   .catch((error) => {
-      //     log.error(`GAPI client sign-in failed:`, error);
-      //     let errorMsg = `Google sign-in process failed.`;
-      //     if (error && error.error === 'popup_blocked_by_browser') {
-      //       errorMsg += ` Please try disabling pop-up blocking for this site.`;
-      //     }
-      //     reject(new Error(errorMsg));
-      //   });
     });
   }
 
   public signOut(): void {
     // gapi.auth2.getAuthInstance().signOut();
-    const token = gapi.client.getToken();
+    const token = window.gapi.client.getToken();
     if (token !== null) {
       window.google.accounts.oauth2.revoke(token.access_token);
-      gapi.client.setToken('');
+      window.gapi.client.setToken('');
     }
   }
 
-  public getUserProfile(): UserProfile {
-    // const googleUserProfile = gapi.auth2
-    //   .getAuthInstance()
-    //   .currentUser.get()
-    //   .getBasicProfile();
+  public async getUserProfile(): Promise<UserProfile> {
+    const googleUserProfile = await window.gapi.client.people.people.get({
+      resourceName: 'people/me',
+      personFields: 'emailAddresses,names,nicknames,clientData,photos',
+      // personFields: '*',
+    });
+    console.log(';; 登录后ggUser ', googleUserProfile.result);
 
-    // google.accounts.id.initialize({
-    //   client_id: 'YOUR_GOOGLE_CLIENT_ID',
-    //   callback: handleCredentialResponse
-    // });
-
-    // return this.convertGoogleUserProfileToStandardUserProfile(
-    //   googleUserProfile,
-    // );
-
-    return {
-      email: 'hello@qq.com',
-      firstName: 'Usr1',
-      lastName: 'Super',
-    };
+    return this.convertGoogleUserProfileToStandardUserProfile(
+      googleUserProfile.result,
+    );
+    // return {
+    //   email: 'hello@qq.com',
+    //   firstName: 'Usr1',
+    //   lastName: 'Super',
+    // };
   }
 
   public getSettings(): SyncProfileSettings {
@@ -373,8 +278,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     this.setupRemoteFolder();
   }
 
-  /**
-   * This function will be called after every successful sign-in (assuming it is set up as the handler for
+  /** This function will be called after every successful sign-in (assuming it is set up as the handler for
    * `gapi.auth2.getAuthInstance().currentUser.listen(...)`).
    *
    * Note that even after the initial sign-in, this function will continue to get called every hour. This happens
@@ -385,12 +289,10 @@ export class GoogleDrivePlugin implements SyncPlugin {
    * Google likely does this to limit the amount of time an access key is valid if it were to be intercepted.
    */
   // @ts-ignore
-  private async onCurrentUserChange(googleUser: gapi.auth2.GoogleUser) {
-    const googleUserProfile = googleUser.getBasicProfile();
+  private async onCurrentUserChange(googleUser?: gapi.auth2.GoogleUser) {
     await this.setupRemoteFolder();
-    this.dispatchSignInChangeEvent(
-      this.convertGoogleUserProfileToStandardUserProfile(googleUserProfile),
-    );
+    const googleUserProfile = await this.getUserProfile();
+    this.dispatchSignInChangeEvent(googleUserProfile);
   }
 
   public async setupRemoteFolder() {
@@ -407,6 +309,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
         exactName: this.remoteFolderName,
       });
       if (existingFolderListPage.files.length) {
+        // 👉🏻 找到app-folder
         const existingFolder = existingFolderListPage.files[0];
         log.debug(
           `Found existing Google Drive folder with name '${this.remoteFolderName}`,
@@ -415,6 +318,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
         this.remoteFolderId = existingFolder.id;
         this.remoteFolderLink = existingFolder.webViewLink;
       } else {
+        // 👉🏻 没找到app-folder就创建
         log.debug(
           `No folder with name '${this.remoteFolderName}' exists in Google Drive; attempting to create...`,
         );
@@ -429,6 +333,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
         this.remoteFolderLink = newFolder.webViewLink;
       }
     } else {
+      // 👉🏻 根据id获取app-folder
       const existingFolder = await this.getFile(this.remoteFolderId);
       if (existingFolder) {
         if (
@@ -460,8 +365,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
     }
   }
 
-  private onSignInChange(isSignedIn: boolean) {
-    const userProfile = isSignedIn ? this.getUserProfile() : null;
+  private async onSignInChange(isSignedIn: boolean) {
+    const userProfile = isSignedIn ? await this.getUserProfile() : null;
     this.dispatchSignInChangeEvent(userProfile);
   }
 
@@ -476,12 +381,12 @@ export class GoogleDrivePlugin implements SyncPlugin {
 
   private convertGoogleUserProfileToStandardUserProfile(
     // @ts-ignore
-    googleUserProfile: gapi.auth2.BasicProfile,
+    user: gapi.auth2.BasicProfile,
   ): UserProfile {
     return {
-      email: googleUserProfile.getEmail(),
-      firstName: googleUserProfile.getGivenName(),
-      lastName: googleUserProfile.getFamilyName(),
+      email: user.emailAddresses[0]['value'],
+      firstName: user.names[0].givenName,
+      lastName: user.names[0].familyName,
     };
   }
 
@@ -490,7 +395,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     return new Promise((resolve, reject) => {
       debug &&
         log.debug(`Attempting to get Google Drive file with ID '${fileId}'...`);
-      gapi.client.drive.files
+      window.gapi.client.drive.files
         .get({
           fileId: fileId,
           fields: GAPI_FILE_FIELDS,
@@ -602,7 +507,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
 
     try {
       // For more info on 'list' operation see https://developers.google.com/drive/api/v3/reference/files/list
-      const response = await gapi.client.drive.files.list(listParams);
+      const response = await window.gapi.client.drive.files.list(listParams);
       debug && log.debug('GAPI files.list() response:', response);
       return {
         files: Array.isArray(response.result.files)
@@ -621,7 +526,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
 
   public createGoogleDriveFolder(folderName: string): Promise<GoogleFile> {
     return new Promise((resolve, reject) => {
-      gapi.client.drive.files
+      window.gapi.client.drive.files
         .create({
           resource: {
             name: folderName,
@@ -662,8 +567,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     return new Date(this.mostRecentUploadedEntryTimeMsec);
   }
 
-  /**
-   * A convenience function that wraps the paginated results of `getFileListPage()` and returns an async generator so
+  /** A convenience function that wraps the paginated results of `getFileListPage()` and returns an async generator so
    * that you can do something like the following:
    *
    * @example
@@ -723,7 +627,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
             log.debug(
               `Attempting to download '${file.name}' (file ID: ${file.id}).`,
             );
-          const response = await gapi.client.drive.files.get({
+          const response = await window.gapi.client.drive.files.get({
             fileId: file.id,
             alt: 'media',
           });
@@ -742,6 +646,9 @@ export class GoogleDrivePlugin implements SyncPlugin {
     }
   }
 
+  /** 从云端获取afterTime时间之后的op记录
+   *
+   */
   public async *getRemoteEntries(params: {
     clientId: string;
     afterTime?: Date | null;
@@ -779,7 +686,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
             log.debug(
               `Attempting to download '${file.name}' (file ID: ${file.id}).`,
             );
-          const response = await gapi.client.drive.files.get({
+          const response = await window.gapi.client.drive.files.get({
             fileId: file.id,
             alt: 'media',
           });
@@ -793,8 +700,10 @@ export class GoogleDrivePlugin implements SyncPlugin {
     }
   }
 
-  // TODO: Investigate batching:
-  // https://github.com/google/google-api-javascript-client/blob/master/docs/promises.md#batch-requests
+  /** 上传op记录数据到云端的入口
+   * - TODO: Investigate batching:
+   * - https://github.com/google/google-api-javascript-client/blob/master/docs/promises.md#batch-requests
+   */
   public async saveRemoteEntry(params: {
     time: Date;
     counter: number;
@@ -815,7 +724,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
         ...DEFAULT_GAPI_FILE_LIST_PARAMS,
       };
       listParams.q = `name = '${entryFileName}'`;
-      const response = await gapi.client.drive.files.list(listParams);
+      const response = await window.gapi.client.drive.files.list(listParams);
       if (
         Array.isArray(response.result.files) &&
         response.result.files.length > 0
@@ -857,6 +766,9 @@ export class GoogleDrivePlugin implements SyncPlugin {
     return { numUploaded: 1 };
   }
 
+  /** 上传本地记录到云端
+   * - ❓ 为何保存的数据fileData是空对象{}
+   */
   public async saveRemoteClientRecord(
     clientId: string,
     options: { overwriteIfExists?: boolean } = {},
@@ -881,7 +793,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
           'Checking to see if client record file already exists on server with name:',
           fileName,
         );
-      const response = await gapi.client.drive.files.list(listParams);
+      const response = await window.gapi.client.drive.files.list(listParams);
       if (
         Array.isArray(response.result.files) &&
         response.result.files.length > 0
@@ -914,8 +826,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     });
   }
 
-  /**
-   * Convenience function for saving some object to Google Drive.
+  /** Convenience function for saving some object to Google Drive.
    */
   public async saveFile(params: {
     fileId?: string; // Specify existing file ID to overwrite existing file contents
@@ -971,7 +882,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
       close_delim;
 
     try {
-      const response = await gapi.client.request({
+      const response = await window.gapi.client.request({
         path:
           'https://www.googleapis.com/upload/drive/v3/files' +
           (params.fileId ? `/${params.fileId}` : ''),

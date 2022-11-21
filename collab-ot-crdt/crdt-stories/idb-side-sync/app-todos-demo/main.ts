@@ -914,3 +914,4 @@ export async function initDefaultTodoTypes() {
 }
 
 window['closeModal'] = closeModal;
+window['syncNow'] = syncNow;

@@ -95,7 +95,7 @@ export function onupgradeneeded(event: IDBVersionChangeEvent): void {
 }
 
 /** Allow IDBSideSync to initialize itself with the provided IndexedDB database.
- * - 将idb缓存到cachedDb
+ * - 将idb缓存到变量cachedDb
  * - 向idb写入全局设置信息，如clientId;
  * - 初始化逻辑时钟hlc
  */
@@ -189,6 +189,7 @@ export function saveSettings(newSettings: Settings): Promise<Settings> {
   });
 }
 
+/** 获取本地最近的op记录 */
 export async function getMostRecentEntryForClient(
   clientId: string,
 ): Promise<OpLogEntry | null> {

@@ -117,6 +117,7 @@ export function getDB() {
   return db;
 }
 
+/** 删除indexeddb */
 export function deleteDB() {
   return new Promise((resolve, reject) => {
     getDB().then((db) => {
@@ -124,8 +125,10 @@ export function deleteDB() {
       console.log('Attempting to close database...');
       db.close();
       console.log('Attempting to delete database...');
+      // 👇🏻 attempting to delete a database that doesn't exist does not throw an exception
       const deleteReq = indexedDB.deleteDatabase(DB_NAME);
       deleteReq.onblocked = () => {
+        // onblocked is executed when an open connection to a database is blocking a `versionchange` transaction on the same database.
         console.log('deleting idb gets blocked');
       };
       deleteReq.onerror = (event) => {

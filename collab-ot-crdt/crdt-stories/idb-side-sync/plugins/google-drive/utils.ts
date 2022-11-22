@@ -20,6 +20,7 @@ export const log = {
 };
 /* eslint-enable no-console */
 
+/** 云端默认文件名 */
 export const FILENAME_PART = {
   clientPrefix: 'clientId:',
   clientInfoExt: '.clientinfo.json',

@@ -766,8 +766,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
     return { numUploaded: 1 };
   }
 
-  /** 上传本地记录到云端
-   * - ❓ 为何保存的数据fileData是空对象{}
+  /** 根据名称检查云端是否存在同步文件，若不存在或强制覆盖就创建空文件，本方法并未实际上传数据
+   * - 保存的数据fileData是空对象{}，以此在云端创建文件
    */
   public async saveRemoteClientRecord(
     clientId: string,
@@ -813,12 +813,15 @@ export class GoogleDrivePlugin implements SyncPlugin {
         log.debug(
           `Client record with file name ${fileName} already exists; won't overwrite.`,
         );
+        // 👇🏻 若不覆盖，则返回
         return;
       } else {
         log.debug(`Overwriting existing client record file '${fileName}'.`);
+        // todo 覆盖时先备份旧文件
       }
     }
 
+    // 当云端不存在同名文件或显式强制覆盖时，会先创建一个空文件
     await this.saveFile({
       fileId: existingFileId,
       fileName: fileName,

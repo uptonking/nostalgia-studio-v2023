@@ -3,6 +3,7 @@ import { HLTime } from './HLTime';
 import * as db from './db';
 import { LIB_NAME, debug, log } from './utils';
 
+/** 全局同步插件集合 */
 export const plugins: SyncPlugin[] = [];
 
 /** 同步数据
@@ -108,6 +109,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
   }
 }
 
+/** 注册同步插件到全局，执行插件的初始化逻辑；自动登录帐号 */
 export async function registerSyncPlugin(plugin: SyncPlugin) {
   if (!isSyncPlugin(plugin)) {
     throw new Error(

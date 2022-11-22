@@ -183,6 +183,7 @@ export interface SyncPlugin {
     includeClientIds?: string[];
     excludeClientIds?: string[];
   }) => AsyncGenerator<ClientRecord, void, void>;
+  /** 根据名称检查云端是否存在同步文件，若不存在就创建，本方法并未实际上传数据 */
   saveRemoteClientRecord(
     clientId: string,
     options?: { overwriteIfExists?: boolean },

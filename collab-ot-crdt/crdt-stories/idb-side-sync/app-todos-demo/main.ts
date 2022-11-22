@@ -143,7 +143,7 @@ function renderTodos({ root, todos, isDeleted = false }) {
 }
 
 let renderCount = 0;
-async function render() {
+export async function render() {
   document.documentElement.style.height = '100%';
   document.body.style.height = '100%';
   console.log(';; ==renderCount ', renderCount++);
@@ -225,7 +225,7 @@ async function render() {
           <!-- 👀 点击函数是str -->
           <button
             ${disableSyncBtn ? 'disabled' : ''}
-            onclick="syncNow()"
+            id="syncNow"
             class="m-4 mr-6 text-white rounded p-2 bg-blue-${disableSyncBtn ? '300 cursor-default' : '600'
     }"
           >Sync${uiState.sync.inProgress ? 'ing...' : ''}</button>
@@ -234,9 +234,9 @@ async function render() {
             class="m-4 mr-6 bg-blue-600 text-white rounded p-2"
           >Sync Settings</button>
           <button
-            onclick="showResetWarningModal()"
+            id="showResetWarningModal"
             class="m-4 mr-6 bg-red-500 text-white rounded p-2"
-          >Reset</button>
+          >ClearData</button>
         </div>
       </div>
     </div>
@@ -327,6 +327,7 @@ async function render() {
     `);
   }
 
+  // 删除indexeddb数据的确认信息警告
   if (uiState.modal === 'reset-warning') {
     append(`
       <div class="${classes.modalBackground}">
@@ -338,7 +339,7 @@ async function render() {
           <div class="flex flex-col">
             <!-- 👀 点击函数是str -->
             <button
-              onClick="onResetDataBtnClick()"
+              id="resetDataConfirm"
               class="${classes.buttonDanger} mt-6 mb-4">Yes, Reset Local Data</button>
             <button onClick="closeModal()" class="${classes.buttonSecondary}">Cancel</button>
           </div>
@@ -545,6 +546,9 @@ function addEventHandlers() {
   qs('#gDriveLogin')?.addEventListener('click', onGDriveSettingsBtnClick);
   qs('#gDriveLoginStart')?.addEventListener('click', onGDriveLoginBtnClick);
   qs('#gDriveLogout')?.addEventListener('click', onGDriveLogoutBtnClick);
+  qs('#syncNow')?.addEventListener('click', syncNow);
+  qs('#showResetWarningModal')?.addEventListener('click', showResetWarningModal);
+  qs('#resetDataConfirm')?.addEventListener('click', onResetDataBtnClick);
 
   for (const editBtn of qsa('.todo-item .btn-edit')) {
     editBtn.addEventListener('click', async (e) => {
@@ -690,6 +694,7 @@ function showResetWarningModal() {
   uiState.modal = 'reset-warning';
   render();
 }
+/** 删除indexeddb */
 async function onResetDataBtnClick() {
   await deleteDB();
   window.location.reload();
@@ -857,7 +862,7 @@ export async function setupSync() {
   await getDB();
   console.log(';; init-sync ', 2);
   const syncProfiles = getSyncProfiles();
-  console.log(';; syncProfile ', syncProfiles);
+  console.log(';; syncProfiles ', syncProfiles);
   for (const syncProfile of syncProfiles) {
     if (syncProfile.pluginId === GoogleDrivePlugin.PLUGIN_ID) {
       try {
@@ -892,8 +897,8 @@ export async function setupSync() {
 }
 
 /** 同步前后都会执行render */
-async function syncNow(forceFullSync) {
-  console.log(';; syncNow ');
+async function syncNow(forceFullSync = false) {
+  console.log(';; syncNow-ing ');
   uiState.sync.inProgress = true;
   render();
   await sync({ forceFullSync });
@@ -914,4 +919,3 @@ export async function initDefaultTodoTypes() {
 }
 
 window['closeModal'] = closeModal;
-window['syncNow'] = syncNow;

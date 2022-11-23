@@ -201,12 +201,16 @@ export async function getMostRecentEntryForClient(
   return Promise.resolve(entries.length > 0 ? entries[0] : null);
 }
 
+/** 查询本地db中的clientId的op，每次查询N=100条
+ * - ❓ 为什么用yield，让方法的返回值可迭代
+ */
 export async function* getEntriesByClient(
   clientId: string,
   options: { afterTime?: Date | null } = {},
 ): AsyncGenerator<OpLogEntry, void, void> {
   let page = 0;
   while (page >= 0) {
+    // 普通循环体内await会等待后顺序执行
     const entries = await getEntriesByClientPage(clientId, {
       afterTime: options.afterTime,
       page,
@@ -219,6 +223,9 @@ export async function* getEntriesByClient(
   }
 }
 
+/** 在idb上索引+游标分页查询出符合条件的op
+ *
+ */
 export function getEntriesByClientPage(
   clientId: string,
   options: {
@@ -227,9 +234,9 @@ export function getEntriesByClientPage(
     page: number;
     pageSize: number;
   } = {
-    page: 0,
-    pageSize: DEFAULT_ENTRY_PAGE_SIZE,
-  },
+      page: 0,
+      pageSize: DEFAULT_ENTRY_PAGE_SIZE,
+    },
 ): Promise<OpLogEntry[]> {
   return new Promise((resolve, reject) => {
     const startTime = performance.now();
@@ -248,13 +255,11 @@ export function getEntriesByClientPage(
       clientId,
       options.afterTime instanceof Date ? options.afterTime.toISOString() : '',
     ];
-
     // Each key in the index must be "less than or equal to" the following upper bounds key. We're using '9' for the
     // upper bound of the `hlcTime` key element because we want to include all possible hlcTime values (i.e., we want
     // all possible hlcTime values to be LESS THAN OR EQUAL TO this string), and the string '9' should always be >= any
     // hlcTime value (e.g., '9' >= '2021-01-01...', etc.).
     const upperBound = [clientId, '9'];
-
     const idxCursorReq = oplogIndex.openCursor(
       IDBKeyRange.bound(lowerBound, upperBound),
       options.newestFirst ? 'prev' : 'next',
@@ -263,8 +268,10 @@ export function getEntriesByClientPage(
     const entries: OpLogEntry[] = [];
     let cursorWasAdvanced = false;
 
-    idxCursorReq.onsuccess = function () {
-      const cursor = idxCursorReq.result;
+    idxCursorReq.onsuccess = function (event) {
+      // const cursor = idxCursorReq.result;
+      // @ts-expect-error native types missing
+      const cursor = event.target.result;
       if (!cursor) {
         resolve(entries);
         return;
@@ -273,7 +280,7 @@ export function getEntriesByClientPage(
       if (!cursorWasAdvanced && options.page > 0) {
         cursorWasAdvanced = true;
         cursor.advance(options.page * options.pageSize);
-        return;
+        return; // cursor的请求是遍历，不符合条件时要结束
       }
 
       entries.push(cursor.value);
@@ -283,8 +290,7 @@ export function getEntriesByClientPage(
       } else {
         const stopTime = performance.now();
         log.debug(
-          `⏱ Took ${stopTime - startTime}msec to get ${
-            options.pageSize
+          `⏱ Took ${stopTime - startTime}msec to get ${options.pageSize
           } entries at page ${options.page}.`,
         );
         resolve(entries);
@@ -361,7 +367,7 @@ export function getEntriesByTimePage(
     if (store.keyPath !== OPLOG_ENTRY_HLC_TIME_PROP_NAME) {
       throw new Error(
         `${LIB_NAME} getEntries() can't return oplog entries in reliable order; ${OPLOG_STORE} isn't using ` +
-          `${OPLOG_ENTRY_HLC_TIME_PROP_NAME} as its keyPath and therefore entries aren't sorted by HLC time.`,
+        `${OPLOG_ENTRY_HLC_TIME_PROP_NAME} as its keyPath and therefore entries aren't sorted by HLC time.`,
       );
     }
 
@@ -390,8 +396,7 @@ export function getEntriesByTimePage(
       } else {
         const stopTime = performance.now();
         log.debug(
-          `⏱ Took ${stopTime - startTime}msec to get ${
-            params.pageSize
+          `⏱ Took ${stopTime - startTime}msec to get ${params.pageSize
           } entries at page ${params.page}.`,
         );
         resolve(entries);
@@ -548,7 +553,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
         } catch (error) {
           log.warn(
             `encountered an invalid oplog entry in "${OPLOG_STORE}" store. This might mean that an oplog entry` +
-              `was manually edited or created in an invalid way somewhere. The entry will be ignored.`,
+            `was manually edited or created in an invalid way somewhere. The entry will be ignored.`,
             JSON.stringify(error.message),
           );
           cursor.continue();
@@ -678,7 +683,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
                 const putError = new ApplyPutError(
                   targetStore.name,
                   `The oplog entry's ".objectKey" property should be an array but isn't: ` +
-                    JSON.stringify(candidate),
+                  JSON.stringify(candidate),
                 );
                 log.error(putError);
                 txReq.abort();
@@ -757,7 +762,7 @@ class UnexpectedOpLogEntryError extends Error {
   constructor(noun: keyof OpLogEntry, expected: string, actual: string) {
     super(
       `${LIB_NAME}: invalid "most recent oplog entry"; expected '${noun}' value of '${expected}' but got ` +
-        `'${actual}'. (This might mean there's a problem with the IDBKeyRange used to iterate over ${OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME}.)`,
+      `'${actual}'. (This might mean there's a problem with the IDBKeyRange used to iterate over ${OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME}.)`,
     );
     Object.setPrototypeOf(this, UnexpectedOpLogEntryError.prototype); // https://git.io/vHLlu
   }
@@ -767,7 +772,7 @@ export class ApplyPutError extends Error {
   constructor(storeName: string, error: unknown) {
     super(
       `${LIB_NAME}: error on attempt to apply oplog entry that adds/updates object in "${storeName}": ` +
-        error,
+      error,
     );
     Object.setPrototypeOf(this, ApplyPutError.prototype); // https://git.io/vHLlu
   }

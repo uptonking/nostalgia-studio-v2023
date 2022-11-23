@@ -21,7 +21,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
           `Attempting to sync with remote storage using '${pluginId}' plugin.`,
         );
 
-      // ❓ 为何先上传一次空数据
+      // 先检查云端数据文件是否存在，若不存在或强制覆盖就先创建空文件
       await plugin.saveRemoteClientRecord(localClientId);
 
       // Which of this client's own oplog entries needs to be uploaded to the server?
@@ -37,11 +37,12 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
         log.debug(`Uploading ALL local entries.`);
       }
 
-      // 👉🏻 上传到云端 Upload own oplog entries that are missing from the server.
+      // 👉🏻 上传op到云端 Upload own oplog entries that are missing from the server.
       let ownEntryUploadCounter = 0;
       for await (const localEntry of db.getEntriesByClient(localClientId, {
         afterTime: mostRecentUploadedEntryTime,
       })) {
+        // console.log(';; up ', localEntry)
         //TODO: Add support for uploading more than one entry at a time (batching)
         const hlTime = HLTime.parse(localEntry.hlcTime);
         const result = await plugin.saveRemoteEntry({
@@ -59,6 +60,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
         log.debug(
           `Attempting to discover remote clients on server and download their oplog entries...`,
         );
+
       for await (const clientRecord of plugin.getRemoteClientRecords({
         excludeClientIds: [localClientId],
       })) {

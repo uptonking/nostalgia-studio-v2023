@@ -11,8 +11,27 @@ The concept that IDBSideSync is attempting to prove is: local-first, browser-bas
 ### codebase
 
 - roadmap
-  - 清理无用的op，以减少存储空间
+  - 自动定期清理无用的op，以减少存储空间
   - render方法中存在大量异步计算，当在1个frame的计算量过大时，如何优化
+
+- google-drive保存数据的格式
+  - 文件名以日期开头的原因是，方便利用google drive api搜索能容易找到多个设备总体的最新op记录
+  - clientId:8127f91c2048654b.clientinfo.json 内容为字符串 {}
+  - 2022-11-22T09:45:49.536Z 0000 clientId:8127f91c2048654b.oplogmsg.json 文件名+内容 对应OpLogObjectStore中一个记录的key和value
+
+```JSON
+{
+  "key": "2022-11-22T09:45:49.538Z_0001_8127f91c2048654b",
+  "value": {
+    "clientId": "8127f91c2048654b",
+    "hlcTime": "2022-11-22T09:45:49.538Z_0001_8127f91c2048654b",
+    "store": "todo_types",
+    "objectKey": "04f96261-cec7-4675-9713-e549ae2b7e86",
+    "prop": "name",
+    "value": "Important"
+  }
+}
+```
 
 - 在修改view层数据(不一定在内存)的同时，创建修改操作op并保存到idb，这一逻辑基于proxy代理模式实现
   - dom的更新 ~~通过轮询新数据然后rerender实现~~
@@ -21,7 +40,8 @@ The concept that IDBSideSync is attempting to prove is: local-first, browser-bas
 - ❓❓ 如何使web应用在 纯内存数据源(如redux单例状态) 和 外部数据源(如idb/sqlite) 间切换
   - 首先获取view层数据的逻辑改成async
   - 将获取数据的逻辑，从取state.prop1改为 idb.tr.objectStore1
-  - 参考stoxy-js
+  - 可参考 stoxy-js(内置数据源切换)
+  - 可参考 crdt-hlc(纯内存) 和 idbsidesync(纯外部数据源)
 
 - ❓ 为什么更新idb数据的proxiedPut方法中，要执行2次put
   - 只是因为代理put方法需要立即返回一个IDBRequest，

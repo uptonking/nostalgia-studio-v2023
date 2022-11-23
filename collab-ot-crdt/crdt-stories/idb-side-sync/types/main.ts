@@ -89,7 +89,7 @@
  * }
  * ```
  *
- * Then we might use a (pseudo-code-ish) process like the following to rebuid the stores from the oplog entries:
+ * Then we might use a (pseudo-code-ish) process like the following to rebuild the stores from the oplog entries:
  *
  * @example
  * ```
@@ -134,6 +134,7 @@ export interface OpLogEntry {
   clientId: string;
   hlcTime: string;
   store: string;
+  /** 要与keyPath的名称作为key，记录中objectKey值的各项作为对应的value */
   objectKey: number | string | Date | Array<number | string | Date>;
   prop: string;
   value: unknown;

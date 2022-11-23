@@ -43,7 +43,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
   private remoteFolderName: string;
   private remoteFolderId?: string;
   private remoteFolderLink?: string;
-  /** 记录本地上传时间 */
+  /** 记录本地上传时间，没有通过查询云端得到 */
   private mostRecentUploadedEntryTimeMsec: number = 0;
 
   private listeners: {
@@ -564,7 +564,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
    * oplog entries are uploaded.
    */
   public async getMostRecentUploadedEntryTime(): Promise<Date> {
-    return new Date(this.mostRecentUploadedEntryTimeMsec);
+    return new Date(this.mostRecentUploadedEntryTimeMsec); // 本地初始时间为0，即19700101
   }
 
   /** A convenience function that wraps the paginated results of `getFileListPage()` and returns an async generator so
@@ -760,6 +760,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     });
 
     if (params.time.getTime() > this.mostRecentUploadedEntryTimeMsec) {
+      // 每次上传都会更新本地时间
       this.mostRecentUploadedEntryTimeMsec = params.time.getTime();
     }
 

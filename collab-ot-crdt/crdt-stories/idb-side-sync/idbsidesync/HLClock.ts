@@ -1,8 +1,9 @@
 import { HLTime } from './HLTime';
 import { LIB_NAME } from './utils';
 
-/** 静态类，客户端的时间操作工具 */
+/** 静态类，客户端的时间操作工具，持有一个全局HLTime对象 */
 export class HLClock {
+  /** 本地全局单例hlc */
   private static _time: HLTime | null = null;
 
   // Maximum physical clock drift allowed, in ms. In other words, if we receive a message from another node and that
@@ -51,8 +52,8 @@ export class HLClock {
     HLClock._time = time;
   }
 
-  /**
-   * Use this function to advance the HLC clock. Normally this results in the "physical" time part of the HLC being
+  /** 本地每次触发crud操作开始产生的op都会带有一个新时间戳，一般+1
+   * - Use this function to advance the HLC clock. Normally this results in the "physical" time part of the HLC being
    * advanced to the current system date/time. If, in theory, it were to be called more than once in the same msec, then
    * the "logical" part of the HLC (i.e., the counter) will be incremented.
    *
@@ -94,8 +95,9 @@ export class HLClock {
     return HLClock._time;
   }
 
-  /**
-   * Use this function to advance the hybrid logical clock. The new HLC time will be greater than both the current HLC
+  /** 每次applyOplogEntry执行op时碰到最新的hlc，都会用最新的来更新本地hlc
+   * - counter可能置0
+   * - Use this function to advance the hybrid logical clock. The new HLC time will be greater than both the current HLC
    * time _and_ the passed-in HLC time (i.e., this function will always advance the clock).
    */
   public static tickPast(theirTimestamp: HLTime): HLTime {
@@ -141,6 +143,13 @@ export class HLClock {
       );
     }
 
+    // Calculate the next logical time and counter.
+    // Ensure that the logical time never goes backward;
+    // * if all logical clocks are equal, increment the max counter,
+    // * if max = old > message, increment local counter,
+    // * if max = messsage > old, increment message counter,
+    // * otherwise, clocks are monotonic, reset counter
+
     // Given our HLC time, the incoming HLC time, and the current system time, pick whichever is most recent. If our
     // local device time is older than either of these, it means we'll end up _re-using_ either the incoming HLC time or
     // our local HLC time. In that scenario, we're not actually advancing the time, so we must increment the counter.
@@ -152,7 +161,7 @@ export class HLClock {
     // Now check to see if the physical time didn't actually change (in which case we need to increment thee counter).
     if (nextTime === ourHlcTime && nextTime === theirHlcTime) {
       // The next physical time that will be used isn't changing--it's the same as both our local HLC's physical time
-      // _and_ the incoming HLC's physical time. In that scenario it's important to increment the "logical" part of the
+      // _and_ the incoming HLC's physical time. maxIn that scenario it's important to increment the "logical" part of the
       // time--the counter--to ensure that time moves forward. Note that we are incrementing the greater of the existing
       // counters to make sure the next counter differs.
       nextCounter = Math.max(ourCounter, theirCounter) + 1;
@@ -172,7 +181,7 @@ export class HLClock {
       throw new HLClock.OverflowError();
     }
 
-    // Update our HLC.
+    // Update our HLC. 更新本地hlc
     HLClock._time = new HLTime(nextTime, nextCounter, HLClock._time.node());
 
     return HLClock._time;

@@ -7,11 +7,21 @@ export { v4 as uuid } from 'uuid';
 
 export const LIB_NAME = 'IDBSync';
 export let debug = process.env.NODE_ENV !== 'production';
+
 export function setDebug(isEnabled: boolean) {
   debug = isEnabled === true;
 }
 
-export function noOp() {}
+export function noOp() { }
+
+export const logPrefix = '[' + LIB_NAME + ']';
+export const log = {
+  log: console.log.bind(console, logPrefix),
+  todo: console.log.bind(console, '%c[TODO]', 'color:blue;font-weight:bold;'),
+  debug: debug ? console.log.bind(console, logPrefix) : noOp,
+  warn: console.warn.bind(console, logPrefix),
+  error: console.error.bind(console, logPrefix),
+};
 
 /**
  * Use this function to create a presumably unique string that can be used to identify a client/node/agent. This just
@@ -136,31 +146,22 @@ export function isEventWithTargetError(
   return true;
 }
 
-/* eslint-disable no-console */
-export const logPrefix = '[' + LIB_NAME + ']';
-export const log = {
-  log: console.log.bind(console, logPrefix),
-  todo: console.log.bind(console, '%c[TODO]', 'color:blue;font-weight:bold;'),
-  debug: debug ? console.log.bind(console, logPrefix) : noOp,
-  warn: console.warn.bind(console, logPrefix),
-  error: console.error.bind(console, logPrefix),
-};
-/* eslint-enable no-console */
 
-/**
- * Utility function for wrapping an IDB request with a promise so that the result/error can be `await`ed.
+
+/** @unused
+ * - Utility function for wrapping an IDB request with a promise so that the result/error can be `await`ed.
  *
  * @returns a promise that resolves (or throws) when the request's onsuccess/onerror callback runs.
  */
-export function request(request: IDBRequest): Promise<unknown> {
+export function pRequest(request: IDBRequest): Promise<unknown> {
   return new Promise((resolve, reject) => {
     request.onsuccess = () => resolve(request.result);
     request.onerror = () => reject(request.error);
   });
 }
 
-/**
- * Utility function for initiating an IndexedDB transaction, getting a reference to an object store, and being able to
+/** @unused
+ * - Utility function for initiating an IndexedDB transaction, getting a reference to an object store, and being able to
  * `await` the completion of the transaction. Sort of a lightweight alternative to Jake Archibald's `idb` library.
  * Initially copied from his `svgomg` app (https://preview.tinyurl.com/yaoxc9cl) but adds the ability await the
  * completion of an async callback.
@@ -180,7 +181,7 @@ export function request(request: IDBRequest): Promise<unknown> {
  *
  * @return a Promise that resolves after both the passed-in 'callback' resolves AND the transaction 'oncomplete' fires.
  */
-export async function transaction(
+export async function pTransaction(
   db: IDBDatabase,
   storeNames: string[],
   mode: Exclude<IDBTransactionMode, 'versionchange'>,

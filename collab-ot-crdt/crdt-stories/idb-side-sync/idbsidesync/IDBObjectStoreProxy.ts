@@ -228,6 +228,7 @@ export class IDBObjectStoreProxy {
   };
 
   /** 记录idb的add/put操作到oplog表，可覆盖业务开发中的crud，会复用transaction
+   * - 每次操作都会更新hlc时钟
    * - This method is used to convert an object that was just "put" into an object store into 1+ oplog entries that can be
    * recorded and shared so the operation can be replicated on other nodes. It should be called as part of the same
    * transaction used to perform the actual add()/put() so that if operation fails--or if the attempt to add an object
@@ -270,7 +271,7 @@ export class IDBObjectStoreProxy {
       throw error;
     }
 
-    /** value值对应的操作 */
+    /** value值对应的op操作 */
     const entries: OpLogEntry[] = [];
 
     if (typeof newValue === 'object') {

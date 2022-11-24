@@ -19,6 +19,7 @@ export function proxyPutRequest(
 export class IDBUpsertRequestProxy {
   target: IDBRequest<IDBValidKey>;
   options: IDBUpsertRequestProxyOptions;
+  /** @unused 外部未使用，可移除 */
   upstreamOnSuccess: IDBRequest['onsuccess'] = null;
   upstreamOnError: IDBRequest['onerror'] = null;
 

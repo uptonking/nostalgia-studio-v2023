@@ -29,6 +29,9 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
     - 每个客户端都会保存所有op记录到内存，从db表获取到的记录一直在本地_messages
 
 - 本示例要点
+  - hlc逻辑时钟
+    - db/sendMessages, 每次crud操作对应的message都会带有一个新时间戳，来自 Timestamp.send，一般+1
+    - sync/receiveMessages, 每次收到服务端op都会执行 Timestamp.recv，更新本地logic clock，一般+1
   - app业务数据模型定义在前端，sqlite数据库只记录历史操作，服务端并不直接处理业务模型的crud
   - 本示例协作的粒度是对象属性，所以可能存在输入内容被全部替换，而不是合并操作A和B
   - 客户端op操作基本数据： some-client did something/op at sometime

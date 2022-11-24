@@ -12,8 +12,8 @@ import {
   FileDownloadError,
   FileListError,
   FileUploadError,
+  LIB_NAME,
   debug,
-  libName,
   log,
   oplogEntryToFileName,
 } from './utils';
@@ -25,6 +25,7 @@ export const GAPI_FOLDER_MIME_TYPE = 'application/vnd.google-apps.folder';
 // fields, see https://developers.google.com/drive/api/v3/reference/files
 export const GAPI_FILE_FIELDS = 'id, name, createdTime, webViewLink';
 
+/** 查询google drive文件的默认条件 */
 export const DEFAULT_GAPI_FILE_LIST_PARAMS = {
   spaces: 'drive',
   pageSize: 10,
@@ -34,18 +35,26 @@ export const DEFAULT_GAPI_FILE_LIST_PARAMS = {
   fields: `nextPageToken, files(${GAPI_FILE_FIELDS})`,
 };
 
+/** 基于google drive的同步插件
+ * - 核心就只有这一个class，其他文件代码不多且不重要
+ */
 export class GoogleDrivePlugin implements SyncPlugin {
-  public static PLUGIN_ID = libName;
+  public static PLUGIN_ID = LIB_NAME;
 
   private googleAppKey: string;
   private googleAppClientId: string;
+  /** todo 保存jwt认证token，方便刷新页面时保证登录状态 */
   private accountToken: string;
+
+  /** 云端同步相关元数据 */
   private remoteFolderName: string;
   private remoteFolderId?: string;
   private remoteFolderLink?: string;
-  /** 记录本地上传时间，没有通过查询云端得到 */
+
+  /** 记录本地上传时间，更好的方式是通过查询云端得到，是物理时间的Date对象 */
   private mostRecentUploadedEntryTimeMsec: number = 0;
 
+  /** 暴露给外部注册监听器 */
   private listeners: {
     signInChange: SignInChangeHandler[];
   } = {
@@ -63,7 +72,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     if (!options || typeof options.googleAppClientId !== 'string') {
       const errMsg = `Missing options param with googleAppClientId. Example: setup({ googleAppClientId: '...' })`;
       log.error(errMsg);
-      throw new Error(`[${libName}] ${errMsg}`);
+      throw new Error(`[${LIB_NAME}] ${errMsg}`);
     }
 
     this.googleAppKey = options.googleAppKey;
@@ -79,7 +88,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
   }
 
   public getPluginId() {
-    return libName;
+    return LIB_NAME;
   }
 
   public isLoaded(): boolean {
@@ -91,6 +100,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     );
   }
 
+  /** 通过动态创建script标签来引入google账户登录相关sdk */
   public async load(): Promise<any> {
     if (this.isLoaded()) {
       debug &&
@@ -170,6 +180,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
       handlerFcn instanceof Function &&
       !this.listeners.signInChange.includes(handlerFcn)
     ) {
+      // 如果没找到，就添加进去吗 ？
       this.listeners.signInChange.push(handlerFcn);
     }
   }
@@ -194,6 +205,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
 
         debug && log.debug(`GAPI client sign-in completed successfully.`);
         console.log(';; 登录成功 ', resp);
+        this.accountToken = resp['access_token'];
 
         await this.onSignInChange(true);
         await this.onCurrentUserChange();
@@ -225,27 +237,23 @@ export class GoogleDrivePlugin implements SyncPlugin {
     const googleUserProfile = await window.gapi.client.people.people.get({
       resourceName: 'people/me',
       personFields: 'emailAddresses,names,nicknames,clientData,photos',
-      // personFields: '*',
+      // personFields: '*', // * 语法错误
     });
     console.log(';; 登录后ggUser ', googleUserProfile.result);
 
     return this.convertGoogleUserProfileToStandardUserProfile(
       googleUserProfile.result,
     );
-    // return {
-    //   email: 'hello@qq.com',
-    //   firstName: 'Usr1',
-    //   lastName: 'Super',
-    // };
   }
 
   public getSettings(): SyncProfileSettings {
-    return {
+    const syncConfig = {
       remoteFolderName: this.remoteFolderName,
       remoteFolderId: this.remoteFolderId,
       remoteFolderLink: this.remoteFolderLink,
       mostRecentUploadedEntryTime: this.mostRecentUploadedEntryTimeMsec,
     };
+    return syncConfig;
   }
 
   public setSettings(settings: SyncProfileSettings) {
@@ -278,7 +286,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
     this.setupRemoteFolder();
   }
 
-  /** This function will be called after every successful sign-in (assuming it is set up as the handler for
+  /** 用户变化后，要更新请求云端appFolder的信息
+   * - This function will be called after every successful sign-in (assuming it is set up as the handler for
    * `gapi.auth2.getAuthInstance().currentUser.listen(...)`).
    *
    * Note that even after the initial sign-in, this function will continue to get called every hour. This happens
@@ -295,6 +304,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     this.dispatchSignInChangeEvent(googleUserProfile);
   }
 
+  /** 请求云端appFolder的信息 */
   public async setupRemoteFolder() {
     log.debug(`Attempting to find remote folder with criteria:`, {
       name: this.remoteFolderName,
@@ -309,7 +319,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
         exactName: this.remoteFolderName,
       });
       if (existingFolderListPage.files.length) {
-        // 👉🏻 找到app-folder
+        // 👉🏻 找到appFolder
         const existingFolder = existingFolderListPage.files[0];
         log.debug(
           `Found existing Google Drive folder with name '${this.remoteFolderName}`,
@@ -318,7 +328,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
         this.remoteFolderId = existingFolder.id;
         this.remoteFolderLink = existingFolder.webViewLink;
       } else {
-        // 👉🏻 没找到app-folder就创建
+        // 👉🏻 没找到appFolder就创建
         log.debug(
           `No folder with name '${this.remoteFolderName}' exists in Google Drive; attempting to create...`,
         );
@@ -333,7 +343,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
         this.remoteFolderLink = newFolder.webViewLink;
       }
     } else {
-      // 👉🏻 根据id获取app-folder
+      // 👉🏻 根据id获取appFolder
       const existingFolder = await this.getFile(this.remoteFolderId);
       if (existingFolder) {
         if (
@@ -345,7 +355,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
           this.remoteFolderLink = existingFolder.webViewLink;
         } else {
           throw new Error(
-            `${libName} Google Drive folder with ID '${this.remoteFolderId}' lacks valid name.`,
+            `${LIB_NAME} Google Drive folder with ID '${this.remoteFolderId}' lacks valid name.`,
           );
         }
       } else {
@@ -365,6 +375,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     }
   }
 
+  /** 登录成功后触发执行外部注册的事件 */
   private async onSignInChange(isSignedIn: boolean) {
     const userProfile = isSignedIn ? await this.getUserProfile() : null;
     this.dispatchSignInChangeEvent(userProfile);
@@ -390,8 +401,9 @@ export class GoogleDrivePlugin implements SyncPlugin {
     };
   }
 
+  /** 获取fileId对应的文件或文件夹信息 */
   // @ts-ignore
-  public getFile(fileId: string): Promise<gapi.client.drive.File> {
+  private getFile(fileId: string): Promise<gapi.client.drive.File> {
     return new Promise((resolve, reject) => {
       debug &&
         log.debug(`Attempting to get Google Drive file with ID '${fileId}'...`);
@@ -414,8 +426,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     });
   }
 
-  /**
-   * GAPI convenience wrapper for listing files.
+  /** GAPI convenience wrapper for listing files.
    */
   public async getFileListPage(filter: {
     type: 'files' | 'folders';
@@ -477,7 +488,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
       if (!this.remoteFolderId) {
         const errMsg = `Remote folder ID hasn't been set; file listing can't proceed.`;
         log.error(errMsg);
-        throw new Error(libName + ' ' + errMsg);
+        throw new Error(LIB_NAME + ' ' + errMsg);
       }
       queryParts.push(`('${this.remoteFolderId}' in parents)`);
     }
@@ -524,6 +535,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     }
   }
 
+  /** 在google drive根目录创建appFolder，默认名由应用配置传入  */
   public createGoogleDriveFolder(folderName: string): Promise<GoogleFile> {
     return new Promise((resolve, reject) => {
       window.gapi.client.drive.files
@@ -544,7 +556,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
             default:
               const errorMsg = `Received error response on attempt to create folder:`;
               log.error(errorMsg, response);
-              throw new Error(`[${libName}] ${errorMsg} ${response.body}`);
+              throw new Error(`[${LIB_NAME}] ${errorMsg} ${response.body}`);
           }
         })
         .catch((error) => {
@@ -554,8 +566,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
     });
   }
 
-  /**
-   * Returns the time of the most recent oplog entry known to have been uploaded to the remote server for the current
+  /** 获取本地上传时间，更好的方式是通过查询云端得到，是物理时间的Date对象
+   * - Returns the time of the most recent oplog entry known to have been uploaded to the remote server for the current
    * client. Ideally this would be determined by querying Google Drive. That approach involves asking the Google Drive
    * API to order the results of a "list files" operation (i.e., order by date). Unfortunately, as of April 2021, the
    * "list files" documentation states that "order by" doesn't work for users that have > ~1M files (see `orderBy` in
@@ -567,7 +579,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
     return new Date(this.mostRecentUploadedEntryTimeMsec); // 本地初始时间为0，即19700101
   }
 
-  /** A convenience function that wraps the paginated results of `getFileListPage()` and returns an async generator so
+  /** 从云端查询符合clientId的记录列表，然后获取各记录内容
+   * - A convenience function that wraps the paginated results of `getFileListPage()` and returns an async generator so
    * that you can do something like the following:
    *
    * @example
@@ -607,6 +620,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     let pageToken: undefined | string = '';
 
     while (pageToken !== undefined) {
+      // 获取一页 N=10 个文件
       pageResults = await this.getFileListPage({
         type: 'files',
         nameContains,
@@ -627,9 +641,10 @@ export class GoogleDrivePlugin implements SyncPlugin {
             log.debug(
               `Attempting to download '${file.name}' (file ID: ${file.id}).`,
             );
+          // 获取file.id的文件的内容
           const response = await window.gapi.client.drive.files.get({
             fileId: file.id,
-            alt: 'media',
+            alt: 'media', // alt=media, then the response includes the file contents in the response body.
           });
           const clientIdWithPrefix = file.name.split('.')[0];
           const clientId = clientIdWithPrefix.replace(
@@ -646,7 +661,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     }
   }
 
-  /** 从云端获取afterTime时间之后的op记录
+  /** 从云端获取afterTime时间之后的op记录及内容，可与上面方法共享部分逻辑
    *
    */
   public async *getRemoteEntries(params: {
@@ -701,7 +716,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
   }
 
   /** 上传op记录数据到云端的入口
-   * - TODO: Investigate batching:
+   * TODO: Investigate batching:
    * - https://github.com/google/google-api-javascript-client/blob/master/docs/promises.md#batch-requests
    */
   public async saveRemoteEntry(params: {
@@ -745,9 +760,10 @@ export class GoogleDrivePlugin implements SyncPlugin {
           `Oplog entry already exists; won't overwrite.`,
           entryFileName,
         );
-      return { numUploaded: 0 };
+      return { numUploaded: 0 }; // 不覆盖已有记录
     }
 
+    // 上传记录内容到云端
     await this.saveFile({
       fileId: existingFileId,
       fileName: entryFileName,
@@ -767,7 +783,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     return { numUploaded: 1 };
   }
 
-  /** 根据名称检查云端是否存在同步文件，若不存在或强制覆盖就创建空文件，本方法并未实际上传数据
+  /** 根据名称检查云端是否存在客户端id文件，若不存在或强制覆盖就创建该文件，本方法并未实际上传数据
    * - 保存的数据fileData是空对象{}，以此在云端创建文件
    */
   public async saveRemoteClientRecord(
@@ -831,6 +847,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
   }
 
   /** Convenience function for saving some object to Google Drive.
+   * - 通过手动构造 multipart/form-data boundary 来上传文件内容
    */
   public async saveFile(params: {
     fileId?: string; // Specify existing file ID to overwrite existing file contents
@@ -841,7 +858,7 @@ export class GoogleDrivePlugin implements SyncPlugin {
     if (!this.remoteFolderId) {
       const errMsg = `Remote folder ID hasn't been set; files can't be saved without having ID of parent folder.`;
       log.error(errMsg);
-      throw new Error(libName + ' ' + errMsg);
+      throw new Error(LIB_NAME + ' ' + errMsg);
     }
     const fileData = JSON.stringify(params.fileData);
     const contentType = 'text/plain';
@@ -857,9 +874,9 @@ export class GoogleDrivePlugin implements SyncPlugin {
       metadata.createdTime = params.createdTime;
     }
 
-    const boundary = 'multipartformboundaryhere';
-    const delimiter = '\r\n--' + boundary + '\r\n';
-    const close_delim = '\r\n--' + boundary + '--';
+    const boundaryFlag = 'multipartformboundaryhere';
+    const delimiter = '\r\n--' + boundaryFlag + '\r\n';
+    const close_delim = '\r\n--' + boundaryFlag + '--';
 
     // Create a request body that looks like this:
     //
@@ -893,7 +910,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
         method: params.fileId ? 'PATCH' : 'POST',
         params: { uploadType: 'multipart' },
         headers: {
-          'Content-Type': String('multipart/related; boundary=' + boundary),
+          // 👇🏻 在header中指定boundary
+          'Content-Type': String('multipart/related; boundary=' + boundaryFlag),
         },
         body: multipartRequestBody,
       });

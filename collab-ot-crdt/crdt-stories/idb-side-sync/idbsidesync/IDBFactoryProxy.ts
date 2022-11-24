@@ -1,6 +1,6 @@
 import { debug, log } from './utils';
 
-/**
+/** @unused
  * Instances of this class can intercept and modify calls to the IndexedDB API if used as a Proxy handler, wrapping
  * window.indexedDB.
  */

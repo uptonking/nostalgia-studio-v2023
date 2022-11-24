@@ -1,32 +1,34 @@
 import type { OpLogEntry } from '../../types/main';
 
-export const libName = 'IDBSideSync.plugins.googledrive';
-export const logPrefix = '[' + libName + ']';
+export const LIB_NAME = 'IDBSideSync.plugins.googledrive';
+export const logPrefix = '[' + LIB_NAME + ']';
 
-export function noOp() {}
+export function noOp() { }
 export const COUNTER_PART_STR_LENGTH = 4;
+
 export let debug = process.env.NODE_ENV !== 'production';
 
 export function setDebug(isEnabled: boolean) {
   debug = isEnabled === true;
 }
 
-/* eslint-disable no-console */
 export const log = {
   log: console.log.bind(console, logPrefix),
   debug: debug ? console.log.bind(console, logPrefix) : noOp,
   warn: console.warn.bind(console, logPrefix),
   error: console.error.bind(console, logPrefix),
 };
-/* eslint-enable no-console */
 
-/** 云端默认文件名 */
+/** 云端文件名的固定部分 */
 export const FILENAME_PART = {
   clientPrefix: 'clientId:',
   clientInfoExt: '.clientinfo.json',
   messageExt: '.oplogmsg.json',
 };
 
+/** op记录在云端对应的文件名
+ * - 示例 `2022-11-22T09:45:49.536Z 0000 clientId:8127f91c2048654b.oplogmsg.json`
+ */
 export function oplogEntryToFileName(params: {
   time: Date;
   counter: number;
@@ -51,8 +53,8 @@ export function oplogEntryToFileName(params: {
 export class FileDownloadError extends Error {
   constructor(fileName: string, error: unknown) {
     super(
-      `${libName}: Error on attempt to download ${fileName}. ` +
-        JSON.stringify(error),
+      `${LIB_NAME}: Error on attempt to download ${fileName}. ` +
+      JSON.stringify(error),
     );
     Object.setPrototypeOf(this, FileDownloadError.prototype); // https://git.io/vHLlu
   }
@@ -61,7 +63,7 @@ export class FileDownloadError extends Error {
 export class FileListError extends Error {
   constructor(error: unknown) {
     super(
-      `${libName}: Error on attempt to list files: ` + JSON.stringify(error),
+      `${LIB_NAME}: Error on attempt to list files: ` + JSON.stringify(error),
     );
     Object.setPrototypeOf(this, FileListError.prototype); // https://git.io/vHLlu
   }
@@ -70,7 +72,7 @@ export class FileListError extends Error {
 export class FileUploadError extends Error {
   constructor(error: unknown) {
     super(
-      `${libName}: Error on attempt to upload file: ` + JSON.stringify(error),
+      `${LIB_NAME}: Error on attempt to upload file: ` + JSON.stringify(error),
     );
     Object.setPrototypeOf(this, FileUploadError.prototype); // https://git.io/vHLlu
   }

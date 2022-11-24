@@ -6,7 +6,7 @@ import { LIB_NAME, debug, log } from './utils';
 /** 全局同步插件集合 */
 export const plugins: SyncPlugin[] = [];
 
-/** 同步数据
+/** 执行同步
  * - 先上传op数据到云端，然后从云端下载op数据
  */
 export async function sync(options: { forceFullSync?: boolean } = {}) {
@@ -61,6 +61,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
           `Attempting to discover remote clients on server and download their oplog entries...`,
         );
 
+      // 查询除clientId外其他设备对应的op列表
       for await (const clientRecord of plugin.getRemoteClientRecords({
         excludeClientIds: [localClientId],
       })) {
@@ -69,6 +70,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
         // What is the most recent oplog entry time we know of for the current remote client?
         let mostRecentKnownOplogTimeForRemoteClient: Date | null = null;
         try {
+          // 查询clientId在本地的最新记录
           const mostRecentEntry = await db.getMostRecentEntryForClient(
             remoteClientId,
           );
@@ -89,7 +91,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
           clientId: remoteClientId,
           afterTime: mostRecentKnownOplogTimeForRemoteClient,
         })) {
-          // 👀 that this will increment the local HLC time.
+          // 👀 this will increment the local HLC time.
           db.applyOplogEntry(remoteEntry);
           remoteEntryDownloadCounter++;
         }
@@ -111,7 +113,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
   }
 }
 
-/** 注册同步插件到全局，执行插件的初始化逻辑；自动登录帐号 */
+/** 注册同步插件到全局，执行插件的初始化逻辑；触发自动登录帐号 */
 export async function registerSyncPlugin(plugin: SyncPlugin) {
   if (!isSyncPlugin(plugin)) {
     throw new Error(

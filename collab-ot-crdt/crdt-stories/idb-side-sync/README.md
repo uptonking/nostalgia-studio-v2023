@@ -10,14 +10,24 @@ The concept that IDBSideSync is attempting to prove is: local-first, browser-bas
 
 ### codebase
 
+- src-code
+  - 先看 ./types/main.ts 分析应用表结构的设计
+  - 业务系统很难把代码写得有条理
+
+- hlc逻辑时钟
+  - add/put > recordOp > HLClock.tick，每次crud操作对应的op都会带有一个新时间戳，一般+1
+  - applyOplogEntry > HLClock.tickPast, 每次执行op都会检查并尝试更新本地hlc
+
 - roadmap
   - 自动定期清理无用的op，以减少存储空间
   - render方法中存在大量异步计算，当在1个frame的计算量过大时，如何优化
+  - 迁移原仓库的cypress测试
+  - 支持可插拔的协作，如何去掉op记录表
 
 - google-drive保存数据的格式
   - 文件名以日期开头的原因是，方便利用google drive api搜索能容易找到多个设备总体的最新op记录
-  - clientId:8127f91c2048654b.clientinfo.json 内容为字符串 {}
-  - 2022-11-22T09:45:49.536Z 0000 clientId:8127f91c2048654b.oplogmsg.json 文件名+内容 对应OpLogObjectStore中一个记录的key和value
+  - `clientId:8127f91c2048654b.clientinfo.json` 内容为字符串 {}
+  - `2022-11-22T09:45:49.536Z 0000 clientId:8127f91c2048654b.oplogmsg.json` 文件名+内容 对应OpLogObjectStore中一个记录的key和value
 
 ```JSON
 {
@@ -37,11 +47,17 @@ The concept that IDBSideSync is attempting to prove is: local-first, browser-bas
   - dom的更新 ~~通过轮询新数据然后rerender实现~~
     - 通过在触发更新的事件中，先更新idb数据，然后从idb读取最新数据执行rerender来更新dom
 
+- ❓ 系统预置数据如待办类型合并时可能出现名称相同的情况，用户添加数据时也可能出现
+  - 对于__同一个用户__的__同属性名数据__，按最新时间合并属性值是可行的
+
 - ❓❓ 如何使web应用在 纯内存数据源(如redux单例状态) 和 外部数据源(如idb/sqlite) 间切换
   - 首先获取view层数据的逻辑改成async
   - 将获取数据的逻辑，从取state.prop1改为 idb.tr.objectStore1
   - 可参考 stoxy-js(内置数据源切换)
   - 可参考 crdt-hlc(纯内存) 和 idbsidesync(纯外部数据源)
+
+- ❓ 本地触发的op，对应的hlc是否会在recordOp和applyOplogEntry2处各增加一次
+  - 对于本地的op，applyOplogEntry会比较op和本地的hlc，并不会更新本地hlc
 
 - ❓ 为什么更新idb数据的proxiedPut方法中，要执行2次put
   - 只是因为代理put方法需要立即返回一个IDBRequest，

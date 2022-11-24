@@ -83,7 +83,7 @@
  * }
  *
  * // Remember: NO keyPath
- * const settings = {
+ * const settingsStore = {
  *   appBackgroundColor: 'rebeccapurple',
  *   appBaseFontSize: 12
  * }
@@ -129,24 +129,35 @@
  * ```
  */
 
-/** data operation log */
+/** data operation log，用来更新本地业务数据对象，也可用来同步恢复 */
 export interface OpLogEntry {
   clientId: string;
   hlcTime: string;
+  /** 类似关系数据库的表名 */
   store: string;
-  /** 要与keyPath的名称作为key，记录中objectKey值的各项作为对应的value */
+  /** objectStore的keyPath的值作为key，OpLogEntry的objectKey值的各项作为对应的value */
   objectKey: number | string | Date | Array<number | string | Date>;
+  /** 属性名称 */
   prop: string;
+  /** 属性值 */
   value: unknown;
 }
 
 export interface UserProfile {
+  id?: string;
   email: string;
   firstName: string;
   lastName: string;
 }
 
-export type SyncProfileSettings = Record<string, unknown>;
+// export type SyncProfileSettings = Record<string, unknown>;
+/** 云端同步相关元数据 */
+export type SyncProfileSettings = {
+  remoteFolderName?: string;
+  remoteFolderId?: string;
+  remoteFolderLink?: string;
+  mostRecentUploadedEntryTime?: number;
+};
 
 export type SignInChangeHandler = (
   userProfile: UserProfile | null,
@@ -158,39 +169,6 @@ export interface ClientRecord {
   data: unknown;
 }
 
-export interface SyncPlugin {
-  getPluginId(): string;
-  isLoaded(): boolean;
-  load(): Promise<void>;
-  isSignedIn(): boolean;
-  signIn(): Promise<void>;
-  signOut(): void;
-  addSignInChangeListener(handlerFcn: SignInChangeHandler): void;
-  getSettings(): SyncProfileSettings;
-  setSettings(settings: SyncProfileSettings): void;
-  getMostRecentUploadedEntryTime(): Promise<Date>;
-  getRemoteEntries: (params: {
-    clientId: string;
-    afterTime?: Date | null;
-  }) => AsyncGenerator<OpLogEntry, void, void>;
-  saveRemoteEntry: (params: {
-    time: Date;
-    counter: number;
-    clientId: string;
-    entry: OpLogEntry;
-    overwriteExisting?: boolean;
-  }) => Promise<{ numUploaded: number }>;
-  getRemoteClientRecords: (filter: {
-    includeClientIds?: string[];
-    excludeClientIds?: string[];
-  }) => AsyncGenerator<ClientRecord, void, void>;
-  /** 根据名称检查云端是否存在同步文件，若不存在就创建，本方法并未实际上传数据 */
-  saveRemoteClientRecord(
-    clientId: string,
-    options?: { overwriteIfExists?: boolean },
-  ): Promise<void>;
-}
-
 export interface SyncProfile {
   pluginId: string;
   userProfile: UserProfile;
@@ -200,4 +178,55 @@ export interface SyncProfile {
 export interface Settings {
   nodeId: string;
   syncProfiles: SyncProfile[];
+}
+
+/** 同步数据插件需要的功能，插件会在首次render后执行，触发在setupSync() */
+export interface SyncPlugin {
+  getPluginId(): string;
+
+  /** 引入云端账户登录相关sdk，可通过动态创建script标签来实现，此处不触发登录 */
+  load(): Promise<void>;
+  isLoaded(): boolean;
+
+  /** 触发用户登录插件帐号 */
+  signIn(): Promise<void>;
+  signOut(): void;
+  isSignedIn(): boolean;
+
+  /** 暴露给外部注册监听器，让外部能拿到插件账户相关信息 */
+  addSignInChangeListener(handlerFcn: SignInChangeHandler): void;
+
+  /** 云端同步相关元数据 */
+  getSettings(): SyncProfileSettings;
+  setSettings(settings: SyncProfileSettings): void;
+
+  /** 获取本地上传时间，更好的方式是通过查询云端得到，是物理时间的Date对象 */
+  getMostRecentUploadedEntryTime(): Promise<Date>;
+
+  /** 从云端获取afterTime时间之后的op记录及内容*/
+  getRemoteEntries: (params: {
+    clientId: string;
+    afterTime?: Date | null;
+  }) => AsyncGenerator<OpLogEntry, void, void>;
+
+  /** 上传op记录数据到云端的入口，可定制实现细节 */
+  saveRemoteEntry: (params: {
+    time: Date;
+    counter: number;
+    clientId: string;
+    entry: OpLogEntry;
+    overwriteExisting?: boolean;
+  }) => Promise<{ numUploaded: number }>;
+
+  /** 从云端查询符合clientId的记录列表，然后获取各记录内容 */
+  getRemoteClientRecords: (filter: {
+    includeClientIds?: string[];
+    excludeClientIds?: string[];
+  }) => AsyncGenerator<ClientRecord, void, void>;
+
+  /** 根据名称检查云端是否存在客户端id文件，若不存在或强制覆盖就创建该文件，本方法并未实际上传数据 */
+  saveRemoteClientRecord(
+    clientId: string,
+    options?: { overwriteIfExists?: boolean },
+  ): Promise<void>;
 }

@@ -11,88 +11,26 @@ import {
   throwIfInvalidOpLogEntry,
 } from './utils';
 
-export enum STORE_NAME {
-  META = 'IDBSideSync_MetaStore',
-  OPLOG = 'IDBSideSync_OpLogStore',
-}
-
+export const STORE_NAME = {
+  META: 'IDBSideSync_MetaStore',
+  OPLOG: 'IDBSideSync_OpLogStore',
+} as const;
 export const OPLOG_STORE = STORE_NAME.OPLOG;
 export const META_STORE = STORE_NAME.META;
 export const OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME =
   'Indexed by: store, objectKey, prop, hlcTime';
 export const OPLOG_INDEX_BY_CLIENTID_TIME = 'Indexed by: client ID, hlcTime';
 export const CACHED_SETTINGS_OBJ_KEY = 'settings';
-// export const OPLOG_MERKLE_OBJ_KEY = 'oplogMerkle';
 export const DEFAULT_ENTRY_PAGE_SIZE = 100;
 
 // This is technically unnecessary, but a nice way to help make sure we're always referencing a valid OpLogEntry
 // property name when defining a `keyPath` for the object store.
 const OPLOG_ENTRY_HLC_TIME_PROP_NAME: keyof OpLogEntry = 'hlcTime';
 
+/** 全局单例idb对象，从业务应用层直接传过来 */
 let cachedDb: IDBDatabase;
+/** 缓存idb中常访问且变化不多的设置项，避免多次读取idb数据库 */
 let cachedSettings: Settings;
-
-/**
- * This should be called as part of the upstream library handling an onupgradeneeded event (i.e., this won't be called
- * every time an app starts up--only when the database version changes).
- */
-export function onupgradeneeded(event: IDBVersionChangeEvent): void {
-  debug && log.debug('onupgradeneeded()');
-
-  const db = (event.target as IDBOpenDBRequest).result;
-
-  // Create an object store where we can put IDBSideSync settings that won't be sync'ed. Note the lack of a keypath.
-  // This means that a "key" arg will need to be specified when calling `add()` or `put()`.
-  db.createObjectStore(STORE_NAME.META);
-
-  const oplogStore = db.createObjectStore(STORE_NAME.OPLOG, {
-    keyPath: OPLOG_ENTRY_HLC_TIME_PROP_NAME,
-  });
-
-  // Create an index tailored to finding the most recent oplog entry for a given store + object key + prop. Note:
-  //
-  //  1. The index will have an entry for each object in the object store that has a "non-empty" value for EVERY prop
-  //     (i.e., the object needs to have the prop defined and the value is not null, undefined, or a boolean).
-  //  2. The index key for the object will be an array consisting of the values for the corresponding prop values.
-  //  3. The index is sorted by the keys. In this case, each key is an array; the IndexedDB spec defines an algo for how
-  //     arrays are compared and sorted (see https://www.w3.org/TR/IndexedDB/#key-construct).
-  //  4. This basically amounts comparing each element of both arrays, using the same comparison algo.
-  //  5. Note that the IndexedDB comparison algo sometimes determines order based on the TYPE of a thing, not its value
-  //     (e.g., an array is considered "greater than" a string). This matters for the 'objectKey' prop since that prop
-  //     value could be a string, number, Date, or array of those things.
-  //
-  // Since our only use case will be searching for entries that have a matching store + objectKey + prop (and needing
-  // those to be sorted by hlcTime so we can get the most recent), we aren't concerned with how the index entries
-  // initially sorted based on 'store' and 'objectKey' (i.e., we don't care if the index key for Object A comes before
-  // the one for Object B because of their 'objectKey' values). We only care that all of oplog entries for a specific
-  // object and prop are grouped together AND sorted by `hlcTime`.
-  //
-  // Note that while we are not going to use this index to SEARCH by `hlcTime`, we do want the index keys to be SORTED
-  // based on `hlcTime` (after first being sorted by store, objectKey, and prop). In other words, the only reason
-  // `hlcTime` is included in the index `keyPath` is to affect the sorting.
-  //
-  // For more info see https://stackoverflow.com/a/15625231/62694.
-  const indexByStoreObjKeyPropTimeKeyPath: Array<keyof OpLogEntry> = [
-    'store',
-    'objectKey',
-    'prop',
-    'hlcTime',
-  ];
-  oplogStore.createIndex(
-    OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME,
-    indexByStoreObjKeyPropTimeKeyPath,
-  );
-
-  // Create an index tailored to finding oplog entries by clientId
-  const indexbyClientIdTimeKeyPath: Array<keyof OpLogEntry> = [
-    'clientId',
-    'hlcTime',
-  ];
-  oplogStore.createIndex(
-    OPLOG_INDEX_BY_CLIENTID_TIME,
-    indexbyClientIdTimeKeyPath,
-  );
-}
 
 /** Allow IDBSideSync to initialize itself with the provided IndexedDB database.
  * - 将idb缓存到变量cachedDb
@@ -189,7 +127,7 @@ export function saveSettings(newSettings: Settings): Promise<Settings> {
   });
 }
 
-/** 获取本地最近的op记录 */
+/** 获取本地最新的一条op记录 */
 export async function getMostRecentEntryForClient(
   clientId: string,
 ): Promise<OpLogEntry | null> {
@@ -299,7 +237,7 @@ export function getEntriesByClientPage(
   });
 }
 
-/**
+/** @unused
  * A convenience function for iterating over local oplog entries in order of their HLTime, oldest first, and optionally
  * including criteria for starting where the HLTime is >= some value. This function wraps the paginated results of
  * `getEntriesByTimePage()` and returns an async iteraterable iterator so that you can do something like the following:
@@ -411,8 +349,10 @@ export async function applyOplogEntries(candidates: OpLogEntry[]) {
   }
 }
 
-/**
- * Attempt to apply an oplog entry to a specified store + objectKey + prop. In other words, update an existing object in
+/** 根据op记录在对应的idb业务表上执行crud操作。
+ * - 会根据hlc逻辑时钟丢弃过期操作，并更新本地hlc
+ * - 先保存op到op记录表，再判断是更新值、还是添加新属性和值
+ * - Attempt to apply an oplog entry to a specified store + objectKey + prop. In other words, update an existing object in
  * the appropriate object store, or create a new one, per the _operation_ represented by an oplog entry object. Then add
  * the entry to the local oplog entries store.
  *
@@ -463,7 +403,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
           },
         );
 
-      // Note that this will throw if the oplog entry's time is too far in the future...
+      // 👉🏻 Note that this will throw if the oplog entry's time is too far in the future...
       HLClock.tickPast(candidateHLTime);
 
       debug &&
@@ -543,10 +483,12 @@ export function applyOplogEntry(candidate: OpLogEntry) {
       'prev',
     );
 
+    // 剩下的逻辑全在这里，遍历op表寻找符合条件的op，更新业务表
     idxCursorReq.onsuccess = () => {
       const cursor = idxCursorReq.result;
 
-      // The purpose of this block is to see if an existing oplog entry exists that is "newer" than the candidate entry.
+      // to see if an existing oplog entry exists that is "newer" than the candidate entry.
+      // 丢弃无效或过期op
       if (cursor && cursor.value) {
         try {
           throwIfInvalidOpLogEntry(cursor.value);
@@ -560,15 +502,15 @@ export function applyOplogEntry(candidate: OpLogEntry) {
           return;
         }
 
-        const existing = cursor.value;
+        const existingCursor = cursor.value;
 
         const expectedObjectKey = JSON.stringify(candidate.objectKey);
-        const actualObjectKey = JSON.stringify(existing.objectKey);
+        const actualObjectKey = JSON.stringify(existingCursor.objectKey);
 
         // In theory, the cursor range should prevent us from encountering oplog entries that don't match the candidate
         // store/objectKey/prop values. That said, doing some extra checks can't hurt--especially while the code hasn't
         // been thoroughly tested in more than one "production" environment.
-        if (existing.store !== candidate.store) {
+        if (existingCursor.store !== candidate.store) {
           txReq.abort();
           // By calling reject() here we are preventing txReq.onabort or txReq.onerror from rejecting; this allows
           // the calling code to catch our custom error vs. a generic the DOMException from IDB
@@ -576,7 +518,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
             new UnexpectedOpLogEntryError(
               'store',
               candidate.store,
-              existing.store,
+              existingCursor.store,
             ),
           );
         } else if (expectedObjectKey !== actualObjectKey) {
@@ -588,7 +530,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
               actualObjectKey,
             ),
           );
-        } else if (existing.prop !== candidate.prop) {
+        } else if (existingCursor.prop !== candidate.prop) {
           txReq.abort();
           reject(
             new UnexpectedOpLogEntryError(
@@ -601,13 +543,13 @@ export function applyOplogEntry(candidate: OpLogEntry) {
 
         // If we found an existing entry whose HLC timestamp is more recent than the candidate's, then the candidate
         // entry is obsolete and we'll ignore it.
-        if (candidate.hlcTime < existing.hlcTime) {
+        if (candidate.hlcTime < existingCursor.hlcTime) {
           debug &&
             log.debug(`WON'T apply oplog entry; found existing that's newer:`, {
               candidate,
-              existing,
+              existing: existingCursor,
             });
-          return;
+          return; // 丢弃过期op
         }
       }
 
@@ -619,6 +561,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
       // Add the entry to the oplog store. Note that, in theory, it may already exist there (e.g., it's possible for a
       // sync to happen in which known oplog entries received again). Instead of attempting to check first, we'll just
       // use `put()` to "upsert"--less code and avoids an extra IndexedDB operation.
+      // 👉🏻 先更新op记录表
       const oplogPutReq = oplogStore.put(candidate);
 
       if (process.env.NODE_ENV !== 'production') {
@@ -657,6 +600,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
             );
         }
 
+        /** 先确定新的值 */
         let newValue: any;
 
         if (candidate.prop === '') {
@@ -667,7 +611,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
           // "Merge" the existing object with the new object.
           newValue = { ...existingValue, [candidate.prop]: candidate.value };
         } else {
-          // No existing value exists. Since the oplog entry specifies an _object property_ (i.e., candidate.prop), we
+          // 👉🏻 No existing value exists. Since the oplog entry specifies an _object property_ (i.e., candidate.prop), we
           // know that the final value needs to be an object.
           newValue = { [candidate.prop]: candidate.value };
 
@@ -693,6 +637,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
                 return;
               }
             } else {
+              // keyPath为非数组时
               newValue[targetStore.keyPath] = candidate.objectKey;
             }
           }
@@ -704,6 +649,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
           // When calling the target object store's `put()` method it's important to NOT include a `key` param if that
           // store has a `keyPath`. Doing this causes an error (e.g., "[...] object store uses in-line keys and the key
           // parameter was provided" in Chrome).
+          // 👉🏻 更新业务员表
           mergedPutReq = targetStore.keyPath
             ? targetStore.put(newValue)
             : targetStore.put(newValue, candidate.objectKey);
@@ -756,6 +702,67 @@ export function applyOplogEntry(candidate: OpLogEntry) {
       reject(new Error(errMsg));
     };
   });
+}
+
+/** 创建op记录表和基本元信息表，并创建相关索引
+ * - This should be called as part of the upstream library handling an onupgradeneeded event (i.e., this won't be called
+ * every time an app starts up--only when the database version changes).
+ */
+export function opIndexForOnupgradeneeded(event: IDBVersionChangeEvent): void {
+  debug && log.debug('onupgradeneeded()');
+
+  const db = (event.target as IDBOpenDBRequest).result;
+
+  // Create an object store where we can put IDBSideSync settings that won't be sync'ed. Note the lack of a keypath.
+  // This means that a "key" arg will need to be specified when calling `add()` or `put()`.
+  db.createObjectStore(STORE_NAME.META);
+  const oplogStore = db.createObjectStore(STORE_NAME.OPLOG, {
+    keyPath: OPLOG_ENTRY_HLC_TIME_PROP_NAME,
+  });
+
+  // Create an index tailored to finding the most recent oplog entry for a given store + object key + prop. Note:
+  //
+  //  1. The index will have an entry for each object in the object store that has a "non-empty" value for EVERY prop
+  //     (i.e., the object needs to have the prop defined and the value is not null, undefined, or a boolean).
+  //  2. The index key for the object will be an array consisting of the values for the corresponding prop values.
+  //  3. The index is sorted by the keys. In this case, each key is an array; the IndexedDB spec defines an algo for how
+  //     arrays are compared and sorted (see https://www.w3.org/TR/IndexedDB/#key-construct).
+  //  4. This basically amounts comparing each element of both arrays, using the same comparison algo.
+  //  5. Note that the IndexedDB comparison algo sometimes determines order based on the TYPE of a thing, not its value
+  //     (e.g., an array is considered "greater than" a string). This matters for the 'objectKey' prop since that prop
+  //     value could be a string, number, Date, or array of those things.
+  //
+  // Since our only use case will be searching for entries that have a matching store + objectKey + prop (and needing
+  // those to be sorted by hlcTime so we can get the most recent), we aren't concerned with how the index entries
+  // initially sorted based on 'store' and 'objectKey' (i.e., we don't care if the index key for Object A comes before
+  // the one for Object B because of their 'objectKey' values). We only care that all of oplog entries for a specific
+  // object and prop are grouped together AND sorted by `hlcTime`.
+  //
+  // Note that while we are not going to use this index to SEARCH by `hlcTime`, we do want the index keys to be SORTED
+  // based on `hlcTime` (after first being sorted by store, objectKey, and prop). In other words, the only reason
+  // `hlcTime` is included in the index `keyPath` is to affect the sorting.
+  //
+  // For more info see https://stackoverflow.com/a/15625231/62694.
+  const indexByStoreObjKeyPropTimeKeyPath: Array<keyof OpLogEntry> = [
+    'store',
+    'objectKey',
+    'prop',
+    'hlcTime',
+  ];
+  oplogStore.createIndex(
+    OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME,
+    indexByStoreObjKeyPropTimeKeyPath,
+  );
+
+  // Create an index tailored to finding oplog entries by clientId
+  const indexbyClientIdTimeKeyPath: Array<keyof OpLogEntry> = [
+    'clientId',
+    'hlcTime',
+  ];
+  oplogStore.createIndex(
+    OPLOG_INDEX_BY_CLIENTID_TIME,
+    indexbyClientIdTimeKeyPath,
+  );
 }
 
 class UnexpectedOpLogEntryError extends Error {

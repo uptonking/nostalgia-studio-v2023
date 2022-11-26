@@ -1,4 +1,9 @@
-import { OPLOG_STORE, init, opIndexForOnupgradeneeded, proxyStore } from '../idbsidesync';
+import {
+  OPLOG_STORE,
+  init,
+  opIndexForOnupgradeneeded,
+  proxyStore,
+} from '../idbsidesync';
 import { uuid } from '../idbsidesync/utils';
 
 // /存放在前端的业务表

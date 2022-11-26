@@ -57,13 +57,13 @@ function saveActiveElement() {
   _activeElement = el?.id
     ? '#' + el.id
     : el?.className
-      ? '.' +
+    ? '.' +
       el.className
         .replace(/ ?hover:[^ ]*/g, '')
         .replace(/ /g, '.')
         .replace(/:/g, '\\:')
         .replace(/.$/, '')
-      : null;
+    : null;
 }
 function restoreActiveElement() {
   const autofocusElements = qsa('[autofocus]');
@@ -86,11 +86,13 @@ async function renderProfileNames() {
   return `
     <label for="profiles" class="flex justify-between items-center mb-4 mr-7">
       <span class="text-gray-500 flex-grow">Theme:</span>
-      <select name="profiles" onchange="onStyleProfileChange()" class="${classes.select
-    }">
+      <select name="profiles" onchange="onStyleProfileChange()" class="${
+        classes.select
+      }">
         ${(await getAllProfileNames()).map(
           (profile) =>
-            `<option ${uiState.activeProfileName === profile.name ? 'selected' : ''
+            `<option ${
+              uiState.activeProfileName === profile.name ? 'selected' : ''
             }>${profile.name}</option>`,
         )}
         <option value="add-new-profile">Add new theme...</option>
@@ -112,8 +114,8 @@ function renderTodoTypes({
     >
       ${showBlank ? '<option value="">Select type...</option>' : ''}
       ${todoTypes.map(
-    (type) => `<option value="${type['id']}">${type['name']}</option>`,
-  )}
+        (type) => `<option value="${type['id']}">${type['name']}</option>`,
+      )}
       <option value="add-type">Add type...</option>
       <option value="delete-type">Delete type...</option>
     </select>
@@ -226,8 +228,9 @@ export async function render() {
           <button
             ${disableSyncBtn ? 'disabled' : ''}
             id="syncNow"
-            class="m-4 mr-6 text-white rounded p-2 bg-blue-${disableSyncBtn ? '300 cursor-default' : '600'
-    }"
+            class="m-4 mr-6 text-white rounded p-2 bg-blue-${
+              disableSyncBtn ? '300 cursor-default' : '600'
+            }"
           >Sync${uiState.sync.inProgress ? 'ing...' : ''}</button>
           <button
             id="configSyncSettings"
@@ -255,12 +258,15 @@ export async function render() {
         <div class="${classes.modalContainer}">
           <h2 class="${classes.modalTitle}">Edit To-Do</h2>
           <div class="flex flex-col">
-            <input value="${sanitize(editingTodo.name)}" class="${classes.textInput
-      }" />
-            <button id="btn-edit-save" class="${classes.buttonPrimary
-      } mt-4 mb-4">Save</button>
-            <button id="btn-edit-cancel" class="${classes.buttonSecondary
-      }">Cancel</button>
+            <input value="${sanitize(editingTodo.name)}" class="${
+      classes.textInput
+    }" />
+            <button id="btn-edit-save" class="${
+              classes.buttonPrimary
+            } mt-4 mb-4">Save</button>
+            <button id="btn-edit-cancel" class="${
+              classes.buttonSecondary
+            }">Cancel</button>
           </div>
         </div>
       </div>
@@ -280,10 +286,11 @@ export async function render() {
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            ${uiState.waitModalMessage
-        ? `<div class="my-4">${uiState.waitModalMessage}</div>`
-        : ''
-      }
+            ${
+              uiState.waitModalMessage
+                ? `<div class="my-4">${uiState.waitModalMessage}</div>`
+                : ''
+            }
           </div>
         </div>
       </div>
@@ -465,10 +472,12 @@ export async function render() {
           </div>
 
           <div class="flex mt-2">
-            <button id="btn-edit-delete" class="${classes.buttonDanger
-      }  p-2 mr-2">Delete</button>
-            <button id="btn-edit-cancel" class="${classes.buttonSecondary
-      } p-2">Cancel</button>
+            <button id="btn-edit-delete" class="${
+              classes.buttonDanger
+            }  p-2 mr-2">Delete</button>
+            <button id="btn-edit-cancel" class="${
+              classes.buttonSecondary
+            } p-2">Cancel</button>
           </div>
         </div>
       </div>
@@ -506,8 +515,9 @@ export async function render() {
               <!-- 👀 点击函数是str -->
               <span class="ml-2" onclick="onFontSizeSettingClick()">✏️</span>
             </label>
-            <button onClick="closeModal()" class="${classes.buttonPrimary
-      } mt-4">Done</button>
+            <button onClick="closeModal()" class="${
+              classes.buttonPrimary
+            } mt-4">Done</button>
           </div>
         </div>
       </div>
@@ -547,7 +557,10 @@ function addEventHandlers() {
   qs('#gDriveLoginStart')?.addEventListener('click', onGDriveLoginBtnClick);
   qs('#gDriveLogout')?.addEventListener('click', onGDriveLogoutBtnClick);
   qs('#syncNow')?.addEventListener('click', syncNow);
-  qs('#showResetWarningModal')?.addEventListener('click', showResetWarningModal);
+  qs('#showResetWarningModal')?.addEventListener(
+    'click',
+    showResetWarningModal,
+  );
   qs('#resetDataConfirm')?.addEventListener('click', onResetDataBtnClick);
 
   for (const editBtn of qsa('.todo-item .btn-edit')) {

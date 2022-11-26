@@ -130,9 +130,9 @@ export class IDBObjectStoreProxy {
       // same field exists only applies to syncing.
       const resolvedValue =
         value &&
-          typeof value === 'object' &&
-          existingObjReq.result &&
-          typeof existingObjReq.result === 'object'
+        typeof value === 'object' &&
+        existingObjReq.result &&
+        typeof existingObjReq.result === 'object'
           ? { ...existingObjReq.result, ...value } // "Merge" the new object with the existing object
           : value;
       console.log(';; existingObjReq.onsuccess ', resolvedValue);
@@ -357,8 +357,8 @@ export class PutWithoutKeyError extends Error {
       : `"${store.keyPath}"`;
     super(
       `${LIB_NAME}: The object passed to ${store.name}.put(...) lacks properties from ${store.name}.keyPath and no ` +
-      `"key" arg was specified. Either call put() with a key arg (e.g., store.put(obj, key)) or make sure the ` +
-      `object has the following properties set to valid values: ${formattedKeyNames}`,
+        `"key" arg was specified. Either call put() with a key arg (e.g., store.put(obj, key)) or make sure the ` +
+        `object has the following properties set to valid values: ${formattedKeyNames}`,
     );
     Object.setPrototypeOf(this, PutWithoutKeyError.prototype); // https://git.io/vHLlu
   }
@@ -368,7 +368,7 @@ export class TempPutError extends Error {
   constructor(storeName: string, error: unknown) {
     super(
       `${LIB_NAME}: error while attempting to "temporarily" put() something into "${storeName}": ` +
-      error,
+        error,
     );
     Object.setPrototypeOf(this, TempPutError.prototype); // https://git.io/vHLlu
   }
@@ -378,7 +378,7 @@ export class FinalPutError extends Error {
   constructor(storeName: string, error: unknown) {
     super(
       `${LIB_NAME}: error while attempting to put() final/merged version of object into "${storeName}": ` +
-      error,
+        error,
     );
     Object.setPrototypeOf(this, FinalPutError.prototype); // https://git.io/vHLlu
   }

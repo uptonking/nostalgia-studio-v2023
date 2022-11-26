@@ -74,7 +74,7 @@ export class HLClock {
       const sysTimeStr = new Date(systemTime).toISOString();
       throw new HLClock.ClockDriftError(
         `Local HLC's physical time (${hlcTimeStr}) is ahead of system time (${sysTimeStr}) by more than ` +
-        `${HLClock.maxDrift} msec. Is system clock set correctly?`,
+          `${HLClock.maxDrift} msec. Is system clock set correctly?`,
       );
     }
 
@@ -130,16 +130,16 @@ export class HLClock {
       // the other node that also have "future" timestamps).
       throw new HLClock.ClockDriftError(
         `Encountered an event/message from another node (${theirTimestamp.node()}) with time '${theirTimestamp}' ` +
-        `occuring "in the future" compared to local system time (${new Date(
-          systemTime,
-        ).toISOString()}).`,
+          `occuring "in the future" compared to local system time (${new Date(
+            systemTime,
+          ).toISOString()}).`,
       );
     } else if (ourHlcTime - systemTime > HLClock.maxDrift) {
       const hlcTimeStr = new Date(ourHlcTime).toISOString();
       const sysTimeStr = new Date(systemTime).toISOString();
       throw new HLClock.ClockDriftError(
         `Local HLC's physical time (${hlcTimeStr}) is ahead of system time (${sysTimeStr}) by more than ` +
-        `${HLClock.maxDrift} msec. Is local system clock set correctly?`,
+          `${HLClock.maxDrift} msec. Is local system clock set correctly?`,
       );
     }
 

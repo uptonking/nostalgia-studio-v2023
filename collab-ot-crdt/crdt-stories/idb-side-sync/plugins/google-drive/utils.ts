@@ -3,7 +3,7 @@ import type { OpLogEntry } from '../../types/main';
 export const LIB_NAME = 'IDBSideSync.plugins.googledrive';
 export const logPrefix = '[' + LIB_NAME + ']';
 
-export function noOp() { }
+export function noOp() {}
 export const COUNTER_PART_STR_LENGTH = 4;
 
 export let debug = process.env.NODE_ENV !== 'production';
@@ -54,7 +54,7 @@ export class FileDownloadError extends Error {
   constructor(fileName: string, error: unknown) {
     super(
       `${LIB_NAME}: Error on attempt to download ${fileName}. ` +
-      JSON.stringify(error),
+        JSON.stringify(error),
     );
     Object.setPrototypeOf(this, FileDownloadError.prototype); // https://git.io/vHLlu
   }

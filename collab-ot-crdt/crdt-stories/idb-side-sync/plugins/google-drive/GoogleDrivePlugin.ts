@@ -58,8 +58,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
   private listeners: {
     signInChange: SignInChangeHandler[];
   } = {
-      signInChange: [],
-    };
+    signInChange: [],
+  };
 
   constructor(options: {
     googleAppKey: string;
@@ -441,8 +441,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
     const queryParts = [] as any[];
     queryParts.push(
       'mimeType ' +
-      (filter.type === 'folders' ? '=' : '!=') +
-      ` '${GAPI_FOLDER_MIME_TYPE}'`,
+        (filter.type === 'folders' ? '=' : '!=') +
+        ` '${GAPI_FOLDER_MIME_TYPE}'`,
     );
 
     if (typeof filter.exactName === 'string') {
@@ -606,14 +606,14 @@ export class GoogleDrivePlugin implements SyncPlugin {
 
     const nameContains = Array.isArray(filter.includeClientIds)
       ? filter.includeClientIds.map(
-        (clientId) => clientId + FILENAME_PART.clientInfoExt,
-      )
+          (clientId) => clientId + FILENAME_PART.clientInfoExt,
+        )
       : [FILENAME_PART.clientInfoExt];
 
     const nameNotContains = Array.isArray(filter.excludeClientIds)
       ? filter.excludeClientIds.map(
-        (clientId) => clientId + FILENAME_PART.clientInfoExt,
-      )
+          (clientId) => clientId + FILENAME_PART.clientInfoExt,
+        )
       : undefined;
 
     let pageResults;
@@ -631,7 +631,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
       pageToken = pageResults.nextPageToken;
 
       log.debug(
-        `Found ${pageResults.files.length} client record files (${pageToken ? '' : 'no '
+        `Found ${pageResults.files.length} client record files (${
+          pageToken ? '' : 'no '
         }more pages exist).`,
       );
 
@@ -691,7 +692,8 @@ export class GoogleDrivePlugin implements SyncPlugin {
       pageToken = pageResults.nextPageToken;
 
       log.debug(
-        `Found ${pageResults.files.length} oplog entry files (${pageToken ? '' : 'no '
+        `Found ${pageResults.files.length} oplog entry files (${
+          pageToken ? '' : 'no '
         }more pages exist).`,
       );
 
@@ -865,10 +867,10 @@ export class GoogleDrivePlugin implements SyncPlugin {
     const metadata: Record<string, unknown> = params.fileId
       ? {}
       : {
-        name: params.fileName,
-        mimeType: contentType,
-        parents: [this.remoteFolderId],
-      };
+          name: params.fileName,
+          mimeType: contentType,
+          parents: [this.remoteFolderId],
+        };
 
     if (!params.fileId && typeof params.createdTime === 'string') {
       metadata.createdTime = params.createdTime;

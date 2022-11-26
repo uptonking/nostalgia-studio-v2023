@@ -172,9 +172,9 @@ export function getEntriesByClientPage(
     page: number;
     pageSize: number;
   } = {
-      page: 0,
-      pageSize: DEFAULT_ENTRY_PAGE_SIZE,
-    },
+    page: 0,
+    pageSize: DEFAULT_ENTRY_PAGE_SIZE,
+  },
 ): Promise<OpLogEntry[]> {
   return new Promise((resolve, reject) => {
     const startTime = performance.now();
@@ -228,7 +228,8 @@ export function getEntriesByClientPage(
       } else {
         const stopTime = performance.now();
         log.debug(
-          `⏱ Took ${stopTime - startTime}msec to get ${options.pageSize
+          `⏱ Took ${stopTime - startTime}msec to get ${
+            options.pageSize
           } entries at page ${options.page}.`,
         );
         resolve(entries);
@@ -305,7 +306,7 @@ export function getEntriesByTimePage(
     if (store.keyPath !== OPLOG_ENTRY_HLC_TIME_PROP_NAME) {
       throw new Error(
         `${LIB_NAME} getEntries() can't return oplog entries in reliable order; ${OPLOG_STORE} isn't using ` +
-        `${OPLOG_ENTRY_HLC_TIME_PROP_NAME} as its keyPath and therefore entries aren't sorted by HLC time.`,
+          `${OPLOG_ENTRY_HLC_TIME_PROP_NAME} as its keyPath and therefore entries aren't sorted by HLC time.`,
       );
     }
 
@@ -334,7 +335,8 @@ export function getEntriesByTimePage(
       } else {
         const stopTime = performance.now();
         log.debug(
-          `⏱ Took ${stopTime - startTime}msec to get ${params.pageSize
+          `⏱ Took ${stopTime - startTime}msec to get ${
+            params.pageSize
           } entries at page ${params.page}.`,
         );
         resolve(entries);
@@ -495,7 +497,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
         } catch (error) {
           log.warn(
             `encountered an invalid oplog entry in "${OPLOG_STORE}" store. This might mean that an oplog entry` +
-            `was manually edited or created in an invalid way somewhere. The entry will be ignored.`,
+              `was manually edited or created in an invalid way somewhere. The entry will be ignored.`,
             JSON.stringify(error.message),
           );
           cursor.continue();
@@ -627,7 +629,7 @@ export function applyOplogEntry(candidate: OpLogEntry) {
                 const putError = new ApplyPutError(
                   targetStore.name,
                   `The oplog entry's ".objectKey" property should be an array but isn't: ` +
-                  JSON.stringify(candidate),
+                    JSON.stringify(candidate),
                 );
                 log.error(putError);
                 txReq.abort();
@@ -769,7 +771,7 @@ class UnexpectedOpLogEntryError extends Error {
   constructor(noun: keyof OpLogEntry, expected: string, actual: string) {
     super(
       `${LIB_NAME}: invalid "most recent oplog entry"; expected '${noun}' value of '${expected}' but got ` +
-      `'${actual}'. (This might mean there's a problem with the IDBKeyRange used to iterate over ${OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME}.)`,
+        `'${actual}'. (This might mean there's a problem with the IDBKeyRange used to iterate over ${OPLOG_INDEX_BY_STORE_OBJKEY_PROP_TIME}.)`,
     );
     Object.setPrototypeOf(this, UnexpectedOpLogEntryError.prototype); // https://git.io/vHLlu
   }
@@ -779,7 +781,7 @@ export class ApplyPutError extends Error {
   constructor(storeName: string, error: unknown) {
     super(
       `${LIB_NAME}: error on attempt to apply oplog entry that adds/updates object in "${storeName}": ` +
-      error,
+        error,
     );
     Object.setPrototypeOf(this, ApplyPutError.prototype); // https://git.io/vHLlu
   }

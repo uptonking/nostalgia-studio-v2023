@@ -1,4 +1,4 @@
-import type { AppMainStateType } from "./types";
+import type { AppMainStateType } from './types';
 
 export const qs = document.querySelector.bind(document);
 export const qsa = document.querySelectorAll.bind(document);
@@ -62,7 +62,6 @@ export const classes = {
   modalContainer: 'flex-grow max-w-sm mx-4 p-4 bg-white rounded shadow-xl',
   modalTitle: 'text-lg font-bold mb-4 ext-lg font-bold mb-4',
 };
-
 
 export function initDefaultUiState() {
   return {

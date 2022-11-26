@@ -131,7 +131,7 @@ export class HLTime {
     constructor(invalidTimestampStr: unknown, reason: unknown) {
       super(
         `Invalid HLTime string; ${reason}: ` +
-        JSON.stringify(invalidTimestampStr),
+          JSON.stringify(invalidTimestampStr),
       );
       Object.setPrototypeOf(this, ParseError.prototype); // https://git.io/vHLlu
     }

@@ -5,11 +5,29 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "nedb-server",
+      "cwd": "${workspaceFolder}/store-nedb",
+      "type": "node",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+      "runtimeArgs": [
+        "-I",
+        "--exec",
+        "node",
+        "--experimental-specifier-resolution=node",
+        "--loader=ts-node/esm/transpile-only"
+      ],
+      "program": "${workspaceFolder}/store-nedb/tests/draft.test.ts",
+      // "restart": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "crdt-hlc-server-nodemon",
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
       // "internalConsoleOptions": "neverOpen",
-      "name": "crdt-hlc-server-nodemon",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
       "runtimeArgs": [
         "--experimental-specifier-resolution=node",
@@ -20,12 +38,11 @@
       "skipFiles": ["<node_internals>/**"]
     },
     {
+      "name": "node-test",
       "type": "node",
       "request": "launch",
-      "name": "node-test",
       "restart": true,
       // "runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
-
       "console": "integratedTerminal",
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/collab-ot-crdt/crdt-stories/crdt-example-app-hlc-jlongster/server/index.js",

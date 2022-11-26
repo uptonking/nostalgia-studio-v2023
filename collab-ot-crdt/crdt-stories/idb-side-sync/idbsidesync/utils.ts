@@ -12,7 +12,7 @@ export function setDebug(isEnabled: boolean) {
   debug = isEnabled === true;
 }
 
-export function noOp() { }
+export function noOp() {}
 
 export const logPrefix = '[' + LIB_NAME + ']';
 export const log = {
@@ -145,8 +145,6 @@ export function isEventWithTargetError(
 
   return true;
 }
-
-
 
 /** @unused
  * - Utility function for wrapping an IDB request with a promise so that the result/error can be `await`ed.

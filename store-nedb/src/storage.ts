@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from 'fs';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 

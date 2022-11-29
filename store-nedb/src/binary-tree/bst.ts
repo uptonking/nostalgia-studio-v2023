@@ -1,14 +1,5 @@
 import * as customUtils from './utils';
 
-type BinarySearchTreeProps = {
-  unique?: boolean;
-  key?: string;
-  value?: any;
-  parent?: BinarySearchTree;
-  compareKeys?: (a: any, b: any) => number;
-  checkValueEquality?: (a: any, b: any) => boolean;
-};
-
 /**
  * Simple binary search tree
  */
@@ -30,7 +21,9 @@ export class BinarySearchTree {
    * @param {Value}    options.value Initialize this BST's data with [value]
    * @param {Function} options.compareKeys Initialize this BST's compareKeys
    */
-  constructor(options: BinarySearchTreeProps = {}) {
+  constructor(options = undefined) {
+    options = options || {};
+
     this.left = null;
     this.right = null;
     this.parent = options.parent !== undefined ? options.parent : null;
@@ -168,7 +161,9 @@ export class BinarySearchTree {
     options.compareKeys = this.compareKeys;
     options.checkValueEquality = this.checkValueEquality;
 
-    return new BinarySearchTree(options);
+    // 🚨 下面的 this.constructor 不能直接改成 BinarySearchTree，因为子类调用时class变了
+    // @ts-expect-error fixme
+    return new this.constructor(options);
   }
 
   /**
@@ -380,7 +375,7 @@ export class BinarySearchTree {
    * @param {Value} value Optional. If not set, the whole key is deleted. If set, only this value is deleted
    */
   delete(key, value) {
-    const newData = [] as any[];
+    const newData = [];
     let replaceWith;
 
     if (!Object.hasOwn(this, 'key')) return;
@@ -395,9 +390,9 @@ export class BinarySearchTree {
       return;
     }
 
-    // @ts-expect-error right?
-    if (!this.compareKeys(key, this.key) === 0) return;
-    // if (this.compareKeys(key, this.key) === 0) return;
+    // ❓ 原来是不是写错了
+    // if (!this.compareKeys(key, this.key) === 0) return;
+    if (this.compareKeys(key, this.key) === 0) return;
 
     // Delete only a value
     if (this.data.length > 1 && value !== undefined) {
@@ -414,7 +409,7 @@ export class BinarySearchTree {
     if (this.deleteIfOnlyOneChild()) return;
 
     // We are in the case where the node to delete has two children
-    if (Math.random() >= 0.5 && this.left) {
+    if (Math.random() >= 0.5) {
       // Randomize replacement to avoid unbalancing the tree too much
       // Use the in-order predecessor
       replaceWith = this.left.getMaxKeyDescendant();
@@ -433,7 +428,7 @@ export class BinarySearchTree {
     } else {
       // Use the in-order successor
       replaceWith = this.right.getMinKeyDescendant();
-      // @ts-ignore fix-null
+
       this.key = replaceWith.key;
       this.data = replaceWith.data;
 

@@ -5,7 +5,7 @@ import { createLineStream as byline } from './byline';
 import { Index } from './indexes';
 import * as model from './model';
 import * as storage from './storage';
-import { uid } from './utils';
+import { uid } from './utils-polyfills';
 
 const DEFAULT_DIR_MODE = 0o755;
 const DEFAULT_FILE_MODE = 0o644;
@@ -13,7 +13,8 @@ const DEFAULT_FILE_MODE = 0o644;
 /**
  * Under the hood, NeDB's persistence uses an append-only format, meaning that all
  * updates and deletes actually result in lines added at the end of the datafile,
- * for performance reasons. The database is automatically compacted (i.e. put back
+ * for performance reasons.
+ * - The database is automatically compacted (i.e. put back
  * in the one-line-per-document format) every time you load each database within
  * your application.
  *
@@ -22,15 +23,15 @@ const DEFAULT_FILE_MODE = 0o644;
  *
  * 👉🏻 Since version 3.0.0, using {@link Datastore.persistence} methods manually is deprecated.
  *
- * Compaction takes a bit of time (not too much: 130ms for 50k
+ * - Compaction takes a bit of time (not too much: 130ms for 50k
  * records on a typical development machine) and no other operation can happen when
  * it does, so most projects actually don't need to use it.
  *
- * Compaction will also immediately remove any documents whose data line has become
+ * - Compaction will also immediately remove any documents whose data line has become
  * corrupted, assuming that the total percentage of all corrupted documents in that
  * database still falls below the specified `corruptAlertThreshold` option's value.
  *
- * Durability works similarly to major databases: compaction forces the OS to
+ * - Durability works similarly to major databases: compaction forces the OS to
  * physically flush data to disk, while appends to the data file do not (the OS is
  * responsible for flushing the data). That guarantees that a server crash can
  * never cause complete data loss, while preserving performance. The worst that can
@@ -162,7 +163,7 @@ export class Persistence {
    * @param {NoParamCallback} [callback = () => {}]
    * @see Persistence#compactDatafileAsync
    */
-  compactDatafile(callback) {
+  compactDatafile(callback = undefined) {
     deprecate(
       (_callback) => this.db.compactDatafile(_callback),
       'nedb: calling Datastore#persistence#compactDatafile is deprecated, please use Datastore#compactDatafile, it will be removed in the next major version.',

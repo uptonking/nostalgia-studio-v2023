@@ -12,3 +12,9 @@
   - Embedded persistent or in memory database for Node.js, nw.js, Electron and browsers, 100% JavaScript, no binary dependency. 
   - API is a subset of MongoDB's and it's plenty fast.
 # usage
+
+# dev-to-list
+
+## tests-failed
+- model.test.ts
+  - l378， Doesn't replace a falsy field by an object when recursively following dot notation

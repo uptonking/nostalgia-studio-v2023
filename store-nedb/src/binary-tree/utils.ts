@@ -12,7 +12,7 @@ export const getRandomArray = (n) => {
   return res;
 };
 
-/**
+/*
  * Default compareKeys function will work for numbers, strings and dates
  */
 export const defaultCompareKeysFunction = (a, b) => {

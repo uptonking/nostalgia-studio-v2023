@@ -1,16 +1,26 @@
 import { Datastore } from '../src';
 
+const TEST_DB_IT = 'tests/testdata/testing11.db';
+
 // in-memory only db
 // const db1 = new Datastore();
 
 // local-file db
-const db = new Datastore({ filename: './tests/databases/test.db' });
+// const db = new Datastore({ filename: './testdata/testing11.db', autoload: true });
+const db = new Datastore({ filename: TEST_DB_IT });
 db.loadDatabase((err) => {
   console.log(';; db-err ', err);
 });
 
+// const db = new Datastore({ filename: TEST_DB_IT })
+// try {
+//   await db.loadDatabaseAsync()
+// } catch (error) {
+//   // loading has failed
+// }
+
 const doc = {
-  hello: 'world2022',
+  hello: 'world-2022',
   n: 5,
   today: new Date(),
   nedbIsAwesome: true,
@@ -20,14 +30,14 @@ const doc = {
   infos: { name: 'nedb' },
 };
 
-db.insert(doc, (err, newDoc) => { });
+// db.insert(doc, (err, newDoc) => { });
 
-db.insert([{ a: 5 }, { a: 42 }], function (err, newDocs) { });
+db.insert([{ a: 5 }, { b: 42 }], function (err, newDocs) {});
 
 // Find all documents in the collection
 db.find({}, (err, docs) => {
-  console.log(';;getAll ', docs)
+  console.log(';;getAll ', docs);
 });
 
-// db.persistence.compactDatafile()
-db.compactDatafile()
+db.persistence.compactDatafile();
+// db.compactDatafile();

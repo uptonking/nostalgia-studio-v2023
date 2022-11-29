@@ -3,7 +3,8 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "dist",
-    "module": "esnext"
+    "module": "esnext",
+    "moduleResolution": "node"
   },
   "include": ["src", "tests"]
 }

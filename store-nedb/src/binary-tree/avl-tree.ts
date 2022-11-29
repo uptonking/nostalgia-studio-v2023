@@ -6,8 +6,8 @@ import * as customUtils from './utils';
  */
 export class AVLTree {
   tree: _AVLTree;
-  static _AVLTree: typeof _AVLTree;
 
+  static _AVLTree: typeof _AVLTree;
   /**
    * Constructor
    * We can't use a direct pointer to the root node (as in the simple binary search tree)
@@ -19,8 +19,8 @@ export class AVLTree {
     this.tree = new _AVLTree(options);
   }
 
-  checkIsAVLTree() {
-    this.tree.checkIsAVLTree();
+  checkIsAVLT() {
+    this.tree.checkIsAVLT();
   }
 
   // Insert in the internal tree, update the pointer to the root if needed
@@ -137,7 +137,7 @@ class _AVLTree extends BinarySearchTree {
    * When checking if the BST conditions are met, also check that the heights are correct
    * and the tree is balanced
    */
-  checkIsAVLTree() {
+  checkIsAVLT() {
     super.checkIsBST();
     this.checkHeightCorrect();
     this.checkBalanceFactors();
@@ -228,7 +228,7 @@ class _AVLTree extends BinarySearchTree {
   rightTooSmall() {
     if (this.balanceFactor() <= 1) return this; // Right is not too small, don't change
 
-    if (this.left && this.left.balanceFactor() < 0) this.left.leftRotation();
+    if (this.left.balanceFactor() < 0) this.left.leftRotation();
 
     return this.rightRotation();
   }
@@ -242,8 +242,7 @@ class _AVLTree extends BinarySearchTree {
       return this;
     } // Left is not too small, don't change
 
-    if (this.right && this.right.balanceFactor() > 0)
-      this.right.rightRotation();
+    if (this.right.balanceFactor() > 0) this.right.rightRotation();
 
     return this.leftRotation();
   }
@@ -258,11 +257,9 @@ class _AVLTree extends BinarySearchTree {
     let newRoot = this;
     let rotated;
     let i;
-    // console.log(';; re-path ', path)
 
     if (!Object.hasOwn(this, 'key')) {
       delete this.height;
-      // @ts-ignore fixme-up
       return this;
     } // Empty tree
 
@@ -294,7 +291,7 @@ class _AVLTree extends BinarySearchTree {
    * Return a pointer to the root node, which may have changed
    */
   insert(key, value) {
-    const insertPath: _AVLTree[] = [];
+    const insertPath = [];
     let currentNode: _AVLTree = this;
 
     // Empty tree, insert as root
@@ -325,17 +322,14 @@ class _AVLTree extends BinarySearchTree {
       if (currentNode.compareKeys(key, currentNode.key) < 0) {
         if (!currentNode.left) {
           insertPath.push(
-            currentNode.createLeftChild({ key: key, value: value }) as _AVLTree,
+            currentNode.createLeftChild({ key: key, value: value }),
           );
           break;
         } else currentNode = currentNode.left;
       } else {
         if (!currentNode.right) {
           insertPath.push(
-            currentNode.createRightChild({
-              key: key,
-              value: value,
-            }) as _AVLTree,
+            currentNode.createRightChild({ key: key, value: value }),
           );
           break;
         } else currentNode = currentNode.right;
@@ -351,10 +345,10 @@ class _AVLTree extends BinarySearchTree {
    * @param {Value} value Optional. If not set, the whole key is deleted. If set, only this value is deleted
    */
   delete(key, value) {
-    const newData: any[] = [];
+    const newData = [];
     let replaceWith;
     let currentNode: _AVLTree = this;
-    const deletePath: _AVLTree[] = [];
+    const deletePath = [];
 
     if (!Object.hasOwn(this, 'key')) return this; // Empty tree
 
@@ -397,12 +391,11 @@ class _AVLTree extends BinarySearchTree {
         delete currentNode.key;
         currentNode.data = [];
         delete currentNode.height;
-        // @ts-ignore fixme-up
         return this;
       } else {
-        if (currentNode.parent!.left === currentNode)
-          currentNode.parent!.left = null;
-        else currentNode.parent!.right = null;
+        if (currentNode.parent.left === currentNode)
+          currentNode.parent.left = null;
+        else currentNode.parent.right = null;
         return this.rebalanceAlongPath(deletePath);
       }
     }
@@ -416,11 +409,11 @@ class _AVLTree extends BinarySearchTree {
         replaceWith.parent = null;
         return replaceWith; // height of replaceWith is necessarily 1 because the tree was balanced before deletion
       } else {
-        if (currentNode.parent!.left === currentNode) {
-          currentNode.parent!.left = replaceWith;
+        if (currentNode.parent.left === currentNode) {
+          currentNode.parent.left = replaceWith;
           replaceWith.parent = currentNode.parent;
         } else {
-          currentNode.parent!.right = replaceWith;
+          currentNode.parent.right = replaceWith;
           replaceWith.parent = currentNode.parent;
         }
 

@@ -8,7 +8,7 @@ export interface DataStoreOptions {
   afterSerialization?(line: string): string;
   corruptAlertThreshold?: number;
   compareStrings?(a: string, b: string): number;
-  modes?: { fileMode: number; dirMode: number };
+  modes?: { fileMode?: number; dirMode?: number };
   testSerializationHooks?: boolean;
 }
 

@@ -30,11 +30,22 @@ const projectForUnique = (elt) => {
 /**
  * Indexes on field names, with atomic operations and which can optionally enforce a unique constraint or allow indexed
  * fields to be undefined
+ * - You can index any field, including fields in nested documents using the dot notation.
+ * - `_id` is automatically indexed with a unique constraint, no need to call ensureIndex on it.
+ * - indexes are only used to speed up basic queries and queries using $in, $lt, $lte, $gt and $gte.
+ * - The indexed values cannot be of type array of object.
+ * - If your datastore is persistent, the indexes you created are persisted in the datafile, when you load the database a second time they are automatically created for you.
  * @private
  */
 export class Index {
-  fieldName: any;
-  unique: any;
+  /** name of the field to index. Use the dot notation to index a field in a nested document.
+   */
+  fieldName: string;
+  /** enforce field uniqueness.
+   * - Note that a unique index will raise an error if you try to index two documents for which the field is not defined. */
+  unique?: boolean;
+  /** don't index documents for which the field is not defined.
+   * - Use this option along with "unique" if you want to accept multiple documents for which it is not defined.. */
   sparse: any;
   treeOptions: {
     unique: any;
@@ -53,10 +64,6 @@ export class Index {
    * @param {boolean} [options.sparse = false] Allows a sparse index (we can have documents for which fieldName is `undefined`)
    */
   constructor(options) {
-    /**
-     * On which field the index applies to (may use dot notation to index on sub fields).
-     * @type {string}
-     */
     this.fieldName = options.fieldName;
     /**
      * Defines if the index enforces a unique constraint for this index.
@@ -91,7 +98,7 @@ export class Index {
    * @param {?document|?document[]} [newData] Data to initialize the index with. If an error is thrown during
    * insertion, the index is not modified.
    */
-  reset(newData) {
+  reset(newData = undefined) {
     this.tree = new BinarySearchTree(this.treeOptions);
 
     if (newData) this.insert(newData);
@@ -270,7 +277,7 @@ export class Index {
    * @param {document|Array.<{oldDoc: document, newDoc: document}>} oldDoc Document to revert to, or an `Array` of `{oldDoc, newDoc}` pairs.
    * @param {document} [newDoc] Document to revert from. If the first argument is an Array of {oldDoc, newDoc}, this second argument is ignored.
    */
-  revertUpdate(oldDoc, newDoc) {
+  revertUpdate(oldDoc, newDoc = undefined) {
     const revert = [];
 
     if (!Array.isArray(oldDoc)) this.update(newDoc, oldDoc);

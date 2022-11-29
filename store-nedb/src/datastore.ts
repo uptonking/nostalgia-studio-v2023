@@ -6,8 +6,9 @@ import { Executor } from './executor';
 import { Index } from './indexes';
 import * as model from './model';
 import { Persistence } from './persistence';
-import { DataStoreOptions, EnsureIndexOptions } from './types';
-import { isDate, uid } from './utils';
+import { DataStoreOptions, EnsureIndexOptions } from './types/datastore';
+import { isDate } from './utils';
+import { uid } from './utils-polyfills';
 
 /**
  * Callback that returns an Array of documents.
@@ -102,6 +103,10 @@ import { isDate, uid } from './utils';
  */
 
 /** ✨ One datastore is the equivalent of a MongoDB collection.
+ * - NeDB's persistence uses an append-only format, meaning that all updates and deletes actually result in lines added at the end of the datafile, for performance reasons.
+ * - The database is automatically compacted (i.e. put back in the one-line-per-document format) every time you load each database within your application.
+ * - The native types are String, Number, Boolean, Date and null. You can also use arrays and subdocuments (objects).
+ * - A copy of the whole database is kept in memory. This is not much on the expected kind of datasets (20MB for 10,000 2KB documents).
  * @class
  * @classdesc The `Datastore` class is the main class of NeDB.
  * @extends external:EventEmitter
@@ -112,7 +117,7 @@ export class Datastore extends EventEmitter {
   /** if used, the database will automatically be loaded from the datafile upon creation
    * - Any command issued before load is finished is buffered and will be executed when load is done. */
   public autoload = false;
-  /** if you use autoloading, this is the handler called after the loadDatabase.
+  /** if you use autoloading, this is the handler called after the `loadDatabase`.
    * - If you use autoloading without specifying this handler, and an error happens during load, an error will be thrown. */
   public onload?: ((error: any) => void) | null;
   /** path to the file where the data is persisted.
@@ -121,7 +126,7 @@ export class Datastore extends EventEmitter {
   public filename?: string;
   public inMemoryOnly = false;
   /** timestamp the insertion and last update of all documents, with the fields `createdAt` and `updatedAt`.
-   * - useful for testing */
+   * - User-specified values override automatic generation, usually useful for testing */
   public timestampData = false;
   /** compares strings a and b and return -1, 0 or 1.
    * - If specified, it overrides default string comparison which is not well adapted to non-US characters in particular accented letters.
@@ -185,7 +190,7 @@ export class Datastore extends EventEmitter {
    * @param {boolean} [options.testSerializationHooks=true] Whether to test the serialization hooks or not,
    * might be CPU-intensive
    */
-  constructor(options: DataStoreOptions = {}) {
+  constructor(options: string | DataStoreOptions = {}) {
     super();
     let filename;
 
@@ -232,6 +237,8 @@ export class Datastore extends EventEmitter {
     } else {
       this.filename = filename;
     }
+
+    if (typeof options === 'string') return;
 
     // String comparison function
     /**
@@ -297,10 +304,11 @@ export class Datastore extends EventEmitter {
       this.autoloadPromise = this.loadDatabaseAsync();
       this.autoloadPromise.then(
         () => {
-          if (options.onload) options.onload();
+          if (typeof options === 'object' && options.onload) options.onload();
         },
         (err) => {
-          if (options.onload) options.onload(err);
+          if (typeof options === 'object' && options.onload)
+            options.onload(err);
           else throw err;
         },
       );
@@ -326,8 +334,11 @@ export class Datastore extends EventEmitter {
     );
   }
 
-  /**
-   * Callback version of {@link Datastore#compactDatafileAsync}.
+  /** queues a compaction of the datafile in the executor, to be executed sequentially after all pending operations.
+   * - The datastore will fire a `compaction.done` event once compaction is finished.
+   * - Compaction will immediately remove any documents whose data line has become corrupted
+   * - compaction forces the OS to physically flush data to disk, while appends to the data file do not (the OS is responsible for flushing the data).
+   * - Callback version of {@link Datastore#compactDatafileAsync}.
    * @param {NoParamCallback} [callback = () => {}]
    * @see Datastore#compactDatafileAsync
    */
@@ -489,7 +500,7 @@ export class Datastore extends EventEmitter {
    * @param {NoParamCallback} [callback]
    * @see Datastore#removeIndexAsync
    */
-  removeIndex(fieldName, callback = () => { }) {
+  removeIndex(fieldName, callback = () => {}) {
     const promise = this.removeIndexAsync(fieldName);
     callbackify(() => promise)(callback);
   }
@@ -612,10 +623,10 @@ export class Datastore extends EventEmitter {
         ([k, v]) =>
           Boolean(
             typeof v === 'string' ||
-            typeof v === 'number' ||
-            typeof v === 'boolean' ||
-            isDate(v) ||
-            v === null,
+              typeof v === 'number' ||
+              typeof v === 'boolean' ||
+              isDate(v) ||
+              v === null,
           ) && indexNames.includes(k),
       )
       .pop();
@@ -637,10 +648,10 @@ export class Datastore extends EventEmitter {
         ([k, v]) =>
           Boolean(
             query[k] &&
-            (Object.hasOwn(query[k], '$lt') ||
-              Object.hasOwn(query[k], '$lte') ||
-              Object.hasOwn(query[k], '$gt') ||
-              Object.hasOwn(query[k], '$gte')),
+              (Object.hasOwn(query[k], '$lt') ||
+                Object.hasOwn(query[k], '$lte') ||
+                Object.hasOwn(query[k], '$gt') ||
+                Object.hasOwn(query[k], '$gte')),
           ) && indexNames.includes(k),
       )
       .pop();
@@ -802,13 +813,16 @@ export class Datastore extends EventEmitter {
    * @param {SingleDocumentCallback|MultipleDocumentsCallback} [callback]
    * @see Datastore#insertAsync
    */
-  insert(newDoc, callback) {
+  insert(newDoc, callback = undefined) {
     const promise = this.insertAsync(newDoc);
     if (typeof callback === 'function') callbackify(() => promise)(callback);
   }
 
   /**
    * Insert a new document, or new documents.
+   * - If a field is `undefined`, it will not be saved (this is different from MongoDB which transforms `undefined` in `null`).
+   * - Field names cannot begin by `$` or contain `.`.
+   * - If the document does not contain an `_id` field, NeDB will automatically generated an immutable one for you (a 16-characters alphanumerical string).
    * @param {document|document[]} newDoc Document or array of documents to insert.
    * @return {Promise<document|document[]>} The document(s) inserted.
    * @async
@@ -841,6 +855,7 @@ export class Datastore extends EventEmitter {
 
   /**
    * Count all documents matching the query.
+   * - It has the same syntax as `find`
    * @param {query} query MongoDB-style query
    * @return {Cursor<number>} count
    * @async
@@ -877,10 +892,12 @@ export class Datastore extends EventEmitter {
 
   /**
    * Find all documents matching the query.
-   * We return the {@link Cursor} that the user can either `await` directly or use to can {@link Cursor#limit} or
+   * - You can select documents based on field equality or use comparison operators ($lt, $lte, $gt, $gte, $in, $nin, $ne).
+   * - You can use the dot notation to navigate inside nested documents, arrays, arrays of subdocuments and to match a specific element of an array.
+   * - We return the {@link Cursor} that the user can either `await` directly or use to can {@link Cursor#limit} or
    * {@link Cursor#skip} before.
    * @param {query} query MongoDB-style query
-   * @param {projection} [projection = {}] MongoDB-style projection
+   * @param {projection} [projection = {}] MongoDB-style projection {propName: 1/0} to filter props returned
    * @return {Cursor<document[]>}
    * @async
    */
@@ -907,7 +924,7 @@ export class Datastore extends EventEmitter {
    * @return {Cursor<document>|undefined}
    * @see Datastore#findOneAsync
    */
-  findOne(query, projection, callback) {
+  findOne(query, projection, callback = undefined) {
     if (arguments.length === 1) {
       projection = {};
       // callback is undefined, will return a cursor
@@ -1061,7 +1078,7 @@ export class Datastore extends EventEmitter {
    * @see Datastore#updateAsync
    *
    */
-  update(query, update, options, callback) {
+  update(query, update, options, callback = undefined) {
     if (typeof options === 'function') {
       callback = options;
       options = {};
@@ -1159,7 +1176,7 @@ export class Datastore extends EventEmitter {
       cb = options;
       options = {};
     }
-    const callback = cb || (() => { });
+    const callback = cb || (() => {});
     callbackify((query, options) => this.removeAsync(query, options))(
       query,
       options,

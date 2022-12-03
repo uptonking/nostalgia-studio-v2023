@@ -11,7 +11,7 @@ import * as model from '../src/model';
 import { Persistence } from '../src/persistence';
 import * as storage from '../src/storage';
 import { ensureFileDoesntExistAsync } from '../src/storage';
-import { wait, exists } from './utils.test';
+import { exists, wait } from './utils.test';
 
 const TEST_DB_IT = 'tests/testdata/test.db';
 const CORRUPT_DB_IT = 'tests/testdata/corruptTest.db';

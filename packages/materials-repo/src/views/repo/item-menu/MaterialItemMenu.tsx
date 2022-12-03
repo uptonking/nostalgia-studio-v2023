@@ -1,16 +1,15 @@
-import React, { useRef, useEffect } from 'react';
-import jquery from 'jquery';
-import FileMenuRenameItem from './FileMenuRenameItem';
-import FileMenuMoveItem from './FileMenuMoveItem';
-import FileMenuEditorItem from './FileMenuEditorItem';
-import FileMenuCopyItem from './FileMenuCopyItem';
-import FileMenuDeleteItem from './FileMenuDeleteItem';
+import React, { useEffect, useRef } from 'react';
+import { useClickAway } from 'react-use';
+
 import { useGlobalContext } from '../../../store';
 import { hideListItemActionsMenu } from '../../../store/repo/actions';
 import DownloadFileMenuItem from './DownloadFileMenuItem';
-
+import FileMenuCopyItem from './FileMenuCopyItem';
+import FileMenuDeleteItem from './FileMenuDeleteItem';
+import FileMenuEditorItem from './FileMenuEditorItem';
+import FileMenuMoveItem from './FileMenuMoveItem';
+import FileMenuRenameItem from './FileMenuRenameItem';
 import OpenAsMiniAppMenuItem from './OpenAsMiniAppMenuItem';
-import { useClickAway } from 'react-use';
 
 /** 文件或文件夹的右键菜单 */
 function MaterialItemMenu() {

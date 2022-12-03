@@ -9,6 +9,8 @@ import * as model from '../src/model';
 const { assert, expect } = chai;
 chai.should();
 
+const TEST1_DB_IT = 'tests/testdata/test1.db'
+
 describe('Model', function () {
   describe('Serialization, deserialization', function () {
     it('Can serialize and deserialize strings', function () {
@@ -129,18 +131,18 @@ describe('Model', function () {
       let db2;
       const badString = 'world\r\nearth\nother\rline';
 
-      if (fs.existsSync('test/testdata/test1.db')) {
-        fs.unlinkSync('test/testdata/test1.db');
+      if (fs.existsSync(TEST1_DB_IT)) {
+        fs.unlinkSync(TEST1_DB_IT);
       }
-      fs.existsSync('test/testdata/test1.db').should.equal(false);
-      const db1 = new Datastore({ filename: 'test/testdata/test1.db' });
+      fs.existsSync(TEST1_DB_IT).should.equal(false);
+      const db1 = new Datastore({ filename: TEST1_DB_IT });
 
       db1.loadDatabase(function (err) {
         assert.isNull(err);
         db1.insert({ hello: badString }, function (err) {
           assert.isNull(err);
 
-          db2 = new Datastore({ filename: 'test/testdata/test1.db' });
+          db2 = new Datastore({ filename: TEST1_DB_IT });
           db2.loadDatabase(function (err) {
             assert.isNull(err);
             db2.find({}, function (err, docs) {
@@ -1833,7 +1835,7 @@ describe('Model', function () {
             { childrens: ['Riri', 'Fifi', 'Loulou'] },
             {
               childrens: {
-                $size: 3,
+                // $size: 3,
                 // eslint-disable-next-line no-dupe-keys
                 $size: 3,
               },
@@ -1845,7 +1847,7 @@ describe('Model', function () {
             { childrens: ['Riri', 'Fifi', 'Loulou'] },
             {
               childrens: {
-                $size: 3,
+                // $size: 3,
                 // eslint-disable-next-line no-dupe-keys
                 $size: 4,
               },
@@ -2171,10 +2173,12 @@ describe('Model', function () {
       it('Should throw an error if a logical operator is used without an array or if an unknown logical operator is used', function () {
         // eslint-disable-next-line no-dupe-keys
         (function () {
-          model.match({ a: 5 }, { $or: { a: 5, a: 6 } });
+          // model.match({ a: 5 }, { $or: { a: 5, a: 6 } });
+          model.match({ a: 5 }, { $or: { a: 6 } });
         }.should.throw());
         (function () {
-          model.match({ a: 5 }, { $and: { a: 5, a: 6 } });
+          // model.match({ a: 5 }, { $and: { a: 5, a: 6 } });
+          model.match({ a: 5 }, { $and: { a: 6 } });
         }.should.throw());
         (function () {
           model.match({ a: 5 }, { $unknown: [{ a: 5 }] });
@@ -2237,9 +2241,9 @@ describe('Model', function () {
           }
           return (
             this.firstName.toLowerCase() +
-              '.' +
-              this.lastName.toLowerCase() +
-              '@gmail.com' ===
+            '.' +
+            this.lastName.toLowerCase() +
+            '@gmail.com' ===
             this.email
           );
         };
@@ -2305,7 +2309,8 @@ describe('Model', function () {
           .should.equal(true);
         // eslint-disable-next-line no-dupe-keys
         model
-          .match({ tags: ['node', 'js', 'db'] }, { tags: 'js', tags: 'node' })
+          // .match({ tags: ['node', 'js', 'db'] }, { tags: 'js', tags: 'node' })
+          .match({ tags: ['node', 'js', 'db'] }, { tags: 'node' })
           .should.equal(true);
 
         // Mixed matching with array and non array

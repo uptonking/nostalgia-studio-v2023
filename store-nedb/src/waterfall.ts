@@ -17,7 +17,7 @@ export class Waterfall {
     this.guardian = Promise.resolve();
   }
 
-  /**
+  /** 先执行 func，然后返回一个promise
    *
    * @param {AsyncFunction} func
    * @return {AsyncFunction}

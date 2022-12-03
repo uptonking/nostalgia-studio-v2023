@@ -53,9 +53,12 @@ export class Executor {
    * @async
    * @see Executor#push
    */
-  pushAsync(task, forceQueuing = false) {
-    if (this.ready || forceQueuing) return this.queue.waterfall(task)();
-    else return this.buffer.waterfall(task)();
+  async pushAsync(task, forceQueuing = false) {
+    if (this.ready || forceQueuing) {
+      return this.queue.waterfall(task)();
+    } else {
+      return this.buffer.waterfall(task)();
+    }
   }
 
   /**

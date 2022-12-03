@@ -591,7 +591,7 @@ describe('Cursor Async', function () {
       const cursor = new Cursor(d, {});
       cursor.sort({ age: 1 }); // For easier finding
       cursor.projection({ age: 1, name: 0 });
-      // @ts-expect-error fixme
+      // @ts-ignore fixme
       await assert.rejects(() => cursor);
 
       cursor.projection({ age: 1, _id: 0 });

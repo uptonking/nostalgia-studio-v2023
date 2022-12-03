@@ -10,10 +10,10 @@ import * as model from './model';
  * @return {*|Promise<*>}
  */
 
-/**
- * Manage access to data, be it to find, update or remove it.
+/** 👀 注意class里面有自定义`then`方法
+ * - Manage access to data, be it to find, update or remove it.
  *
- * It extends `Promise` so that its methods (which return `this`) are chainable & awaitable.
+ * - It extends `Promise` so that its methods (which return `this`) are chainable & awaitable.
  * @extends Promise
  */
 export class Cursor {
@@ -32,6 +32,9 @@ export class Cursor {
    * @param {Cursor~mapFn} [mapFn] - Handler to be executed after cursor has found the results and before the callback passed to find/findOne/update/remove
    */
   constructor(db, query = undefined, mapFn = undefined) {
+    // super((resolve: any, reject: any) => {
+    //   resolve("ok");
+    // });
     /**
      * @protected
      * @type {Datastore}
@@ -251,17 +254,22 @@ export class Cursor {
     callbackify(() => this.execAsync())(_callback);
   }
 
-  /**
-   * Get all matching elements.
-   * Will return pointers to matched elements (shallow copies), returning full copies is the role of {@link Datastore#findAsync} or {@link Datastore#findOneAsync}.
+  /** Get all matching elements.
+   * - Will return pointers to matched elements (shallow copies), returning full copies is the role of {@link Datastore#findAsync} or {@link Datastore#findOneAsync}.
    * @return {Promise<document[]|*>}
    * @async
    */
-  execAsync() {
+  async execAsync() {
     return this.db.executor.pushAsync(() => this._execAsync());
   }
 
-  then(onFulfilled, onRejected) {
+  async then(
+    onFulfilled?:
+      | ((value: any[]) => any | PromiseLike<any[]>)
+      | undefined
+      | null,
+    onRejected?: (reason: any) => any[] | PromiseLike<any[]>,
+  ): Promise<any[] | never> {
     return this.execAsync().then(onFulfilled, onRejected);
   }
 

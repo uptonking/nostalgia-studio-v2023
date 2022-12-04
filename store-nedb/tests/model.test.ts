@@ -9,7 +9,7 @@ import * as model from '../src/model';
 const { assert, expect } = chai;
 chai.should();
 
-const TEST1_DB_IT = 'tests/testdata/test1.db'
+const TEST1_DB_IT = 'tests/testdata/test1.db';
 
 describe('Model', function () {
   describe('Serialization, deserialization', function () {
@@ -2241,9 +2241,9 @@ describe('Model', function () {
           }
           return (
             this.firstName.toLowerCase() +
-            '.' +
-            this.lastName.toLowerCase() +
-            '@gmail.com' ===
+              '.' +
+              this.lastName.toLowerCase() +
+              '@gmail.com' ===
             this.email
           );
         };

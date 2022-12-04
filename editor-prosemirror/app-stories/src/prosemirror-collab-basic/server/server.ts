@@ -146,7 +146,7 @@ export class Waiting {
     this.ip = ip;
     this.finish = finish;
     this.done = false;
-    /** 👇🏻 每个waiting对象都会使请求的response进入等待状态，默认等待N分钟*/
+    /** 👇🏻 每个waiting对象都会使当前持有的请求response进入等待状态，默认等待N分钟*/
     resp.setTimeout(1000 * 60 * 0.5, () => {
       this.abort();
       this.send(Output.json({}));

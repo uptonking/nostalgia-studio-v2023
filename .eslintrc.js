@@ -78,6 +78,7 @@ module.exports = {
     'node/no-unsupported-features/es-syntax': 0,
     'node/no-unpublished-import': 1,
     'node/no-unpublished-require': 1,
+    'node/no-extraneous-require': 1,
     'node/no-missing-import': 0,
     'node/no-unsupported-features/node-builtins': 0,
     'no-process-exit': 1,

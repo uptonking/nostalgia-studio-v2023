@@ -3,7 +3,7 @@
 # overview
 
 - this project is a fork of nedb
-  - db core has zero deps
+  - db core is zero-deps
 
 - https://github.com/seald/nedb /js/active
   - Since v3, NeDB provides a Promise-based equivalent for each function suffixed with `Async`

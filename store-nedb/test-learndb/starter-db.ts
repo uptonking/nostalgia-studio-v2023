@@ -12,8 +12,6 @@ type CRUDCmd = {
   ): void;
 };
 
-
-
 /** 仅内存的数据库存储，底层是kv
  * - 示例 { user: { keys: [ 'uid', 'uname' ], data: [ [Object], [Object] ] } }
  * - data属性包含该表所有数据 [ { uid: 'id1', uname: 'name1' }, { uid: 'id2', uname: 'name2' } ]
@@ -83,8 +81,8 @@ export const eval1: REPLEval = (cmd, context, filename, callback) => {
   console.log(';; start-eval1', cmd === 'log', cmd);
 
   if (cmd === 'log') {
-    console.log(';; full db \n ',);
-    console.dir(database, { depth: null })
+    console.log(';; full db \n ');
+    console.dir(database, { depth: null });
     return;
   }
 
@@ -95,7 +93,7 @@ export const eval1: REPLEval = (cmd, context, filename, callback) => {
     commands[i] = parseCommand(eachStatement[i]);
   }
 
-  console.log(';; stmt-cmd ', eachStatement, commands)
+  console.log(';; stmt-cmd ', eachStatement, commands);
 
   executeCommand(commands);
 };

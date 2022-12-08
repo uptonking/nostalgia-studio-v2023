@@ -1,59 +1,50 @@
+import type { AsyncFunction } from './types/common';
 import { Waterfall } from './waterfall';
 
 /**
  * Executes operations sequentially.
- * Has an option for a buffer that can be triggered afterwards.
- * @private
+ * - Has an option for a buffer that can be triggered afterwards.
+ * @internal
  */
 export class Executor {
-  ready: boolean;
-  queue: Waterfall;
-  buffer: any;
-  _triggerBuffer: any;
+  /**
+   * If `false`, then every task pushed will be buffered until `this.processBuffer` is called.
+   * @internal
+   */
+  public ready = false;
+  /**
+   * The main queue
+   * @internal
+   */
+  public queue: Waterfall;
+  /**
+   * The buffer queue
+   */
+  private buffer: Waterfall;
+  /**
+   * Method to trigger the buffer processing.
+   * - Do not be use directly, use `this.processBuffer` instead.
+   */
+  private _triggerBuffer: (x?: any) => void;
 
   /**
    * Instantiates a new Executor.
    */
   constructor() {
-    /**
-     * If this.ready is `false`, then every task pushed will be buffered until this.processBuffer is called.
-     * @type {boolean}
-     * @private
-     */
     this.ready = false;
-    /**
-     * The main queue
-     * @type {Waterfall}
-     * @private
-     */
     this.queue = new Waterfall();
-    /**
-     * The buffer queue
-     * @type {Waterfall}
-     * @private
-     */
     this.buffer = null;
-    /**
-     * Method to trigger the buffer processing.
-     *
-     * Do not be use directly, use `this.processBuffer` instead.
-     * @function
-     * @private
-     */
     this._triggerBuffer = null;
     this.resetBuffer();
   }
 
   /**
    * If executor is ready, queue task (and process it immediately if executor was idle)
-   * If not, buffer task for later processing
+   * - If not ready, buffer task for later processing
    * @param {AsyncFunction} task Function to execute
    * @param {boolean} [forceQueuing = false] Optional (defaults to false) force executor to queue task even if it is not ready
-   * @return {Promise<*>}
-   * @async
-   * @see Executor#push
    */
-  async pushAsync(task, forceQueuing = false) {
+  async pushAsync(task: AsyncFunction, forceQueuing = false): Promise<any> {
     if (this.ready || forceQueuing) {
       return this.queue.waterfall(task)();
     } else {
@@ -63,7 +54,7 @@ export class Executor {
 
   /**
    * Queue all tasks in buffer (in the same order they came in)
-   * Automatically sets executor as ready
+   * - Automatically sets executor as ready
    */
   processBuffer() {
     this.ready = true;
@@ -73,6 +64,7 @@ export class Executor {
 
   /**
    * Removes all tasks queued up in the buffer
+   * - `this.buffer = new Waterfall();`, then this._triggerBuffer();
    */
   resetBuffer() {
     this.buffer = new Waterfall();
@@ -81,6 +73,8 @@ export class Executor {
         this._triggerBuffer = resolve;
       }),
     );
-    if (this.ready) this._triggerBuffer();
+    if (this.ready) {
+      this._triggerBuffer();
+    }
   }
 }

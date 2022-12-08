@@ -10,6 +10,7 @@ import type {
   DataStoreOptionsProps,
   EnsureIndexOptions,
 } from './types/datastore';
+import { PersistenceOptionsProps } from './types/datastore';
 import { isDate } from './utils';
 import { uid } from './utils-polyfillable';
 
@@ -26,7 +27,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   public compareStrings?: DataStoreOptionsProps['compareStrings'] | null;
 
   /** The `Persistence` instance for this `Datastore`. */
-  persistence: Persistence;
+  public persistence: Persistence;
   /** The `Executor` instance for this `Datastore`. It is used in all methods exposed by the {@link Datastore},
    * any {@link Cursor} produced by the `Datastore` and by {@link Datastore#compactDatafileAsync} to ensure operations
    * are performed sequentially in the database.
@@ -43,23 +44,22 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @internal
    */
   public ttlIndexes: Record<string, number>;
-  /** A Promise that resolves when the autoload has finished.
+  /** A Promise that resolves when the autoload has finished. 仅构造函数中使用
    * - The onload callback is not awaited by this Promise, it is started immediately after that.
    */
-  autoloadPromise: Promise<any> | null;
-  /** return value from setInterval, type is number
+  private autoloadPromise: Promise<any> | null;
+  /** return value from setInterval, type is number.
    * - Interval if {@link Datastore#setAutocompactionInterval} was called. */
-  _autocompactionIntervalId: ReturnType<typeof setInterval> | null;
+  private _autocompactionIntervalId: ReturnType<typeof setInterval> | null;
 
-  /**
-   * Create a new collection, either persistent or in-memory.
+  /** Create a new collection, either persistent or in-memory.
    *
    * - If you use a persistent datastore without the `autoload` option, you need to call {@link Datastore#loadDatabase} or
    * {@link Datastore#loadDatabaseAsync} manually. This function fetches the data from datafile and prepares the database.
    * **Don't forget it!** If you use a persistent datastore, no command (insert, find, update, remove) will be executed
    * before it is called, so make sure to call it yourself or use the `autoload` option.
    */
-  constructor(options: string | DataStoreOptionsProps = {}) {
+  constructor(options: string | (DataStoreOptionsProps & PersistenceOptionsProps) = {}) {
     super();
     let filename: string;
 
@@ -215,7 +215,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @async
    * @return {Promise}
    */
-  loadDatabaseAsync() {
+  async loadDatabaseAsync() {
     return this.executor.pushAsync(
       () => this.persistence.loadDatabaseAsync(),
       true,
@@ -305,7 +305,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @param {NoParamCallback} [callback]
    * @see Datastore#removeIndexAsync
    */
-  removeIndex(fieldName, callback = () => {}) {
+  removeIndex(fieldName, callback = () => { }) {
     const promise = this.removeIndexAsync(fieldName);
     callbackify(() => promise)(callback);
   }
@@ -428,10 +428,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         ([k, v]) =>
           Boolean(
             typeof v === 'string' ||
-              typeof v === 'number' ||
-              typeof v === 'boolean' ||
-              isDate(v) ||
-              v === null,
+            typeof v === 'number' ||
+            typeof v === 'boolean' ||
+            isDate(v) ||
+            v === null,
           ) && indexNames.includes(k),
       )
       .pop();
@@ -453,10 +453,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         ([k, v]) =>
           Boolean(
             query[k] &&
-              (Object.hasOwn(query[k], '$lt') ||
-                Object.hasOwn(query[k], '$lte') ||
-                Object.hasOwn(query[k], '$gt') ||
-                Object.hasOwn(query[k], '$gte')),
+            (Object.hasOwn(query[k], '$lt') ||
+              Object.hasOwn(query[k], '$lte') ||
+              Object.hasOwn(query[k], '$gt') ||
+              Object.hasOwn(query[k], '$gte')),
           ) && indexNames.includes(k),
       )
       .pop();
@@ -981,7 +981,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       cb = options;
       options = {};
     }
-    const callback = cb || (() => {});
+    const callback = cb || (() => { });
     callbackify((query, options) => this.removeAsync(query, options))(
       query,
       options,

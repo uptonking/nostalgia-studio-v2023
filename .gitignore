@@ -32,7 +32,9 @@ repos-caches/
 
 # temp/test files
 collab-ot-crdt/crdt-stories/crdt-example-app-hlc-jlongster/db.sqlite
-# store-nedb/tests/testdata/
+store-nedb/tests/testdata/
+store-nedb/nedb-ts-techpire/
+
 
 # below Created by https://www.gitignore.io/api/node
 

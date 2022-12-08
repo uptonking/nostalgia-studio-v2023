@@ -1,4 +1,4 @@
-export interface DataStoreOptionsProps extends PersistenceOptionsProps {
+export interface DataStoreOptionsProps {
   /** default false. if true, the database will automatically be loaded from the datafile upon creation
    * - Any command issued before load is finished is buffered and will be executed when load is done. Is not read after instantiation. */
   autoload?: boolean;
@@ -31,7 +31,8 @@ export interface PersistenceOptionsProps {
    * - Make sure to include both and not just one or you risk data loss.
    **/
   beforeDeserialization?: (line: string) => string;
-  /** Whether to test the serialization hooks or not, might be CPU-intensive */
+  /** Whether to test the serialization hooks or not, might be CPU-intensive.
+   * - `beforeSer(afterDeSer(str)) ?== str` */
   testSerializationHooks?: boolean;
   /** between 0 and 1, defaults to 10%.
  * - 0 means you don't tolerate any corruption, 1 means you don't care.

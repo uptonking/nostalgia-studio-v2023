@@ -1,28 +1,22 @@
+import type { AsyncFunction } from './types/common';
+
 /**
  * Responsible for sequentially executing actions on the database
  * @internal
  */
 export class Waterfall {
-  /**  */
-  guardian: Promise<any>;
+  /** This is the internal Promise object which resolves when all the tasks of the `Waterfall` are done.
+   * - It will change anytime `this.waterfall()` is called.
+   */
+  public guardian: Promise<any>;
 
   constructor() {
-    /**
-     * This is the internal Promise object which resolves when all the tasks of the `Waterfall` are done.
-     *
-     * It will change any time `this.waterfall` is called.
-     *
-     * @type {Promise}
-     */
     this.guardian = Promise.resolve();
   }
 
-  /** 先执行 func，然后返回一个promise
-   *
-   * @param {AsyncFunction} func
-   * @return {AsyncFunction}
+  /** 先执行 func，然后返回一个函数，这个函数返回值是Promise
    */
-  waterfall(func) {
+  waterfall(func: AsyncFunction): AsyncFunction {
     return (...args) => {
       this.guardian = this.guardian.then(() => {
         return func(...args).then(
@@ -39,10 +33,8 @@ export class Waterfall {
 
   /**
    * Shorthand for chaining a promise to the Waterfall
-   * @param {Promise} promise
-   * @return {Promise}
    */
-  chain(promise) {
+  chain(promise: Promise<any>): Promise<any> {
     return this.waterfall(() => promise)();
   }
 }

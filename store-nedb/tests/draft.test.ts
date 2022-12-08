@@ -9,7 +9,7 @@ const TEST_DB_IT = 'tests/testdata/testing11.db';
 // const db = new Datastore({ filename: './testdata/testing11.db', autoload: true });
 const db = new Datastore({ filename: TEST_DB_IT });
 db.loadDatabase((err) => {
-  console.log(';; db-err ', err);
+  console.log(';; db-loaded ', err);
 });
 
 // const db = new Datastore({ filename: TEST_DB_IT })
@@ -20,7 +20,7 @@ db.loadDatabase((err) => {
 // }
 
 const doc = {
-  hello: 'world-2022',
+  hello: 'world-202212',
   n: 5,
   today: new Date(),
   nedbIsAwesome: true,
@@ -32,7 +32,7 @@ const doc = {
 
 // db.insert(doc, (err, newDoc) => { });
 
-db.insert([{ a: 5 }, { b: 42 }], function (err, newDocs) {});
+db.insert([{ a: 5 }, { b: 42 }], function (err, newDocs) { });
 
 // Find all documents in the collection
 db.find({}, (err, docs) => {

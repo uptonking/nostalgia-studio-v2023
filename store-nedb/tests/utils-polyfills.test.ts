@@ -1,5 +1,5 @@
 import chai from 'chai';
-import * as customUtils from '../src/utils-polyfills';
+import * as customUtils from '../src/utils-polyfillable';
 
 chai.should();
 describe('customUtils, polyfills', function () {

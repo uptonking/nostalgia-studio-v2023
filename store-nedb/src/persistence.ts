@@ -2,10 +2,15 @@ import path from 'node:path';
 import { deprecate } from 'node:util';
 
 import { createLineStream as byline } from './byline';
+import type { Datastore } from './datastore';
 import { Index } from './indexes';
 import * as model from './model';
 import * as storage from './storage';
-import { uid } from './utils-polyfills';
+import type {
+  DataStoreOptionsProps,
+  PersistenceOptionsProps,
+} from './types/datastore';
+import { uid } from './utils-polyfillable';
 
 const DEFAULT_DIR_MODE = 0o755;
 const DEFAULT_FILE_MODE = 0o644;
@@ -41,27 +46,19 @@ const DEFAULT_FILE_MODE = 0o644;
  * explains this in more details, NeDB being very close to Redis AOF persistence
  * with `appendfsync` option set to `no`.
  */
-export class Persistence {
-  db: any;
-  inMemoryOnly: any;
-  filename: any;
-  corruptAlertThreshold: any;
-  modes: any;
-  afterSerialization: any;
-  beforeDeserialization: any;
+export class Persistence implements PersistenceOptionsProps {
+  db: Datastore;
+  inMemoryOnly: DataStoreOptionsProps['inMemoryOnly'];
+  filename: DataStoreOptionsProps['filename'];
+  corruptAlertThreshold?: PersistenceOptionsProps['corruptAlertThreshold'];
+  modes?: PersistenceOptionsProps['modes'];
+  afterSerialization?: PersistenceOptionsProps['afterSerialization'];
+  beforeDeserialization?: PersistenceOptionsProps['beforeDeserialization'];
 
   /**
    * Create a new Persistence object for database options.db
-   * @param {Datastore} options.db
-   * @param {Number} [options.corruptAlertThreshold] Optional, threshold after which an alert is thrown if too much data is corrupt
-   * @param {serializationHook} [options.beforeDeserialization] Hook you can use to transform data after it was serialized and before it is written to disk.
-   * @param {serializationHook} [options.afterSerialization] Inverse of `afterSerialization`.
-   * @param {object} [options.modes] Modes to use for FS permissions. Will not work on Windows.
-   * @param {number} [options.modes.fileMode=0o644] Mode to use for files.
-   * @param {number} [options.modes.dirMode=0o755] Mode to use for directories.
-   * @param {boolean} [options.testSerializationHooks=true] Whether to test the serialization hooks or not, might be CPU-intensive
    */
-  constructor(options) {
+  constructor(options: PersistenceOptionsProps & { db: Datastore }) {
     this.db = options.db;
     this.inMemoryOnly = this.db.inMemoryOnly;
     this.filename = this.db.filename;
@@ -73,9 +70,12 @@ export class Persistence {
       options.modes !== undefined
         ? options.modes
         : { fileMode: DEFAULT_FILE_MODE, dirMode: DEFAULT_DIR_MODE };
-    if (this.modes.fileMode === undefined)
+    if (this.modes.fileMode === undefined) {
       this.modes.fileMode = DEFAULT_FILE_MODE;
-    if (this.modes.dirMode === undefined) this.modes.dirMode = DEFAULT_DIR_MODE;
+    }
+    if (this.modes.dirMode === undefined) {
+      this.modes.dirMode = DEFAULT_DIR_MODE;
+    }
     if (
       !this.inMemoryOnly &&
       this.filename &&

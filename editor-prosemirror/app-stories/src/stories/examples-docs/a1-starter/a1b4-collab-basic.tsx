@@ -1,18 +1,15 @@
-import { applyDevTools } from 'prosemirror-dev-toolkit';
-import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
-import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
-import { schema } from 'prosemirror-schema-basic';
-import { EditorState, Plugin, type PluginView } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+} from 'react';
 
 import styled from '@emotion/styled';
 
-import { StyledContainer } from '../editor-examples.styles';
 import {
   EditorConnection,
   Reporter,
 } from '../../../prosemirror-collab-basic/client/collab';
+import { StyledContainer } from '../editor-examples.styles';
 
 /**
  * ✨ 官方编辑器示例，基于prosemirror-collab实现协作编辑 。

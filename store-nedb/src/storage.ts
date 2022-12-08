@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'node:path';
 import { Readable } from 'node:stream';
+import { PersistenceOptionsProps } from './types/datastore';
 
 const fsPromises = fs.promises;
 
@@ -253,7 +254,7 @@ export const writeFileLinesAsync = (
 export const crashSafeWriteFileLinesAsync = async (
   filename,
   lines,
-  modes = { fileMode: DEFAULT_FILE_MODE, dirMode: DEFAULT_DIR_MODE },
+  modes: PersistenceOptionsProps['modes'] = { fileMode: DEFAULT_FILE_MODE, dirMode: DEFAULT_DIR_MODE },
 ) => {
   const tempFilename = filename + '~';
 

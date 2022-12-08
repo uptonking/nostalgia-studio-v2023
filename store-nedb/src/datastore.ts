@@ -6,232 +6,79 @@ import { Executor } from './executor';
 import { Index } from './indexes';
 import * as model from './model';
 import { Persistence } from './persistence';
-import { DataStoreOptions, EnsureIndexOptions } from './types/datastore';
+import type {
+  DataStoreOptionsProps,
+  EnsureIndexOptions,
+} from './types/datastore';
 import { isDate } from './utils';
-import { uid } from './utils-polyfills';
-
-/**
- * Callback that returns an Array of documents.
- * @callback MultipleDocumentsCallback
- * @param {?Error} err
- * @param {?document[]} docs
- */
-
-/**
- * Callback that returns a single document.
- * @callback SingleDocumentCallback
- * @param {?Error} err
- * @param {?document} docs
- */
-
-/**
- * Compaction event. Happens when the Datastore's Persistence has been compacted.
- * It happens when calling {@link Datastore#compactDatafileAsync}, which is called periodically if you have called
- * {@link Datastore#setAutocompactionInterval}.
- *
- * @event Datastore#event:"compaction.done"
- * @type {undefined}
- */
-
-/**
- * Generic document in NeDB.
- * It consists of an Object with anything you want inside.
- * @typedef document
- * @property {?string} [_id] Internal `_id` of the document, which can be `null` or undefined at some points (when not
- * inserted yet for example).
- * @type {object}
- */
-
-/**
- * Nedb query.
- *
- * Each key of a query references a field name, which can use the dot-notation to reference subfields inside nested
- * documents, arrays, arrays of subdocuments and to match a specific element of an array.
- *
- * Each value of a query can be one of the following:
- * - `string`: matches all documents which have this string as value for the referenced field name
- * - `number`: matches all documents which have this number as value for the referenced field name
- * - `Regexp`: matches all documents which have a value that matches the given `Regexp` for the referenced field name
- * - `object`: matches all documents which have this object as deep-value for the referenced field name
- * - Comparison operators: the syntax is `{ field: { $op: value } }` where `$op` is any comparison operator:
- *   - `$lt`, `$lte`: less than, less than or equal
- *   - `$gt`, `$gte`: greater than, greater than or equal
- *   - `$in`: member of. `value` must be an array of values
- *   - `$ne`, `$nin`: not equal, not a member of
- *   - `$stat`: checks whether the document posses the property `field`. `value` should be true or false
- *   - `$regex`: checks whether a string is matched by the regular expression. Contrary to MongoDB, the use of
- *   `$options` with `$regex` is not supported, because it doesn't give you more power than regex flags. Basic
- *   queries are more readable so only use the `$regex` operator when you need to use another operator with it
- *   - `$size`: if the referenced filed is an Array, matches on the size of the array
- *   - `$elemMatch`: matches if at least one array element matches the sub-query entirely
- * - Logical operators: You can combine queries using logical operators:
- *   - For `$or` and `$and`, the syntax is `{ $op: [query1, query2, ...] }`.
- *   - For `$not`, the syntax is `{ $not: query }`
- *   - For `$where`, the syntax is:
- *   ```
- *   { $where: function () {
- *     // object is 'this'
- *     // return a boolean
- *   } }
- *   ```
- * @typedef query
- * @type {Object.<string, *>}
- */
-
-/**
- * Nedb projection.
- *
- * You can give `find` and `findOne` an optional second argument, `projections`.
- * The syntax is the same as MongoDB: `{ a: 1, b: 1 }` to return only the `a`
- * and `b` fields, `{ a: 0, b: 0 }` to omit these two fields. You cannot use both
- * modes at the time, except for `_id` which is by default always returned and
- * which you can choose to omit. You can project on nested documents.
- *
- * To reference subfields, you can use the dot-notation.
- *
- * @typedef projection
- * @type {Object.<string, 0|1>}
- */
-
-/**
- * The `beforeDeserialization` and `afterDeserialization` callbacks are hooks which are executed respectively before
- * parsing each document and after stringifying them. They can be used for example to encrypt the Datastore.
- * The `beforeDeserialization` should revert what `afterDeserialization` has done.
- * @callback serializationHook
- * @param {string} x
- * @return {string}
- */
+import { uid } from './utils-polyfillable';
 
 /** ✨ One datastore is the equivalent of a MongoDB collection.
- * - NeDB's persistence uses an append-only format, meaning that all updates and deletes actually result in lines added at the end of the datafile, for performance reasons.
- * - The database is automatically compacted (i.e. put back in the one-line-per-document format) every time you load each database within your application.
  * - The native types are String, Number, Boolean, Date and null. You can also use arrays and subdocuments (objects).
- * - A copy of the whole database is kept in memory. This is not much on the expected kind of datasets (20MB for 10,000 2KB documents).
- * @class
- * @classdesc The `Datastore` class is the main class of NeDB.
- * @extends external:EventEmitter
- * @emits Datastore#event:"compaction.done"
- * @typicalname NeDB
+ * - A copy of the whole database is kept in memory.
  */
-export class Datastore extends EventEmitter {
-  /** if used, the database will automatically be loaded from the datafile upon creation
-   * - Any command issued before load is finished is buffered and will be executed when load is done. */
+export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   public autoload = false;
-  /** if you use autoloading, this is the handler called after the `loadDatabase`.
-   * - If you use autoloading without specifying this handler, and an error happens during load, an error will be thrown. */
-  public onload?: ((error: any) => void) | null;
-  /** path to the file where the data is persisted.
-   * - If left blank, the datastore is automatically considered in-memory only.
-   * - It cannot end with a `~` which is used in the temporary files NeDB uses to perform crash-safe writes. */
-  public filename?: string;
+  public onload: DataStoreOptionsProps['onload'] | null;
+  public filename: DataStoreOptionsProps['filename'];
   public inMemoryOnly = false;
-  /** timestamp the insertion and last update of all documents, with the fields `createdAt` and `updatedAt`.
-   * - User-specified values override automatic generation, usually useful for testing */
   public timestampData = false;
-  /** compares strings a and b and return -1, 0 or 1.
-   * - If specified, it overrides default string comparison which is not well adapted to non-US characters in particular accented letters.
-   * - Native `localCompare` will most of the time be the right choice */
-  public compareStrings?: Function | null;
+  public compareStrings?: DataStoreOptionsProps['compareStrings'] | null;
 
+  /** The `Persistence` instance for this `Datastore`. */
   persistence: Persistence;
-  executor: Executor;
-  indexes: { _id?: Index };
-  ttlIndexes: {};
-  autoloadPromise: any;
-  _autocompactionIntervalId: any;
+  /** The `Executor` instance for this `Datastore`. It is used in all methods exposed by the {@link Datastore},
+   * any {@link Cursor} produced by the `Datastore` and by {@link Datastore#compactDatafileAsync} to ensure operations
+   * are performed sequentially in the database.
+   * @internal
+   */
+  public executor: Executor;
+  /** Indexed by field name, dot notation can be used.
+   * - `_id` is always indexed and since _ids are generated randomly the underlying binary search tree is always well-balanced
+   * @internal
+   */
+  public indexes: Record<'_id' | string, Index>;
+  /** Stores the time to live (TTL) of the indexes created. The key represents the field name, the value the number of
+   * seconds after which data with this index field should be removed.
+   * @internal
+   */
+  public ttlIndexes: Record<string, number>;
+  /** A Promise that resolves when the autoload has finished.
+   * - The onload callback is not awaited by this Promise, it is started immediately after that.
+   */
+  autoloadPromise: Promise<any> | null;
+  /** return value from setInterval, type is number
+   * - Interval if {@link Datastore#setAutocompactionInterval} was called. */
+  _autocompactionIntervalId: ReturnType<typeof setInterval> | null;
 
   /**
    * Create a new collection, either persistent or in-memory.
    *
-   * If you use a persistent datastore without the `autoload` option, you need to call {@link Datastore#loadDatabase} or
+   * - If you use a persistent datastore without the `autoload` option, you need to call {@link Datastore#loadDatabase} or
    * {@link Datastore#loadDatabaseAsync} manually. This function fetches the data from datafile and prepares the database.
    * **Don't forget it!** If you use a persistent datastore, no command (insert, find, update, remove) will be executed
    * before it is called, so make sure to call it yourself or use the `autoload` option.
-   *
-   * Also, if loading fails, all commands registered to the {@link Datastore#executor} afterwards will not be executed.
-   * They will be registered and executed, in sequence, only after a successful loading.
-   *
-   * @param {object|string} options Can be an object or a string. If options is a string, the behavior is the same as in
-   * v0.6: it will be interpreted as `options.filename`. **Giving a string is deprecated, and will be removed in the
-   * next major version.**
-   * @param {string} [options.filename = null] Path to the file where the data is persisted. If left blank, the datastore is
-   * automatically considered in-memory only. It cannot end with a `~` which is used in the temporary files NeDB uses to
-   * perform crash-safe writes. Not used if `options.inMemoryOnly` is `true`.
-   * @param {boolean} [options.inMemoryOnly = false] If set to true, no data will be written in storage. This option has
-   * priority over `options.filename`.
-   * @param {object} [options.modes] Permissions to use for FS. Only used for Node.js storage module. Will not work on Windows.
-   * @param {number} [options.modes.fileMode = 0o644] Permissions to use for database files
-   * @param {number} [options.modes.dirMode = 0o755] Permissions to use for database directories
-   * @param {boolean} [options.timestampData = false] If set to true, createdAt and updatedAt will be created and
-   * populated automatically (if not specified by user)
-   * @param {boolean} [options.autoload = false] If used, the database will automatically be loaded from the datafile
-   * upon creation (you don't need to call `loadDatabase`). Any command issued before load is finished is buffered and
-   * will be executed when load is done. When autoloading is done, you can either use the `onload` callback, or you can
-   * use `this.autoloadPromise` which resolves (or rejects) when autloading is done.
-   * @param {NoParamCallback} [options.onload] If you use autoloading, this is the handler called after the `loadDatabase`. It
-   * takes one `error` argument. If you use autoloading without specifying this handler, and an error happens during
-   * load, an error will be thrown.
-   * @param {serializationHook} [options.beforeDeserialization] Hook you can use to transform data after it was serialized and
-   * before it is written to disk. Can be used for example to encrypt data before writing database to disk. This
-   * function takes a string as parameter (one line of an NeDB data file) and outputs the transformed string, **which
-   * must absolutely not contain a `\n` character** (or data will be lost).
-   * @param {serializationHook} [options.afterSerialization] Inverse of `afterSerialization`. Make sure to include both and not
-   * just one, or you risk data loss. For the same reason, make sure both functions are inverses of one another. Some
-   * failsafe mechanisms are in place to prevent data loss if you misuse the serialization hooks: NeDB checks that never
-   * one is declared without the other, and checks that they are reverse of one another by testing on random strings of
-   * various lengths. In addition, if too much data is detected as corrupt, NeDB will refuse to start as it could mean
-   * you're not using the deserialization hook corresponding to the serialization hook used before.
-   * @param {number} [options.corruptAlertThreshold = 0.1] Between 0 and 1, defaults to 10%. NeDB will refuse to start
-   * if more than this percentage of the datafile is corrupt. 0 means you don't tolerate any corruption, 1 means you
-   * don't care.
-   * @param {compareStrings} [options.compareStrings] If specified, it overrides default string comparison which is not
-   * well adapted to non-US characters in particular accented letters. Native `localCompare` will most of the time be
-   * the right choice.
-   * @param {boolean} [options.testSerializationHooks=true] Whether to test the serialization hooks or not,
-   * might be CPU-intensive
    */
-  constructor(options: string | DataStoreOptions = {}) {
+  constructor(options: string | DataStoreOptionsProps = {}) {
     super();
-    let filename;
+    let filename: string;
 
     // Retrocompatibility with v0.6 and before
     if (typeof options === 'string') {
       deprecate(() => {
-        filename = options;
+        filename = options as string;
         this.inMemoryOnly = false; // Default
       }, "nedb: Giving a string to the Datastore constructor is deprecated and will be removed in the next major version. Please use an options object with an argument 'filename'.")();
     } else {
       options = options || {};
       filename = options.filename;
-      /**
-       * Determines if the `Datastore` keeps data in-memory, or if it saves it in storage. Is not read after
-       * instanciation.
-       * @type {boolean}
-       * @protected
-       */
       this.inMemoryOnly = options.inMemoryOnly || false;
-      /**
-       * Determines if the `Datastore` should autoload the database upon instantiation. Is not read after instanciation.
-       * @type {boolean}
-       * @protected
-       */
       this.autoload = options.autoload || false;
-      /**
-       * Determines if the `Datastore` should add `createdAt` and `updatedAt` fields automatically if not set by the user.
-       * @type {boolean}
-       * @protected
-       */
       this.timestampData = options.timestampData || false;
     }
 
-    // Determine whether in memory or persistent
     if (!filename || typeof filename !== 'string' || filename.length === 0) {
-      /**
-       * If null, it means `inMemoryOnly` is `true`. The `filename` is the name given to the storage module. Is not read
-       * after instanciation.
-       * @type {?string}
-       * @protected
-       */
+      // /Determine whether in memory or persistent
       this.filename = null;
       this.inMemoryOnly = true;
     } else {
@@ -240,21 +87,7 @@ export class Datastore extends EventEmitter {
 
     if (typeof options === 'string') return;
 
-    // String comparison function
-    /**
-     * Overrides default string comparison which is not well adapted to non-US characters in particular accented
-     * letters. Native `localCompare` will most of the time be the right choice
-     * @type {compareStrings}
-     * @function
-     * @protected
-     */
     this.compareStrings = options.compareStrings;
-
-    // Persistence handling
-    /**
-     * The `Persistence` instance for this `Datastore`.
-     * @type {Persistence}
-     */
     this.persistence = new Persistence({
       db: this,
       afterSerialization: options.afterSerialization,
@@ -263,61 +96,34 @@ export class Datastore extends EventEmitter {
       modes: options.modes,
       testSerializationHooks: options.testSerializationHooks,
     });
-
-    // This new executor is ready if we don't use persistence
-    // If we do, it will only be ready once loadDatabase is called
-    /**
-     * The `Executor` instance for this `Datastore`. It is used in all methods exposed by the {@link Datastore},
-     * any {@link Cursor} produced by the `Datastore` and by {@link Datastore#compactDatafileAsync} to ensure operations
-     * are performed sequentially in the database.
-     * @type {Executor}
-     * @protected
-     */
     this.executor = new Executor();
-    if (this.inMemoryOnly) this.executor.ready = true;
-
-    /**
-     * Indexed by field name, dot notation can be used.
-     * _id is always indexed and since _ids are generated randomly the underlying binary search tree is always well-balanced
-     * @type {Object.<string, Index>}
-     * @protected
-     */
+    if (this.inMemoryOnly) {
+      this.executor.ready = true;
+    }
     this.indexes = {};
     this.indexes._id = new Index({ fieldName: '_id', unique: true });
-    /**
-     * Stores the time to live (TTL) of the indexes created. The key represents the field name, the value the number of
-     * seconds after which data with this index field should be removed.
-     * @type {Object.<string, number>}
-     * @protected
-     */
     this.ttlIndexes = {};
 
     // Queue a load of the database right away and call the onload handler
     // By default (no onload handler), if there is an error there, no operation will be possible so warn the user by throwing an exception
     if (this.autoload) {
-      /**
-       * A Promise that resolves when the autoload has finished.
-       *
-       * The onload callback is not awaited by this Promise, it is started immediately after that.
-       * @type {?Promise}
-       */
       this.autoloadPromise = this.loadDatabaseAsync();
       this.autoloadPromise.then(
         () => {
-          if (typeof options === 'object' && options.onload) options.onload();
+          if (typeof options === 'object' && options.onload) {
+            options.onload();
+          }
         },
         (err) => {
-          if (typeof options === 'object' && options.onload)
+          if (typeof options === 'object' && options.onload) {
             options.onload(err);
-          else throw err;
+          } else throw err;
         },
       );
-    } else this.autoloadPromise = null;
-    /**
-     * Interval if {@link Datastore#setAutocompactionInterval} was called.
-     * @private
-     * @type {null|number}
-     */
+    } else {
+      this.autoloadPromise = null;
+    }
+
     this._autocompactionIntervalId = null;
   }
 
@@ -326,9 +132,8 @@ export class Datastore extends EventEmitter {
    * It works by rewriting the database file, and compacts it since the cache always contains only the number of
    * documents in the collection while the data file is append-only so it may grow larger.
    *
-   * @async
    */
-  compactDatafileAsync() {
+  async compactDatafileAsync() {
     return this.executor.pushAsync(() =>
       this.persistence.persistCachedDatabaseAsync(),
     );
@@ -430,7 +235,7 @@ export class Datastore extends EventEmitter {
    * @param {?document|?document[]} [newData]
    * @private
    */
-  _resetIndexes(newData) {
+  _resetIndexes(newData = undefined) {
     for (const index of Object.values(this.indexes)) {
       index.reset(newData);
     }

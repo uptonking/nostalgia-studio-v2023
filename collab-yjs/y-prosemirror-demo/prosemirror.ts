@@ -10,7 +10,6 @@ import {
   yUndoPlugin,
 } from 'y-prosemirror';
 import { WebrtcProvider } from 'y-webrtc';
-import { WebsocketProvider } from 'y-websocket';
 import * as Y from 'yjs';
 
 import { schema } from './schema';

@@ -32,9 +32,6 @@ export class Cursor {
    * @param {Cursor~mapFn} [mapFn] - Handler to be executed after cursor has found the results and before the callback passed to find/findOne/update/remove
    */
   constructor(db, query = undefined, mapFn = undefined) {
-    // super((resolve: any, reject: any) => {
-    //   resolve("ok");
-    // });
     /**
      * @protected
      * @type {Datastore}

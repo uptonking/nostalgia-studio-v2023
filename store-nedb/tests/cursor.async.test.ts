@@ -5,7 +5,7 @@ import path from 'path';
 import { Cursor } from '../src/cursor';
 import { Datastore } from '../src/datastore';
 import { Persistence } from '../src/persistence';
-import { exists } from './utils.test.js';
+import { exists } from './utils/common-utils.js';
 
 const TEST_DB_IT = 'tests/testdata/test.db';
 

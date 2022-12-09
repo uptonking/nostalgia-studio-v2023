@@ -5,8 +5,7 @@ import path from 'path';
 import { Datastore } from '../src/datastore';
 import * as model from '../src/model';
 import { Persistence } from '../src/persistence';
-import { wait } from './utils.test';
-import { exists } from './utils.test.js';
+import { exists, wait } from './utils/common-utils';
 
 const reloadTimeUpperBound = 200; // In ms, an upper bound for the reload time used to check createdAt and updatedAt
 
@@ -1283,20 +1282,25 @@ describe('Database async', function () {
       const d2 = new Datastore({ inMemoryOnly: true, timestampData: true });
       await d2.insertAsync({ a: 1 });
       const doc = await d2.findOneAsync({ a: 1 });
+      // @ts-expect-error fix-type
       const createdAt = doc.createdAt.getTime();
 
       // Modifying update
       await wait(20);
       await d2.updateAsync({ a: 1 }, { $set: { b: 2 } }, {});
       const doc2 = await d2.findOneAsync({ a: 1 });
+      // @ts-expect-error fix-type
       assert.equal(doc2.createdAt.getTime(), createdAt);
+      // @ts-expect-error fix-type
       assert.ok(Date.now() - doc2.updatedAt.getTime() < 5);
 
       // Complete replacement
       await wait(20);
       await d2.updateAsync({ a: 1 }, { c: 3 }, {});
       const doc3 = await d2.findOneAsync({ c: 3 });
+      // @ts-expect-error fix-type
       assert.equal(doc3.createdAt.getTime(), createdAt);
+      // @ts-expect-error fix-type
       assert.ok(Date.now() - doc3.updatedAt.getTime() < 5);
     });
   });

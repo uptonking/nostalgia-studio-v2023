@@ -1,9 +1,10 @@
-import { promises as fs } from 'fs';
 import { strict as assert } from 'assert';
+import { promises as fs } from 'fs';
 import path from 'path';
+
 import { Datastore } from '../src/datastore';
 import { Persistence } from '../src/persistence';
-import { exists } from './utils.test';
+import { exists } from './utils/common-utils';
 
 const TEST_DB_IT = 'tests/testdata/test.db';
 
@@ -25,7 +26,7 @@ const testRightOrder = async (d) => {
   assert.equal(docs3[0].a, 3);
 };
 
-// Note:  The following test does not have any assertion because it
+// Note: The following test does not have any assertion because it
 // is meant to address the deprecation warning:
 // (node) warning: Recursive process.nextTick detected. This will break in the next version of node. Please use setImmediate for recursive deferral.
 // see

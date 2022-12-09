@@ -98,12 +98,12 @@ export const deserialize = (rawData) =>
 
 /**
  * Deep copy a DB object
- * The optional strictKeys flag (defaulting to false) indicates whether to copy everything or only fields
+ * - The optional strictKeys flag (defaulting to false) indicates whether to copy everything or only fields
  * where the keys are valid, i.e. don't begin with $ and don't contain a .
  * @param {?document} obj
  * @param {boolean} [strictKeys=false]
  * @return {?document}
- * @alias module:modelel:(.*)
+ * @alias module:model-el:(.*)
  */
 export function deepCopy(obj, strictKeys = undefined) {
   if (

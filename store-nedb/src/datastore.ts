@@ -46,8 +46,9 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   public ttlIndexes: Record<string, number>;
   /** A Promise that resolves when the autoload has finished. 仅构造函数中使用
    * - The onload callback is not awaited by this Promise, it is started immediately after that.
+   * @internal
    */
-  private autoloadPromise: Promise<any> | null;
+  public autoloadPromise: Promise<any> | null;
   /** return value from setInterval, type is number.
    * - Interval if {@link Datastore#setAutocompactionInterval} was called. */
   private _autocompactionIntervalId: ReturnType<typeof setInterval> | null;
@@ -59,7 +60,9 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * **Don't forget it!** If you use a persistent datastore, no command (insert, find, update, remove) will be executed
    * before it is called, so make sure to call it yourself or use the `autoload` option.
    */
-  constructor(options: string | (DataStoreOptionsProps & PersistenceOptionsProps) = {}) {
+  constructor(
+    options: string | (DataStoreOptionsProps & PersistenceOptionsProps) = {},
+  ) {
     super();
     let filename: string;
 
@@ -215,7 +218,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @async
    * @return {Promise}
    */
-  async loadDatabaseAsync() {
+  loadDatabaseAsync() {
     return this.executor.pushAsync(
       () => this.persistence.loadDatabaseAsync(),
       true,
@@ -521,7 +524,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @private
    */
   async _insertAsync(newDoc) {
-    const preparedDoc = this._prepareDocumentForInsertion(newDoc);
+    const preparedDoc = this._prepareDocumentForInsertion(newDoc); // 手动深拷贝
     this._insertInCache(preparedDoc);
 
     await this.persistence.persistNewStateAsync(
@@ -545,7 +548,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
 
   /**
    * Prepare a document (or array of documents) to be inserted in a database
-   * Meaning adds _id and timestamps if necessary on a copy of newDoc to avoid any side effect on user input
+   * - Meaning adds _id and timestamps if necessary on a copy of newDoc to avoid any side effect on user input
    * @param {document|document[]} newDoc document, or Array of documents, to prepare
    * @return {document|document[]} prepared document, or Array of prepared documents
    * @private
@@ -560,7 +563,9 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       });
     } else {
       preparedDoc = model.deepCopy(newDoc);
-      if (preparedDoc._id === undefined) preparedDoc._id = this._createNewId();
+      if (preparedDoc._id === undefined) {
+        preparedDoc._id = this._createNewId();
+      }
       const now = new Date();
       if (this.timestampData && preparedDoc.createdAt === undefined)
         preparedDoc.createdAt = now;
@@ -578,9 +583,11 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @private
    */
   _insertInCache(preparedDoc) {
-    if (Array.isArray(preparedDoc))
+    if (Array.isArray(preparedDoc)) {
       this._insertMultipleDocsInCache(preparedDoc);
-    else this._addToIndexes(preparedDoc);
+    } else {
+      this._addToIndexes(preparedDoc);
+    }
   }
 
   /**

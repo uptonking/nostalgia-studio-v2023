@@ -396,13 +396,13 @@ export class Persistence implements PersistenceOptionsProps {
       treatedData = await this.treatRawStreamAsync(fileStream);
     } else {
       // Browser
-      // const rawData = await storage.readFileAsync(this.filename, { encoding: 'utf8', mode: this.modes.fileMode })
       const rawData = await storage.readFileAsync(this.filename, {
         encoding: 'utf8',
         flag: this.modes.fileMode,
       });
       treatedData = this.treatRawData(rawData);
     }
+
     // Recreate all indexes in the datafile
     Object.keys(treatedData.indexes).forEach((key) => {
       this.db.indexes[key] = new Index(treatedData.indexes[key]);

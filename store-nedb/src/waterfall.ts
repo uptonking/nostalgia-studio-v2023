@@ -14,9 +14,11 @@ export class Waterfall {
     this.guardian = Promise.resolve();
   }
 
-  /** 先执行 func，然后返回一个函数，这个函数返回值是Promise
+  /**
+   * @deprecated legacy promise-then impl;
+   * @see waterfall
    */
-  waterfall(func: AsyncFunction): AsyncFunction {
+  waterfall1(func: AsyncFunction): AsyncFunction {
     return (...args) => {
       this.guardian = this.guardian.then(() => {
         return func(...args).then(
@@ -31,8 +33,39 @@ export class Waterfall {
     };
   }
 
-  /**
-   * Shorthand for chaining a promise to the Waterfall
+  /** 返回一个返回值是Promise的函数，会在这个函数中执行func，不会立即执行func
+   *
+   * ? 性能似乎降低了
+   */
+  waterfall(func: AsyncFunction): AsyncFunction {
+    return async (...args) => {
+      // const p1 = (async () => {
+      this.guardian = (async () => {
+        try {
+          await this.guardian;
+          const result = await func(...args);
+          return { error: false, result };
+        } catch (err) {
+          return { error: true, result: err };
+        }
+      })();
+
+      const p2 = (async () => {
+        try {
+          // const { error, result } = await p1;
+          const { error, result } = await this.guardian;
+          return error ? Promise.reject(result) : result;
+        } catch (err) {
+          console.error(';; waterfall-err ', err);
+          // return Promise.reject(err);
+        }
+      })();
+
+      return p2;
+    };
+  }
+
+  /** Shorthand for chaining a promise to the Waterfall
    */
   chain(promise: Promise<any>): Promise<any> {
     return this.waterfall(() => promise)();

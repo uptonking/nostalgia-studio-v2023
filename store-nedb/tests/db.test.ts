@@ -1,12 +1,13 @@
-import chai from 'chai';
 import fs from 'node:fs';
 import path from 'node:path';
 import { callbackify } from 'node:util';
 
+import chai from 'chai';
+
 import { Datastore } from '../src/datastore';
 import * as model from '../src/model';
 import { Persistence } from '../src/persistence';
-import { apply, each, waterfall } from './utils.test';
+import { apply, each, waterfall } from './utils/common-utils';
 
 const TEST_DB_IT = 'tests/testdata/test.db';
 const AUTO_DB_IT = 'tests/testdata/auto.db';

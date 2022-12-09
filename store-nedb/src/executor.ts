@@ -35,7 +35,7 @@ export class Executor {
     this.queue = new Waterfall();
     this.buffer = null;
     this._triggerBuffer = null;
-    this.resetBuffer();
+    this.resetBuffer(); // also init this.buffer
   }
 
   /**
@@ -73,6 +73,7 @@ export class Executor {
         this._triggerBuffer = resolve;
       }),
     );
+
     if (this.ready) {
       this._triggerBuffer();
     }

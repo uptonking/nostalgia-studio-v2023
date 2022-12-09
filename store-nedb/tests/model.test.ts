@@ -1,7 +1,6 @@
+import chai from 'chai';
 import fs from 'fs';
 import util from 'util';
-
-import chai from 'chai';
 
 import { Datastore } from '../src/datastore';
 import * as model from '../src/model';

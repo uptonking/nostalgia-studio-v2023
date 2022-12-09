@@ -1,8 +1,10 @@
 import chai from 'chai';
+
 import * as customUtils from '../src/utils-polyfillable';
 
 chai.should();
-describe('customUtils, polyfills', function () {
+
+describe('customUtils/polyfills', function () {
   describe('uid', function () {
     it('Generates a string of the expected length', function () {
       customUtils.uid(3).length.should.equal(3);

@@ -76,8 +76,14 @@ module.exports = {
     'import/order': 0,
     'import/no-duplicates': 1,
     'node/no-unsupported-features/es-syntax': 0,
-    'node/no-unpublished-import': 1,
-    'node/no-unpublished-require': 1,
+    'node/no-unpublished-import': ["warn", {
+      "devDependencies": true,
+      "allowModules": ["chai"]
+    }],
+    'node/no-unpublished-require': ["warn", {
+      "devDependencies": true,
+      "allowModules": ["chai"]
+    }],
     'node/no-extraneous-require': 0,
     'node/no-extraneous-import': 0,
     'node/no-missing-import': 0,

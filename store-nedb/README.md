@@ -5,10 +5,12 @@
 - this project is a fork of nedb
   - db core is zero-deps
 
-- https://github.com/seald/nedb /js/active
+- https://github.com/seald/nedb /MIT
   - Since v3, NeDB provides a Promise-based equivalent for each function suffixed with `Async`
+- https://github.com/seald/node-binary-search-tree /MIT
+  - a fork of node-binary-search-tree written by Louis Chatriot for storing indexes in nedb.
 
-- https://github.com/louischatriot/nedb /201602/js
+- https://github.com/louischatriot/nedb /MIT/201602/js
   - Embedded persistent or in memory database for Node.js, nw.js, Electron and browsers, 100% JavaScript, no binary dependency. 
   - API is a subset of MongoDB's and it's plenty fast.
 # usage

@@ -1,13 +1,12 @@
-import { AVLTree as BinarySearchTree } from './binary-tree';
+import { AVLTree, BinarySearchTree as BST } from './binary-tree';
 import * as model from './model';
 import { isDate, uniq } from './utils';
 
+/** AVL平衡二叉树，注意使用简单版BST单测无法通过 */
+const BinarySearchTree = AVLTree;
+
 /**
  * Two indexed pointers are equal if they point to the same place
- * @param {*} a
- * @param {*} b
- * @return {boolean}
- * @private
  */
 const checkValueEquality = (a, b) => a === b;
 
@@ -43,53 +42,42 @@ export class Index {
   fieldName: string;
   /** enforce field uniqueness.
    * - Note that a unique index will raise an error if you try to index two documents for which the field is not defined. */
-  unique?: boolean;
-  /** don't index documents for which the field is not defined.
-   * - Use this option along with "unique" if you want to accept multiple documents for which it is not defined.. */
-  sparse: any;
+  unique = false;
+  /** Defines if we can have documents for which fieldName is `undefined`
+   * - if true, don't index documents for which the field is `undefined`.
+   * - Use this option along with "unique" if you want to accept multiple documents for which it is not defined. */
+  sparse = false;
+  /**
+   * Options object given to the underlying BinarySearchTree.
+   */
   treeOptions: {
-    unique: any;
+    unique: boolean;
     compareKeys: (a: any, b: any, _compareStrings: any) => any;
     checkValueEquality: (a: any, b: any) => boolean;
   };
-  tree: any;
+  /**
+   * Underlying BinarySearchTree for this index. Uses an AVLTree for optimization.
+   */
+  tree: InstanceType<typeof BinarySearchTree>;
 
   /**
    * Create a new index
-   * All methods on an index guarantee that either the whole operation was successful and the index changed
+   * - All methods on an index guarantee that either the whole operation was successful and the index changed
    * or the operation was unsuccessful and an error is thrown while the index is unchanged
-   * @param {object} options
+   * @param {object} optionslei x
    * @param {string} options.fieldName On which field should the index apply (can use dot notation to index on sub fields)
    * @param {boolean} [options.unique = false] Enforces a unique constraint
    * @param {boolean} [options.sparse = false] Allows a sparse index (we can have documents for which fieldName is `undefined`)
    */
   constructor(options) {
     this.fieldName = options.fieldName;
-    /**
-     * Defines if the index enforces a unique constraint for this index.
-     * @type {boolean}
-     */
     this.unique = options.unique || false;
-    /**
-     * Defines if we can have documents for which fieldName is `undefined`
-     * @type {boolean}
-     */
     this.sparse = options.sparse || false;
-
-    /**
-     * Options object given to the underlying BinarySearchTree.
-     * @type {{unique: boolean, checkValueEquality: (function(*, *): boolean), compareKeys: ((function(*, *, compareStrings): (number|number))|*)}}
-     */
     this.treeOptions = {
       unique: this.unique,
       compareKeys: model.compareThings,
       checkValueEquality: checkValueEquality,
     };
-
-    /**
-     * Underlying BinarySearchTree for this index. Uses an AVLTree for optimization.
-     * @type {AVLTree}
-     */
     this.tree = new BinarySearchTree(this.treeOptions);
   }
 
@@ -294,9 +282,10 @@ export class Index {
    * @param {Array.<*>|*} value Value to match the key against
    * @return {document[]}
    */
-  getMatching(value) {
-    if (!Array.isArray(value)) return this.tree.search(value);
-    else {
+  getMatching(value): any[] {
+    if (!Array.isArray(value)) {
+      return this.tree.search(value);
+    } else {
       const _res = {};
       const res = [];
 
@@ -324,7 +313,7 @@ export class Index {
    * @param {*} [query.$lte] Lower than or equal matcher.
    * @return {document[]}
    */
-  getBetweenBounds(query) {
+  getBetweenBounds(query): any[] {
     return this.tree.betweenBounds(query);
   }
 
@@ -334,7 +323,6 @@ export class Index {
    */
   getAll() {
     const res = [];
-
     this.tree.executeOnEveryNode((node) => {
       res.push(...node.data);
     });

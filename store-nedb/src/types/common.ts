@@ -107,4 +107,3 @@ export type SerializationHookType = (x: string) => string;
  * ```
  */
 export type CompareStringsType = (a: string, b: string) => number;
-

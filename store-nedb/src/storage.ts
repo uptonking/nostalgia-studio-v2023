@@ -254,7 +254,10 @@ export const writeFileLinesAsync = (
 export const crashSafeWriteFileLinesAsync = async (
   filename,
   lines,
-  modes: PersistenceOptionsProps['modes'] = { fileMode: DEFAULT_FILE_MODE, dirMode: DEFAULT_DIR_MODE },
+  modes: PersistenceOptionsProps['modes'] = {
+    fileMode: DEFAULT_FILE_MODE,
+    dirMode: DEFAULT_DIR_MODE,
+  },
 ) => {
   const tempFilename = filename + '~';
 

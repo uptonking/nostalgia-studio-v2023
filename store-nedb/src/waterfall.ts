@@ -38,7 +38,7 @@ export class Waterfall {
    * ? 性能似乎降低了
    */
   waterfall(func: AsyncFunction): AsyncFunction {
-    return async (...args) => {
+    return (...args) => {
       // const p1 = (async () => {
       this.guardian = (async () => {
         try {
@@ -67,7 +67,7 @@ export class Waterfall {
 
   /** Shorthand for chaining a promise to the Waterfall
    */
-  chain(promise: Promise<any>): Promise<any> {
+  chain(promise: Promise<unknown>): Promise<unknown> {
     return this.waterfall(() => promise)();
   }
 }

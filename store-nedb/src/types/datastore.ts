@@ -35,9 +35,9 @@ export interface PersistenceOptionsProps {
    * - `beforeSer(afterDeSer(str)) ?== str` */
   testSerializationHooks?: boolean;
   /** between 0 and 1, defaults to 10%.
- * - 0 means you don't tolerate any corruption, 1 means you don't care.
- * - NeDB will refuse to start if more than this percentage of the datafile is corrupt.
- */
+   * - 0 means you don't tolerate any corruption, 1 means you don't care.
+   * - NeDB will refuse to start if more than this percentage of the datafile is corrupt.
+   */
   corruptAlertThreshold?: number;
   /** Permissions to use for FS. Only used for Node.js storage module. Wont work on Windows.
    * - [.fileMode] number = 0o644 - Permissions to use for database files

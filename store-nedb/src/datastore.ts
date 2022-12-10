@@ -36,6 +36,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   public executor: Executor;
   /** Indexed by field name, dot notation can be used.
    * - `_id` is always indexed and since _ids are generated randomly the underlying binary search tree is always well-balanced
+   * - ❓ 所有数据内容和字段索引都保存在这里
    * @internal
    */
   public indexes: Record<'_id' | string, Index>;
@@ -104,6 +105,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       this.executor.ready = true;
     }
     this.indexes = {};
+    // 👇🏻 data stored here
     this.indexes._id = new Index({ fieldName: '_id', unique: true });
     this.ttlIndexes = {};
 
@@ -227,6 +229,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
 
   /**
    * Get an array of all the data in the database.
+   * - 在persist时会用到
    * @return {document[]}
    */
   getAllData() {
@@ -261,8 +264,9 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
 
   /**
    * Ensure an index is kept for this field. Same parameters as lib/indexes
-   * This function acts synchronously on the indexes, however the persistence of the indexes is deferred with the
+   * - This function acts synchronously on the indexes, however the persistence of the indexes is deferred with the
    * executor.
+   * - if index for fieldName already exist, return immediately
    * @param {object} options
    * @param {string} options.fieldName Name of the field to index. Use the dot notation to index a field in a nested
    * document.
@@ -276,21 +280,24 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @return {Promise<void>}
    */
   async ensureIndexAsync(options: EnsureIndexOptions = {}) {
-    if (!options.fieldName) {
+    const fieldName = options.fieldName;
+    if (!fieldName) {
       const err = new Error('Cannot create an index without a fieldName');
       err['missingFieldName'] = true;
       throw err;
     }
-    if (this.indexes[options.fieldName]) return;
+    if (this.indexes[fieldName]) return;
 
-    this.indexes[options.fieldName] = new Index(options);
-    if (options.expireAfterSeconds !== undefined)
-      this.ttlIndexes[options.fieldName] = options.expireAfterSeconds; // With this implementation index creation is not necessary to ensure TTL but we stick with MongoDB's API here
+    this.indexes[fieldName] = new Index(options);
+    if (options.expireAfterSeconds !== undefined) {
+      // With this implementation index creation is not necessary to ensure TTL, but we stick with MongoDB's API here
+      this.ttlIndexes[fieldName] = options.expireAfterSeconds;
+    }
 
     try {
-      this.indexes[options.fieldName].insert(this.getAllData());
+      this.indexes[fieldName].insert(this.getAllData());
     } catch (e) {
-      delete this.indexes[options.fieldName];
+      delete this.indexes[fieldName];
       throw e;
     }
 
@@ -308,7 +315,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @param {NoParamCallback} [callback]
    * @see Datastore#removeIndexAsync
    */
-  removeIndex(fieldName, callback = () => { }) {
+  removeIndex(fieldName, callback = () => {}) {
     const promise = this.removeIndexAsync(fieldName);
     callbackify(() => promise)(callback);
   }
@@ -421,7 +428,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    *
    * @private
    */
-  _getRawCandidates(query) {
+  _getRawCandidates(query): any[] {
     const indexNames = Object.keys(this.indexes);
     // STEP 1: get candidates list by checking indexes from most to least frequent usecase
     // For a basic match
@@ -431,10 +438,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         ([k, v]) =>
           Boolean(
             typeof v === 'string' ||
-            typeof v === 'number' ||
-            typeof v === 'boolean' ||
-            isDate(v) ||
-            v === null,
+              typeof v === 'number' ||
+              typeof v === 'boolean' ||
+              isDate(v) ||
+              v === null,
           ) && indexNames.includes(k),
       )
       .pop();
@@ -456,10 +463,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         ([k, v]) =>
           Boolean(
             query[k] &&
-            (Object.hasOwn(query[k], '$lt') ||
-              Object.hasOwn(query[k], '$lte') ||
-              Object.hasOwn(query[k], '$gt') ||
-              Object.hasOwn(query[k], '$gte')),
+              (Object.hasOwn(query[k], '$lt') ||
+                Object.hasOwn(query[k], '$lte') ||
+                Object.hasOwn(query[k], '$gt') ||
+                Object.hasOwn(query[k], '$gte')),
           ) && indexNames.includes(k),
       )
       .pop();
@@ -517,23 +524,6 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   }
 
   /**
-   * Insert a new document
-   * This is an internal function, use {@link Datastore#insertAsync} which has the same signature.
-   * @param {document|document[]} newDoc
-   * @return {Promise<document|document[]>}
-   * @private
-   */
-  async _insertAsync(newDoc) {
-    const preparedDoc = this._prepareDocumentForInsertion(newDoc); // 手动深拷贝
-    this._insertInCache(preparedDoc);
-
-    await this.persistence.persistNewStateAsync(
-      Array.isArray(preparedDoc) ? preparedDoc : [preparedDoc],
-    );
-    return model.deepCopy(preparedDoc);
-  }
-
-  /**
    * Create a new _id that's not already in use
    * @return {string} id
    * @private
@@ -547,8 +537,25 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   }
 
   /**
+   * Insert a new document
+   * - This is an internal function, use {@link Datastore#insertAsync} which has the same signature.
+   * @param {document|document[]} newDoc
+   * @return {Promise<document|document[]>}
+   * @private
+   */
+  async _insertAsync(newDoc) {
+    const preparedDoc = this._prepareDocumentForInsertion(newDoc); // 手动深拷贝
+    this._insertInCache(preparedDoc); // _addToIndexes
+
+    await this.persistence.persistNewStateAsync(
+      Array.isArray(preparedDoc) ? preparedDoc : [preparedDoc],
+    );
+    return model.deepCopy(preparedDoc);
+  }
+
+  /**
    * Prepare a document (or array of documents) to be inserted in a database
-   * - Meaning adds _id and timestamps if necessary on a copy of newDoc to avoid any side effect on user input
+   * - Meaning adds `_id` and `createdAt/updatedAt` timestamps if necessary on a copy of newDoc to avoid any side effect on user input
    * @param {document|document[]} newDoc document, or Array of documents, to prepare
    * @return {document|document[]} prepared document, or Array of prepared documents
    * @private
@@ -559,6 +566,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
     if (Array.isArray(newDoc)) {
       preparedDoc = [];
       newDoc.forEach((doc) => {
+        // 👇🏻 recursive
         preparedDoc.push(this._prepareDocumentForInsertion(doc));
       });
     } else {
@@ -805,8 +813,9 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
     const multi = options.multi !== undefined ? options.multi : false;
     const upsert = options.upsert !== undefined ? options.upsert : false;
 
-    // If upsert option is set, check whether we need to insert the doc
     if (upsert) {
+      // If `upsert` is set, check whether we need to insert the doc; reuse `_insert`
+
       const cursor = new Cursor(this, query);
 
       // Need to use an internal function not tied to the executor to avoid deadlock
@@ -828,6 +837,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         return { numAffected: 1, affectedDocuments: newDoc, upsert: true };
       }
     }
+
     // Perform the update
     let numReplaced = 0;
     let modifiedDoc;
@@ -858,13 +868,14 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
     // Update the datafile
     const updatedDocs = modifications.map((x) => x.newDoc);
     await this.persistence.persistNewStateAsync(updatedDocs);
-    if (!options.returnUpdatedDocs)
+
+    if (!options.returnUpdatedDocs) {
       return {
         numAffected: numReplaced,
         upsert: false,
         affectedDocuments: null,
       };
-    else {
+    } else {
       let updatedDocsDC = [];
       updatedDocs.forEach((doc) => {
         updatedDocsDC.push(model.deepCopy(doc));
@@ -988,7 +999,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       cb = options;
       options = {};
     }
-    const callback = cb || (() => { });
+    const callback = cb || (() => {});
     callbackify((query, options) => this.removeAsync(query, options))(
       query,
       options,

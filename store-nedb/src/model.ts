@@ -150,8 +150,8 @@ export const isPrimitiveType = (obj) =>
 
 /**
  * Utility functions for comparing things
- * Assumes type checking was already done (a and b already have the same type)
- * compareNSB works for numbers, strings and booleans
+ * - Assumes type checking was already done (a and b already have the same type)
+ * - compareNSB works for numbers, strings and booleans
  * @param {number|string|boolean} a
  * @param {number|string|boolean} b
  * @return {number} 0 if a == b, 1 i a > b, -1 if a < b
@@ -186,11 +186,11 @@ const compareArrays = (a, b) => {
 
 /**
  * Compare { things U undefined }
- * Things are defined as any native types (string, number, boolean, null, date) and objects
- * We need to compare with undefined as it will be used in indexes
- * In the case of objects and arrays, we deep-compare
- * If two objects dont have the same type, the (arbitrary) type hierarchy is: undefined, null, number, strings, boolean, dates, arrays, objects
- * Return -1 if a < b, 1 if a > b and 0 if a = b (note that equality here is NOT the same as defined in areThingsEqual!)
+ * - Things are defined as any native types (string, number, boolean, null, date) and objects
+ * - We need to compare with undefined as it will be used in indexes
+ * - In the case of objects and arrays, we deep-compare
+ * - If two objects dont have the same type, the (arbitrary) type hierarchy is: undefined, null, number, strings, boolean, dates, arrays, objects
+ * - Return -1 if a < b, 1 if a > b and 0 if a = b (note that equality here is NOT the same as defined in areThingsEqual!)
  * @param {*} a
  * @param {*} b
  * @param {compareStrings} [_compareStrings] String comparing function, returning -1, 0 or 1, overriding default string comparison (useful for languages with accented letters)
@@ -444,8 +444,7 @@ const modifierFunctions = {
   }),
 };
 
-/**
- * Modify a DB object according to an update query
+/** 👉🏻 Modify a DB object according to an update query
  * @param {document} obj
  * @param {query} updateQuery
  * @return {document}
@@ -601,8 +600,9 @@ const areComparable = (a, b) => {
     typeof b !== 'string' &&
     typeof b !== 'number' &&
     !isDate(b)
-  )
+  ) {
     return false;
+  }
 
   if (typeof a !== typeof b) return false;
 
@@ -685,7 +685,7 @@ const comparisonFunctions = {
 const arrayComparisonFunctions = { $size: true, $elemMatch: true };
 
 /**
- * @enum
+ * - 类似mongodb的逻辑运算符，包括 $or/$and/$not/$where
  */
 const logicalOperators = {
   /**
@@ -783,7 +783,7 @@ export const match = (obj, query) => {
 
 /**
  * Match an object against a specific { key: value } part of a query
- * if the treatObjAsValue flag is set, don't try to match every part separately, but the array as a whole
+ * - if the `treatObjAsValue` flag is set, don't try to match every part separately, but the array as a whole
  * @param {object} obj
  * @param {string} queryKey
  * @param {*} queryValue

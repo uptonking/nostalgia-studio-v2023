@@ -9,7 +9,7 @@ export class BinarySearchTree {
   parent: BinarySearchTree | null;
   key: any;
   data: any[];
-  unique: any;
+  unique = false;
   compareKeys: (a: any, b: any) => number;
   checkValueEquality: (a: any, b: any) => boolean;
 
@@ -161,7 +161,7 @@ export class BinarySearchTree {
     options.compareKeys = this.compareKeys;
     options.checkValueEquality = this.checkValueEquality;
 
-    // 🚨 下面的 this.constructor 不能直接改成 BinarySearchTree，因为子类调用时class变了
+    // 🚨 this.constructor 不能直接改成 BinarySearchTree，因为子类调用时class变了
     // @ts-expect-error fixme
     return new this.constructor(options);
   }
@@ -191,7 +191,7 @@ export class BinarySearchTree {
   /**
    * Insert a new element
    */
-  insert(key, value) {
+  insert(key, value = undefined) {
     // Empty tree, insert as root
     if (!Object.hasOwn(this, 'key')) {
       this.key = key;
@@ -290,7 +290,7 @@ export class BinarySearchTree {
    * @param {Object} query Mongo-style query where keys are $lt, $lte, $gt or $gte (other keys are not considered)
    * @param {Functions} lbm/ubm matching functions calculated at the first recursive step
    */
-  betweenBounds(query, lbm, ubm) {
+  betweenBounds(query, lbm = undefined, ubm = undefined) {
     const res = [];
 
     if (!Object.hasOwn(this, 'key')) return []; // Empty tree
@@ -298,11 +298,15 @@ export class BinarySearchTree {
     lbm = lbm || this.getLowerBoundMatcher(query);
     ubm = ubm || this.getUpperBoundMatcher(query);
 
-    if (lbm(this.key) && this.left)
+    if (lbm(this.key) && this.left) {
       append(res, this.left.betweenBounds(query, lbm, ubm));
-    if (lbm(this.key) && ubm(this.key)) append(res, this.data);
-    if (ubm(this.key) && this.right)
+    }
+    if (lbm(this.key) && ubm(this.key)) {
+      append(res, this.data);
+    }
+    if (ubm(this.key) && this.right) {
       append(res, this.right.betweenBounds(query, lbm, ubm));
+    }
 
     return res;
   }
@@ -374,7 +378,7 @@ export class BinarySearchTree {
    * @param {Key} key
    * @param {Value} value Optional. If not set, the whole key is deleted. If set, only this value is deleted
    */
-  delete(key, value) {
+  delete(key, value = undefined) {
     const newData = [];
     let replaceWith;
 
@@ -390,9 +394,9 @@ export class BinarySearchTree {
       return;
     }
 
-    // ❓ 原来是不是写错了
+    // @ts-expect-error fix-types ❓ 原来是不是写错了;; 原来就是写错了
     // if (!this.compareKeys(key, this.key) === 0) return;
-    if (this.compareKeys(key, this.key) === 0) return;
+    if (false) return;
 
     // Delete only a value
     if (this.data.length > 1 && value !== undefined) {
@@ -481,9 +485,12 @@ export class BinarySearchTree {
 // Methods used to actually work on the tree
 // ============================================
 
-// Append all elements in toAppend to array
+/** Append all elements in `toAppend` to `array` */
 function append(array, toAppend) {
-  for (let i = 0; i < toAppend.length; i += 1) {
-    array.push(toAppend[i]);
+  // for (let i = 0; i < toAppend.length; i += 1) {
+  //   array.push(toAppend[i]);
+  // }
+  if (Array.isArray(array) && Array.isArray(toAppend)) {
+    array.push(...toAppend)
   }
 }

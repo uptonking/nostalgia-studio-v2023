@@ -1,53 +1,12 @@
 import { BinarySearchTree } from './bst';
 import * as customUtils from './utils';
 
-/**
- * Self-balancing binary search tree using the AVL implementation
- */
-export class AVLTree {
-  tree: _AVLTree;
-
-  static _AVLTree: typeof _AVLTree;
-  /**
-   * Constructor
-   * We can't use a direct pointer to the root node (as in the simple binary search tree)
-   * as the root will change during tree rotations
-   * @param {Boolean}  options.unique Whether to enforce a 'unique' constraint on the key or not
-   * @param {Function} options.compareKeys Initialize this BST's compareKeys
-   */
-  constructor(options) {
-    this.tree = new _AVLTree(options);
-  }
-
-  checkIsAVLT() {
-    this.tree.checkIsAVLT();
-  }
-
-  // Insert in the internal tree, update the pointer to the root if needed
-  insert(key, value) {
-    const newTree = this.tree.insert(key, value);
-
-    // If newTree is undefined, that means its structure was not modified
-    if (newTree) {
-      this.tree = newTree;
-    }
-  }
-
-  // Delete a value
-  delete(key, value) {
-    const newTree = this.tree.delete(key, value);
-
-    // If newTree is undefined, that means its structure was not modified
-    if (newTree) {
-      this.tree = newTree;
-    }
-  }
-}
-
+/** @internal */
 class _AVLTree extends BinarySearchTree {
   left: _AVLTree | null;
   right: _AVLTree | null;
   parent: _AVLTree | null;
+  /** ❓ for check only */
   height: number;
 
   /**
@@ -65,7 +24,9 @@ class _AVLTree extends BinarySearchTree {
     this.left = null;
     this.right = null;
     this.parent = options.parent !== undefined ? options.parent : null;
-    if (Object.hasOwn(options, 'key')) this.key = options.key;
+    if (Object.hasOwn(options, 'key')) {
+      this.key = options.key;
+    }
     this.data = Object.hasOwn(options, 'value') ? [options.value] : [];
     this.unique = options.unique || false;
 
@@ -137,7 +98,7 @@ class _AVLTree extends BinarySearchTree {
    * When checking if the BST conditions are met, also check that the heights are correct
    * and the tree is balanced
    */
-  checkIsAVLT() {
+  checkIsAVLTree() {
     super.checkIsBST();
     this.checkHeightCorrect();
     this.checkBalanceFactors();
@@ -457,21 +418,86 @@ class _AVLTree extends BinarySearchTree {
 }
 
 /**
- * Keep a pointer to the internal tree constructor for testing purposes
+ * Self-balancing binary search tree using the AVL implementation
  */
-AVLTree._AVLTree = _AVLTree;
+export class AVLTree {
+  tree: _AVLTree;
+
+  /** Keep a pointer to the internal tree constructor for testing purposes
+   */
+  static _AVLTree = _AVLTree;
+
+  /**
+   * We can't use a direct pointer to the root node (as in the simple binary search tree)
+   * as the root will change during tree rotations
+   * @param {Boolean}  options.unique Whether to enforce a 'unique' constraint on the key or not
+   * @param {Function} options.compareKeys Initialize this BST's compareKeys
+   */
+  constructor(options = {}) {
+    this.tree = new _AVLTree(options);
+  }
+
+  checkIsAVLTree() {
+    this.tree.checkIsAVLTree();
+  }
+
+  /** Insert in the internal tree, update the pointer to the root if needed */
+  insert(key, value = undefined) {
+    const newTree = this.tree.insert(key, value);
+
+    // If newTree is undefined, that means its structure was not modified
+    if (newTree) {
+      this.tree = newTree;
+    }
+  }
+
+  /** Delete a value */
+  delete(key, value = undefined) {
+    const newTree = this.tree.delete(key, value);
+
+    // If newTree is undefined, that means its structure was not modified
+    if (newTree) {
+      this.tree = newTree;
+    }
+  }
+
+  /**
+   * Get number of keys inserted
+   */
+  getNumberOfKeys() {
+    return this.tree.getNumberOfKeys();
+  }
+
+  /**
+   * Search for all data corresponding to a key
+   */
+  search(key) {
+    return this.tree.search(key);
+  }
 
 /**
- * Other functions we want to use on an AVLTree as if it were the internal _AVLTree
+ * Get all data for a key between bounds
+ * Return it in key order
+ * @param {Object} query Mongo-style query where keys are $lt, $lte, $gt or $gte (other keys are not considered)
+ * @param {Functions} lbm/ubm matching functions calculated at the first recursive step
  */
-[
-  'getNumberOfKeys',
-  'search',
-  'betweenBounds',
-  'prettyPrint',
-  'executeOnEveryNode',
-].forEach(function (fn) {
-  AVLTree.prototype[fn] = function () {
-    return this.tree[fn].apply(this.tree, arguments);
-  };
-});
+  betweenBounds(query, lbm = undefined, ubm = undefined) {
+    return this.tree.betweenBounds(query, lbm, ubm);
+  }
+
+  /**
+   * Pretty print a tree
+   * @param {Boolean} printData To print the nodes' data along with the key
+   */
+  prettyPrint(printData: boolean, spacing) {
+    this.tree.prettyPrint(printData, spacing);
+  }
+
+  /**
+   * Execute a function on every node of the tree, in key order
+   * @param {Function} fn Signature: node. Most useful will probably be node.key and node.data
+   */
+  executeOnEveryNode(fn) {
+    this.tree.executeOnEveryNode(fn);
+  }
+}

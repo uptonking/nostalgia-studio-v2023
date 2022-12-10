@@ -158,10 +158,10 @@ export class Persistence implements PersistenceOptionsProps {
   }
 
   /**
-   * @see Datastore#compactDatafile
    * @deprecated
    * @param {NoParamCallback} [callback = () => {}]
-   * @see Persistence#compactDatafileAsync
+   * @see Datastore#compactDatafile
+   * @see Persistence#persistCachedDatabaseAsync
    */
   compactDatafile(callback = undefined) {
     deprecate(
@@ -368,7 +368,7 @@ export class Persistence implements PersistenceOptionsProps {
    * - Also, all data is persisted right away, which has the effect of compacting the database file
    * - This operation is very quick at startup for a big collection (60ms for ~10k docs)
    *
-   * Do not use directly as it does not use the [Executor]{@link Datastore.executor}, use {@link Datastore#loadDatabaseAsync} instead.
+   * Do not use directly as it does not use the [Executor]{@link Datastore .executor}, use {@link Datastore#loadDatabaseAsync} instead.
    * @return {Promise<void>}
    * @private
    */

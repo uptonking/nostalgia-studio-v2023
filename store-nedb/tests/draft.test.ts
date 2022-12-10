@@ -32,7 +32,7 @@ const doc = {
 
 // db.insert(doc, (err, newDoc) => { });
 
-db.insert([{ a: 5 }, { b: 42 }], function (err, newDocs) { });
+db.insert([{ a: 5 }, { b: 42 }], function (err, newDocs) {});
 
 // Find all documents in the collection
 db.find({}, (err, docs) => {

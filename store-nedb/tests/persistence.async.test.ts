@@ -738,7 +738,10 @@ describe('Persistence async', function () {
 
     it('If no file stat, ensureDatafileIntegrity creates an empty datafile', async () => {
       const p = new Persistence({
-        db: { inMemoryOnly: false, filename: 'tests/testdata/it.db' } as Datastore,
+        db: {
+          inMemoryOnly: false,
+          filename: 'tests/testdata/it.db',
+        } as Datastore,
       });
       if (await exists('tests/testdata/it.db'))
         await fs.unlink('tests/testdata/it.db');
@@ -758,7 +761,10 @@ describe('Persistence async', function () {
 
     it('If only datafile stat, ensureDatafileIntegrity will use it', async () => {
       const p = new Persistence({
-        db: { inMemoryOnly: false, filename: 'tests/testdata/it.db' } as Datastore,
+        db: {
+          inMemoryOnly: false,
+          filename: 'tests/testdata/it.db',
+        } as Datastore,
       });
 
       if (await exists('tests/testdata/it.db')) {
@@ -786,7 +792,10 @@ describe('Persistence async', function () {
 
     it('If temp datafile stat and datafile doesnt, ensureDatafileIntegrity will use it (cannot happen except upon first use)', async () => {
       const p = new Persistence({
-        db: { inMemoryOnly: false, filename: 'tests/testdata/it.db' } as Datastore,
+        db: {
+          inMemoryOnly: false,
+          filename: 'tests/testdata/it.db',
+        } as Datastore,
       });
 
       if (await exists('tests/testdata/it.db')) {

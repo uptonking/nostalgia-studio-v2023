@@ -510,11 +510,9 @@ describe('AVL tree', () => {
       avlt.delete(5);
       avltu.delete(5);
 
-      Object.prototype.hasOwnProperty
-        .call(avlt.tree, 'key')
+      Object.hasOwn(avlt.tree, 'key')
         .should.equal(false);
-      Object.prototype.hasOwnProperty
-        .call(avltu.tree, 'key')
+      Object.hasOwn(avltu.tree, 'key')
         .should.equal(false);
 
       avlt.tree.data.length.should.equal(0);
@@ -583,8 +581,7 @@ describe('AVL tree', () => {
       avlt.getNumberOfKeys().should.equal(1);
 
       avlt.delete(10);
-      Object.prototype.hasOwnProperty
-        .call(avlt.tree, 'key')
+      Object.hasOwn(avlt.tree, 'key')
         .should.equal(false);
       avlt.tree.data.length.should.equal(0);
       avlt.getNumberOfKeys().should.equal(0);

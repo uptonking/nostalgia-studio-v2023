@@ -202,6 +202,7 @@ export class Persistence implements PersistenceOptionsProps {
    * @private
    */
   async persistNewStateAsync(newDocs) {
+    /** persisted content is string. serialize > flush  */
     let toPersist = '';
 
     // In-memory only datastore

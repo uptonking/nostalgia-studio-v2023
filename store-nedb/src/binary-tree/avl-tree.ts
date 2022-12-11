@@ -1,7 +1,11 @@
 import { BinarySearchTree } from './bst';
 import * as customUtils from './utils';
 
-/** @internal */
+/** an AVL tree is a self-balancing binary search tree.
+ * - In an AVL tree, the heights of the two child subtrees of any node differ by at most one
+ * - Lookup, insertion, and deletion all take `O(log n)` time in both the average and worst cases
+ * @internal
+ */
 class _AVLTree extends BinarySearchTree {
   left: _AVLTree | null;
   right: _AVLTree | null;
@@ -209,10 +213,10 @@ class _AVLTree extends BinarySearchTree {
   }
 
   /**
-   * Rebalance the tree along the given path. The path is given reversed (as he was calculated
-   * in the insert and delete functions).
-   * Returns the new root of the tree
-   * Of course, the first element of the path must be the root of the tree
+   * Rebalance the tree along the given path.
+   * - The path is given reversed (as it was calculated in the insert and delete functions).
+   * - Returns the new root of the tree
+   * - Of course, the first element of the path must be the root of the tree
    */
   rebalanceAlongPath(path) {
     let newRoot = this;
@@ -248,8 +252,8 @@ class _AVLTree extends BinarySearchTree {
   }
 
   /**
-   * Insert a key, value pair in the tree while maintaining the AVL tree height constraint
-   * Return a pointer to the root node, which may have changed
+   * Insert a [key, value] pair in the tree while maintaining the AVL tree height constraint
+   * - Return a pointer to the root node, which may have changed
    */
   insert(key, value) {
     const insertPath = [];
@@ -274,7 +278,9 @@ class _AVLTree extends BinarySearchTree {
           err.key = key;
           err.errorType = 'uniqueViolated';
           throw err;
-        } else currentNode.data.push(value);
+        } else {
+          currentNode.data.push(value);
+        }
         return this;
       }
 
@@ -286,14 +292,18 @@ class _AVLTree extends BinarySearchTree {
             currentNode.createLeftChild({ key: key, value: value }),
           );
           break;
-        } else currentNode = currentNode.left;
+        } else {
+          currentNode = currentNode.left;
+        }
       } else {
         if (!currentNode.right) {
           insertPath.push(
             currentNode.createRightChild({ key: key, value: value }),
           );
           break;
-        } else currentNode = currentNode.right;
+        } else {
+          currentNode = currentNode.right;
+        }
       }
     }
 
@@ -475,12 +485,12 @@ export class AVLTree {
     return this.tree.search(key);
   }
 
-/**
- * Get all data for a key between bounds
- * Return it in key order
- * @param {Object} query Mongo-style query where keys are $lt, $lte, $gt or $gte (other keys are not considered)
- * @param {Functions} lbm/ubm matching functions calculated at the first recursive step
- */
+  /**
+   * Get all data for a key between bounds
+   * Return it in key order
+   * @param {Object} query Mongo-style query where keys are $lt, $lte, $gt or $gte (other keys are not considered)
+   * @param {Functions} lbm/ubm matching functions calculated at the first recursive step
+   */
   betweenBounds(query, lbm = undefined, ubm = undefined) {
     return this.tree.betweenBounds(query, lbm, ubm);
   }
@@ -495,6 +505,7 @@ export class AVLTree {
 
   /**
    * Execute a function on every node of the tree, in key order
+   * - recursive/depth-first
    * @param {Function} fn Signature: node. Most useful will probably be node.key and node.data
    */
   executeOnEveryNode(fn) {

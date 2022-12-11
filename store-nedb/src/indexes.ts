@@ -82,19 +82,21 @@ export class Index {
   }
 
   /**
-   * Reset an index
+   * Reset an index by creating a new bst
    * @param {?document|?document[]} [newData] Data to initialize the index with. If an error is thrown during
    * insertion, the index is not modified.
    */
   reset(newData = undefined) {
     this.tree = new BinarySearchTree(this.treeOptions);
 
-    if (newData) this.insert(newData);
+    if (newData) {
+      this.insert(newData);
+    }
   }
 
   /**
    * Insert a new document in the index
-   * If an array is passed, we insert all its elements (if one insertion fails the index is not modified)
+   * - If an array is passed, we insert all its elements (if one insertion fails the index is not modified)
    * O(log(n))
    * @param {document|document[]} doc The document, or array of documents, to insert.
    */
@@ -113,8 +115,9 @@ export class Index {
     // We don't index documents that don't contain the field if the index is sparse
     if (key === undefined && this.sparse) return;
 
-    if (!Array.isArray(key)) this.tree.insert(key, doc);
-    else {
+    if (!Array.isArray(key)) {
+      this.tree.insert(key, doc);
+    } else {
       // If an insert fails due to a unique constraint, roll back all inserts before it
       keys = uniq(key, projectForUnique);
 
@@ -140,7 +143,8 @@ export class Index {
 
   /**
    * Insert an array of documents in the index
-   * If a constraint is violated, the changes should be rolled back and an error thrown
+   * - using `this.insert` in loop
+   * - If a constraint is violated, the changes should be rolled back and an error thrown
    * @param {document[]} docs Array of documents to insert.
    * @private
    */
@@ -169,8 +173,8 @@ export class Index {
 
   /**
    * Removes a document from the index.
-   * If an array is passed, we remove all its elements
-   * The remove operation is safe with regards to the 'unique' constraint
+   * - If an array is passed, we remove all its elements
+   * - The remove operation is safe with regards to the 'unique' constraint
    * O(log(n))
    * @param {document[]|document} doc The document, or Array of documents, to remove.
    */
@@ -197,8 +201,8 @@ export class Index {
 
   /**
    * Update a document in the index
-   * If a constraint is violated, changes are rolled back and an error thrown
-   * Naive implementation, still in O(log(n))
+   * - If a constraint is violated, changes are rolled back and an error thrown
+   * - Naive implementation, still in O(log(n))
    * @param {document|Array.<{oldDoc: document, newDoc: document}>} oldDoc Document to update, or an `Array` of
    * `{oldDoc, newDoc}` pairs.
    * @param {document} [newDoc] Document to replace the oldDoc with. If the first argument is an `Array` of
@@ -222,7 +226,7 @@ export class Index {
 
   /**
    * Update multiple documents in the index
-   * If a constraint is violated, the changes need to be rolled back
+   * - If a constraint is violated, the changes need to be rolled back
    * and an error thrown
    * @param {Array.<{oldDoc: document, newDoc: document}>} pairs
    *
@@ -268,8 +272,9 @@ export class Index {
   revertUpdate(oldDoc, newDoc = undefined) {
     const revert = [];
 
-    if (!Array.isArray(oldDoc)) this.update(newDoc, oldDoc);
-    else {
+    if (!Array.isArray(oldDoc)) {
+      this.update(newDoc, oldDoc);
+    } else {
       oldDoc.forEach((pair) => {
         revert.push({ oldDoc: pair.newDoc, newDoc: pair.oldDoc });
       });
@@ -282,7 +287,7 @@ export class Index {
    * @param {Array.<*>|*} value Value to match the key against
    * @return {document[]}
    */
-  getMatching(value): any[] {
+  getMatching(value) {
     if (!Array.isArray(value)) {
       return this.tree.search(value);
     } else {
@@ -305,7 +310,7 @@ export class Index {
 
   /**
    * Get all documents in index whose key is between bounds are they are defined by query
-   * Documents are sorted by key
+   * - Documents are sorted by key
    * @param {object} query An object with at least one matcher among $gt, $gte, $lt, $lte.
    * @param {*} [query.$gt] Greater than matcher.
    * @param {*} [query.$gte] Greater than or equal matcher.
@@ -313,20 +318,19 @@ export class Index {
    * @param {*} [query.$lte] Lower than or equal matcher.
    * @return {document[]}
    */
-  getBetweenBounds(query): any[] {
+  getBetweenBounds(query) {
     return this.tree.betweenBounds(query);
   }
 
   /**
-   * Get all elements in the index
+   * Get all elements in the index.
    * return {document[]}
    */
   getAll() {
-    const res = [];
+    const resultData = [];
     this.tree.executeOnEveryNode((node) => {
-      res.push(...node.data);
+      resultData.push(...node.data);
     });
-
-    return res;
+    return resultData;
   }
 }

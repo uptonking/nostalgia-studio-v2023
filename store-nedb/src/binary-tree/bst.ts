@@ -4,10 +4,12 @@ import * as customUtils from './utils';
  * Simple binary search tree
  */
 export class BinarySearchTree {
+
   left: BinarySearchTree | null;
   right: BinarySearchTree | null;
   parent: BinarySearchTree | null;
   key: any;
+  /** ❓ array  */
   data: any[];
   unique = false;
   compareKeys: (a: any, b: any) => number;
@@ -394,7 +396,7 @@ export class BinarySearchTree {
       return;
     }
 
-    // @ts-expect-error fix-types ❓ 原来是不是写错了;; 原来就是写错了
+    // ts-expect-error fix-types ❓ 原来是不是写错了
     // if (!this.compareKeys(key, this.key) === 0) return;
     if (false) return;
 

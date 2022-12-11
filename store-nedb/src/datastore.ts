@@ -35,7 +35,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    */
   public executor: Executor;
   /** Indexed by field name, dot notation can be used.
-   * - `_id` is always indexed and since _ids are generated randomly the underlying binary search tree is always well-balanced
+   * - `_id` is always indexed and since _ids are generated randomly, the underlying binary search tree is always well-balanced
    * - ❓ 所有数据内容和字段索引都保存在这里
    * @internal
    */
@@ -104,8 +104,8 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
     if (this.inMemoryOnly) {
       this.executor.ready = true;
     }
-    this.indexes = {};
     // 👇🏻 data stored here
+    this.indexes = {};
     this.indexes._id = new Index({ fieldName: '_id', unique: true });
     this.ttlIndexes = {};
 
@@ -315,7 +315,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @param {NoParamCallback} [callback]
    * @see Datastore#removeIndexAsync
    */
-  removeIndex(fieldName, callback = () => {}) {
+  removeIndex(fieldName, callback = () => { }) {
     const promise = this.removeIndexAsync(fieldName);
     callbackify(() => promise)(callback);
   }
@@ -340,9 +340,8 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   /**
    * Add one or several document(s) to all indexes.
    *
-   * This is an internal function.
-   * @param {document} doc
-   * @private
+   * @param {document} add doc/docs
+   * @internal
    */
   _addToIndexes(doc) {
     let failingIndex;
@@ -438,10 +437,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         ([k, v]) =>
           Boolean(
             typeof v === 'string' ||
-              typeof v === 'number' ||
-              typeof v === 'boolean' ||
-              isDate(v) ||
-              v === null,
+            typeof v === 'number' ||
+            typeof v === 'boolean' ||
+            isDate(v) ||
+            v === null,
           ) && indexNames.includes(k),
       )
       .pop();
@@ -463,10 +462,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         ([k, v]) =>
           Boolean(
             query[k] &&
-              (Object.hasOwn(query[k], '$lt') ||
-                Object.hasOwn(query[k], '$lte') ||
-                Object.hasOwn(query[k], '$gt') ||
-                Object.hasOwn(query[k], '$gte')),
+            (Object.hasOwn(query[k], '$lt') ||
+              Object.hasOwn(query[k], '$lte') ||
+              Object.hasOwn(query[k], '$gt') ||
+              Object.hasOwn(query[k], '$gte')),
           ) && indexNames.includes(k),
       )
       .pop();
@@ -545,8 +544,9 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    */
   async _insertAsync(newDoc) {
     const preparedDoc = this._prepareDocumentForInsertion(newDoc); // 手动深拷贝
+    // add to memory
     this._insertInCache(preparedDoc); // _addToIndexes
-
+    // add to persistence
     await this.persistence.persistNewStateAsync(
       Array.isArray(preparedDoc) ? preparedDoc : [preparedDoc],
     );
@@ -601,6 +601,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   /**
    * If one insertion fails (e.g. because of a unique constraint), roll back all previous
    * inserts and throws the error
+   * - using `this._addToIndexes` in loop
    * @param {document[]} preparedDocs
    * @private
    */
@@ -999,7 +1000,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       cb = options;
       options = {};
     }
-    const callback = cb || (() => {});
+    const callback = cb || (() => { });
     callbackify((query, options) => this.removeAsync(query, options))(
       query,
       options,

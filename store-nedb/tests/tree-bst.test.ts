@@ -464,8 +464,8 @@ describe('Binary search tree', () => {
       bst.delete(5)
       bstu.delete(5)
 
-      Object.prototype.hasOwnProperty.call(bst, 'key').should.equal(false)
-      Object.prototype.hasOwnProperty.call(bstu, 'key').should.equal(false)
+      Object.hasOwn(bst, 'key').should.equal(false)
+      Object.hasOwn(bstu, 'key').should.equal(false)
 
       bst.data.length.should.equal(0)
       bstu.data.length.should.equal(0)
@@ -533,7 +533,7 @@ describe('Binary search tree', () => {
       bst.getNumberOfKeys().should.equal(1)
 
       bst.delete(10)
-      Object.prototype.hasOwnProperty.call(bst, 'key').should.equal(false)
+      Object.hasOwn(bst, 'key').should.equal(false)
       bst.data.length.should.equal(0)
       bst.getNumberOfKeys().should.equal(0)
     })

@@ -2,15 +2,15 @@ import { Datastore } from '../src';
 
 const TEST_DB_IT = 'tests/testdata/testing11.db';
 
-// in-memory only db
-// const db1 = new Datastore();
+// const db1 = new Datastore(); // in-memory only db
 
-// local-file db
 // const db = new Datastore({ filename: './testdata/testing11.db', autoload: true });
 const db = new Datastore({ filename: TEST_DB_IT });
 db.loadDatabase((err) => {
   console.log(';; db-loaded ', err);
 });
+
+db.ensureIndex({ fieldName: 'year' }, () => { });
 
 // const db = new Datastore({ filename: TEST_DB_IT })
 // try {
@@ -30,13 +30,30 @@ const doc = {
   infos: { name: 'nedb' },
 };
 
-db.insert(doc, (err, newDoc) => { });
+const docs = [
+  { title: 'Seven', year: 1995, genres: ['Drama', 'Crime', 'Mystery'] },
+  { title: 'Fight Club', year: 1999, genres: ['Drama'] },
+  { title: 'Inception', year: 2010, genres: ['Sci-Fi', 'Action', 'Adventure'] },
+  {
+    title: 'Jurassic Park',
+    year: 1993,
+    genres: ['Sci-Fi', 'Action', 'Adventure'],
+  },
+  {
+    title: "Schindler's List",
+    year: 1993,
+    genres: ['Drama', 'History', 'Biography'],
+  },
+];
 
-// db.insert([{ a: 5 }, { b: 42 }], function (err, newDocs) {});
+// db.insert(doc, (err, newDoc) => {});
+
+db.insert(docs, (err, newDocs) => { });
 
 // Find all documents in the collection
-db.find({}, (err, docs) => {
-  console.log(';;getAll ', docs);
+// db.find({ year: '1993' }, (err, docs) => {
+db.find({ year: 1993 }, (err, docs) => {
+  console.log(';;found ', docs);
 });
 
 db.persistence.compactDatafile();

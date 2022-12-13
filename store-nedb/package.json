@@ -16,11 +16,11 @@
     "start": "npm run server:nedb",
     "server:nedb": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./tests/draft.test.ts",
     "server": "npm run server:crdt-hlc",
-    "test": "npm run test:nedb-api",
+    "test": "npm run test:nedb-draft",
     "test1": "npm run test:nedb",
     "test:jest": "jest",
     "test:learndb": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./src-learndb/index.ts",
-    "test:nedb-api": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./tests/draft.test.ts",
+    "test:nedb-draft": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./tests/draft.test.ts",
     "test:nedb": "mocha --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,tsx 'tests/**/*.test.ts' --reporter spec --timeout 10000",
     "test:nedb-oneoff": "mocha --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,tsx 'tests/waterfall.test.ts' ",
     "test:log": "node index.js --name nested-a"

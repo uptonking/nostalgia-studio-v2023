@@ -2240,9 +2240,9 @@ describe('Model', function () {
           }
           return (
             this.firstName.toLowerCase() +
-              '.' +
-              this.lastName.toLowerCase() +
-              '@gmail.com' ===
+            '.' +
+            this.lastName.toLowerCase() +
+            '@gmail.com' ===
             this.email
           );
         };

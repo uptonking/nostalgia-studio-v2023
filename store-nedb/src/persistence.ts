@@ -1,5 +1,5 @@
-import path from 'node:path';
-import { deprecate } from 'node:util';
+import path from 'path';
+import { deprecate } from 'util';
 
 import { createLineStream as byline } from './byline';
 import type { Datastore } from './datastore';
@@ -121,10 +121,11 @@ export class Persistence implements PersistenceOptionsProps {
 
   /**
    * Internal version without using the {@link Datastore#executor} of {@link Datastore#compactDatafileAsync}, use it instead.
-   * @return {Promise<void>}
-   * @private
+   * - 先持久化数据，再持久化索引
+   * @internal
    */
-  async persistCachedDatabaseAsync() {
+  public async persistCachedDatabaseAsync(): Promise<void> {
+    /** result lines to persist */
     const lines = [];
 
     if (this.inMemoryOnly) return;

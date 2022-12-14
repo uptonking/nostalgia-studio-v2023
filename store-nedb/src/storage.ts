@@ -1,6 +1,7 @@
 import fs from 'fs';
-import path from 'node:path';
-import { Readable } from 'node:stream';
+import path from 'path';
+import { Readable } from 'stream';
+
 import { PersistenceOptionsProps } from './types/datastore';
 
 const fsPromises = fs.promises;

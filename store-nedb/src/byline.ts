@@ -1,5 +1,5 @@
-import stream from 'node:stream';
-import timers from 'node:timers';
+import stream from 'stream';
+import timers from 'timers';
 
 interface LineStreamOptions extends stream.TransformOptions {
   keepEmptyLines?: boolean | undefined;

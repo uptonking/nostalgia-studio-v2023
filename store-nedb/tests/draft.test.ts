@@ -46,15 +46,19 @@ const docs = [
   },
 ];
 
-// db.insert(doc, (err, newDoc) => {});
+db.insert(doc, (err, newDoc) => { });
 
-db.insert(docs, (err, newDocs) => { });
+// db.insert(docs, (err, newDocs) => { });
 
 // Find all documents in the collection
 // db.find({ year: '1993' }, (err, docs) => {
 db.find({ year: 1993 }, (err, docs) => {
   console.log(';;found ', docs);
 });
+
+
+db.ensureIndex({ fieldName: 'title' }, () => { });
+
 
 db.persistence.compactDatafile();
 // db.compactDatafile();

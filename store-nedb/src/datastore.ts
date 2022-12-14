@@ -1,5 +1,5 @@
-import { EventEmitter } from 'node:events';
-import { callbackify, deprecate } from 'node:util';
+import { EventEmitter } from 'events';
+import { callbackify, deprecate } from 'util';
 
 import { Cursor } from './cursor';
 import { Executor } from './executor';
@@ -15,8 +15,10 @@ import { isDate } from './utils';
 import { uid } from './utils-polyfillable';
 
 /** ✨ One datastore is the equivalent of a MongoDB collection.
+ * - Data is stored in bst-tree, with auto-generated `_id` 
  * - The native types are String, Number, Boolean, Date and null. You can also use arrays and subdocuments (objects).
  * - A copy of the whole database is kept in memory.
+ * - eventEmitter在persistence中使用
  */
 export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   public autoload = false;
@@ -229,7 +231,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
 
   /**
    * Get an array of all the data in the database.
-   * - 在persist时会用到
+   * - 在persist时会用到，`this.indexes._id.getAll()`
    * @return {document[]}
    */
   getAllData() {

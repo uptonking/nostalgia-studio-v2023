@@ -72,7 +72,8 @@
       "y-websocket": ["collab-yjs/src-pkgs/y-websocket"],
       "y-indexeddb": ["collab-yjs/src-pkgs/y-indexeddb"],
       "y-prosemirror": ["collab-yjs/src-pkgs/y-indexeddb"],
-      "nedb-ts": ["store-nedb/src/"]
+      "nedb-base": ["store-mongo-like/src-nedb/src/"],
+      "minimongo": ["store-mongo-like/src-minimongo/src/"]
     }
   },
   "files": ["typings.d.ts"]

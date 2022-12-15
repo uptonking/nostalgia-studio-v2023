@@ -15,28 +15,29 @@ import { isDate } from './utils';
 import { uid } from './utils-polyfillable';
 
 /** ✨ One datastore is the equivalent of a MongoDB collection.
- * - Data is stored in bst-tree, with auto-generated `_id` 
+ * - Data is stored in bst-tree, with auto-generated `_id`
  * - The native types are String, Number, Boolean, Date and null. You can also use arrays and subdocuments (objects).
  * - A copy of the whole database is kept in memory.
  * - eventEmitter在persistence中使用
  */
 export class Datastore extends EventEmitter implements DataStoreOptionsProps {
-  public autoload = false;
-  public onload: DataStoreOptionsProps['onload'] | null;
-  public filename: DataStoreOptionsProps['filename'];
-  public inMemoryOnly = false;
-  public timestampData = false;
-  public compareStrings?: DataStoreOptionsProps['compareStrings'] | null;
+  autoload = false;
+  onload: DataStoreOptionsProps['onload'] | null;
+  filename: DataStoreOptionsProps['filename'];
+  inMemoryOnly = false;
+  timestampData = false;
+  compareStrings?: DataStoreOptionsProps['compareStrings'] | null;
 
   /** The `Persistence` instance for this `Datastore`. */
-  public persistence: Persistence;
+  persistence: Persistence;
   /** The `Executor` instance for this `Datastore`. It is used in all methods exposed by the {@link Datastore},
    * any {@link Cursor} produced by the `Datastore` and by {@link Datastore#compactDatafileAsync} to ensure operations
    * are performed sequentially in the database.
    * @internal
    */
   public executor: Executor;
-  /** Indexed by field name, dot notation can be used.
+  /** data and indexes
+   * - Indexed by field name, dot notation can be used.
    * - `_id` is always indexed and since _ids are generated randomly, the underlying binary search tree is always well-balanced
    * - ❓ 所有数据内容和字段索引都保存在这里
    * @internal
@@ -57,7 +58,6 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   private _autocompactionIntervalId: ReturnType<typeof setInterval> | null;
 
   /** Create a new collection, either persistent or in-memory.
-   *
    * - If you use a persistent datastore without the `autoload` option, you need to call {@link Datastore#loadDatabase} or
    * {@link Datastore#loadDatabaseAsync} manually. This function fetches the data from datafile and prepares the database.
    * **Don't forget it!** If you use a persistent datastore, no command (insert, find, update, remove) will be executed

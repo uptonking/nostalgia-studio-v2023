@@ -434,21 +434,19 @@ export class AVLTree {
   tree: _AVLTree;
 
   /** Keep a pointer to the internal tree constructor for testing purposes
+   * @internal
    */
   static _AVLTree = _AVLTree;
 
   /**
-   * We can't use a direct pointer to the root node (as in the simple binary search tree)
+   * create an AVLTree using {@link _AVLTree }
+   * - We can't use a direct pointer to the root node (as in the simple binary search tree)
    * as the root will change during tree rotations
    * @param {Boolean}  options.unique Whether to enforce a 'unique' constraint on the key or not
    * @param {Function} options.compareKeys Initialize this BST's compareKeys
    */
   constructor(options = {}) {
     this.tree = new _AVLTree(options);
-  }
-
-  checkIsAVLTree() {
-    this.tree.checkIsAVLTree();
   }
 
   /** Insert in the internal tree, update the pointer to the root if needed */
@@ -469,6 +467,10 @@ export class AVLTree {
     if (newTree) {
       this.tree = newTree;
     }
+  }
+
+  checkIsAVLTree() {
+    this.tree.checkIsAVLTree();
   }
 
   /**

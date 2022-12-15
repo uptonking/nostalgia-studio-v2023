@@ -1,5 +1,5 @@
 {
-  "name": "nedb-ts",
+  "name": "nedb-base",
   "version": "3.1.1111",
   "type": "module",
   "main": "src/index.ts",

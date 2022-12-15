@@ -1,4 +1,4 @@
-# nedb-ts
+# nedb-base
 
 # overview
 

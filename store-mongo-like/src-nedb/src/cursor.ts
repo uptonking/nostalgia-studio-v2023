@@ -10,19 +10,47 @@ import * as model from './model';
  * @return {*|Promise<*>}
  */
 
-/** 👀 注意class里面有自定义`then`方法
- * - Manage access to data, be it to find, update or remove it.
- *
+/** Manage access to data, be it to find, update or remove it.
+ * - 👀 注意class里面有自定义`then`方法
  * - It extends `Promise` so that its methods (which return `this`) are chainable & awaitable.
  * @extends Promise
  */
 export class Cursor {
   db: Datastore;
+  /**
+   * @protected
+   * @type {query}
+   */
   query: any;
+  /**
+   * The handler to be executed after cursor has found the results and applied projection.
+   * @type {Cursor~mapFn}
+   * @protected
+   */
   mapFn: any;
-  _limit: any;
-  _skip: any;
+  /**
+   * @see Cursor#limit
+   * @type {undefined|number}
+   * @private
+   */
+  _limit: number;
+  /**
+   * @see Cursor#skip
+   * @type {undefined|number}
+   * @private
+   */
+  _skip: number;
+  /**
+   * @see Cursor#sort
+   * @type {undefined|Object.<string, number>}
+   * @private
+   */
   _sort: any;
+  /**
+   * @see Cursor#projection
+   * @type {undefined|Object.<string, number>}
+   * @private
+   */
   _projection: any;
 
   /**
@@ -32,45 +60,12 @@ export class Cursor {
    * @param {Cursor~mapFn} [mapFn] - Handler to be executed after cursor has found the results and before the callback passed to find/findOne/update/remove
    */
   constructor(db, query = undefined, mapFn = undefined) {
-    /**
-     * @protected
-     * @type {Datastore}
-     */
     this.db = db;
-    /**
-     * @protected
-     * @type {query}
-     */
     this.query = query || {};
-    /**
-     * The handler to be executed after cursor has found the results.
-     * @type {Cursor~mapFn}
-     * @protected
-     */
     if (mapFn) this.mapFn = mapFn;
-    /**
-     * @see Cursor#limit
-     * @type {undefined|number}
-     * @private
-     */
     this._limit = undefined;
-    /**
-     * @see Cursor#skip
-     * @type {undefined|number}
-     * @private
-     */
     this._skip = undefined;
-    /**
-     * @see Cursor#sort
-     * @type {undefined|Object.<string, number>}
-     * @private
-     */
     this._sort = undefined;
-    /**
-     * @see Cursor#projection
-     * @type {undefined|Object.<string, number>}
-     * @private
-     */
     this._projection = undefined;
   }
 
@@ -79,7 +74,7 @@ export class Cursor {
    * @param {Number} limit
    * @return {Cursor} the same instance of Cursor, (useful for chaining).
    */
-  limit(limit) {
+  limit(limit: number) {
     this._limit = limit;
     return this;
   }
@@ -89,7 +84,7 @@ export class Cursor {
    * @param {Number} skip
    * @return {Cursor} the same instance of Cursor, (useful for chaining).
    */
-  skip(skip) {
+  skip(skip: number) {
     this._skip = skip;
     return this;
   }
@@ -174,9 +169,9 @@ export class Cursor {
   }
 
   /**
-   * Get all matching elements
-   * Will return pointers to matched elements (shallow copies), returning full copies is the role of find or findOne
-   * This is an internal function, use execAsync which uses the executor
+   * Get all matching elements.  _getCandidates > match > sort/skip/limit
+   * - Will return pointers to matched elements (shallow copies), returning full copies is the role of find or findOne
+   * - This is an internal function, use `execAsync` which uses the executor
    * @return {document[]|Promise<*>}
    * @private
    */
@@ -191,13 +186,16 @@ export class Cursor {
       if (model.match(candidate, this.query)) {
         // If a sort is defined, wait for the results to be sorted before applying limit and skip
         if (!this._sort) {
-          if (this._skip && this._skip > skipped) skipped += 1;
-          else {
+          if (this._skip && this._skip > skipped) {
+            skipped += 1;
+          } else {
             res.push(candidate);
             added += 1;
             if (this._limit && this._limit <= added) break;
           }
-        } else res.push(candidate);
+        } else {
+          res.push(candidate);
+        }
       }
     }
 

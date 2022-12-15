@@ -224,6 +224,7 @@ class _AVLTree extends BinarySearchTree {
     let i;
 
     if (!Object.hasOwn(this, 'key')) {
+      // todo fixme
       delete this.height;
       return this;
     } // Empty tree

@@ -231,7 +231,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
 
   /**
    * Get an array of all the data in the database.
-   * - 在persist时会用到，`this.indexes._id.getAll()`
+   * - `this.indexes._id.getAll()`
    * @return {document[]}
    */
   getAllData() {
@@ -432,9 +432,9 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   _getRawCandidates(query): any[] {
     const indexNames = Object.keys(this.indexes);
     // STEP 1: get candidates list by checking indexes from most to least frequent usecase
-    // For a basic match
+    // / For a basic match
     let usableQuery;
-    usableQuery = Object.entries(query)
+    usableQuery = Object.entries(query) // 处理query中声明的基础类型的值
       .filter(
         ([k, v]) =>
           Boolean(
@@ -445,10 +445,12 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
             v === null,
           ) && indexNames.includes(k),
       )
-      .pop();
-    if (usableQuery)
+      .pop(); // 只返回第一个query值
+    if (usableQuery) {
       return this.indexes[usableQuery[0]].getMatching(usableQuery[1]);
-    // For a $in match
+    }
+
+    // / For a $in match; query-value should be meme=ber of $in-params
     usableQuery = Object.entries(query)
       .filter(
         ([k, v]) =>
@@ -456,9 +458,11 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
           indexNames.includes(k),
       )
       .pop();
-    if (usableQuery)
+    if (usableQuery) {
       return this.indexes[usableQuery[0]].getMatching(usableQuery[1].$in);
-    // For a comparison match
+    }
+
+    // / For a comparison match
     usableQuery = Object.entries(query)
       .filter(
         ([k, v]) =>
@@ -471,34 +475,33 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
           ) && indexNames.includes(k),
       )
       .pop();
-    if (usableQuery)
+    if (usableQuery) {
       return this.indexes[usableQuery[0]].getBetweenBounds(usableQuery[1]);
+    }
     // By default, return all the DB data
     return this.getAllData();
   }
 
-  /**
-   * Return the list of candidates for a given query
-   * Crude implementation for now, we return the candidates given by the first usable index if any
-   * We try the following query types, in this order: basic match, $in match, comparison match
-   * One way to make it better would be to enable the use of multiple indexes if the first usable index
+  /**  Return the list of candidates for a given query
+   * - Crude implementation for now, we return the candidates given by the first usable index if any
+   * - We try the following query types, in this order: basic match, $in match, comparison match
+   * - One way to make it better would be to enable the use of multiple indexes if the first usable index
    * returns too much data. I may do it in the future.
    *
-   * Returned candidates will be scanned to find and remove all expired documents
+   * - Returned candidates will be scanned to find and remove all expired documents
    *
-   * This is an internal function.
    * @param {query} query
    * @param {boolean} [dontExpireStaleDocs = false] If true don't remove stale docs. Useful for the remove function
    * which shouldn't be impacted by expirations.
    * @return {Promise<document[]>} candidates
-   * @private
+   * @private @internal
    */
   async _getCandidatesAsync(query, dontExpireStaleDocs = false) {
     const validDocs = [];
 
     // STEP 1: get candidates list by checking indexes from most to least frequent usecase
     const docs = this._getRawCandidates(query);
-    // STEP 2: remove all expired documents
+    // STEP 2: remove all expired documents by ttlIndexes
     if (!dontExpireStaleDocs) {
       const expiredDocsIds = [];
       const ttlIndexesFieldNames = Object.keys(this.ttlIndexes);
@@ -520,7 +523,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       for (const _id of expiredDocsIds) {
         await this._removeAsync({ _id: _id }, {});
       }
-    } else validDocs.push(...docs);
+    } else {
+      validDocs.push(...docs);
+    }
+
     return validDocs;
   }
 
@@ -546,8 +552,8 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    */
   async _insertAsync(newDoc) {
     const preparedDoc = this._prepareDocumentForInsertion(newDoc); // 手动深拷贝
-    // add to memory
-    this._insertInCache(preparedDoc); // _addToIndexes
+    // add to memory, _addToIndexes
+    this._insertInCache(preparedDoc);
     // add to persistence
     await this.persistence.persistNewStateAsync(
       Array.isArray(preparedDoc) ? preparedDoc : [preparedDoc],
@@ -720,7 +726,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * - We return the {@link Cursor} that the user can either `await` directly or use to can {@link Cursor#limit} or
    * {@link Cursor#skip} before.
    * @param {query} query MongoDB-style query
-   * @param {projection} [projection = {}] MongoDB-style projection {propName: 1/0} to filter props returned
+   * @param {projection} [projection = {}] MongoDB-style projection `{propName: 1/0}` to filter props returned
    * @return {Cursor<document[]>}
    * @async
    */

@@ -33,7 +33,8 @@ export class Waterfall {
     };
   }
 
-  /** 返回一个返回值是Promise的函数，会在这个函数中执行func，不会立即执行func
+  /** 返回一个返回值是Promise的函数，会在这个函数中执行func
+   * - 不会立即执行func
    *
    * ? 性能似乎降低了
    */

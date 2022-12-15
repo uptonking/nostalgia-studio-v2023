@@ -5,8 +5,8 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "nedb-server",
-      "cwd": "${workspaceFolder}/store-nedb",
+      "name": "nedb-cli",
+      "cwd": "${workspaceFolder}/store-mongo-like/src-nedb",
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
@@ -18,7 +18,7 @@
         "--experimental-specifier-resolution=node",
         "--loader=ts-node/esm/transpile-only"
       ],
-      "program": "${workspaceFolder}/store-nedb/tests/draft.test.ts",
+      "program": "${workspaceFolder}/store-mongo-like/src-nedb/tests/draft.test.ts",
       // "restart": true,
       "skipFiles": ["<node_internals>/**"]
     },

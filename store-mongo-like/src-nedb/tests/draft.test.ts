@@ -2,15 +2,14 @@ import { Datastore } from '../src';
 
 const TEST_DB_IT = 'tests/testdata/testing11.db';
 
+let db: Datastore;
 // const db1 = new Datastore(); // in-memory only db
 
-// const db = new Datastore({ filename: './testdata/testing11.db', autoload: true });
-const db = new Datastore({ filename: TEST_DB_IT });
-db.loadDatabase((err) => {
-  console.log(';; db-loaded ', err);
-});
-
-db.ensureIndex({ fieldName: 'year' }, () => { });
+// db = new Datastore({ filename: './testdata/testing11.db', autoload: true });
+// db = new Datastore({ filename: TEST_DB_IT });
+// db.loadDatabase((err) => {
+//   console.log(';; db-loaded ', err);
+// });
 
 // const db = new Datastore({ filename: TEST_DB_IT })
 // try {
@@ -30,7 +29,7 @@ const doc = {
   infos: { name: 'nedb' },
 };
 
-const docs = [
+const docsMovie = [
   { title: 'Seven', year: 1995, genres: ['Drama', 'Crime', 'Mystery'] },
   { title: 'Fight Club', year: 1999, genres: ['Drama'] },
   { title: 'Inception', year: 2010, genres: ['Sci-Fi', 'Action', 'Adventure'] },
@@ -46,19 +45,19 @@ const docs = [
   },
 ];
 
-db.insert(doc, (err, newDoc) => { });
+(async () => {
+  db = new Datastore({ filename: TEST_DB_IT, autoload: true });
+  await db.ensureIndexAsync({ fieldName: 'year' });
 
-// db.insert(docs, (err, newDocs) => { });
+  // db.insert(doc, (err, newDoc) => { });
+  // await db.insertAsync(docsMovie);
 
-// Find all documents in the collection
-// db.find({ year: '1993' }, (err, docs) => {
-db.find({ year: 1993 }, (err, docs) => {
+  // Find all documents in the collection
+  const docs = await db.findAsync({ year: 1993 });
   console.log(';;found ', docs);
-});
 
+  await db.ensureIndexAsync({ fieldName: 'title' });
 
-db.ensureIndex({ fieldName: 'title' }, () => { });
-
-
-db.persistence.compactDatafile();
-// db.compactDatafile();
+  // db.persistence.compactDatafile();
+  db.compactDatafile();
+})();

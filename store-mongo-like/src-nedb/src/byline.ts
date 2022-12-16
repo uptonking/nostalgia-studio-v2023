@@ -18,6 +18,7 @@ export const createLineStream = (
   readStream.pipe(lineStream);
   return lineStream;
 };
+export default createLineStream;
 
 /** Line-by-line Stream reader for node.js
  * - Fork from {@link https://github.com/jahewson/node-byline} /MIT.

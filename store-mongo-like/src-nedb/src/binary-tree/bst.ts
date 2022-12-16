@@ -226,7 +226,7 @@ export class BinarySearchTree {
   }
 
   /**
-   * Search for all data corresponding to a key
+   * Recursively search for all data corresponding to a key
    */
   search(key) {
     if (!Object.hasOwn(this, 'key')) return [];

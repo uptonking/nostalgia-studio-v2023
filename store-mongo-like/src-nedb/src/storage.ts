@@ -243,7 +243,9 @@ export const writeFileLinesAsync = (
   });
 
 /**
- * Fully write or rewrite the datafile, immune to crashes during the write operation (data will not be lost).
+ * ✨ Fully write or rewrite the datafile, immune to crashes during the write operation (data will not be lost).
+ * - [I finished rewriting the crash safe write function, mimicing how Redis AOF basically works](https://github.com/louischatriot/nedb/issues/265)
+ * - this code doesn't work on Windows, as it seems that Windows's counterpart to `fsync`, `FlushFileBuffers` cannot be called on directories.
  * @param {string} filename
  * @param {string[]} lines
  * @param {object} [modes={ fileMode: 0o644, dirMode: 0o755 }]
@@ -260,23 +262,26 @@ export const crashSafeWriteFileLinesAsync = async (
     dirMode: DEFAULT_DIR_MODE,
   },
 ) => {
+  /** temporary file suffix with `~`  */
   const tempFilename = filename + '~';
 
+  // 1. fsync directory so that datafile is sure to be linked to from the directory
   await flushToStorageAsync({
     filename: path.dirname(filename),
     isDir: true,
     mode: modes.dirMode,
   });
 
+  // 2. fsync datafile if it exists. At this point we are guaranteed that datafile is up to date, and a crash during steps 1 or 2 will not corrupt the datafile
   const exists = await existsAsync(filename);
   if (exists) await flushToStorageAsync({ filename, mode: modes.fileMode });
 
+  // 3. Write data to a temp datafile, then fsync it
   await writeFileLinesAsync(tempFilename, lines, modes.fileMode);
-
   await flushToStorageAsync({ filename: tempFilename, mode: modes.fileMode });
 
+  // 4. Rename temp datafile to datafile and fsync directory
   await renameAsync(tempFilename, filename);
-
   await flushToStorageAsync({
     filename: path.dirname(filename),
     isDir: true,

@@ -121,7 +121,7 @@ export class Persistence implements PersistenceOptionsProps {
 
   /**
    * Internal version without using the {@link Datastore#executor} of {@link Datastore#compactDatafileAsync}, use it instead.
-   * - 先持久化数据，再持久化索引
+   * - 持久化数据、索引
    * @internal
    */
   public async persistCachedDatabaseAsync(): Promise<void> {
@@ -195,15 +195,15 @@ export class Persistence implements PersistenceOptionsProps {
 
   /**
    * Persist new state for the given newDocs (can be insertion, update or removal)
-   * Use an append-only format
-   *
-   * Do not use directly, it should only used by a {@link Datastore} instance.
+   * - serialize > afterSerialization > appendFileAsync
+   * - Use an append-only format
+   * - Do not use directly, it should only used by a {@link Datastore} instance.
    * @param {document[]} newDocs Can be empty if no doc was updated/removed
    * @return {Promise}
    * @private
    */
   async persistNewStateAsync(newDocs) {
-    /** persisted content is string. serialize > flush  */
+    /** persisted content is string. serialize > storage-backend  */
     let toPersist = '';
 
     // In-memory only datastore

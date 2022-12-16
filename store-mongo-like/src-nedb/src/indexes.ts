@@ -27,8 +27,9 @@ const projectForUnique = (elt) => {
 };
 
 /**
- * Indexes on field names, with atomic operations and which can optionally enforce a unique constraint or allow indexed
- * fields to be undefined
+ * Indexes on field names, with atomic operations and which can optionally enforce a unique constraint or
+ * allow indexed fields to be undefined
+ * - Index uses AVLTree internally
  * - You can index any field, including fields in nested documents using the dot notation.
  * - `_id` is automatically indexed with a unique constraint, no need to call ensureIndex on it.
  * - indexes are only used to speed up basic queries and queries using $in, $lt, $lte, $gt and $gte.
@@ -284,6 +285,7 @@ export class Index {
 
   /**
    * Get all documents in index whose key match value (if it is a Thing) or one of the elements of value (if it is an array of Things)
+   * - search by AVL
    * @param {Array.<*>|*} value Value to match the key against
    * @return {document[]}
    */
@@ -295,6 +297,7 @@ export class Index {
       const res = [];
 
       value.forEach((v) => {
+        // 👇🏻 recursive
         this.getMatching(v).forEach((doc) => {
           _res[doc._id] = doc;
         });

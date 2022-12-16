@@ -265,10 +265,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   }
 
   /**
-   * Ensure an index is kept for this field. Same parameters as lib/indexes
+   * Ensure an index is kept for this field.  Same parameters as lib/indexes
    * - This function acts synchronously on the indexes, however the persistence of the indexes is deferred with the
    * executor.
-   * - if index for fieldName already exist, return immediately
+   * - if an index for fieldName already exists, return immediately
    * @param {object} options
    * @param {string} options.fieldName Name of the field to index. Use the dot notation to index a field in a nested
    * document.
@@ -734,7 +734,6 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
     const cursor = new Cursor(this, query, (docs) =>
       docs.map((doc) => model.deepCopy(doc)),
     );
-
     cursor.projection(projection);
     return cursor;
   }
@@ -871,7 +870,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       }
     }
 
-    // Change the docs in memory
+    // update the docs in memory
     this._updateIndexes(modifications);
 
     // Update the datafile

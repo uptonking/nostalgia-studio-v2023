@@ -11,7 +11,8 @@ import * as model from './model';
  */
 
 /** Manage access to data, be it to find, update or remove it.
- * - 👀 注意class里面有自定义`then`方法
+ * - 👀 注意class里面有自定义`then`方法； 数据全在内存，cursor会一次返回所有数据，而不类似idb
+ * - api: limit, skip, sort
  * - It extends `Promise` so that its methods (which return `this`) are chainable & awaitable.
  * @extends Promise
  */
@@ -168,8 +169,8 @@ export class Cursor {
     return res;
   }
 
-  /**
-   * Get all matching elements.  _getCandidates > match > sort/skip/limit
+  /** ✨ Get all matching elements.  _getCandidates > match > sort/skip/limit > project
+   * - every cursor instance will come here by `then`
    * - Will return pointers to matched elements (shallow copies), returning full copies is the role of find or findOne
    * - This is an internal function, use `execAsync` which uses the executor
    * @return {document[]|Promise<*>}

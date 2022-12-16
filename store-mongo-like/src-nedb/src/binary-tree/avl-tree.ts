@@ -10,7 +10,7 @@ class _AVLTree extends BinarySearchTree {
   left: _AVLTree | null;
   right: _AVLTree | null;
   parent: _AVLTree | null;
-  /** ❓ for check only */
+  /** 从当前节点到叶的距离，叶节点高度0 ❓ for check only */
   height: number;
 
   /**
@@ -482,7 +482,7 @@ export class AVLTree {
   }
 
   /**
-   * Search for all data corresponding to a key
+   * Recursively search for all data corresponding to a key
    */
   search(key) {
     return this.tree.search(key);

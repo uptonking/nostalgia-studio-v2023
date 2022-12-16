@@ -156,7 +156,7 @@ const isLinkActive = (editor) => {
     match: (n) =>
       !Editor.isEditor(n) && SlateElement.isElement(n) && n['type'] === 'link',
   });
-  return !!link;
+  return Boolean(link);
 };
 
 const isButtonActive = (editor) => {
@@ -166,7 +166,7 @@ const isButtonActive = (editor) => {
       SlateElement.isElement(n) &&
       n['type'] === 'button',
   });
-  return !!button;
+  return Boolean(button);
 };
 
 const insertLink = (editor, url) => {

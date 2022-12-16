@@ -510,10 +510,8 @@ describe('AVL tree', () => {
       avlt.delete(5);
       avltu.delete(5);
 
-      Object.hasOwn(avlt.tree, 'key')
-        .should.equal(false);
-      Object.hasOwn(avltu.tree, 'key')
-        .should.equal(false);
+      Object.hasOwn(avlt.tree, 'key').should.equal(false);
+      Object.hasOwn(avltu.tree, 'key').should.equal(false);
 
       avlt.tree.data.length.should.equal(0);
       avltu.tree.data.length.should.equal(0);
@@ -581,8 +579,7 @@ describe('AVL tree', () => {
       avlt.getNumberOfKeys().should.equal(1);
 
       avlt.delete(10);
-      Object.hasOwn(avlt.tree, 'key')
-        .should.equal(false);
+      Object.hasOwn(avlt.tree, 'key').should.equal(false);
       avlt.tree.data.length.should.equal(0);
       avlt.getNumberOfKeys().should.equal(0);
     });
@@ -1179,7 +1176,7 @@ describe('AVL tree', () => {
             if (possibleKeys.length > 0) {
               key =
                 possibleKeys[
-                Math.floor(possibleKeys.length * Math.random()).toString()
+                  Math.floor(possibleKeys.length * Math.random()).toString()
                 ];
             } else {
               key = Math.floor(70 * Math.random()).toString();

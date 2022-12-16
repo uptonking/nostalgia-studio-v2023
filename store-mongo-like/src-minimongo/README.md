@@ -2,6 +2,9 @@
 
 # overview
 
+- 基于localforage实现nedb的web版
+  - indexeddb中只有只有一个objectStore，key是文件名，value是对应的node版文件内容，即数据+索引
+
 - this project is a fork of minimongo
   - db core
 

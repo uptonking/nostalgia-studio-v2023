@@ -88,7 +88,7 @@ const isFormatActive = (editor, format) => {
     match: (n) => n[format] === true,
     mode: 'all',
   });
-  return !!match;
+  return Boolean(match);
 };
 
 /** slate文本元素 */

@@ -60,7 +60,8 @@ module.exports = function (api) {
     [
       '@babel/preset-env',
       {
-        modules: env === 'esm' ? false : 'auto',
+        modules: false,
+        // modules: env === 'esm' ? false : 'auto',
         // modules: configModule(),
         // targets: 'defaults',
         // targets: '> 0.25%, not dead',

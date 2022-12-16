@@ -4,7 +4,6 @@ import * as customUtils from './utils';
  * Simple binary search tree
  */
 export class BinarySearchTree {
-
   left: BinarySearchTree | null;
   right: BinarySearchTree | null;
   parent: BinarySearchTree | null;
@@ -493,6 +492,6 @@ function append(array, toAppend) {
   //   array.push(toAppend[i]);
   // }
   if (Array.isArray(array) && Array.isArray(toAppend)) {
-    array.push(...toAppend)
+    array.push(...toAppend);
   }
 }

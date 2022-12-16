@@ -317,7 +317,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
    * @param {NoParamCallback} [callback]
    * @see Datastore#removeIndexAsync
    */
-  removeIndex(fieldName, callback = () => { }) {
+  removeIndex(fieldName, callback = () => {}) {
     const promise = this.removeIndexAsync(fieldName);
     callbackify(() => promise)(callback);
   }
@@ -439,10 +439,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         ([k, v]) =>
           Boolean(
             typeof v === 'string' ||
-            typeof v === 'number' ||
-            typeof v === 'boolean' ||
-            isDate(v) ||
-            v === null,
+              typeof v === 'number' ||
+              typeof v === 'boolean' ||
+              isDate(v) ||
+              v === null,
           ) && indexNames.includes(k),
       )
       .pop(); // 只返回第一个query值
@@ -468,10 +468,10 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
         ([k, v]) =>
           Boolean(
             query[k] &&
-            (Object.hasOwn(query[k], '$lt') ||
-              Object.hasOwn(query[k], '$lte') ||
-              Object.hasOwn(query[k], '$gt') ||
-              Object.hasOwn(query[k], '$gte')),
+              (Object.hasOwn(query[k], '$lt') ||
+                Object.hasOwn(query[k], '$lte') ||
+                Object.hasOwn(query[k], '$gt') ||
+                Object.hasOwn(query[k], '$gte')),
           ) && indexNames.includes(k),
       )
       .pop();
@@ -1007,7 +1007,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       cb = options;
       options = {};
     }
-    const callback = cb || (() => { });
+    const callback = cb || (() => {});
     callbackify((query, options) => this.removeAsync(query, options))(
       query,
       options,

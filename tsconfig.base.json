@@ -73,6 +73,7 @@
       "y-indexeddb": ["collab-yjs/src-pkgs/y-indexeddb"],
       "y-prosemirror": ["collab-yjs/src-pkgs/y-indexeddb"],
       "nedb-base": ["store-mongo-like/src-nedb/src/"],
+      "linvodb": ["store-mongo-like/src-linvodb/src/"],
       "minimongo": ["store-mongo-like/src-minimongo/src/"]
     }
   },

@@ -22,11 +22,8 @@
 ## dev-to-list
 
 - merge各个仓库的pr
-
-- https://github.com/sindresorhus/p-waterfall
-  - Run promise-returning & async functions in series, each passing its result to the next
-  - pWaterfall(tasks, initialValue?)
 # testing
+- 迁移web版tests
 
 ## 待改进的测试
 
@@ -37,3 +34,7 @@
 
 - model.test.ts
   - l378， Doesn't replace a falsy field by an object when recursively following dot notation
+# more
+- https://github.com/sindresorhus/p-waterfall
+  - Run promise-returning & async functions in series, each passing its result to the next
+  - pWaterfall(tasks, initialValue?)

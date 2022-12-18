@@ -32,7 +32,6 @@
     "lodash": "^3.10.1"
   },
   "devDependencies": {
-    "@seald-io/nedb": "^3.1.0",
     "@types/chai": "^4.3.4",
     "@types/lodash": "^3.1.0",
     "@types/mocha": "^10.0.1",

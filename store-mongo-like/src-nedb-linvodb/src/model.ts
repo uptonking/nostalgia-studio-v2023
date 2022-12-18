@@ -12,34 +12,29 @@ import { Index } from './indexes';
 import * as schemas from './schemas';
 import { Bagpipe } from './utils/bagpipe';
 
-const stores = {}; // We have to keep those unique by filename because they're locked
+/** We have to keep those unique by filename because they're locked */
+const stores = {};
 
-const LEVELUP_RETR_CONCURRENCY = 100; // We'll use that on a bagpipe instance regulating findById
+/** We'll use that on a bagpipe instance regulating findById */
+const LEVELUP_RETR_CONCURRENCY = 100;
 
 const leveldown = null;
 try {
   // leveldown = import('leveldown')
-} catch (error) {}
+} catch (error) { }
+
 
 /**
  * Create a new model
  */
-export function Model(name, schema, options: any = {}) {
-  if (typeof name !== 'string')
-    throw 'model name must be provided and a string';
-  if (arguments.length == 1) {
-    options = {};
-    schema = {};
-  }
-  if (arguments.length == 2) {
-    options = schema;
-    schema = {};
-  }
+export function Model(name, options: any = {}, schema = {},) {
+  if (typeof name !== 'string') { throw 'model name must be provided and a string'; }
 
-  var self: any = function Document(raw) {
-    // @ts-expect-error fix-types
+  const self: any = function Document(raw) {
+    // console.log(';; self===Document ', self === Document, self) // true
+    // @ts-expect-error fix-types  Call the Document builder
     return document.Document.call(this, self, raw);
-  }; // Call the Document builder
+  };
   _.extend(self, Model.prototype); // Ugly but works - we need to return a function but still inherit prototype
   const emitter = new events.EventEmitter();
   emitter.setMaxListeners(0);
@@ -51,7 +46,8 @@ export function Model(name, schema, options: any = {}) {
     // @ts-expect-error fix-types
     options.filename || path.join(Model.dbPath || '.', name + '.db'),
   );
-  self.options = _.extend({}, Model.defaults, options);
+  // self.options = _.extend({}, Model.defaults, options);
+  self.options = { ...Model.defaults, ...options }
 
   // Indexed by field name, dot notation can be used
   // _id is always indexed and since _ids are generated randomly the underlying
@@ -181,7 +177,7 @@ Model.prototype.buildIndexes = function (cb) {
         try {
           // @ts-expect-error fix-types
           idx.insert(doc);
-        } catch (e) {}
+        } catch (e) { }
       });
     })
     .on('end', function () {
@@ -221,7 +217,7 @@ Model.prototype.resetIndexes = function () {
  * @param {Function} cb Optional callback, signature: err
  */
 Model.prototype.ensureIndex = function (options, cb) {
-  const callback = cb || function () {};
+  const callback = cb || function () { };
 
   options = options || {};
 
@@ -243,7 +239,7 @@ Model.prototype.ensureIndex = function (options, cb) {
  * @param {Function} cb Optional callback, signature: err
  */
 Model.prototype.removeIndex = function (fieldName, cb) {
-  const callback = cb || function () {};
+  const callback = cb || function () { };
 
   delete this.indexes[fieldName];
   callback(null);
@@ -327,7 +323,7 @@ Model.prototype.updateIndexes = function (oldDoc, newDoc) {
  *
  */
 Model.prototype.insert = function (newDoc, cb) {
-  const callback = cb || function () {};
+  const callback = cb || function () { };
   const self = this;
   newDoc = (Array.isArray(newDoc) ? newDoc : [newDoc]).map(function (d) {
     return new self(d);
@@ -512,7 +508,7 @@ Model.prototype.update = function (query, updateQuery, options, cb) {
     cb = options;
     options = {};
   }
-  callback = _.once(cb || function () {});
+  callback = _.once(cb || function () { });
   multi = options.multi !== undefined ? options.multi : false;
   upsert = options.upsert !== undefined ? options.upsert : false;
 
@@ -633,7 +629,7 @@ Model.prototype.update = function (query, updateQuery, options, cb) {
  */
 Model.prototype.save = function (docs, cb, quiet) {
   const self = this;
-  cb = cb || function () {};
+  cb = cb || function () { };
 
   docs = (Array.isArray(docs) ? docs : [docs]).map(function (d) {
     return d.constructor.modelName == self.modelName ? d : new self(d);
@@ -719,7 +715,7 @@ Model.prototype.remove = function (query, options, cb) {
     cb = options;
     options = {};
   }
-  callback = cb || function () {};
+  callback = cb || function () { };
   const multi = options.multi !== undefined ? options.multi : false;
 
   const stream = Cursor.getMatchesStream(this, query);
@@ -764,4 +760,3 @@ Model.prototype.remove = function (query, options, cb) {
 };
 
 Model.Cursor = Cursor;
-// module.exports = Model;

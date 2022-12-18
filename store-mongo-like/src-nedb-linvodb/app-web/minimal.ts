@@ -2,18 +2,22 @@ import leveljs from 'level-js';
 
 import { Model as LinvoDB } from '../src';
 
-// The following two lines are very important
+// console.log(';; LinvoDB ', LinvoDB)
+
+
 // Initialize the default store to level-js - which is a JS-only store which will work without recompiling in NW.js/Electron
 // @ts-expect-error fix-types
 LinvoDB.defaults.store = { db: leveljs }; // Comment out to use LevelDB instead of level-js
 // @ts-expect-error fix-types; Set dbPath - this should be done explicitly and will be the dir where each model's store is saved
 // LinvoDB.dbPath = process.cwd();
-LinvoDB.dbPath = './lvl-path'; // 在浏览器中路径可随意，不会生效
+LinvoDB.dbPath = './lvl-path'; // path实参 对应于 idb的objectStore名称
 
 // @ts-expect-error fix-types
 const Doc = new LinvoDB('doc', {
   /* schema, can be empty */
 });
+
+console.log(';; Doc ', Doc)
 
 // Construct a single document and then save it
 const doc = new Doc({ a: 5, now: new Date(), test: 'test-str' });

@@ -997,9 +997,10 @@ function matchQueryPart(
   return true;
 }
 
-/*
+/**
  * Instance of a model (Document)
- * Low level functions here (_persist), we use them in our higher-levels (Model.update, Model.remove)
+ * - Low level functions here (_persist), we use them in our higher-levels (Model.update, Model.remove)
+ * - 通过Object.defineProperty在this对象上添加方法
  */
 export function Document(this: any, db, raw) {
   const self = this;
@@ -1067,18 +1068,3 @@ export function Document(this: any, db, raw) {
 }
 
 export { comparisonFunctions as comparators };
-
-// Interface
-// module.exports.Document = Document;
-// module.exports.serialize = serialize;
-// module.exports.deserialize = deserialize;
-// module.exports.checkObject = checkObject;
-// module.exports.deepCopy = deepCopy;
-// module.exports.isPrimitiveType = isPrimitiveType;
-// module.exports.modify = modify;
-// module.exports.getDotValue = getDotValue;
-// module.exports.match = match;
-// module.exports.areThingsEqual = areThingsEqual;
-// module.exports.compareThings = compareThings;
-// module.exports.compoundCompareThings = compoundCompareThings;
-// module.exports.comparators = comparisonFunctions;

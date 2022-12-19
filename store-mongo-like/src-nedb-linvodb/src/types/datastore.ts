@@ -1,3 +1,9 @@
+export type DatastoreDefaultsOptions = {
+  autoIndexing: boolean;
+  autoLoad: boolean;
+  store: { db: any };
+};
+
 export interface DataStoreOptionsProps {
   /** default false. if true, the database will automatically be loaded from the datafile upon creation
    * - Any command issued before load is finished is buffered and will be executed when load is done. Is not read after instantiation. */

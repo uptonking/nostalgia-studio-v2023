@@ -1,8 +1,8 @@
 /**
  * Handle documents:
- * Serialization/deserialization
- * Copying
+ * Serialization/deserialization, Copying
  * Querying, update
+ * * Use sift, which implements mongodb query language, to scan documents instead of current code.
  */
 
 import _ from 'lodash';
@@ -17,13 +17,13 @@ const arrayComparisonFunctions = {} as any;
 
 /**
  * Check a key, throw an error if the key is non valid
+ * - Non-treatable edge cases here: if part of the object if of the form { $$date: number } or { $$deleted: true }
+ * - Its serialized-then-deserialized version it will transformed into a Date object
+ * - But you really need to want it to trigger such behaviour, even when warned not to use '$' at the beginning of the field names...
  * @param {String} k key
  * @param {Model} v value, needed to treat the Date edge case
- * Non-treatable edge cases here: if part of the object if of the form { $$date: number } or { $$deleted: true }
- * Its serialized-then-deserialized version it will transformed into a Date object
- * But you really need to want it to trigger such behaviour, even when warned not to use '$' at the beginning of the field names...
  */
-function checkKey(k, v) {
+function checkKey(k: string, v: any) {
   if (typeof k !== 'string') return; // JSON.stringify callback in some environments calls it on arrays
 
   if (
@@ -34,27 +34,25 @@ function checkKey(k, v) {
     !(k === '$$indexCreated') &&
     !(k === '$$indexRemoved')
   ) {
-    throw 'Field names cannot begin with the $ character';
+    throw new Error('Field names cannot begin with the $ character');
   }
 
   if (k.indexOf('.') !== -1) {
-    throw 'Field names cannot contain a .';
+    throw new Error('Field names cannot contain a .');
   }
 }
 
 /**
  * Check a DB object and throw an error if it's not valid
- * Works by applying the above checkKey function to all fields recursively
+ * - Works by applying the above `checkKey` function to all fields recursively
  */
 export function checkObject(obj) {
   if (Array.isArray(obj)) {
-    obj.forEach(function (o) {
-      checkObject(o);
-    });
+    obj.forEach((o) => checkObject(o));
   }
 
   if (typeof obj === 'object' && obj !== null) {
-    Object.keys(obj).forEach(function (k) {
+    Object.keys(obj).forEach((k) => {
       checkKey(k, obj[k]);
       checkObject(obj[k]);
     });
@@ -63,11 +61,12 @@ export function checkObject(obj) {
 
 /**
  * Serialize an object to be persisted to a one-line string
- * For serialization/deserialization, we use the native JSON parser and not eval or Function
- * That gives us less freedom but data entered in the database may come from users
+ * - For serialization/deserialization, we use the native JSON parser and not eval or Function
+ * - That gives us less freedom but data entered in the database may come from users
  * so eval and the like are not safe
- * Accepted primitive types: Number, String, Boolean, Date, null
- * Accepted secondary types: Objects, Arrays
+ * - Accepted primitive types: Number, String, Boolean, Date, null
+ *    - `null` will be preserved
+ * - Accepted secondary types: Objects, Arrays
  */
 export function serialize(obj) {
   let res;
@@ -75,15 +74,12 @@ export function serialize(obj) {
   res = JSON.stringify(obj, function (k, v) {
     checkKey(k, v);
 
-    if (v === undefined) {
-      return undefined;
-    }
-    if (v === null) {
-      return null;
+    if (v === undefined || v === null) {
+      return v;
     }
 
     // Hackish way of checking if object is Date (this way it works between execution contexts in node-webkit).
-    // We can't use value directly because for dates it is already string in this function (date.toJSON was already called), so we use this
+    // 👀 We can't use value directly because for dates it is already string in this function (date.toJSON was already called), so we use this
     if (typeof this[k].getTime === 'function') {
       return { $$date: this[k].getTime() };
     }
@@ -103,8 +99,8 @@ export function serialize(obj) {
  * From a one-line representation of an object generate by the serialize function
  * Return the object itself
  */
-export function deserialize(rawData) {
-  return JSON.parse(rawData, function (k, v) {
+export function deserialize(rawData: string) {
+  return JSON.parse(rawData, (k, v) => {
     if (k === '$$date') {
       return new Date(v);
     }
@@ -154,7 +150,7 @@ export function deepCopy(obj, strictKeys = undefined) {
 
   if (Array.isArray(obj)) {
     res = [];
-    obj.forEach(function (o) {
+    obj.forEach((o) => {
       res.push(deepCopy(o, strictKeys));
     });
     return res;
@@ -162,7 +158,7 @@ export function deepCopy(obj, strictKeys = undefined) {
 
   if (typeof obj === 'object') {
     res = {};
-    Object.keys(obj).forEach(function (k) {
+    Object.keys(obj).forEach((k) => {
       if (!strictKeys || (k[0] !== '$' && k.indexOf('.') === -1)) {
         res[k] = deepCopy(obj[k], strictKeys);
       }
@@ -192,7 +188,7 @@ export function isPrimitiveType(obj) {
 /**
  * Utility functions for comparing things
  * Assumes type checking was already done (a and b already have the same type)
- * compareNSB works for numbers, strings and booleans
+ * - `compareNSB` works for numbers, strings and booleans
  */
 function compareNSB(a, b) {
   if (a < b) {
@@ -358,28 +354,28 @@ export function compareThings(a, b) {
 /**
  * Set a field to a new value
  */
-lastStepModifierFunctions.$set = function (obj, field, value) {
+lastStepModifierFunctions.$set = (obj, field, value) => {
   obj[field] = value;
 };
 
 /**
  * Unset a field
  */
-lastStepModifierFunctions.$unset = function (obj, field, value) {
+lastStepModifierFunctions.$unset = (obj, field, value) => {
   delete obj[field];
 };
 
 /**
  * Push an element to the end of an array field
  */
-lastStepModifierFunctions.$push = function (obj, field, value) {
+lastStepModifierFunctions.$push = (obj, field, value) => {
   // Create the array if it doesn't exist
   if (!obj.hasOwnProperty(field)) {
     obj[field] = [];
   }
 
   if (!Array.isArray(obj[field])) {
-    throw "Can't $push an element on non-array values";
+    throw new Error("Can't $push an element on non-array values");
   }
 
   if (value !== null && typeof value === 'object' && value.$each) {
@@ -497,9 +493,9 @@ lastStepModifierFunctions.$inc = function (obj, field, value) {
   }
 };
 
-// Given its name, create the complete modifier function
+/** Given its name, create the complete modifier function */
 function createModifierFunction(modifier) {
-  return function (obj, field, value) {
+  return (obj, field, value) => {
     const fieldParts = typeof field === 'string' ? field.split('.') : field;
 
     if (fieldParts.length === 1) {
@@ -516,7 +512,7 @@ function createModifierFunction(modifier) {
 }
 
 // Actually create all modifier functions
-Object.keys(lastStepModifierFunctions).forEach(function (modifier) {
+Object.keys(lastStepModifierFunctions).forEach((modifier) => {
   modifierFunctions[modifier] = createModifierFunction(modifier);
 });
 
@@ -553,7 +549,7 @@ export function modify(obj, updateQuery) {
     // Apply modifiers
     modifiers = _.uniq(keys);
     newDoc = deepCopy(obj);
-    modifiers.forEach(function (m) {
+    modifiers.forEach((m) => {
       let keys;
 
       if (!modifierFunctions[m]) {
@@ -561,12 +557,16 @@ export function modify(obj, updateQuery) {
       }
 
       try {
-        keys = Object.keys(updateQuery[m]);
+        const queryModifier = updateQuery[m];
+        if (queryModifier == null || ['string', 'number', 'boolean'].includes(typeof queryModifier)) {
+          throw new Error('Modifier ' + m + "'s argument must be an object")
+        }
+        keys = Object.keys(queryModifier);
       } catch (e) {
         throw 'Modifier ' + m + "'s argument must be an object";
       }
 
-      keys.forEach(function (k) {
+      keys.forEach((k) => {
         modifierFunctions[m](newDoc, k, updateQuery[m][k]);
       });
     });
@@ -907,7 +907,7 @@ export function match(obj, query) {
 
 /**
  * Match an object against a specific { key: value } part of a query
- * if the treatObjAsValue flag is set, don't try to match every part separately, but the array as a whole
+ * - if the `treatObjAsValue` flag is set, don't try to match every part separately, but the array as a whole
  */
 function matchQueryPart(
   obj,
@@ -999,6 +999,7 @@ function matchQueryPart(
 
 /**
  * Instance of a model (Document)
+ * @deprecated
  * - Low level functions here (_persist), we use them in our higher-levels (Model.update, Model.remove)
  * - 通过Object.defineProperty在this对象上添加方法
  */
@@ -1063,7 +1064,9 @@ export function Document(this: any, db, raw) {
   });
 
   _.extend(this, raw.constructor.modelName ? deepCopy(raw) : raw); // Clone it deeply if it's schema-constructed
+
   schemas.construct(this, db.schema);
+
   db.emit('construct', self);
 }
 

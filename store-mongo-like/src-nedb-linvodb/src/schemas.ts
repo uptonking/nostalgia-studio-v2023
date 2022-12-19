@@ -21,18 +21,16 @@ function isComplexSpec(spec) {
   return (
     typeof spec === 'object' &&
     !Array.isArray(spec) &&
-    _.keys(spec).every(function (x) {
-      return _.includes(specAllowedKeys, x);
-    })
+    Object.keys(spec).every((x) => specAllowedKeys.includes(x))
   );
 }
 
 function isNormalized(spec) {
   return (
-    !isComplexSpec(spec) &&
-    !Array.isArray(spec) &&
     'schema' in spec &&
-    'type' in spec
+    'type' in spec &&
+    !isComplexSpec(spec) &&
+    !Array.isArray(spec)
   );
 }
 
@@ -47,18 +45,21 @@ function mapSpec(spec) {
   return spec;
 }
 
+/** recursively normalize all of schema obj props */
 export function normalize(schema) {
-  _.each(schema, function (spec, key) {
+  Object.keys(schema).forEach((key) => {
+    const spec = schema[key];
     if (isNormalized(spec)) return;
+
     if (isComplexSpec(spec)) {
       if (Array.isArray(spec.type)) {
         schema[key] = _.assign(
           {},
           {
-            schema: mapSpec(spec.type[0]) || undefined,
             type: 'array',
+            schema: mapSpec(spec.type[0]) || undefined,
           },
-          _.pick(spec, function (specValue, specKey) {
+          _.pick(spec, (specValue, specKey) => {
             return (
               specKey !== 'type' && specAllowedKeys.indexOf(specKey) !== -1
             );
@@ -68,16 +69,19 @@ export function normalize(schema) {
         spec.type = mapSpec(spec.type);
       }
       return;
-    } else if (Array.isArray(spec))
+    } else if (Array.isArray(spec)) {
       schema[key] = { schema: mapSpec(spec[0]) || undefined, type: 'array' };
-    else if (typeof spec === 'object')
+    } else if (typeof spec === 'object') {
       schema[key] = { schema: normalize(spec), type: 'object' };
-    else schema[key] = { type: mapSpec(spec) };
+    } else {
+      schema[key] = { type: mapSpec(spec) };
+    }
   });
 
   return schema;
 }
 
+/** enhance self by schema info */
 export function construct(self, schema) {
   // TODO: incorporate _ctime and _mtime here, making them default non-enumerable date props
   // Has some minor increase on time it takes to do DB operations - but we want schema support
@@ -98,42 +102,50 @@ export function construct(self, schema) {
   }
 
   // Dynamic getter/setter for objects
-  _.each(schema, function (spec, key) {
+  Object.keys(schema).forEach((key) => {
+    const spec = schema[key];
     if (spec.get || spec.set) {
-      var val = self[key];
+      const val1 = self[key];
       const hasVal = self.hasOwnProperty(key);
       Object.defineProperty(self, key, {
         get: spec.get,
         set: spec.set,
         enumerable: true,
       });
-      if (hasVal) self[key] = val; // call the setter the first time if we already had a set value
+      if (hasVal) self[key] = val1; // call the setter the first time if we already had a set value
       return;
     }
 
     if (!spec.type) return;
 
-    var val;
-    if (self.hasOwnProperty(key) && canCast(self[key], spec.type))
+    let val;
+    if (self.hasOwnProperty(key) && canCast(self[key], spec.type)) {
       val = castToType(self[key], spec.type);
-    else if (spec.hasOwnProperty('default') && canCast(spec.default, spec.type))
+    } else if (
+      spec.hasOwnProperty('default') &&
+      canCast(spec.default, spec.type)
+    ) {
       val = castToType(spec.default, spec.type);
-    else val = defaultValue(spec.type);
+    } else {
+      val = defaultValue(spec.type);
+    }
 
-    if (spec.schema) construct(val, spec.schema);
+    if (spec.schema) {
+      construct(val, spec.schema);
+    }
 
     Object.defineProperty(self, key, {
       enumerable: true,
       get:
-        spec.type == 'array'
-          ? function () {
+        spec.type === 'array'
+          ? () => {
               construct(val, spec.schema);
               return val;
             }
           : function () {
               return val;
             },
-      set: function (v) {
+      set: (v) => {
         if (canCast(v, spec.type)) {
           const oldVal = val;
           val = castToType(v, spec.type);
@@ -147,30 +159,30 @@ export function construct(self, schema) {
 }
 
 function canCast(val, spec) {
-  if (spec === true || spec == 'mixed') return true;
-  if (spec == 'array' && Array.isArray(val)) return true;
+  if (spec === true || spec === 'mixed') return true;
+  if (spec === 'array' && Array.isArray(val)) return true;
   if (typeof val === spec) return true;
   if (typeof val === typeof spec) return true;
-  if (spec == 'string' && val && val.toString) return true;
-  if (spec == 'ObjectId' && val && val.toString) return true;
+  if (spec === 'string' && val && val.toString) return true;
+  if (spec === 'ObjectId' && val && val.toString) return true;
   //if (spec == "regexp" && typeof(val))
-  if (spec == 'number' && !isNaN(val)) return true;
-  if (spec == 'date' && !isNaN(new Date(val).getTime())) return true;
-  if (spec == 'boolean' && !isNaN(val)) return true;
+  if (spec === 'number' && !isNaN(val)) return true;
+  if (spec === 'date' && !isNaN(new Date(val).getTime())) return true;
+  if (spec === 'boolean' && !isNaN(val)) return true;
   if (spec instanceof RegExp && val.toString && spec.test(val)) return true;
   return false;
 }
 
 function castToType(val, spec) {
   if (spec === true || spec == 'mixed') return val;
-  if (spec == 'array' && Array.isArray(val)) return val;
+  if (spec === 'array' && Array.isArray(val)) return val;
   if (typeof val === spec) return val;
   if (typeof val === typeof spec) return val;
-  if (spec == 'string') return val.toString();
-  if (spec == 'ObjectId') return val.toString();
-  if (spec == 'number') return parseFloat(val);
-  if (spec == 'boolean') return Boolean(val);
-  if (spec == 'date') return new Date(val);
+  if (spec === 'string') return val.toString();
+  if (spec === 'ObjectId') return val.toString();
+  if (spec === 'number') return parseFloat(val);
+  if (spec === 'boolean') return Boolean(val);
+  if (spec === 'date') return new Date(val);
   if (spec instanceof RegExp) return val.toString();
 }
 
@@ -185,32 +197,35 @@ function defaultValue(spec) {
     date: new Date(),
     // @ts-expect-error fix-types
     regexp: new RegExp(),
-    function: function () {},
+    function: () => { },
     array: [],
     object: {},
     ObjectId: null,
   }[spec];
 }
 
-export function getIndexes(obj, prefix = undefined) {
-  let indexes = [];
-  var prefix = prefix || '';
-  _.each(obj, function (spec, key) {
-    if (spec.schema && typeof spec.schema === 'object')
+/** recursively build index-config for all of obj keys */
+export function getIndexes(obj, prefix = '') {
+  let indexes: Array<{
+    fieldName: string;
+    sparse: any;
+    unique: any;
+  }> = [];
+  Object.keys(obj).forEach((key) => {
+    const spec = obj[key];
+    if (spec.schema && typeof spec.schema === 'object') {
       return (indexes = indexes.concat(
         getIndexes(spec.schema, prefix + key + '.'),
       ));
-    if (spec.index)
+    }
+    if (spec.index) {
       // now we know spec is a special object: add the index
       indexes.push({
         fieldName: prefix + key,
         sparse: spec.sparse,
         unique: spec.unique,
       });
+    }
   });
   return indexes;
 }
-
-// module.exports.construct = construct;
-// module.exports.normalize = normalize;
-// module.exports.indexes = getIndexes;

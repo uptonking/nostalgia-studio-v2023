@@ -1,4 +1,3 @@
-import async from 'async';
 import { assert, should } from 'chai';
 import _ from 'lodash';
 
@@ -8,7 +7,7 @@ should();
 
 describe('Document', function () {
   describe('Serialization, deserialization', function () {
-    it('Can serialize and deserialize strings', function () {
+    it('Can serialize and deserialize str with line-break "\n" ', function () {
       let a;
       let b;
       let c;
@@ -62,17 +61,19 @@ describe('Document', function () {
       a = { test: null };
       b = document.serialize(a);
       c = document.deserialize(b);
+      // console.log(';; b-c ', b, c);
       b.indexOf('\n').should.equal(-1);
-      assert.isNull(a.test);
+      assert.isNull(c.test);
     });
 
     it('undefined fields are removed when serialized', function () {
-      const a = { bloup: undefined, hello: 'world' };
+      const a = { undef: undefined, hello: 'world' };
       const b = document.serialize(a);
       const c = document.deserialize(b);
+      b.indexOf('undefined').should.equal(-1)
       Object.keys(c).length.should.equal(1);
       c.hello.should.equal('world');
-      assert.isUndefined(c.bloup);
+      assert.isUndefined(c.undef);
     });
 
     it('Can serialize and deserialize a date', function () {
@@ -105,19 +106,19 @@ describe('Document', function () {
       c.test.toString().should.equal(r.toString());
     });
 
-    it('Can serialize and deserialize sub objects', function () {
+    it('Can serialize and deserialize nested objects', function () {
       let a;
       let b;
       let c;
       const d = new Date();
 
-      a = { test: { something: 39, also: d, yes: { again: 'yes' } } };
+      a = { test: { something: 39, also: d, nested: { again: 'nested' } } };
       b = document.serialize(a);
       c = document.deserialize(b);
       b.indexOf('\n').should.equal(-1);
       c.test.something.should.equal(39);
       c.test.also.getTime().should.equal(d.getTime());
-      c.test.yes.again.should.equal('yes');
+      c.test.nested.again.should.equal('nested');
     });
 
     it('Can serialize and deserialize sub arrays', function () {
@@ -346,6 +347,7 @@ describe('Document', function () {
 
     it('Throw an error if trying to use modify in a mixed copy+modify way', function () {
       const obj = { some: 'thing' };
+      // ❓ $modify
       const updateQuery = { replace: 'me', $modify: 'metoo' };
 
       (function () {
@@ -363,6 +365,7 @@ describe('Document', function () {
     });
 
     it('Throw an error if a modifier is used with a non-object argument', function () {
+      // ? failed
       const obj = { some: 'thing' };
       const updateQuery = { $set: 'this exists' };
 

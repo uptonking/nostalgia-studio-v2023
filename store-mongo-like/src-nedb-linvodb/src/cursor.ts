@@ -1,6 +1,5 @@
 import events from 'events';
 import _ from 'lodash';
-import util from 'util';
 
 /**
  * Manage access to data, be it to find, update or remove it
@@ -359,11 +358,12 @@ Cursor.getMatchesStream = function (
         return stream.emit('error', e);
       }
 
-      /* if getIdsForQuery returns null, then we have to re-build indexes
-       * Insert a simple timeout if the queue is empty in order to do debouncing */
+      // if getIdsForQuery returns null, then we have to re-build indexes
+      //  Insert a simple timeout if the queue is empty in order to do debouncing
       if (
-        db._pipe.queue.length == 0 &&
-        _.some(db.indexes, function (idx) {
+        db._pipe.queue.length === 0 &&
+        _.some(db.indexes, idx => {
+          // @ts-expect-error fix-types
           return !idx.ready;
         })
       )
@@ -385,7 +385,7 @@ Cursor.getMatchesStream = function (
       });
     },
     0,
-    function () {},
+    function () { },
   );
 
   /* Stream the documents themselves: push all to the retriever queue */
@@ -641,7 +641,7 @@ Cursor.getIdsForQuery = function (db, query, sort = undefined) {
   return res;
 };
 
-/*
+/**
  * Internal function to help sorting in case getIdsForQuery doesn't return sorted results
  */
 Cursor.getSorter = function (sort) {
@@ -668,5 +668,3 @@ Cursor.getSorter = function (sort) {
   };
 };
 
-// Interface
-// module.exports = Cursor;

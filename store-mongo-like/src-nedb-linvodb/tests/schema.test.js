@@ -1,17 +1,14 @@
 import async from 'async';
 import { assert, should } from 'chai';
-import fs from 'fs';
 import _ from 'lodash';
-import path from 'path';
 import rimraf from 'rimraf';
-import util from 'util';
 
 import { Model } from '../src/model';
 import * as Schemas from '../src/schemas';
 
 should();
 
-const testDb = 'workspace/test3.db';
+const testDb = 'tests/testdata/test3.db';
 
 describe('Schema', function () {
   let d;
@@ -30,7 +27,7 @@ describe('Schema', function () {
           d = new Model('testDb', { filename: testDb });
           d.filename.should.equal(testDb);
 
-          d.reload(function (err) {
+          d.reload((err) => {
             assert.isNull(err);
             d.getAllData().length.should.equal(0);
             return cb();
@@ -44,16 +41,15 @@ describe('Schema', function () {
   describe('Indexing', function () {
     // TODO: also check dot notation for indexes on this test
     beforeEach(function (done) {
-      d = new Model(
-        'testDb',
-        {
+      d = new Model('testDb', {
+        filename: testDb,
+        schema: {
           name: { index: true, unique: true, sparse: true },
           age: { index: true },
           department: { index: false },
           address: { city: { index: true } },
         },
-        { filename: testDb },
-      );
+      });
 
       d.insert(
         [
@@ -114,9 +110,9 @@ describe('Schema', function () {
 
   describe('Validation', function () {
     it('basic type validation', function (done) {
-      d = new Model(
-        'testDb',
-        {
+      d = new Model('testDb', {
+        filename: testDb,
+        schema: {
           name: { index: true, unique: true, sparse: true, type: 'string' },
           age: { index: true, type: 'number' },
           department: { index: false },
@@ -125,8 +121,7 @@ describe('Schema', function () {
           active: Boolean, // test the new syntax
           started: Date,
         },
-        { filename: testDb },
-      );
+      });
 
       const doc = new d({
         name: 'Kelly',
@@ -174,26 +169,29 @@ describe('Schema', function () {
     it('getter/setter', function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: { index: true, unique: true, sparse: true, type: 'string' },
-          age: { index: true, type: 'number' },
-          department: { index: false },
-          address: { city: { index: true } },
-          doubleAge: {
-            get: function () {
-              return 2 * this.age;
+          filename: testDb,
+          schema: {
+            name: { index: true, unique: true, sparse: true, type: 'string' },
+            age: { index: true, type: 'number' },
+            department: { index: false },
+            address: { city: { index: true } },
+            doubleAge: {
+              get: function () {
+                return 2 * this.age;
+              },
             },
-          },
-          tripleAge: {
-            get: function () {
-              return 3 * this.age;
-            },
-            set: function (v) {
-              this.age = v / 3;
+            tripleAge: {
+              get: function () {
+                return 3 * this.age;
+              },
+              set: function (v) {
+                this.age = v / 3;
+              },
             },
           },
         },
-        { filename: testDb },
       );
 
       const doc = new d({
@@ -213,18 +211,21 @@ describe('Schema', function () {
     it('_id as a getter', function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: { index: true, unique: true, sparse: true, type: 'string' },
-          age: { index: true, type: 'number' },
-          department: { index: false },
-          address: { city: { index: true } },
-          _id: {
-            get: function () {
-              return this.name;
+          filename: testDb,
+          schema: {
+            name: { index: true, unique: true, sparse: true, type: 'string' },
+            age: { index: true, type: 'number' },
+            department: { index: false },
+            address: { city: { index: true } },
+            _id: {
+              get: function () {
+                return this.name;
+              },
             },
           },
         },
-        { filename: testDb },
       );
 
       d.insert(
@@ -260,10 +261,18 @@ describe('Schema', function () {
     it('type validation via regexp', function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: { index: true, unique: true, sparse: true, type: /^j(.*)y$/i },
+          filename: testDb,
+          schema: {
+            name: {
+              index: true,
+              unique: true,
+              sparse: true,
+              type: /^j(.*)y$/i,
+            },
+          },
         },
-        { filename: testDb },
       );
 
       const doc = new d({ name: 'Jay' });
@@ -281,10 +290,13 @@ describe('Schema', function () {
     it('type validation- any type', function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: true,
+          filename: testDb,
+          schema: {
+            name: true,
+          },
         },
-        { filename: testDb },
       );
 
       const doc = new d({ name: 'Jay' });
@@ -302,13 +314,19 @@ describe('Schema', function () {
     it('type validation on underlying objects', function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: { index: true, unique: true, sparse: true, type: 'string' },
-          age: { index: true, type: 'number' },
-          department: { index: false },
-          address: { city: { index: true, type: 'string' }, number: 'number' },
+          filename: testDb,
+          schema: {
+            name: { index: true, unique: true, sparse: true, type: 'string' },
+            age: { index: true, type: 'number' },
+            department: { index: false },
+            address: {
+              city: { index: true, type: 'string' },
+              number: 'number',
+            },
+          },
         },
-        { filename: testDb },
       );
 
       const doc = new d({
@@ -329,16 +347,19 @@ describe('Schema', function () {
     it('type validation on underlying arrays', function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: { index: true, unique: true, sparse: true, type: 'string' },
-          age: { index: true, type: 'number' },
-          department: { index: false },
-          address: { city: { index: true } },
-          tags: ['string'],
-          hits: [Number],
-          addons: [],
+          filename: testDb,
+          schema: {
+            name: { index: true, unique: true, sparse: true, type: 'string' },
+            age: { index: true, type: 'number' },
+            department: { index: false },
+            address: { city: { index: true } },
+            tags: ['string'],
+            hits: [Number],
+            addons: [],
+          },
         },
-        { filename: testDb },
       );
 
       const doc = new d({
@@ -380,16 +401,19 @@ describe('Schema', function () {
     it('type validation on constructing', function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: { index: true, unique: true, sparse: true, type: 'string' },
-          age: { index: true, type: 'number' },
-          department: { index: false },
-          address: {
-            city: { index: true, type: 'string' },
-            number: { type: 'number' },
+          filename: testDb,
+          schema: {
+            name: { index: true, unique: true, sparse: true, type: 'string' },
+            age: { index: true, type: 'number' },
+            department: { index: false },
+            address: {
+              city: { index: true, type: 'string' },
+              number: { type: 'number' },
+            },
           },
         },
-        { filename: testDb },
       );
 
       const doc = new d({
@@ -407,19 +431,22 @@ describe('Schema', function () {
     it('default value', function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: {
-            index: true,
-            unique: true,
-            sparse: true,
-            type: 'string',
-            default: 'Billy',
+          filename: testDb,
+          schema: {
+            name: {
+              index: true,
+              unique: true,
+              sparse: true,
+              type: 'string',
+              default: 'Billy',
+            },
+            age: { index: true, type: 'number' },
+            department: { index: false },
+            address: { city: { index: true } },
           },
-          age: { index: true, type: 'number' },
-          department: { index: false },
-          address: { city: { index: true } },
         },
-        { filename: testDb },
       );
 
       const doc = new d({
@@ -471,12 +498,15 @@ describe('Schema', function () {
     beforeEach(function (done) {
       d = new Model(
         'testDb',
+
         {
-          name: { index: true, unique: true, sparse: true },
-          age: { index: true },
-          department: { index: false },
+          filename: testDb,
+          schema: {
+            name: { index: true, unique: true, sparse: true },
+            age: { index: true },
+            department: { index: false },
+          },
         },
-        { filename: testDb },
       );
 
       d.insert(

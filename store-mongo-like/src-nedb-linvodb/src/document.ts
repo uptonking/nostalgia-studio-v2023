@@ -479,7 +479,7 @@ lastStepModifierFunctions.$pull = function (obj, field, value) {
  */
 lastStepModifierFunctions.$inc = function (obj, field, value) {
   if (typeof value !== 'number') {
-    throw value + ' must be a number';
+    throw new Error(value + ' must be a number');
   }
 
   if (typeof obj[field] !== 'number') {
@@ -521,12 +521,8 @@ Object.keys(lastStepModifierFunctions).forEach((modifier) => {
  */
 export function modify(obj, updateQuery) {
   const keys = Object.keys(updateQuery);
-  const firstChars = _.map(keys, function (item) {
-    return item[0];
-  });
-  const dollarFirstChars = _.filter(firstChars, function (c) {
-    return c === '$';
-  });
+  const firstChars = keys.map(key => key[0]);
+  const dollarFirstChars = firstChars.filter(c => c === '$')
   let newDoc;
   let modifiers;
 
@@ -627,9 +623,9 @@ export function getDotValue(obj, field) {
 
 /**
  * Check whether 'things' are equal
- * Things are defined as any native types (string, number, boolean, null, date) and objects
- * In the case of object, we check deep equality
- * Returns true if they are, false otherwise
+ * - Things are defined as any native types (string, number, boolean, null, date) and objects
+ * - In the case of object, we check deep equality
+ * - Returns true if they are, false otherwise
  */
 export function areThingsEqual(a, b) {
   let aKeys;
@@ -954,18 +950,14 @@ function matchQueryPart(
     !(queryValue instanceof RegExp)
   ) {
     keys = Object.keys(queryValue);
-    firstChars = _.map(keys, function (item) {
-      return item[0];
-    });
-    dollarFirstChars = _.filter(firstChars, function (c) {
-      return c === '$';
-    });
+    firstChars = keys.map(key => key[0]);
+    dollarFirstChars = firstChars.filter(c => c === '$')
 
     if (
       dollarFirstChars.length !== 0 &&
       dollarFirstChars.length !== firstChars.length
     ) {
-      throw 'You cannot mix operators and normal fields';
+      throw new Error('You cannot mix operators and normal fields');
     }
 
     // queryValue is an object of this form: { $comparisonOperator1: value1, ... }
@@ -1004,70 +996,70 @@ function matchQueryPart(
  * - 通过Object.defineProperty在this对象上添加方法
  */
 export function Document(this: any, db, raw) {
-  const self = this;
-  var raw;
-  if (raw === undefined) raw = {};
-  if (typeof raw === 'string') raw = deserialize(raw);
+  // const self = this;
+  // var raw;
+  // if (raw === undefined) raw = {};
+  // if (typeof raw === 'string') raw = deserialize(raw);
 
-  Object.defineProperty(this, 'save', {
-    value: function (cb) {
-      return db.save(self, cb);
-    },
-    writable: false,
-  });
+  // Object.defineProperty(this, 'save', {
+  //   value: function (cb) {
+  //     return db.save(self, cb);
+  //   },
+  //   writable: false,
+  // });
 
-  Object.defineProperty(this, 'remove', {
-    value: function (cb) {
-      if (!self._id) return cb(); // TODO maybe emit error
-      return db.remove({ _id: self._id }, {}, cb);
-    },
-    writable: false,
-  });
+  // Object.defineProperty(this, 'remove', {
+  //   value: function (cb) {
+  //     if (!self._id) return cb(); // TODO maybe emit error
+  //     return db.remove({ _id: self._id }, {}, cb);
+  //   },
+  //   writable: false,
+  // });
 
-  Object.defineProperty(this, 'update', {
-    value: function (modifier, cb) {
-      if (self._id === undefined) self._id = db.createNewId();
-      return db.update({ _id: self._id }, modifier, { upsert: true }, cb);
-    },
-    writable: false,
-  });
+  // Object.defineProperty(this, 'update', {
+  //   value: function (modifier, cb) {
+  //     if (self._id === undefined) self._id = db.createNewId();
+  //     return db.update({ _id: self._id }, modifier, { upsert: true }, cb);
+  //   },
+  //   writable: false,
+  // });
 
-  Object.defineProperty(this, 'copy', {
-    value: function (strict) {
-      return deepCopy(self, strict);
-    },
-    writable: false,
-  });
+  // Object.defineProperty(this, 'copy', {
+  //   value: function (strict) {
+  //     return deepCopy(self, strict);
+  //   },
+  //   writable: false,
+  // });
 
-  Object.defineProperty(this, 'serialize', {
-    value: function (strict) {
-      return serialize(self);
-    },
-    writable: false,
-  });
+  // Object.defineProperty(this, 'serialize', {
+  //   value: function (strict) {
+  //     return serialize(self);
+  //   },
+  //   writable: false,
+  // });
 
-  // Special methods
-  for (const method in db._methods)
-    Object.defineProperty(this, method, {
-      value: db._methods[method],
-      writable: false,
-    });
+  // // Special methods
+  // for (const method in db._methods)
+  //   Object.defineProperty(this, method, {
+  //     value: db._methods[method],
+  //     writable: false,
+  //   });
 
-  // Persist to LevelUP
-  Object.defineProperty(this, '_persist', {
-    value: function (cb, quiet) {
-      if (!quiet) db.emit('save', self);
-      db.store.put(self._id, self.serialize(), function (err) {
-        cb(err || null, err ? undefined : self);
-      });
-    },
-  });
+  // // Persist to LevelUP
+  // Object.defineProperty(this, '_persist', {
+  //   value: function (cb, quiet) {
+  //     if (!quiet) db.emit('save', self);
+  //     db.store.put(self._id, self.serialize(), function (err) {
+  //       cb(err || null, err ? undefined : self);
+  //     });
+  //   },
+  // });
 
-  _.extend(this, raw.constructor.modelName ? deepCopy(raw) : raw); // Clone it deeply if it's schema-constructed
+  // _.extend(this, raw.constructor.modelName ? deepCopy(raw) : raw); // Clone it deeply if it's schema-constructed
 
-  schemas.construct(this, db.schema);
+  // schemas.construct(this, db.schema);
 
-  db.emit('construct', self);
+  // db.emit('construct', self);
 }
 
 export { comparisonFunctions as comparators };

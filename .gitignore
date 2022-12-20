@@ -33,6 +33,7 @@ repos-caches/
 # temp/test files
 collab-ot-crdt/crdt-stories/crdt-example-app-hlc-jlongster/db.sqlite
 store-mongo-like/src-nedb/tests/testdata/
+store-mongo-like/src-nedb-linvodb/tests/testdata
 store-mongo-like/src-nedb-linvodb-node/tests/testdata
 
 # below Created by https://www.gitignore.io/api/node

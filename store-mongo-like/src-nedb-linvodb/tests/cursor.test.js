@@ -10,7 +10,7 @@ import { Model } from '../src/model';
 
 should();
 
-const testDb = 'workspace/test.db';
+const testDb = 'tests/testdata/test.db';
 
 describe('Cursor', function () {
   let d;

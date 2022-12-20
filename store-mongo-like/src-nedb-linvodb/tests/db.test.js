@@ -8,13 +8,14 @@ import { Model } from '../src/model';
 
 should();
 
-const testDb = 'workspace/test1.db';
+const testDb = 'tests/testdata/test1.db';
 
-describe('Database', function () {
+describe('Datastore like mongodb collection', function () {
+  // let d: Model;
   let d;
 
   function remove_ids(docs) {
-    docs.forEach(function (d) {
+    docs.forEach(d => {
       delete d._id;
     });
   }
@@ -30,11 +31,12 @@ describe('Database', function () {
           rimraf(testDb, cb);
         },
         function (cb) {
-          d = new Model('testDb1', { filename: testDb });
+          Model.dbPath = testDb
+          d = new Model('testDbDoc', { filename: testDb });
 
           d.filename.should.equal(testDb);
 
-          d.reload(function (err) {
+          d.reload(err => {
             assert.isNull(err);
             d.getAllData().length.should.equal(0);
             return cb();
@@ -92,21 +94,21 @@ describe('Database', function () {
   */
   describe('Insert', function () {
     it('Able to insert a document in the database, setting an _id if none provided, and retrieve it even after a reload', function (done) {
-      d.find({}, function (err, docs) {
+      d.find({}, (err, docs) => {
         docs.length.should.equal(0);
 
-        d.insert({ somedata: 'ok' }, function (err) {
+        d.insert({ somedata: 'ok' }, err => {
           // The data was correctly updated
-          d.find({}, function (err, docs) {
+          d.find({}, (err, docs1) => {
             assert.isNull(err);
-            docs.length.should.equal(1);
-            Object.keys(docs[0]).length.should.equal(2);
-            docs[0].somedata.should.equal('ok');
-            assert.isDefined(docs[0]._id);
-            docs[0]._id.should.have.lengthOf(16);
+            docs1.length.should.equal(1);
+            Object.keys(docs1[0]).length.should.equal(2);
+            docs1[0].somedata.should.equal('ok');
+            assert.isDefined(docs1[0]._id);
+            docs1[0]._id.should.have.lengthOf(16);
 
             // After a reload the data has been correctly persisted
-            d.reload(function (err) {
+            d.reload(err => {
               d.find({}, function (err, docs) {
                 assert.isNull(err);
                 docs.length.should.equal(1);
@@ -232,7 +234,7 @@ describe('Database', function () {
           let data;
 
           docs.length.should.equal(2);
-          _.find(docs, function (doc) {
+          _.find(docs, doc => {
             return doc.a === 5;
           }).b.should.equal('hello');
           _.find(docs, function (doc) {
@@ -511,9 +513,9 @@ describe('Database', function () {
       d.options.autoIndexing.should.equal(true);
 
       d.insert({ tf: 4, r: 6 }, function (err, _doc1) {
-        getCandidates({ r: 6 }, null, function (data) {});
+        getCandidates({ r: 6 }, null, function (data) { });
         setTimeout(function () {
-          getCandidates({ tf: 4 }, null, function (data) {});
+          getCandidates({ tf: 4 }, null, function (data) { });
         }, 5);
 
         d.once('indexesReady', function (indexes) {

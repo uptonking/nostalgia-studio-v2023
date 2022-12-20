@@ -32,7 +32,7 @@ describe('Database', function () {
         function (cb) {
           callbackify((dirname) =>
             Persistence.ensureDirectoryExistsAsync(dirname),
-          )(path.dirname(TEST_DB_IT), function () {
+          )(path.dirname(TEST_DB_IT), () => {
             fs.access(TEST_DB_IT, fs.constants.F_OK, function (err) {
               if (!err) {
                 fs.unlink(TEST_DB_IT, cb);
@@ -43,7 +43,7 @@ describe('Database', function () {
           });
         },
         function (cb) {
-          d.loadDatabase(function (err) {
+          d.loadDatabase(err => {
             assert.isNull(err);
             d.getAllData().length.should.equal(0);
             return cb();
@@ -55,17 +55,17 @@ describe('Database', function () {
   });
 
   it('Constructor compatibility with v0.6-', function () {
-    let dbef = new Datastore('somefile');
-    dbef.filename.should.equal('somefile');
-    dbef.inMemoryOnly.should.equal(false);
+    let ds = new Datastore('somefile');
+    ds.filename.should.equal('somefile');
+    ds.inMemoryOnly.should.equal(false);
 
-    dbef = new Datastore('');
-    assert.isNull(dbef.filename);
-    dbef.inMemoryOnly.should.equal(true);
+    ds = new Datastore('');
+    assert.isNull(ds.filename);
+    ds.inMemoryOnly.should.equal(true);
 
-    dbef = new Datastore();
-    assert.isNull(dbef.filename);
-    dbef.inMemoryOnly.should.equal(true);
+    ds = new Datastore();
+    assert.isNull(ds.filename);
+    ds.inMemoryOnly.should.equal(true);
   });
 
   describe('Autoloading', function () {
@@ -84,7 +84,7 @@ describe('Database', function () {
       fs.writeFileSync(autoDb, fileStr, 'utf8');
       const db = new Datastore({ filename: autoDb, autoload: true });
 
-      db.find({}, function (err, docs) {
+      db.find({}, (err, docs) => {
         assert.isNull(err);
         docs.length.should.equal(2);
         done();
@@ -106,11 +106,11 @@ describe('Database', function () {
 
       fs.writeFileSync(autoDb, fileStr, 'utf8');
 
-      // Check the loadDatabase generated an error
-      function onload(err) {
+        // Check the loadDatabase generated an error
+      const onload = err => {
         err.errorType.should.equal('uniqueViolated');
         done();
-      }
+        };
 
       const db = new Datastore({
         filename: autoDb,
@@ -118,8 +118,7 @@ describe('Database', function () {
         onload: onload,
       });
 
-      // eslint-disable-next-line node/handle-callback-err
-      db.find({}, function (err, docs) {
+      db.find({}, (err, docs) => {
         done(new Error('Find should not be executed since autoload failed'));
       });
     });

@@ -94,6 +94,7 @@ export class Index {
 
   /**
    * Reset an index
+   * - new BinarySearchTree + ready=false
    */
   reset() {
     this.tree = new BinarySearchTree(this.treeOptions);
@@ -108,7 +109,6 @@ export class Index {
   insert(doc) {
     let key;
     let val;
-    const self = this;
     let keys;
     let i;
     let failingI;
@@ -191,11 +191,10 @@ export class Index {
    */
   remove(doc) {
     let key;
-    const self = this;
 
     if (Array.isArray(doc)) {
-      doc.forEach(function (d) {
-        self.remove(d);
+      doc.forEach(d => {
+        this.remove(d);
       });
       return;
     }
@@ -209,8 +208,8 @@ export class Index {
     if (!Array.isArray(key)) {
       this.tree.delete(key, doc._id);
     } else {
-      _.uniq(key, false, projectForUnique).forEach(function (_key) {
-        self.tree.delete(_key, doc._id);
+      _.uniq(key, false, projectForUnique).forEach(_key => {
+        this.tree.delete(_key, doc._id);
       });
     }
   }
@@ -347,9 +346,7 @@ export class Index {
 
 /** Append all elements in toAppend to array */
 function append(array, toAppend) {
-  let i;
-
-  for (i = 0; i < toAppend.length; i += 1) {
+  for (let i = 0; i < toAppend.length; i += 1) {
     array.push(toAppend[i]);
   }
 }

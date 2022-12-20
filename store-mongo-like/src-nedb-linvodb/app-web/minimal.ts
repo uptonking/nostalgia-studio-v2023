@@ -16,12 +16,11 @@ console.log(';; Doc ', doc);
 
 // Construct a single document and then save it
 // const doc = new Doc({ a: 5, now: new Date(), test: 'test-str' });
-// const doc = new Doc({ a: 5, now: new Date(), test: 'test-str' });
-// doc.b = 13; // you can modify the doc
-// doc.save((err) => {
-//   // Document is saved
-//   console.log(doc._id);
-// });
+// doc.b = 13; // you can modify the doc, just like plain object
+doc.save((err) => {
+  // Document is saved
+  console.log(doc._id);
+});
 
 // you can use the .insert method to insert one or more documents
 doc.insert({ a: 3 }, (err, newDoc) => {

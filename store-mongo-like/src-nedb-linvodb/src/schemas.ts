@@ -1,6 +1,8 @@
 import bson from 'bson';
 import _ from 'lodash';
 
+import type { Model } from './model';
+
 const ObjectId = bson.ObjectID;
 
 /** We can pass an object as a spec which really describes a single type, and not a sub-object
@@ -53,18 +55,16 @@ export function normalize(schema) {
 
     if (isComplexSpec(spec)) {
       if (Array.isArray(spec.type)) {
-        schema[key] = _.assign(
-          {},
-          {
-            type: 'array',
+        schema[key] = {
+
+          type: 'array',
             schema: mapSpec(spec.type[0]) || undefined,
-          },
-          _.pick(spec, (specValue, specKey) => {
+          ..._.pick(spec, (specValue, specKey) => {
             return (
               specKey !== 'type' && specAllowedKeys.indexOf(specKey) !== -1
             );
           }),
-        );
+        };
       } else {
         spec.type = mapSpec(spec.type);
       }
@@ -81,8 +81,8 @@ export function normalize(schema) {
   return schema;
 }
 
-/** enhance self by schema info */
-export function construct(self, schema) {
+/** enhance self by schema info, by Object.defineProperty */
+export function construct(self: Model, schema) {
   // TODO: incorporate _ctime and _mtime here, making them default non-enumerable date props
   // Has some minor increase on time it takes to do DB operations - but we want schema support
 
@@ -95,8 +95,11 @@ export function construct(self, schema) {
     while (len--) {
       if (typeof self[len] === type) continue;
 
-      if (canCast(self[len], type)) self[len] = castToType(self[len], type);
-      else self.splice(len, 1);
+      if (canCast(self[len], type)) {
+        self[len] = castToType(self[len], type);
+      } else {
+        self.splice(len, 1);
+      }
     }
     return self;
   }
@@ -139,12 +142,10 @@ export function construct(self, schema) {
       get:
         spec.type === 'array'
           ? () => {
-              construct(val, spec.schema);
-              return val;
-            }
-          : function () {
-              return val;
-            },
+            construct(val, spec.schema);
+            return val;
+          }
+          : () => val,
       set: (v) => {
         if (canCast(v, spec.type)) {
           const oldVal = val;
@@ -205,14 +206,14 @@ function defaultValue(spec) {
 }
 
 /** recursively build index-config for all of obj keys */
-export function getIndexes(obj, prefix = '') {
+export function getIndexes(schemaObj, prefix = '') {
   let indexes: Array<{
     fieldName: string;
     sparse: any;
     unique: any;
   }> = [];
-  Object.keys(obj).forEach((key) => {
-    const spec = obj[key];
+  Object.keys(schemaObj).forEach((key) => {
+    const spec = schemaObj[key];
     if (spec.schema && typeof spec.schema === 'object') {
       return (indexes = indexes.concat(
         getIndexes(spec.schema, prefix + key + '.'),

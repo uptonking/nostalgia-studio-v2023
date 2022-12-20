@@ -5,19 +5,19 @@ export type DatastoreDefaultsOptions = {
 };
 
 export interface DataStoreOptionsProps {
-  /** default false. if true, the database will automatically be loaded from the datafile upon creation
+  /** schema for model */
+  schema?: Record<string, any>
+  /** initial data */
+  raw?: any;
+  /** postpone query execution until after wait milliseconds have elapsed */
+  liveQueryDebounce?: number;
+  /** default true. if true, the database will automatically be loaded from the datafile upon creation
    * - Any command issued before load is finished is buffered and will be executed when load is done. Is not read after instantiation. */
   autoload?: boolean;
-  /** if you use autoloading, this is the handler called after the `loadDatabase`.
-   * - If you use autoloading without specifying this handler, and an error happens during load, an error will be thrown. */
-  onload?: (error?: Error | null) => void;
   /** path to the file where the data is persisted.
    * - If left blank, the datastore is automatically considered in-memory only.
    * - It cannot end with a `~` which is used in the temporary files NeDB uses to perform crash-safe writes. Is not read after instantiation.*/
   filename?: string;
-  /** default false. If set to true, no data will be written in storage.
-   * - This option has priority over `options.filename`. Is not read after instantiation. */
-  inMemoryOnly?: boolean;
   /** default false. if true, timestamp the insertion and last update of all documents, with the fields `createdAt` and `updatedAt`.
    * - User-specified values override automatic generation, usually useful for testing */
   timestampData?: boolean;

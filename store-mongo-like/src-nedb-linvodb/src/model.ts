@@ -2,16 +2,18 @@ import async from 'async';
 import encode from 'encoding-down';
 import events from 'events';
 import hat from 'hat';
+import leveldown from 'leveldown';
 import levelup from 'levelup';
 import _ from 'lodash';
 import path from 'path';
 
 import { Cursor } from './cursor';
-import * as docs from './document';
+import * as docUtils from './document';
 import { Index } from './indexes';
 import * as schemas from './schemas';
 import type { DatastoreDefaultsOptions } from './types/datastore';
 import { Bagpipe } from './utils/bagpipe';
+import { once } from './utils/utils';
 
 /** We have to keep those unique by filename because they're locked */
 const stores = {};
@@ -20,7 +22,7 @@ const stores = {};
 const LEVELUP_RE_TR_CONCURRENCY = 100;
 
 // eslint-disable-next-line prefer-const
-let leveldown: any = null;
+// let leveldown: any = null;
 // try {
 //   (async () => {
 //     // leveldown = import('leveldown')
@@ -35,34 +37,41 @@ export class Model extends events.EventEmitter {
   schema: any;
   /** prefer `filename` to `dbPath` */
   filename: string;
-  _id: any;
+  /** Datastore id */
+  _id: string;
   options: any;
   /** Indexed by field name, dot notation can be used
-  * - `_id` is always indexed and since _ids are generated randomly the underlying
-  * BST is always well-balanced
- */
+   * - `_id` is always indexed and since _ids are generated randomly the underlying
+   * BST is always well-balanced
+   */
   indexes: Record<string, Index>;
   /** Concurrency control for 1) index building and 2) pulling objects from LevelUP */
   _pipe: Bagpipe;
   /** LEVELUP_RE_TR_CONCURRENCY */
   _reTrQueue: Bagpipe;
-  /** swappable persistence backend; use `static defaults.store` to customize */
+  /** swappable persistence backend; use `static defaults.store` to customize
+   * - LevelUP type */
   private store: Record<string, any>;
 
   /** default config for all documents, config `store.db` before constructor */
-  static defaults: DatastoreDefaultsOptions = { autoIndexing: true, autoLoad: true, store: { db: null } };
-  /** prefer `filename` to `dbPath` */
+  static defaults: DatastoreDefaultsOptions = {
+    autoIndexing: true,
+    autoLoad: true,
+    store: { db: null },
+  };
+  /** the dir where each model's store is saved */
   static dbPath: string;
   static Cursor = Cursor;
 
   /** create a document-store, like a mongodb collection
-   * - create indexes from schema
+   * - create all indexes from schema in constructor
+   * @param name model name
    */
-  constructor(name, options: any = {}, schema = {}) {
+  constructor(name: string, options: any = {}, schema = {}) {
     super();
     this.setMaxListeners(0);
 
-    this.buildIndexes = this.buildIndexes.bind(this)
+    this.buildIndexes = this.buildIndexes.bind(this);
 
     if (typeof name !== 'string') {
       throw new Error('model name must be provided as string');
@@ -71,10 +80,9 @@ export class Model extends events.EventEmitter {
     this.filename = path.normalize(
       options.filename || path.join(Model.dbPath || '.', name + '.db'),
     );
-    schema = schema || options.schema;
+    schema = schema || options.schema || {};
     this.schema = schemas.normalize(schema); // Normalize to allow for short-hands
     this.options = { ...Model.defaults, ...options };
-
 
     this.indexes = {};
     this.indexes._id = new Index({ fieldName: '_id', unique: true });
@@ -83,17 +91,26 @@ export class Model extends events.EventEmitter {
       this.ensureIndex(idx);
     });
 
-
     this._pipe = new Bagpipe(1);
     this._pipe.pause();
     this._reTrQueue = new Bagpipe(LEVELUP_RE_TR_CONCURRENCY);
     this._reTrQueue._locked = {};
     this._reTrQueue._locks = {}; // Hide those in ._reTrQueue
 
-
     if (this.options.autoLoad) {
       this.initStore();
     }
+
+    let raw = options.raw;
+    if (!raw) raw = {};
+    if (typeof raw === 'string') {
+      raw = docUtils.deserialize(raw);
+    }
+    // Clone it deeply if it's schema-constructed
+    Object.assign(
+      this,
+      raw.constructor.modelName ? docUtils.deepCopy(raw) : raw,
+    );
 
     schemas.construct(this, this.schema);
     this.emit('construct', this);
@@ -113,7 +130,12 @@ export class Model extends events.EventEmitter {
     const storeOptions = this.options.store || {};
     // console.log(';; init-options ', options, leveldown);
     const db = storeOptions.db || leveldown;
-    console.log(';; init-db ', db);
+    console.log(
+      ';; init-db ',
+      db,
+      this.store,
+      this.store ? this.store.isOpen() : null,
+    );
     this.store = stores[path.resolve(filename)] =
       this.store && this.store.isOpen()
         ? this.store
@@ -124,60 +146,54 @@ export class Model extends events.EventEmitter {
   /**
    * Re-load the database by rebuilding indexes
    */
-  reload(cb) {
-    const self = this;
-    self.emit('reset');
+  reload(cb: (...args: any[]) => any) {
+    this.emit('reset');
     this.resetIndexes();
-    this._pipe.push(this.buildIndexes.bind(this), function () {
+    this._pipe.push(this.buildIndexes, () => {
       cb(null);
-      self.emit('reload');
+      this.emit('reload');
     });
   }
 
   /**
    * Build new indexes from a full scan
    */
-  buildIndexes(cb) {
-    const self = this;
+  buildIndexes(cb: (...args: any[]) => any) {
+    const toBuild = Object.keys(this.indexes)
+      .filter((key) => !this.indexes[key].ready)
+      .map((k) => this.indexes[k]);
 
-    const toBuild = _.filter(self.indexes, (idx) => {
-      return !idx.ready;
-    });
-    if (!toBuild.length)
-      return setTimeout(function () {
-        cb(null);
-      });
+    if (!toBuild.length) {
+      return setTimeout(() => cb(null));
+    }
 
     // Rebuild the new indexes
-    _.each(toBuild, (idx) => {
-      idx.reset();
-    });
+    toBuild.forEach((idx) => idx.reset());
 
-    self.emit('indexesBuild', toBuild);
+    this.emit('indexesBuild', toBuild);
 
-    self.store
+    this.store
       .createReadStream()
-      .on('error', function (err) {
-        cb(err);
-      })
-      .on('data', function (data) {
+      .on('error', (err) => cb(err))
+      .on('data', (data) => {
         const doc = schemas.construct(
-          docs.deserialize(data.value),
-          self.schema,
+          docUtils.deserialize(data.value),
+          this.schema,
         );
-        self.emit('construct', doc);
-        self.emit('indexesConstruct', doc, toBuild);
-        _.each(toBuild, (idx) => {
+        this.emit('construct', doc);
+        this.emit('indexesConstruct', doc, toBuild);
+
+        toBuild.forEach((idx) => {
           try {
             idx.insert(doc);
           } catch (e) { }
         });
       })
-      .on('end', function () {
-        _.each(toBuild, (idx) => {
+      .on('end', () => {
+        toBuild.forEach((idx) => {
           idx.ready = true;
         });
-        self.emit('indexesReady', toBuild);
+        this.emit('indexesReady', toBuild);
         cb(null);
       });
   }
@@ -193,15 +209,15 @@ export class Model extends events.EventEmitter {
    * Reset all currently defined indexes
    */
   resetIndexes() {
-    Object.keys(this.indexes).forEach(i => {
+    Object.keys(this.indexes).forEach((i) => {
       this.indexes[i].reset();
     });
   }
 
   /**
    * Ensure an index is kept for this field. Same parameters as lib/indexes
-   * For now this function is synchronous, we need to test how much time it takes
-   * We use an async API for consistency with the rest of the code
+   * - For now this function is synchronous, we need to test how much time it takes
+   * - We use an async API for consistency with the rest of the code
    * @param {String} options.fieldName
    * @param {Boolean} options.unique
    * @param {Boolean} options.sparse
@@ -228,8 +244,7 @@ export class Model extends events.EventEmitter {
    * @param {Function} cb Optional callback, signature: err
    */
   removeIndex(fieldName, cb) {
-    const callback = cb || function () { };
-
+    const callback = cb || (() => { });
     delete this.indexes[fieldName];
     callback(null);
   }
@@ -266,10 +281,8 @@ export class Model extends events.EventEmitter {
    * Remove one or several document(s) from all indexes
    */
   removeFromIndexes(doc) {
-    const self = this;
-
-    Object.keys(this.indexes).forEach(function (i) {
-      self.indexes[i].remove(doc);
+    Object.keys(this.indexes).forEach((i) => {
+      this.indexes[i].remove(doc);
     });
   }
 
@@ -311,15 +324,20 @@ export class Model extends events.EventEmitter {
    * @param {Function} cb Optional callback, signature: err, insertedDoc
    *
    */
-  insert(newDoc, callback = (...args: any[]) => { }) {
-    newDoc = (Array.isArray(newDoc) ? newDoc : [newDoc]).map((d) => {
-      // return new Model(d);
-    });
+  insert(
+    newDoc: Record<string, any> | Array<Record<string, any>>,
+    callback = (...args: any[]) => { },
+  ) {
+    newDoc = Array.isArray(newDoc) ? newDoc : [newDoc];
+    // .map((d) => {
+    //   // return new Model(d);
+    // });
 
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
     // We also have to ensure indexes are up-to-date
     this._pipe.push(this.buildIndexes, () => {
       try {
+        // ❓ 添加索引重复了
         this._insertIndex(newDoc);
       } catch (e) {
         return callback(e);
@@ -330,7 +348,6 @@ export class Model extends events.EventEmitter {
         newDoc,
         (d, cb) => {
           this.emit('insert', d);
-          // @ts-expect-error fix-types
           d._persist(cb);
         },
         (err, docs) => {
@@ -354,14 +371,13 @@ export class Model extends events.EventEmitter {
 
   /**
    * Prepare a document (or array of documents) to be inserted in a database - add _id and check them
-   * @api private
+   * - createDocId + checkDoc
+   * @private
    */
-  prepareDocumentForInsertion(newDoc) {
-    const self = this;
-
-    (Array.isArray(newDoc) ? newDoc : [newDoc]).forEach(function (doc) {
-      if (doc._id === undefined) doc._id = self.createNewId();
-      doc.checkObject(doc);
+  prepareDocumentForInsertion(newDoc: Model | Model[]) {
+    (Array.isArray(newDoc) ? newDoc : [newDoc]).map((doc: Model) => {
+      if (doc._id === undefined) doc._id = this.createNewId();
+      docUtils.checkObject(doc);
     });
 
     return newDoc;
@@ -369,11 +385,11 @@ export class Model extends events.EventEmitter {
 
   /**
    * If newDoc is an array of documents, this will insert all documents in the cache
-   * @api private
+   * @private
    */
   _insertIndex(newDoc) {
     if (Array.isArray(newDoc)) {
-      this._insertMultipleDocsInIdx(newDoc);
+      this._insertMultipleDocsInIndex(newDoc);
     } else {
       this.addToIndexes(this.prepareDocumentForInsertion(newDoc));
     }
@@ -382,13 +398,16 @@ export class Model extends events.EventEmitter {
   /**
    * If one insertion fails (e.g. because of a unique constraint), roll back all previous
    * inserts and throws the error
-   * @api private
+   * @private
    */
-  _insertMultipleDocsInIdx(newDocs) {
+  _insertMultipleDocsInIndex(newDocs) {
     let i;
     let failingI;
     let error;
-    const preparedDocs = this.prepareDocumentForInsertion(newDocs);
+    let preparedDocs = this.prepareDocumentForInsertion(newDocs);
+    if (!Array.isArray(preparedDocs)) {
+      preparedDocs = [preparedDocs];
+    }
     for (i = 0; i < preparedDocs.length; i += 1) {
       try {
         this.addToIndexes(preparedDocs[i]);
@@ -451,7 +470,7 @@ export class Model extends events.EventEmitter {
    * @param {Object} query MongoDB-style query
    */
   findOne(query, callback) {
-    const cursor = new Cursor(this, query, function (err, docs, callback) {
+    const cursor = new Cursor(this, query, (err, docs, callback) => {
       if (err) {
         return callback(err);
       }
@@ -470,6 +489,11 @@ export class Model extends events.EventEmitter {
     return this.find(query).live();
   }
 
+  update(modifier, cb) {
+    if (this._id === undefined) this._id = this.createNewId();
+    return this._update({ _id: this._id }, modifier, { upsert: true }, cb);
+  }
+
   /**
    * Update all docs matching query
    * @param {Object} query
@@ -485,9 +509,8 @@ export class Model extends events.EventEmitter {
    * updating, since constructing a new document instance via the constructor does shallow copy; but seems it will be OK, since
    * we only do that at the end, when everything is successful
    */
-  update(query, updateQuery, options, cb) {
+  _update(query, updateQuery, options, cb) {
     let callback;
-    const self = this;
     let multi;
     let upsert;
     let err;
@@ -496,17 +519,17 @@ export class Model extends events.EventEmitter {
       cb = options;
       options = {};
     }
-    callback = _.once(cb || function () { });
+    callback = once(cb || (() => { }));
     multi = options.multi !== undefined ? options.multi : false;
     upsert = options.upsert !== undefined ? options.upsert : false;
 
-    const stream = Cursor.getMatchesStream(self, query);
-    stream.on('error', function (e) {
+    const stream = Cursor.getMatchesStream(this, query);
+    stream.on('error', (e) => {
       err = e;
       stream.close();
       callback(err);
     });
-    stream.on('ids', function (ids) {
+    stream.on('ids', (ids) => {
       const indexed = ids._indexed;
 
       // Special case - upsert and no found docs, which means we do an insert
@@ -515,20 +538,20 @@ export class Model extends events.EventEmitter {
 
         if (typeof updateQuery === 'function') {
           // updateQuery is a function, we have to initialize schema from query
-          toBeInserted = new Model(docs.deepCopy(query, true));
+          toBeInserted = new Model(docUtils.deepCopy(query, true));
           // toBeInserted = new self(document.deepCopy(query, true));
           updateQuery(toBeInserted);
         } else {
           try {
-            docs.checkObject(updateQuery);
+            docUtils.checkObject(updateQuery);
             // updateQuery is a simple object with no modifier, use it as the document to insert
             toBeInserted = updateQuery;
           } catch (e) {
             // updateQuery contains modifiers, use the find query as the base,
             // strip it from all operators and update it according to updateQuery
             try {
-              toBeInserted = docs.modify(
-                docs.deepCopy(query, true),
+              toBeInserted = docUtils.modify(
+                docUtils.deepCopy(query, true),
                 updateQuery,
               );
             } catch (e) {
@@ -538,7 +561,7 @@ export class Model extends events.EventEmitter {
           }
         }
 
-        return self.insert(toBeInserted, function (err, newDoc) {
+        return this.insert(toBeInserted, (err, newDoc) => {
           if (err) {
             return callback(err);
           }
@@ -548,9 +571,9 @@ export class Model extends events.EventEmitter {
 
       // Go on with our update; treat the error handling gingerly
       const modifications = [];
-      stream.on('data', function (data) {
+      stream.on('data', (data) => {
         try {
-          if (!indexed && !docs.match(data.val(), query)) return; // Not a match, ignore
+          if (!indexed && !docUtils.match(data.val(), query)) return; // Not a match, ignore
         } catch (e) {
           err = e;
           stream.close();
@@ -558,16 +581,21 @@ export class Model extends events.EventEmitter {
         }
 
         try {
-          const val = data.lock(); // we're doing a modification, grab the lock - ensures we get the safe reference to the object until it's unlocked
+          let val = data.lock(); // we're doing a modification, grab the lock - ensures we get the safe reference to the object until it's unlocked
 
           if (typeof updateQuery === 'function') {
             updateQuery(val);
-            if (data.id != val._id) throw 'update function cannot change _id';
+            if (data.id != val._id) {
+              throw new Error('update function cannot change _id');
+            }
             data.newDoc = val;
-          } else data.newDoc = docs.modify(val, updateQuery);
+          } else {
+            data.newDoc = docUtils.modify(val, updateQuery);
+          }
 
           data.oldDoc = val.copy();
-          _.extend(val, data.newDoc); // IMPORTANT: don't update on .modify, in case we emit an error while modifying
+          // _.extend(val, data.newDoc); // IMPORTANT: don't update on .modify, in case we emit an error while modifying
+          Object.assign(val, data.newDoc);
           modifications.push(data);
 
           if (!multi) stream.close(); // Not a multi update, close after one valid modification
@@ -579,12 +607,12 @@ export class Model extends events.EventEmitter {
         }
       });
 
-      stream.on('ready', function () {
+      stream.on('ready', () => {
         if (err) return callback(err);
 
         // Change the docs in memory
         try {
-          self.updateIndexes(modifications);
+          this.updateIndexes(modifications);
         } catch (e) {
           return callback(e);
         }
@@ -594,13 +622,13 @@ export class Model extends events.EventEmitter {
           modifications,
           function (d, cb) {
             // new self(d.newDoc)._persist(function (e, doc) {
-            new Model(d.newDoc)._persist(function (e, doc) {
+            new Model(d.newDoc)._persist((e, doc) => {
               d.unlock();
               cb(e, doc);
             });
           },
-          function (e, docs) {
-            if (docs) self.emit('updated', docs);
+          (e, docs) => {
+            if (docs) this.emit('updated', docs);
 
             callback(
               e || null,
@@ -613,71 +641,81 @@ export class Model extends events.EventEmitter {
     });
   }
 
+  save(cb: (...args: any[]) => any = () => { }) {
+    return this._save(this, cb);
+  }
+
   /**
    * Save a document - insert it into the DB or update in-place
-   * @param {Object} document
+   * - If a field is `undefined`, it will not be saved.
    */
-  save(docs, cb, quiet) {
-    const self = this;
-    cb = cb || function () { };
-
-    docs = (Array.isArray(docs) ? docs : [docs]).map(function (d) {
+  _save(
+    docs: Model | Model[],
+    cb: (...args: any[]) => any = () => { },
+    quiet = false,
+  ) {
+    const validDocs = (Array.isArray(docs) ? docs : [docs]).map((doc) => {
       // return d.constructor.modelName == self.modelName ? d : new self(d);
-      return d.constructor.modelName == self.modelName ? d : new Model(d);
+      // todo fix not equals
+      return doc.modelName === this.modelName ? doc : new Model(this.modelName);
     });
-    this.prepareDocumentForInsertion(docs);
+    this.prepareDocumentForInsertion(validDocs);
 
     const existingDocs = {};
+    const idsAllowed = validDocs
+      .map((doc) => {
+        if (![null, undefined, '', false, 0, NaN].includes(doc._id)) {
+          return doc._id;
+        } else {
+          return null;
+        }
+      })
+      .filter(Boolean);
     const stream = Cursor.getMatchesStream(this, {
-      _id: { $in: _.chain(docs).map('_id').compact().value() },
+      _id: { $in: idsAllowed },
+      // _id: { $in: _.chain(validDocs).map('_id').compact().value() },
     });
-    stream.on('error', function (err) {
+    stream.on('error', (err) => {
       stream.close();
       cb(err);
     });
-    stream.on('data', function (d) {
+    stream.on('data', (d) => {
       existingDocs[d.id] = d.val();
     });
-    stream.on('ready', function () {
+    stream.on('ready', () => {
       const insert = [];
       const modifications = [];
-      docs.forEach(function (d) {
+      validDocs.forEach((d) => {
         modifications.push({ oldDoc: existingDocs[d._id], newDoc: d });
       });
 
       try {
-        self.updateIndexes(modifications);
+        this.updateIndexes(modifications);
       } catch (err) {
         return cb(err);
       }
 
       async.each(
         modifications,
-        function (m, cb) {
-          if (!m.oldDoc && !quiet) self.emit('insert', m.newDoc);
+        (m, cb) => {
+          if (!m.oldDoc && !quiet) {
+            this.emit('insert', m.newDoc);
+          }
           m.newDoc._persist(cb, quiet);
         },
-        function (err) {
+        (err) => {
           if (err) return cb(err);
 
           const inserted = modifications
-            .filter(function (x) {
-              return !x.oldDoc;
-            })
-            .map(function (x) {
-              return x.newDoc;
-            });
+            .filter((x) => !x.oldDoc)
+            .map((x) => x.newDoc);
           const updated = modifications
-            .filter(function (x) {
-              return x.oldDoc;
-            })
-            .map(function (x) {
-              return x.newDoc;
-            });
-          if (inserted.length) self.emit('inserted', inserted, quiet);
-          if (updated.length) self.emit('updated', updated, quiet);
+            .filter((x) => x.oldDoc)
+            .map((x) => x.newDoc);
+          if (inserted.length) this.emit('inserted', inserted, quiet);
+          if (updated.length) this.emit('updated', updated, quiet);
 
-          cb(null, docs.length <= 1 ? docs[0] : docs, {
+          cb(null, validDocs.length <= 1 ? validDocs[0] : validDocs, {
             inserted: inserted.length,
             updated: updated.length,
           });
@@ -686,9 +724,15 @@ export class Model extends events.EventEmitter {
     });
   }
 
+  remove(cb) {
+    if (!this._id) return cb();
+
+    return this._remove({ _id: this._id }, {}, cb);
+  }
+
   /**
    * Remove all docs matching the query
-   * For now very naive implementation (similar to update)
+   * - For now very naive implementation (similar to update)
    * @param {Object} query
    * @param {Object} options Optional options
    *                 options.multi If true, can update multiple documents (defaults to false)
@@ -696,9 +740,8 @@ export class Model extends events.EventEmitter {
    *
    * @api private Use Model.remove which has the same signature
    */
-  remove(query, options, cb) {
+  _remove(query, options, cb) {
     let callback;
-    const self = this;
     const removed = [];
     let err;
 
@@ -706,63 +749,58 @@ export class Model extends events.EventEmitter {
       cb = options;
       options = {};
     }
-    callback = cb || function () { };
+    callback = cb || (() => { });
     const multi = options.multi !== undefined ? options.multi : false;
 
     const stream = Cursor.getMatchesStream(this, query);
     let indexed;
-    stream.on('ids', function (ids) {
-      indexed = ids._indexed;
-    });
-    stream.on('data', function (d) {
+    stream.on('ids', (ids) => (indexed = ids._indexed));
+    stream.on('data', (d) => {
       try {
         const v = d.val();
         if (
-          (indexed || docs.match(v, query)) &&
+          (indexed || docUtils.match(v, query)) &&
           (multi || removed.length === 0)
         ) {
           removed.push(v._id);
-          self.removeFromIndexes(v);
-          self.emit('remove', v);
+          this.removeFromIndexes(v);
+          this.emit('remove', v);
         }
       } catch (e) {
         err = e;
       }
     });
-    stream.on('ready', function () {
+    stream.on('ready', () => {
       if (err) return callback(err);
 
       // Persist in LevelUP; do this after error check
       async.each(
         removed,
-        function (id, cb) {
-          self.store.del(id, cb);
-        },
-        function (e) {
-          self.emit('removed', removed);
+        (id, cb) => this.store.del(id, cb),
+        (e) => {
+          this.emit('removed', removed);
           callback(e || null, e ? undefined : removed.length);
         },
       );
     });
-    stream.on('error', function (e) {
+    stream.on('error', (e) => {
       stream.close();
       callback(e);
     });
   }
 
   copy(strict) {
-    return docs.deepCopy(this, strict);
+    return docUtils.deepCopy(this, strict);
   }
 
   serialize() {
-    return docs.serialize(this);
+    return docUtils.serialize(this);
   }
 
-  _persist(cb, quiet = undefined) {
+  _persist(cb: (...args: any[]) => any, quiet = undefined) {
     if (!quiet) this.emit('save', this);
-    this.store.put(this._id, this.serialize(), err => {
+    this.store.put(this._id, this.serialize(), (err) => {
       cb(err || null, err ? undefined : this);
     });
   }
-
 }

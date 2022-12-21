@@ -7,7 +7,7 @@ export type DatastoreDefaultsOptions = {
 export interface DataStoreOptionsProps {
   /** schema for model */
   schema?: Record<string, any>
-  /** initial data */
+  /** @deprecated initial data. use `modelObj.insert(docs)` instead */
   raw?: any;
   /** postpone query execution until after wait milliseconds have elapsed */
   liveQueryDebounce?: number;

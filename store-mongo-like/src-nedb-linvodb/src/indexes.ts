@@ -215,9 +215,9 @@ export class Index {
   }
 
   /**
-   * Update a document in the index
-   * If a constraint is violated, changes are rolled back and an error thrown
-   * Naive implementation, still in O(log(n))
+   * Update a document in the index. remove oldDoc, then insert newDoc/oldDoc
+   * - If a constraint is violated, changes are rolled back and an error thrown
+   * - Naive implementation, still in O(log(n))
    */
   update(oldDoc, newDoc = undefined) {
     if (Array.isArray(oldDoc)) {

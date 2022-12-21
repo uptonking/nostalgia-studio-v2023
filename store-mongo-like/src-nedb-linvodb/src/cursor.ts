@@ -1,9 +1,7 @@
-import events from 'events';
 import _ from 'lodash';
 
-/**
- * Manage access to data, be it to find, update or remove it
- */
+import { EventEmitter } from '@datalking/utils-vanillajs';
+
 import * as document from './document';
 import type { Model } from './model';
 
@@ -12,7 +10,7 @@ const LIVE_QUERY_DEBOUNCE = 30;
 const AUTO_INDEXING = true;
 
 /**
- *
+ * Manage access to data, be it to find, update or remove it
  */
 export class Cursor {
   db: Model;
@@ -45,7 +43,7 @@ export class Cursor {
     this.db = db;
     this.query = query || {};
     if (execFn) {
-      this.execFn = execFn;
+      this.execFn = execFn; // todo no usage
     }
   }
 
@@ -119,7 +117,7 @@ export class Cursor {
 
   /**
    * Get all matching elements
-   * Will return pointers to matched elements (shallow copies), returning full copies is the role of find or findOne
+   * - Will return pointers to matched elements (shallow copies), returning full copies is the role of find or findOne
    *
    * @param {Function} callback - Signature: err, results
    */
@@ -127,17 +125,15 @@ export class Cursor {
     let res = [] as any;
     const resIds = {};
     const resById = {};
-    const self = this;
     let err = null;
-
     let sort;
     let sorter;
     if (typeof this._sort === 'function') sorter = this._sort;
     else sort = this._sort;
 
     let reducer;
-    if (self._reduce) reducer = [].concat(self._reduce);
-    if (reducer && reducer[1]) reducer[1] = document.deepCopy(self._reduce[1]); // we have to copy the initial value, so that we don't inherit old vals
+    if (this._reduce) reducer = [].concat(this._reduce);
+    if (reducer && reducer[1]) reducer[1] = document.deepCopy(this._reduce[1]); // we have to copy the initial value, so that we don't inherit old vals
 
     if (!this._quiet) this.db.emit('query', this.query);
 
@@ -147,23 +143,23 @@ export class Cursor {
       sort,
       this._prefetched,
     );
-    stream.on('error', function (e) {
-      callback(e);
-    });
+    stream.on('error', e => callback(e));
     stream.removeListener('ids', stream.trigger);
-    stream.on('ids', function (ids) {
+    stream.on('ids', ids => {
       const indexed = ids._indexed;
-      const sorted = ids._sorted; // for some reason we cannot access those in on 'ready' - maybe properties get erased from arrays?
-      const earlyLimit = indexed && sorted && !self._filter && !sorter; // query is indexed, sorter and we don't have special filter/sort funcs; TODO: we should also set this to true if there's no limit/skip
-      const earlySort = (sorted || !sort) && !sorter; // If ids are already sorted
-      const earlyMapReduce = earlyLimit && earlySort && self._map && reducer; // special mode - run the map/reduce directly on data event
+      // for some reason we cannot access those in on 'ready' - maybe properties get erased from arrays?
+      const sorted = ids._sorted;
+      // query is indexed, sorter and we don't have special filter/sort funcs; TODO: we should also set this to true if there's no limit/skip
+      const earlyLimit = indexed && sorted && !this._filter && !sorter;
+      // If ids are already sorted
+      const earlySort = (sorted || !sort) && !sorter;
+      // special mode - run the map/reduce directly on data event
+      const earlyMapReduce = earlyLimit && earlySort && this._map && reducer;
       // TODO: earlyMapReduce even without the map
-
-      if (earlyLimit)
-        ids = limit(ids, self._limit || ids.length, self._skip || 0);
+      if (earlyLimit) { ids = limit(ids, this._limit || ids.length, this._skip || 0); }
 
       // No need to go further, sort and limits are applied, we only need count
-      if (earlyLimit && self._count) {
+      if (earlyLimit && this._count) {
         res = ids;
         return ready();
       }
@@ -182,21 +178,22 @@ export class Cursor {
         res = undefined;
       };
 
-      stream.on('data', function (d) {
+      stream.on('data', d => {
         let v = d.val();
 
-        if (!indexed && !document.match(v, self.query)) return; // Check documents for match if query is not full-index
+        // Check documents for match if query is not full-index
+        if (!indexed && !document.match(v, this.query)) return;
 
         // WARNING: maybe we can put this entire block in try-catch but then we have to make absolutely sure that we're not going to throw errors
         // and the only place it can come from is _filter, _map or reducer
 
         try {
-          if (self._filter && !self._filter(v)) return; // Apply filter
+          if (this._filter && !this._filter(v)) return; // Apply filter
         } catch (e) {
           catcher(e);
         }
 
-        if (self._live) {
+        if (this._live) {
           resById[v._id] = v;
           resIds[v._id] = true;
         } // Keep those in a map if we need them for a live query
@@ -204,7 +201,7 @@ export class Cursor {
         if (earlyMapReduce) {
           // The early map-reduce system, map/reduce-es results on the go if we can (results are pre-sorted and limited)
           try {
-            v = self._map(v);
+            v = this._map(v);
             res = res === undefined ? v : reducer[0](res, v);
           } catch (e) {
             catcher(e);
@@ -214,31 +211,29 @@ export class Cursor {
 
         if (res) res[d.idx] = v; // res might have been set to undefined because of an error
 
-        if (self._ondata) self._ondata(v);
+        if (this._ondata) this._ondata(v);
       });
-      stream.on('ready', function () {
+      stream.on('ready', () => {
         if (err) return ready();
 
-        if (self._live) {
-          self._ids = resIds;
-        } // We need those for the live query
-        self._prefetched = resById; // also keep this on a regular cursor; no harm done, it will be released once the cursor is let go
+        if (this._live) {
+          this._ids = resIds; // We need those for the live query
+        }
+        // also keep this on a regular cursor; no harm done, it will be released once the cursor is let go
+        this._prefetched = resById;
 
         if (earlyMapReduce) return ready();
 
         try {
-          res = res.filter(function (x) {
-            return x !== null;
-          }); // Remove holes left by document.match/filter
+          // Remove holes left by document.match/filter
+          res = res.filter((x) => x !== null);
 
           if (!earlySort) res = res.sort(sorter || Cursor.getSorter(sort));
           if (!earlyLimit)
-            res = limit(res, self._limit || res.length, self._skip || 0);
+          { res = limit(res, this._limit || res.length, this._skip || 0); }
 
-          if (self._map)
-            res = res.map(function (v) {
-              return self._map(v);
-            });
+          if (this._map)
+            res = res.map(v => this._map(v));
           if (reducer) res = res.reduce.apply(res, reducer);
         } catch (e) {
           err = e;
@@ -249,18 +244,20 @@ export class Cursor {
       });
     });
 
-    function limit(res, limit, skip) {
+    const limit = (res, limit, skip) => {
       return res.slice(skip, limit + skip);
-    }
+    };
 
-    function ready() {
-      if (res && self._count) res = res.length;
-      if (res && self._aggregate) res = self._aggregate(res);
+    const ready = () => {
+      if (res && this._count) res = res.length;
+      if (res && this._aggregate) res = this._aggregate(res);
 
-      if (typeof self.execFn === 'function')
-        return self.execFn(err, res, callback);
-      else return callback(err, res);
-    }
+      if (typeof this.execFn === 'function') {
+        return this.execFn(err, res, callback);
+      } else {
+        return callback(err, res);
+      }
+    };
   }
 
   count(callback) {
@@ -355,14 +352,9 @@ export class Cursor {
    * - prefetched - a hash map of ID->constructed object which we have pre-fetched somehow - previous results from a live query
    * @return eventEmitter obj
    */
-  static getMatchesStream(
-    db: Model,
-    query,
-    sort = {},
-    prefetched = undefined,
-  ) {
-
-    const stream = new events.EventEmitter() as any;
+  static getMatchesStream(db: Model, query, sort = {}, prefetched = undefined) {
+    // const stream = new events.EventEmitter() as any;
+    const stream = new EventEmitter() as any;
     stream._closed = false;
     stream._waiting = null;
 
@@ -402,7 +394,7 @@ export class Cursor {
         db._pipe.push(db.buildIndexes.bind(db), () => {
           const ids = Cursor.getIdsForQuery(db, query, sort);
           if (ids) {
-            stream.emit('ids', ids);
+            stream.emit('ids', ids); // 👈🏻 emitEvent ids
           } else {
             stream.emit(
               'error',
@@ -415,13 +407,16 @@ export class Cursor {
       () => { },
     );
 
-    /* Stream the documents themselves: push all to the retriever queue */
+    // Stream the documents themselves: push all to the retriever queue
+    // 👈🏻 onEvent ids
     stream.on(
       'ids',
       (stream.trigger = (ids) => {
         stream._waiting = ids.length;
-        if (!ids.length)
+        if (!ids.length) {
+          // ready event is handled in Model.save, updateIndexes
           return setTimeout(() => stream.emit('ready'));
+        }
 
         ids.forEach((id, i) => {
           db._reTrQueue.push((cb) => {
@@ -448,13 +443,14 @@ export class Cursor {
     return stream;
   }
 
+  /** get id from persistence storage */
   static retriever(task, cb) {
     const locked = task.db._reTrQueue._locked;
     const locks = task.db._reTrQueue._locks;
 
     if (task.stream._closed) return cb();
 
-    if (task.prefetched)
+    if (task.prefetched) {
       return setTimeout(() => {
         task.stream.emit('data', {
           id: task.id,
@@ -465,6 +461,7 @@ export class Cursor {
         });
         return cb();
       });
+    }
 
     task.db.store.get(task.id, (err, buf) => {
       if (task.stream._closed) return cb();
@@ -505,7 +502,7 @@ export class Cursor {
    * Run a complex query on indexes and return results
    * @internal
    */
-  static getIdsForQuery(db, query, sort = undefined) {
+  static getIdsForQuery(db: Model, query, sort = undefined) {
     const self = db;
 
     // Comparison operators: $lt $lte $gt $gte $in $nin $ne $regex $exists - all implemented
@@ -514,14 +511,17 @@ export class Cursor {
     // TODO: think about performance, how to minimize calls to _.union and _.intersection
     // best way to go would be lazy evaluation
 
-    let indexed = true; // Is query fully indexed
-    let sorted = true; // Query- is sorted
-    let indexable = true; // Query cannot be indexed
+    /** Is query fully indexed */
+    let indexed = true;
+    /** Query is sorted */
+    let sorted = true;
+    /** Query can be indexed */
+    let indexable = true;
 
     let res = null;
     let excludes = [];
 
-    // Push to results with _.intersection
+    /** Push to results with `_.intersection` */
     const push = (x) => {
       res = res ? _.intersection(res, x) : _.uniq(x);
     };
@@ -551,15 +551,18 @@ export class Cursor {
       });
 
     // Match all keys in the query except the sort keys, since we've done this already in the sort loop
-    _.each(query, (value, key) => {
+    Object.keys(query).forEach((key) => {
       if (sort && sort[key]) return;
+      const value = query[key];
+      console.log(';; cursor-getIds-match ', query, key, value);
       match(key, value);
     });
 
-    // The matcher itself
-    const match = (key, val) => {
+    /** ensureIndex */
+    const match = (key: string, val) => {
       // Handle logical operators
-      if (key[0] === '$') {
+      if (key.charAt(0) === '$') {
+        // if (key[0] === '$') {
         if (key === '$and' || key === '$or') {
           if (!Array.isArray(val)) {
             throw new Error(key + ' operator used without an array');
@@ -612,7 +615,9 @@ export class Cursor {
       // The query is not fully indexed - set the flag and build the index
       if (!(db.indexes[key] && db.indexes[key].ready)) {
         indexed = false;
-        if (db.options.autoIndexing) db.ensureIndex({ fieldName: key });
+        if (db.options.autoIndexing) {
+          db.ensureIndex({ fieldName: key });
+        }
       }
 
       // 1) We can utilize this index and 2) we should
@@ -672,6 +677,7 @@ export class Cursor {
 
     if (indexable && !indexed && db.options.autoIndexing) return null;
     if (!res && !db.indexes._id.ready) return false;
+
     res = _.difference(res || self.getAllData(), excludes);
     res._indexed = indexable && indexed;
     res._sorted = sorted;

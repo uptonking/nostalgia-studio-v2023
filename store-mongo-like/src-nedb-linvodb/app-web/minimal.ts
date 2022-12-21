@@ -26,12 +26,12 @@ doc.save((err) => {
 doc.insert({ a: 3 }, (err, newDoc) => {
   console.log(newDoc._id);
 });
-doc.insert([{ a: 3 }, { a: 42 }], (err, newDocs) => {
-  // Two documents were inserted in the database
-  // newDocs is an array with these documents, augmented with their _id
-  // If there's an unique constraint on 'a', this will fail, and no changes will be made to the DB
-  // err is a 'uniqueViolated' error
-});
+// doc.insert([{ a: 3 }, { a: 42 }], (err, newDocs) => {
+//   // Two documents were inserted in the database
+//   // newDocs is an array with these documents, augmented with their _id
+//   // If there's an unique constraint on 'a', this will fail, and no changes will be made to the DB
+//   // err is a 'uniqueViolated' error
+// });
 
 doc.find({}, (err, docs) => {
   console.log(';; find ', docs);

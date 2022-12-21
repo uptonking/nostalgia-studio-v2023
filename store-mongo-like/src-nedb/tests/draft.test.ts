@@ -50,7 +50,7 @@ const docsMovie = [
   await db.ensureIndexAsync({ fieldName: 'year' });
 
   // db.insert(doc, (err, newDoc) => { });
-  // await db.insertAsync(docsMovie);
+  await db.insertAsync(docsMovie);
 
   // Find all documents in the collection
   const docs = await db.findAsync({ year: 1993 });

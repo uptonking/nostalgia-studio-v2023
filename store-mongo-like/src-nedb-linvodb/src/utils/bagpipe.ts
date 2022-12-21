@@ -1,5 +1,7 @@
 import events from 'events';
 
+import { EventEmitter } from '@datalking/utils-vanillajs';
+
 export type BagpipeOptions = {
   /** use ratio with limit */
   ratio?: number;
@@ -17,7 +19,7 @@ export type BagpipeOptions = {
  * - When an asynchronous invoke ends, a invoke in the head of the queue will be popped and executed, such that assures active asynchronous invoke amount no larger than restricted value.
  * - When the queue length is larger than 1, Bagpipe object will fire its `full` event, which delivers the queue length value.
  */
-export class Bagpipe extends events.EventEmitter {
+export class Bagpipe extends EventEmitter {
   /** if 0, fn called immediately */
   limit: number;
   active: number;
@@ -113,7 +115,9 @@ export class Bagpipe extends events.EventEmitter {
   }
 
   /** add task-method to the end of the queue, then exec the first item in the queue
-   * - splits method/parameter/callback, then delivery it to bagpipe through `push` */
+   * - splits method/parameter/callback, then delivery it to bagpipe through `push`
+   * - the last item in `args` is callback after method
+   */
   push(method: (...params: any[]) => any, ...args: any[]) {
     this.addToQueue(0, ...args)(method);
   }
@@ -161,6 +165,7 @@ export class Bagpipe extends events.EventEmitter {
 
   /**
    * exec task recursively
+   * - all tasks are exec using setTimeout(task,  0)
    */
   run(method: (...params: any[]) => any, args: any[]) {
     if (this.stopped) return;
@@ -181,6 +186,7 @@ export class Bagpipe extends events.EventEmitter {
       }
       // if timeout, don't execute
       if (!called) {
+        // 👇🏻 exec next task, then the callback for current task
         this._next();
         callback.apply(null, [err, ...args1]);
         // callback.apply(null, arguments); // 👀 arguments === [err, ...args1
@@ -214,6 +220,7 @@ export class Bagpipe extends events.EventEmitter {
       }, timeout);
     }
     setTimeout(() => {
+      // callback will be passed to method
       method.apply(null, args);
     }, 0);
   }

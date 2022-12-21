@@ -7,6 +7,8 @@ import levelup from 'levelup';
 import _ from 'lodash';
 import path from 'path';
 
+import { EventEmitter } from '@datalking/utils-vanillajs';
+
 import { Cursor } from './cursor';
 import * as docUtils from './document';
 import { Index } from './indexes';
@@ -32,7 +34,7 @@ const LEVELUP_RE_TR_CONCURRENCY = 100;
 //   })();
 // } catch (error) { }
 
-export class Model extends events.EventEmitter {
+export class Model extends EventEmitter {
   modelName: string;
   schema: any;
   /** prefer `filename` to `dbPath` */
@@ -59,7 +61,9 @@ export class Model extends events.EventEmitter {
     autoLoad: true,
     store: { db: null },
   };
-  /** the dir where each model's store is saved */
+  /** the dir where each model's store is saved
+   * todo convert to instance prop
+   * */
   static dbPath: string;
   static Cursor = Cursor;
 
@@ -69,7 +73,7 @@ export class Model extends events.EventEmitter {
    */
   constructor(name: string, options: any = {}, schema = {}) {
     super();
-    this.setMaxListeners(0);
+    // this.setMaxListeners(0);
 
     this.buildIndexes = this.buildIndexes.bind(this);
 
@@ -107,6 +111,7 @@ export class Model extends events.EventEmitter {
       raw = docUtils.deserialize(raw);
     }
     // Clone it deeply if it's schema-constructed
+    // todo 重写，将当前doc对象直接赋值到Model对象
     Object.assign(
       this,
       raw.constructor.modelName ? docUtils.deepCopy(raw) : raw,
@@ -170,7 +175,7 @@ export class Model extends events.EventEmitter {
     // Rebuild the new indexes
     toBuild.forEach((idx) => idx.reset());
 
-    this.emit('indexesBuild', toBuild);
+    this.emit('indexesBuild', toBuild); // no onEvent handler
 
     this.store
       .createReadStream()
@@ -223,9 +228,7 @@ export class Model extends events.EventEmitter {
    * @param {Boolean} options.sparse
    * @param {Function} cb Optional callback, signature: err
    */
-  ensureIndex(options, callback = (...args: any[]) => { }) {
-    options = options || {};
-
+  ensureIndex(options: any = {}, callback = (...args: any[]) => { }) {
     if (!options.fieldName) {
       return callback({ missingFieldName: true });
     }
@@ -298,7 +301,7 @@ export class Model extends events.EventEmitter {
     const keys = Object.keys(this.indexes);
     const skipId = (oldDoc && oldDoc._id) === (newDoc && newDoc._id);
 
-    for (i = 0; i < keys.length; i += 1) {
+    for (i = 0; i < keys.length; i++) {
       try {
         // if (! (skipId && keys[i] == '_id')) this.indexes[keys[i]].update(oldDoc, newDoc);
         this.indexes[keys[i]].update(oldDoc, newDoc);
@@ -337,7 +340,7 @@ export class Model extends events.EventEmitter {
     // We also have to ensure indexes are up-to-date
     this._pipe.push(this.buildIndexes, () => {
       try {
-        // ❓ 添加索引重复了
+        // dd index to datastore
         this._insertIndex(newDoc);
       } catch (e) {
         return callback(e);
@@ -348,6 +351,7 @@ export class Model extends events.EventEmitter {
         newDoc,
         (d, cb) => {
           this.emit('insert', d);
+          // persist doc to leveldb
           d._persist(cb);
         },
         (err, docs) => {
@@ -401,28 +405,27 @@ export class Model extends events.EventEmitter {
    * @private
    */
   _insertMultipleDocsInIndex(newDocs) {
-    let i;
-    let failingI;
+    let failedIndex;
     let error;
     let preparedDocs = this.prepareDocumentForInsertion(newDocs);
     if (!Array.isArray(preparedDocs)) {
       preparedDocs = [preparedDocs];
     }
-    for (i = 0; i < preparedDocs.length; i += 1) {
+
+    for (let i = 0; i < preparedDocs.length; i += 1) {
       try {
         this.addToIndexes(preparedDocs[i]);
       } catch (e) {
         error = e;
-        failingI = i;
+        failedIndex = i;
         break;
       }
     }
 
     if (error) {
-      for (i = 0; i < failingI; i += 1) {
+      for (let i = 0; i < failedIndex; i += 1) {
         this.removeFromIndexes(preparedDocs[i]);
       }
-
       throw error;
     }
   }
@@ -451,17 +454,17 @@ export class Model extends events.EventEmitter {
 
   /**
    * Find all documents matching the query
-   * If no callback is passed, we return the cursor so that user can limit, skip and finally exec
+   * - If no callback is passed, we return the cursor so that user can limit, skip and finally exec
    * @param {Object} query MongoDB-style query
    */
   find(query, callback = (...args: any[]) => { }, quiet = undefined) {
-    const cursor = new Cursor(this, query, function (err, docs, callback) {
+    const cursor = new Cursor(this, query, (err, docs, callback) => {
       return callback(err ? err : null, err ? undefined : docs);
     });
-
     cursor._quiet = quiet; // Used in special circumstances, such as sync
-
-    if (typeof callback === 'function') cursor.exec(callback);
+    if (typeof callback === 'function') {
+      cursor.exec(callback);
+    }
     return cursor;
   }
 
@@ -642,27 +645,34 @@ export class Model extends events.EventEmitter {
   }
 
   save(cb: (...args: any[]) => any = () => { }) {
-    return this._save(this, cb);
+    return this.saveDocs(this, cb);
   }
 
   /**
    * Save a document - insert it into the DB or update in-place
    * - If a field is `undefined`, it will not be saved.
    */
-  _save(
-    docs: Model | Model[],
-    cb: (...args: any[]) => any = () => { },
+  saveDocs(
+    doc: any | any[],
+    callback: (...args: any[]) => any = () => { },
     quiet = false,
   ) {
-    const validDocs = (Array.isArray(docs) ? docs : [docs]).map((doc) => {
+    const docs = (Array.isArray(doc) ? doc : [doc]).map((d) => {
       // return d.constructor.modelName == self.modelName ? d : new self(d);
       // todo fix not equals
-      return doc.modelName === this.modelName ? doc : new Model(this.modelName);
+      if (d instanceof Model && d.modelName === this.modelName) {
+        return d;
+      }
+      // const newDoc = new Model(this.modelName)
+      this.insert(d, (err, newDocs) => {
+        if (err) throw new Error('insert failed when saveDocs');
+      });
+      return this;
     });
-    this.prepareDocumentForInsertion(validDocs);
+    this.prepareDocumentForInsertion(docs);
 
     const existingDocs = {};
-    const idsAllowed = validDocs
+    const idsAllowed = docs
       .map((doc) => {
         if (![null, undefined, '', false, 0, NaN].includes(doc._id)) {
           return doc._id;
@@ -677,34 +687,33 @@ export class Model extends events.EventEmitter {
     });
     stream.on('error', (err) => {
       stream.close();
-      cb(err);
+      callback(err);
     });
     stream.on('data', (d) => {
       existingDocs[d.id] = d.val();
     });
     stream.on('ready', () => {
-      const insert = [];
       const modifications = [];
-      validDocs.forEach((d) => {
+      docs.forEach((d) => {
         modifications.push({ oldDoc: existingDocs[d._id], newDoc: d });
       });
 
       try {
         this.updateIndexes(modifications);
       } catch (err) {
-        return cb(err);
+        return callback(err);
       }
 
       async.each(
         modifications,
         (m, cb) => {
           if (!m.oldDoc && !quiet) {
-            this.emit('insert', m.newDoc);
+            this.emit('insert', m.newDoc); // no insert handler
           }
-          m.newDoc._persist(cb, quiet);
+          m.newDoc._persist(cb, quiet); // persist doc to storage
         },
         (err) => {
-          if (err) return cb(err);
+          if (err) return callback(err);
 
           const inserted = modifications
             .filter((x) => !x.oldDoc)
@@ -715,7 +724,7 @@ export class Model extends events.EventEmitter {
           if (inserted.length) this.emit('inserted', inserted, quiet);
           if (updated.length) this.emit('updated', updated, quiet);
 
-          cb(null, validDocs.length <= 1 ? validDocs[0] : validDocs, {
+          callback(null, docs.length <= 1 ? docs[0] : docs, {
             inserted: inserted.length,
             updated: updated.length,
           });
@@ -797,8 +806,10 @@ export class Model extends events.EventEmitter {
     return docUtils.serialize(this);
   }
 
+  /** persist all docs to levelup(idb/nodejs) */
   _persist(cb: (...args: any[]) => any, quiet = undefined) {
-    if (!quiet) this.emit('save', this);
+    if (!quiet) this.emit('save', this); // no save-event handler
+    // level-up storage
     this.store.put(this._id, this.serialize(), (err) => {
       cb(err || null, err ? undefined : this);
     });

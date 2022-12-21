@@ -28,7 +28,8 @@
     "encoding-down": "^5.0.4",
     "hat": "0.0.3",
     "levelup": "^5",
-    "lodash": "^3.10.1"
+    "lodash": "^3.10.1",
+    "@datalking/utils-vanillajs": "1.1.1111"
   },
   "devDependencies": {
     "@types/async": "^2.0.0",

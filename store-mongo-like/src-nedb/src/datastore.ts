@@ -870,7 +870,7 @@ export class Datastore extends EventEmitter implements DataStoreOptionsProps {
       }
     }
 
-    // update the docs in memory
+    // ❓ update the docs in memory，没有第2个参数
     this._updateIndexes(modifications);
 
     // Update the datafile

@@ -9,6 +9,9 @@
   - LinvoDB is based on NeDB, the most significant core change is that it uses LevelUP as a back-end, meaning it doesn't have to keep the whole dataset in memory.
 # usage
 
+# bugs
+
+- ❓ 代码中update操作然后remove，实际上update操作的cb比remove操作的cb后执行
 # roadmap
 
 ## dev-to-list

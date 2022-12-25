@@ -10,15 +10,10 @@ should();
 
 const testDb = 'tests/testdata/test1.db';
 
-describe('Datastore like mongodb collection', function () {
-  // let d: Model;
-  let d;
+describe('Datastore/Model like mongodb collection', function () {
+  let d: Model;
 
-  function remove_ids(docs) {
-    docs.forEach(d => {
-      delete d._id;
-    });
-  }
+  const removeIds = (docs) => docs.forEach((d) => delete d._id);
 
   beforeEach(function (done) {
     async.waterfall(
@@ -31,12 +26,12 @@ describe('Datastore like mongodb collection', function () {
           rimraf(testDb, cb);
         },
         function (cb) {
-          Model.dbPath = testDb
+          Model.dbPath = testDb;
           d = new Model('testDbDoc', { filename: testDb });
 
           d.filename.should.equal(testDb);
 
-          d.reload(err => {
+          d.reload((err) => {
             assert.isNull(err);
             d.getAllData().length.should.equal(0);
             return cb();
@@ -92,12 +87,12 @@ describe('Datastore like mongodb collection', function () {
 
   });
   */
+
   describe('Insert', function () {
     it('Able to insert a document in the database, setting an _id if none provided, and retrieve it even after a reload', function (done) {
       d.find({}, (err, docs) => {
         docs.length.should.equal(0);
-
-        d.insert({ somedata: 'ok' }, err => {
+        d.insert({ somedata: 'ok' }, (err) => {
           // The data was correctly updated
           d.find({}, (err, docs1) => {
             assert.isNull(err);
@@ -106,9 +101,8 @@ describe('Datastore like mongodb collection', function () {
             docs1[0].somedata.should.equal('ok');
             assert.isDefined(docs1[0]._id);
             docs1[0]._id.should.have.lengthOf(16);
-
             // After a reload the data has been correctly persisted
-            d.reload(err => {
+            d.reload((err) => {
               d.find({}, function (err, docs) {
                 assert.isNull(err);
                 docs.length.should.equal(1);
@@ -200,13 +194,12 @@ describe('Datastore like mongodb collection', function () {
         if (err) {
           return done(err);
         }
-
+        // console.log(';; err-newDoc', err, newDoc)
         newDoc.stuff.should.equal(true);
         newDoc._id.should.equal('test');
 
         d.insert({ _id: 'test', otherstuff: 42 }, function (err) {
           err.errorType.should.equal('uniqueViolated');
-
           done();
         });
       });
@@ -214,12 +207,15 @@ describe('Datastore like mongodb collection', function () {
 
     it('Modifying the insertedDoc after an insert doesnt change the copy saved in the database', function (done) {
       d.insert({ a: 2, hello: 'world' }, function (err, newDoc) {
-        newDoc.hello = 'changed';
+        // newDoc.hello = 'changed';
 
-        d.findOne({ a: 2 }, function (err, doc) {
-          doc.hello.should.equal('world');
-          done();
-        });
+        d.update({ hello: 'world' }, { $set: { hello: 'changed' } }, {}, () => {
+          d.find({ a: 2 }, function (err, doc) {
+            doc.hello.should.equal('world');
+            done();
+          });
+        })
+
       });
     });
 
@@ -234,10 +230,10 @@ describe('Datastore like mongodb collection', function () {
           let data;
 
           docs.length.should.equal(2);
-          _.find(docs, doc => {
+          _.find(docs, (doc: any) => {
             return doc.a === 5;
           }).b.should.equal('hello');
-          _.find(docs, function (doc) {
+          _.find(docs, function (doc: any) {
             return doc.a === 42;
           }).b.should.equal('world');
 
@@ -349,7 +345,7 @@ describe('Datastore like mongodb collection', function () {
       });
 
       d.insert({ a: 5 }, function () {
-        d.update({ a: 5 }, { a: 6 }, function (err, count) {
+        d.update({ a: 5 }, { a: 6 }, {}, function (err, count) {
           if (tryCount === 0) {
             tryCount += 1;
             throw 'SOME EXCEPTION';
@@ -438,7 +434,7 @@ describe('Datastore like mongodb collection', function () {
         it('Emits the inserted event with the inserted doc', function (done) {
           let inserted = false;
           d.on('inserted', function (docs) {
-            remove_ids(docs);
+            removeIds(docs);
             docs.should.eql([{ a: 1 }]);
             inserted = true;
           });
@@ -454,7 +450,7 @@ describe('Datastore like mongodb collection', function () {
         it('Emits the inserted event with the inserted docs', function (done) {
           let inserted = false;
           d.on('inserted', function (docs) {
-            remove_ids(docs);
+            removeIds(docs);
             _.sortBy(docs, 'a').should.eql([{ a: 1 }, { a: 2 }]);
             inserted = true;
           });
@@ -522,12 +518,12 @@ describe('Datastore like mongodb collection', function () {
           indexes.length.should.equal(2);
 
           assert.isNotNull(
-            _.find(indexes, function (x) {
+            _.find(indexes, function (x: any) {
               return x.fieldName === 'r';
             }),
           );
           assert.isNotNull(
-            _.find(indexes, function (x) {
+            _.find(indexes, function (x: any) {
               return x.fieldName === 'tf';
             }),
           );
@@ -588,10 +584,10 @@ describe('Datastore like mongodb collection', function () {
           d.insert({ tf: 4, an: 'other', r: 6 }, function (err, _doc2) {
             d.insert({ tf: 9 }, function () {
               getCandidates({ r: 6, tf: 4 }, null, function (data) {
-                const doc1 = _.find(data, function (d) {
+                const doc1 = _.find(data, function (d: any) {
                   return d._id === _doc1._id;
                 });
-                const doc2 = _.find(data, function (d) {
+                const doc2 = _.find(data, function (d: any) {
                   return d._id === _doc2._id;
                 });
                 data.length.should.equal(2);
@@ -680,10 +676,10 @@ describe('Datastore like mongodb collection', function () {
           d.insert({ tf: 4, an: 'other', r: 6 }, function (err, _doc2) {
             d.insert({ tf: 9 }, function () {
               getCandidates({ tf: { $ne: 5 }, r: 6 }, null, function (data) {
-                const doc1 = _.find(data, function (d) {
+                const doc1 = _.find(data, function (d: any) {
                   return d._id === _doc1._id;
                 });
-                const doc2 = _.find(data, function (d) {
+                const doc2 = _.find(data, function (d: any) {
                   return d._id === _doc2._id;
                 });
                 data.length.should.equal(2);
@@ -711,7 +707,7 @@ describe('Datastore like mongodb collection', function () {
           d.insert({ tf: 4, an: 'other', r: { a: 4 } }, function (err) {
             d.insert({ tf: 9 }, function () {
               getCandidates({ 'r.a': 6, tf: 4 }, null, function (data) {
-                const doc1 = _.find(data, function (d) {
+                const doc1 = _.find(data, function (d: any) {
                   return d._id === _doc1._id;
                 });
                 data.length.should.equal(1);
@@ -735,10 +731,10 @@ describe('Datastore like mongodb collection', function () {
                   { tf: { $in: [6, 9, 5] } },
                   null,
                   function (data) {
-                    const doc1 = _.find(data, function (d) {
+                    const doc1 = _.find(data, function (d: any) {
                       return d._id === _doc1._id;
                     });
-                    const doc2 = _.find(data, function (d) {
+                    const doc2 = _.find(data, function (d: any) {
                       return d._id === _doc2._id;
                     });
                     data.length.should.equal(2);
@@ -765,10 +761,10 @@ describe('Datastore like mongodb collection', function () {
                   { tf: { $nin: [4, 8, 10] } },
                   null,
                   function (data) {
-                    const doc1 = _.find(data, function (d) {
+                    const doc1 = _.find(data, function (d: any) {
                       return d._id === _doc1._id;
                     });
-                    const doc2 = _.find(data, function (d) {
+                    const doc2 = _.find(data, function (d: any) {
                       return d._id === _doc2._id;
                     });
                     data.length.should.equal(2);
@@ -797,10 +793,10 @@ describe('Datastore like mongodb collection', function () {
                   { tf: { $lte: 9, $gte: 6 } },
                   null,
                   function (data) {
-                    const doc2 = _.find(data, function (d) {
+                    const doc2 = _.find(data, function (d: any) {
                       return d._id === _doc2._id;
                     });
-                    const doc4 = _.find(data, function (d) {
+                    const doc4 = _.find(data, function (d: any) {
                       return d._id === _doc4._id;
                     });
                     data.length.should.equal(2);
@@ -827,10 +823,10 @@ describe('Datastore like mongodb collection', function () {
                   { $or: [{ tf: 6 }, { tf: 9 }] },
                   null,
                   function (data) {
-                    const doc1 = _.find(data, function (d) {
+                    const doc1 = _.find(data, function (d: any) {
                       return d._id === _doc1._id;
                     });
-                    const doc2 = _.find(data, function (d) {
+                    const doc2 = _.find(data, function (d: any) {
                       return d._id === _doc2._id;
                     });
                     data.length.should.equal(2);
@@ -857,7 +853,7 @@ describe('Datastore like mongodb collection', function () {
                   { $and: [{ tf: 4 }, { an: 'other' }] },
                   null,
                   function (data) {
-                    const doc1 = _.find(data, function (d) {
+                    const doc1 = _.find(data, function (d: any) {
                       return d._id === _doc1._id;
                     });
                     data.length.should.equal(1);
@@ -886,10 +882,10 @@ describe('Datastore like mongodb collection', function () {
                 { $not: { $and: [{ tf: 4 }, { an: 'other' }] } },
                 null,
                 function (data) {
-                  const doc1 = _.find(data, function (d) {
+                  const doc1 = _.find(data, function (d: any) {
                     return d._id === _doc1._id;
                   });
-                  const doc2 = _.find(data, function (d) {
+                  const doc2 = _.find(data, function (d: any) {
                     return d._id === _doc2._id;
                   });
                   data.length.should.equal(2);
@@ -1093,7 +1089,7 @@ describe('Datastore like mongodb collection', function () {
               docs.length.should.equal(3);
               _.pluck(docs, 'somedata').should.contain('ok');
               _.pluck(docs, 'somedata').should.contain('another');
-              _.find(docs, function (d) {
+              _.find(docs, function (d: any) {
                 return d.somedata === 'another';
               }).plus.should.equal('additional data');
               _.pluck(docs, 'somedata').should.contain('again');
@@ -1521,18 +1517,18 @@ describe('Datastore like mongodb collection', function () {
                 n.should.equal(0);
 
                 d.find({}, function (err, docs) {
-                  const doc1 = _.find(docs, function (d) {
+                  const doc1: any = _.find(docs, function (d) {
                     return d.somedata === 'ok';
                   });
-                  const doc2 = _.find(docs, function (d) {
+                  const doc2: any = _.find(docs, function (d) {
                     return d.somedata === 'again';
                   });
-                  const doc3 = _.find(docs, function (d) {
+                  const doc3: any = _.find(docs, function (d) {
                     return d.somedata === 'another';
                   });
                   docs.length.should.equal(3);
                   assert.isUndefined(
-                    _.find(docs, function (d) {
+                    _.find(docs, function (d: any) {
                       return d.newDoc === 'yes';
                     }),
                   );
@@ -1566,13 +1562,13 @@ describe('Datastore like mongodb collection', function () {
       // Test DB state after update and reload
       function testPostUpdateState(cb) {
         d.find({}, function (err, docs) {
-          const doc1 = _.find(docs, function (d) {
+          const doc1 = _.find(docs, function (d: any) {
             return d._id === id1;
           });
-          const doc2 = _.find(docs, function (d) {
+          const doc2 = _.find(docs, function (d: any) {
             return d._id === id2;
           });
-          const doc3 = _.find(docs, function (d) {
+          const doc3 = _.find(docs, function (d: any) {
             return d._id === id3;
           });
           docs.length.should.equal(3);
@@ -1643,13 +1639,13 @@ describe('Datastore like mongodb collection', function () {
       // Test DB state after update and reload
       function testPostUpdateState(cb) {
         d.find({}, function (err, docs) {
-          const doc1 = _.find(docs, function (d) {
+          const doc1 = _.find(docs, function (d: any) {
             return d._id === id1;
           });
-          const doc2 = _.find(docs, function (d) {
+          const doc2 = _.find(docs, function (d: any) {
             return d._id === id2;
           });
-          const doc3 = _.find(docs, function (d) {
+          const doc3 = _.find(docs, function (d: any) {
             return d._id === id3;
           });
           docs.length.should.equal(3);
@@ -2207,17 +2203,17 @@ describe('Datastore like mongodb collection', function () {
       d.insert({ a: 1, hello: 'world' }, function (err, doc1) {
         d.insert({ a: 2, hello: 'earth' }, function (err, doc2) {
           d.insert({ a: 5, hello: 'pluton' }, function (err, doc3) {
-            d.update({ a: 2 }, { $inc: { a: 10 } }, function (err, nr) {
+            d.update({ a: 2 }, { $inc: { a: 10 } }, {}, function (err, nr) {
               assert.isNull(err);
               nr.should.equal(1);
               d.find({}, function (err, docs) {
-                const d1 = _.find(docs, function (doc) {
+                const d1 = _.find(docs, function (doc: any) {
                   return doc._id === doc1._id;
                 });
-                const d2 = _.find(docs, function (doc) {
+                const d2 = _.find(docs, function (doc: any) {
                   return doc._id === doc2._id;
                 });
-                const d3 = _.find(docs, function (doc) {
+                const d3 = _.find(docs, function (doc: any) {
                   return doc._id === doc3._id;
                 });
                 d1.a.should.equal(1);
@@ -2248,19 +2244,19 @@ describe('Datastore like mongodb collection', function () {
                 // No index modified
                 async.each(
                   d.indexes,
-                  function (index, cb) {
+                  function (index: any, cb) {
                     const docs = index.getAll();
                     async.map(
                       docs,
                       d.findById.bind(d),
                       function (err, docs) {
-                        const d1 = _.find(docs, function (doc) {
+                        const d1 = _.find(docs, function (doc: any) {
                           return doc._id === doc1._id;
                         });
-                        const d2 = _.find(docs, function (doc) {
+                        const d2 = _.find(docs, function (doc: any) {
                           return doc._id === doc2._id;
                         });
-                        const d3 = _.find(docs, function (doc) {
+                        const d3 = _.find(docs, function (doc: any) {
                           return doc._id === doc3._id;
                         });
                         // All changes rolled back, including those that didn't trigger an error
@@ -2268,7 +2264,7 @@ describe('Datastore like mongodb collection', function () {
                         d2.a.should.equal(5);
                         d3.a.should.equal('abc');
                       },
-                      cb,
+                      // cb,
                     );
                   },
                   done,
@@ -2295,23 +2291,23 @@ describe('Datastore like mongodb collection', function () {
               // Check that no index was modified
               async.each(
                 d.indexes,
-                function (index, cb) {
+                function (index: any, cb) {
                   const docs = index.getAll();
                   async.map(
                     docs,
                     d.findById.bind(d),
                     function (err, docs) {
-                      const d1 = _.find(docs, function (doc) {
+                      const d1 = _.find(docs, function (doc: any) {
                         return doc._id === doc1._id;
                       });
-                      const d2 = _.find(docs, function (doc) {
+                      const d2 = _.find(docs, function (doc: any) {
                         return doc._id === doc2._id;
                       });
                       // All changes rolled back, including those that didn't trigger an error
                       d1.a.should.equal(4);
                       d2.a.should.equal(5);
                     },
-                    cb,
+                    // cb,
                   );
                 },
                 done,
@@ -2427,7 +2423,7 @@ describe('Datastore like mongodb collection', function () {
               async.each(
                 toRemove,
                 function (planet, cb) {
-                  d.remove({ planet: planet }, function (err) {
+                  d.remove({ planet: planet }, {}, function (err) {
                     return cb(err);
                   });
                 },
@@ -2553,17 +2549,17 @@ describe('Datastore like mongodb collection', function () {
       d.insert({ a: 1, hello: 'world' }, function (err, doc1) {
         d.insert({ a: 2, hello: 'earth' }, function (err, doc2) {
           d.insert({ a: 5, hello: 'pluton' }, function (err, doc3) {
-            d.remove({ a: 2 }, function (err, nr) {
+            d.remove({ a: 2 }, {}, function (err, nr) {
               assert.isNull(err);
               nr.should.equal(1);
               d.find({}, function (err, docs) {
-                const d1 = _.find(docs, function (doc) {
+                const d1 = _.find(docs, function (doc: any) {
                   return doc._id === doc1._id;
                 });
-                const d2 = _.find(docs, function (doc) {
+                const d2 = _.find(docs, function (doc: any) {
                   return doc._id === doc2._id;
                 });
-                const d3 = _.find(docs, function (doc) {
+                const d3 = _.find(docs, function (doc: any) {
                   return doc._id === doc3._id;
                 });
                 d1.a.should.equal(1);
@@ -2583,7 +2579,7 @@ describe('Datastore like mongodb collection', function () {
         it('emits the removed event with the doc', function (done) {
           let id;
           d.on('removed', function (docs) {
-            remove_ids(docs);
+            removeIds(docs);
             docs.should.eql([id]);
             done();
           });
@@ -2600,7 +2596,7 @@ describe('Datastore like mongodb collection', function () {
       describe('when multiple documents are removed', function () {
         it('emits the removed event with the docs', function (done) {
           d.on('removed', function (docs) {
-            remove_ids(docs);
+            removeIds(docs);
             docs.length.should.equal(2);
             done();
           });
@@ -3122,10 +3118,10 @@ describe('Datastore like mongodb collection', function () {
               function (err, nr) {
                 const data = d.getAllData();
                 async.map(data, d.findById.bind(d), function (err, data) {
-                  const doc1 = _.find(data, function (doc) {
+                  const doc1 = _.find(data, function (doc: any) {
                     return doc._id === _doc1._id;
                   });
-                  const doc2 = _.find(data, function (doc) {
+                  const doc2 = _.find(data, function (doc: any) {
                     return doc._id === _doc2._id;
                   });
                   assert.isUndefined(err);
@@ -3142,10 +3138,10 @@ describe('Datastore like mongodb collection', function () {
                     function (err, nr) {
                       const data = d.getAllData();
                       async.map(data, d.findById.bind(d), function (err, data) {
-                        const doc1 = _.find(data, function (doc) {
+                        const doc1 = _.find(data, function (doc: any) {
                           return doc._id === _doc1._id;
                         });
-                        const doc2 = _.find(data, function (doc) {
+                        const doc2 = _.find(data, function (doc: any) {
                           return doc._id === _doc2._id;
                         });
                         assert.isUndefined(err);
@@ -3270,13 +3266,13 @@ describe('Datastore like mongodb collection', function () {
                 function (err) {
                   const data = d.getAllData();
                   async.map(data, d.findById.bind(d), function (er, data) {
-                    const doc1 = _.find(data, function (doc) {
+                    const doc1 = _.find(data, function (doc: any) {
                       return doc._id === _doc1._id;
                     });
-                    const doc2 = _.find(data, function (doc) {
+                    const doc2 = _.find(data, function (doc: any) {
                       return doc._id === _doc2._id;
                     });
-                    const doc3 = _.find(data, function (doc) {
+                    const doc3 = _.find(data, function (doc: any) {
                       return doc._id === _doc3._id;
                     });
                     err.errorType.should.equal('uniqueViolated');
@@ -3345,13 +3341,13 @@ describe('Datastore like mongodb collection', function () {
                     d.getAllData(),
                     d.findById.bind(d),
                     function (er, data) {
-                      const doc1 = _.find(data, function (doc) {
+                      const doc1 = _.find(data, function (doc: any) {
                         return doc._id === _doc1._id;
                       });
-                      const doc2 = _.find(data, function (doc) {
+                      const doc2 = _.find(data, function (doc: any) {
                         return doc._id === _doc2._id;
                       });
-                      const doc3 = _.find(data, function (doc) {
+                      const doc3 = _.find(data, function (doc: any) {
                         return doc._id === _doc3._id;
                       });
                       err.errorType.should.equal('uniqueViolated');
@@ -3416,10 +3412,10 @@ describe('Datastore like mongodb collection', function () {
                   d.getAllData(),
                   d.findById.bind(d),
                   function (er, data) {
-                    const doc2 = _.find(data, function (doc) {
+                    const doc2 = _.find(data, function (doc: any) {
                       return doc._id === _doc2._id;
                     });
-                    const doc3 = _.find(data, function (doc) {
+                    const doc3 = _.find(data, function (doc: any) {
                       return doc._id === _doc3._id;
                     });
                     assert.isNull(err);

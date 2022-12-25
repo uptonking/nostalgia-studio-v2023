@@ -47,16 +47,23 @@ const docsMovie = [
 
 (async () => {
   db = new Datastore({ filename: TEST_DB_IT, autoload: true });
-  await db.ensureIndexAsync({ fieldName: 'year' });
+  // await db.ensureIndexAsync({ fieldName: 'year' });
 
   // db.insert(doc, (err, newDoc) => { });
-  await db.insertAsync(docsMovie);
+  // await db.insertAsync(docsMovie);
+  const doc1 = await db.insertAsync({ aa: 22 });
+  // const doc1 = await db.insertAsync({ aa: 22, _id: 'PQ3jWlzVOsbJ7ufu' });
+  console.log(';; doc1 ', doc1)
+
 
   // Find all documents in the collection
   const docs = await db.findAsync({ year: 1993 });
-  console.log(';;found ', docs);
+  console.log(';;found1 ', docs);
+  const docsAll = await db.findAsync({});
+  console.log(';;found ', docsAll);
 
-  await db.ensureIndexAsync({ fieldName: 'title' });
+
+  // await db.ensureIndexAsync({ fieldName: 'title' });
 
   // db.persistence.compactDatafile();
   db.compactDatafile();

@@ -1,6 +1,8 @@
 import events from 'events';
 
-import { EventEmitter } from '@datalking/utils-vanillajs';
+import { EventEmitter } from './event-emitter';
+
+// import { EventEmitter } from '@datalking/utils-vanillajs';
 
 export type BagpipeOptions = {
   /** use ratio with limit */
@@ -49,7 +51,7 @@ export class Bagpipe extends EventEmitter {
    * @param {Number} limit 并发数限制值
    * @param {Object} options Options
    */
-  constructor(limit: number, options: BagpipeOptions = {}) {
+  constructor(limit: number, options: boolean | BagpipeOptions = {}) {
     super();
     this.limit = limit;
     this.active = 0;
@@ -186,7 +188,7 @@ export class Bagpipe extends EventEmitter {
       }
       // if timeout, don't execute
       if (!called) {
-        // 👇🏻 exec next task, then the callback for current task
+        // 👇🏻 before exec callback for current task, put next task using microtask
         this._next();
         callback.apply(null, [err, ...args1]);
         // callback.apply(null, arguments); // 👀 arguments === [err, ...args1

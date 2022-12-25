@@ -59,13 +59,14 @@ export class Index {
   fieldName: string;
   unique = false;
   sparse = false;
+  /** ❓ 在Model.save-ready方法中，updateIndexes前是true */
+  ready = false;
   treeOptions: {
     unique: any;
     compareKeys: (a: any, b: any) => any;
     checkValueEquality: (a: any, b: any) => boolean;
   };
   tree: BinarySearchTree;
-  ready: boolean;
 
   /**
    * Create a new index
@@ -280,7 +281,7 @@ export class Index {
   /**
    * Revert an update
    */
-  revertUpdate(oldDoc, newDoc) {
+  revertUpdate(oldDoc, newDoc = undefined) {
     const revert = [];
 
     if (!Array.isArray(oldDoc)) {

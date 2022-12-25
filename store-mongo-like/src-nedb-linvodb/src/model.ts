@@ -7,15 +7,16 @@ import levelup from 'levelup';
 import _ from 'lodash';
 import path from 'path';
 
-import { EventEmitter } from '@datalking/utils-vanillajs';
-
 import { Cursor } from './cursor';
 import * as docUtils from './document';
 import { Index } from './indexes';
 import * as schemas from './schemas';
 import type { DatastoreDefaultsOptions } from './types/datastore';
 import { Bagpipe } from './utils/bagpipe';
+import { EventEmitter } from './utils/event-emitter';
 import { once } from './utils/utils';
+
+// import { EventEmitter } from '@datalking/utils-vanillajs';
 
 /** We have to keep those unique by filename because they're locked */
 const stores = {};
@@ -51,9 +52,11 @@ export class Model extends EventEmitter {
   _pipe: Bagpipe;
   /** LEVELUP_RE_TR_CONCURRENCY */
   _reTrQueue: Bagpipe;
-  /** swappable persistence backend; use `static defaults.store` to customize
-   * - LevelUP type */
-  private store: Record<string, any>;
+  /**  swappable persistence backend; use `static defaults.store` to customize
+   * - LevelUP type
+   * @internal
+   */
+  public store: Record<string, any>;
 
   /** default config for all documents, config `store.db` before constructor */
   static defaults: DatastoreDefaultsOptions = {
@@ -149,7 +152,7 @@ export class Model extends EventEmitter {
   }
 
   /**
-   * Re-load the database by rebuilding indexes
+   * Re-load the database by rebuilding all indexes
    */
   reload(cb: (...args: any[]) => any) {
     this.emit('reset');
@@ -162,6 +165,7 @@ export class Model extends EventEmitter {
 
   /**
    * Build new indexes from a full scan
+   * - register listeners for persistence backend
    */
   buildIndexes(cb: (...args: any[]) => any) {
     const toBuild = Object.keys(this.indexes)
@@ -255,7 +259,7 @@ export class Model extends EventEmitter {
   /**
    * Add one or several document(s) to all indexes
    */
-  addToIndexes(doc) {
+  addToIndexes(doc): void {
     let i;
     let failingIndex;
     let error;
@@ -323,7 +327,7 @@ export class Model extends EventEmitter {
   }
 
   /**
-   * Insert a new document:
+   * Insert a new document: add to indexes, then persist
    * @param {Function} cb Optional callback, signature: err, insertedDoc
    *
    */
@@ -331,30 +335,29 @@ export class Model extends EventEmitter {
     newDoc: Record<string, any> | Array<Record<string, any>>,
     callback = (...args: any[]) => { },
   ) {
-    newDoc = Array.isArray(newDoc) ? newDoc : [newDoc];
-    // .map((d) => {
-    //   // return new Model(d);
-    // });
+    let docs = Array.isArray(newDoc) ? newDoc : [newDoc];
 
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
     // We also have to ensure indexes are up-to-date
     this._pipe.push(this.buildIndexes, () => {
       try {
-        // dd index to datastore
-        this._insertIndex(newDoc);
+        // add index to datastore
+        // this._insertInIndex(newDoc);
+        docs = this._insertMultipleDocsInIndex(docs);
       } catch (e) {
         return callback(e);
       }
 
       // Persist the document
       async.map(
-        newDoc,
+        docs,
         (d, cb) => {
           this.emit('insert', d);
           // persist doc to leveldb
-          d._persist(cb);
+          this._persist(d, cb);
         },
-        (err, docs) => {
+        (err, docsInCb) => {
+          // console.log(';; afterInsertCb-docs ', docs, docsInCb);
           this.emit('inserted', docs);
           callback(err || null, err ? undefined : docs[0]);
         },
@@ -366,7 +369,7 @@ export class Model extends EventEmitter {
    * Create a new _id that's not already in use
    */
   createNewId() {
-    let tentativeId = hat(32);
+    let tentativeId = hat(64);
     if (this.indexes._id.getMatching(tentativeId).length > 0) {
       tentativeId = this.createNewId();
     }
@@ -391,13 +394,13 @@ export class Model extends EventEmitter {
    * If newDoc is an array of documents, this will insert all documents in the cache
    * @private
    */
-  _insertIndex(newDoc) {
-    if (Array.isArray(newDoc)) {
-      this._insertMultipleDocsInIndex(newDoc);
-    } else {
-      this.addToIndexes(this.prepareDocumentForInsertion(newDoc));
-    }
-  }
+  // _insertInIndex(newDoc) {
+  //   if (Array.isArray(newDoc)) {
+  //     this._insertMultipleDocsInIndex(newDoc);
+  //   } else {
+  //     this.addToIndexes(this.prepareDocumentForInsertion(newDoc));
+  //   }
+  // }
 
   /**
    * If one insertion fails (e.g. because of a unique constraint), roll back all previous
@@ -428,6 +431,8 @@ export class Model extends EventEmitter {
       }
       throw error;
     }
+
+    return preparedDocs;
   }
 
   /**
@@ -445,7 +450,7 @@ export class Model extends EventEmitter {
    * Count all documents matching the query
    * @param {Object} query MongoDB-style query
    */
-  count(query, callback, quiet) {
+  count(query, callback, quiet = false) {
     const cursor = new Cursor(this, query);
     cursor._quiet = quiet; // Used in special circumstances, such as sync
     if (typeof callback === 'function') cursor.count(callback);
@@ -472,7 +477,7 @@ export class Model extends EventEmitter {
    * Find one document matching the query
    * @param {Object} query MongoDB-style query
    */
-  findOne(query, callback) {
+  findOne(query, callback = undefined) {
     const cursor = new Cursor(this, query, (err, docs, callback) => {
       if (err) {
         return callback(err);
@@ -492,10 +497,10 @@ export class Model extends EventEmitter {
     return this.find(query).live();
   }
 
-  update(modifier, cb) {
-    if (this._id === undefined) this._id = this.createNewId();
-    return this._update({ _id: this._id }, modifier, { upsert: true }, cb);
-  }
+  // update(modifier, cb) {
+  // if (this._id === undefined) this._id = this.createNewId();
+  //   return this._update({ _id: this._id }, modifier, { upsert: true }, cb);
+  // }
 
   /**
    * Update all docs matching query
@@ -512,7 +517,7 @@ export class Model extends EventEmitter {
    * updating, since constructing a new document instance via the constructor does shallow copy; but seems it will be OK, since
    * we only do that at the end, when everything is successful
    */
-  _update(query, updateQuery, options, cb) {
+  update(query, updateQuery, options, cb) {
     let callback;
     let multi;
     let upsert;
@@ -623,9 +628,9 @@ export class Model extends EventEmitter {
         // Persist document
         async.map(
           modifications,
-          function (d, cb) {
+          (d, cb) => {
             // new self(d.newDoc)._persist(function (e, doc) {
-            new Model(d.newDoc)._persist((e, doc) => {
+            this._persist(d.newDoc, (e, doc) => {
               d.unlock();
               cb(e, doc);
             });
@@ -644,15 +649,18 @@ export class Model extends EventEmitter {
     });
   }
 
-  save(cb: (...args: any[]) => any = () => { }) {
-    return this.saveDocs(this, cb);
-  }
+  /** @deprecated */
+  // save(cb: (...args: any[]) => any = () => { }) {
+  //   return this.saveDocs(this, cb);
+  // }
 
   /**
+   * @deprecated use {@link Model#insert}
    * Save a document - insert it into the DB or update in-place
+   * - it allows bulk save, and would account for re-saving (updating) objects, unlike insert which only does new inserts.
    * - If a field is `undefined`, it will not be saved.
    */
-  saveDocs(
+  save(
     doc: any | any[],
     callback: (...args: any[]) => any = () => { },
     quiet = false,
@@ -710,7 +718,7 @@ export class Model extends EventEmitter {
           if (!m.oldDoc && !quiet) {
             this.emit('insert', m.newDoc); // no insert handler
           }
-          m.newDoc._persist(cb, quiet); // persist doc to storage
+          this._persist(m.newDoc, cb, quiet); // persist doc to storage
         },
         (err) => {
           if (err) return callback(err);
@@ -733,11 +741,10 @@ export class Model extends EventEmitter {
     });
   }
 
-  remove(cb) {
-    if (!this._id) return cb();
-
-    return this._remove({ _id: this._id }, {}, cb);
-  }
+  // remove(cb) {
+  //   if (!this._id) return cb();
+  //   return this._remove({ _id: this._id }, {}, cb);
+  // }
 
   /**
    * Remove all docs matching the query
@@ -749,7 +756,7 @@ export class Model extends EventEmitter {
    *
    * @api private Use Model.remove which has the same signature
    */
-  _remove(query, options, cb) {
+  remove(query, options, cb) {
     let callback;
     const removed = [];
     let err;
@@ -807,10 +814,11 @@ export class Model extends EventEmitter {
   }
 
   /** persist all docs to levelup(idb/nodejs) */
-  _persist(cb: (...args: any[]) => any, quiet = undefined) {
-    if (!quiet) this.emit('save', this); // no save-event handler
+  _persist(doc, cb: (...args: any[]) => any, quiet = undefined) {
+    if (!quiet) this.emit('save', doc); // no save-event handler
     // level-up storage
-    this.store.put(this._id, this.serialize(), (err) => {
+    // this.store.put(doc._id, this.serialize(), (err) => {
+    this.store.put(doc._id, docUtils.serialize(doc), (err) => {
       cb(err || null, err ? undefined : this);
     });
   }

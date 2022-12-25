@@ -5,16 +5,34 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "linvodb-cli",
+      "cwd": "${workspaceFolder}/store-mongo-like/src-nedb-linvodb",
+      "type": "node",
+      "request": "launch",
+      "console": "integratedTerminal",
+      // "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+      "runtimeArgs": [
+        // "-I",
+        // "--exec",
+        // "node",
+        "--experimental-specifier-resolution=node",
+        "--loader=ts-node/esm/transpile-only"
+      ],
+      "program": "${workspaceFolder}/store-mongo-like/src-nedb-linvodb/tests/draft.test.ts",
+      // "restart": true,
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
       "name": "nedb-cli",
       "cwd": "${workspaceFolder}/store-mongo-like/src-nedb",
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
+      // "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
       "runtimeArgs": [
-        "-I",
-        "--exec",
-        "node",
+        // "-I",
+        // "--exec",
+        // "node",
         "--experimental-specifier-resolution=node",
         "--loader=ts-node/esm/transpile-only"
       ],

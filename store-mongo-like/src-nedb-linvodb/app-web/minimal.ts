@@ -5,27 +5,25 @@ import { Model as LinvoDB } from '../src';
 console.log(';; LinvoDB ', LinvoDB)
 
 // Initialize the default store to level-js - which is a JS-only store which will work without recompiling in NW.js/Electron
-LinvoDB.defaults.store = { db: leveljs }; // Comment out to use LevelDB instead of level-js
-LinvoDB.dbPath = './lvl-path'; // path实参 对应于 idb的objectStore名称
+// LinvoDB.defaults.store = { db: leveljs }; // Comment out to use LevelDB instead of level-js
+LinvoDB.dbPath = 'tests/testdata'; // path实参 对应于 idb的objectStore名称的前一部分
 
-const doc = new LinvoDB('doc', {
-  /* schema, can be empty */
-});
+// 初始化时传入当前collection的名称
+const doc11 = new LinvoDB('doc', {});
 
-console.log(';; Doc ', doc);
+console.log(';; Doc ', doc11);
 
-// Construct a single document and then save it
-// const doc = new Doc({ a: 5, now: new Date(), test: 'test-str' });
-// doc.b = 13; // you can modify the doc, just like plain object
-doc.save((err) => {
-  // Document is saved
-  console.log(doc._id);
-});
 
 // you can use the .insert method to insert one or more documents
-doc.insert({ a: 3 }, (err, newDoc) => {
-  console.log(newDoc._id);
+doc11.insert({ aa: 3 }, (err, newDoc) => {
+  console.log(';; insert-cb ', newDoc);
+
+  doc11.find({}, (err, docs) => {
+    console.log(';; find-cb ', docs);
+  });
+
 });
+
 // doc.insert([{ a: 3 }, { a: 42 }], (err, newDocs) => {
 //   // Two documents were inserted in the database
 //   // newDocs is an array with these documents, augmented with their _id
@@ -33,6 +31,3 @@ doc.insert({ a: 3 }, (err, newDoc) => {
 //   // err is a 'uniqueViolated' error
 // });
 
-doc.find({}, (err, docs) => {
-  console.log(';; find ', docs);
-});

@@ -1,9 +1,9 @@
 import _ from 'lodash';
 
-import { EventEmitter } from '@datalking/utils-vanillajs';
-
-import * as document from './document';
+// import { EventEmitter } from '@datalking/utils-vanillajs';
+import * as docUtils from './document';
 import type { Model } from './model';
+import { EventEmitter } from './utils/event-emitter';
 
 const INDEX_BUILDING_DEBOUNCE = 10;
 const LIVE_QUERY_DEBOUNCE = 30;
@@ -133,7 +133,7 @@ export class Cursor {
 
     let reducer;
     if (this._reduce) reducer = [].concat(this._reduce);
-    if (reducer && reducer[1]) reducer[1] = document.deepCopy(this._reduce[1]); // we have to copy the initial value, so that we don't inherit old vals
+    if (reducer && reducer[1]) reducer[1] = docUtils.deepCopy(this._reduce[1]); // we have to copy the initial value, so that we don't inherit old vals
 
     if (!this._quiet) this.db.emit('query', this.query);
 
@@ -143,9 +143,9 @@ export class Cursor {
       sort,
       this._prefetched,
     );
-    stream.on('error', e => callback(e));
+    stream.on('error', (e) => callback(e));
     stream.removeListener('ids', stream.trigger);
-    stream.on('ids', ids => {
+    stream.on('ids', (ids) => {
       const indexed = ids._indexed;
       // for some reason we cannot access those in on 'ready' - maybe properties get erased from arrays?
       const sorted = ids._sorted;
@@ -156,7 +156,9 @@ export class Cursor {
       // special mode - run the map/reduce directly on data event
       const earlyMapReduce = earlyLimit && earlySort && this._map && reducer;
       // TODO: earlyMapReduce even without the map
-      if (earlyLimit) { ids = limit(ids, this._limit || ids.length, this._skip || 0); }
+      if (earlyLimit) {
+        ids = limit(ids, this._limit || ids.length, this._skip || 0);
+      }
 
       // No need to go further, sort and limits are applied, we only need count
       if (earlyLimit && this._count) {
@@ -178,11 +180,11 @@ export class Cursor {
         res = undefined;
       };
 
-      stream.on('data', d => {
+      stream.on('data', (d) => {
         let v = d.val();
 
         // Check documents for match if query is not full-index
-        if (!indexed && !document.match(v, this.query)) return;
+        if (!indexed && !docUtils.match(v, this.query)) return;
 
         // WARNING: maybe we can put this entire block in try-catch but then we have to make absolutely sure that we're not going to throw errors
         // and the only place it can come from is _filter, _map or reducer
@@ -229,11 +231,11 @@ export class Cursor {
           res = res.filter((x) => x !== null);
 
           if (!earlySort) res = res.sort(sorter || Cursor.getSorter(sort));
-          if (!earlyLimit)
-          { res = limit(res, this._limit || res.length, this._skip || 0); }
+          if (!earlyLimit) {
+            res = limit(res, this._limit || res.length, this._skip || 0);
+          }
 
-          if (this._map)
-            res = res.map(v => this._map(v));
+          if (this._map) res = res.map((v) => this._map(v));
           if (reducer) res = res.reduce.apply(res, reducer);
         } catch (e) {
           err = e;
@@ -297,7 +299,7 @@ export class Cursor {
       docs.forEach((doc) => {
         // Avoid using .some since it would stop iterating after first match and we need to set _prefetched
         const interested =
-          this._count || this._ids[doc._id] || document.match(doc, this.query); // _count queries never set _ids
+          this._count || this._ids[doc._id] || docUtils.match(doc, this.query); // _count queries never set _ids
         if (interested) this._prefetched[doc._id] = doc;
         shouldRefresh = shouldRefresh || interested;
       });
@@ -350,7 +352,7 @@ export class Cursor {
    * - this function, besides doing the query, makes sure that indexes are built for it before (auto-indexing)
    *
    * - prefetched - a hash map of ID->constructed object which we have pre-fetched somehow - previous results from a live query
-   * @return eventEmitter obj
+   * @return new EventEmitter obj, a new obj for every func call
    */
   static getMatchesStream(db: Model, query, sort = {}, prefetched = undefined) {
     // const stream = new events.EventEmitter() as any;
@@ -424,10 +426,10 @@ export class Cursor {
             //if (db.store.isClosed()) return cb();
             Cursor.retriever(
               {
+                db: db,
                 stream: stream,
                 id: id,
                 idx: i,
-                db: db,
                 prefetched: prefetched && prefetched[id],
               },
               () => {
@@ -463,34 +465,40 @@ export class Cursor {
       });
     }
 
-    task.db.store.get(task.id, (err, buf) => {
+    task.db.store.get(task.id, (err, storeVal) => {
       if (task.stream._closed) return cb();
 
       // quietly ignore that one for now, since it's possible to do a .remove while a query is happening
       // ugly workaround; TODO: fix
       if (err && err.type === 'NotFoundError') return cb();
 
-      const emitData = {
-        id: task.id,
-        idx: task.idx,
-        val: () => new task.db(buf),
-        lock: () => {
-          if (!locks.hasOwnProperty(task.id)) locks[task.id] = 0;
-          locks[task.id]++;
-          return (locked[task.id] = locked[task.id] || emitData.val());
-        },
-        unlock: () => {
-          locks[task.id]--;
-          if (!locks[task.id]) {
-            delete locks[task.id];
-            delete locked[task.id];
-          }
-        },
-      };
-
       if (err) {
         task.stream.emit('error', err);
       } else {
+        // console.log(';; storeVal ', storeVal);
+
+        if (storeVal === undefined) storeVal = {};
+        if (typeof storeVal === 'string') storeVal = docUtils.deserialize(storeVal);
+        // ? check missing `new task.db` logic, schemas.construct
+
+        const emitData = {
+          id: task.id,
+          idx: task.idx,
+          // val: () => new task.db(storeVal),
+          val: () => storeVal,
+          lock: () => {
+            if (!locks.hasOwnProperty(task.id)) locks[task.id] = 0;
+            locks[task.id]++;
+            return (locked[task.id] = locked[task.id] || emitData.val());
+          },
+          unlock: () => {
+            locks[task.id]--;
+            if (!locks[task.id]) {
+              delete locks[task.id];
+              delete locked[task.id];
+            }
+          },
+        };
         task.stream.emit('data', emitData);
       }
 
@@ -624,11 +632,11 @@ export class Cursor {
       const index = db.indexes[key];
       if (index && (indexed || !db.options.autoIndexing)) {
         if (val === undefined) return push(index.getAll()); // Useful when we invoke match() in sort loop
-        if (document.isPrimitiveType(val)) return push(index.getMatching(val));
+        if (docUtils.isPrimitiveType(val)) return push(index.getMatching(val));
 
         if (
           typeof val === 'object' &&
-          !_.keys(val).some((k) => document.comparators[k])
+          !_.keys(val).some((k) => docUtils.comparators[k])
         )
           return push(index.getMatching(val));
 
@@ -697,9 +705,9 @@ export class Cursor {
         criterion = criteria[i];
         compare =
           criterion.direction *
-          document.compareThings(
-            document.getDotValue(a, criterion.key),
-            document.getDotValue(b, criterion.key),
+        docUtils.compareThings(
+          docUtils.getDotValue(a, criterion.key),
+          docUtils.getDotValue(b, criterion.key),
           );
         if (compare !== 0) {
           return compare;

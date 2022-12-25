@@ -255,7 +255,7 @@ describe('Document', function () {
   describe('Deep copying', function () {
     it('Should be able to deep copy any serializable document', function () {
       const d = new Date();
-      const obj = { a: ['ee', 'ff', 42], date: d, subobj: { a: 'b', b: 'c' } };
+      const obj: any = { a: ['ee', 'ff', 42], date: d, subobj: { a: 'b', b: 'c' } };
       const res = document.deepCopy(obj);
 
       res.a.length.should.equal(3);
@@ -528,7 +528,7 @@ describe('Document', function () {
       });
 
       it('Can push on nested fields', function () {
-        let obj = { arr: { nested: ['hello'] } };
+        let obj: any = { arr: { nested: ['hello'] } };
         let modified;
 
         modified = document.modify(obj, { $push: { 'arr.nested': 'world' } });
@@ -540,7 +540,7 @@ describe('Document', function () {
       });
 
       it('Throw if we try to push to a non-array', function () {
-        let obj = { arr: 'hello' };
+        let obj: any = { arr: 'hello' };
         let modified;
 
         (function () {
@@ -643,7 +643,7 @@ describe('Document', function () {
 
     describe('$pop modifier', function () {
       it('Throw if called on a non array, a non defined field or a non integer', function () {
-        let obj = { arr: 'hello' };
+        let obj: any = { arr: 'hello' };
         let modified;
 
         (function () {
@@ -725,7 +725,7 @@ describe('Document', function () {
       });
 
       it('Can use any kind of nedb query with $pull', function () {
-        let obj = { arr: [4, 7, 12, 2], other: 'yup' };
+        let obj: any = { arr: [4, 7, 12, 2], other: 'yup' };
         let modified;
 
         modified = document.modify(obj, { $pull: { arr: { $gte: 5 } } });
@@ -1241,6 +1241,7 @@ describe('Document', function () {
     describe('Regular expression matching', function () {
       it('Matching a non-string to a regular expression always yields false', function () {
         const d = new Date();
+        // @ts-expect-error fix-types
         const r = new RegExp(d.getTime());
 
         document.match({ test: true }, { test: /true/ }).should.equal(false);
@@ -1610,10 +1611,12 @@ describe('Document', function () {
 
       it('Should throw an error if a logical operator is used without an array or if an unknown logical operator is used', function () {
         (function () {
-          document.match({ a: 5 }, { $or: { a: 5, a: 6 } });
+          // document.match({ a: 5 }, { $or: { a: 5, a: 6 } });
+          document.match({ a: 5 }, { $or: { a: 6 } });
         }.should.throw());
         (function () {
-          document.match({ a: 5 }, { $and: { a: 5, a: 6 } });
+          // document.match({ a: 5 }, { $and: { a: 5, a: 6 } });
+          document.match({ a: 5 }, { $and: { a: 6 } });
         }.should.throw());
         (function () {
           document.match({ a: 5 }, { $unknown: [{ a: 5 }] });
@@ -1633,7 +1636,8 @@ describe('Document', function () {
           .match({ tags: ['node', 'js', 'db'] }, { tags: 'js' })
           .should.equal(true);
         document
-          .match({ tags: ['node', 'js', 'db'] }, { tags: 'js', tags: 'node' })
+          // .match({ tags: ['node', 'js', 'db'] }, { tags: 'js', tags: 'node' })
+          .match({ tags: ['node', 'js', 'db'] }, { tags: 'node' })
           .should.equal(true);
 
         // Mixed matching with array and non array

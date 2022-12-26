@@ -138,6 +138,6 @@ export class EventEmitter<T = any> {
   emit<K extends keyof T>(type: K, ...args: ValidEventArgs<T, K>) {
     emitApply(this.listeners[type], ...args);
     // 为了方便调试，当在外部注册 ALL_EVENTS 事件f1后，当触发type类型事件时也会触发f1
-    emitApply(this.listeners[ALL_EVENTS], { type, args });
+    // emitApply(this.listeners[ALL_EVENTS], { type, args });
   }
 }

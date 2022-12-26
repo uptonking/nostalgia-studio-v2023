@@ -14,15 +14,16 @@ const AUTO_INDEXING = true;
  */
 export class Cursor {
   db: Model;
-  query: any;
-  execFn: any;
+  query: Record<string, any>;
+  /** cb to be executed after _aggregate in {@link Cursor#exec} ready func */
+  execFn: (...args: any[]) => any;
   _limit: any;
   _skip: any;
   _filter: any;
   _sort: any;
   _map: any;
   _reduce: any[];
-  _aggregate: any;
+  _aggregate: (...args: any[]) => any;
   _quiet: any;
   _count: boolean;
   _live: any;
@@ -39,11 +40,11 @@ export class Cursor {
    * @param {Query} query - The query this cursor will operate on
    * @param {Function} execDn - Handler to be executed after cursor has found the results and before the callback passed to find/findOne/update/remove
    */
-  constructor(db, query, execFn = undefined) {
+  constructor(db: Model, query, execFn = undefined) {
     this.db = db;
     this.query = query || {};
     if (execFn) {
-      this.execFn = execFn; // todo no usage
+      this.execFn = execFn;
     }
   }
 
@@ -133,18 +134,21 @@ export class Cursor {
 
     let reducer;
     if (this._reduce) reducer = [].concat(this._reduce);
-    if (reducer && reducer[1]) reducer[1] = docUtils.deepCopy(this._reduce[1]); // we have to copy the initial value, so that we don't inherit old vals
+    // we have to copy the initial value, so that we don't inherit old vals
+    if (reducer && reducer[1]) reducer[1] = docUtils.deepCopy(this._reduce[1]);
 
     if (!this._quiet) this.db.emit('query', this.query);
 
-    const stream: any = Cursor.getMatchesStream(
+    const stream = Cursor.getMatchesStream(
       this.db,
       this.query,
       sort,
       this._prefetched,
     );
     stream.on('error', (e) => callback(e));
-    stream.removeListener('ids', stream.trigger);
+    stream.removeListener('ids', stream.trigger); // ❓ why removed so quickly
+
+    // register events for data/ready; trigger when index built and ids found
     stream.on('ids', (ids) => {
       const indexed = ids._indexed;
       // for some reason we cannot access those in on 'ready' - maybe properties get erased from arrays?
@@ -181,40 +185,41 @@ export class Cursor {
       };
 
       stream.on('data', (d) => {
-        let v = d.val();
+        let val = d.val();
 
         // Check documents for match if query is not full-index
-        if (!indexed && !docUtils.match(v, this.query)) return;
+        if (!indexed && !docUtils.match(val, this.query)) return;
 
         // WARNING: maybe we can put this entire block in try-catch but then we have to make absolutely sure that we're not going to throw errors
         // and the only place it can come from is _filter, _map or reducer
 
         try {
-          if (this._filter && !this._filter(v)) return; // Apply filter
+          if (this._filter && !this._filter(val)) return; // Apply filter
         } catch (e) {
           catcher(e);
         }
 
         if (this._live) {
-          resById[v._id] = v;
-          resIds[v._id] = true;
+          resById[val._id] = val;
+          resIds[val._id] = true;
         } // Keep those in a map if we need them for a live query
 
         if (earlyMapReduce) {
           // The early map-reduce system, map/reduce-es results on the go if we can (results are pre-sorted and limited)
           try {
-            v = this._map(v);
-            res = res === undefined ? v : reducer[0](res, v);
+            val = this._map(val);
+            res = res === undefined ? val : reducer[0](res, val);
           } catch (e) {
             catcher(e);
           }
           return;
         }
 
-        if (res) res[d.idx] = v; // res might have been set to undefined because of an error
+        if (res) res[d.idx] = val; // res might have been set to undefined because of an error
 
-        if (this._ondata) this._ondata(v);
+        if (this._ondata) this._ondata(val);
       });
+
       stream.on('ready', () => {
         if (err) return ready();
 
@@ -355,7 +360,6 @@ export class Cursor {
    * @return new EventEmitter obj, a new obj for every func call
    */
   static getMatchesStream(db: Model, query, sort = {}, prefetched = undefined) {
-    // const stream = new events.EventEmitter() as any;
     const stream = new EventEmitter() as any;
     stream._closed = false;
     stream._waiting = null;
@@ -369,6 +373,7 @@ export class Cursor {
     setTimeout(
       (cb) => {
         try {
+          debugger;
           // If the query fails, it will happen now, no need to re-catch it later
           const ids = Cursor.getIdsForQuery(db, query, sort);
           if (ids) return stream.emit('ids', ids);
@@ -410,11 +415,12 @@ export class Cursor {
     );
 
     // Stream the documents themselves: push all to the retriever queue
-    // 👈🏻 onEvent ids
+    // 👈🏻 onEvent ids; fired from buildIndexes cb
     stream.on(
       'ids',
       (stream.trigger = (ids) => {
         stream._waiting = ids.length;
+        debugger;
         if (!ids.length) {
           // ready event is handled in Model.save, updateIndexes
           return setTimeout(() => stream.emit('ready'));
@@ -478,7 +484,8 @@ export class Cursor {
         // console.log(';; storeVal ', storeVal);
 
         if (storeVal === undefined) storeVal = {};
-        if (typeof storeVal === 'string') storeVal = docUtils.deserialize(storeVal);
+        if (typeof storeVal === 'string')
+          storeVal = docUtils.deserialize(storeVal);
         // ? check missing `new task.db` logic, schemas.construct
 
         const emitData = {
@@ -543,30 +550,7 @@ export class Cursor {
       ? Boolean(db.indexes[firstKey]) && _.keys(sort).length === 1
       : true;
 
-    if (sort)
-      _.each(sort, (value, key) => {
-        match(key, query[key]); // If there's no query key, the value will be undefined
-
-        if (!sorted) return; // We need this to be active in order to avoid empty res
-
-        // Flip results, descending order
-        if (key == firstKey && value === -1 && res) {
-          res = res.reverse();
-        }
-
-        // Apply all the sort keys first, effectively allowing results to be sorted by first sort key
-        // In order to implement compound sort here, we need compound indexes
-      });
-
-    // Match all keys in the query except the sort keys, since we've done this already in the sort loop
-    Object.keys(query).forEach((key) => {
-      if (sort && sort[key]) return;
-      const value = query[key];
-      console.log(';; cursor-getIds-match ', query, key, value);
-      match(key, value);
-    });
-
-    /** ensureIndex */
+    /** handle $and/$or, then db.ensureIndex to build index, then handle $lt/$gt */
     const match = (key: string, val) => {
       // Handle logical operators
       if (key.charAt(0) === '$') {
@@ -682,6 +666,31 @@ export class Cursor {
         }
       }
     };
+
+
+    if (sort)
+      _.each(sort, (value, key) => {
+        match(key, query[key]); // If there's no query key, the value will be undefined
+
+        if (!sorted) return; // We need this to be active in order to avoid empty res
+
+        // Flip results, descending order
+        if (key == firstKey && value === -1 && res) {
+          res = res.reverse();
+        }
+
+        // Apply all the sort keys first, effectively allowing results to be sorted by first sort key
+        // In order to implement compound sort here, we need compound indexes
+      });
+
+    // Match all keys in the query except the sort keys, since we've done this already in the sort loop
+    Object.keys(query).forEach((key) => {
+      if (sort && sort[key]) return;
+      const value = query[key];
+      // console.log(';; cursor-getIds-match ', query, key, value);
+      match(key, value);
+    });
+
 
     if (indexable && !indexed && db.options.autoIndexing) return null;
     if (!res && !db.indexes._id.ready) return false;

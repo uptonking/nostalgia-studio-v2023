@@ -138,12 +138,12 @@ export class Model extends EventEmitter {
     const storeOptions = this.options.store || {};
     // console.log(';; init-options ', options, leveldown);
     const db = storeOptions.db || leveldown;
-    console.log(
-      ';; init-db ',
-      db,
-      this.store,
-      this.store ? this.store.isOpen() : null,
-    );
+    // console.log(
+    //   ';; init-db ',
+    //   db,
+    //   this.store,
+    //   this.store ? this.store.isOpen() : null,
+    // );
     this.store = stores[path.resolve(filename)] =
       this.store && this.store.isOpen()
         ? this.store
@@ -295,8 +295,8 @@ export class Model extends EventEmitter {
 
   /**
    * Update one or several documents in all indexes
-   * To update multiple documents, oldDoc must be an array of { oldDoc, newDoc } pairs
-   * If one update violates a constraint, all changes are rolled back
+   * - To update multiple documents, oldDoc must be an array of { oldDoc, newDoc } pairs
+   * - If one update violates a constraint, all changes are rolled back
    */
   updateIndexes(oldDoc, newDoc = undefined) {
     let i;
@@ -335,7 +335,8 @@ export class Model extends EventEmitter {
     newDoc: Record<string, any> | Array<Record<string, any>>,
     callback = (...args: any[]) => { },
   ) {
-    let docs = Array.isArray(newDoc) ? newDoc : [newDoc];
+    const isMultiDoc = Array.isArray(newDoc)
+    let docs = isMultiDoc ? newDoc : [newDoc];
 
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
     // We also have to ensure indexes are up-to-date
@@ -359,7 +360,7 @@ export class Model extends EventEmitter {
         (err, docsInCb) => {
           // console.log(';; afterInsertCb-docs ', docs, docsInCb);
           this.emit('inserted', docs);
-          callback(err || null, err ? undefined : docs[0]);
+          callback(err || null, err ? undefined : (isMultiDoc ? docs : docs[0]));
         },
       );
     });
@@ -381,7 +382,7 @@ export class Model extends EventEmitter {
    * - createDocId + checkDoc
    * @private
    */
-  prepareDocumentForInsertion(newDoc: Model | Model[]) {
+  prepareDocumentForInsertion(newDoc: any | any[]): any[] {
     (Array.isArray(newDoc) ? newDoc : [newDoc]).map((doc: Model) => {
       if (doc._id === undefined) doc._id = this.createNewId();
       docUtils.checkObject(doc);
@@ -477,15 +478,18 @@ export class Model extends EventEmitter {
    * Find one document matching the query
    * @param {Object} query MongoDB-style query
    */
-  findOne(query, callback = undefined) {
+  findOne(query, callback = (...args: any[]) => { }) {
     const cursor = new Cursor(this, query, (err, docs, callback) => {
       if (err) {
         return callback(err);
       }
+      // only return the first
       return callback(null, docs.length ? docs[0] : null);
     });
 
-    if (typeof callback === 'function') cursor.exec(callback);
+    if (typeof callback === 'function') {
+      cursor.exec(callback);
+    }
     return cursor;
   }
 
@@ -511,7 +515,6 @@ export class Model extends EventEmitter {
    *                 options.upsert If true, document is inserted if the query doesn't match anything
    * @param {Function} cb Optional callback, signature: err, numReplaced, upsert (set to true if the update was in fact an upsert)
    *
-   * @api private Use Model.update which has the same signature
    *
    * NOTE things are a bit wonky here with atomic updating and lock/unlock mechanisms; I'm not sure how it will fare with deep object
    * updating, since constructing a new document instance via the constructor does shallow copy; but seems it will be OK, since
@@ -539,15 +542,15 @@ export class Model extends EventEmitter {
     });
     stream.on('ids', (ids) => {
       const indexed = ids._indexed;
-
-      // Special case - upsert and no found docs, which means we do an insert
+      debugger;
       if (upsert && !ids.length) {
+        // / Special case - upsert and no found docs, which means we do an insert
         let toBeInserted;
 
         if (typeof updateQuery === 'function') {
           // updateQuery is a function, we have to initialize schema from query
-          toBeInserted = new Model(docUtils.deepCopy(query, true));
           // toBeInserted = new self(document.deepCopy(query, true));
+          toBeInserted = docUtils.deepCopy(query, true);
           updateQuery(toBeInserted);
         } else {
           try {
@@ -570,9 +573,7 @@ export class Model extends EventEmitter {
         }
 
         return this.insert(toBeInserted, (err, newDoc) => {
-          if (err) {
-            return callback(err);
-          }
+          if (err) return callback(err);
           return callback(null, 1, newDoc);
         });
       }
@@ -580,6 +581,7 @@ export class Model extends EventEmitter {
       // Go on with our update; treat the error handling gingerly
       const modifications = [];
       stream.on('data', (data) => {
+        debugger;
         try {
           if (!indexed && !docUtils.match(data.val(), query)) return; // Not a match, ignore
         } catch (e) {
@@ -589,11 +591,12 @@ export class Model extends EventEmitter {
         }
 
         try {
-          let val = data.lock(); // we're doing a modification, grab the lock - ensures we get the safe reference to the object until it's unlocked
+          // we're doing a modification, grab the lock - ensures we get the safe reference to the object until it's unlocked
+          const val = data.lock();
 
           if (typeof updateQuery === 'function') {
             updateQuery(val);
-            if (data.id != val._id) {
+            if (data.id !== val._id) {
               throw new Error('update function cannot change _id');
             }
             data.newDoc = val;
@@ -601,7 +604,8 @@ export class Model extends EventEmitter {
             data.newDoc = docUtils.modify(val, updateQuery);
           }
 
-          data.oldDoc = val.copy();
+          // data.oldDoc = val.copy();
+          data.oldDoc = docUtils.deepCopy(val);
           // _.extend(val, data.newDoc); // IMPORTANT: don't update on .modify, in case we emit an error while modifying
           Object.assign(val, data.newDoc);
           modifications.push(data);
@@ -616,6 +620,7 @@ export class Model extends EventEmitter {
       });
 
       stream.on('ready', () => {
+        debugger;
         if (err) return callback(err);
 
         // Change the docs in memory
@@ -665,19 +670,7 @@ export class Model extends EventEmitter {
     callback: (...args: any[]) => any = () => { },
     quiet = false,
   ) {
-    const docs = (Array.isArray(doc) ? doc : [doc]).map((d) => {
-      // return d.constructor.modelName == self.modelName ? d : new self(d);
-      // todo fix not equals
-      if (d instanceof Model && d.modelName === this.modelName) {
-        return d;
-      }
-      // const newDoc = new Model(this.modelName)
-      this.insert(d, (err, newDocs) => {
-        if (err) throw new Error('insert failed when saveDocs');
-      });
-      return this;
-    });
-    this.prepareDocumentForInsertion(docs);
+    const docs = this.prepareDocumentForInsertion(Array.isArray(doc) ? doc : [doc]);
 
     const existingDocs = {};
     const idsAllowed = docs
@@ -805,6 +798,7 @@ export class Model extends EventEmitter {
     });
   }
 
+  /** @deprecated to remove */
   copy(strict) {
     return docUtils.deepCopy(this, strict);
   }
@@ -819,7 +813,7 @@ export class Model extends EventEmitter {
     // level-up storage
     // this.store.put(doc._id, this.serialize(), (err) => {
     this.store.put(doc._id, docUtils.serialize(doc), (err) => {
-      cb(err || null, err ? undefined : this);
+      cb(err || null, err ? undefined : doc);
     });
   }
 }

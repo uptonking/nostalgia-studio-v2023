@@ -2,6 +2,7 @@ import bson from 'bson';
 import _ from 'lodash';
 
 import type { Model } from './model';
+import type { CreateIndexOptions } from './types/datastore';
 
 const ObjectId = bson.ObjectID;
 
@@ -19,6 +20,7 @@ const specAllowedKeys = [
   'enumerable',
 ];
 
+/** is object and not array */
 function isComplexSpec(spec) {
   return (
     typeof spec === 'object' &&
@@ -27,12 +29,15 @@ function isComplexSpec(spec) {
   );
 }
 
+/** is simple with type/schema, not array/complex-obj */
 function isNormalized(spec) {
   return (
+    spec &&
+    typeof spec === 'object' &&
     'schema' in spec &&
     'type' in spec &&
-    !isComplexSpec(spec) &&
-    !Array.isArray(spec)
+    !Array.isArray(spec) &&
+    !isComplexSpec(spec)
   );
 }
 
@@ -42,12 +47,14 @@ function mapSpec(spec) {
   if (spec === Object) return 'object';
   if (spec === Array) return 'array';
   if (spec === Boolean) return 'boolean';
-  if (spec == Date) return 'date';
+  if (spec === Date) return 'date';
   if (spec && spec.name === ObjectId.name) return 'ObjectId';
   return spec;
 }
 
-/** recursively normalize all of schema obj props */
+/** recursively normalize all of schema obj props
+ * - add `{ type:'object', schema:{ nestedSchema} }` to nested def
+ */
 export function normalize(schema) {
   Object.keys(schema).forEach((key) => {
     const spec = schema[key];
@@ -56,9 +63,8 @@ export function normalize(schema) {
     if (isComplexSpec(spec)) {
       if (Array.isArray(spec.type)) {
         schema[key] = {
-
           type: 'array',
-            schema: mapSpec(spec.type[0]) || undefined,
+          schema: mapSpec(spec.type[0]) || undefined,
           ..._.pick(spec, (specValue, specKey) => {
             return (
               specKey !== 'type' && specAllowedKeys.indexOf(specKey) !== -1
@@ -81,7 +87,7 @@ export function normalize(schema) {
   return schema;
 }
 
-/** enhance self by schema info, by Object.defineProperty */
+/** enhance self by schema info, by `Object.defineProperty` */
 export function construct(self: Model, schema) {
   // TODO: incorporate _ctime and _mtime here, making them default non-enumerable date props
   // Has some minor increase on time it takes to do DB operations - but we want schema support
@@ -175,7 +181,7 @@ function canCast(val, spec) {
 }
 
 function castToType(val, spec) {
-  if (spec === true || spec == 'mixed') return val;
+  if (spec === true || spec === 'mixed') return val;
   if (spec === 'array' && Array.isArray(val)) return val;
   if (typeof val === spec) return val;
   if (typeof val === typeof spec) return val;
@@ -205,13 +211,9 @@ function defaultValue(spec) {
   }[spec];
 }
 
-/** recursively build index-config for all of obj keys */
+/** recursively build index-options for all schemaObj keys, nested prop is `p1.p11` */
 export function getIndexes(schemaObj, prefix = '') {
-  let indexes: Array<{
-    fieldName: string;
-    sparse: any;
-    unique: any;
-  }> = [];
+  let indexes: CreateIndexOptions[] = [];
   Object.keys(schemaObj).forEach((key) => {
     const spec = schemaObj[key];
     if (spec.schema && typeof spec.schema === 'object') {

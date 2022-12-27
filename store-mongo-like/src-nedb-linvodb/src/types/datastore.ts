@@ -52,8 +52,8 @@ export interface PersistenceOptionsProps {
   modes?: { fileMode?: number; dirMode?: number };
 }
 
-export interface EnsureIndexOptions {
-  fieldName?: string;
+export interface CreateIndexOptions {
+  fieldName: string;
   unique?: boolean;
   sparse?: boolean;
   expireAfterSeconds?: number;

@@ -11,7 +11,10 @@ import { Cursor } from './cursor';
 import * as docUtils from './document';
 import { Index } from './indexes';
 import * as schemas from './schemas';
-import type { DatastoreDefaultsOptions } from './types/datastore';
+import type {
+  CreateIndexOptions,
+  DatastoreDefaultsOptions,
+} from './types/datastore';
 import { Bagpipe } from './utils/bagpipe';
 import { EventEmitter } from './utils/event-emitter';
 import { once } from './utils/utils';
@@ -42,6 +45,8 @@ export class Model extends EventEmitter {
   filename: string;
   /** Datastore id */
   _id: string;
+  /** oneDoc object, for testing only */
+  _rawDoc: any;
   options: any;
   /** Indexed by field name, dot notation can be used
    * - `_id` is always indexed and since _ids are generated randomly the underlying
@@ -74,7 +79,7 @@ export class Model extends EventEmitter {
    * - create all indexes from schema in constructor
    * @param name model name
    */
-  constructor(name: string, options: any = {}, schema = {}) {
+  constructor(name: string, options: any = {}, schema = undefined) {
     super();
     // this.setMaxListeners(0);
 
@@ -87,14 +92,14 @@ export class Model extends EventEmitter {
     this.filename = path.normalize(
       options.filename || path.join(Model.dbPath || '.', name + '.db'),
     );
-    schema = schema || options.schema || {};
-    this.schema = schemas.normalize(schema); // Normalize to allow for short-hands
+    schema = options.schema || schema || {};
+    this.schema = schemas.normalize({ ...schema }); // Normalize to allow for short-hands
     this.options = { ...Model.defaults, ...options };
 
     this.indexes = {};
     this.indexes._id = new Index({ fieldName: '_id', unique: true });
     // create indexes from schema
-    schemas.getIndexes(schema).forEach((idx) => {
+    schemas.getIndexes(this.schema).forEach((idx) => {
       this.ensureIndex(idx);
     });
 
@@ -108,20 +113,10 @@ export class Model extends EventEmitter {
       this.initStore();
     }
 
-    let raw = options.raw;
-    if (!raw) raw = {};
-    if (typeof raw === 'string') {
-      raw = docUtils.deserialize(raw);
+    this._rawDoc = options.raw;
+    if (typeof this._rawDoc === 'string') {
+      this._rawDoc = docUtils.deserialize(this._rawDoc);
     }
-    // Clone it deeply if it's schema-constructed
-    // todo 重写，将当前doc对象直接赋值到Model对象
-    Object.assign(
-      this,
-      raw.constructor.modelName ? docUtils.deepCopy(raw) : raw,
-    );
-
-    schemas.construct(this, this.schema);
-    this.emit('construct', this);
   }
 
   /**
@@ -149,6 +144,24 @@ export class Model extends EventEmitter {
         ? this.store
         : levelup(encode(db(filename), storeOptions), storeOptions);
     this._pipe.resume();
+  }
+
+  /** insert a doc, and get current Model assigned the props of the doc  */
+  getRawDocOfModel(raw: any) {
+    if (typeof raw === 'string') {
+      raw = docUtils.deserialize(raw);
+    }
+    this._rawDoc = raw || {};
+    // create a Model object with initial content
+    // Clone it deeply if it's schema-constructed
+    Object.assign(
+      this,
+      raw.constructor.modelName ? docUtils.deepCopy(raw) : raw,
+    );
+    schemas.construct(this, this.schema);
+    this.emit('construct', this);
+    this.insert(raw);
+    return this;
   }
 
   /**
@@ -232,7 +245,7 @@ export class Model extends EventEmitter {
    * @param {Boolean} options.sparse
    * @param {Function} cb Optional callback, signature: err
    */
-  ensureIndex(options: any = {}, callback = (...args: any[]) => { }) {
+  ensureIndex(options: CreateIndexOptions, callback = (...args: any[]) => { }) {
     if (!options.fieldName) {
       return callback({ missingFieldName: true });
     }
@@ -335,7 +348,7 @@ export class Model extends EventEmitter {
     newDoc: Record<string, any> | Array<Record<string, any>>,
     callback = (...args: any[]) => { },
   ) {
-    const isMultiDoc = Array.isArray(newDoc)
+    const isMultiDoc = Array.isArray(newDoc);
     let docs = isMultiDoc ? newDoc : [newDoc];
 
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
@@ -360,7 +373,7 @@ export class Model extends EventEmitter {
         (err, docsInCb) => {
           // console.log(';; afterInsertCb-docs ', docs, docsInCb);
           this.emit('inserted', docs);
-          callback(err || null, err ? undefined : (isMultiDoc ? docs : docs[0]));
+          callback(err || null, err ? undefined : isMultiDoc ? docs : docs[0]);
         },
       );
     });
@@ -670,7 +683,9 @@ export class Model extends EventEmitter {
     callback: (...args: any[]) => any = () => { },
     quiet = false,
   ) {
-    const docs = this.prepareDocumentForInsertion(Array.isArray(doc) ? doc : [doc]);
+    const docs = this.prepareDocumentForInsertion(
+      Array.isArray(doc) ? doc : [doc],
+    );
 
     const existingDocs = {};
     const idsAllowed = docs

@@ -40,7 +40,7 @@ export class Cursor {
    * @param {Query} query - The query this cursor will operate on
    * @param {Function} execDn - Handler to be executed after cursor has found the results and before the callback passed to find/findOne/update/remove
    */
-  constructor(db: Model, query, execFn = undefined) {
+  constructor(db: Model, query = undefined, execFn = undefined) {
     this.db = db;
     this.query = query || {};
     if (execFn) {
@@ -101,7 +101,7 @@ export class Cursor {
    * Add the use of a reducing function
    * @param {Function} reduce - reduce function, takes the two objects
    */
-  reduce(reduce, initial) {
+  reduce(reduce, initial = undefined) {
     if (typeof reduce === 'function') {
       this._reduce = initial === undefined ? [reduce] : [reduce, initial];
     }
@@ -267,13 +267,13 @@ export class Cursor {
     };
   }
 
-  count(callback) {
+  count(callback = undefined) {
     this._count = true;
     if (callback) this.exec(callback);
     return this;
   }
 
-  // Make the cursor into a live query
+  /** Make the cursor into a live query */
   live(query = {}) {
     if (query !== undefined) this.query = query;
     if (this._live) {
@@ -345,6 +345,7 @@ export class Cursor {
     return this;
   }
 
+  /** streaming cursor */
   stream(ondata, callback) {
     this._ondata = ondata;
     this.exec(callback);

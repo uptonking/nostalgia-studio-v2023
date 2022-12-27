@@ -1,8 +1,6 @@
 import async from 'async';
 import { assert, should } from 'chai';
-import fs from 'fs';
 import _ from 'lodash';
-import path from 'path';
 import rimraf from 'rimraf';
 
 import { Cursor } from '../src/cursor';
@@ -13,7 +11,7 @@ should();
 const testDb = 'tests/testdata/test.db';
 
 describe('Cursor', function () {
-  let d;
+  let d: Model;
 
   beforeEach(function (done) {
     async.waterfall(
@@ -41,12 +39,13 @@ describe('Cursor', function () {
   });
 
   describe('Without sorting', function () {
+    // data seeding
     beforeEach(function (done) {
-      d.insert({ age: 5 }, function (err) {
-        d.insert({ age: 57 }, function (err) {
-          d.insert({ age: 52 }, function (err) {
-            d.insert({ age: 23 }, function (err) {
-              d.insert({ age: 89 }, function (err) {
+      d.insert({ age: 5 }, (err) => {
+        d.insert({ age: 57 }, (err) => {
+          d.insert({ age: 52 }, (err) => {
+            d.insert({ age: 23 }, (err) => {
+              d.insert({ age: 89 }, (err) => {
                 return done();
               });
             });
@@ -63,19 +62,19 @@ describe('Cursor', function () {
             cursor.exec(function (err, docs) {
               assert.isNull(err);
               docs.length.should.equal(5);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 5;
               })[0].age.should.equal(5);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 57;
               })[0].age.should.equal(57);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 52;
               })[0].age.should.equal(52);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 23;
               })[0].age.should.equal(23);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 89;
               })[0].age.should.equal(89);
               cb();
@@ -86,19 +85,19 @@ describe('Cursor', function () {
             cursor.exec(function (err, docs) {
               assert.isNull(err);
               docs.length.should.equal(5);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 5;
               })[0].age.should.equal(5);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 57;
               })[0].age.should.equal(57);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 52;
               })[0].age.should.equal(52);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 23;
               })[0].age.should.equal(23);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 89;
               })[0].age.should.equal(89);
               cb();
@@ -109,13 +108,13 @@ describe('Cursor', function () {
             cursor.exec(function (err, docs) {
               assert.isNull(err);
               docs.length.should.equal(3);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 57;
               })[0].age.should.equal(57);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 52;
               })[0].age.should.equal(52);
-              _.filter(docs, function (doc) {
+              _.filter(docs, function (doc: any) {
                 return doc.age === 89;
               })[0].age.should.equal(89);
               cb();
@@ -180,10 +179,8 @@ describe('Cursor', function () {
     it('With a filter', function (done) {
       const cursor = new Cursor(d);
       cursor
-        .filter(function (x) {
-          return x.age > 50;
-        })
-        .count(function (err, c) {
+        .filter((x) => x.age > 50)
+        .count((err, c) => {
           assert.isNull(err);
           c.should.equal(3);
           done();
@@ -193,10 +190,9 @@ describe('Cursor', function () {
     it('With a filter, catch the error in the filter', function (done) {
       const cursor = new Cursor(d);
       cursor
-        .filter(function (x) {
-          return 'blablabla';
-        })
-        .count(function (err, c) {
+        // eslint-disable-next-line no-undef
+        .filter((x) => blablabla)
+        .count((err, c) => {
           assert.isDefined(err);
           assert.isUndefined(c);
           err.message.should.contain('blablabla');
@@ -921,9 +917,7 @@ describe('Cursor', function () {
         return x.age;
       });
 
-      cursor.reduce(function (a, b) {
-        return a + b;
-      });
+      cursor.reduce((a, b) => a + b);
 
       cursor.exec(function (err, res) {
         assert.isNull(err);
@@ -1021,6 +1015,7 @@ describe('Cursor', function () {
     let doc2;
     let doc3;
     let doc4;
+
     beforeEach(function (done) {
       // We don't know the order in which docs wil be inserted but we ensure correctness by testing both sort orders
       d.insert({ age: 5, name: 'Jo', planet: 'B' }, function (err, _doc0) {
@@ -1059,10 +1054,8 @@ describe('Cursor', function () {
 
       const items = [];
       cursor.stream(
-        function (d) {
-          items.push(d);
-        },
-        function () {
+        (d) => items.push(d),
+        () => {
           items.length.should.equal(5);
           done();
         },
@@ -1213,6 +1206,8 @@ describe('Cursor', function () {
   }); // ===== End of 'getMatches' =====
 
   describe('Live query', function () {
+
+    // data seeding
     beforeEach(function (done) {
       d.insert(
         [
@@ -1239,14 +1234,14 @@ describe('Cursor', function () {
           { age: 45, name: 'Phyllis', department: 'sales' },
           { age: 23, name: 'Ryan', department: 'sales' },
         ],
-        function (err) {
+        (err) => {
           done();
         },
       );
     });
 
     it('Updates properly', function (done) {
-      /*
+      /**
        * We do things on the dataset, expecting certain results after updating the live query
        * We test removing, inserting, updating and if modifying an object we don't care about triggers live query update
        */
@@ -1306,26 +1301,27 @@ describe('Cursor', function () {
       ];
 
       const modifiers = [
-        function () {
-          d.remove({ name: 'Jim' }, {}, _.noop);
+        () => {
+          d.remove({ name: 'Jim' }, {}, () => { });
         },
-        function () {
-          d.save({ name: 'Stanley', age: 58, department: 'sales' }, _.noop);
+        () => {
+          d.save({ name: 'Stanley', age: 58, department: 'sales' }, () => { });
         },
-        function () {
-          d.update({ name: 'Phyllis' }, { $inc: { age: 1 } }, {}, _.noop);
+        () => {
+          d.update({ name: 'Phyllis' }, { $inc: { age: 1 } }, {}, () => { });
         },
-        function () {},
+        () => { },
       ];
 
       const query = d.find({ department: 'sales' }).sort({ name: 1 }).live();
-      d.on('liveQueryUpdate', function () {
+
+      d.on('liveQueryUpdate', () => {
         const exp = expected.shift();
         const mod = modifiers.shift();
 
         //console.log(query.res.map(function(x){return x.name}), exp.map(function(x){return x.name}));
         assert.deepEqual(
-          query.res.map(function (x) {
+          query.res.map(x => {
             return _.omit(x, '_id');
           }),
           exp,
@@ -1408,28 +1404,43 @@ describe('Cursor', function () {
       const query = d.find({ department: 'sales' }).sort({ name: 1 });
       query.should.not.to.have.ownProperty('refresh');
       query.should.not.to.have.ownProperty('stop');
+      // @ts-expect-error fix-types
       d.listeners('updated').should.to.have.length(0);
+      // @ts-expect-error fix-types
       d.listeners('inserted').should.to.have.length(0);
+      // @ts-expect-error fix-types
       d.listeners('removed').should.to.have.length(0);
+      // @ts-expect-error fix-types
       d.listeners('reload').should.to.have.length(0);
+      // @ts-expect-error fix-types
       d.listeners('liveQueryRefresh').should.to.have.length(0);
 
       query.live();
       query.should.to.have.ownProperty('refresh');
       query.should.to.have.ownProperty('stop');
+      // @ts-expect-error fix-types
       d.listeners('updated').should.to.have.length(1);
+      // @ts-expect-error fix-types
       d.listeners('inserted').should.to.have.length(1);
+      // @ts-expect-error fix-types
       d.listeners('removed').should.to.have.length(1);
+      // @ts-expect-error fix-types
       d.listeners('reload').should.to.have.length(1);
+      // @ts-expect-error fix-types
       d.listeners('liveQueryRefresh').should.to.have.length(1);
 
       query.stop();
       query.should.not.to.have.ownProperty('refresh');
       query.should.not.to.have.ownProperty('stop');
+      // @ts-expect-error fix-types
       d.listeners('updated').should.to.have.length(0);
+      // @ts-expect-error fix-types
       d.listeners('inserted').should.to.have.length(0);
+      // @ts-expect-error fix-types
       d.listeners('removed').should.to.have.length(0);
+      // @ts-expect-error fix-types
       d.listeners('reload').should.to.have.length(0);
+      // @ts-expect-error fix-types
       d.listeners('liveQueryRefresh').should.to.have.length(0);
       done();
     });

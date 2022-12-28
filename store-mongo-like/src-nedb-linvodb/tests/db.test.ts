@@ -579,15 +579,19 @@ describe('Datastore/Model like mongodb collection', function () {
     it('Can use an index to get docs with a basic match on two indexes', function (done) {
       d.options.autoIndexing.should.equal(true);
 
-      d.insert({ tf: 4, r: 6 }, function (err, _doc1) {
-        d.insert([{ tf: 6 }, { tf: 4, an: 'dont match us' }], function () {
-          d.insert({ tf: 4, an: 'other', r: 6 }, function (err, _doc2) {
-            d.insert({ tf: 9 }, function () {
-              getCandidates({ r: 6, tf: 4 }, null, function (data) {
-                const doc1 = _.find(data, function (d: any) {
+      d.insert({ tf: 4, r: 6 }, (err, _doc1) => {
+        d.insert([{ tf: 6 }, { tf: 4, an: 'dont match us' }], () => {
+          d.insert({ tf: 4, an: 'other', r: 6 }, (err, _doc2) => {
+            d.insert({ tf: 9 }, () => {
+
+              // console.log(';; insert-cb ', _doc1, _doc2)
+              getCandidates({ r: 6, tf: 4 }, null, data => {
+                console.log(';; find-cb ', data)
+
+                const doc1 = _.find(data, (d: any) => {
                   return d._id === _doc1._id;
                 });
-                const doc2 = _.find(data, function (d: any) {
+                const doc2 = _.find(data, (d: any) => {
                   return d._id === _doc2._id;
                 });
                 data.length.should.equal(2);
@@ -913,8 +917,8 @@ describe('Datastore/Model like mongodb collection', function () {
           { a: 9, b: 1 },
           { b: 2 }, // to check if we still match on a (a: { $exists: true } )
         ],
-        function () {
-          getCandidates({}, { a: 1 }, function (data) {
+        () => {
+          getCandidates({}, { a: 1 }, data => {
             data.length.should.equal(8);
             assert.deepEqual(_.pluck(data, 'a'), [
               undefined,
@@ -2248,9 +2252,9 @@ describe('Datastore/Model like mongodb collection', function () {
                 //   (index: any, cb) => {
                 const index = d.indexes['_id'];
                 const docs_ = index.getAll();
-                console.log(';; up-each ', docs_);
+                // console.log(';; up-each ', docs_);
                 async.map(docs_, d.findById.bind(d), (err, docs: any[]) => {
-                  console.log(';; up-idx-docs ', docs);
+                  // console.log(';; up-idx-docs ', docs);
 
                   const d1 = docs.find((doc: any) => doc._id === doc1._id);
                   const d2 = docs.find((doc: any) => doc._id === doc2._id);

@@ -30,8 +30,8 @@ export class Cursor {
   _ondata: any;
   _ids: Record<string, any>;
   res: any;
-  stop: any;
   _prefetched: any;
+  stop: (...args: any[]) => any;
   refresh: (...args: any[]) => any;
 
   /**
@@ -137,7 +137,7 @@ export class Cursor {
     // we have to copy the initial value, so that we don't inherit old vals
     if (reducer && reducer[1]) reducer[1] = docUtils.deepCopy(this._reduce[1]);
 
-    if (!this._quiet) this.db.emit('query', this.query);
+    if (!this._quiet) this.db.emit('query', this.query); // no handler
 
     const stream = Cursor.getMatchesStream(
       this.db,
@@ -171,7 +171,7 @@ export class Cursor {
       }
 
       // Start retrieving the objects for those IDs; res is an array that will hold all results
-      stream.trigger(ids);
+      stream.trigger(ids); // go to {@link getMatchesStream}
       res = new Array(ids.length);
 
       // Special case: res becomes the cursor of reduce if we're running a map/reduce
@@ -254,7 +254,7 @@ export class Cursor {
     const limit = (res, limit, skip) => {
       return res.slice(skip, limit + skip);
     };
-
+    /** this._aggregate, then trigger Cursor constructor cb fn */
     const ready = () => {
       if (res && this._count) res = res.length;
       if (res && this._aggregate) res = this._aggregate(res);
@@ -273,31 +273,35 @@ export class Cursor {
     return this;
   }
 
-  /** Make the cursor into a live query */
-  live(query = {}) {
+  /** Make the cursor into a live query, and trigger an async {@link Cursor#exec}  */
+  live(query = undefined) {
     if (query !== undefined) this.query = query;
     if (this._live) {
+      // Live query already initialized; refresh
       this.refresh();
       return this;
-    } // Live query already initialized; refresh
+    }
 
     this._live = true;
     this._ids = {};
     this._prefetched = {};
     this.res = undefined;
 
-    // Refresh live query
-    const refresh = _.debounce((callback = undefined) => {
+    /** Refresh live query and do {@link Cursor#exec}, `this.refresh = refresh;` */
+    const refresh = (callback = undefined) => {
+      // const refresh = _.debounce((callback = undefined) => {
+      debugger;
       this.exec((err, res) => {
         if (err) console.error(err); // No other way for now
         this.res = res;
         this.db.emit('liveQueryUpdate', this.query);
         if (typeof callback === 'function') callback();
       });
-    }, this.db.options.liveQueryDebounce || LIVE_QUERY_DEBOUNCE);
-    refresh();
+    };
+    // }, this.db.options.liveQueryDebounce || LIVE_QUERY_DEBOUNCE);
+    refresh(); // trigger an async exec now
 
-    // Watch for changes
+    /** Watch for changes */
     const updated = (docs) => {
       // Refresh if any of the objects: have an ID which is in our results OR they match our query (this.query)
       let shouldRefresh = false;
@@ -360,7 +364,8 @@ export class Cursor {
    * - prefetched - a hash map of ID->constructed object which we have pre-fetched somehow - previous results from a live query
    * @return new EventEmitter obj, a new obj for every func call
    */
-  static getMatchesStream(db: Model, query, sort = {}, prefetched = undefined) {
+  static getMatchesStream(db: Model, query, sort = undefined, prefetched = undefined) {
+    sort = sort || {};
     const stream = new EventEmitter() as any;
     stream._closed = false;
     stream._waiting = null;
@@ -428,7 +433,7 @@ export class Cursor {
         }
 
         ids.forEach((id, i) => {
-          db._reTrQueue.push((cb) => {
+          db._reTrQueue.push((cb) => { // todo perf time reduce
             // If db.store.isClosed(), then bagpipe.stop() has been called. So we shouldn't be in this state.
             //if (db.store.isClosed()) return cb();
             Cursor.retriever(
@@ -440,7 +445,7 @@ export class Cursor {
                 prefetched: prefetched && prefetched[id],
               },
               () => {
-                if (--stream._waiting === 0) stream.emit('ready');
+                if (--stream._waiting === 0) stream.emit('ready'); // data is ready, goto cursor exec end
                 cb();
               },
             );
@@ -537,7 +542,7 @@ export class Cursor {
     let res = null;
     let excludes = [];
 
-    /** Push to results with `_.intersection` */
+    /** Push to results with `.intersection` */
     const push = (x) => {
       res = res ? _.intersection(res, x) : _.uniq(x);
     };
@@ -546,9 +551,12 @@ export class Cursor {
     };
 
     // TODO; change the logic here when we have compound indexes
-    const firstKey = _.first(_.keys(sort));
+    // const firstKey = _.first(_.keys(sort));
+    const firstKey = sort ? Object.keys(sort)[0] : undefined; // 👀 same as above
+    // console.log(';; firstKey-sort ', firstKey, sort)
     sorted = firstKey
-      ? Boolean(db.indexes[firstKey]) && _.keys(sort).length === 1
+      ? // Boolean(db.indexes[firstKey]) && _.keys(sort).length === 1
+      Boolean(db.indexes[firstKey]) && Object.keys(sort).length === 1
       : true;
 
     /** handle $and/$or, then db.ensureIndex to build index, then handle $lt/$gt */
@@ -609,7 +617,7 @@ export class Cursor {
       if (!(db.indexes[key] && db.indexes[key].ready)) {
         indexed = false;
         if (db.options.autoIndexing) {
-          db.ensureIndex({ fieldName: key });
+          db.ensureIndex({ fieldName: key }); // add index with ready `false`
         }
       }
 
@@ -621,7 +629,7 @@ export class Cursor {
 
         if (
           typeof val === 'object' &&
-          !_.keys(val).some((k) => docUtils.comparators[k])
+          !Object.keys(val).some((k) => docUtils.comparators[k])
         )
           return push(index.getMatching(val));
 
@@ -668,21 +676,22 @@ export class Cursor {
       }
     };
 
-
-    if (sort)
-      _.each(sort, (value, key) => {
+    if (sort) {
+      Object.keys(sort).forEach((key) => {
+        const value = sort[key];
         match(key, query[key]); // If there's no query key, the value will be undefined
 
         if (!sorted) return; // We need this to be active in order to avoid empty res
 
         // Flip results, descending order
-        if (key == firstKey && value === -1 && res) {
+        if (key === firstKey && value === -1 && res) {
           res = res.reverse();
         }
 
         // Apply all the sort keys first, effectively allowing results to be sorted by first sort key
         // In order to implement compound sort here, we need compound indexes
       });
+    }
 
     // Match all keys in the query except the sort keys, since we've done this already in the sort loop
     Object.keys(query).forEach((key) => {
@@ -692,8 +701,7 @@ export class Cursor {
       match(key, value);
     });
 
-
-    if (indexable && !indexed && db.options.autoIndexing) return null;
+    if (indexable && !indexed && db.options.autoIndexing) return null; // indexes not ready
     if (!res && !db.indexes._id.ready) return false;
 
     res = _.difference(res || self.getAllData(), excludes);
@@ -705,8 +713,12 @@ export class Cursor {
   /**
    * Internal function to help sorting in case `getIdsForQuery` doesn't return sorted results
    */
-  static getSorter(sort) {
-    const criteria = _.map(sort, (val, key) => ({ key: key, direction: val }));
+  private static getSorter(sort) {
+    // const criteria = _.map(sort, (val, key) => ({ key: key, direction: val }));
+    const criteria = Object.keys(sort).map((key) => ({
+      key,
+      direction: sort[key],
+    }));
     return (a, b) => {
       let criterion;
       let compare;
@@ -719,9 +731,7 @@ export class Cursor {
           docUtils.getDotValue(a, criterion.key),
           docUtils.getDotValue(b, criterion.key),
           );
-        if (compare !== 0) {
-          return compare;
-        }
+        if (compare !== 0) return compare;
       }
       return 0;
     };

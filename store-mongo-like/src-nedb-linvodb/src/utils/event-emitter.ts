@@ -116,6 +116,7 @@ export class EventEmitter<T = any> {
     return add(listeners, { fn });
   }
 
+  /** Alias for `emitter.on(eventName, listener)` */
   addListener(type, listener) {
     return this.on(type, listener)
   }
@@ -131,6 +132,7 @@ export class EventEmitter<T = any> {
     this.listeners[type] = new Set(newListeners);
   }
 
+  /** Alias for `emitter.off()` */
   removeListener(type, listener) {
     this.off(type, listener)
   }

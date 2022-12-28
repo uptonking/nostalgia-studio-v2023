@@ -19,7 +19,7 @@
     "test1": "npm run test:nedb",
     "test:jest": "jest",
     "test:linvodb-draft": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./tests/draft.test.ts",
-    "test:linvodb": "mocha --experimental-loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,js 'tests/**/*.test.js' --reporter spec --timeout 10000",
+    "test:linvodb": "mocha --experimental-loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,js 'tests/**/*.test.ts' --reporter spec --timeout 10000",
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {

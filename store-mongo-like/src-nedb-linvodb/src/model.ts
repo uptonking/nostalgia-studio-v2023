@@ -476,14 +476,15 @@ export class Model extends EventEmitter {
    * - If no callback is passed, we return the cursor so that user can limit, skip and finally exec
    * @param {Object} query MongoDB-style query
    */
-  find(query, callback = (...args: any[]) => { }, quiet = undefined) {
-    const cursor = new Cursor(this, query, (err, docs, callback) => {
-      return callback(err ? err : null, err ? undefined : docs);
+  find(query, callback = undefined, quiet = undefined) {
+    const cursor = new Cursor(this, query, (err, docs, cursorCb) => {
+      return cursorCb(err ? err : null, err ? undefined : docs);
     });
     cursor._quiet = quiet; // Used in special circumstances, such as sync
     if (typeof callback === 'function') {
       cursor.exec(callback);
     }
+    // if callback is not provided, cursor.exec wont work now
     return cursor;
   }
 

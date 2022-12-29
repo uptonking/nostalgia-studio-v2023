@@ -1,5 +1,3 @@
-import events from 'events';
-
 import { EventEmitter } from './event-emitter';
 
 // import { EventEmitter } from '@datalking/utils-vanillajs';

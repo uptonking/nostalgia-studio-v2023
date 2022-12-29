@@ -92,6 +92,7 @@ module.exports = {
     'node/no-extraneous-import': 0,
     'node/no-missing-import': 0,
     'node/no-unsupported-features/node-builtins': 0,
+    'node/no-unsupported-features/es-builtins': 0,
     'no-process-exit': 1,
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-unused-vars': 0,

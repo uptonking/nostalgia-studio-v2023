@@ -1,6 +1,5 @@
 import _ from 'lodash';
 
-// import { EventEmitter } from '@datalking/utils-vanillajs';
 import * as docUtils from './document';
 import type { Model } from './model';
 import { EventEmitter } from './utils/event-emitter';
@@ -36,7 +35,7 @@ export class Cursor {
 
   /**
    * Create a new cursor for this collection
-   * @param {Datastore} db - The datastore this cursor is bound to
+   * @param {Model} db - The datastore this cursor is bound to
    * @param {Query} query - The query this cursor will operate on
    * @param {Function} execDn - Handler to be executed after cursor has found the results and before the callback passed to find/findOne/update/remove
    */
@@ -290,7 +289,7 @@ export class Cursor {
     /** Refresh live query and do {@link Cursor#exec}, `this.refresh = refresh;` */
     const refresh = (callback = undefined) => {
       // const refresh = _.debounce((callback = undefined) => {
-      debugger;
+      // debugger;
       this.exec((err, res) => {
         if (err) console.error(err); // No other way for now
         this.res = res;
@@ -364,7 +363,12 @@ export class Cursor {
    * - prefetched - a hash map of ID->constructed object which we have pre-fetched somehow - previous results from a live query
    * @return new EventEmitter obj, a new obj for every func call
    */
-  static getMatchesStream(db: Model, query, sort = undefined, prefetched = undefined) {
+  static getMatchesStream(
+    db: Model,
+    query,
+    sort = undefined,
+    prefetched = undefined,
+  ) {
     sort = sort || {};
     const stream = new EventEmitter() as any;
     stream._closed = false;
@@ -379,7 +383,7 @@ export class Cursor {
     setTimeout(
       (cb) => {
         try {
-          debugger;
+          // debugger;
           // If the query fails, it will happen now, no need to re-catch it later
           const ids = Cursor.getIdsForQuery(db, query, sort);
           if (ids) return stream.emit('ids', ids);
@@ -426,14 +430,15 @@ export class Cursor {
       'ids',
       (stream.trigger = (ids) => {
         stream._waiting = ids.length;
-        debugger;
+        // debugger;
         if (!ids.length) {
           // ready event is handled in Model.save, updateIndexes
           return setTimeout(() => stream.emit('ready'));
         }
 
         ids.forEach((id, i) => {
-          db._reTrQueue.push((cb) => { // todo perf time reduce
+          db._reTrQueue.push((cb) => {
+            // todo perf time reduce
             // If db.store.isClosed(), then bagpipe.stop() has been called. So we shouldn't be in this state.
             //if (db.store.isClosed()) return cb();
             Cursor.retriever(

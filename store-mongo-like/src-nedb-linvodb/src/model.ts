@@ -1,6 +1,5 @@
 import async from 'async';
 import encode from 'encoding-down';
-import events from 'events';
 import hat from 'hat';
 import leveldown from 'leveldown';
 import levelup from 'levelup';
@@ -19,10 +18,9 @@ import { Bagpipe } from './utils/bagpipe';
 import { EventEmitter } from './utils/event-emitter';
 import { once } from './utils/utils';
 
-// import { EventEmitter } from '@datalking/utils-vanillajs';
-
 /** We have to keep those unique by filename because they're locked */
 const stores = {};
+globalThis['stores'] = stores;
 
 /** We'll use that on a bagpipe instance regulating findById */
 const LEVELUP_RE_TR_CONCURRENCY = 100;
@@ -137,7 +135,6 @@ export class Model extends EventEmitter {
     //   ';; init-db ',
     //   db,
     //   this.store,
-    //   this.store ? this.store.isOpen() : null,
     // );
     this.store = stores[path.resolve(filename)] =
       this.store && this.store.isOpen()
@@ -355,7 +352,7 @@ export class Model extends EventEmitter {
     // We also have to ensure indexes are up-to-date
     this._pipe.push(this.buildIndexes, () => {
       try {
-        // add index to datastore
+        // add index to memory
         // this._insertInIndex(newDoc);
         docs = this._insertMultipleDocsInIndex(docs);
       } catch (e) {
@@ -556,7 +553,7 @@ export class Model extends EventEmitter {
     });
     stream.on('ids', (ids) => {
       const indexed = ids._indexed;
-      debugger;
+      // debugger;
       if (upsert && !ids.length) {
         // / Special case - upsert and no found docs, which means we do an insert
         let toBeInserted;
@@ -595,7 +592,7 @@ export class Model extends EventEmitter {
       // Go on with our update; treat the error handling gingerly
       const modifications = [];
       stream.on('data', (data) => {
-        debugger;
+        // debugger;
         try {
           if (!indexed && !docUtils.match(data.val(), query)) return; // Not a match, ignore
         } catch (e) {
@@ -634,7 +631,7 @@ export class Model extends EventEmitter {
       });
 
       stream.on('ready', () => {
-        debugger;
+        // debugger;
         if (err) return callback(err);
 
         // Change the docs in memory
@@ -827,7 +824,6 @@ export class Model extends EventEmitter {
   _persist(doc, cb: (...args: any[]) => any, quiet = undefined) {
     if (!quiet) this.emit('save', doc); // no save-event handler
     // level-up storage
-    // this.store.put(doc._id, this.serialize(), (err) => {
     this.store.put(doc._id, docUtils.serialize(doc), (err) => {
       cb(err || null, err ? undefined : doc);
     });

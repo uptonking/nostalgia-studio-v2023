@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import { AVLTree as BinarySearchTree } from './binary-tree';
-import * as document from './document';
+import * as docUtils from './document';
 
 /**
  * Two indexed pointers are equal iif they point to the same place
@@ -47,11 +47,11 @@ function getDotValues(doc, fields) {
     key = {};
     for (i = 0, len = fields.length; i < len; i++) {
       field = fields[i];
-      key[field] = document.getDotValue(doc, field);
+      key[field] = docUtils.getDotValue(doc, field);
     }
     return key;
   } else {
-    return document.getDotValue(doc, fields);
+    return docUtils.getDotValue(doc, fields);
   }
 }
 
@@ -82,8 +82,8 @@ export class Index {
     this.sparse = options.sparse || false;
 
     const compareFunc = Array.isArray(this.fieldName)
-      ? document.compoundCompareThings(this.fieldName)
-      : document.compareThings;
+      ? docUtils.compoundCompareThings(this.fieldName)
+      : docUtils.compareThings;
     this.treeOptions = {
       unique: this.unique,
       compareKeys: compareFunc,

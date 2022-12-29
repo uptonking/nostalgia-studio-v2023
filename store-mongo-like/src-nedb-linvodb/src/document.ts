@@ -7,8 +7,6 @@
 
 import _ from 'lodash';
 
-import * as schemas from './schemas';
-
 const modifierFunctions = {} as any;
 const lastStepModifierFunctions = {} as any;
 const comparisonFunctions = {} as any;

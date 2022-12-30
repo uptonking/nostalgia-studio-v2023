@@ -31,7 +31,7 @@ export type Events<T> = T & EmitterEvents<T>;
 export type ValidEventArgs<
   T,
   K extends keyof Events<T>,
-  > = K extends keyof EmitterEvents<T>
+> = K extends keyof EmitterEvents<T>
   ? EmitterEvents<T>[K]
   : K extends keyof T
   ? ValidArgs<T[K]>
@@ -117,7 +117,7 @@ export class EventEmitter<T = any> {
   }
 
   addListener(type, listener) {
-    return this.on(type, listener)
+    return this.on(type, listener);
   }
 
   off(type, fnListener) {
@@ -132,7 +132,7 @@ export class EventEmitter<T = any> {
   }
 
   removeListener(type, listener) {
-    this.off(type, listener)
+    this.off(type, listener);
   }
 
   emit<K extends keyof T>(type: K, ...args: ValidEventArgs<T, K>) {

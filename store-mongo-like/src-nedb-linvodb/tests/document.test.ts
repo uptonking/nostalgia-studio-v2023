@@ -70,7 +70,7 @@ describe('Document', function () {
       const a = { undef: undefined, hello: 'world' };
       const b = document.serialize(a);
       const c = document.deserialize(b);
-      b.indexOf('undefined').should.equal(-1)
+      b.indexOf('undefined').should.equal(-1);
       Object.keys(c).length.should.equal(1);
       c.hello.should.equal('world');
       assert.isUndefined(c.undef);
@@ -255,7 +255,11 @@ describe('Document', function () {
   describe('Deep copying', function () {
     it('Should be able to deep copy any serializable document', function () {
       const d = new Date();
-      const obj: any = { a: ['ee', 'ff', 42], date: d, subobj: { a: 'b', b: 'c' } };
+      const obj: any = {
+        a: ['ee', 'ff', 42],
+        date: d,
+        subobj: { a: 'b', b: 'c' },
+      };
       const res = document.deepCopy(obj);
 
       res.a.length.should.equal(3);

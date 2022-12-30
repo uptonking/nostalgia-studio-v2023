@@ -86,7 +86,7 @@ export class Bagpipe extends EventEmitter {
 
       const callback = args[args.length - 1];
       if (typeof callback !== 'function') {
-        args.push(() => { });
+        args.push(() => {});
       }
       if (this.options.disabled || this.limit < 1) {
         method.apply(null, args);

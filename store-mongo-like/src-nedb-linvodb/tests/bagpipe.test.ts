@@ -70,7 +70,7 @@ describe('Bagpipe Utils', function () {
     bagpipe.limit.should.be.equal(5);
     bagpipe.queue.should.have.length(0);
     bagpipe.active.should.be.equal(0);
-    const context: { value: number, async?: Function } = { value: 10 };
+    const context: { value: number; async?: Function } = { value: 10 };
     context.async = function (callback) {
       this.value--;
       const that = this;
@@ -136,7 +136,7 @@ describe('Bagpipe Utils', function () {
       counter++;
     });
 
-    const noop = function () { };
+    const noop = function () {};
     for (let i = 0; i < 100; i++) {
       bagpipe.push(async, 10, noop);
     }

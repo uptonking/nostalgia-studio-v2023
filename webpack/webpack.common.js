@@ -30,6 +30,9 @@ module.exports = {
             },
           },
         ],
+        resolve: {
+          fullySpecified: false,
+        },
         exclude: /node_modules/,
       },
       {

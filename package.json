@@ -2,7 +2,7 @@
   "name": "@datalking/nostalgia-studio-monorepo",
   "version": "1.0.0",
   "private": true,
-  "description": "markdown-based, easy-to-read, easy-to-write and content-centric web app for data and ideas.",
+  "description": "content-centric web app for data and ideas.",
   "keywords": [
     "markdown"
   ],
@@ -23,6 +23,7 @@
     "collab-ot-crdt/*",
     "collab-ot-crdt/src-ottypes/*",
     "store-mongo-like/*",
+    "store-level-like/*",
     "utils/*",
     "utils/dnd-kit/packages/*",
     "utils/dnd-kit/playground",
@@ -37,7 +38,7 @@
     "format:check": "npm run formatter -- --check",
     "help": "echo 'exec npm start to view the demo'",
     "preinstall": "",
-    "lint": "eslint --fix \"store-mongo-like/**/*.{js,jsx,ts,tsx,cjs,mjs}\"",
+    "lint": "eslint --fix \"store-level-like/**/*.{js,jsx,ts,tsx,cjs,mjs}\"",
     "lint:js": "",
     "lint:style": "",
     "prepare": "",

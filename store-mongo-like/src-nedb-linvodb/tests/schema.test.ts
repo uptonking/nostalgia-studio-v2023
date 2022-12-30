@@ -661,7 +661,7 @@ describe('Schema', function () {
               if (doc._id === doc._id) done();
             });
             // doc2.remove();
-            d.remove({ _id: doc2._id }, {}, () => { });
+            d.remove({ _id: doc2._id }, {}, () => {});
           });
           // });
         }, 50);

@@ -1,0 +1,42 @@
+{
+  "name": "level-transcoder",
+  "version": "1.0.1111",
+  "description": "Encode data with built-in or custom encodings",
+  "keywords": [
+    "level"
+  ],
+  "homepage": "https://github.com/Level/transcoder",
+  "repository": "Level/transcoder",
+  "license": "MIT",
+  "main": "index.js",
+  "type": "module",
+  "types": "./index.d.ts",
+  "files": [
+    "lib",
+    "index.js",
+    "index.d.ts",
+    "CHANGELOG.md",
+    "LICENSE",
+    "UPGRADING.md"
+  ],
+  "scripts": {
+    "coverage": "nyc report -r lcovonly",
+    "hallmark": "hallmark --fix",
+    "test": "tsc && standard && hallmark && nyc tape test/*.js",
+    "test-browsers-local": "airtap --coverage --verbose test/*.js"
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "module-error": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "airtap": "^4.0.3",
+    "airtap-playwright": "^1.0.1",
+    "nyc": "^15.1.0",
+    "tape": "^5.3.2"
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}

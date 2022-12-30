@@ -1,0 +1,62 @@
+{
+  "name": "level-web-stream",
+  "version": "1.1.1111",
+  "description": "Read and write to an abstract-level database using Web Streams",
+  "keywords": [
+    "level",
+    "stream",
+    "web-streams",
+    "abstract-level"
+  ],
+  "homepage": "https://github.com/Level/web-stream",
+  "repository": "Level/web-stream",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "browser": {
+    "./streams.js": "streams-browser.js"
+  },
+  "types": "./index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "streams.js",
+    "streams-browser.js",
+    "CHANGELOG.md",
+    "UPGRADING.md"
+  ],
+  "scripts": {
+    "coverage": "nyc report -r lcovonly",
+    "lint": "standard && ts-standard *.ts && hallmark",
+    "test": "npm run lint && npm run test-browsers-local && npm run test-node",
+    "test-browsers-local": "airtap --coverage test.js",
+    "test-node": "(nyc -s node test.js | faucet) && nyc report"
+  },
+  "devDependencies": {
+    "airtap": "^4.0.3",
+    "airtap-playwright": "^1.0.1",
+    "faucet": "^0.0.3",
+    "memory-level": "1.0.1111",
+    "nyc": "^15.1.0",
+    "tape": "^5.0.1"
+  },
+  "peerDependencies": {
+    "abstract-level": "1.0.3111"
+  },
+  "peerDependenciesMeta": {
+    "abstract-level": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=16.5.0"
+  },
+  "standard": {
+    "globals": [
+      "ReadableStream",
+      "WritableStream",
+      "CountQueuingStrategy",
+      "AbortController"
+    ]
+  }
+}

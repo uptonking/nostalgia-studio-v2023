@@ -482,7 +482,7 @@ export class Cursor {
       });
     }
 
-    task.db.store.get(task.id, (err, storeVal) => {
+    task.db.store.get(task.id, (err, value) => {
       if (task.stream._closed) return cb();
 
       // quietly ignore that one for now, since it's possible to do a .remove while a query is happening
@@ -492,18 +492,18 @@ export class Cursor {
       if (err) {
         task.stream.emit('error', err);
       } else {
-        // console.log(';; storeVal ', storeVal);
+        // console.log(';; getVal ', value);
 
-        if (storeVal === undefined) storeVal = {};
-        if (typeof storeVal === 'string')
-          storeVal = docUtils.deserialize(storeVal);
+        if (value === undefined) value = {};
+        if (typeof value === 'string')
+          value = docUtils.deserialize(value);
         // ? check missing `new task.db` logic, schemas.construct
 
         const emitData = {
           id: task.id,
           idx: task.idx,
-          // val: () => new task.db(storeVal),
-          val: () => storeVal,
+          // val: () => new task.db(value),
+          val: () => value,
           lock: () => {
             if (!locks.hasOwnProperty(task.id)) locks[task.id] = 0;
             locks[task.id]++;

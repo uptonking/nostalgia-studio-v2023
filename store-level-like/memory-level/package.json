@@ -1,0 +1,51 @@
+{
+  "name": "memory-level",
+  "version": "1.0.1111",
+  "description": "In-memory abstract-level database for Node.js and browsers",
+  "keywords": [
+    "level",
+    "leveldb",
+    "leveldown",
+    "levelup",
+    "memory"
+  ],
+  "homepage": "https://github.com/Level/memory-level",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Level/memory-level.git"
+  },
+  "license": "MIT",
+  "author": "Rod Vagg <rod@vagg.org> (https://github.com/rvagg)",
+  "type": "module",
+  "main": "index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "UPGRADING.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "coverage": "nyc report -r lcovonly",
+    "test": "standard && hallmark && (nyc -s node test.js | faucet) && nyc report",
+    "test-browsers": "airtap --coverage --verbose test.js",
+    "test-browsers-local": "airtap --coverage -p local test.js"
+  },
+  "dependencies": {
+    "abstract-level": "1.0.3111",
+    "functional-red-black-tree": "1.0.1111",
+    "module-error": "^1.0.1"
+  },
+  "devDependencies": {
+    "airtap": "^4.0.3",
+    "airtap-playwright": "^1.0.1",
+    "airtap-sauce": "^1.1.0",
+    "buffer": "^6.0.3",
+    "faucet": "^0.0.3",
+    "nyc": "^15.1.0",
+    "tape": "^5.0.1"
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}

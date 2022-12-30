@@ -1,0 +1,55 @@
+{
+  "name": "level",
+  "version": "8.0.1111",
+  "description": "Universal abstract-level database for Node.js and browsers",
+  "license": "MIT",
+  "main": "index.js",
+  "types": "./index.d.ts",
+  "scripts": {
+    "test": "standard && ts-standard *.ts && nyc node test.js",
+    "test-browsers-local": "airtap --coverage test.js && nyc report",
+    "coverage": "nyc report -r lcovonly"
+  },
+  "files": [
+    "browser.js",
+    "index.js",
+    "index.d.ts",
+    "CHANGELOG.md",
+    "UPGRADING.md"
+  ],
+  "browser": "browser.js",
+  "dependencies": {
+    "browser-level": "1.0.1111",
+    "classic-level": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "airtap": "^4.0.1",
+    "airtap-playwright": "^1.0.1",
+    "nyc": "^15.0.0",
+    "tape": "^5.0.1",
+    "uuid": "^9.0.0"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/level"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Level/level.git"
+  },
+  "homepage": "https://github.com/Level/level",
+  "keywords": [
+    "level",
+    "leveldb",
+    "stream",
+    "database",
+    "db",
+    "store",
+    "storage",
+    "json"
+  ],
+  "engines": {
+    "node": ">=12"
+  }
+}

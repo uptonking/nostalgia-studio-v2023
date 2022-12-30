@@ -13,7 +13,7 @@ import * as schemas from './schemas';
 import type {
   CreateIndexOptions,
   DatastoreDefaultsOptions,
-} from './types/datastore';
+} from './types/common';
 import { Bagpipe } from './utils/bagpipe';
 import { EventEmitter } from './utils/event-emitter';
 import { once } from './utils/utils';
@@ -41,7 +41,7 @@ export class Model extends EventEmitter {
   schema: any;
   /** prefer `filename` to `dbPath` */
   filename: string;
-  /** Datastore id */
+  /** @deprecated id */
   _id: string;
   /** oneDoc object, for testing only */
   _rawDoc: any;
@@ -59,7 +59,7 @@ export class Model extends EventEmitter {
    * - LevelUP type
    * @internal
    */
-  public store: Record<string, any>;
+  public store: any;
 
   /** default config for all documents, config `store.db` before constructor */
   static defaults: DatastoreDefaultsOptions = {
@@ -73,7 +73,7 @@ export class Model extends EventEmitter {
   static dbPath: string;
   static Cursor = Cursor;
 
-  /** create a document-store, like a mongodb collection
+  /** create a document-storage, like a mongodb collection
    * - create all indexes from schema in constructor
    * @param name model name
    */

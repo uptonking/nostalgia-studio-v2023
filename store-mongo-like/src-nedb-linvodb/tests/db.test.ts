@@ -521,9 +521,9 @@ describe('Datastore/Model like mongodb collection', function () {
       d.options.autoIndexing.should.equal(true);
 
       d.insert({ tf: 4, r: 6 }, (err, _doc1) => {
-        getCandidates({ r: 6 }, null, (data) => { });
+        getCandidates({ r: 6 }, null, (data) => {});
         setTimeout(() => {
-          getCandidates({ tf: 4 }, null, (data) => { });
+          getCandidates({ tf: 4 }, null, (data) => {});
         }, 5);
 
         d.once('indexesReady', (indexes) => {
@@ -583,10 +583,9 @@ describe('Datastore/Model like mongodb collection', function () {
         d.insert([{ tf: 6 }, { tf: 4, an: 'dont match us' }], () => {
           d.insert({ tf: 4, an: 'other', r: 6 }, (err, _doc2) => {
             d.insert({ tf: 9 }, () => {
-
               // console.log(';; insert-cb ', _doc1, _doc2)
-              getCandidates({ r: 6, tf: 4 }, null, data => {
-                console.log(';; find-cb ', data)
+              getCandidates({ r: 6, tf: 4 }, null, (data) => {
+                console.log(';; find-cb ', data);
 
                 const doc1 = _.find(data, (d: any) => {
                   return d._id === _doc1._id;
@@ -918,7 +917,7 @@ describe('Datastore/Model like mongodb collection', function () {
           { b: 2 }, // to check if we still match on a (a: { $exists: true } )
         ],
         () => {
-          getCandidates({}, { a: 1 }, data => {
+          getCandidates({}, { a: 1 }, (data) => {
             data.length.should.equal(8);
             assert.deepEqual(_.pluck(data, 'a'), [
               undefined,
@@ -2296,19 +2295,15 @@ describe('Datastore/Model like mongodb collection', function () {
               //   (index: any, cb) => {
               const index = d.indexes['_id'];
               const docs = index.getAll();
-              async.map(
-                docs,
-                d.findById.bind(d),
-                (err, docs: any[]) => {
-                  const d1 = docs.find((doc: any) => doc._id === doc1._id);
-                  const d2 = docs.find((doc: any) => doc._id === doc2._id);
+              async.map(docs, d.findById.bind(d), (err, docs: any[]) => {
+                const d1 = docs.find((doc: any) => doc._id === doc1._id);
+                const d2 = docs.find((doc: any) => doc._id === doc2._id);
 
-                  // All changes rolled back, including those that didn't trigger an error
-                  d1.a.should.equal(4);
-                  d2.a.should.equal(5);
-                  done();
-                },
-              );
+                // All changes rolled back, including those that didn't trigger an error
+                d1.a.should.equal(4);
+                d2.a.should.equal(5);
+                done();
+              });
               //   },
               //   done,
               // );
@@ -3111,61 +3106,56 @@ describe('Datastore/Model like mongodb collection', function () {
 
         d.insert({ a: 1, b: 'hello' }, (err, _doc1) => {
           d.insert({ a: 2, b: 'si' }, (err, _doc2) => {
-            d.update(
-              { a: 1 },
-              { $set: { a: 456, b: 'no' } },
-              {},
-              (err, nr) => {
-                const data = d.getAllData();
-                async.map(data, d.findById.bind(d), function (err, data) {
-                  const doc1 = _.find(data, (doc: any) => {
-                    return doc._id === _doc1._id;
-                  });
-                  const doc2 = _.find(data, (doc: any) => {
-                    return doc._id === _doc2._id;
-                  });
-                  // assert.isUndefined(err); // expected null to equal undefined
-                  nr.should.equal(1);
-
-                  data.length.should.equal(2);
-                  assert.deepEqual(doc1, { a: 456, b: 'no', _id: _doc1._id });
-                  assert.deepEqual(doc2, { a: 2, b: 'si', _id: _doc2._id });
-
-                  d.update(
-                    {},
-                    { $inc: { a: 10 }, $set: { b: 'same' } },
-                    { multi: true },
-                    (err, nr) => {
-                      const data = d.getAllData();
-                      async.map(data, d.findById.bind(d), (err, data) => {
-                        const doc1 = _.find(data, (doc: any) => {
-                          return doc._id === _doc1._id;
-                        });
-                        const doc2 = _.find(data, (doc: any) => {
-                          return doc._id === _doc2._id;
-                        });
-                        // assert.isUndefined(err); // expected null to equal undefined
-                        nr.should.equal(2);
-
-                        data.length.should.equal(2);
-                        assert.deepEqual(doc1, {
-                          a: 466,
-                          b: 'same',
-                          _id: _doc1._id,
-                        });
-                        assert.deepEqual(doc2, {
-                          a: 12,
-                          b: 'same',
-                          _id: _doc2._id,
-                        });
-
-                        done();
-                      });
-                    },
-                  );
+            d.update({ a: 1 }, { $set: { a: 456, b: 'no' } }, {}, (err, nr) => {
+              const data = d.getAllData();
+              async.map(data, d.findById.bind(d), function (err, data) {
+                const doc1 = _.find(data, (doc: any) => {
+                  return doc._id === _doc1._id;
                 });
-              },
-            );
+                const doc2 = _.find(data, (doc: any) => {
+                  return doc._id === _doc2._id;
+                });
+                // assert.isUndefined(err); // expected null to equal undefined
+                nr.should.equal(1);
+
+                data.length.should.equal(2);
+                assert.deepEqual(doc1, { a: 456, b: 'no', _id: _doc1._id });
+                assert.deepEqual(doc2, { a: 2, b: 'si', _id: _doc2._id });
+
+                d.update(
+                  {},
+                  { $inc: { a: 10 }, $set: { b: 'same' } },
+                  { multi: true },
+                  (err, nr) => {
+                    const data = d.getAllData();
+                    async.map(data, d.findById.bind(d), (err, data) => {
+                      const doc1 = _.find(data, (doc: any) => {
+                        return doc._id === _doc1._id;
+                      });
+                      const doc2 = _.find(data, (doc: any) => {
+                        return doc._id === _doc2._id;
+                      });
+                      // assert.isUndefined(err); // expected null to equal undefined
+                      nr.should.equal(2);
+
+                      data.length.should.equal(2);
+                      assert.deepEqual(doc1, {
+                        a: 466,
+                        b: 'same',
+                        _id: _doc1._id,
+                      });
+                      assert.deepEqual(doc2, {
+                        a: 12,
+                        b: 'same',
+                        _id: _doc2._id,
+                      });
+
+                      done();
+                    });
+                  },
+                );
+              });
+            });
           });
         });
       });

@@ -519,8 +519,8 @@ Object.keys(lastStepModifierFunctions).forEach((modifier) => {
  */
 export function modify(obj, updateQuery) {
   const keys = Object.keys(updateQuery);
-  const firstChars = keys.map(key => key[0]);
-  const dollarFirstChars = firstChars.filter(c => c === '$')
+  const firstChars = keys.map((key) => key[0]);
+  const dollarFirstChars = firstChars.filter((c) => c === '$');
   let newDoc;
   let modifiers;
 
@@ -552,8 +552,11 @@ export function modify(obj, updateQuery) {
 
       try {
         const queryModifier = updateQuery[m];
-        if (queryModifier == null || ['string', 'number', 'boolean'].includes(typeof queryModifier)) {
-          throw new Error('Modifier ' + m + "'s argument must be an object")
+        if (
+          queryModifier == null ||
+          ['string', 'number', 'boolean'].includes(typeof queryModifier)
+        ) {
+          throw new Error('Modifier ' + m + "'s argument must be an object");
         }
         keys = Object.keys(queryModifier);
       } catch (e) {
@@ -948,8 +951,8 @@ function matchQueryPart(
     !(queryValue instanceof RegExp)
   ) {
     keys = Object.keys(queryValue);
-    firstChars = keys.map(key => key[0]);
-    dollarFirstChars = firstChars.filter(c => c === '$')
+    firstChars = keys.map((key) => key[0]);
+    dollarFirstChars = firstChars.filter((c) => c === '$');
 
     if (
       dollarFirstChars.length !== 0 &&

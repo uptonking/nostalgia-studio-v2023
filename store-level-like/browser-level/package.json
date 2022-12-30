@@ -1,0 +1,52 @@
+{
+  "name": "browser-level",
+  "version": "1.0.1111",
+  "description": "An abstract-level database for browsers, backed by IndexedDB",
+  "keywords": [
+    "level",
+    "leveldb",
+    "indexeddb",
+    "abstract-level"
+  ],
+  "homepage": "https://github.com/Level/browser-level",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Level/browser-level.git"
+  },
+  "license": "MIT",
+  "author": "max ogden",
+  "type": "module",
+  "main": "index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "iterator.js",
+    "util",
+    "CHANGELOG.md",
+    "UPGRADING.md",
+    "sauce-labs.svg"
+  ],
+  "scripts": {
+    "coverage": "nyc report -r lcovonly",
+    "dependency-check": "dependency-check --no-dev .",
+    "prepublishOnly": "npm run dependency-check",
+    "test": "standard && hallmark && airtap -p local --coverage test/index.js && nyc report",
+    "test-browsers": "standard && airtap --coverage test/index.js"
+  },
+  "dependencies": {
+    "abstract-level": "1.0.3111",
+    "catering": "^2.1.1",
+    "module-error": "^1.0.2",
+    "run-parallel-limit": "^1.1.0"
+  },
+  "devDependencies": {
+    "airtap": "^4.0.4",
+    "airtap-playwright": "^1.0.1",
+    "airtap-sauce": "^1.1.0",
+    "dependency-check": "^4.1.0",
+    "nyc": "^15.0.0",
+    "tape": "^5.5.2",
+    "uuid": "^3.3.2"
+  }
+}

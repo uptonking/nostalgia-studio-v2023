@@ -194,7 +194,7 @@ export class Index {
     let key;
 
     if (Array.isArray(doc)) {
-      doc.forEach(d => {
+      doc.forEach((d) => {
         this.remove(d);
       });
       return;
@@ -209,7 +209,7 @@ export class Index {
     if (!Array.isArray(key)) {
       this.tree.delete(key, doc._id);
     } else {
-      _.uniq(key, false, projectForUnique).forEach(_key => {
+      _.uniq(key, false, projectForUnique).forEach((_key) => {
         this.tree.delete(_key, doc._id);
       });
     }

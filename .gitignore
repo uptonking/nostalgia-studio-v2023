@@ -19,7 +19,6 @@ tomcat.**
 *.log
 
 dist/
-# lib/
 
 
 # hidden files
@@ -32,9 +31,11 @@ repos-caches/
 
 # temp/test files
 collab-ot-crdt/crdt-stories/crdt-example-app-hlc-jlongster/db.sqlite
+tests/testdata/
 store-mongo-like/src-nedb/tests/testdata/
 store-mongo-like/src-nedb-linvodb/tests/testdata
 store-mongo-like/src-nedb-linvodb-node/tests/testdata
+store-level-like/app-stories-level-nodejs/tests/testdata
 
 # below Created by https://www.gitignore.io/api/node
 
@@ -72,6 +73,12 @@ bower_components
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
+build/
+build-pre-gyp/
+Release/
+deps/*/Debug/
+libleveldb.so
+libleveldb.a
 
 # Dependency directories
 node_modules/
@@ -100,7 +107,5 @@ typings/
 
 
 # End of https://www.gitignore.io/api/node
-
-lib/
 
 *.tsbuildinfo

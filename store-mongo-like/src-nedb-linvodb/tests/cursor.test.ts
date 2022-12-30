@@ -1301,15 +1301,15 @@ describe('Cursor', function () {
 
       const modifiers = [
         () => {
-          d.remove({ name: 'Jim' }, {}, () => { });
+          d.remove({ name: 'Jim' }, {}, () => {});
         },
         () => {
-          d.save({ name: 'Stanley', age: 58, department: 'sales' }, () => { });
+          d.save({ name: 'Stanley', age: 58, department: 'sales' }, () => {});
         },
         () => {
-          d.update({ name: 'Phyllis' }, { $inc: { age: 1 } }, {}, () => { });
+          d.update({ name: 'Phyllis' }, { $inc: { age: 1 } }, {}, () => {});
         },
-        () => { },
+        () => {},
       ];
 
       const liveq = d.find({ department: 'sales' }).sort({ name: 1 }).live();

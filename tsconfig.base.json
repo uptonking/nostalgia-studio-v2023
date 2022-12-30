@@ -73,8 +73,19 @@
       "y-indexeddb": ["collab-yjs/src-pkgs/y-indexeddb"],
       "y-prosemirror": ["collab-yjs/src-pkgs/y-indexeddb"],
       "nedb-base": ["store-mongo-like/src-nedb/src/"],
-      "linvodb": ["store-mongo-like/src-linvodb/src/"],
-      "minimongo": ["store-mongo-like/src-minimongo/src/"]
+      "linvodb": ["store-mongo-like/src-nedb-linvodb/src/"],
+      "minimongo": ["store-mongo-like/src-minimongo/src/"],
+      "abstract-level": ["store-level-like/abstract-level/"],
+      "classic-level": ["store-level-like/classic-level/"],
+      "browser-level": ["store-level-like/browser-level/"],
+      "memory-level": ["store-level-like/memory-level/"],
+      "many-level": ["store-level-like/many-level/"],
+      "level-transcoder": ["store-level-like/level-transcoder/"],
+      "level-read-stream": ["store-level-like/level-read-stream/"],
+      "level-web-stream": ["store-level-like/level-web-stream/"],
+      "functional-red-black-tree": [
+        "store-level-like/functional-red-black-tree/"
+      ]
     }
   },
   "files": ["typings.d.ts"]

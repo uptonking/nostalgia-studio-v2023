@@ -43,7 +43,7 @@ describe('Database', function () {
           });
         },
         function (cb) {
-          d.loadDatabase(err => {
+          d.loadDatabase((err) => {
             assert.isNull(err);
             d.getAllData().length.should.equal(0);
             return cb();
@@ -106,11 +106,11 @@ describe('Database', function () {
 
       fs.writeFileSync(autoDb, fileStr, 'utf8');
 
-        // Check the loadDatabase generated an error
-      const onload = err => {
+      // Check the loadDatabase generated an error
+      const onload = (err) => {
         err.errorType.should.equal('uniqueViolated');
         done();
-        };
+      };
 
       const db = new Datastore({
         filename: autoDb,

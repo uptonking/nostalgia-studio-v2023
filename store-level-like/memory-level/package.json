@@ -3,17 +3,12 @@
   "version": "1.0.1111",
   "description": "In-memory abstract-level database for Node.js and browsers",
   "keywords": [
-    "level",
     "leveldb",
     "leveldown",
     "levelup",
     "memory"
   ],
   "homepage": "https://github.com/Level/memory-level",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Level/memory-level.git"
-  },
   "license": "MIT",
   "author": "Rod Vagg <rod@vagg.org> (https://github.com/rvagg)",
   "type": "module",

@@ -17,7 +17,7 @@ import {
   DeferredKeyIterator,
   DeferredValueIterator,
 } from './lib/deferred-iterator';
-import nextTick from './lib/next-tick';
+import nextTickFn from './lib/next-tick';
 import rangeOptions from './lib/range-options';
 
 const kPromise = Symbol('promise');
@@ -33,10 +33,9 @@ const kDefaultOptions = Symbol('defaultOptions');
 const kTranscoder = Symbol('transcoder');
 const kKeyEncoding = Symbol('keyEncoding');
 const kValueEncoding = Symbol('valueEncoding');
-const noop = () => {};
+const noop = () => { };
 
 export class AbstractLevel extends EventEmitter {
-  nextTick = nextTick;
 
   constructor(manifest, options) {
     super();
@@ -117,6 +116,11 @@ export class AbstractLevel extends EventEmitter {
 
   get status() {
     return this[kStatus];
+  }
+
+  // nextTick = nextTickFn;
+  nextTick(callback, ...args) {
+    nextTickFn(callback, ...args)
   }
 
   keyEncoding(encoding) {
@@ -718,6 +722,7 @@ export class AbstractLevel extends EventEmitter {
     this.nextTick(callback);
   }
 
+  /** `return this._iterator(options)` */
   iterator(options) {
     const keyEncoding = this.keyEncoding(options && options.keyEncoding);
     const valueEncoding = this.valueEncoding(options && options.valueEncoding);

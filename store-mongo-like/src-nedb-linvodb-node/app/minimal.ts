@@ -6,17 +6,18 @@ import LinvoDB from '../src';
 // Set dbPath - this should be done explicitly and will be the dir where each model's store is saved
 LinvoDB.dbPath = process.cwd();
 
-var Doc = new LinvoDB("doc", { /* schema, can be empty */ })
+var Doc = new LinvoDB('doc', {
+  /* schema, can be empty */
+});
 
 var d = new Doc();
 
-d.name = "test";
+d.name = 'test';
 d.saved = new Date();
 
 d.save(function () {
-  console.log("saved document with _id: " + d._id);
+  console.log('saved document with _id: ' + d._id);
   Doc.count({}, function (err, n) {
-    console.log("document count " + n)
+    console.log('document count ' + n);
   });
 });
-

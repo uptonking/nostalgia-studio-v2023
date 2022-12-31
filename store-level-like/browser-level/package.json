@@ -9,10 +9,6 @@
     "abstract-level"
   ],
   "homepage": "https://github.com/Level/browser-level",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Level/browser-level.git"
-  },
   "license": "MIT",
   "author": "max ogden",
   "type": "module",

@@ -104,7 +104,7 @@ export class Index {
 
   /**
    * Insert a new document in the index
-   * If an array is passed, we insert all its elements (if one insertion fails the index is not modified)
+   * - If an array is passed, we insert all its elements (if one insertion fails the index is not modified)
    * O(log(n))
    */
   insert(doc) {

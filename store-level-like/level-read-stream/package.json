@@ -2,15 +2,16 @@
   "name": "level-read-stream",
   "version": "1.1.1111",
   "description": "Read from an abstract-level database using Node.js streams",
+  "keywords": [
+    "level",
+    "stream",
+    "abstract-level"
+  ],
+  "homepage": "https://github.com/Level/read-stream",
+  "repository": "Level/read-stream",
   "license": "MIT",
-  "scripts": {
-    "test": "standard --fix && ts-standard *.ts && hallmark && (nyc -s node test.js | faucet) && nyc report",
-    "test-browsers-local": "airtap --coverage test.js",
-    "coverage": "nyc report -r lcovonly",
-    "hallmark": "hallmark fix"
-  },
-  "main": "index.js",
   "type": "module",
+  "main": "index.js",
   "types": "./index.d.ts",
   "files": [
     "index.js",
@@ -18,15 +19,15 @@
     "CHANGELOG.md",
     "UPGRADING.md"
   ],
-  "dependencies": {
-    "readable-stream": "^3.4.0",
-    "abstract-level": "1.0.3111"
+  "scripts": {
+    "coverage": "nyc report -r lcovonly",
+    "hallmark": "hallmark fix",
+    "test": "standard --fix && ts-standard *.ts && hallmark && (nyc -s node test.js | faucet) && nyc report",
+    "test-browsers-local": "airtap --coverage test.js"
   },
-  "peerDependencies": {},
-  "peerDependenciesMeta": {
-    "abstract-level": {
-      "optional": true
-    }
+  "dependencies": {
+    "abstract-level": "1.0.3111",
+    "readable-stream": "^3.4.0"
   },
   "devDependencies": {
     "@types/readable-stream": "^2.3.13",
@@ -38,13 +39,12 @@
     "secret-event-listener": "^1.0.0",
     "tape": "^5.0.1"
   },
-  "repository": "Level/read-stream",
-  "homepage": "https://github.com/Level/read-stream",
-  "keywords": [
-    "level",
-    "stream",
-    "abstract-level"
-  ],
+  "peerDependencies": {},
+  "peerDependenciesMeta": {
+    "abstract-level": {
+      "optional": true
+    }
+  },
   "engines": {
     "node": ">=12"
   }

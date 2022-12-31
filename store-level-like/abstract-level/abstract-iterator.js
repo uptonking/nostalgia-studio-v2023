@@ -25,7 +25,7 @@ const kLimit = Symbol('limit');
 const kCount = Symbol('count');
 
 const emptyOptions = Object.freeze({});
-const noop = () => {};
+const noop = () => { };
 let warnedEnd = false;
 
 // This class is an internal utility for common functionality between AbstractIterator,
@@ -387,7 +387,7 @@ class CommonIterator {
   }
 }
 
-// For backwards compatibility this class is not (yet) called AbstractEntryIterator.
+/** For backwards compatibility this class is not (yet) called AbstractEntryIterator. */
 export class AbstractIterator extends CommonIterator {
   constructor(db, options) {
     super(db, options, true);

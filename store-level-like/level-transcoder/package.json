@@ -8,8 +8,8 @@
   "homepage": "https://github.com/Level/transcoder",
   "repository": "Level/transcoder",
   "license": "MIT",
-  "main": "index.js",
   "type": "module",
+  "main": "index.js",
   "types": "./index.d.ts",
   "files": [
     "lib",

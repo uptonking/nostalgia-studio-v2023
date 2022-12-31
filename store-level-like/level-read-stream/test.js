@@ -361,6 +361,7 @@ function monitor(stream, onClose) {
       original.apply(this, arguments);
     };
   });
+
   ['data', 'end', 'error', 'close'].forEach(function (event) {
     // Add listener without side effects (like triggering flowing mode)
     addSecretListener(stream, event, function (err) {

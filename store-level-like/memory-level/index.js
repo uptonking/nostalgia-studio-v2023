@@ -53,6 +53,8 @@ function lte(value) {
   return compare(value, this[kUpperBound]) <= 0;
 }
 
+/**
+ */
 class MemoryIterator extends AbstractIterator {
   constructor(db, options) {
     super(db, options);
@@ -263,6 +265,9 @@ for (const Ctor of [MemoryIterator, MemoryKeyIterator, MemoryValueIterator]) {
   };
 }
 
+/**
+ *
+ */
 export class MemoryLevel extends AbstractLevel {
   constructor(location, options, _) {
     // Take a dummy location argument to align with other implementations

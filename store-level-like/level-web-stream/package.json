@@ -14,7 +14,7 @@
   "type": "module",
   "main": "index.js",
   "browser": {
-    "./streams.js": "streams-browser.js"
+    "./streams.js": "./streams-browser.js"
   },
   "types": "./index.d.ts",
   "files": [

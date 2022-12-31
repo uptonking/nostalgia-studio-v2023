@@ -172,6 +172,8 @@ Model.prototype.buildIndexes = function (cb) {
       cb(err);
     })
     .on('data', function (data) {
+      console.log(';; buildIdx-data ', typeof data.value, data);
+
       const doc = schemas.construct(
         document.deserialize(data.value),
         self.schema,

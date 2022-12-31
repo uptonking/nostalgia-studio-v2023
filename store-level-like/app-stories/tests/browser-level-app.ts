@@ -1,22 +1,28 @@
 import { BrowserLevel } from 'browser-level';
+import { EntryStream } from 'level-web-stream';
+import { MemoryLevel } from 'memory-level';
 
 (async () => {
   // An abstract-level database for browsers, backed by IndexedDB. The successor to level-js
   const db = new BrowserLevel<string, any>('lv/web', { valueEncoding: 'json' })
+  // const db = new MemoryLevel();
 
-  // Add an entry with key 'a' and value 1
-  await db.put('a', 111)
+  // Write sample data
+  await db.put('a', 'a1');
+  await db.put('b', 'a2');
+  await db.put('c', 'a3');
 
-  // Add multiple entries
-  await db.batch([{ type: 'put', key: 'b', value: 222 }])
+  // Create a ReadableStream
+  const src = new EntryStream(db, {
+    gte: 'a',
+  });
 
-  // Get value of key 'a': 1
-  const value = await db.get('a')
+  // Pipe to a stream of choice
+  const dst = new WritableStream({
+    write([key, value]) {
+      console.log(';; kv ', '%s: %s', key, value);
+    },
+  });
 
-  // Iterate entries with keys that are greater than 'a'
-  for await (const [key, value] of db.iterator({ gt: 'a' })) {
-    console.log(';; kv ', key, value) // 2
-  }
-
+  await src.pipeTo(dst);
 })();
-

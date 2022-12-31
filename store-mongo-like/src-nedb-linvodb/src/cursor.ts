@@ -425,7 +425,7 @@ export class Cursor {
     );
 
     // Stream the documents themselves: push all to the retriever queue
-    // 👈🏻 onEvent ids; fired from buildIndexes cb
+    // 👈🏻 onEvent ids; fired from build Indexes cb
     stream.on(
       'ids',
       (stream.trigger = (ids) => {

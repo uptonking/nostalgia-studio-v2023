@@ -26,7 +26,7 @@ describe('Datastore/Model like mongodb collection', function () {
           rimraf(testDb, cb);
         },
         function (cb) {
-          Model.dbPath = testDb;
+          // Model.dbPath = testDb;
           d = new Model('testDbDoc', { filename: testDb });
 
           d.filename.should.equal(testDb);

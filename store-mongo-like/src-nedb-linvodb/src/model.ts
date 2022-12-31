@@ -1,9 +1,9 @@
+import type { AbstractLevel } from 'abstract-level';
 import async from 'async';
-import encode from 'encoding-down';
 import hat from 'hat';
-import leveldown from 'leveldown';
-import levelup from 'levelup';
+import { EntryStream } from 'level-read-stream';
 import _ from 'lodash';
+import { MemoryLevel } from 'memory-level';
 import path from 'path';
 
 import { Cursor } from './cursor';
@@ -25,21 +25,14 @@ globalThis['stores'] = stores;
 /** We'll use that on a bagpipe instance regulating findById */
 const LEVELUP_RE_TR_CONCURRENCY = 100;
 
-// eslint-disable-next-line prefer-const
-// let leveldown: any = null;
-// try {
-//   (async () => {
-//     // leveldown = import('leveldown')
-//     leveldown = await import('leveldown');
-//     // leveldown = await (await import('leveldown')).default('')
-//     console.log(';; leveldown ', leveldown, leveldown.default());
-//   })();
-// } catch (error) { }
-
+/**
+ *
+ */
 export class Model extends EventEmitter {
+  /** currently not used */
   modelName: string;
   schema: any;
-  /** prefer `filename` to `dbPath` */
+  /** use `filename` instead of deprecated `dbPath` */
   filename: string;
   /** @deprecated id */
   _id: string;
@@ -56,10 +49,10 @@ export class Model extends EventEmitter {
   /** LEVELUP_RE_TR_CONCURRENCY */
   _reTrQueue: Bagpipe;
   /**  swappable persistence backend; use `static defaults.store` to customize
-   * - LevelUP type
+   * - AbstractLevel type
    * @internal
    */
-  public store: any;
+  public store: AbstractLevel<string, any>;
 
   /** default config for all documents, config `store.db` before constructor */
   static defaults: DatastoreDefaultsOptions = {
@@ -67,8 +60,10 @@ export class Model extends EventEmitter {
     autoLoad: true,
     store: { db: null },
   };
-  /** the dir where each model's store is saved
-   * todo convert to instance prop
+  /**
+   * @deprecated
+   * - the dir where each model's store is saved
+   * - use `filename` instead of deprecated `dbPath`
    * */
   static dbPath: string;
   static Cursor = Cursor;
@@ -77,7 +72,7 @@ export class Model extends EventEmitter {
    * - create all indexes from schema in constructor
    * @param name model name
    */
-  constructor(name: string, options: any = {}, schema = undefined) {
+  constructor(name: string, options: any = {}, schema?: Record<string, any>) {
     super();
     // this.setMaxListeners(0);
 
@@ -122,24 +117,21 @@ export class Model extends EventEmitter {
    */
   initStore() {
     const filename = this.filename;
-    // console.log(';; init-filename ', filename);
     if (!filename) return this._pipe.pause();
 
     // LevelUP; the safety we have here to re-use instance is right now only because of the tests
     this.store = stores[path.resolve(filename)];
 
     const storeOptions = this.options.store || {};
-    // console.log(';; init-options ', options, leveldown);
-    const db = storeOptions.db || leveldown;
-    // console.log(
-    //   ';; init-db ',
-    //   db,
-    //   this.store,
-    // );
+    // console.log(';; init-options ', storeOptions);
+    const LevelLikeDbCtor = storeOptions.db || MemoryLevel;
+    // console.log(';; init-db ', this.store);
     this.store = stores[path.resolve(filename)] =
-      this.store && this.store.isOpen()
+      // this.store && this.store.isOpen()
+      this.store && this.store.status === 'open'
         ? this.store
-        : levelup(encode(db(filename), storeOptions), storeOptions);
+        : // : levelup(encode(db(filename), storeOptions), storeOptions);
+        new LevelLikeDbCtor(filename, { valueEncoding: 'utf8' });
     this._pipe.resume();
   }
 
@@ -191,12 +183,24 @@ export class Model extends EventEmitter {
 
     this.emit('indexesBuild', toBuild); // no onEvent handler
 
-    this.store
-      .createReadStream()
+    // todo, migrate to level-web-stream without on data/end events
+    const stream = new EntryStream(this.store);
+
+    // this.store
+    //   .createReadStream()
+    stream
       .on('error', (err) => cb(err))
       .on('data', (data) => {
+        // console.log(';; buildIdx-data ', typeof data.value, data);
+        // debugger;
+
+        // todo remove unnecessary serialize work
+        let dataVal = data.value;
+        // if (dataVal && typeof dataVal === 'object') {
+        // dataVal = JSON.stringify(data.value);
+        // }
         const doc = schemas.construct(
-          docUtils.deserialize(data.value),
+          docUtils.deserialize(dataVal),
           this.schema,
         );
         this.emit('construct', doc);
@@ -205,7 +209,9 @@ export class Model extends EventEmitter {
         toBuild.forEach((idx) => {
           try {
             idx.insert(doc);
-          } catch (e) { }
+          } catch (e) {
+            throw new Error('insert index failed: ' + e);
+          }
         });
       })
       .on('end', () => {
@@ -473,7 +479,7 @@ export class Model extends EventEmitter {
    * - If no callback is passed, we return the cursor so that user can limit, skip and finally exec
    * @param {Object} query MongoDB-style query
    */
-  find(query, callback = undefined, quiet = undefined) {
+  find(query, callback?: (...args: any[]) => any, quiet = undefined) {
     const cursor = new Cursor(this, query, (err, docs, cursorCb) => {
       return cursorCb(err ? err : null, err ? undefined : docs);
     });

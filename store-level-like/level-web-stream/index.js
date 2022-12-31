@@ -12,6 +12,7 @@ const kBatchType = Symbol('batchType');
 const kBatchOptions = Symbol('batchOptions');
 const kDb = Symbol('db');
 
+/** pull/cancel with db iterator */
 class LevelSource {
   constructor(iterator) {
     this[kIterator] = iterator;
@@ -53,6 +54,7 @@ class LevelSource {
   }
 }
 
+/** base class for EntryStream/KyeStream/ValueStream */
 class LevelReadableStream extends ReadableStream {
   constructor(db, method, options) {
     const { highWaterMark, ...rest } = options || {};

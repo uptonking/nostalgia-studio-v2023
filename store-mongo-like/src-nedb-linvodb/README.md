@@ -27,3 +27,16 @@
 ## tests-failed
 
 # more
+
+- deps backup
+
+```
+"levelup": "^5",
+"encoding-down": "^5.0.4",
+"leveldown": "^6",
+"@types/encoding-down": "^5.0.0",
+"@types/levelup": "^5.0.0",
+"level-js": "^2.2.4",
+
+
+```

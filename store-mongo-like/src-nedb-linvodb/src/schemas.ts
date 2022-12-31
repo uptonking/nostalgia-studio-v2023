@@ -1,7 +1,6 @@
 import bson from 'bson';
 import _ from 'lodash';
 
-import type { Model } from './model';
 import type { CreateIndexOptions } from './types/common';
 
 const ObjectId = bson.ObjectID;
@@ -88,7 +87,7 @@ export function normalize(schema) {
 }
 
 /** enhance self by schema info, by `Object.defineProperty` */
-export function construct(self: Model, schema) {
+export function construct(self, schema) {
   // TODO: incorporate _ctime and _mtime here, making them default non-enumerable date props
   // Has some minor increase on time it takes to do DB operations - but we want schema support
 

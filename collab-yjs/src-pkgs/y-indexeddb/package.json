@@ -39,7 +39,6 @@
     "http-server": "^0.12.3",
     "y-protocols": "1.0.5111"
   },
-  "peerDependencies": {},
   "standard": {
     "ignore": [
       "/dist",

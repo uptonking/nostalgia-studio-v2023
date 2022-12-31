@@ -47,8 +47,6 @@
     "y-protocols": "1.0.5111",
     "yjs": "13.5.4111"
   },
-  "devDependencies": {},
-  "peerDependencies": {},
   "optionalDependencies": {
     "ws": "^6.2.1",
     "y-leveldb": "^0.1.0"

@@ -17,6 +17,5 @@
   },
   "dependencies": {
     "ot-text-unicode": "4.0.1111"
-  },
-  "devDependencies": {}
+  }
 }

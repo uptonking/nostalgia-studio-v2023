@@ -27,19 +27,18 @@
   },
   "dependencies": {
     "abstract-level": "1.0.3111",
-    "readable-stream": "^3.4.0"
+    "readable-stream": "^4.0.0"
   },
   "devDependencies": {
     "@types/readable-stream": "^2.3.13",
-    "airtap": "^4.0.3",
+    "airtap": "^4.0.4",
     "airtap-playwright": "^1.0.1",
     "faucet": "^0.0.3",
     "memory-level": "1.0.1111",
     "nyc": "^15.1.0",
     "secret-event-listener": "^1.0.0",
-    "tape": "^5.0.1"
+    "tape": "^5.5.2"
   },
-  "peerDependencies": {},
   "peerDependenciesMeta": {
     "abstract-level": {
       "optional": true

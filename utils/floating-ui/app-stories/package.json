@@ -23,9 +23,8 @@
     "@floating-ui/dom": "0.4.2111",
     "@floating-ui/react-dom": "0.6.1111",
     "@floating-ui/react-dom-interactions": "0.0.1511",
-    "classnames": "^2.3.1",
+    "classnames": "^2.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "devDependencies": {}
+  }
 }

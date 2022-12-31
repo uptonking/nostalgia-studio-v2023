@@ -12,9 +12,6 @@
       "console": "integratedTerminal",
       // "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
       "runtimeArgs": [
-        // "-I",
-        // "--exec",
-        // "node",
         "--experimental-specifier-resolution=node",
         "--loader=ts-node/esm/transpile-only"
       ],
@@ -30,9 +27,6 @@
       "console": "integratedTerminal",
       // "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/nodemon",
       "runtimeArgs": [
-        // "-I",
-        // "--exec",
-        // "node",
         "--experimental-specifier-resolution=node",
         "--loader=ts-node/esm/transpile-only"
       ],

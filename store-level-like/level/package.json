@@ -31,14 +31,14 @@
   },
   "dependencies": {
     "browser-level": "1.0.1111",
-    "classic-level": "^1.2.0"
+    "classic-level": "1.2.1111"
   },
   "devDependencies": {
-    "@types/node": "^18.0.0",
-    "airtap": "^4.0.1",
+    "@types/node": "^18.0.6",
+    "airtap": "^4.0.4",
     "airtap-playwright": "^1.0.1",
-    "nyc": "^15.0.0",
-    "tape": "^5.0.1",
+    "nyc": "^15.1.0",
+    "tape": "^5.5.2",
     "uuid": "^9.0.0"
   },
   "engines": {

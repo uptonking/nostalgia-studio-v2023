@@ -16,6 +16,5 @@
   "dependencies": {
     "@floating-ui/core": "0.6.1111",
     "@floating-ui/dom": "0.4.2111"
-  },
-  "devDependencies": {}
+  }
 }

@@ -14,7 +14,5 @@
     "server": "npm run demo",
     "test": "jest",
     "test:log": "node index.js --name nested-a"
-  },
-  "dependencies": {},
-  "devDependencies": {}
+  }
 }

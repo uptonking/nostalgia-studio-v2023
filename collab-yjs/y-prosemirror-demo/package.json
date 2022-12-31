@@ -18,6 +18,5 @@
     "y-prosemirror": "1.2.1111",
     "y-websocket": "1.4.5111",
     "yjs": "13.5.4111"
-  },
-  "devDependencies": {}
+  }
 }

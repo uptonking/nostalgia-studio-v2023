@@ -27,7 +27,7 @@
   ],
   "dependencies": {
     "@dnd-kit/utilities": "3.1.0111",
-    "tslib": "^2.0.0"
+    "tslib": "^2.4.0"
   },
   "peerDependencies": {
     "@dnd-kit/core": "5.0.3111"

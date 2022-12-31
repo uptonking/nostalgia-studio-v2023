@@ -32,6 +32,5 @@
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "prepare1": "npm run build"
-  },
-  "devDependencies": {}
+  }
 }

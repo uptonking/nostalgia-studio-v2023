@@ -51,7 +51,6 @@
   "devDependencies": {
     "http-server": "^0.12.3"
   },
-  "peerDependencies": {},
   "optionalDependencies": {
     "ws": "^7.2.0"
   },

@@ -51,7 +51,6 @@
     "lib0": "0.2.5211",
     "yjs": "13.5.4111"
   },
-  "devDependencies": {},
   "standard": {
     "ignore": [
       "/dist",

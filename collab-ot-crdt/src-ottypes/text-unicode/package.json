@@ -17,6 +17,5 @@
   },
   "dependencies": {
     "unicount": "^1.2.0"
-  },
-  "devDependencies": {}
+  }
 }

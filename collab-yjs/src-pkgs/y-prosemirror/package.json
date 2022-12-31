@@ -52,7 +52,6 @@
     "yjs": "13.5.4111",
     "y-protocols": "1.0.5111"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "prosemirror-example-setup": "1.2.1111",
     "prosemirror-schema-basic": "1.2.1111",

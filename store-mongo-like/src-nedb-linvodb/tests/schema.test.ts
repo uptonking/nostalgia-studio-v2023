@@ -261,6 +261,7 @@ describe('Schema', function () {
     //   );
     // });
 
+    // ❓ Error: Database is not open
     it('type validation via regexp', function (done) {
       d = new Model('testDb', {
         filename: testDb,

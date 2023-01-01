@@ -64,7 +64,7 @@ export function normalize(schema) {
         schema[key] = {
           type: 'array',
           schema: mapSpec(spec.type[0]) || undefined,
-          ..._.pick(spec, (specValue, specKey) => {
+          ..._.pickBy(spec, (specValue, specKey) => {
             return (
               specKey !== 'type' && specAllowedKeys.indexOf(specKey) !== -1
             );
@@ -85,6 +85,21 @@ export function normalize(schema) {
 
   return schema;
 }
+
+// function normalize(schema) {
+//   _.each(schema, function (spec, key) {
+//     if (isComplexSpec(spec)) {
+//       spec.type = mapSpec(spec.type);
+//       return;
+//     } else if (util.isArray(spec))
+//       schema[key] = { schema: mapSpec(spec[0]) || undefined, type: 'array' };
+//     else if (typeof spec == 'object')
+//       schema[key] = { schema: normalize(spec), type: 'object' };
+//     else schema[key] = { type: mapSpec(spec) };
+//   });
+
+//   return schema;
+// }
 
 /** enhance self by schema info, by `Object.defineProperty` */
 export function construct(self, schema) {

@@ -132,7 +132,7 @@ export class Index {
       this.tree.insert(key, doc._id);
     } else {
       // If an insert fails due to a unique constraint, roll back all inserts before it
-      keys = _.uniq(key, false, projectForUnique);
+      keys = _.uniqBy(key, projectForUnique);
 
       for (i = 0; i < keys.length; i += 1) {
         try {
@@ -209,7 +209,7 @@ export class Index {
     if (!Array.isArray(key)) {
       this.tree.delete(key, doc._id);
     } else {
-      _.uniq(key, false, projectForUnique).forEach((_key) => {
+      _.uniqBy(key, projectForUnique).forEach((_key) => {
         this.tree.delete(_key, doc._id);
       });
     }

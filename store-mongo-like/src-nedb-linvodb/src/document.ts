@@ -5,7 +5,7 @@
  * * Use sift, which implements mongodb query language, to scan documents instead of current code.
  */
 
-import _ from 'lodash';
+import { has } from './utils/utils';
 
 const modifierFunctions = {} as any;
 const lastStepModifierFunctions = {} as any;
@@ -481,7 +481,7 @@ lastStepModifierFunctions.$inc = function (obj, field, value) {
   }
 
   if (typeof obj[field] !== 'number') {
-    if (!_.has(obj, field)) {
+    if (!has(obj, field)) {
       obj[field] = value;
     } else {
       throw "Don't use the $inc modifier on non-number fields";
@@ -541,7 +541,8 @@ export function modify(obj, updateQuery) {
     newDoc._id = obj._id;
   } else {
     // Apply modifiers
-    modifiers = _.uniq(keys);
+    // modifiers = _.uniq(keys);
+    modifiers = [...new Set(keys)];
     newDoc = deepCopy(obj);
     modifiers.forEach((m) => {
       let keys;

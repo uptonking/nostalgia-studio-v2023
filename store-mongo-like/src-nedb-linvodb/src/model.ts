@@ -2,7 +2,6 @@ import type { AbstractLevel } from 'abstract-level';
 import async from 'async';
 import hat from 'hat';
 import { EntryStream } from 'level-read-stream';
-import _ from 'lodash';
 import { MemoryLevel } from 'memory-level';
 import path from 'path';
 
@@ -826,7 +825,7 @@ export class Model extends EventEmitter {
     return docUtils.serialize(this);
   }
 
-  /** persist all docs to levelup(idb/nodejs) */
+  /** persist all docs to level-like-db(idb/nodejs) */
   _persist(doc, cb: (...args: any[]) => any, quiet = undefined) {
     if (!quiet) this.emit('save', doc); // no save-event handler
     // level-up storage

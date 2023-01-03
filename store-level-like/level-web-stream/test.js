@@ -1,4 +1,3 @@
-
 const test = require('tape');
 const { MemoryLevel } = require('memory-level');
 const { ReadableStream, WritableStream } = require('./streams');

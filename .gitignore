@@ -36,6 +36,8 @@ store-mongo-like/src-nedb/tests/testdata/
 store-mongo-like/src-nedb-linvodb/tests/testdata
 store-mongo-like/src-nedb-linvodb-node/tests/testdata
 store-level-like/app-stories-level-nodejs/tests/testdata
+store-text-search/src-search-fergies-inverted-index/tests/sandbox
+store-text-search/src-search-index/tests/sandbox
 
 # below Created by https://www.gitignore.io/api/node
 

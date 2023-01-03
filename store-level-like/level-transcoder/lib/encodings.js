@@ -21,8 +21,8 @@ export const utf8 = new UTF8Format({
     return BufferWithFallback.isBuffer(data)
       ? data.toString('utf8')
       : ArrayBuffer.isView(data)
-        ? textDecoder.decode(data)
-        : String(data);
+      ? textDecoder.decode(data)
+      : String(data);
   },
   decode: identity,
   name: 'utf8',
@@ -43,8 +43,12 @@ export const utf8 = new UTF8Format({
         return BufferWithFallback.isBuffer(data)
           ? data
           : ArrayBuffer.isView(data)
-            ? BufferWithFallback.from(data.buffer, data.byteOffset, data.byteLength)
-            : BufferWithFallback.from(String(data), 'utf8');
+          ? BufferWithFallback.from(
+              data.buffer,
+              data.byteOffset,
+              data.byteLength,
+            )
+          : BufferWithFallback.from(String(data), 'utf8');
       },
       decode: function (data) {
         return data.toString('utf8');
@@ -71,8 +75,8 @@ export const buffer = new BufferFormat({
     return BufferWithFallback.isBuffer(data)
       ? data
       : ArrayBuffer.isView(data)
-        ? BufferWithFallback.from(data.buffer, data.byteOffset, data.byteLength)
-        : BufferWithFallback.from(String(data), 'utf8');
+      ? BufferWithFallback.from(data.buffer, data.byteOffset, data.byteLength)
+      : BufferWithFallback.from(String(data), 'utf8');
   },
   decode: identity,
   name: 'buffer',
@@ -84,7 +88,11 @@ export const buffer = new BufferFormat({
           : BufferWithFallback.from(String(data), 'utf8');
       },
       decode: function (data) {
-        return BufferWithFallback.from(data.buffer, data.byteOffset, data.byteLength);
+        return BufferWithFallback.from(
+          data.buffer,
+          data.byteOffset,
+          data.byteLength,
+        );
       },
       name: `${this.name}+view`,
     });
@@ -106,8 +114,12 @@ export const view = new ViewFormat({
         return BufferWithFallback.isBuffer(data)
           ? data
           : ArrayBuffer.isView(data)
-            ? BufferWithFallback.from(data.buffer, data.byteOffset, data.byteLength)
-            : BufferWithFallback.from(String(data), 'utf8');
+          ? BufferWithFallback.from(
+              data.buffer,
+              data.byteOffset,
+              data.byteLength,
+            )
+          : BufferWithFallback.from(String(data), 'utf8');
       },
       decode: identity,
       name: `${this.name}+buffer`,
@@ -120,7 +132,9 @@ export const view = new ViewFormat({
  */
 export const hex = new BufferFormat({
   encode: function (data) {
-    return BufferWithFallback.isBuffer(data) ? data : BufferWithFallback.from(String(data), 'hex');
+    return BufferWithFallback.isBuffer(data)
+      ? data
+      : BufferWithFallback.from(String(data), 'hex');
   },
   decode: function (buffer) {
     return buffer.toString('hex');
@@ -133,7 +147,9 @@ export const hex = new BufferFormat({
  */
 export const base64 = new BufferFormat({
   encode: function (data) {
-    return BufferWithFallback.isBuffer(data) ? data : BufferWithFallback.from(String(data), 'base64');
+    return BufferWithFallback.isBuffer(data)
+      ? data
+      : BufferWithFallback.from(String(data), 'base64');
   },
   decode: function (buffer) {
     return buffer.toString('base64');

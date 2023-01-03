@@ -37,7 +37,7 @@
     "@types/async": "^2.0.0",
     "@types/bson": "^1.0.0",
     "@types/chai": "^4.3.4",
-    "@types/lodash": "^4.14.170",
+    "@types/lodash": "^4.14.191",
     "@types/mocha": "^10.0.1",
     "browser-level": "1.0.1111",
     "chai": "^4.3.7",

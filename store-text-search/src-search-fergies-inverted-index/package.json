@@ -1,0 +1,50 @@
+{
+  "name": "fergies-inverted-index",
+  "version": "10.1.1111",
+  "description": "An inverted index that allows javascript objects to be easily serialised and retrieved using promises and map-reduce",
+  "type": "module",
+  "main": "src/node.js",
+  "browser": "src/browser.js",
+  "scripts": {
+    "build": "rimraf dist && npm run build:prod",
+    "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
+    "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "build:types": "",
+    "demo": "webpack serve --hot --config webpack/webpack.config.demo.cjs",
+    "demo:nedb-web": "webpack serve --hot --config webpack/webpack.config.demo.cjs",
+    "demo:gdrive": "cd public && serve -C -l 8999",
+    "start": "npm run demo:nedb-web",
+    "server:nedb": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./tests/draft.test.ts",
+    "server": "npm run server:crdt-hlc",
+    "test": "npm run test:inverted-index",
+    "test1": "npm run test:nedb",
+    "test:jest": "jest",
+    "empty-sandbox": "rm -rf tests/sandbox && mkdir tests/sandbox",
+    "test:nedb-draft": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./tests/draft.test.ts",
+    "test:inverted-index2": "mocha --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,tsx,js 'tests/**/*.test.ts' --reporter spec --timeout 10000",
+    "test:inverted-index": "npm run empty-sandbox && esm-tape-runner 'tests/**/*test.js' --enable-source-maps --experimental-modules --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node | tap-monkey",
+    "test:nedb-oneoff": "mocha --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,tsx 'tests/waterfall.test.ts' ",
+    "test:log": "node index.js --name nested-a"
+  },
+  "dependencies": {
+    "browser-level": "1.0.1111",
+    "charwise": "^3.0.1",
+    "level-read-stream": "1.1.1111",
+    "memory-level": "1.0.1111",
+    "traverse": "^0.6.7"
+  },
+  "devDependencies": {
+    "@small-tech/esm-tape-runner": "^2.0.0",
+    "@small-tech/tap-monkey": "^1.4.0",
+    "diacritic": "^0.0.2",
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "nodemon": "^2.0.20",
+    "npm-run-all": "^4.1.5",
+    "stemmer": "^2.0.1",
+    "stopword": "^1.0.7",
+    "stream-browserify": "^3.0.0",
+    "tape": "^5.6.1",
+    "ts-node": "^10.9.1",
+    "world-bank-dataset": "^1.0.0"
+  }
+}

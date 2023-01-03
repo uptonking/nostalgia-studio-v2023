@@ -128,9 +128,9 @@ describe('Datastore/Model like mongodb collection', function () {
             d.insert({ somedata: 'again' }, function (err) {
               d.find({}, function (err, docs) {
                 docs.length.should.equal(3);
-                docs.map(d => d['somedata']).should.contain('ok');
-                docs.map(d => d['somedata']).should.contain('another');
-                docs.map(d => d['somedata']).should.contain('again');
+                docs.map((d) => d['somedata']).should.contain('ok');
+                docs.map((d) => d['somedata']).should.contain('another');
+                docs.map((d) => d['somedata']).should.contain('again');
                 done();
               });
             });
@@ -521,9 +521,9 @@ describe('Datastore/Model like mongodb collection', function () {
       d.options.autoIndexing.should.equal(true);
 
       d.insert({ tf: 4, r: 6 }, (err, _doc1) => {
-        getCandidates({ r: 6 }, null, (data) => { });
+        getCandidates({ r: 6 }, null, (data) => {});
         setTimeout(() => {
-          getCandidates({ tf: 4 }, null, (data) => { });
+          getCandidates({ tf: 4 }, null, (data) => {});
         }, 5);
 
         d.once('indexesReady', (indexes) => {
@@ -615,8 +615,8 @@ describe('Datastore/Model like mongodb collection', function () {
     it('Can use an index to get docs with $exists', function (done) {
       d.insert(
         [{ tf: 4, r: 6 }, { tf: 4, r: 9 }, { tf: 10, r: 2 }, { tf: 3 }],
-        err => {
-          getCandidates({ r: { $exists: true } }, null, data => {
+        (err) => {
+          getCandidates({ r: { $exists: true } }, null, (data) => {
             data.length.should.equal(3);
             getCandidates({ r: { $exists: false } }, null, function (data) {
               data.length.should.equal(1);
@@ -922,16 +922,10 @@ describe('Datastore/Model like mongodb collection', function () {
           getCandidates({}, { a: 1 }, (data) => {
             data.length.should.equal(8);
             // assert.deepEqual(_.pluck(data, 'a'), [
-            assert.deepEqual(data.map(d => d['a']), [
-              undefined,
-              1,
-              3,
-              5,
-              9,
-              12,
-              14,
-              18,
-            ]);
+            assert.deepEqual(
+              data.map((d) => d['a']),
+              [undefined, 1, 3, 5, 9, 12, 14, 18],
+            );
             done();
           });
         },
@@ -956,7 +950,10 @@ describe('Datastore/Model like mongodb collection', function () {
             { a: 1 },
             function (data) {
               data.length.should.equal(5);
-              assert.deepEqual(data.map(d => d['a']), [1, 3, 5, 14, 18]);
+              assert.deepEqual(
+                data.map((d) => d['a']),
+                [1, 3, 5, 14, 18],
+              );
               done();
             },
           );
@@ -1093,12 +1090,12 @@ describe('Datastore/Model like mongodb collection', function () {
             d.find({}, function (err, docs) {
               assert.isNull(err);
               docs.length.should.equal(3);
-              docs.map(d => d['somedata']).should.contain('ok');
-              docs.map(d => d['somedata']).should.contain('another');
+              docs.map((d) => d['somedata']).should.contain('ok');
+              docs.map((d) => d['somedata']).should.contain('another');
               _.find(docs, (d: any) => {
                 return d.somedata === 'another';
               }).plus.should.equal('additional data');
-              docs.map(d => d['somedata']).should.contain('again');
+              docs.map((d) => d['somedata']).should.contain('again');
               return cb();
             });
           },
@@ -1127,7 +1124,7 @@ describe('Datastore/Model like mongodb collection', function () {
             d.find({ somedata: 'again' }, function (err, docs) {
               assert.isNull(err);
               docs.length.should.equal(2);
-              docs.map(d => d['somedata']).should.not.contain('ok');
+              docs.map((d) => d['somedata']).should.not.contain('ok');
               return cb();
             });
           },
@@ -1242,14 +1239,14 @@ describe('Datastore/Model like mongodb collection', function () {
               d.find({ fruits: 'pear' }, function (err, docs) {
                 assert.isNull(err);
                 docs.length.should.equal(2);
-                docs.map(d => d['_id']).should.contain(doc1._id);
-                docs.map(d => d['_id']).should.contain(doc2._id);
+                docs.map((d) => d['_id']).should.contain(doc1._id);
+                docs.map((d) => d['_id']).should.contain(doc2._id);
 
                 d.find({ fruits: 'banana' }, function (err, docs) {
                   assert.isNull(err);
                   docs.length.should.equal(2);
-                  docs.map(d => d['_id']).should.contain(doc1._id);
-                  docs.map(d => d['_id']).should.contain(doc3._id);
+                  docs.map((d) => d['_id']).should.contain(doc1._id);
+                  docs.map((d) => d['_id']).should.contain(doc3._id);
 
                   d.find({ fruits: 'doesntexist' }, function (err, docs) {
                     assert.isNull(err);

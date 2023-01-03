@@ -25,7 +25,7 @@ const kLimit = Symbol('limit');
 const kCount = Symbol('count');
 
 const emptyOptions = Object.freeze({});
-const noop = () => { };
+const noop = () => {};
 let warnedEnd = false;
 
 // This class is an internal utility for common functionality between AbstractIterator,

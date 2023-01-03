@@ -110,7 +110,9 @@ export const highlightingCodeBlockStyles = css`
       }
 
       &:not([data-debounce='true']) {
-        > code:not([data-language='plaintext']):not([data-language='none']):not([data-language='']) {
+        > code:not([data-language='plaintext']):not([data-language='none']):not(
+            [data-language='']
+          ) {
           color: transparent;
           caret-color: ${themed({ light: colors.N800, dark: colors.DN500 })};
         }

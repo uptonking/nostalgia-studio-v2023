@@ -20,7 +20,9 @@ export function once(fn) {
  */
 export function has(obj, path) {
   // Regex explained: https://regexr.com/58j0k
-  const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g)
+  const pathArray = Array.isArray(path) ? path : path.match(/([^[.\]])+/g);
 
-  return Boolean(pathArray.reduce((prevObj, key) => prevObj && prevObj[key], obj))
+  return Boolean(
+    pathArray.reduce((prevObj, key) => prevObj && prevObj[key], obj),
+  );
 }

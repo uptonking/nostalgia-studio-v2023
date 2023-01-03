@@ -222,7 +222,10 @@ describe('Cursor', function () {
         assert.isNull(err);
 
         docs.length.should.equal(3);
-        assert.deepEqual(docs.map(d => d['age']), [5, 23, 52]);
+        assert.deepEqual(
+          docs.map((d) => d['age']),
+          [5, 23, 52],
+        );
         // No way to predict which results are returned of course ...
         done();
       });
@@ -1301,15 +1304,15 @@ describe('Cursor', function () {
 
       const modifiers = [
         () => {
-          d.remove({ name: 'Jim' }, {}, () => { });
+          d.remove({ name: 'Jim' }, {}, () => {});
         },
         () => {
-          d.save({ name: 'Stanley', age: 58, department: 'sales' }, () => { });
+          d.save({ name: 'Stanley', age: 58, department: 'sales' }, () => {});
         },
         () => {
-          d.update({ name: 'Phyllis' }, { $inc: { age: 1 } }, {}, () => { });
+          d.update({ name: 'Phyllis' }, { $inc: { age: 1 } }, {}, () => {});
         },
-        () => { },
+        () => {},
       ];
 
       const liveq = d.find({ department: 'sales' }).sort({ name: 1 }).live();

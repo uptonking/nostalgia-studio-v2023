@@ -211,4 +211,3 @@ export class ClassicLevel extends AbstractLevel {
     return callback[kPromise];
   }
 }
-

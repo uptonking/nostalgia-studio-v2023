@@ -184,7 +184,7 @@ Model.prototype.buildIndexes = function (cb) {
         try {
           // @ts-expect-error fix-types
           idx.insert(doc);
-        } catch (e) { }
+        } catch (e) {}
       });
     })
     .on('end', function () {
@@ -224,7 +224,7 @@ Model.prototype.resetIndexes = function () {
  * @param {Function} cb Optional callback, signature: err
  */
 Model.prototype.ensureIndex = function (options, cb) {
-  const callback = cb || function () { };
+  const callback = cb || function () {};
 
   options = options || {};
 
@@ -246,7 +246,7 @@ Model.prototype.ensureIndex = function (options, cb) {
  * @param {Function} cb Optional callback, signature: err
  */
 Model.prototype.removeIndex = function (fieldName, cb) {
-  const callback = cb || function () { };
+  const callback = cb || function () {};
 
   delete this.indexes[fieldName];
   callback(null);
@@ -330,7 +330,7 @@ Model.prototype.updateIndexes = function (oldDoc, newDoc) {
  *
  */
 Model.prototype.insert = function (newDoc, cb) {
-  const callback = cb || function () { };
+  const callback = cb || function () {};
   const self = this;
   newDoc = (Array.isArray(newDoc) ? newDoc : [newDoc]).map(function (d) {
     return new self(d);
@@ -515,7 +515,7 @@ Model.prototype.update = function (query, updateQuery, options, cb) {
     cb = options;
     options = {};
   }
-  callback = _.once(cb || function () { });
+  callback = _.once(cb || function () {});
   multi = options.multi !== undefined ? options.multi : false;
   upsert = options.upsert !== undefined ? options.upsert : false;
 
@@ -636,7 +636,7 @@ Model.prototype.update = function (query, updateQuery, options, cb) {
  */
 Model.prototype.save = function (docs, cb, quiet) {
   const self = this;
-  cb = cb || function () { };
+  cb = cb || function () {};
 
   docs = (Array.isArray(docs) ? docs : [docs]).map(function (d) {
     return d.constructor.modelName == self.modelName ? d : new self(d);
@@ -722,7 +722,7 @@ Model.prototype.remove = function (query, options, cb) {
     cb = options;
     options = {};
   }
-  callback = cb || function () { };
+  callback = cb || function () {};
   const multi = options.multi !== undefined ? options.multi : false;
 
   const stream = Cursor.getMatchesStream(this, query);

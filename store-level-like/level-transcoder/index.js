@@ -92,7 +92,6 @@ export class Transcoder {
   }
 }
 
-
 /**
  * @param {MixedEncoding<any, any, any>} options
  * @returns {Encoding<any, any, any>}

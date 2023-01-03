@@ -25,7 +25,7 @@ declare class AbstractLevel<
   TFormat,
   KDefault = string,
   VDefault = string,
-  > extends EventEmitter {
+> extends EventEmitter {
   /**
    * Private database constructor.
    *

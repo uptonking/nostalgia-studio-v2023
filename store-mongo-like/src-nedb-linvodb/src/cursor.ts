@@ -421,7 +421,7 @@ export class Cursor {
         });
       },
       0,
-      () => { },
+      () => {},
     );
 
     // Stream the documents themselves: push all to the retriever queue
@@ -495,8 +495,7 @@ export class Cursor {
         // console.log(';; getVal ', value);
 
         if (value === undefined) value = {};
-        if (typeof value === 'string')
-          value = docUtils.deserialize(value);
+        if (typeof value === 'string') value = docUtils.deserialize(value);
         // ? check missing `new task.db` logic, schemas.construct
 
         const emitData = {
@@ -561,7 +560,7 @@ export class Cursor {
     // console.log(';; firstKey-sort ', firstKey, sort)
     sorted = firstKey
       ? // Boolean(db.indexes[firstKey]) && _.keys(sort).length === 1
-      Boolean(db.indexes[firstKey]) && Object.keys(sort).length === 1
+        Boolean(db.indexes[firstKey]) && Object.keys(sort).length === 1
       : true;
 
     /** handle $and/$or, then db.ensureIndex to build index, then handle $lt/$gt */
@@ -732,9 +731,9 @@ export class Cursor {
         criterion = criteria[i];
         compare =
           criterion.direction *
-        docUtils.compareThings(
-          docUtils.getDotValue(a, criterion.key),
-          docUtils.getDotValue(b, criterion.key),
+          docUtils.compareThings(
+            docUtils.getDotValue(a, criterion.key),
+            docUtils.getDotValue(b, criterion.key),
           );
         if (compare !== 0) return compare;
       }

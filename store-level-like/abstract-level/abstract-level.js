@@ -33,10 +33,9 @@ const kDefaultOptions = Symbol('defaultOptions');
 const kTranscoder = Symbol('transcoder');
 const kKeyEncoding = Symbol('keyEncoding');
 const kValueEncoding = Symbol('valueEncoding');
-const noop = () => { };
+const noop = () => {};
 
 export class AbstractLevel extends EventEmitter {
-
   constructor(manifest, options) {
     super();
 
@@ -120,7 +119,7 @@ export class AbstractLevel extends EventEmitter {
 
   // nextTick = nextTickFn;
   nextTick(callback, ...args) {
-    nextTickFn(callback, ...args)
+    nextTickFn(callback, ...args);
   }
 
   keyEncoding(encoding) {

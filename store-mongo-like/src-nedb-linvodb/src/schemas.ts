@@ -162,9 +162,9 @@ export function construct(self, schema) {
       get:
         spec.type === 'array'
           ? () => {
-            construct(val, spec.schema);
-            return val;
-          }
+              construct(val, spec.schema);
+              return val;
+            }
           : () => val,
       set: (v) => {
         if (canCast(v, spec.type)) {
@@ -218,7 +218,7 @@ function defaultValue(spec) {
     date: new Date(),
     // @ts-expect-error fix-types
     regexp: new RegExp(),
-    function: () => { },
+    function: () => {},
     array: [],
     object: {},
     ObjectId: null,

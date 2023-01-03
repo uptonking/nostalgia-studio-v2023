@@ -4,7 +4,7 @@ import { MemoryLevel } from 'memory-level';
 
 (async () => {
   // An abstract-level database for browsers, backed by IndexedDB. The successor to level-js
-  const db = new BrowserLevel<string, any>('lv/web', { valueEncoding: 'json' })
+  const db = new BrowserLevel<string, any>('lv/web', { valueEncoding: 'json' });
   // const db = new MemoryLevel();
 
   // Write sample data

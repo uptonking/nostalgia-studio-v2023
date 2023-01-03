@@ -14,13 +14,16 @@ import {
 export class MemoryLevel<
   KDefault = string,
   VDefault = string,
-  > extends AbstractLevel<Buffer | Uint8Array | string, KDefault, VDefault> {
+> extends AbstractLevel<Buffer | Uint8Array | string, KDefault, VDefault> {
   /**
    * Database constructor.
    *
    * @param options Options, of which some will be forwarded to {@link open}.
    */
-  constructor(location: string, options?: DatabaseOptions<KDefault, VDefault> | undefined);
+  constructor(
+    location: string,
+    options?: DatabaseOptions<KDefault, VDefault> | undefined,
+  );
 
   open(): Promise<void>;
   open(options: OpenOptions): Promise<void>;

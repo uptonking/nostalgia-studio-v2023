@@ -48,7 +48,7 @@ module.exports = {
     'no-sparse-arrays': 1,
     'no-new-object': 1,
     'no-implicit-coercion': 1,
-    'no-useless-concat': 1,
+    'no-useless-concat': 0,
     'no-labels': 1,
     'no-cond-assign': 1,
     'no-constant-condition': 1,

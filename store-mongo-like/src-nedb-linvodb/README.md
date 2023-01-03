@@ -1,7 +1,8 @@
 # linvodb
 
-# overview
+> open source js database designed for airtable-like pivot views
 
+# overview
 - this project is a fork of linvodb v20210507
   - for web & nodejs
 
@@ -27,7 +28,6 @@
 ## tests-failed
 
 # more
-
 - deps backup
 
 ```
@@ -37,6 +37,5 @@
 "@types/encoding-down": "^5.0.0",
 "@types/levelup": "^5.0.0",
 "level-js": "^2.2.4",
-
 
 ```

@@ -29,9 +29,7 @@ function mainServer() {
       Doc.find({}, function (err, docs) {
         console.log(';; find ', docs);
       });
-    })
-
-
+    });
   });
   // Doc.insert([{ a: 3 }, { a: 42 }], function (err, newDocs) {
   //   // Two documents were inserted in the database
@@ -39,8 +37,6 @@ function mainServer() {
   //   // If there's an unique constraint on 'a', this will fail, and no changes will be made to the DB
   //   // err is a 'uniqueViolated' error
   // });
-
-
 }
 
 mainServer();

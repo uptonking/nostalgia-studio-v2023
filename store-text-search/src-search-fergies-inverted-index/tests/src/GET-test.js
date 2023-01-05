@@ -1,4 +1,4 @@
-import sw from 'stopword';
+import stopWd from 'stopword';
 import test from 'tape';
 
 import fii from '../..';
@@ -46,7 +46,7 @@ const data = [
   {
     _id: 4,
     make: 'BMW',
-    colour: JSON.stringify(['Black', 999]),
+    colour: ['Black', 999],
     year: 2000,
     price: 10,
     model: '5-series',
@@ -100,7 +100,13 @@ const data = [
 ];
 
 test('some simple GETs', async function (t) {
-  const { GET, PUT } = await fii({ name: indexName });
+  const { GET, PUT } = await fii({
+    name: indexName,
+    isLeaf: (item) =>
+      typeof item === 'string' ||
+      typeof item === 'number' ||
+      Array.isArray(item),
+  });
   t.pass('db initialized');
 
   await PUT(data);
@@ -204,7 +210,7 @@ test('testing case sensitivity', async function (t) {
 test('testing stopwords, empty and non-existant tokens', async function (t) {
   const { GET, PUT } = await fii({
     name: indexName + '_4',
-    stopwords: sw.en,
+    stopwords: stopWd.eng,
   });
   t.pass('db initialized');
 

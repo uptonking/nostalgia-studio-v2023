@@ -2,6 +2,7 @@ import { EntryStream } from 'level-read-stream';
 import test from 'tape';
 
 import si from '../..';
+import packageFile from '../../package.json' assert { type: 'json' };
 
 const sandbox = 'tests/sandbox/';
 const dontIndexEmptyFields = sandbox + 'dontIndexEmptyFields';
@@ -47,21 +48,20 @@ test('index looks good', (t) => {
   const expectedIndex = [
     {
       key: ['CREATED_WITH'],
-      // value: 'search-index@' + require('../../package.json').version,
-      value: 'search-index@' + '3.3.1111',
+      value: 'search-index@' + packageFile.version,
     },
     {
       key: ['DOC', '6'],
       value: {
         _id: '6',
         title: [
-          '["4472","1.00"]',
-          '["5590","1.00"]',
-          '["a","1.00"]',
-          '["behind","1.00"]',
-          '["oc","1.00"]',
-          '["volcano","1.00"]',
-          '["waterfalls","1.00"]',
+          ['4472', '1.00'],
+          ['5590', '1.00'],
+          ['a', '1.00'],
+          ['behind', '1.00'],
+          ['oc', '1.00'],
+          ['volcano', '1.00'],
+          ['waterfalls', '1.00'],
         ],
       },
     },

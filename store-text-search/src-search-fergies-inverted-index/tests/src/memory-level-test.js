@@ -2,7 +2,7 @@ import { MemoryLevel } from 'memory-level';
 import test from 'tape';
 import wbd from 'world-bank-dataset';
 
-import fii from '../../src/node';
+import fii from '../../src/main';
 
 const sandbox = 'tests/sandbox/';
 const indexName = sandbox + 'memdown-test';

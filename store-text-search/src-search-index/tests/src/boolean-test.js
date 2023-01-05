@@ -1,8 +1,7 @@
 import test from 'tape';
+import wbd from 'world-bank-dataset';
 
 import si from '../..';
-
-import wbd from 'world-bank-dataset';
 
 const sandbox = 'tests/sandbox/';
 const indexName = sandbox + 'BOOLEAN';

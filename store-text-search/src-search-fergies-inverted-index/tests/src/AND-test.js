@@ -113,6 +113,7 @@ test('can add some data', (t) => {
 
 test('get simple AND', (t) => {
   t.plan(1);
+
   global[indexName].AND(['drivetrain:Diesel', 'colour:Black']).then((result) =>
     t.deepEqual(result, [
       {

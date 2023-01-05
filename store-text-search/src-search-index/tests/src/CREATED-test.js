@@ -50,7 +50,7 @@ test('recreate index', (t) => {
 });
 
 // 🚨
-// test('CREATED timestamp is unchanged after db is closed and reopened', (t) => {
-//   t.plan(1);
-//   global[indexName].CREATED().then((res) => t.equals(res, timestamp));
-// });
+// test('CREATED timestamp is unchanged after db is closed and reopened', t => {
+//   t.plan(1)
+//   global[indexName].CREATED().then(res => t.equals(res, timestamp))
+// })

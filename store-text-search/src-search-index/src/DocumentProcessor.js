@@ -1,6 +1,3 @@
-/**
- *
- */
 export default function documentProcessor(ops) {
   const isObject = (item) =>
     typeof item === 'object' && item !== null && !Array.isArray(item);
@@ -30,11 +27,9 @@ export default function documentProcessor(ops) {
   const processValueUnknownType = (unknown, key) =>
     // eslint-disable-next-line
     new Promise(async (resolve) => {
-      if (unknown === null) return resolve(JSON.stringify([null, '1.00']));
-      if (isEmptyObject(unknown)) return resolve(JSON.stringify([[], '1.00']));
-      if (Number.isInteger(unknown)) {
-        return resolve(JSON.stringify([unknown, unknown]));
-      }
+      if (unknown === null) return resolve([null, '1.00']);
+      if (isEmptyObject(unknown)) return resolve([[], '1.00']);
+      if (Number.isInteger(unknown)) return resolve([unknown, unknown]);
       if (isString(unknown)) return resolve(ops.tokenizer(unknown, key, ops));
       if (isObject(unknown)) return resolve(processValueObject(unknown));
       if (isArray(unknown)) return resolve(processValueArray(unknown));

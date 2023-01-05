@@ -1,6 +1,7 @@
 import test from 'tape';
 
 import si from '../..';
+import packageFile from '../../package.json' assert { type: 'json' };
 
 const sandbox = 'tests/sandbox/';
 const indexName = sandbox + 'version-stamp-test';
@@ -25,8 +26,7 @@ test('create a search index', async function (t) {
 
   t.equals(
     await INDEX.STORE.get(['CREATED_WITH']),
-    // 'search-index@' + require('../../package.json').version,
-    'search-index@' + '3.3.1111',
+    'search-index@' + packageFile.version,
   );
 
   // TODO: test rejections when trying to open with an incorrect

@@ -8,6 +8,8 @@ export default function write(ops) {
 
   // use trav lib to find all leaf nodes with corresponding paths
   const invertDoc = (obj, putOptions) => {
+    // console.log(JSON.stringify(obj._object, null, 2))
+
     if (obj._object == null) {
       return {
         _id: obj._id,
@@ -17,43 +19,32 @@ export default function write(ops) {
 
     const keys = [];
     traverse(obj._object).forEach(function (node) {
-      let searchable = true;
       const fieldName = this.path
         // allowing numbers in path names create ambiguity with arrays
         // so just strip numbers from path names
         .filter((item) => !Number.isInteger(Number(item)))
         .join('.');
-      if (fieldName === '_id') searchable = false;
-      // Skip fields that are not to be indexed
-      if (
-        putOptions.doNotIndexField.filter((item) => fieldName.startsWith(item))
-          .length
-      ) {
-        searchable = false;
-      }
-
-      // TODO: deal with "comments" using objects
-
-      // deal with stopwords
-      if (
-        this.isLeaf &&
-        ops.stopwords.includes(String(this.node).split('#')[0])
-      ) {
-        searchable = false;
-      }
-
-      if (searchable && this.isLeaf) {
-        let key;
-        try {
-          const parsedJSON = JSON.parse(this.node);
-          if (!Array.isArray(parsedJSON)) throw new Error();
-          key = JSON.stringify([fieldName, parsedJSON]);
-        } catch (e) {
-          key = JSON.stringify([fieldName, [this.node]]);
+      if (fieldName !== '_id') {
+        // Skip fields that are not to be indexed
+        if (
+          !putOptions.doNotIndexField.filter((item) =>
+            fieldName.startsWith(item),
+          ).length
+        ) {
+          if (ops.isLeaf(this.node)) {
+            // deal with stopwords
+            if (!ops.stopwords.includes(this.node)) {
+              const key = JSON.stringify([
+                fieldName,
+                [this.node].flat(Infinity),
+              ]);
+              // bump to lower case if not case sensitive
+              keys.push(ops.caseSensitive ? key : key.toLowerCase());
+            }
+            // calling .update is the only way to move on to the next node
+            this.update(this.node, true);
+          }
         }
-
-        // bump to lower case if not case sensitive
-        keys.push(ops.caseSensitive ? key : key.toLowerCase());
       }
     });
 
@@ -100,6 +91,7 @@ export default function write(ops) {
           ];
           return {
             key: ['IDX', ...JSON.parse(indexKeys[i])],
+
             // if newSet is [] then simply remove the index entry
             // otherwise update
             type: newSet.length === 0 ? 'del' : 'put',
@@ -133,8 +125,6 @@ export default function write(ops) {
     if (id === undefined) return ++incrementalId;
     if (typeof id === 'string') return id;
     if (typeof id === 'number') return id;
-    // else
-    //    return ++incrementalId
   };
 
   const availableFields = (reverseIndex) =>

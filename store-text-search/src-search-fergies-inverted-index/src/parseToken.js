@@ -3,8 +3,8 @@ const charwise = {};
 charwise.LO = null;
 charwise.HI = undefined;
 
-/** key might be object or string like this `<fieldname>:<value>`.
- * - Turn key into json object that is of format {FIELD: ..., VALUE: {GTE: ..., LTE ...}}
+/** key might be object or string like this <fieldname>:<value>.
+ * - Turn key into json object that is of the format {FIELD: ..., VALUE: {GTE: ..., LTE ...}}
  */
 export default function parseToken(token, availableFields) {
   return new Promise((resolve, reject) => {

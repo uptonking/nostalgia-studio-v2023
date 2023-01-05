@@ -42,7 +42,7 @@
     "airtap-sauce": "^1.1.0",
     "dependency-check": "^4.1.0",
     "nyc": "^15.1.0",
-    "tape": "^5.5.2",
+    "tape": "^5.6.1",
     "uuid": "^9.0.0"
   }
 }

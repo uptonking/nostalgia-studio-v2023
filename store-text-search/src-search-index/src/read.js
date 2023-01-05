@@ -32,6 +32,13 @@ export default function read(ops, cache) {
         )
       : ALL_DOCUMENTS();
 
+  const DOCUMENT_VECTORS = (...requestedDocs) =>
+    Promise.all(
+      requestedDocs.map((_id) =>
+        ops.fii.STORE.get(['DOC', _id]).catch((e) => null),
+      ),
+    );
+
   const DICTIONARY = (token) =>
     DISTINCT(token).then((results) =>
       Array.from(
@@ -100,86 +107,74 @@ export default function read(ops, cache) {
   // score by tfidf by default
   // TODO: Total hits (length of _match)
   // TODO: better error handling: what if TYPE is 'XXXXX'
+  // TODO: scoring precision (decimal places) should be an option
   const SCORE = (results, scoreOps = {}) => {
-    const filterFields = (item) => {
-      if (!scoreOps.FIELDS) return true;
-      return scoreOps.FIELDS.includes(item.FIELD);
-    };
-
+    // TODO: test for defaulting to TFIDF
     scoreOps = {
       TYPE: 'TFIDF',
       ...scoreOps,
     };
 
-    if (scoreOps.TYPE === 'TFIDF') {
-      return DOCUMENT_COUNT().then((docCount) =>
-        results.map((result, _, resultSet) => {
-          const idf = Math.log((docCount + 1) / resultSet.length);
-          result._score = Number(
-            result._match
-              .filter(filterFields)
-              .reduce((acc, cur) => acc + idf * Number(cur.SCORE), 0)
-              .toFixed(2),
-          ); // TODO: make precision an option
-          return result;
-        }),
-      );
-    }
-    if (scoreOps.TYPE === 'PRODUCT') {
-      return new Promise((resolve) =>
-        resolve(
-          results.map((r) => {
-            r._score = Number(
-              r._match
-                .filter(filterFields)
-                .reduce((acc, cur) => acc * Number(cur.SCORE), 1)
-                .toFixed(2),
-            );
-            // TODO: make precision an option
-            return r;
-          }),
-        ),
-      );
-    }
-    if (scoreOps.TYPE === 'CONCAT') {
-      return new Promise((resolve) =>
-        resolve(
-          results.map((r) => {
-            r._score = r._match
-              .filter(filterFields)
-              .reduce((acc, cur) => acc + cur.SCORE, '');
-            return r;
-          }),
-        ),
-      );
-    }
-    if (scoreOps.TYPE === 'SUM') {
-      return new Promise((resolve) =>
-        resolve(
-          results.map((r) => {
-            r._score = Number(
-              r._match
-                .filter(filterFields)
-                .reduce((acc, cur) => acc + Number(cur.SCORE), 0)
-                .toFixed(2),
-            ); // TODO: make precision an option
-            return r;
-          }),
-        ),
-      );
-    }
-    if (scoreOps.TYPE === 'VALUE') {
-      return new Promise((resolve) =>
-        resolve(
-          results.map((r) => {
-            r._score = r._match
-              .filter(filterFields)
-              .reduce((acc, cur) => acc + cur.VALUE, '');
-            return r;
-          }),
-        ),
-      );
-    }
+    const filterFields = (item) => {
+      if (!scoreOps.FIELDS) return true;
+      return scoreOps.FIELDS.includes(item.FIELD);
+    };
+
+    const filterMatch = (_match) => (_match || []).filter(filterFields);
+
+    return new Promise((resolve) =>
+      resolve(
+        scoreOps.TYPE === 'TFIDF'
+          ? DOCUMENT_COUNT().then((docCount) =>
+              results.map((result, _, resultSet) => {
+                const idf = Math.log((docCount + 1) / resultSet.length);
+                result._score = Number(
+                  (result._match || [])
+                    .filter(filterFields)
+                    .reduce((acc, cur) => acc + idf * Number(cur.SCORE), 0)
+                    // TODO: make precision an option
+                    .toFixed(2),
+                );
+                return result;
+              }),
+            )
+          : scoreOps.TYPE === 'PRODUCT'
+          ? results.map((r) => ({
+              ...r,
+              _score: Number(
+                filterMatch(r._match)
+                  .reduce((acc, cur) => acc * Number(cur.SCORE), 1)
+                  .toFixed(2),
+              ),
+            }))
+          : scoreOps.TYPE === 'CONCAT'
+          ? results.map((r) => ({
+              ...r,
+              _score: filterMatch(r._match).reduce(
+                (acc, cur) => acc + cur.SCORE,
+                '',
+              ),
+            }))
+          : scoreOps.TYPE === 'SUM'
+          ? results.map((r) => ({
+              ...r,
+              _score: Number(
+                filterMatch(r._match)
+                  .reduce((acc, cur) => acc + Number(cur.SCORE), 0)
+                  .toFixed(2),
+              ), // TODO: make precision an option
+            }))
+          : scoreOps.TYPE === 'VALUE'
+          ? results.map((r) => ({
+              ...r,
+              _score: filterMatch(r._match).reduce(
+                (acc, cur) => acc + cur.VALUE,
+                '',
+              ),
+            }))
+          : null,
+      ),
+    );
   };
 
   // TODO: maybe add a default page size?
@@ -424,6 +419,7 @@ export default function read(ops, cache) {
         DOCUMENTS: docs,
       }),
     DOCUMENT_COUNT,
+    DOCUMENT_VECTORS,
     FACETS,
     PAGE,
     QUERY: (q, qops) => tryCache(parseJsonQuery(q, qops), { QUERY: [q, qops] }),

@@ -1,4 +1,4 @@
-import fii from 'fergies-inverted-index/src/main';
+import fii from 'fergies-inverted-index';
 import LRU from 'lru-cache';
 
 import reader from './read';
@@ -8,7 +8,7 @@ import writer from './write';
 // import packageJSON from '../package.json';
 
 const makeASearchIndex = (ops) =>
-  // eslint-disable-next-line no-async-promise-executor
+  // eslint-disable-next-line
   new Promise(async (resolve) => {
     // TODO: the cache size should be an option
     const cache = new LRU({
@@ -55,6 +55,7 @@ const makeASearchIndex = (ops) =>
         DISTINCT: r.DISTINCT,
         DOCUMENTS: r.DOCUMENTS,
         DOCUMENT_COUNT: r.DOCUMENT_COUNT,
+        DOCUMENT_VECTORS: r.DOCUMENT_VECTORS,
         EXPORT: ops.fii.EXPORT,
         FACETS: r.FACETS,
         FIELDS: ops.fii.FIELDS,
@@ -70,9 +71,6 @@ const makeASearchIndex = (ops) =>
 
 const initIndex = (ops = {}) =>
   new Promise((resolve, reject) => {
-    // TODO: dont pass tokenization ops through to fii. Use the
-    // tokenization pipeline instead and always initialize fii with the
-    // same ops
     ops = {
       cacheLength: 1000,
       caseSensitive: false,
@@ -83,6 +81,15 @@ const initIndex = (ops = {}) =>
           yield Date.now() + '-' + i++;
         }
       })(),
+      isLeaf: (node) =>
+        Array.isArray(node) &&
+        node.length === 2 &&
+        node.every(
+          (item) =>
+            typeof item === 'string' ||
+            typeof item === 'number' ||
+            item === null,
+        ),
       skipFields: [],
       ngrams: {},
       replace: {},
@@ -107,8 +114,7 @@ const validateVersion = (si) =>
   new Promise((resolve, reject) => {
     const key = ['CREATED_WITH'];
     // const version = 'search-index@' + packageJSON.version
-    const version = 'search-index@' + '3.3.1111';
-    // eslint-disable-next-line no-promise-executor-return
+    const version = 'search-index@' + '3.4.1111';
     return si.INDEX.STORE.get(key)
       .then((v) =>
         // throw a rejection if versions do not match
@@ -125,6 +131,11 @@ const validateVersion = (si) =>
       )
       .catch((e) => si.INDEX.STORE.put(key, version).then(resolve));
   });
+
+// module.exports = ops =>
+//   initIndex(ops)
+//     .then(makeASearchIndex)
+//     .then(si => validateVersion(si).then(() => si))
 
 export default function main(ops) {
   return initIndex(ops)

@@ -18,7 +18,7 @@ import { uid } from './utils-polyfillable';
  * - Data is stored in bst-tree, with auto-generated `_id`
  * - The native types are String, Number, Boolean, Date and null. You can also use arrays and subdocuments (objects).
  * - A copy of the whole database is kept in memory.
- * - eventEmitter在persistence中使用
+ * - eventEmitter is used in persistence
  */
 export class Datastore extends EventEmitter implements DataStoreOptionsProps {
   autoload = false;

@@ -1,5 +1,6 @@
-import fii from '../../';
 import test from 'tape';
+
+import fii from '../..';
 
 const sandbox = 'tests/sandbox/';
 const exportingIndexName = sandbox + 'EXPORT';

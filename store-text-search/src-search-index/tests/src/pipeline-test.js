@@ -1,12 +1,10 @@
 import { stemmer } from 'stemmer';
-import * as stopWd from 'stopword';
+import stopWd from 'stopword';
 import test from 'tape';
 
 import si from '../..';
 
 const sandbox = 'tests/sandbox/';
-
-console.log(';; stopW ', stopWd);
 
 const docs = [
   {

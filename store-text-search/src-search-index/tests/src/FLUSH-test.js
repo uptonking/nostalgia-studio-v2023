@@ -2,6 +2,7 @@ import { EntryStream } from 'level-read-stream';
 import test from 'tape';
 
 import si from '../..';
+import packageFile from '../../package.json' assert { type: 'json' };
 
 const sandbox = 'tests/sandbox/';
 const indexName = sandbox + 'FLUSH';
@@ -40,30 +41,32 @@ test('verify index structure', (t) => {
   const expectedIndexStructure = [
     {
       key: ['CREATED_WITH'],
-      // value: 'search-index@' + require('../../package.json').version,
-      value: 'search-index@' + '3.3.1111',
+      value: 'search-index@' + packageFile.version,
     },
     {
       key: ['DOC', 'a'],
       value: {
         _id: 'a',
         title: [
-          '["a","1.00"]',
-          '["cool","1.00"]',
-          '["document","1.00"]',
-          '["quite","1.00"]',
+          ['a', '1.00'],
+          ['cool', '1.00'],
+          ['document', '1.00'],
+          ['quite', '1.00'],
         ],
         body: {
           text: [
-            '["cool","1.00"]',
-            '["document","0.33"]',
-            '["is","0.33"]',
-            '["really","0.33"]',
-            '["this","0.33"]',
+            ['cool', '1.00'],
+            ['document', '0.33'],
+            ['is', '0.33'],
+            ['really', '0.33'],
+            ['this', '0.33'],
           ],
-          metadata: ['["coolness","1.00"]', '["documentness","1.00"]'],
+          metadata: [
+            ['coolness', '1.00'],
+            ['documentness', '1.00'],
+          ],
         },
-        importantNumber: '[5000,5000]',
+        importantNumber: [5000, 5000],
       },
     },
     { key: ['DOCUMENT_COUNT'], value: 1 },

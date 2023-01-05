@@ -38,7 +38,7 @@
     "airtap": "^4.0.4",
     "airtap-playwright": "^1.0.1",
     "nyc": "^15.1.0",
-    "tape": "^5.5.2",
+    "tape": "^5.6.1",
     "uuid": "^9.0.0"
   },
   "engines": {

@@ -1,7 +1,8 @@
 import test from 'tape';
-import wbd from 'world-bank-dataset';
 
 import si from '../..';
+
+import wbd from 'world-bank-dataset';
 
 const sandbox = 'tests/sandbox/';
 const indexName = sandbox + 'aggregation-test';
@@ -28,13 +29,6 @@ test('can add some worldbank data', (t) => {
       totalamt: item.totalamt,
     };
   });
-  // console.log(
-  //   JSON.stringify(
-  //     data.map(d => d.impagency),
-  //     null,
-  //     2
-  //   )
-  // )
   t.plan(1);
   global[indexName].PUT(data).then(t.pass);
 });
@@ -381,7 +375,6 @@ test('can aggregate totalamt', (t) => {
     })
     .then((result) =>
       t.deepEqual(result, [
-        { FIELD: 'impagency', VALUE: null },
         { FIELD: 'impagency', VALUE: 'administration' },
         { FIELD: 'impagency', VALUE: 'and' },
         { FIELD: 'impagency', VALUE: 'communications' },
@@ -416,7 +409,6 @@ test('can aggregate totalamt JSON DISTINCT', (t) => {
     })
     .then((result) =>
       t.deepEqual(result, [
-        { FIELD: 'impagency', VALUE: null },
         { FIELD: 'impagency', VALUE: 'administration' },
         { FIELD: 'impagency', VALUE: 'and' },
         { FIELD: 'impagency', VALUE: 'communications' },
@@ -452,11 +444,6 @@ test('can aggregate totalamt', (t) => {
     .then((result) => Promise.all(result.map(global[indexName]._BUCKET)))
     .then((result) => {
       t.deepEqual(result, [
-        {
-          FIELD: ['impagency'],
-          VALUE: { GTE: null, LTE: null },
-          _id: ['52b213b38594d8a2be17c785'],
-        },
         {
           FIELD: ['impagency'],
           VALUE: { GTE: 'administration', LTE: 'administration' },
@@ -602,11 +589,6 @@ test('can run a query and create facets on impagency', (t) => {
     .then((result) => {
       t.deepEqual(result, {
         FACETS: [
-          {
-            FIELD: 'impagency',
-            VALUE: null,
-            _id: ['52b213b38594d8a2be17c785'],
-          },
           {
             FIELD: 'impagency',
             VALUE: 'administration',

@@ -1,7 +1,7 @@
-import fii from "../../";
+import fii from '../..';
 import test from "tape";
 
-const sandbox = 'tests/sandbox/'
+const sandbox = 'tests/sandbox/';
 const indexName = sandbox + 'stemmer'
 
 test('init fii and index data', async t => {

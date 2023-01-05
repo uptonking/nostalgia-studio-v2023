@@ -1,7 +1,8 @@
-import { MemoryLevel } from 'memory-level';
 import test from 'tape';
 
-import si from '../../src/main';
+import si from '../..';
+
+import { MemoryLevel } from 'memory-level';
 
 const sandbox = 'tests/sandbox/';
 const indexName = sandbox + 'memdown-test';

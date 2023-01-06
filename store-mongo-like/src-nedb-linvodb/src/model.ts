@@ -4,6 +4,7 @@ import hat from 'hat';
 import { EntryStream } from 'level-read-stream';
 import { MemoryLevel } from 'memory-level';
 import path from 'path';
+import si from 'search-index';
 
 import { Cursor } from './cursor';
 import * as docUtils from './document';
@@ -25,7 +26,7 @@ globalThis['stores'] = stores;
 const LEVELUP_RE_TR_CONCURRENCY = 100;
 
 /**
- *
+ * data model, like a table/mongodb-collection
  */
 export class Model extends EventEmitter {
   /** currently not used */
@@ -35,7 +36,7 @@ export class Model extends EventEmitter {
   filename: string;
   /** @deprecated id */
   _id: string;
-  /** oneDoc object, for testing only */
+  /** single doc object, for testing only */
   _rawDoc: any;
   options: any;
   /** Indexed by field name, dot notation can be used
@@ -51,7 +52,13 @@ export class Model extends EventEmitter {
    * - AbstractLevel type
    * @internal
    */
-  public store: AbstractLevel<string, any>;
+  store: AbstractLevel<string, any>;
+  /** enable full text search for current data collection */
+  enableFullTextSearch = false;
+  /**
+  * @internal
+  */
+  fullTextSearchInstance: any;
 
   /** default config for all documents, config `store.db` before constructor */
   static defaults: DatastoreDefaultsOptions = {
@@ -95,6 +102,13 @@ export class Model extends EventEmitter {
       this.ensureIndex(idx);
     });
 
+    this.enableFullTextSearch = this.options.enableFullTextSearch || false;
+    if (this.enableFullTextSearch) {
+      (async () => {
+        await this.initFullTextSearch();
+      })();
+    }
+
     this._pipe = new Bagpipe(1);
     this._pipe.pause();
     this._reTrQueue = new Bagpipe(LEVELUP_RE_TR_CONCURRENCY);
@@ -130,8 +144,12 @@ export class Model extends EventEmitter {
       this.store && this.store.status === 'open'
         ? this.store
         : // : levelup(encode(db(filename), storeOptions), storeOptions);
-          new LevelLikeDbCtor(filename, { valueEncoding: 'utf8' });
+        new LevelLikeDbCtor(filename, { valueEncoding: 'utf8' });
     this._pipe.resume();
+  }
+
+  async initFullTextSearch() {
+    this.fullTextSearchInstance = await si({ name: this.modelName })
   }
 
   /** insert a doc, and get current Model assigned the props of the doc  */
@@ -247,7 +265,7 @@ export class Model extends EventEmitter {
    * @param {Boolean} options.sparse
    * @param {Function} cb Optional callback, signature: err
    */
-  ensureIndex(options: CreateIndexOptions, callback = (...args: any[]) => {}) {
+  ensureIndex(options: CreateIndexOptions, callback = (...args: any[]) => { }) {
     if (!options.fieldName) {
       return callback({ missingFieldName: true });
     }
@@ -265,8 +283,8 @@ export class Model extends EventEmitter {
    * @param {String} fieldName
    * @param {Function} cb Optional callback, signature: err
    */
-  removeIndex(fieldName, cb) {
-    const callback = cb || (() => {});
+  removeIndex(fieldName: string, cb?: Function) {
+    const callback = cb || (() => { });
     delete this.indexes[fieldName];
     callback(null);
   }
@@ -348,20 +366,25 @@ export class Model extends EventEmitter {
    */
   insert(
     newDoc: Record<string, any> | Array<Record<string, any>>,
-    callback = (...args: any[]) => {},
+    callback = (...args: any[]) => { },
   ) {
     const isMultiDoc = Array.isArray(newDoc);
     let docs = isMultiDoc ? newDoc : [newDoc];
 
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
     // We also have to ensure indexes are up-to-date
-    this._pipe.push(this.buildIndexes, () => {
+    this._pipe.push(this.buildIndexes, async () => {
       try {
         // add index to memory
         // this._insertInIndex(newDoc);
         docs = this._insertMultipleDocsInIndex(docs);
       } catch (e) {
         return callback(e);
+      }
+
+      if (this.fullTextSearchInstance) {
+        // todo filter fields, PUT_RAW, extra metadata of the docs
+        await this.fullTextSearchInstance.put(docs);
       }
 
       // Persist the document
@@ -398,7 +421,7 @@ export class Model extends EventEmitter {
    * @private
    */
   prepareDocumentForInsertion(newDoc: any | any[]): any[] {
-    (Array.isArray(newDoc) ? newDoc : [newDoc]).map((doc: Model) => {
+    (Array.isArray(newDoc) ? newDoc : [newDoc]).map((doc) => {
       if (doc._id === undefined) doc._id = this.createNewId();
       docUtils.checkObject(doc);
     });
@@ -462,6 +485,31 @@ export class Model extends EventEmitter {
     return this.findOne({ _id: id }, callback);
   }
 
+  /** add doc to full text search.
+   * ? better design
+   */
+  textIndex() {
+    if (!this.fullTextSearchInstance) {
+      throw new Error(`full text search for ${this.modelName} must not be null.`);
+    }
+
+  }
+
+  /** full text search  */
+  textSearch(text: string) {
+    if (!this.fullTextSearchInstance) {
+      throw new Error(`full text search for ${this.modelName} must not be null.`);
+    }
+    if (!text || text.trim() === '') return;
+    this.fullTextSearchInstance.QUERY(text, {
+      SCORE: 'TFIDF',
+      SORT: true
+    })
+
+  }
+
+
+
   /**
    * Count all documents matching the query
    * @param {Object} query MongoDB-style query
@@ -494,7 +542,7 @@ export class Model extends EventEmitter {
    * Find one document matching the query
    * @param {Object} query MongoDB-style query
    */
-  findOne(query, callback = (...args: any[]) => {}) {
+  findOne(query, callback = (...args: any[]) => { }) {
     const cursor = new Cursor(this, query, (err, docs, callback) => {
       if (err) {
         return callback(err);
@@ -546,7 +594,7 @@ export class Model extends EventEmitter {
       cb = options;
       options = {};
     }
-    callback = once(cb || (() => {}));
+    callback = once(cb || (() => { }));
     multi = options.multi !== undefined ? options.multi : false;
     upsert = options.upsert !== undefined ? options.upsert : false;
 
@@ -683,7 +731,7 @@ export class Model extends EventEmitter {
    */
   save(
     doc: any | any[],
-    callback: (...args: any[]) => any = () => {},
+    callback: (...args: any[]) => any = () => { },
     quiet = false,
   ) {
     const docs = this.prepareDocumentForInsertion(
@@ -776,15 +824,16 @@ export class Model extends EventEmitter {
       cb = options;
       options = {};
     }
-    callback = cb || (() => {});
+    callback = cb || (() => { });
     const multi = options.multi !== undefined ? options.multi : false;
 
     const stream = Cursor.getMatchesStream(this, query);
     let indexed;
     stream.on('ids', (ids) => (indexed = ids._indexed));
-    stream.on('data', (d) => {
+    stream.on('data', async (d) => {
+      let v;
       try {
-        const v = d.val();
+        v = d.val();
         if (
           (indexed || docUtils.match(v, query)) &&
           (multi || removed.length === 0)
@@ -795,6 +844,14 @@ export class Model extends EventEmitter {
         }
       } catch (e) {
         err = e;
+      }
+
+      if (this.fullTextSearchInstance) {
+        try {
+          await this.fullTextSearchInstance.DELETE(v._id)
+        } catch (e) {
+          err = e;
+        }
       }
     });
     stream.on('ready', () => {

@@ -2,7 +2,7 @@
 
 # overview
 
-- this project is a fork of fergies-inverted-index v10.1.0_20220725
+- this project is a fork of fergies-inverted-index v11.0.0_20221220
 
 - https://github.com/fergiemcdowall/fergies-inverted-index /MIT
   - This is an inverted index library. 

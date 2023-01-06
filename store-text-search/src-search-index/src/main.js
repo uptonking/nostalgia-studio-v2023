@@ -1,15 +1,14 @@
 import fii from 'fergies-inverted-index';
 import LRU from 'lru-cache';
 
+import packageJSON from '../package.json' assert { type: 'json' };
 import reader from './read';
-import * as tp from './tokenisationPipeline';
+import * as tokenPipeline from './tokenisationPipeline';
 import writer from './write';
 
-// import packageJSON from '../package.json';
-
-const makeASearchIndex = (ops) =>
-  // eslint-disable-next-line
-  new Promise(async (resolve) => {
+const makeASearchIndex = (ops) => {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async (resolve) => {
     // TODO: the cache size should be an option
     const cache = new LRU({
       max: 1000,
@@ -45,7 +44,7 @@ const makeASearchIndex = (ops) =>
         IMPORT: w.IMPORT,
         PUT: w.PUT,
         PUT_RAW: w.PUT_RAW,
-        TOKENIZATION_PIPELINE_STAGES: tp,
+        TOKENIZATION_PIPELINE_STAGES: tokenPipeline,
 
         // public API (read)
         ALL_DOCUMENTS: r.ALL_DOCUMENTS,
@@ -68,6 +67,7 @@ const makeASearchIndex = (ops) =>
       }),
     );
   });
+}
 
 const initIndex = (ops = {}) =>
   new Promise((resolve, reject) => {
@@ -98,7 +98,7 @@ const initIndex = (ops = {}) =>
       storeVectors: true, // TODO: make a test for this being false
       tokenAppend: '#',
       tokenSplitRegex: /[\p{L}\d]+/gu,
-      tokenizer: tp.tokenizer,
+      tokenizer: tokenPipeline.tokenizer,
       ...ops,
     };
 
@@ -113,32 +113,29 @@ const initIndex = (ops = {}) =>
 const validateVersion = (si) =>
   new Promise((resolve, reject) => {
     const key = ['CREATED_WITH'];
-    // const version = 'search-index@' + packageJSON.version
-    const version = 'search-index@' + '3.4.1111';
+    const version = 'search-index@' + packageJSON.version
+    // const version = 'search-index@' + '3.4.1111';
     return si.INDEX.STORE.get(key)
       .then((v) =>
         // throw a rejection if versions do not match
         version === v
           ? resolve()
           : reject(
-              new Error(
-                'This index was created with ' +
-                  v +
-                  ', you are running ' +
-                  version,
-              ),
+            new Error(
+              'This index was created with ' +
+              v +
+              ', you are running ' +
+              version,
             ),
+          ),
       )
       .catch((e) => si.INDEX.STORE.put(key, version).then(resolve));
   });
 
-// module.exports = ops =>
-//   initIndex(ops)
-//     .then(makeASearchIndex)
-//     .then(si => validateVersion(si).then(() => si))
 
-export default function main(ops) {
-  return initIndex(ops)
-    .then(makeASearchIndex)
-    .then((si) => validateVersion(si).then(() => si));
+export default async function main(ops) {
+  const ops_2 = await initIndex(ops);
+  const si = await makeASearchIndex(ops_2);
+  await validateVersion(si);
+  return si;
 }

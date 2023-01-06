@@ -31,7 +31,8 @@
     "level-transcoder": "1.0.1111",
     "level-web-stream": "1.1.1111",
     "lodash": "^4.17.21",
-    "memory-level": "1.0.1111"
+    "memory-level": "1.0.1111",
+    "search-index": "3.4.1111"
   },
   "devDependencies": {
     "@types/async": "^2.0.0",

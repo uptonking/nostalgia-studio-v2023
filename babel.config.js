@@ -44,6 +44,7 @@ module.exports = function (api) {
     // '@babel/proposal-object-rest-spread',
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     ['@babel/plugin-proposal-class-properties', { loose: false }],
+    // ['@babel/plugin-syntax-import-assertions'],
     isEnvReactHotReload && 'react-refresh/babel',
   ].filter(Boolean);
 

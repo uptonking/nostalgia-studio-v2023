@@ -2,7 +2,7 @@
 
 # overview
 
-- this project is a fork of search-index v3.3.0_20221109
+- this project is a fork of search-index v3.4.0_20230105
   - full text search using level-like db
 
 - https://github.com/fergiemcdowall/search-index /MIT

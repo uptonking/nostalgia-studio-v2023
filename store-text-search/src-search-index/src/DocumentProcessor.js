@@ -1,3 +1,6 @@
+/**
+ *
+ */
 export default function documentProcessor(ops) {
   const isObject = (item) =>
     typeof item === 'object' && item !== null && !Array.isArray(item);

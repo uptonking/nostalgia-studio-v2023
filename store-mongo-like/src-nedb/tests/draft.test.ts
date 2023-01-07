@@ -33,6 +33,7 @@ const docsMovie = [
   { title: 'Seven', year: 1995, genres: ['Drama', 'Crime', 'Mystery'] },
   { title: 'Fight Club', year: 1999, genres: ['Drama'] },
   { title: 'Inception', year: 2010, genres: ['Sci-Fi', 'Action', 'Adventure'] },
+  { title: 'Gone Girl', year: 2014, genres: ['Drama', 'Mystry', 'Thriller'] },
   {
     title: 'Jurassic Park',
     year: 1993,

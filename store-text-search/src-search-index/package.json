@@ -18,13 +18,11 @@
     "server:nedb": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./tests/draft.test.ts",
     "server": "npm run server:crdt-hlc",
     "test": "npm run test:search-index",
-    "test1": "npm run test:search-index1",
-    "test:jest": "jest",
+    "test1": "npm run test:search-draft",
     "empty-sandbox": "rm -rf fii && rm -rf tests/sandbox && mkdir tests/sandbox",
-    "test:search-draft": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./tests/draft.test.ts",
     "test:search-index": "npm run empty-sandbox && esm-tape-runner 'tests/**/*test.js' --enable-source-maps --experimental-modules --experimental-json-modules --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node | tap-monkey",
-    "test:search-index1": "npm run empty-sandbox && esm-tape-runner tests/src/DELETE-test.js --enable-source-maps --experimental-modules --experimental-json-modules --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node   | tap-monkey",
-    "test:nedb-oneoff": "mocha --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,tsx 'tests/waterfall.test.ts' ",
+    "test:search-index1": "npm run empty-sandbox && esm-tape-runner tests/draft.test.js --enable-source-maps --experimental-modules --experimental-json-modules --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node   | tap-monkey",
+    "test:search-draft": "node --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --experimental-modules --experimental-json-modules 'tests/draft.test.js' ",
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {

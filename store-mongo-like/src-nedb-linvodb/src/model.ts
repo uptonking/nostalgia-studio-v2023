@@ -53,12 +53,10 @@ export class Model extends EventEmitter {
    * @internal
    */
   store: AbstractLevel<string, any>;
-  /** enable full text search for current data collection */
-  enableFullTextSearch = false;
-  /**
-  * @internal
-  */
-  fullTextSearchInstance: any;
+  /** full text search for current data collection
+   * @internal
+   */
+  textSearchInstance: any;
 
   /** default config for all documents, config `store.db` before constructor */
   static defaults: DatastoreDefaultsOptions = {
@@ -102,13 +100,6 @@ export class Model extends EventEmitter {
       this.ensureIndex(idx);
     });
 
-    this.enableFullTextSearch = this.options.enableFullTextSearch || false;
-    if (this.enableFullTextSearch) {
-      (async () => {
-        await this.initFullTextSearch();
-      })();
-    }
-
     this._pipe = new Bagpipe(1);
     this._pipe.pause();
     this._reTrQueue = new Bagpipe(LEVELUP_RE_TR_CONCURRENCY);
@@ -149,7 +140,7 @@ export class Model extends EventEmitter {
   }
 
   async initFullTextSearch() {
-    this.fullTextSearchInstance = await si({ name: this.modelName })
+    this.textSearchInstance = await si({ name: this.modelName });
   }
 
   /** insert a doc, and get current Model assigned the props of the doc  */
@@ -364,27 +355,34 @@ export class Model extends EventEmitter {
    * @param {Function} cb Optional callback, signature: err, insertedDoc
    *
    */
-  insert(
+  async insert(
     newDoc: Record<string, any> | Array<Record<string, any>>,
     callback = (...args: any[]) => { },
   ) {
     const isMultiDoc = Array.isArray(newDoc);
     let docs = isMultiDoc ? newDoc : [newDoc];
 
+    try {
+      if (this.textSearchInstance) {
+        // todo filter fields, PUT_RAW, extra metadata of the docs
+        const putRet = await this.textSearchInstance.PUT(docs);
+        // console.log(';; fts-putRet ', putRet);
+      }
+    } catch (e) {
+      console.error(';; fts-add-idx-err ', e);
+      return callback(e);
+    }
+
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
     // We also have to ensure indexes are up-to-date
-    this._pipe.push(this.buildIndexes, async () => {
+    this._pipe.push(this.buildIndexes, () => {
+      debugger;
       try {
         // add index to memory
         // this._insertInIndex(newDoc);
         docs = this._insertMultipleDocsInIndex(docs);
       } catch (e) {
         return callback(e);
-      }
-
-      if (this.fullTextSearchInstance) {
-        // todo filter fields, PUT_RAW, extra metadata of the docs
-        await this.fullTextSearchInstance.put(docs);
       }
 
       // Persist the document
@@ -489,26 +487,36 @@ export class Model extends EventEmitter {
    * ? better design
    */
   textIndex() {
-    if (!this.fullTextSearchInstance) {
-      throw new Error(`full text search for ${this.modelName} must not be null.`);
+    if (!this.textSearchInstance) {
+      throw new Error(
+        `full text search for ${this.modelName} must not be null.`,
+      );
     }
-
   }
 
-  /** full text search  */
-  textSearch(text: string) {
-    if (!this.fullTextSearchInstance) {
-      throw new Error(`full text search for ${this.modelName} must not be null.`);
+  /** full text search
+   * todo return cursor
+   */
+  async textSearch(input: string, options = { FACETS: [] }) {
+    if (!this.textSearchInstance) {
+      throw new Error(
+        `full text search for ${this.modelName} must not be null.`,
+      );
     }
-    if (!text || text.trim() === '') return;
-    this.fullTextSearchInstance.QUERY(text, {
-      SCORE: 'TFIDF',
-      SORT: true
-    })
+    if (!input || input.trim() === '') return;
 
+    return await this.textSearchInstance.QUERY(
+      {
+        AND: [...input.split(' ')],
+      },
+      {
+        SCORE: 'TFIDF',
+        SORT: true,
+        DOCUMENTS: true,
+        ...options,
+      },
+    );
   }
-
-
 
   /**
    * Count all documents matching the query
@@ -846,9 +854,9 @@ export class Model extends EventEmitter {
         err = e;
       }
 
-      if (this.fullTextSearchInstance) {
+      if (this.textSearchInstance) {
         try {
-          await this.fullTextSearchInstance.DELETE(v._id)
+          await this.textSearchInstance.DELETE(v._id);
         } catch (e) {
           err = e;
         }

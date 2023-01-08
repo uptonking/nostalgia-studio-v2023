@@ -25,7 +25,7 @@ describe('full text search for data model', () => {
     await fs.rm(testDb, { recursive: true, force: true });
   });
 
-  it('text search initialized correctly', async () => {
+  it('text search initialized correctly', () => {
     // console.log(';; db ', db);
     expect(db.textSearchInstance).to.exist;
     expect(db.textSearch).to.exist;
@@ -40,26 +40,32 @@ describe('full text search for data model', () => {
         description,
         date: '2014-10-03',
       },
-      async (err) => {
+      (err) => {
         expect(err).to.not.exist;
         // console.log(';; fts-err ', err);
 
-        const allDocs = await si.QUERY({ ALL_DOCUMENTS: true });
+        // const allDocs = await si.QUERY({ ALL_DOCUMENTS: true });
         // console.log(';; allIdx ', allDocs)
         // debugger;
 
         const opts = { FACETS: ['description'] };
-        const searchInput = description.split(' ').slice(-1)[0]
+        const searchInput = description.split(' ').slice(-1)[0];
 
-        const r1 = await db.textSearch(searchInput, opts);
-        const r2 = await db.textSearch(title, opts);
-        // console.log(';; r1 ', searchInput, r1);
+        // const r1 = await db.textSearch(searchInput, opts);
+        // const r2 = await db.textSearch(title, opts);
+        db.textSearch(searchInput, opts).then((r1) => {
+          console.log(';; r1 ', searchInput, r1);
+          expect(r1.RESULT_LENGTH).to.be.gt(0);
+
+          db.textSearch(title, opts).then((r2) => {
+            console.log(';; r2 ', r2);
+            expect(r2.RESULT_LENGTH).to.equal(0);
+            done();
+          }).catch(done);
+        }).catch(done);
 
         // fixme ❎ done的位置放在最后会异常
-        setTimeout(done, 50);
-
-        expect(r1.RESULT_LENGTH).to.be.gt(0);
-        expect(r2.RESULT_LENGTH).to.equal(0);
+        // setTimeout(done, 50);
 
         console.log(';; done2 '); // never run to here
       },

@@ -4,7 +4,7 @@ import hat from 'hat';
 import { EntryStream } from 'level-read-stream';
 import { MemoryLevel } from 'memory-level';
 import path from 'path';
-import si from 'search-index';
+import si from 'store-search-text/src-search-index/src/node';
 
 import { Cursor } from './cursor';
 import * as docUtils from './document';
@@ -355,23 +355,12 @@ export class Model extends EventEmitter {
    * @param {Function} cb Optional callback, signature: err, insertedDoc
    *
    */
-  async insert(
+  insert(
     newDoc: Record<string, any> | Array<Record<string, any>>,
     callback = (...args: any[]) => { },
   ) {
     const isMultiDoc = Array.isArray(newDoc);
     let docs = isMultiDoc ? newDoc : [newDoc];
-
-    try {
-      if (this.textSearchInstance) {
-        // todo filter fields, PUT_RAW, extra metadata of the docs
-        const putRet = await this.textSearchInstance.PUT(docs);
-        // console.log(';; fts-putRet ', putRet);
-      }
-    } catch (e) {
-      console.error(';; fts-add-idx-err ', e);
-      return callback(e);
-    }
 
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
     // We also have to ensure indexes are up-to-date
@@ -384,21 +373,38 @@ export class Model extends EventEmitter {
       } catch (e) {
         return callback(e);
       }
+      // console.log(';; post-buildIdx ', docs, this.textSearchInstance);
 
-      // Persist the document
-      async.map(
-        docs,
-        (d, cb) => {
-          this.emit('insert', d);
-          // persist doc to leveldb
-          this._persist(d, cb);
-        },
-        (err, docsInCb) => {
-          // console.log(';; afterInsertCb-docs ', docs, docsInCb);
-          this.emit('inserted', docs);
-          callback(err || null, err ? undefined : isMultiDoc ? docs : docs[0]);
-        },
-      );
+
+      try {
+        if (this.textSearchInstance) {
+          // todo filter fields, PUT_RAW, extra metadata of the docs
+          this.textSearchInstance.PUT(docs).then((putRet) => {
+            console.log(';; fts-putRet ', putRet);
+
+            // Persist the document
+            async.map(
+              docs,
+              (d, cb) => {
+                this.emit('insert', d);
+                // persist doc to leveldb
+                this._persist(d, cb);
+              },
+              (err, docsInCb) => {
+                // console.log(';; afterInsertCb-docs ', docs, docsInCb);
+                this.emit('inserted', docs);
+                callback(
+                  err || null,
+                  err ? undefined : isMultiDoc ? docs : docs[0],
+                );
+              },
+            );
+          });
+        }
+      } catch (e) {
+        console.error(';; fts-add-idx-err ', e);
+        return callback(e);
+      }
     });
   }
 

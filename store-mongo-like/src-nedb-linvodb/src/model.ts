@@ -16,6 +16,7 @@ import type {
 } from './types/common';
 import { Bagpipe } from './utils/bagpipe';
 import { EventEmitter } from './utils/event-emitter';
+import { createIndexPutTokenizer, tokenizeChinese } from './utils/search';
 import { once } from './utils/utils';
 
 /** We have to keep those unique by filename because they're locked */
@@ -139,8 +140,19 @@ export class Model extends EventEmitter {
     this._pipe.resume();
   }
 
-  async initFullTextSearch() {
-    this.textSearchInstance = await si({ name: '__fts__' + this.filename });
+  /**
+   * init full text engine, using search-index
+   * @param options search-index init options https://github.com/fergiemcdowall/search-index/blob/master/docs/API.md
+   */
+  async initFullTextSearch(options: { [k: string]: any } = {}) {
+    const { storeRawDocs, ...restOps } = options;
+    this.options.textSearch = {
+      storeRawDocs: storeRawDocs || true,
+    };
+    this.textSearchInstance = await si({
+      name: '__fts__' + this.filename,
+      ...restOps,
+    });
   }
 
   /** insert a doc, and get current Model assigned the props of the doc  */
@@ -376,11 +388,11 @@ export class Model extends EventEmitter {
    *
    */
   insert(
-    newDoc: Record<string, any> | Array<Record<string, any>>,
+    docOrDocs: { [k: string]: unknown } | Array<{ [k: string]: unknown }>,
     callback = (...args: any[]) => { },
   ) {
-    const isMultiDoc = Array.isArray(newDoc);
-    let docs = isMultiDoc ? newDoc : [newDoc];
+    const isMultiDoc = Array.isArray(docOrDocs);
+    let docs = isMultiDoc ? docOrDocs : [docOrDocs];
 
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
     // We also have to ensure indexes are up-to-date
@@ -418,10 +430,16 @@ export class Model extends EventEmitter {
       try {
         if (this.textSearchInstance) {
           // todo filter fields, PUT_RAW, extra metadata of the docs
-          this.textSearchInstance.PUT(docs).then((putRet) => {
-            // console.log(';; fts-putRet ', putRet);
-            persistDocs();
-          });
+          this.textSearchInstance
+            .PUT(docs, {
+              caseSensitive: false,
+              storeRawDocs: this.options.textSearch.storeRawDocs,
+              tokenizer: createIndexPutTokenizer(this.textSearchInstance),
+            })
+            .then((putRet) => {
+              // console.log(';; fts-putRet ', putRet);
+              persistDocs();
+            });
         } else {
           persistDocs();
         }
@@ -516,19 +534,33 @@ export class Model extends EventEmitter {
 
   /** add doc to full text search.
    * ? better design
+   * - designed for add extra metadata, like image desc
    */
-  textIndex() {
+  async textIndex(
+    docOrDocs: { [k: string]: unknown } | Array<{ [k: string]: unknown }>,
+    options = {},
+  ) {
     if (!this.textSearchInstance) {
       throw new Error(
         `full text search for ${this.modelName} must not be null.`,
       );
     }
+    const isMultiDoc = Array.isArray(docOrDocs);
+    const docs = isMultiDoc ? docOrDocs : [docOrDocs];
+    if (!docs.length) return;
+    const res = await this.textSearchInstance.PUT(docs, {
+      caseSensitive: false,
+      storeRawDocs: this.options.textSearch.storeRawDocs,
+      tokenizer: createIndexPutTokenizer(this.textSearchInstance),
+      ...options,
+    });
+    // this.emit('ftsIndexed', res);
   }
 
-  /** full text search
+  /** full text search.
    * todo return cursor
    */
-  async textSearch(input: string, options = { FACETS: [] }) {
+  async textSearch(input: string, options = {}) {
     if (!this.textSearchInstance) {
       throw new Error(
         `full text search for ${this.modelName} must not be null.`,
@@ -538,7 +570,8 @@ export class Model extends EventEmitter {
 
     return await this.textSearchInstance.QUERY(
       {
-        AND: [...input.trim().split(' ')],
+        // AND: [...input.trim().split(' ')],
+        AND: tokenizeChinese(input.trim()),
       },
       {
         // SCORE: 'TFIDF',

@@ -1,6 +1,6 @@
 import { AbstractLevel } from 'abstract-level';
 
-interface SearchIndexOptions {
+export interface SearchIndexOptions {
   db?: AbstractLevel<string, unknown>;
   cacheLength?: number | undefined;
   caseSensitive?: boolean | undefined;
@@ -168,7 +168,7 @@ interface TokenizationPipelineStages {
   SCORE_TERM_FREQUENCY: TokenizerStage;
 }
 
-interface SearchIndex {
+export interface SearchIndex {
   INDEX: any;
   QUERY(query: Token, options?: QueryOptions): Promise<QueryResult>;
   SEARCH(token: Token): Promise<QueryResult>;

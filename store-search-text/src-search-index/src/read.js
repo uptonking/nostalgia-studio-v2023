@@ -26,10 +26,10 @@ export default function read(ops, cache) {
   const DOCUMENTS = (...requestedDocs) =>
     requestedDocs.length
       ? Promise.all(
-          requestedDocs.map((_id) =>
-            ops.fii.STORE.get(['DOC_RAW', _id]).catch((e) => null),
-          ),
-        )
+        requestedDocs.map((_id) =>
+          ops.fii.STORE.get(['DOC_RAW', _id]).catch((e) => null),
+        ),
+      )
       : ALL_DOCUMENTS();
 
   const DOCUMENT_VECTORS = (...requestedDocs) =>
@@ -126,20 +126,20 @@ export default function read(ops, cache) {
       resolve(
         scoreOps.TYPE === 'TFIDF'
           ? DOCUMENT_COUNT().then((docCount) =>
-              results.map((result, _, resultSet) => {
-                const idf = Math.log((docCount + 1) / resultSet.length);
-                result._score = Number(
-                  (result._match || [])
-                    .filter(filterFields)
-                    .reduce((acc, cur) => acc + idf * Number(cur.SCORE), 0)
-                    // TODO: make precision an option
-                    .toFixed(2),
-                );
-                return result;
-              }),
-            )
+            results.map((result, _, resultSet) => {
+              const idf = Math.log((docCount + 1) / resultSet.length);
+              result._score = Number(
+                (result._match || [])
+                  .filter(filterFields)
+                  .reduce((acc, cur) => acc + idf * Number(cur.SCORE), 0)
+                  // TODO: make precision an option
+                  .toFixed(2),
+              );
+              return result;
+            }),
+          )
           : scoreOps.TYPE === 'PRODUCT'
-          ? results.map((r) => ({
+            ? results.map((r) => ({
               ...r,
               _score: Number(
                 filterMatch(r._match)
@@ -147,37 +147,38 @@ export default function read(ops, cache) {
                   .toFixed(2),
               ),
             }))
-          : scoreOps.TYPE === 'CONCAT'
-          ? results.map((r) => ({
-              ...r,
-              _score: filterMatch(r._match).reduce(
-                (acc, cur) => acc + cur.SCORE,
-                '',
-              ),
-            }))
-          : scoreOps.TYPE === 'SUM'
-          ? results.map((r) => ({
-              ...r,
-              _score: Number(
-                filterMatch(r._match)
-                  .reduce((acc, cur) => acc + Number(cur.SCORE), 0)
-                  .toFixed(2),
-              ), // TODO: make precision an option
-            }))
-          : scoreOps.TYPE === 'VALUE'
-          ? results.map((r) => ({
-              ...r,
-              _score: filterMatch(r._match).reduce(
-                (acc, cur) => acc + cur.VALUE,
-                '',
-              ),
-            }))
-          : null,
+            : scoreOps.TYPE === 'CONCAT'
+              ? results.map((r) => ({
+                ...r,
+                _score: filterMatch(r._match).reduce(
+                  (acc, cur) => acc + cur.SCORE,
+                  '',
+                ),
+              }))
+              : scoreOps.TYPE === 'SUM'
+                ? results.map((r) => ({
+                  ...r,
+                  _score: Number(
+                    filterMatch(r._match)
+                      .reduce((acc, cur) => acc + Number(cur.SCORE), 0)
+                      .toFixed(2),
+                  ), // TODO: make precision an option
+                }))
+                : scoreOps.TYPE === 'VALUE'
+                  ? results.map((r) => ({
+                    ...r,
+                    _score: filterMatch(r._match).reduce(
+                      (acc, cur) => acc + cur.VALUE,
+                      '',
+                    ),
+                  }))
+                  : null,
       ),
     );
   };
 
   // TODO: maybe add a default page size?
+  /** parseJsonQuery */
   const SEARCH = (q, qops) => {
     return parseJsonQuery(
       {
@@ -255,8 +256,7 @@ export default function read(ops, cache) {
       return r;
     });
 
-  // This function reads queries in a JSON format and then translates them to
-  // Promises
+  /** reads queries in a JSON format and then translates them to Promises */
   const parseJsonQuery = (q, options = {}) => {
     const runQuery = (cmd) => {
       // if string or object with only FIELD or VALUE, assume
@@ -288,35 +288,35 @@ export default function read(ops, cache) {
     const formatResults = (result) =>
       result.RESULT
         ? Object.assign(result, {
-            RESULT_LENGTH: result.RESULT.length,
-          })
+          RESULT_LENGTH: result.RESULT.length,
+        })
         : {
-            RESULT: result,
-            RESULT_LENGTH: result.length,
-          };
+          RESULT: result,
+          RESULT_LENGTH: result.length,
+        };
 
     // APPEND DOCUMENTS IF SPECIFIED
     const appendDocuments = (result) =>
       options.DOCUMENTS
         ? DOCUMENTS(...result.RESULT.map((doc) => doc._id)).then((documents) =>
-            Object.assign(result, {
-              RESULT: result.RESULT.map((doc, i) =>
-                Object.assign(doc, {
-                  _doc: documents[i],
-                }),
-              ),
-            }),
-          )
+          Object.assign(result, {
+            RESULT: result.RESULT.map((doc, i) =>
+              Object.assign(doc, {
+                _doc: documents[i],
+              }),
+            ),
+          }),
+        )
         : result;
 
     // SCORE IF SPECIFIED
     const score = (result) =>
       options.SCORE
         ? SCORE(result.RESULT, options.SCORE).then((scoredResult) =>
-            Object.assign(result, {
-              RESULT: scoredResult,
-            }),
-          )
+          Object.assign(result, {
+            RESULT: scoredResult,
+          }),
+        )
         : result;
 
     // SORT IF SPECIFIED
@@ -325,8 +325,8 @@ export default function read(ops, cache) {
         result,
         options.SORT
           ? {
-              RESULT: SORT(result.RESULT, options.SORT),
-            }
+            RESULT: SORT(result.RESULT, options.SORT),
+          }
           : {},
       );
 
@@ -334,10 +334,10 @@ export default function read(ops, cache) {
     const buckets = (result) =>
       options.BUCKETS
         ? ops.fii.BUCKETS(...options.BUCKETS).then((bkts) =>
-            Object.assign(result, {
-              BUCKETS: ops.fii.AGGREGATION_FILTER(bkts, result.RESULT),
-            }),
-          )
+          Object.assign(result, {
+            BUCKETS: ops.fii.AGGREGATION_FILTER(bkts, result.RESULT),
+          }),
+        )
         : result;
 
     // FACETS IF SPECIFIED
@@ -383,9 +383,9 @@ export default function read(ops, cache) {
     const weight = (result) =>
       options.WEIGHT
         ? {
-            RESULT: WEIGHT(result.RESULT, options.WEIGHT),
-            ...result,
-          }
+          RESULT: WEIGHT(result.RESULT, options.WEIGHT),
+          ...result,
+        }
         : result;
 
     return runQuery(q)
@@ -405,8 +405,8 @@ export default function read(ops, cache) {
       return cache.has(cacheKey)
         ? resolve(cache.get(cacheKey))
         : q
-            .then((res) => cache.set(cacheKey, res))
-            .then(() => resolve(cache.get(cacheKey)));
+          .then((res) => cache.set(cacheKey, res))
+          .then(() => resolve(cache.get(cacheKey)));
     });
 
   return {
@@ -423,8 +423,8 @@ export default function read(ops, cache) {
     FACETS,
     PAGE,
     QUERY: (q, qops) => tryCache(parseJsonQuery(q, qops), { QUERY: [q, qops] }),
-    SCORE,
     SEARCH: (q, qops) => tryCache(SEARCH(q, qops), { SEARCH: [q, qops] }),
+    SCORE,
     SORT,
   };
 }

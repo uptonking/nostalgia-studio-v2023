@@ -16,6 +16,7 @@ export default function write(ops, cache, queue) {
       ops.fii.STORE.put(['DOCUMENT_COUNT'], Number(count) - increment),
     );
 
+  /** use `fii.PUT` and `_PUT_RAW` to persist index  */
   const _PUT = (docs, putOptions) => {
     cache.clear();
 
@@ -39,6 +40,7 @@ export default function write(ops, cache, queue) {
       });
   };
 
+  /** use `fii.STORE.put` to persist doc id and optional contents */
   const _PUT_RAW = (docs, ids, dontStoreValue) => {
     cache.clear();
     return Promise.all(

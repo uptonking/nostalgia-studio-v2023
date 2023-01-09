@@ -115,6 +115,31 @@ describe('✨ full text search for data model', () => {
     });
   });
 
+  it('chinese+number is tokenized; english+number is not tokenized', (done) => {
+    const titleCn = '快速玩转飞书多维表格';
+    const docTest = {
+      title: titleCn + Math.random(),
+      description:
+        '飞书多维表格是一款以表格为基础的新一代效率应用。它具备表格的轻盈和业务系统的强大，融合了在线协作、信息管理和可视化能力，能够自适应团队思维和业务发展需求，是具备个性化能力的业务管理工具。',
+      field1: title + Math.random(),
+    };
+    db.insert(docTest, (err) => {
+      expect(err).to.not.exist;
+
+      db.textSearch(titleCn.slice(-2)).then((r1) => {
+        expect(r1.RESULT_LENGTH).to.be.gt(0);
+
+        db.textSearch(title).then((r2) => {
+          // still tokenize first
+          expect(r2.RESULT_LENGTH).to.equal(0);
+          // console.dir(r2, { depth: null });
+
+          done();
+        });
+      });
+    });
+  });
+
   it('search by facets', (done) => {
     db.insert(docTest, (err) => {
       expect(err).to.not.exist;
@@ -137,5 +162,15 @@ describe('✨ full text search for data model', () => {
         });
       });
     });
+  });
+
+  it('use textIndex to add text search index', async () => {
+    const result1 = await db.textSearch(title);
+    expect(result1.RESULT_LENGTH).to.equal(0);
+    // console.dir(result1, { depth: null });
+    const res = await db.textIndex(docTest);
+    const result2 = await db.textSearch(title);
+    expect(result2.RESULT_LENGTH).to.equal(1);
+    // console.dir(result2, { depth: null });
   });
 });

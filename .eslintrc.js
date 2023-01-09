@@ -43,7 +43,7 @@ module.exports = {
     'no-empty': 1,
     'no-return-assign': 1,
     'no-inner-declarations': 1,
-    'no-promise-executor-return': 1,
+    'no-promise-executor-return': 0,
     'no-eq-null': 1,
     'no-sparse-arrays': 1,
     'no-new-object': 1,

@@ -6,15 +6,15 @@ import reader from './read';
 import * as tokenPipeline from './tokenisationPipeline';
 import writer from './write';
 
+// import type { SearchIndexOptions } from './types/common';
+
+/** create reader/writer and public api */
 const makeASearchIndex = (ops) => {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve) => {
     // TODO: the cache size should be an option
-    const cache = new LRU({
-      max: 1000,
-    });
+    const cache = new LRU({ max: 1000 });
 
-    // eslint-disable-next-line
     const queue = new (await import('p-queue')).default({ concurrency: 1 });
 
     // TODO: should be just ops?
@@ -58,6 +58,7 @@ const makeASearchIndex = (ops) => {
         EXPORT: ops.fii.EXPORT,
         FACETS: r.FACETS,
         FIELDS: ops.fii.FIELDS,
+        // 👇🏻 underlying inverted-index instance
         INDEX: ops.fii,
         LAST_UPDATED: ops.fii.LAST_UPDATED,
         MAX: ops.fii.MAX,
@@ -69,9 +70,10 @@ const makeASearchIndex = (ops) => {
   });
 }
 
-const initIndex = (ops = {}) =>
+/** create underlying inverted-index instance with merged options */
+const initIndex = (options = {}) =>
   new Promise((resolve, reject) => {
-    ops = {
+    options = {
       cacheLength: 1000,
       caseSensitive: false,
       docExistsSpace: 'DOC_RAW',
@@ -99,13 +101,13 @@ const initIndex = (ops = {}) =>
       tokenAppend: '#',
       tokenSplitRegex: /[\p{L}\d]+/gu,
       tokenizer: tokenPipeline.tokenizer,
-      ...ops,
+      ...options,
     };
 
-    return fii(ops).then((aNewFii) =>
+    return fii(options).then((aNewFii) =>
       resolve({
         fii: aNewFii,
-        ...ops,
+        ...options,
       }),
     );
   });
@@ -133,6 +135,11 @@ const validateVersion = (si) =>
   });
 
 
+/**
+ * create full text search instance
+ * @param {*} ops
+ * @returns
+ */
 export default async function main(ops) {
   const ops_2 = await initIndex(ops);
   const si = await makeASearchIndex(ops_2);

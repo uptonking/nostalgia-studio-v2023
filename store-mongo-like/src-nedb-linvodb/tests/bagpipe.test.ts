@@ -5,7 +5,7 @@ import { Bagpipe } from '../src/utils/bagpipe';
 
 const should = chai.should();
 
-describe('Bagpipe Utils', function () {
+describe('✨ Bagpipe Utils', function () {
   const async = (ms, callback) => {
     setTimeout(() => callback(null, {}), ms);
   };

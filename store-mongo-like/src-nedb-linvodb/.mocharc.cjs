@@ -5,6 +5,8 @@ module.exports = {
   'node-option': [
     'experimental-loader=ts-node/esm/transpile-only',
     'experimental-specifier-resolution=node',
+    'experimental-modules',
+    'experimental-json-modules',
   ], // without leading "--", also V8 flags
   reporter: 'spec',
   // 'reporter-option': ['foo=bar', 'baz=quux'], // array, not object

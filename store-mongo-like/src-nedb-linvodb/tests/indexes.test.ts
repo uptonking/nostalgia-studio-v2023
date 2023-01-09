@@ -5,7 +5,7 @@ import { Index } from '../src/indexes';
 
 should();
 
-describe('Indexes', function () {
+describe('✨ Indexes for fields in memory', function () {
   describe('Insertion', function () {
     it('Can insert pointers to documents in the index correctly when they have the field', function () {
       const idx = new Index({ fieldName: '_id' });

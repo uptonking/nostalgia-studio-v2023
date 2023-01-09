@@ -12,7 +12,7 @@ should();
 
 const testDb = 'tests/testdata/test3.db';
 
-describe('Schema', function () {
+describe('✨ Schema', function () {
   let d: Model;
 
   beforeEach(async () => {

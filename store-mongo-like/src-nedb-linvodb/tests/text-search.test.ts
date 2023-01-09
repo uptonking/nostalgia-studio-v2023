@@ -13,7 +13,7 @@ const docTest = {
   date: '2014-10-03',
 };
 
-describe('full text search for data model', () => {
+describe('✨ full text search for data model', () => {
   let db: Model;
   let si: any;
 

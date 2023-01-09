@@ -6,5 +6,5 @@
     "module": "esnext",
     "moduleResolution": "node"
   },
-  "include": ["src", "tests", "bak/bak.ts"]
+  "include": ["src", "tests", "bak"]
 }

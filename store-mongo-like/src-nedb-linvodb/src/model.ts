@@ -195,7 +195,7 @@ export class Model extends EventEmitter {
     /**
      * todo, migrate to level-web-stream without on data/end events
      */
-    const addListenersToStream = () => {
+    const addListenersToReadStream = () => {
       stream = new EntryStream(this.store);
       stream
         .on('error', (err) => cb(err))
@@ -233,12 +233,16 @@ export class Model extends EventEmitter {
     };
 
     try {
+      // if (process.env.NODE_ENV !== 'production') {
       if (this.store.status !== 'open') {
         // /workaround for tests
-        this.store.open(() => addListenersToStream());
+        this.store.open(() => addListenersToReadStream());
       } else {
-        addListenersToStream();
+        addListenersToReadStream();
       }
+      // } else {
+      //   addListenersToReadStream();
+      // }
     } catch (err) {
       // console.log(';; bd-idx-lvl-db ', this.store.status);
       console.error(err);
@@ -387,7 +391,7 @@ export class Model extends EventEmitter {
         // this._insertInIndex(newDoc);
         docs = this._insertMultipleDocsInIndex(docs);
       } catch (e) {
-        console.error(';; insertAVLErr ', e);
+        // console.error(';; insertAVLErr ', e);
         return callback(e);
       }
 

@@ -10,7 +10,7 @@ should();
 
 const testDb = 'tests/testdata/test.db';
 
-describe('Cursor', function () {
+describe('✨ Cursor', function () {
   let d: Model;
 
   beforeEach(function (done) {

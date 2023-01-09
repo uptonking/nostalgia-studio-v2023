@@ -1,6 +1,6 @@
 # linvodb
 
-> open source js database designed for airtable-like pivot views
+> powerful js database designed for airtable-like pivot views, with mongo-like queries
 
 # overview
 - this project is a fork of linvodb v20210507
@@ -19,8 +19,6 @@
 
 ## dev-to-list
 
-- fix-tests db.test.ts, Can't insert key **, it violates the unique constraint
-
 - merge各个仓库的pr
 # testing
 - 迁移web版tests
@@ -31,13 +29,3 @@
 
 # more
 - deps backup
-
-```
-"levelup": "^5",
-"encoding-down": "^5.0.4",
-"leveldown": "^6",
-"@types/encoding-down": "^5.0.0",
-"@types/levelup": "^5.0.0",
-"level-js": "^2.2.4",
-
-```

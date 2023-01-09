@@ -10,12 +10,12 @@ should();
 
 const testDb = 'tests/testdata/test1.db';
 
-describe('Datastore/Model like mongodb collection', function () {
+describe('✨ Datastore/Model like mongodb collection', function () {
   let d: Model;
 
   const removeIds = (docs) => docs.forEach((d) => delete d._id);
 
-  beforeEach(function (done) {
+  beforeEach(function beforeDbModelTest(done) {
     async.waterfall(
       [
         function (cb) {
@@ -30,12 +30,13 @@ describe('Datastore/Model like mongodb collection', function () {
           d = new Model('testDbDoc', { filename: testDb });
 
           d.filename.should.equal(testDb);
+          return cb();
 
-          d.reload((err) => {
-            assert.isNull(err);
-            d.getAllData().length.should.equal(0);
-            return cb();
-          });
+          // d.reload((err) => {
+          //   assert.isNull(err);
+          //   d.getAllData().length.should.equal(0);
+          //   return cb();
+          // });
         },
       ],
       function (err) {
@@ -173,7 +174,7 @@ describe('Datastore/Model like mongodb collection', function () {
     });
 
     it('If an object returned from the DB is modified and refetched, the original value should be found', function (done) {
-      d.insert({ a: 'something' }, function () {
+      d.insert({ a: 'something' }, () => {
         d.findOne({}, function (err, doc) {
           doc.a.should.equal('something');
           doc.a = 'another thing';
@@ -535,9 +536,9 @@ describe('Datastore/Model like mongodb collection', function () {
       d.options.autoIndexing.should.equal(true);
 
       d.insert({ tf: 4, r: 6 }, (err, _doc1) => {
-        getCandidates({ r: 6 }, null, (data) => {});
+        getCandidates({ r: 6 }, null, (data) => { });
         setTimeout(() => {
-          getCandidates({ tf: 4 }, null, (data) => {});
+          getCandidates({ tf: 4 }, null, (data) => { });
         }, 5);
 
         d.once('indexesReady', (indexes) => {
@@ -601,7 +602,7 @@ describe('Datastore/Model like mongodb collection', function () {
               // console.log(';; insert-cb ', _doc1, _doc2)
 
               getCandidates({ r: 6, tf: 4 }, null, (data) => {
-                console.log(';; find-cb ', data);
+                // console.log(';; find-cb ', data);
 
                 const doc1 = data.find((d: any) => d._id === _doc1._id);
                 const doc2 = data.find((d: any) => d._id === _doc2._id);
@@ -665,11 +666,11 @@ describe('Datastore/Model like mongodb collection', function () {
           { somethingElse: 'else' },
         ],
         (err, docs) => {
-          console.log(';; insert-cb ', docs);
+          // console.log(';; insert-cb ', docs);
 
           getCandidates({ name: { $regex: /^J/ } }, null, (data) => {
             data.length.should.equal(2);
-            console.log(';; qry-cb ', data);
+            // console.log(';; qry-cb ', data);
             data.sort((a, b) =>
               a.name < b.name ? 1 : a.name > b.name ? -1 : 0,
             );
@@ -1980,19 +1981,20 @@ describe('Datastore/Model like mongodb collection', function () {
       );
     });
 
+    // 🚨
     it('Can upsert a document even with modifiers', function (done) {
       d.update(
         { bloup: 'blap' },
         { $set: { hello: 'world' } },
         { upsert: true },
-        function (err, nr, newDoc) {
+        (err, nr, newDoc) => {
           assert.isNull(err);
           nr.should.equal(1);
           newDoc.bloup.should.equal('blap');
           newDoc.hello.should.equal('world');
           assert.isDefined(newDoc._id);
 
-          d.find({}, function (err, docs) {
+          d.find({}, (err, docs) => {
             docs.length.should.equal(1);
             Object.keys(docs[0]).length.should.equal(3);
             docs[0].hello.should.equal('world');

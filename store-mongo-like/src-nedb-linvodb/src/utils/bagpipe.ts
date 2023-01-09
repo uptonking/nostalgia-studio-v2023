@@ -1,7 +1,5 @@
 import { EventEmitter } from './event-emitter';
 
-// import { EventEmitter } from '@datalking/utils-vanillajs';
-
 export type BagpipeOptions = {
   /** use ratio with limit */
   ratio?: number;
@@ -86,7 +84,7 @@ export class Bagpipe extends EventEmitter {
 
       const callback = args[args.length - 1];
       if (typeof callback !== 'function') {
-        args.push(() => {});
+        args.push(() => { });
       }
       if (this.options.disabled || this.limit < 1) {
         method.apply(null, args);

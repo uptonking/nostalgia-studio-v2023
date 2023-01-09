@@ -5,7 +5,7 @@ import * as document from '../src/document';
 
 should();
 
-describe('Document', function () {
+describe('✨ Document', function () {
   describe('Serialization, deserialization', function () {
     it('Can serialize and deserialize str with line-break "\n" ', function () {
       let a;

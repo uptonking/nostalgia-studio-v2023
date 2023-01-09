@@ -1,6 +1,7 @@
 {
   "name": "linvodb",
   "version": "3.25.1111",
+  "description": "powerful js database designed for airtable-like pivot views, with mongo-like queries",
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",

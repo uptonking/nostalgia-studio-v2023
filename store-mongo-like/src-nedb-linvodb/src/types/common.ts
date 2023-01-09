@@ -26,8 +26,6 @@ export interface DataStoreOptionsProps {
    * - If specified, it overrides default string comparison which is not well adapted to non-US characters in particular accented letters.
    * - Native `localCompare` will most of the time be the right choice */
   compareStrings?: (a: string, b: string) => number;
-  /** default false. whether enable full text search for this data collection. */
-  enableFullTextSearch?: boolean;
   /** options passed to FTS constructor */
   fullTextSearchOptions?: Record<string, unknown>;
 }

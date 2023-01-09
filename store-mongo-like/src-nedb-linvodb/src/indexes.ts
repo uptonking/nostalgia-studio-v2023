@@ -62,7 +62,7 @@ export class Index {
   /** ❓ 在Model.save-ready方法中，updateIndexes前是true */
   ready = false;
   treeOptions: {
-    unique: any;
+    unique: boolean;
     compareKeys: (a: any, b: any) => any;
     checkValueEquality: (a: any, b: any) => boolean;
   };
@@ -95,7 +95,7 @@ export class Index {
 
   /**
    * Reset an index
-   * - new BinarySearchTree + ready=false
+   * - `new BinarySearchTree()` + `ready=false`
    */
   reset() {
     this.tree = new BinarySearchTree(this.treeOptions);
@@ -109,7 +109,6 @@ export class Index {
    */
   insert(doc) {
     let key;
-    let val;
     let keys;
     let i;
     let failingI;

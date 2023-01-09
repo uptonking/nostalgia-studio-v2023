@@ -1,5 +1,6 @@
 import async from 'async';
 import { assert, should } from 'chai';
+import fs from 'fs/promises';
 import _ from 'lodash';
 import rimraf from 'rimraf';
 
@@ -14,29 +15,77 @@ const testDb = 'tests/testdata/test3.db';
 describe('Schema', function () {
   let d: Model;
 
-  beforeEach(function (done) {
-    async.waterfall(
-      [
-        function (cb) {
-          if (!d) return cb();
-          d.store.close(cb);
-        },
-        function (cb) {
-          rimraf(testDb, cb);
-        },
-        function (cb) {
-          d = new Model('testDb', { filename: testDb });
-          d.filename.should.equal(testDb);
+  beforeEach(async () => {
+    if (d) {
+      try {
+        await d.store.close();
+      } catch (e) {
+        await d.store.close();
+      }
+    }
+    await fs.rm(testDb, { recursive: true, force: true });
+    d = new Model('testDb', { filename: testDb });
+    d.filename.should.equal(testDb);
+    Object.keys(d.indexes).length.should.equal(1);
+    // console.log(
+    //   ';; bf-each1 ',
+    //   d.store.status,
+    //   d.getAllData().length,
+    //   Object.keys(d.indexes),
+    // );
+  });
 
-          d.reload((err) => {
-            assert.isNull(err);
-            d.getAllData().length.should.equal(0);
-            return cb();
-          });
-        },
-      ],
-      done,
-    );
+  // beforeEach(function (done) {
+  //   async.waterfall(
+  //     [
+  //       function (cb) {
+  //         if (!d) return cb();
+  //         try {
+  //           d.store.close(cb);
+  //         } catch (e) {
+  //           d.store.close(cb);
+  //         }
+  //       },
+  //       function (cb) {
+  //         // console.log(';; bf-each0 ', d?.store?.status);
+  //         rimraf(testDb, cb);
+  //       },
+  //       function (cb) {
+  //         // d = null;
+  //         d = new Model('testDb', { filename: testDb });
+  //         d.filename.should.equal(testDb);
+  //         Object.keys(d.indexes).length.should.equal(1);
+  //         console.log(
+  //           ';; bf-each1 ',
+  //           d.store.status,
+  //           d.getAllData().length,
+  //           Object.keys(d.indexes),
+  //         );
+
+  //         d.reload((err) => {
+  //           d.resetIndexes();
+  //           assert.isNull(err);
+  //           d.getAllData().length.should.equal(0);
+  //           return cb();
+  //         });
+  //       },
+  //     ],
+  //     done,
+  //   );
+  // });
+
+  afterEach(async () => {
+    d.resetIndexes();
+    if (d.store.status !== 'closed') {
+      await d.store.clear();
+      // console.log(';; db-size ', d.getAllData().length);
+      // d.getAllData().length.should.equal(0);
+      try {
+        await d.store.close();
+      } catch (e) {
+        await d.store.close();
+      }
+    }
   });
 
   describe('Indexing', function () {
@@ -92,10 +141,12 @@ describe('Schema', function () {
       assert.isDefined(d.indexes['address.city']);
 
       d.indexes.name.sparse.should.equal(true);
+
       d.indexes.name.unique.should.equal(true);
 
       d.find({ name: 'Dwight' }, (err, docs) => {
         assert.isNull(err);
+        // console.log(';; docs ', docs);
 
         docs.length.should.equal(1);
         docs[0].name.should.equal('Dwight');
@@ -105,8 +156,6 @@ describe('Schema', function () {
 
         done();
       });
-
-      // done();
     });
   }); // End of Indexing
 
@@ -317,17 +366,19 @@ describe('Schema', function () {
         },
       });
 
-      const doc: any = d.getRawDocOfModel({
-        name: 'Kelly',
-        department: 'support',
-        address: { city: 'Scranon', number: '24' },
-        age: '28',
+      d.reload(() => {
+        const doc: any = d.getRawDocOfModel({
+          name: 'Kelly',
+          department: 'support',
+          address: { city: 'Scranon', number: '24' },
+          age: '28',
+        });
+        doc.address.city = 5;
+        doc.address.city.should.equal('5');
+        // doc.address = { city: 10, number: '50' };
+        // assert.deepEqual(doc.address, { city: '10', number: 50 }); // check if we're typecasting
+        done();
       });
-      doc.address.city = 5;
-      doc.address.city.should.equal('5');
-      // doc.address = { city: 10, number: '50' };
-      // assert.deepEqual(doc.address, { city: '10', number: 50 }); // check if we're typecasting
-      done();
     });
 
     it('type validation on underlying arrays', function (done) {
@@ -402,7 +453,6 @@ describe('Schema', function () {
       });
       // doc.age.should.equal(28);
       // doc.address.number.should.equal(24);
-
       done();
     });
 
@@ -429,6 +479,7 @@ describe('Schema', function () {
       });
       doc.age.should.equal(0); // Default value, without having it specified
       doc.name.should.equal('Billy'); // Default value, specified in the spec
+
       done();
     });
   }); // End of Validation

@@ -19,6 +19,8 @@
 
 ## dev-to-list
 
+- fix-tests db.test.ts, Can't insert key **, it violates the unique constraint
+
 - merge各个仓库的pr
 # testing
 - 迁移web版tests

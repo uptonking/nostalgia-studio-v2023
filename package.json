@@ -24,7 +24,7 @@
     "collab-ot-crdt/src-ottypes/*",
     "store-mongo-like/*",
     "store-level-like/*",
-    "store-text-search/*",
+    "store-search-text/*",
     "utils/*",
     "utils/dnd-kit/packages/*",
     "utils/dnd-kit/playground",

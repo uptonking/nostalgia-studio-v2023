@@ -4,7 +4,7 @@ import hat from 'hat';
 import { EntryStream } from 'level-read-stream';
 import { MemoryLevel } from 'memory-level';
 import path from 'path';
-import si from 'store-search-text/src-search-index/src/node';
+import si from 'search-index';
 
 import { Cursor } from './cursor';
 import * as docUtils from './document';
@@ -140,7 +140,7 @@ export class Model extends EventEmitter {
   }
 
   async initFullTextSearch() {
-    this.textSearchInstance = await si({ name: this.modelName });
+    this.textSearchInstance = await si({ name: '__fts__' + this.filename });
   }
 
   /** insert a doc, and get current Model assigned the props of the doc  */
@@ -191,44 +191,59 @@ export class Model extends EventEmitter {
 
     this.emit('indexesBuild', toBuild); // no onEvent handler
 
-    // todo, migrate to level-web-stream without on data/end events
-    const stream = new EntryStream(this.store);
+    let stream;
+    /**
+     * todo, migrate to level-web-stream without on data/end events
+     */
+    const addListenersToStream = () => {
+      stream = new EntryStream(this.store);
+      stream
+        .on('error', (err) => cb(err))
+        .on('data', (data) => {
+          // console.log(';; buildIdx-data ', typeof data.value, data);
+          // debugger;
 
-    // this.store
-    //   .createReadStream()
-    stream
-      .on('error', (err) => cb(err))
-      .on('data', (data) => {
-        // console.log(';; buildIdx-data ', typeof data.value, data);
-        // debugger;
+          // todo remove unnecessary serialize work
+          let dataVal = data.value;
+          // if (dataVal && typeof dataVal === 'object') {
+          // dataVal = JSON.stringify(data.value);
+          // }
+          const doc = schemas.construct(
+            docUtils.deserialize(dataVal),
+            this.schema,
+          );
+          this.emit('construct', doc);
+          this.emit('indexesConstruct', doc, toBuild);
 
-        // todo remove unnecessary serialize work
-        let dataVal = data.value;
-        // if (dataVal && typeof dataVal === 'object') {
-        // dataVal = JSON.stringify(data.value);
-        // }
-        const doc = schemas.construct(
-          docUtils.deserialize(dataVal),
-          this.schema,
-        );
-        this.emit('construct', doc);
-        this.emit('indexesConstruct', doc, toBuild);
-
-        toBuild.forEach((idx) => {
-          try {
-            idx.insert(doc);
-          } catch (e) {
-            throw new Error('insert index failed: ' + e);
-          }
+          toBuild.forEach((idx) => {
+            try {
+              idx.insert(doc);
+            } catch (e) {
+              throw new Error('insert index failed: ' + e);
+            }
+          });
+        })
+        .on('end', () => {
+          toBuild.forEach((idx) => {
+            idx.ready = true;
+          });
+          this.emit('indexesReady', toBuild);
+          cb(null);
         });
-      })
-      .on('end', () => {
-        toBuild.forEach((idx) => {
-          idx.ready = true;
-        });
-        this.emit('indexesReady', toBuild);
-        cb(null);
-      });
+    };
+
+    try {
+      if (this.store.status !== 'open') {
+        // /workaround for tests
+        this.store.open(() => addListenersToStream());
+      } else {
+        addListenersToStream();
+      }
+    } catch (err) {
+      // console.log(';; bd-idx-lvl-db ', this.store.status);
+      console.error(err);
+      throw new Error(err);
+    }
   }
 
   /**
@@ -240,6 +255,7 @@ export class Model extends EventEmitter {
 
   /**
    * Reset all currently defined indexes
+   * - forEach indexes, `new BinarySearchTree()` + `ready=false`
    */
   resetIndexes() {
     Object.keys(this.indexes).forEach((i) => {
@@ -365,41 +381,45 @@ export class Model extends EventEmitter {
     // This is a suboptimal way to do it, but wait for indexes to be up to date in order to avoid mid-insert index reset
     // We also have to ensure indexes are up-to-date
     this._pipe.push(this.buildIndexes, () => {
-      debugger;
+      // debugger;
       try {
         // add index to memory
         // this._insertInIndex(newDoc);
         docs = this._insertMultipleDocsInIndex(docs);
       } catch (e) {
+        console.error(';; insertAVLErr ', e);
         return callback(e);
       }
-      // console.log(';; post-buildIdx ', docs, this.textSearchInstance);
 
+      /** Persist the documents */
+      const persistDocs = () => {
+        async.map(
+          docs,
+          (d, cb) => {
+            this.emit('insert', d);
+            // persist doc to leveldb
+            this._persist(d, cb);
+          },
+          (err, docsInCb) => {
+            // console.log(';; afterInsertCb-docs ', docs, docsInCb);
+            this.emit('inserted', docs);
+            callback(
+              err || null,
+              err ? undefined : isMultiDoc ? docs : docs[0],
+            );
+          },
+        );
+      };
 
       try {
         if (this.textSearchInstance) {
           // todo filter fields, PUT_RAW, extra metadata of the docs
           this.textSearchInstance.PUT(docs).then((putRet) => {
-            console.log(';; fts-putRet ', putRet);
-
-            // Persist the document
-            async.map(
-              docs,
-              (d, cb) => {
-                this.emit('insert', d);
-                // persist doc to leveldb
-                this._persist(d, cb);
-              },
-              (err, docsInCb) => {
-                // console.log(';; afterInsertCb-docs ', docs, docsInCb);
-                this.emit('inserted', docs);
-                callback(
-                  err || null,
-                  err ? undefined : isMultiDoc ? docs : docs[0],
-                );
-              },
-            );
+            // console.log(';; fts-putRet ', putRet);
+            persistDocs();
           });
+        } else {
+          persistDocs();
         }
       } catch (e) {
         console.error(';; fts-add-idx-err ', e);
@@ -472,6 +492,7 @@ export class Model extends EventEmitter {
       for (let i = 0; i < failedIndex; i += 1) {
         this.removeFromIndexes(preparedDocs[i]);
       }
+      // throw new Error(error);
       throw error;
     }
 
@@ -513,12 +534,12 @@ export class Model extends EventEmitter {
 
     return await this.textSearchInstance.QUERY(
       {
-        AND: [...input.split(' ')],
+        AND: [...input.trim().split(' ')],
       },
       {
-        SCORE: 'TFIDF',
+        // SCORE: 'TFIDF',
         SORT: true,
-        DOCUMENTS: true,
+        // DOCUMENTS: true,
         ...options,
       },
     );
@@ -859,22 +880,26 @@ export class Model extends EventEmitter {
       } catch (e) {
         err = e;
       }
-
-      if (this.textSearchInstance) {
-        try {
-          await this.textSearchInstance.DELETE(v._id);
-        } catch (e) {
-          err = e;
-        }
-      }
     });
+
     stream.on('ready', () => {
       if (err) return callback(err);
 
       // Persist in LevelUP; do this after error check
       async.each(
         removed,
-        (id, cb) => this.store.del(id, cb),
+        (id, cb) => {
+          if (this.textSearchInstance) {
+            this.textSearchInstance
+              .DELETE(id)
+              .then(() => {
+                this.store.del(id, cb);
+              })
+              .catch(cb);
+          } else {
+            this.store.del(id, cb);
+          }
+        },
         (e) => {
           this.emit('removed', removed);
           callback(e || null, e ? undefined : removed.length);

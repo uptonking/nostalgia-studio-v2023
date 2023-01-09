@@ -6,35 +6,8 @@ const indexName = 'sandbox' + 'memdown-test';
 
 const title = 'Gone Girl';
 const description = 'a wife disappeared, a husband is suspected';
-const doc1 = {
-  title,
-  description,
-  date: '2014-10-03',
-};
 
-(async () => {
-  const siIdx = await si({
-    db: MemoryLevel,
-    name: indexName,
-  });
 
-  const putRet = await siIdx.PUT([{ ...doc1, _id: 'id11' }]);
-
-  const allDocs = await siIdx.QUERY({ ALL_DOCUMENTS: true });
-  console.log(';; allIdx ', allDocs);
-
-  const dic = await siIdx.DICTIONARY();
-  console.log(';; dic ', dic);
-
-  const opts = {
-    FACETS: ['description'],
-  };
-  const searchInput = description.split(' ').slice(-1)[0]
-  const r1 = await siIdx.QUERY(searchInput, opts);
-  const r2 = await siIdx.QUERY(title, opts);
-  console.log(';; r1 ', searchInput, r1);
-  console.log(';; r2 ', r2);
-})();
 
 const data = [
   {

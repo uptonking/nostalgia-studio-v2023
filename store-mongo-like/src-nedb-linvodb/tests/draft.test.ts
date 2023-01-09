@@ -40,7 +40,7 @@ const DB_PATH = 'tests/testdata/lvDoc11.db';
   let db = new LinvoDB('testDbWithFTS', { filename: DB_PATH });
 
   await db.initFullTextSearch();
-  let si = db.textSearchInstance;
+  let siIdx = db.textSearchInstance;
   // console.log(';; si ', si)
 
   const title = 'Gone Girl';
@@ -59,27 +59,27 @@ const DB_PATH = 'tests/testdata/lvDoc11.db';
       // console.log(';; allIdx ', allDocs)
       // debugger;
 
-      const opts = { FACETS: ['description'] };
+      const opts = { FACETS: [{ FIELD: 'description' }], };
       const searchInput = description.split(' ').slice(-1)[0];
 
-      db.textSearch(searchInput, opts).then((r1) => {
-        console.log(';; r1 ', searchInput, r1);
+      db.textSearch(searchInput, opts)
+        .then((r1) => {
+          console.log(';; r1 ', searchInput);
+          console.dir(r1, { depth: null });
 
-        db.textSearch(title, opts).then((r2) => {
-          console.log(';; r2 ', r2);
-          // done();
-        }).catch(console.log);
-      }).catch(console.log);
+          db.textSearch(title, opts)
+            .then((r2) => {
+              console.log(';; r2 ', title);
+              console.dir(r2, { depth: null });
+
+              // done();
+            })
+            .catch(console.error);
+        })
+        .catch(console.error);
       // const r1 = await db.textSearch(searchInput, opts);
       // const r2 = await db.textSearch(title, opts);
 
-      // fixme ❎ done的位置放在最后会异常
-      // setTimeout(done, 50);
-
-      // expect(r1.RESULT_LENGTH).to.be.gt(0);
-      // expect(r2.RESULT_LENGTH).to.equal(0);
-
-      console.log(';; done2 '); // never run to here
     },
   );
 })();

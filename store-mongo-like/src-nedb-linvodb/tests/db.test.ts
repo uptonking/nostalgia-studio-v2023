@@ -45,6 +45,20 @@ describe('Datastore/Model like mongodb collection', function () {
     );
   });
 
+  afterEach(async () => {
+    d.resetIndexes();
+    if (d.store.status !== 'closed') {
+      await d.store.clear();
+      // console.log(';; db-size ', d.getAllData().length);
+      // d.getAllData().length.should.equal(0);
+      try {
+        await d.store.close();
+      } catch (e) {
+        await d.store.close();
+      }
+    }
+  });
+
   /*
   describe('Autoloading', function () {
 
@@ -577,8 +591,7 @@ describe('Datastore/Model like mongodb collection', function () {
 
     // ❓ test fails following the above test; but it passes when testing alone
     it('Can use an index to get docs with a basic match on two indexes', function (done) {
-      // done = _.once(done);
-
+      done = _.once(done);
       d.options.autoIndexing.should.equal(true);
 
       d.insert({ tf: 4, r: 6 }, (err, _doc1) => {
@@ -586,15 +599,12 @@ describe('Datastore/Model like mongodb collection', function () {
           d.insert({ tf: 4, an: 'other', r: 6 }, (err, _doc2) => {
             d.insert({ tf: 9 }, () => {
               // console.log(';; insert-cb ', _doc1, _doc2)
+
               getCandidates({ r: 6, tf: 4 }, null, (data) => {
                 console.log(';; find-cb ', data);
 
-                const doc1 = _.find(data, (d: any) => {
-                  return d._id === _doc1._id;
-                });
-                const doc2 = _.find(data, (d: any) => {
-                  return d._id === _doc2._id;
-                });
+                const doc1 = data.find((d: any) => d._id === _doc1._id);
+                const doc2 = data.find((d: any) => d._id === _doc2._id);
                 data.length.should.equal(2);
                 assert.deepEqual(doc1, { _id: doc1._id, tf: 4, r: 6 });
                 assert.deepEqual(doc2, {

@@ -7,8 +7,8 @@ import { debug, LIB_NAME, log } from './utils';
 export const plugins: SyncPlugin[] = [];
 
 /** 执行同步
-* - 先查询本地的上次上传时间戳，每次上传都会更新本地时间
-* - 先上传op数据到云端，然后从云端下载op数据
+ * - 先查询本地的上次上传时间戳，每次上传都会更新本地时间
+ * - 先上传op数据到云端，然后从云端下载op数据
  */
 export async function sync(options: { forceFullSync?: boolean } = {}) {
   const { nodeId: localClientId } = db.getSettings();

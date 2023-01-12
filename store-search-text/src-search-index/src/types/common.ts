@@ -187,7 +187,10 @@ export interface SearchIndex {
   IMPORT(index: ReadonlyArray<KeyValue>): Promise<void>;
   MIN(token?: Token): Promise<string>;
   MAX(token?: Token): Promise<string>;
-  PUT(documents: ReadonlyArray<any>, options?: PutOptions): Promise<Operation[]>;
+  PUT(
+    documents: ReadonlyArray<any>,
+    options?: PutOptions,
+  ): Promise<Operation[]>;
   PUT_RAW(documents: ReadonlyArray<any>): Promise<Operation[]>;
   TOKENIZATION_PIPELINE_STAGES: TokenizationPipelineStages;
 }

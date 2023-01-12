@@ -44,7 +44,6 @@ export const ignoreChars =
 const tokenizeChinese = (text) =>
   cut_all(text).filter((token) => !ignoreChars.includes(token));
 
-
 si({
   db: MemoryLevel,
   name: indexName,

@@ -136,7 +136,7 @@ export class Model extends EventEmitter {
       this.store && this.store.status === 'open'
         ? this.store
         : // : levelup(encode(db(filename), storeOptions), storeOptions);
-        new LevelLikeDbCtor(filename, { valueEncoding: 'utf8' });
+          new LevelLikeDbCtor(filename, { valueEncoding: 'utf8' });
     this._pipe.resume();
   }
 
@@ -288,7 +288,7 @@ export class Model extends EventEmitter {
    * @param {Boolean} options.sparse
    * @param {Function} cb Optional callback, signature: err
    */
-  ensureIndex(options: CreateIndexOptions, callback = (...args: any[]) => { }) {
+  ensureIndex(options: CreateIndexOptions, callback = (...args: any[]) => {}) {
     if (!options.fieldName) {
       return callback({ missingFieldName: true });
     }
@@ -307,7 +307,7 @@ export class Model extends EventEmitter {
    * @param {Function} cb Optional callback, signature: err
    */
   removeIndex(fieldName: string, cb?: Function) {
-    const callback = cb || (() => { });
+    const callback = cb || (() => {});
     delete this.indexes[fieldName];
     callback(null);
   }
@@ -389,7 +389,7 @@ export class Model extends EventEmitter {
    */
   insert(
     docOrDocs: { [k: string]: unknown } | Array<{ [k: string]: unknown }>,
-    callback = (...args: any[]) => { },
+    callback = (...args: any[]) => {},
   ) {
     const isMultiDoc = Array.isArray(docOrDocs);
     let docs = isMultiDoc ? docOrDocs : [docOrDocs];
@@ -615,7 +615,7 @@ export class Model extends EventEmitter {
    * Find one document matching the query
    * @param {Object} query MongoDB-style query
    */
-  findOne(query, callback = (...args: any[]) => { }) {
+  findOne(query, callback = (...args: any[]) => {}) {
     const cursor = new Cursor(this, query, (err, docs, callback) => {
       if (err) {
         return callback(err);
@@ -667,7 +667,7 @@ export class Model extends EventEmitter {
       cb = options;
       options = {};
     }
-    callback = once(cb || (() => { }));
+    callback = once(cb || (() => {}));
     multi = options.multi !== undefined ? options.multi : false;
     upsert = options.upsert !== undefined ? options.upsert : false;
 
@@ -804,7 +804,7 @@ export class Model extends EventEmitter {
    */
   save(
     doc: any | any[],
-    callback: (...args: any[]) => any = () => { },
+    callback: (...args: any[]) => any = () => {},
     quiet = false,
   ) {
     const docs = this.prepareDocumentForInsertion(
@@ -897,7 +897,7 @@ export class Model extends EventEmitter {
       cb = options;
       options = {};
     }
-    callback = cb || (() => { });
+    callback = cb || (() => {});
     const multi = options.multi !== undefined ? options.multi : false;
 
     const stream = Cursor.getMatchesStream(this, query);

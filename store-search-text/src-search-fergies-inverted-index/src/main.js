@@ -10,21 +10,21 @@ const flattenMatchArrayInResults = (results) =>
   typeof results === 'undefined'
     ? undefined
     : results.map((result) => {
-      // Sort _match consistently (FIELD -> VALUE -> SCORE)
-      result._match = result._match
-        .flat(Infinity)
-        .map((m) => (typeof m === 'string' ? JSON.parse(m) : m))
-        .sort((a, b) => {
-          if (a.FIELD < b.FIELD) return -1;
-          if (a.FIELD > b.FIELD) return 1;
-          if (a.VALUE < b.VALUE) return -1;
-          if (a.VALUE > b.VALUE) return 1;
-          if (a.SCORE < b.SCORE) return -1;
-          if (a.SCORE > b.SCORE) return 1;
-          return 0;
-        });
-      return result;
-    });
+        // Sort _match consistently (FIELD -> VALUE -> SCORE)
+        result._match = result._match
+          .flat(Infinity)
+          .map((m) => (typeof m === 'string' ? JSON.parse(m) : m))
+          .sort((a, b) => {
+            if (a.FIELD < b.FIELD) return -1;
+            if (a.FIELD > b.FIELD) return 1;
+            if (a.VALUE < b.VALUE) return -1;
+            if (a.VALUE > b.VALUE) return 1;
+            if (a.SCORE < b.SCORE) return -1;
+            if (a.SCORE > b.SCORE) return 1;
+            return 0;
+          });
+        return result;
+      });
 
 const initStore = async (ops = {}) => {
   return new Promise((resolve, reject) => {
@@ -56,7 +56,7 @@ const initStore = async (ops = {}) => {
       err ? reject(err) : resolve(Object.assign(ops, { _db: db })),
     );
   });
-}
+};
 
 const makeAFii = (ops) => {
   const r = read(ops);

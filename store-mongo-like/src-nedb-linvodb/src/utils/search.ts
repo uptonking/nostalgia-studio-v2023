@@ -12,14 +12,8 @@ export const tokenizeChinese = (text: string) =>
  */
 export const createIndexPutTokenizer = (idx) => {
   return (tokens, field, ops) => {
-    const {
-      SKIP,
-      LOWCASE,
-      REPLACE,
-      NGRAMS,
-      STOPWORDS,
-      SCORE_TERM_FREQUENCY,
-    } = idx.TOKENIZATION_PIPELINE_STAGES;
+    const { SKIP, LOWCASE, REPLACE, NGRAMS, STOPWORDS, SCORE_TERM_FREQUENCY } =
+      idx.TOKENIZATION_PIPELINE_STAGES;
 
     return Promise.resolve([tokenizeChinese(tokens), field, ops])
       .then(SKIP)
@@ -29,6 +23,5 @@ export const createIndexPutTokenizer = (idx) => {
       .then(STOPWORDS)
       .then(SCORE_TERM_FREQUENCY)
       .then(([tokens]) => tokens);
-  }
-
+  };
 };

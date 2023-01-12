@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "target": "ES2018",
+    "module": "ESNext",
+    "target": "ESNext",
     "allowJs": false,
     "jsx": "react",
     "allowSyntheticDefaultImports": true,
@@ -85,7 +85,12 @@
       "level-web-stream": ["store-level-like/level-web-stream/"],
       "functional-red-black-tree": [
         "store-level-like/functional-red-black-tree/"
-      ]
+      ],
+      "search-index": ["store-search-text/src-search-index/"],
+      "fergies-inverted-index": [
+        "store-search-text/src-search-fergies-inverted-index/"
+      ],
+      "tinybase": ["store-tinybase/src-tinybase/"]
     }
   },
   "files": ["typings.d.ts"]

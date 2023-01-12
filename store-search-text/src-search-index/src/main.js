@@ -68,7 +68,7 @@ const makeASearchIndex = (ops) => {
       }),
     );
   });
-}
+};
 
 /** create underlying inverted-index instance with merged options */
 const initIndex = (options = {}) =>
@@ -115,7 +115,7 @@ const initIndex = (options = {}) =>
 const validateVersion = (si) =>
   new Promise((resolve, reject) => {
     const key = ['CREATED_WITH'];
-    const version = 'search-index@' + packageJSON.version
+    const version = 'search-index@' + packageJSON.version;
     // const version = 'search-index@' + '3.4.1111';
     return si.INDEX.STORE.get(key)
       .then((v) =>
@@ -123,17 +123,16 @@ const validateVersion = (si) =>
         version === v
           ? resolve()
           : reject(
-            new Error(
-              'This index was created with ' +
-              v +
-              ', you are running ' +
-              version,
+              new Error(
+                'This index was created with ' +
+                  v +
+                  ', you are running ' +
+                  version,
+              ),
             ),
-          ),
       )
       .catch((e) => si.INDEX.STORE.put(key, version).then(resolve));
   });
-
 
 /**
  * create full text search instance

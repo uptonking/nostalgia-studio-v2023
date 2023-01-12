@@ -1,0 +1,58 @@
+{
+  "name": "tinybase",
+  "version": "2.2.6111",
+  "description": "The reactive data store for local-first apps.",
+  "homepage": "https://tinybase.org",
+  "repository": "github:tinyplex/tinybase",
+  "license": "MIT",
+  "author": "jamesgpearce",
+  "sideEffects": false,
+  "type": "module",
+  "main": "src/index.ts",
+  "browser": {
+    "fs": false
+  },
+  "react-native": "./lib/tinybase.js",
+  "bin": {
+    "tinybase": "./bin/cli.js"
+  },
+  "scripts": {
+    "compileAndTestUnit": "gulp compileAndTestUnit",
+    "compileAndTestUnitSaveCoverage": "gulp compileAndTestUnitSaveCoverage",
+    "compileDocs": "gulp compileDocs",
+    "compileDocsAssetsOnly": "gulp compileDocsAssetsOnly",
+    "compileDocsPagesOnly": "gulp compileDocsPagesOnly",
+    "compileForCli": "gulp compileForCli",
+    "compileForProd": "gulp compileForProd",
+    "compileForProdAndDocs": "gulp compileForProdAndDocs",
+    "compileForTest": "gulp compileForTest",
+    "lint": "gulp lint",
+    "preCommit": "gulp preCommit",
+    "prePublishPackage": "gulp prePublishPackage",
+    "publishPackage": "gulp publishPackage",
+    "serveDocs": "gulp serveDocs",
+    "spell": "gulp spell",
+    "test": "gulp --series testUnit testPerf",
+    "testE2e": "gulp testE2e",
+    "testPerf": "gulp testPerf",
+    "testUnit": "gulp testUnit",
+    "testUnitCountAsserts": "gulp testUnitCountAsserts",
+    "ts": "gulp ts"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "ts-unused-exports": "^9.0.1"
+  },
+  "peerDependencies": {
+    "prettier": "^2.0.0",
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "prettier": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  }
+}

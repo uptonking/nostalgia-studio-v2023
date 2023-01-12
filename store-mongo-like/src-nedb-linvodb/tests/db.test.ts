@@ -536,9 +536,9 @@ describe('✨ Datastore/Model like mongodb collection', function () {
       d.options.autoIndexing.should.equal(true);
 
       d.insert({ tf: 4, r: 6 }, (err, _doc1) => {
-        getCandidates({ r: 6 }, null, (data) => { });
+        getCandidates({ r: 6 }, null, (data) => {});
         setTimeout(() => {
-          getCandidates({ tf: 4 }, null, (data) => { });
+          getCandidates({ tf: 4 }, null, (data) => {});
         }, 5);
 
         d.once('indexesReady', (indexes) => {

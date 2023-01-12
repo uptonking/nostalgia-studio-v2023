@@ -3,11 +3,12 @@ import { TextOperation } from './text-operation';
 /**
  * A WrappedOperation contains an operation and corresponding metadata.
  * - 在客户端，WrappedOperation只在undoManager里面用过，其他地方未使用
+ * - `meta` may contain invert/transform
  */
 export class WrappedOperation {
   /** 对应的基础TextOperation */
   wrapped: TextOperation;
-  meta: any;
+  meta: { invert?: Function; transform?: Function };
 
   constructor(operation: TextOperation, meta) {
     this.wrapped = operation;

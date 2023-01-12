@@ -584,6 +584,7 @@ export class Model extends EventEmitter {
 
   /**
    * Count all documents matching the query
+   * - a trick to build indexes for all
    * @param {Object} query MongoDB-style query
    */
   count(query, callback, quiet = false) {
@@ -958,7 +959,10 @@ export class Model extends EventEmitter {
     return docUtils.serialize(this);
   }
 
-  /** persist all docs to level-like-db(idb/nodejs) */
+  /** persist all docs to level-like-db(idb/nodejs)
+   * - used in insert/save/update
+   * @internal
+   */
   _persist(doc, cb: (...args: any[]) => any, quiet = undefined) {
     if (!quiet) this.emit('save', doc); // no save-event handler
     // level-up storage

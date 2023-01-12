@@ -374,7 +374,7 @@ export class EditorClient extends OperationClient {
     this.serverAdapter.sendSelection(selection);
   }
 
-  /** 实现父类OperationClient定义的方法，通过server发送op */
+  /** 实现父类OperationClient定义的方法，发送op到server */
   sendOperation(revision: number, operation: TextOperation) {
     this.serverAdapter.sendOperation(
       revision,

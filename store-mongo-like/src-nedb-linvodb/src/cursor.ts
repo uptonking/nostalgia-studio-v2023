@@ -23,7 +23,7 @@ export class Cursor {
   _map: any;
   _reduce: any[];
   _aggregate: (...args: any[]) => any;
-  _quiet: any;
+  _quiet: boolean;
   _count: boolean;
   _live: any;
   _ondata: any;

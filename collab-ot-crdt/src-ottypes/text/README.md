@@ -3,7 +3,7 @@
 # overview
 
 - `transform(o1, o2):o1'`，实现细节与otjs不同
-- The operation does not have to skip the last characters in the document.
+  - The operation does not have to skip the last characters in the document.
 # usage
 
 # The Plaintext OT Type

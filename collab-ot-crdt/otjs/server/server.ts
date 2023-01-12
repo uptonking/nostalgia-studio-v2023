@@ -1,6 +1,7 @@
+import http from 'node:http';
+
 import cors from 'cors';
 import express from 'express';
-import http from 'node:http';
 import { Server as SocketIOServer } from 'socket.io';
 
 import { EditorSocketIOServer } from './editor-server-socketio';
@@ -23,6 +24,7 @@ const io = new SocketIOServer(httpServer, {
 const server = new EditorSocketIOServer('', [], '1');
 
 io.on('connection', (socket) => {
+  // 连接时会发送最新doc对象和版本
   server.addClient(socket);
 });
 

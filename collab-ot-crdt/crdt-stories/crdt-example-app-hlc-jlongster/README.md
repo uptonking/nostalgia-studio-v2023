@@ -1,5 +1,7 @@
 This is a demo app used for my dotJS 2019 talk ["CRDTs for Mortals"](https://www.youtube.com/watch?v=DEcwa68f-jY).
 
+> https://github.com/jlongster/crdt-example-app
+
 Slides here: https://jlongster.com/s/dotjs-crdt-slides.pdf
 
 View this app here: https://crdt.jlongster.com
@@ -8,7 +10,7 @@ It contains a full implementation of [hybrid logical clocks](https://cse.buffalo
 
 It provides a server to store and retrieve messages, so that clients don't have to connect peer-to-peer.
 
-> 普通http服务器，未使用websocket，
+> 普通http服务器，未使用websocket
 
 The entire implementation is tiny, but provides a robust mechanism for writing distributed apps:
 
@@ -17,7 +19,7 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 
 (This does not include `main.js` in the client which is the implementation of the app. This is just showing the tiny size of everything needed to build an app)
 
-- 问题 (看看github的issues)
+- issues-not-yet (看看github的issues)
   - [ ] 每个客户端的merkle-tree是否可替换为一个代表本客户端上次同步iso时间的简单字符串
   - [ ] `SELECT * FROM messages WHERE timestamp > ? AND timestamp NOT LIKE '%' || ? ORDER BY timestamp` 中的`||`什么意思？
   - [x] 客户端的op被服务端入库后，另一个客户端为什么收不到，diffTime始终为null？
@@ -38,11 +40,15 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
   - merkle-tree的作用，校验数据的一致性，快速定位上次同步时间
     - merkle tree only stores what it needs to answer the question "what is the last time at which the collections had the same messages?": time (as keys) and hashes (as values) made from all known messages at those times.
     - 当每层节点排序后，从左到右就是时间增长的方向
+
+- 同步逻辑
   - 本示例使用了中心服务器，所有节点都会和服务端同步，但若改为无中心化架构逻辑也相同
+  - 每次客户端执行sync都会发送自己的merkle-tree数据到服务端，让服务端快速计算需要返回的op记录
 
 - 离线重连的流程
   - 离线时，本地_messages历史表会继续增加，但不会触发post同步
   - 恢复在线时，post执行一次空op后，会比较返回的clock和本地的clock，再次post本地有效op
+    - 在sync方法中，执行`sync([], diffTime)`，会利用merkle-tree算出diffTime最近修改时间
 
 - roadmap
   - 加入房间的客户端才自动获取协作更新，其余客户端显示默认版本，其他客户端可稍后加入房间

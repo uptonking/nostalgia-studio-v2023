@@ -26,6 +26,7 @@ export class EditorSocketIOServer extends Orchestrator {
       };
   }
 
+  /** socket client 连接时会发送最新doc对象和版本 */
   addClient(socket: Socket) {
     const self = this;
     socket.join(this.docId);

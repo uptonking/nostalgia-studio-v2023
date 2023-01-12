@@ -1,7 +1,9 @@
 import './index.css';
 import 'codemirror/lib/codemirror.css';
-import { io, type Socket } from 'socket.io-client';
+
 import * as CodeMirror from 'codemirror';
+import { io, type Socket } from 'socket.io-client';
+
 import { CodeMirror5Adapter } from './codemirror5-adapter';
 import { EditorClient } from './editor-client';
 import { SocketIOAdapter } from './socketio-adapter';
@@ -12,6 +14,7 @@ const socket = io(COLLAB_BASE_URL);
 
 const editorEle = document.querySelector('#note') as HTMLTextAreaElement;
 
+// doc事件仅首次连接时触发
 socket.on('doc', (data: any) => {
   // 👇🏻 待优化，每次协作服务端发来新数据，都会替换codeMirror实例，试试只更新属性而不是替换实例
   const cm5 = CodeMirror.fromTextArea(editorEle, { lineNumbers: true });

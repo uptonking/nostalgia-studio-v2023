@@ -1,13 +1,14 @@
 import type { SyncPlugin, SyncProfile, UserProfile } from '../types/main';
-import { HLTime } from './HLTime';
 import * as db from './db';
-import { LIB_NAME, debug, log } from './utils';
+import { HLTime } from './HLTime';
+import { debug, LIB_NAME, log } from './utils';
 
 /** 全局同步插件集合 */
 export const plugins: SyncPlugin[] = [];
 
 /** 执行同步
- * - 先上传op数据到云端，然后从云端下载op数据
+* - 先查询本地的上次上传时间戳，每次上传都会更新本地时间
+* - 先上传op数据到云端，然后从云端下载op数据
  */
 export async function sync(options: { forceFullSync?: boolean } = {}) {
   const { nodeId: localClientId } = db.getSettings();
@@ -87,6 +88,7 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
         }
 
         let remoteEntryDownloadCounter = 0;
+        // 👉🏻 从云端下载本地不存在的op
         for await (const remoteEntry of plugin.getRemoteEntries({
           clientId: remoteClientId,
           afterTime: mostRecentKnownOplogTimeForRemoteClient,

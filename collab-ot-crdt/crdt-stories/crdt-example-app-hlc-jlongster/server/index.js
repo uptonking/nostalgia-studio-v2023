@@ -1,11 +1,12 @@
 import '../shared/murmurhash';
 
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 import sqlite3 from 'better-sqlite3';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
-import { dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 import { merkle } from '../shared/merkle';
 import { Timestamp } from '../shared/timestamp';
@@ -116,6 +117,7 @@ function addMessages(groupId, messages) {
 
 // 👇🏻 后端仅此一个用于同步操作数据的接口，会被所有前端轮询来获取所需的op
 // 服务端只执行简单的op消息保存与转发，并没有具体的op应用和转换逻辑
+// 后端会利用merkle.diff计算需要发送给前端的修改msg，前提是前端发来自身的mk-tree
 app.post('/sync', (req, res) => {
   const { group_id, client_id, messages, merkle: clientMerkle } = req.body;
 

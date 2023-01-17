@@ -52,14 +52,14 @@ The concept that IDBSideSync is attempting to prove is: local-first, browser-bas
 
 - ❓❓ 如何使web应用在 纯内存数据源(如redux单例状态) 和 外部数据源(如idb/sqlite) 间切换
   - 首先获取view层数据的逻辑改成async
-  - 将获取数据的逻辑，从取state.prop1改为 idb.tr.objectStore1
+  - 将获取数据的逻辑，从取 state.prop1 改为 idb.tr.objectStore1
   - 可参考 stoxy-js(内置数据源切换)
   - 可参考 crdt-hlc(纯内存) 和 idbsidesync(纯外部数据源)
 
-- ❓ 本地触发的op，对应的hlc是否会在recordOp和applyOplogEntry2处各增加一次
+- ✅ 本地触发的op，对应的hlc是否会在recordOp和applyOplogEntry2处各增加一次
   - 对于本地的op，applyOplogEntry会比较op和本地的hlc，并不会更新本地hlc
 
-- ❓ 为什么更新idb数据的proxiedPut方法中，要执行2次put
+- ✅ 为什么更新idb数据的proxiedPut方法中，要执行2次put
   - 只是因为代理put方法需要立即返回一个IDBRequest，
   - 若不在后面添加一个临时的put，因为前面一个put需要在onsuccess中操作数据，则代理方法就没有一个合法的返回值
 

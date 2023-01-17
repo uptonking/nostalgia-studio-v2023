@@ -1,6 +1,6 @@
 const baseConfig = require('../../config/jest.base');
 const pkgConfig = {
-  displayName: 'sample-vanilla-ts',
+  displayName: 'tinysync',
   rootDir: '.',
   // setupFilesAfterEnv: ['<rootDir>/config/setupTests.js'],
   globals: {

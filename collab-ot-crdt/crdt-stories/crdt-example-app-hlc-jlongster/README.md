@@ -56,7 +56,7 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 - [为什么merkle-tree采用三叉树，而不是常见的二叉树？](https://github.com/jlongster/crdt-example-app/issues/3#issuecomment-686301759)
   - As for why a ternary tree instead of a binary tree, it’s probably just to reduce the depth of the tree to make traversal faster. I actually wonder if a higher base might work even better but I haven’t thought through it enough yet and it probably doesn’t matter much.
   - It also simplifies traversal of the tree and somewhat reduces rebalancing concerns which could otherwise become an issue with monotonically increasing keys, since the "trie" representation means that the key is embedded in the tree structure itself. In this case, the tree starts out very unbalanced but becomes more balanced over time.
-  - Merkle path has precision in minutes, am I right? If so, several edits that occur during one minute will have the same path in Merkle tree - 012 and 012 for example. How does a sync engine deal with a lot of edits during one minute? 
+  - Merkle path has precision in minutes, am I right? If so, several edits that occur during one minute will have the same path in Merkle tree - 012 and 012 for example. How does a sync engine deal with a lot of edits during one minute?
 
 Links:
 

@@ -282,16 +282,16 @@ export const createStore = (): Store => {
   ): CellOrUndefined =>
     hasSchema
       ? ifNotUndefined(
-        mapGet(mapGet(schemaMap, tableId), cellId),
-        (cellSchema) =>
-          getCellType(cell) != cellSchema[TYPE]
-            ? cellInvalid(tableId, rowId, cellId, cell, cellSchema[DEFAULT])
-            : cell,
-        () => cellInvalid(tableId, rowId, cellId, cell),
-      )
+          mapGet(mapGet(schemaMap, tableId), cellId),
+          (cellSchema) =>
+            getCellType(cell) != cellSchema[TYPE]
+              ? cellInvalid(tableId, rowId, cellId, cell, cellSchema[DEFAULT])
+              : cell,
+          () => cellInvalid(tableId, rowId, cellId, cell),
+        )
       : isUndefined(getCellType(cell))
-        ? cellInvalid(tableId, rowId, cellId, cell)
-        : cell;
+      ? cellInvalid(tableId, rowId, cellId, cell)
+      : cell;
 
   const addDefaultsToRow = (row: Row, tableId: Id, rowId?: Id): Row => {
     ifNotUndefined(
@@ -502,19 +502,19 @@ export const createStore = (): Store => {
     oldCell: CellOrUndefined,
     newCell?: CellOrUndefined,
   ): CellOrUndefined =>
-  (mapEnsure<Id, [CellOrUndefined, CellOrUndefined]>(
-    mapEnsure<Id, IdMap<[CellOrUndefined, CellOrUndefined]>>(
-      mapEnsure<Id, IdMap2<[CellOrUndefined, CellOrUndefined]>>(
-        changedCells,
-        tableId,
+    (mapEnsure<Id, [CellOrUndefined, CellOrUndefined]>(
+      mapEnsure<Id, IdMap<[CellOrUndefined, CellOrUndefined]>>(
+        mapEnsure<Id, IdMap2<[CellOrUndefined, CellOrUndefined]>>(
+          changedCells,
+          tableId,
+          mapNew,
+        ),
+        rowId,
         mapNew,
       ),
-      rowId,
-      mapNew,
-    ),
-    cellId,
-    () => [oldCell, 0],
-  )[1] = newCell);
+      cellId,
+      () => [oldCell, 0],
+    )[1] = newCell);
 
   const cellInvalid = (
     tableId?: Id,
@@ -552,18 +552,18 @@ export const createStore = (): Store => {
   const callInvalidCellListeners = (mutator: 0 | 1) =>
     !collIsEmpty(invalidCells) && !collIsEmpty(invalidCellListeners[mutator])
       ? collForEach(
-        mutator ? mapClone(invalidCells, mapClone2) : invalidCells,
-        (rows, tableId) =>
-          collForEach(rows, (cells, rowId) =>
-            collForEach(cells, (invalidCell, cellId) =>
-              callListeners(
-                invalidCellListeners[mutator],
-                [tableId, rowId, cellId],
-                invalidCell,
+          mutator ? mapClone(invalidCells, mapClone2) : invalidCells,
+          (rows, tableId) =>
+            collForEach(rows, (cells, rowId) =>
+              collForEach(cells, (invalidCell, cellId) =>
+                callListeners(
+                  invalidCellListeners[mutator],
+                  [tableId, rowId, cellId],
+                  invalidCell,
+                ),
               ),
             ),
-          ),
-      )
+        )
       : 0;
 
   const callIdsListenersIfChanged = (
@@ -598,13 +598,13 @@ export const createStore = (): Store => {
         ChangedIdsMap3,
         IdMap3<[CellOrUndefined, CellOrUndefined]>,
       ] = mutator
-          ? [
+        ? [
             mapClone(changedTableIds),
             mapClone2(changedRowIds),
             mapClone(changedCellIds, mapClone2),
             mapClone(changedCells, mapClone2),
           ]
-          : [changedTableIds, changedRowIds, changedCellIds, changedCells];
+        : [changedTableIds, changedRowIds, changedCellIds, changedCells];
 
       if (!emptyIdListeners) {
         collForEach(changes[2], (rowCellIds, tableId) =>
@@ -779,11 +779,11 @@ export const createStore = (): Store => {
       (tableId, rowId) =>
         validateRow(id(tableId), id(rowId), row)
           ? setValidRow(
-            id(tableId),
-            getOrCreateTable(id(tableId)),
-            id(rowId),
-            row,
-          )
+              id(tableId),
+              getOrCreateTable(id(tableId)),
+              id(rowId),
+              row,
+            )
           : 0,
       tableId,
       rowId,
@@ -851,7 +851,7 @@ export const createStore = (): Store => {
   const setJson = (json: Json): Store => {
     try {
       json === EMPTY_OBJECT ? delTables() : setTables(jsonParse(json));
-    } catch { }
+    } catch {}
     return store;
   };
 
@@ -1096,17 +1096,17 @@ export const createStore = (): Store => {
   const getListenerStats = (): StoreListenerStats =>
     DEBUG
       ? {
-        tables: pairCollSize2(tablesListeners),
-        tableIds: pairCollSize2(tableIdsListeners),
-        table: pairCollSize2(tableListeners),
-        rowIds: pairCollSize2(rowIdsListeners),
-        sortedRowIds: pairCollSize2(sortedRowIdsListeners),
-        row: pairCollSize2(rowListeners, collSize3),
-        cellIds: pairCollSize2(cellIdsListeners, collSize3),
-        cell: pairCollSize2(cellListeners, collSize4),
-        invalidCell: pairCollSize2(invalidCellListeners, collSize4),
-        transaction: pairCollSize2(finishTransactionListeners),
-      }
+          tables: pairCollSize2(tablesListeners),
+          tableIds: pairCollSize2(tableIdsListeners),
+          table: pairCollSize2(tableListeners),
+          rowIds: pairCollSize2(rowIdsListeners),
+          sortedRowIds: pairCollSize2(sortedRowIdsListeners),
+          row: pairCollSize2(rowListeners, collSize3),
+          cellIds: pairCollSize2(cellIdsListeners, collSize3),
+          cell: pairCollSize2(cellListeners, collSize4),
+          invalidCell: pairCollSize2(invalidCellListeners, collSize4),
+          transaction: pairCollSize2(finishTransactionListeners),
+        }
       : {};
 
   const store: any = {
@@ -1184,8 +1184,7 @@ export const createStore = (): Store => {
     },
   );
 
-  // @ts-expect-error fix-types
-  globalThis['tystore'] = { store, data: tablesMap };
+  store['dat'] = tablesMap;
 
   return objFreeze(store as Store);
 };

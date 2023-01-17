@@ -1,6 +1,6 @@
 import './index.css';
 
-const change = (msg) => {
+const change = (msg = '') => {
   // document.querySelector('root').innerText = msg;
   document.querySelector('#root').innerHTML = `
   <h1>本页面支持热加载 sample-vanilla-app-ts</h1>
@@ -11,7 +11,9 @@ const change = (msg) => {
   `;
 };
 
-change('test 测试 sample-vanilla-ts');
+// change('test 测试 sample-vanilla-ts');
+
+export const changeTest = (msg = 'hi') => true;
 
 // document.querySelector('#root').innerText = `
 // Hello, 热加载!

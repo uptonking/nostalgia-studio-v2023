@@ -10,7 +10,10 @@
     "compile": "npx esbuild --bundle --platform=node  --format=esm --outdir=lib --external:tinybase ./src/index.js",
     "start": "npm run start:sync-test",
     "start1": "npm run compile && node ./lib/index.js",
-    "start:sync-test": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./src/index.ts"
+    "start:sync-test": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./src/index.ts",
+    "test": "npm run test:tinysync",
+    "test:tinysync": "jest",
+    "test:oneoff": "jest ./src/.test.ts"
   },
   "devDependencies": {
     "tinybase": "2.2.6111",

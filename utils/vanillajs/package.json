@@ -2,6 +2,7 @@
   "name": "@datalking/utils-vanillajs",
   "version": "1.1.1111",
   "description": "knowledge base powered by markdown/mdx files.",
+  "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "scripts": {
@@ -14,25 +15,24 @@
     "dev:server": "cd server-node && ts-node-dev --respawn --transpile-only server.ts",
     "start": "npm run demo",
     "start2": "npm run dev:server",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:log": "node index.js --name nested-a"
+    "test": "npm run test:utils-vanillajs",
+    "test:log": "node index.js --name nested-a",
+    "test:utils-vanillajs": "jest",
+    "test:utils-oneoff": "jest ./src/.test.ts",
+    "test:utils1": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only' jest"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.6.0",
     "classnames": "^2.3.2",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express-session": "^1.17.2",
-    "@faker-js/faker": "^7.6.0",
     "keyboardjs": "^2.6.4",
     "lodash": "^4.17.21",
     "mime-types": "^2.1.32",
     "multer": "^1.4.3",
     "pretty-bytes": "^5.6.0",
     "ws": "^8.9.0"
-  },
-  "peerDependencies": {
-    "sqlite": "^4.0.23",
-    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.2",
@@ -43,5 +43,9 @@
     "@types/multer": "^1.4.7",
     "@types/ws": "^8.5.3",
     "ts-node": "^10.9.1"
+  },
+  "peerDependencies": {
+    "sqlite": "^4.0.23",
+    "sqlite3": "^5.0.2"
   }
 }

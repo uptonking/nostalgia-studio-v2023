@@ -222,7 +222,7 @@ Timestamp.recv = function (clock, msg) {
   );
 };
 
-/** Converts a fixed-length string timestamp to the structured value. 用来merkle插入
+/** Converts a fixed-length string timestamp to the structured value. 反序列化
  * - sets this to elapsed msecs since 1/1/70 (e.g., when receiving a message)
  * @param {string} timestamp 类似 2022-10-30T14:23:11.112Z-0000-a02156e53043eaab
  */
@@ -269,7 +269,7 @@ Timestamp.OverflowError = class extends Error {
   }
 };
 
-export { Timestamp, MutableTimestamp };
+export { MutableTimestamp, Timestamp };
 
 globalThis['Timestamp'] = Timestamp;
 globalThis['MutableTimestamp'] = MutableTimestamp;

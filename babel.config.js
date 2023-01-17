@@ -92,7 +92,7 @@ module.exports = function (api) {
     ],
   ].filter(Boolean);
 
-  // console.log('babel-presets, ', JSON.stringify(presets));
+  console.log('babel-presets, ', JSON.stringify(presets));
 
   const ignore = ['node_modules'];
 

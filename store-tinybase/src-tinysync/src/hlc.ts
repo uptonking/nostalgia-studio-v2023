@@ -8,7 +8,7 @@ export type HlcParts = [
   clientHash30: number,
 ];
 export type Hlc = string;
-// Sortable 16 digit radix-64 string representing 96 bits:
+// Sortable 16 digit radix-64(每6个二进制位代表代表一个编码) string representing 96 bits:
 // - 42 bits (7 chars) for time in milliseconds (~139 years)
 // - 24 bits (4 chars) for counter (~16 million)
 // - 30 bits (5 chars) for hash of unique client id (~1 billion)
@@ -20,7 +20,8 @@ const SHIFT18 = 2 ** 18;
 const SHIFT12 = 2 ** 12;
 const SHIFT6 = 2 ** 6;
 
-const encodeHlc = (
+/** get 16-digit hybrid logical clock, time7 + counter4 + clientId5  */
+export const encodeHlc = (
   logicalTime42: number,
   counter24: number,
   clientHash30: number,
@@ -69,11 +70,13 @@ export const getHlcFunctions = (
   let counter = 0;
   const uniqueIdHash = stringHash(uniqueId);
 
+  /** counter +1 */
   const getHlc = (): Hlc => {
     seenHlc();
     return encodeHlc(logicalTime, ++counter, uniqueIdHash);
   };
 
+  /** use max counter */
   const seenHlc = (hlc?: Hlc): void => {
     const previousLogicalTime = logicalTime;
     const [remoteLogicalTime, remoteCounter] = isUndefined(hlc)
@@ -85,6 +88,7 @@ export const getHlcFunctions = (
       remoteLogicalTime,
       Date.now() + offset,
     );
+
     counter =
       logicalTime == previousLogicalTime
         ? logicalTime == remoteLogicalTime

@@ -27,6 +27,7 @@ export const mapGet = <Key, Value>(
   map: Map<Key, Value> | undefined,
   key: Key,
 ): Value | undefined => map?.get(key);
+/** if key exists, return value; if not, createDefaultValue and return it */
 export const mapEnsure = <Key, Value>(
   map: Map<Key, Value>,
   key: Key,
@@ -59,10 +60,11 @@ export const collDel = (
   keyOrValue: unknown,
 ): boolean | undefined => coll?.delete(keyOrValue);
 export const collIsEmpty = (coll: Coll<unknown> | undefined): boolean =>
-  isUndefined(coll) || collSize(coll) == 0;
+  isUndefined(coll) || collSize(coll) === 0;
 export const collSize = (coll: Coll<unknown>): number => coll.size;
 export const isUndefined = (thing: unknown): thing is undefined | null =>
   thing == undefined;
+
 export const setOrDelCell = (
   store: Store,
   tableId: Id,
@@ -112,11 +114,15 @@ export const ifNotUndefined = <Value, Return>(
   then: (value: Value) => Return,
   otherwise?: () => Return,
 ): Return | undefined => (isUndefined(value) ? otherwise?.() : then(value));
+/** remove all items from input collection */
 export const collClear = (coll: Coll<unknown>): void => coll.clear();
 export const arrayPush = <Value>(array: Value[], ...values: Value[]): number =>
   array.push(...values);
 
 export type Coll<Value> = Map<unknown, Value> | Set<Value>;
+/** { string: val } */
 export type IdMap<Value> = Map<Id, Value>;
+/** { string: { string: val } } */
 export type IdMap2<Value> = IdMap<IdMap<Value>>;
+/** { string: { string: { string: val } } } */
 export type IdMap3<Value> = IdMap<IdMap2<Value>>;

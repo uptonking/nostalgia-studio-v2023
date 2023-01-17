@@ -2926,7 +2926,7 @@ export interface Store {
   ): Id;
 
   /**
-   * The addCellListener method registers a listener function with the Store
+   * The `addCellListener` method registers a listener function with the Store
    * that will be called whenever data in a Cell changes.
    *
    * The provided listener is a CellListener function, and will be called with a

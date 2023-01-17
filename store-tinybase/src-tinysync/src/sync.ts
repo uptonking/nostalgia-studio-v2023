@@ -3,12 +3,10 @@ import type { CellOrUndefined, Store } from 'tinybase/src/store-d';
 
 import {
   arrayForEach,
-  arrayMap,
   arrayPush,
   arrayReduce,
   collClear,
   collIsEmpty,
-  collSize,
   IdMap2,
   IdMap3,
   ifNotUndefined,
@@ -18,41 +16,26 @@ import {
   mapEnsure,
   mapForEach,
   mapGet,
-  mapKeys,
   mapNew,
   mapSet,
   setOrDelCell,
 } from './common';
 import { getHlcFunctions, Hlc } from './hlc';
 
-export type Changes = string; //[stringTable: string[], json: string];
-
-const TREE_DEPTH = 3;
-
+// /** [stringTable: string[], json: string]; */
+export type Changes = string;
+/** tuple-4, [tableId, rowId, cellId, cellValue] */
 type Change = [tableId: Id, rowId: Id, cellId: Id, cell: CellOrUndefined];
+/** tree */
 type ChangeNode = Map<string, ChangeNode | Change>;
 
-const getLookupFunctions = (
-  tokenTables: [Map<string, number>, Map<string, number>] = [
-    mapNew(),
-    mapNew(),
-  ],
-): [
-  (value: string | number | boolean | undefined, safeB64?: 1) => number,
-  () => string[],
-] => {
-  const getTokenTyped = (value, tokenTableId) =>
-    mapEnsure(tokenTables[tokenTableId], value, () =>
-      collSize(tokenTables[tokenTableId]),
-    );
-  return [
-    (value: string | number | boolean | undefined, isB64?: 1) =>
-      getTokenTyped(isB64 ? value : jsonString(value ?? null), isB64 ?? 0),
-    (): string[] =>
-      arrayMap(tokenTables, (tokenTable) => mapKeys(tokenTable).join(',')),
-  ];
-};
+/** 对应 IdMap1-3 */
+const TREE_DEPTH = 3;
 
+/** update change tree，将16位的hlc拆分为 3-4-4-5 四部分
+ * - 拆分时间是为了支持细粒度的快速比较时间
+ * - `{ time1: { time2: {counter: {clientId:changeObj} } } }`
+ */
 const addLeaf = (node: ChangeNode, hlc: Hlc, change: Change) =>
   arrayReduce(
     [
@@ -61,15 +44,25 @@ const addLeaf = (node: ChangeNode, hlc: Hlc, change: Change) =>
       hlc.substring(7, 11),
       hlc.substring(11),
     ],
-    (node, fragment, index) =>
-      mapEnsure(
+    (node, fragment, index) => {
+      // console.log(';; hlc-part-len ', fragment.length, fragment)
+      return mapEnsure(
         node,
         fragment,
         index < TREE_DEPTH ? mapNew : () => change,
-      ) as ChangeNode,
+      ) as ChangeNode;
+    },
     node,
   );
 
+/**
+ * recursive diff largerNode and smallerNode
+ * @param largerNode iterated from, changes from here
+ * @param smallerNode for comparison
+ * @param depth 控制递归终止条件
+ * @param diffNode 待返回的diff树
+ * @returns
+ */
 const getDiff = (
   largerNode: ChangeNode,
   smallerNode: ChangeNode,
@@ -82,14 +75,15 @@ const getDiff = (
       (smallerChild) =>
         depth
           ? mapSet(
-              diffNode,
-              key,
-              getDiff(largerChild as ChangeNode, smallerChild, depth - 1),
-            )
+            diffNode,
+            key,
+            getDiff(largerChild as ChangeNode, smallerChild, depth - 1),
+          )
           : 0,
       () => mapSet(diffNode, key, largerChild),
     );
   });
+
   return collIsEmpty(diffNode) ? undefined : diffNode;
 };
 
@@ -107,6 +101,7 @@ const getLeaves = (
   return leaves;
 };
 
+/** custom JSON.stringify: Map to string */
 const encode = (changeNode: ChangeNode | undefined): Changes => {
   if (isUndefined(changeNode)) {
     return '';
@@ -115,76 +110,16 @@ const encode = (changeNode: ChangeNode | undefined): Changes => {
   console.log('\nCompressing...\n');
   console.dir(changeNode, { depth: null });
   console.log('\ninto...\n');
-  console.log(encode2(changeNode));
-  console.log('\n');
+  // console.log(encode2(changeNode));
+  // console.log(';; \n');
   console.log(jsonString(changeNode));
-  console.log('\n');
+  console.log(';; \n');
 
   return jsonString(changeNode);
 };
 
-const encode2 = (
-  node: ChangeNode | undefined,
-  encoding: (string | number)[] = [],
-  lookupFunctions = getLookupFunctions(),
-  depth = TREE_DEPTH,
-): Changes => {
-  mapForEach(node, (key, child) => {
-    arrayPush(encoding, String.fromCharCode(depth + 33));
-    arrayPush(encoding, lookupFunctions[0](key, 1));
-    depth
-      ? encode2(child as ChangeNode, encoding, lookupFunctions, depth - 1)
-      : arrayPush(
-          encoding,
-          ...arrayMap(
-            child as Change,
-            (changePart) => `,${lookupFunctions[0](changePart)}`,
-          ),
-        );
-  });
-  return [...lookupFunctions[1](), encoding.join('')].join('\n');
-};
-
-const DEPTH_REGEX = arrayMap(
-  ['!', '"', '#', '\\$'],
-  (sep, s) => new RegExp(`${sep}(\\d+)${s == 0 ? ',' : ''}([^${sep}]+)`, 'g'),
-);
-
-const decode2 = (changes: Changes): ChangeNode => {
-  if (changes == '') {
-    return mapNew();
-  }
-  const [lookupTableString, lookupTableB64String, tree] = changes.split('\n');
-  const lookupTable = arrayMap(lookupTableString.split(','), (value) =>
-    JSON.parse(value),
-  );
-  const lookupTableB64 = lookupTableB64String.split(',');
-  const parseNode = (
-    string: string,
-    depth = TREE_DEPTH,
-    node: ChangeNode = mapNew(),
-  ): ChangeNode => {
-    arrayForEach(
-      [...string.matchAll(DEPTH_REGEX[depth])],
-      ([, key, childString]) =>
-        mapSet(
-          node,
-          lookupTableB64[key],
-          depth
-            ? parseNode(childString, depth - 1)
-            : arrayMap(
-                childString.split(','),
-                (changePart) => lookupTable[changePart] ?? undefined,
-              ),
-        ),
-    );
-    return node;
-  };
-  return parseNode(tree);
-};
-
 const decode = (changes: Changes): ChangeNode =>
-  JSON.parse(changes == '' ? '{}' : changes, (key, value) => {
+  JSON.parse(changes === '' ? '{}' : changes, (key, value) => {
     if (isObject(value)) {
       const map = mapNew();
       Object.entries(value).forEach(([k, v]) => mapSet(map, k, v));
@@ -193,15 +128,26 @@ const decode = (changes: Changes): ChangeNode =>
     return value;
   });
 
+/** ✨ create a syncUtil to store */
 export const createSync = (store: Store, uniqueStoreId: Id, offset = 0) => {
   let listening = 1;
 
   const [getHlc, seenHlc] = getHlcFunctions(uniqueStoreId, offset);
 
+  /** changes data as flat map, { hlc-string: [table,row,cell,value] }
+   * - only used to update `rootChangeNode` change tree
+   */
   const undigestedChanges: Map<Hlc, Change> = mapNew();
+  /** ⭐️ change tree of the sync-store, a 3-level tree */
   const rootChangeNode: ChangeNode = mapNew();
-  const latestHlcsByCell: IdMap3<Hlc> = mapNew();
+  /** extract hlc of all cells, { table: {row: {cell: hlc} } }
+   * ? 作用不大，可删除 ？
+   */
+  const latestHlcDataByCell: IdMap3<Hlc> = mapNew();
 
+  /** will be called for every cell change to close over `undigestedChanges`
+   * and try to update latestHlcDataByCell
+   */
   const handleChange = (
     hlc: Hlc,
     tableId: Id,
@@ -210,14 +156,18 @@ export const createSync = (store: Store, uniqueStoreId: Id, offset = 0) => {
     cell: CellOrUndefined,
   ): 0 | 1 => {
     mapSet(undigestedChanges, hlc, [tableId, rowId, cellId, cell]);
+
+    // 当前change的cellId是否存在hlc
     const latestHlcByCell = mapGet(
-      mapGet(mapGet(latestHlcsByCell, tableId), rowId),
+      mapGet(mapGet(latestHlcDataByCell, tableId), rowId),
       cellId,
     );
+
     if (isUndefined(latestHlcByCell) || hlc > latestHlcByCell) {
+      // /若当前change的hlc不存在或时间最新，则更新 latestHlcDataByCell
       mapSet(
         mapEnsure(
-          mapEnsure<Id, IdMap2<Hlc>>(latestHlcsByCell, tableId, mapNew),
+          mapEnsure<Id, IdMap2<Hlc>>(latestHlcDataByCell, tableId, mapNew),
           rowId,
           mapNew,
         ),
@@ -226,27 +176,37 @@ export const createSync = (store: Store, uniqueStoreId: Id, offset = 0) => {
       );
       return 1;
     }
+
+    // latestHlcDataByCell not changed
     return 0;
   };
 
+  /** 将未处理过的changes添加到 rootChangeNode */
   const digestChanges = () => {
     mapForEach(undigestedChanges, (hlc, change) =>
       addLeaf(rootChangeNode, hlc, change),
     );
+    // console.log(';; change-tree ', uniqueStoreId);
+    // console.dir(rootChangeNode, { depth: null });
     collClear(undigestedChanges);
   };
 
+  /** 先更新store-rootChangeNode-tree，then get mini diff tree，then stringify */
   const getChanges = (except: Changes = ''): Changes => {
     digestChanges();
-    return encode(getDiff(rootChangeNode, decode(except)));
+    const diffTree = getDiff(rootChangeNode, decode(except));
+    return encode(diffTree);
   };
 
+  /** diff minimal changes, then save to database */
   const setChanges = (changes: Changes) => {
     digestChanges();
     listening = 0;
+    const diffTree = getDiff(decode(changes), rootChangeNode);
+
     store.transaction(() =>
       arrayForEach(
-        getLeaves(getDiff(decode(changes), rootChangeNode)),
+        getLeaves(diffTree),
         ([hlc, [tableId, rowId, cellId, cell]]) => {
           seenHlc(hlc);
           if (handleChange(hlc, tableId, rowId, cellId, cell)) {
@@ -259,7 +219,6 @@ export const createSync = (store: Store, uniqueStoreId: Id, offset = 0) => {
   };
 
   const getUniqueStoreId = () => uniqueStoreId;
-
   const getStore = () => store;
 
   const sync = {
@@ -269,6 +228,7 @@ export const createSync = (store: Store, uniqueStoreId: Id, offset = 0) => {
     getStore,
   };
 
+  // add listener to every cell change
   store.addCellListener(
     null,
     null,

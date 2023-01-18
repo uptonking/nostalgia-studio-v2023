@@ -8,6 +8,11 @@ You could use this library to, for example, build an HTML/JavaScript app that al
 
 The concept that IDBSideSync is attempting to prove is: local-first, browser-based apps can be built with support for sync and collaboration using CRDTs and remote stores that users have more control over--especially ones that can be managed via a user-friendly, file-system-like interface. An app that needs to handle a ton of data or support real-time collaboration among many users probably needs a more traditional backend or [DBaaS](https://en.wikipedia.org/wiki/Cloud_database). But there's a [category of end-user software](https://www.inkandswitch.com/local-first.html) where things can work primarily offline, without real-time sync, that might be improved by allowing users to "keep" their own data--that's probably a better fit for for something like IDBSideSync.
 
+### 🚨 使用注意
+
+- google-drive中刚删除文件时，文件仍在回收站，此时同步会把回收站的数据也拉取到本地
+  - 拉取远程变更数据时，要过滤掉回收站的，但可保留已删除的，因为拉回本地也无影响
+
 ### codebase
 
 - src-code
@@ -18,11 +23,27 @@ The concept that IDBSideSync is attempting to prove is: local-first, browser-bas
   - add/put > recordOp > HLClock.tick，每次crud操作对应的op都会带有一个新时间戳，一般+1
   - applyOplogEntry > HLClock.tickPast, 每次执行op都会检查并尝试更新本地hlc
 
+- 同步逻辑
+  - 需要手动触发同步，基于google-drive，这里可参考remoteStorage；也可改为定时触发
+  - 同步在应用层的实现基于plugin
+    - 在应用首次初始化时，创建插件对象，尝试触发自动登录之前登录过的帐号
+
+- 同步接口设计
+  - 获取本地最新上传时间Date对象 `getMostRecentUploadedEntryTime(): Promise<Date>`; 
+    - 每次上传云端都会更新本地 mostRecentUploadedEntryTimeMsec
+  - 上传本地op记录数据到云端 `saveRemoteEntry(entry)`; 
+  - 从云端请求非本地clientId的其他设备的afterTime时间之后的op记录及内容 
+    - `getRemoteEntries: (params: { clientId: string; afterTime?: Date | null; })`;
+    - 查询 clientIdX 在本地的最新op的时间T
+    - 从云端获取clientIdX在T时间之后的op记录及内容
+    - 将clientIdX的云端op应用在本地
+
 - roadmap
   - 自动定期清理无用的op，以减少存储空间
   - render方法中存在大量异步计算，当在1个frame的计算量过大时，如何优化
   - 迁移原仓库的cypress测试
   - 支持可插拔的协作，如何去掉op记录表
+    - 去掉idb操作相关的代理逻辑
 
 - google-drive保存数据的格式
   - 文件名以日期开头的原因是，方便利用google drive api搜索能容易找到多个设备总体的最新op记录

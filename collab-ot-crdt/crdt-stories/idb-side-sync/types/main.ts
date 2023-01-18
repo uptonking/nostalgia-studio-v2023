@@ -200,7 +200,7 @@ export interface SyncPlugin {
   getSettings(): SyncProfileSettings;
   setSettings(settings: SyncProfileSettings): void;
 
-  /** 获取本地上传时间，更好的方式是通过查询云端得到，是物理时间的Date对象 */
+  /** 获取本地最新上传时间，更好的方式是通过查询云端得到，是物理时间的Date对象 */
   getMostRecentUploadedEntryTime(): Promise<Date>;
 
   /** 从云端获取afterTime时间之后的op记录及内容*/
@@ -209,7 +209,7 @@ export interface SyncPlugin {
     afterTime?: Date | null;
   }) => AsyncGenerator<OpLogEntry, void, void>;
 
-  /** 上传op记录数据到云端的入口，可定制实现细节 */
+  /** 上传本地op记录数据到云端的入口，可定制实现细节 */
   saveRemoteEntry: (params: {
     time: Date;
     counter: number;

@@ -34,7 +34,7 @@ export function makeClientId(): string {
 }
 
 /**
- * Utility / type guard function for verifying that something is both a valid IDB object key and a key supported by
+ * type guard utility function for verifying that something is both a valid IDB object key and a key supported by
  * IDBSideSync.
  */
 export function isSupportedObjectKey(thing: unknown): thing is IDBValidKey {

@@ -78,7 +78,7 @@ function getMerkle(group_id) {
 
 /** 插入实参数据到messages表、messages_merkles表， 手动管理事务提交和回滚
  * - 前端业务模型的crud操作并不在这里apply，这里只是记录操作
- * @return 服务端最新的merkle-tree
+ * @return 返回插入后得到的最新的merkle-tree
  */
 function addMessages(groupId, messages) {
   let trie = getMerkle(groupId);

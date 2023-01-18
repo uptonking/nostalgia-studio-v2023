@@ -911,7 +911,7 @@ export async function setupSync() {
 
 /** 同步前后都会执行render */
 async function syncNow(forceFullSync = false) {
-  console.log(';; syncNow-ing ');
+  console.log(';; sync-Now-ing ');
   uiState.sync.inProgress = true;
   render();
   await sync({ forceFullSync });

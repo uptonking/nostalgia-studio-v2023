@@ -197,7 +197,7 @@ async function sync(initialMessages = [], since = null) {
   let messages = initialMessages;
 
   if (since) {
-    // /离线后恢复在线时，会将counter置0
+    // /离线后恢复在线时，计算需要发送的ops
     const timestamp = new Timestamp(since, 0, '0').toString();
     messages = _messages.filter((msg) => msg.timestamp >= timestamp);
   }

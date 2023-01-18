@@ -255,6 +255,7 @@ function debug(trie, k = '', indent = 0) {
  *    - merkle tree in this app indexes rolling hashes of "known messages" by the times for those messages.
  *    - This means you can quickly compare two merkle trees, and if they differ, find the most recent "message time" when they were the same.
  * - 未提供update，提供了insert
+ * - 不保存具体数据，只保存hash
  */
 export const merkle = {
   getKeys,
@@ -338,5 +339,5 @@ const mockMerkle = {
   hash: -953457433,
 };
 
-console.log(debug(mockMerkle));
-console.log(getKeys(mockMerkle));
+// console.log(debug(mockMerkle));
+// console.log(getKeys(mockMerkle));

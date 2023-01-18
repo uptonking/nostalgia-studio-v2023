@@ -20,8 +20,9 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 (This does not include `main.js` in the client which is the implementation of the app. This is just showing the tiny size of everything needed to build an app)
 
 - issues-not-yet (看看github的issues)
-  - [ ] 每个客户端的merkle-tree是否可替换为一个代表本客户端上次同步iso时间的简单字符串
   - [ ] `SELECT * FROM messages WHERE timestamp > ? AND timestamp NOT LIKE '%' || ? ORDER BY timestamp` 中的`||`什么意思？
+  - [x] 每个客户端的merkle-tree是否可替换为一个代表本客户端上次同步iso时间的简单字符串
+    - 不可以，因为每次同步要发送整棵树到服务端计算最小op集合，服务端可能有旧的op节点的hlc更小但未执行过
   - [x] 客户端的op被服务端入库后，另一个客户端为什么收不到，diffTime始终为null？
     - 因为原始代码被意外修改了，timestamp.hash()未返回合法哈希值
 
@@ -32,16 +33,20 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 
 - 本示例要点
   - hlc逻辑时钟
-    - db/sendMessages, 每次crud操作对应的message都会带有一个新时间戳，来自 Timestamp.send，一般+1
-    - sync/receiveMessages, 每次收到服务端op都会执行 Timestamp.recv，更新本地logic clock，一般+1
+    - sendMessages(db), 每次crud操作对应的message都会带有一个新时间戳，来自 Timestamp.send，一般+1
+    - receiveMessages(sync), 每次收到服务端op都会执行 Timestamp.recv，更新本地hlc为更大的
   - app业务数据模型定义在前端，sqlite数据库只记录历史操作，服务端并不直接处理业务模型的crud
   - 本示例协作的粒度是对象属性，所以可能存在输入内容被全部替换，而不是合并操作A和B
   - 客户端op操作基本数据： some-client did something/op at sometime
   - merkle-tree的作用，校验数据的一致性，快速定位上次同步时间
+    - 本地每次插入msg时，会更新本地mk树
+    - 服务端每次插入msg时，会更新服务端mk树
+    - 本地从离线恢复到同步时，会检查服务端返回的mk树和本地的mk树，然后确定本地需要发送的缓存op
     - merkle tree only stores what it needs to answer the question "what is the last time at which the collections had the same messages?": time (as keys) and hashes (as values) made from all known messages at those times.
     - 当每层节点排序后，从左到右就是时间增长的方向
 
 - 同步逻辑
+  - 同步的时机：每次sendMessages
   - 本示例使用了中心服务器，所有节点都会和服务端同步，但若改为无中心化架构逻辑也相同
   - 每次客户端执行sync都会发送自己的merkle-tree数据到服务端，让服务端快速计算需要返回的op记录
 

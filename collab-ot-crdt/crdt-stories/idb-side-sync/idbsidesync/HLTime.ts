@@ -85,7 +85,7 @@ export class HLTime {
    *     - (65534).toString(16) -> fffe
    *     - (65535).toString(16) -> ffff
    *     - (65536).toString(16) -> 10000 -- oops, this is 5 chars
-   *   - `<client ID>` is the last 16 chars of a UUID (with hyphen removed):
+   *   - `<client ID>` is the last 16 chars of a UUID (with hyphen removed): half the length of uuid 32
    *       - UUID: `xxxxxxxx-xxxx-xxxx-bdb7-87f4536dc989`, client/node: `bdb787f4536dc989`
    *
    * Examples:

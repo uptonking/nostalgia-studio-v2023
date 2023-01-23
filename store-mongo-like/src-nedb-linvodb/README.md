@@ -18,6 +18,7 @@
 
 - ❓ 代码中update操作然后remove，实际上update操作的cb比remove操作的cb后执行
 # roadmap
+- 从数据库读取数据的逻辑添加LRU作为缓存
 
 ## dev-to-list
 

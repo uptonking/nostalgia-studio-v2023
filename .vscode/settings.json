@@ -93,5 +93,6 @@
   "explorer.fileNesting.patterns": {
     "*.ts": "${capture}.test.ts,${capture}.spec.ts",
     "*.js": "${capture}.test.js,${capture}.spec.js"
-  }
+  },
+  "tsImportSorter.configuration.autoFormat": "onSave"
 }

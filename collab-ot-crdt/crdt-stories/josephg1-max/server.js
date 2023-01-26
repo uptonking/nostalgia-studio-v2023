@@ -42,8 +42,8 @@ const broadcastOp = (op, exclude) => {
   }
 };
 
-const server = http.createServer(app.handler);
-const wss = new WebSocketServer({ server });
+const httpServer = http.createServer(app.handler);
+const wss = new WebSocketServer({ server: httpServer });
 
 wss.on('connection', (ws) => {
   console.log(';; ws-clients-num ', wss.clients.size);
@@ -69,6 +69,6 @@ wss.on('connection', (ws) => {
   });
 });
 
-server.listen(3001, () => {
+httpServer.listen(3001, () => {
   console.log('listening on port 3001');
 });

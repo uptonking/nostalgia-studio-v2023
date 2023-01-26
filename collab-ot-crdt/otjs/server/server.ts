@@ -4,7 +4,7 @@ import cors from 'cors';
 import express from 'express';
 import { Server as SocketIOServer } from 'socket.io';
 
-import { EditorSocketIOServer } from './editor-server-socketio';
+import { EditorSocketServer } from './editor-server-socketio';
 
 const port = process.env.PORT || 4001;
 
@@ -21,11 +21,11 @@ const io = new SocketIOServer(httpServer, {
   },
 });
 
-const server = new EditorSocketIOServer('', [], '1');
+const editorServer = new EditorSocketServer('', [], '1');
 
 io.on('connection', (socket) => {
   // 连接时会发送最新doc对象和版本
-  server.addClient(socket);
+  editorServer.addClient(socket);
 });
 
 // app.get('/', function(req, res){

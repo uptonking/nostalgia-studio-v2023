@@ -5,7 +5,10 @@ import { TextOperation } from '../src/text-operation';
 import { WrappedOperation } from '../src/wrapped-operation';
 import { Orchestrator } from './orchestrator';
 
-export class EditorSocketIOServer extends Orchestrator {
+/**
+ * 通过socket.on添加各种事件监听器，其他方法都是为此服务
+ */
+export class EditorSocketServer extends Orchestrator {
   users: Record<string, Record<'selection' | 'name', any>>;
   docId: string;
   mayWrite: (_: any, fn: (args: any) => void) => void;
@@ -26,7 +29,8 @@ export class EditorSocketIOServer extends Orchestrator {
       };
   }
 
-  /** socket client 连接时会发送最新doc对象和版本 */
+  /** socket.on添加各种事件监听器
+   * - socket client 连接时会发送最新doc对象和版本 */
   addClient(socket: Socket) {
     const self = this;
     socket.join(this.docId);
@@ -36,7 +40,7 @@ export class EditorSocketIOServer extends Orchestrator {
       clients: this.users,
     });
 
-    socket.on('operation', function (revision, operation, selection) {
+    socket.on('operation', (revision, operation, selection) => {
       self.mayWrite(socket, function (mayWrite) {
         if (!mayWrite) {
           console.log("User doesn't have the right to edit.");
@@ -46,8 +50,8 @@ export class EditorSocketIOServer extends Orchestrator {
       });
     });
 
-    socket.on('selection', function (obj) {
-      self.mayWrite(socket, function (mayWrite) {
+    socket.on('selection', obj => {
+      self.mayWrite(socket, mayWrite => {
         if (!mayWrite) {
           console.log("User doesn't have the right to edit.");
           return;
@@ -56,7 +60,7 @@ export class EditorSocketIOServer extends Orchestrator {
       });
     });
 
-    socket.on('disconnect', function () {
+    socket.on('disconnect', () => {
       console.log('socket disconnect ', socket.id);
       socket.leave(self.docId);
       self.onDisconnect(socket);

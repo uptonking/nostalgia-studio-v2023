@@ -12,8 +12,8 @@
     "start1": "npm run compile && node ./lib/index.js",
     "start:sync-test": "node --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only ./src/index.ts",
     "test": "npm run test:tinysync",
-    "test:tinysync": "jest",
-    "test:oneoff": "jest ./src/.test.ts"
+    "test:oneoff": "jest ./src/.test.ts",
+    "test:tinysync": "jest"
   },
   "devDependencies": {
     "tinybase": "2.2.6111",

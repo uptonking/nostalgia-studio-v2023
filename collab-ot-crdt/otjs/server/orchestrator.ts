@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events';
 
-// import { TextOperation } from '../src/text-operation';
 import { WrappedOperation } from '../src/wrapped-operation';
+// import { TextOperation } from '../src/text-operation';
 
 /**
  * Takes current document as a string and optionally the array of all operations.

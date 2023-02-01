@@ -1,7 +1,19 @@
-import ws, { WebSocketServer, type ServerOptions } from 'ws';
+import ws, { WebSocket, WebSocketServer, type ServerOptions } from 'ws';
 import http from 'node:http';
 import cors from 'cors';
 import express from 'express';
+import {
+  createSync,
+  decode,
+  syncChangesTreeToTargetTree,
+  getDiff,
+  encode,
+} from '../extensions/sync/sync';
+import { createStore } from '../extensions/sync';
+
+const store = createStore();
+// @ts-expect-error fix-types
+const syncUtil = createSync(store, 'storeServer');
 
 export interface TinyWSRequest extends http.IncomingMessage {
   ws: () => Promise<ws>;
@@ -14,7 +26,7 @@ export interface TinyWSRequest extends http.IncomingMessage {
 export const tinyWs =
   (
     wsOptions?: ServerOptions,
-    wss: InstanceType<typeof WebSocketServer> = new WebSocketServer({
+    wss: WebSocketServer = new WebSocketServer({
       ...wsOptions,
       noServer: true,
     }),
@@ -39,45 +51,98 @@ export const tinyWs =
       await next();
     };
 
-interface SyncServerI {
-  getMetadata: (id: string) => { data: any };
-  getOpLogs: (ids: string[]) => { data: any };
-  receiveOpLogs: (ids: string[]) => { data: any };
+const wss = new WebSocketServer({
+  clientTracking: true,
+  noServer: true,
+});
+
+const wsBroadcast = (data, excludes = []) => {
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN && excludes.indexOf(client) === -1) {
+      client.send(data, { binary: false });
+    }
+  });
+};
+
+/**
+ * common api for any sync server
+ */
+export interface SyncServerType {
+  getChangesMetadata: (id: string) => { data: any };
+  getChanges: (ids: string[]) => { data: any };
+  receiveChanges: (ids: string[]) => { data: any };
 }
 
-class SyncServer implements SyncServerI {
-  changesRootNode = {};
-  changesOpLogs = {};
+export class WebSocketSyncServer implements SyncServerType {
+  changesRootNode;
+  changesContents = {};
 
   constructor() { }
 
   addClient(socket) {
     socket.send(
       JSON.stringify({
-        type: 'hello from server',
+        type: 'cs_init_connection',
         content: [1, '2'],
       }),
     );
+    console.log(';; clients-size ', wss.clients.size);
 
     socket.on('message', (data) => {
-      const d = JSON.parse(data);
-      console.log(';; ', d);
+      const msg = JSON.parse(data);
+      console.log(';; ', msg);
+      if (msg.type === 'cs_open_client') {
+        console.log(';; open_client ', msg);
+      }
+      if (msg.type === 'cs_send_changes') {
+        console.log(';; send_changes ', msg);
+
+        const fromTree = decode(msg.content || '');
+        console.log(';; fromTree ', fromTree);
+        syncChangesTreeToTargetTree(fromTree, syncUtil);
+        console.log(';; srvChangedTo ', store.getState());
+        const currTrie = syncUtil.getChanges();
+        console.log(';; currTrie ', currTrie);
+
+        let remoteChanges = null;
+        // if (!this.changesRootNode) {
+        //   this.changesRootNode = changeTree;
+        // } else {
+        // const currTree = syncUtil.getChanges();
+        // const diffChanges = getDiff(fromTree, currTree)
+        // syncUtil.setChanges(diffChanges)
+        // this.changesRootNode = msg.content;
+        // }
+        // remoteChanges = getDiff(syncUtil.getChangesTree(), fromTree);
+
+        // socket.send(
+        //   JSON.stringify({
+        //     type: 'cs_remote_changes',
+        //     content: encode(remoteChanges),
+        //   }),
+        // );
+
+        wsBroadcast(
+          JSON.stringify({
+            type: 'cs_remote_changes',
+            content: currTrie,
+          }),
+        );
+      }
     });
   }
 
-  getMetadata(id: string) {
+  getChangesMetadata(id: string) {
     return { data: null };
   }
 
-  getOpLogs(ids: string[]) {
+  getChanges(ids: string[]) {
     return { data: null };
   }
 
-  receiveOpLogs(ids: string[]) {
+  receiveChanges(ids: string[]) {
     return { data: null };
   }
-
-  startServer() { }
 }
 
 declare global {
@@ -88,22 +153,26 @@ declare global {
   }
 }
 
-const syncServer = new SyncServer();
+const syncServer = new WebSocketSyncServer();
 
 const app = express();
 app.use(cors());
 
-app.use('/sync/trie', tinyWs(), async (req, res) => {
-  console.log(';; req.ws ', req.ws);
+app.use(
+  '/sync/trie',
+  tinyWs({ clientTracking: true }, wss),
+  async (req, res) => {
+    // console.log(';; req.ws ', req.ws);
 
-  if (req.ws) {
-    const ws = await req.ws();
-    syncServer.addClient(ws);
+    if (req.ws) {
+      const ws = await req.ws();
+      syncServer.addClient(ws);
 
-    // return ws.send('hello from express@4');
-  } else {
-    res.send('Hello from HTTP!');
-  }
-});
+      // return ws.send('hello from express@4');
+    } else {
+      res.send('HTTP request for /sync/trie');
+    }
+  },
+);
 
 app.listen(process.env.PORT || 3000);

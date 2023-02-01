@@ -33,7 +33,7 @@ class SelfMeta {
   }
 }
 
-/** 除自己外其他客户端的视图相关的数据 */
+/** 除自己外其他客户端的视图相关的数据，主要是选区 */
 class OtherClient {
   /** 当前服务端维持的文本变更版本号（version） */
   id: string;

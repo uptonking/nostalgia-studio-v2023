@@ -22,6 +22,7 @@ socket.on('doc', (data: any) => {
   // 对codeMirror实例注册事件函数
   const editorAdapter = new CodeMirror5Adapter(cm5);
 
+  // 在客户端监听服务端发来的socket事件，然后执行已注册的对应函数
   const serverAdapter = new SocketIOAdapter(socket);
 
   // 注册callbacks到editorAdapter和serverAdapter
@@ -32,6 +33,7 @@ socket.on('doc', (data: any) => {
     editorAdapter,
   );
 
+  // 下面是SharedPen示例中的
   // 监听实时 canUndo/canRedo 变化
   // this.client.on('undoStatesChanged', this.trigger.bind(this, 'undoStatesChanged'))
   // 监听协同用户变化

@@ -3,12 +3,12 @@ import type { Socket } from 'socket.io';
 import { Selection } from '../src/selection';
 import { TextOperation } from '../src/text-operation';
 import { WrappedOperation } from '../src/wrapped-operation';
-import { Orchestrator } from './orchestrator';
+import { OpOrchestrator } from './op-orchestrator';
 
 /**
  * 通过socket.on添加各种事件监听器，其他方法都是为此服务
  */
-export class EditorSocketServer extends Orchestrator {
+export class EditorSocketServer extends OpOrchestrator {
   users: Record<string, Record<'selection' | 'name', any>>;
   docId: string;
   mayWrite: (_: any, fn: (args: any) => void) => void;

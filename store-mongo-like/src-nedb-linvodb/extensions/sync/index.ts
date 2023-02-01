@@ -1,4 +1,3 @@
-import { createStore } from 'tinybase';
 
 import { createSync } from './sync';
 
@@ -28,8 +27,8 @@ export const syncFromTo = <T extends SyncUtil>(
   const nextToChanges = syncFrom.getChanges(currentToChanges);
   // console.log(`;;RES/from-chg ${syncFrom.getUniqueStoreId()}`, nextToChanges);
 
-  const setChangesTo = isTestMode ? syncTo.setChanges : syncTo.setChanges1;
-  setChangesTo(nextToChanges);
+  const setChanges = isTestMode ? syncTo.setChanges : syncTo.setChanges1;
+  setChanges(nextToChanges);
   console.log(
     ';;NEW/to-tbl',
     isTestMode ? syncTo.getStore() : syncTo.getStore().getTables(),
@@ -46,30 +45,20 @@ export const syncFromTo = <T extends SyncUtil>(
 // syncFromTo(sync1, sync2);
 // syncFromTo(sync2, sync1);
 
-// store2.setCell('pets', 'roger', 'color', 'brown');
-// store2.setCell('pets', 'roger', 'color', 'red');
-
-// const store3 = createStore();
-// const sync3 = createSync(store3, 'store3');
-// syncFromTo(sync1, sync3);
-
-// store3.setRow('pets', 'roger', { legs: 4 });
-// syncFromTo(sync1, sync3);
-// syncFromTo(sync3, sync1);
-
-// --
-
-// const store0 = createStore();
-// const sync0 = createSync(store0, 'store0');
-// const C = 100;
-// store0.transaction(() => {
-//   for (let t = 0; t < C; t++) {
-//     for (let r = 0; r < C; r++) {
-//       for (let c = 0; c < C; c++) {
-//         store0.setCell(t + '', r + '', c + '', 1);
-//       }
-//     }
-//   }
-// });
-// console.log(sync0.getChanges());
-// console.log(process.memoryUsage().heapUsed / 1000000);
+export const createStore = (initialState = { movies: [] }) => {
+  let state = initialState;
+  const listeners: Function[] = [];
+  const getState = () => state;
+  const setState = (s) => {
+    state = s;
+    listeners.forEach((fn) => fn());
+  };
+  const subscribe = (fn) => {
+    listeners.push(fn);
+    return () => {
+      const index = listeners.indexOf(fn);
+      listeners.splice(index, 1);
+    };
+  };
+  return { getState, setState, subscribe };
+};

@@ -21,6 +21,7 @@ const io = new SocketIOServer(httpServer, {
   },
 });
 
+// 在服务端添加各种事件监听器
 const editorServer = new EditorSocketServer('', [], '1');
 
 io.on('connection', (socket) => {

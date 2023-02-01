@@ -1,12 +1,12 @@
 /* eslint-disable */
 /** 对应数据库的messages表模型
  * @typedef {Object} MessageItem
- * @property {string} group_id
- * @property {string} dataset
- * @property {string} row
- * @property {string} column
- * @property {string} value
- * @property {string} timestamp  a hybrid logical clock timestamp
+ * @property {string} group_id top level namespace
+ * @property {string} dataset table name/id
+ * @property {string} row row id
+ * @property {string} column column name/id
+ * @property {string} value serialized string value
+ * @property {string} timestamp  a hybrid logical clock timestamp, 3 parts
  */
 
 /** 放在内存的历史op数据，每个客户端都保存了所有客户端的op记录，👀可能会内存溢出

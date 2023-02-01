@@ -11,7 +11,7 @@ import { WrappedOperation } from '../src/wrapped-operation';
  * - 优点是，客户端的op一般只需发送一次，且对操作能保存意图
  * - 这里继承nodejs内置的EventEmitter是为了给子类用，子类不能多继承
  */
-export class Orchestrator extends EventEmitter {
+export class OpOrchestrator extends EventEmitter {
   /** 放在内存中的全局文档内容字符串，未持久化，方便新加入客户端能直接获取到最新内容 */
   document: string;
   /** 全局文档的编辑操作记录，注意内存溢出问题 */

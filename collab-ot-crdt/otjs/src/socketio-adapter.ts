@@ -3,11 +3,13 @@ import type { Socket } from 'socket.io-client';
 import type { Selection } from './selection';
 
 /**
- * 在客户端初始化监听服务端发来的socket事件，然后执行已注册的对应函数
+ * 在客户端监听服务端发来的socket事件，然后执行已注册的对应函数
+ * - 自己实现了类似eventemitter的逻辑
+ * - 还提供了与server通信的方法
  */
 export class SocketIOAdapter {
   socket: Socket;
-  /** 存放服务端发来消息后，在客户端待执行的事件函数 */
+  /** 存放服务端发来消息后，在客户端待执行的事件函数，类似event-emitter的实现 */
   callbacks: Record<string, (...args: any[]) => void>;
 
   constructor(socket: Socket) {

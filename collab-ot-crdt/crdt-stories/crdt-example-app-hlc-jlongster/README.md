@@ -21,15 +21,15 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
 
 - issues-not-yet (看看github的issues)
   - [ ] `SELECT * FROM messages WHERE timestamp > ? AND timestamp NOT LIKE '%' || ? ORDER BY timestamp` 中的`||`什么意思？
-  - [x] 每个客户端的merkle-tree是否可替换为一个代表本客户端上次同步iso时间的简单字符串
-    - 不可以，因为每次同步要发送整棵树到服务端计算最小op集合，服务端可能有旧的op节点的hlc更小但未执行过
-  - [x] 客户端的op被服务端入库后，另一个客户端为什么收不到，diffTime始终为null？
-    - 因为原始代码被意外修改了，timestamp.hash()未返回合法哈希值
+
+- roadmap
+  - 加入房间的客户端才自动获取协作更新，其余客户端显示默认版本，其他客户端可稍后加入房间
 
 - 本示例缺点
   - app初始数据由db的messages表所有op记录apply到本地计算得到，全表传输加本地计算可能导致性能问题
-  - 本地存放的op-msg历史数据全局对象_messages可能内存溢出
-    - 每个客户端都会保存所有op记录到内存，从db表获取到的记录一直在本地_messages
+  - 本地存放的op-msg历史数据全局对象_messages都在内存，可能导致内存溢出
+    - 每个客户端都会保存所有op记录到内存，从db表获取到的记录会一直在本地_messages
+  - 本示例以从服务端查询到的数据为唯一数据源，未持久化到浏览器web storage
 
 - 本示例要点
   - hlc逻辑时钟
@@ -49,14 +49,19 @@ The entire implementation is tiny, but provides a robust mechanism for writing d
   - 同步的时机：每次sendMessages
   - 本示例使用了中心服务器，所有节点都会和服务端同步，但若改为无中心化架构逻辑也相同
   - 每次客户端执行sync都会发送自己的merkle-tree数据到服务端，让服务端快速计算需要返回的op记录
+  - sendMessages会触发同步sync，post的内容包括 `{ group_id, client_id, messages, merkleTrie}`，注意发送时msg不包含client_id，但服务端入库时会每行会包含它，减少了传输size
 
 - 离线重连的流程
   - 离线时，本地_messages历史表会继续增加，但不会触发post同步
   - 恢复在线时，post执行一次空op后，会比较返回的clock和本地的clock，再次post本地有效op
     - 在sync方法中，执行`sync([], diffTime)`，会利用merkle-tree算出diffTime最近修改时间
 
-- roadmap
-  - 加入房间的客户端才自动获取协作更新，其余客户端显示默认版本，其他客户端可稍后加入房间
+
+  - [x] 每个客户端的merkle-tree是否可替换为一个代表本客户端上次同步iso时间的简单字符串
+    - 不可以，因为每次同步要发送整棵树到服务端计算最小op集合，服务端可能有旧的op节点的hlc更小但未执行过
+  - [x] 客户端的op被服务端入库后，另一个客户端为什么收不到，diffTime始终为null？
+    - 因为原始代码被意外修改了，timestamp.hash()未返回合法哈希值
+
 
 - [为什么merkle-tree采用三叉树，而不是常见的二叉树？](https://github.com/jlongster/crdt-example-app/issues/3#issuecomment-686301759)
   - As for why a ternary tree instead of a binary tree, it’s probably just to reduce the depth of the tree to make traversal faster. I actually wonder if a higher base might work even better but I haven’t thought through it enough yet and it probably doesn’t matter much.

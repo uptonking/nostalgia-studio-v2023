@@ -1,14 +1,27 @@
 import async from 'async';
 import _ from 'lodash';
+import type { Model } from '../src';
 
-export function setupSync(model, api, options: Record<string, any> = {}) {
+export function setupSync(
+  model: { linvoSync: boolean; } & Model,
+  api: {
+    user?: { _id: any };
+    request?: any;
+  },
+  options: {
+    log: any;
+    debounce: any;
+    remoteCollection: any;
+    limitPerSync: number;
+  },
+) {
   if (model.linvoSync) return;
   model.linvoSync = true;
   const log = (s) => options.log && console.log('LinvoDB Sync: ' + s);
 
   /** true only if sync is in progress */
   let dirty = false;
-  const triggerSync = _.debounce((cb = () => {}) => {
+  const triggerSync = _.debounce((cb = () => { }) => {
     dirty = true;
     queue.push({}, cb);
   }, options.debounce || 500);
@@ -125,9 +138,9 @@ export function setupSync(model, api, options: Record<string, any> = {}) {
             if (push.length)
               log(
                 'pushing ' +
-                  push.length +
-                  ' changes to remote for ' +
-                  model.modelName,
+                push.length +
+                ' changes to remote for ' +
+                model.modelName,
               );
 
             // @ts-expect-error fix-types

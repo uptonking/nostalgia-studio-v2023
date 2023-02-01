@@ -22,7 +22,7 @@ const addStyleRule = (css: string) => {
 };
 
 /**
- * CodeMirror changes <==> 自定义text-operations
+ * CodeMirror changes <--> 自定义text-operations
  */
 export class CodeMirror5Adapter {
   cm: Editor;

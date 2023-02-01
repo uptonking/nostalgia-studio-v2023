@@ -1,3 +1,5 @@
+/** @unused */
+
 import type { CellOrUndefined } from 'tinybase';
 import type { Id } from 'tinybase/src/common-d';
 

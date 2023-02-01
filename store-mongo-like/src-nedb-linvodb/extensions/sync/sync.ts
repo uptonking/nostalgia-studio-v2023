@@ -104,23 +104,23 @@ export const getDiff = (
 };
 
 /** custom JSON.stringify: Map to string */
-const encode = (changeNode: ChangeNode | undefined): Changes => {
+export const encode = (changeNode: ChangeNode | undefined): Changes => {
   if (isUndefined(changeNode)) {
     return '';
   }
 
-  console.log('\nCompressing...\n');
-  console.dir(changeNode, { depth: null });
-  console.log('\ninto...\n');
+  // console.log('\nCompressing...\n');
+  // console.dir(changeNode, { depth: null });
+  // console.log('\ninto...\n');
   // console.log(encode2(changeNode));
   // console.log(';; \n');
-  console.log(jsonString(changeNode));
-  console.log(';; \n');
+  // console.log(jsonString(changeNode));
+  // console.log(';; \n');
 
   return jsonString(changeNode);
 };
 
-const decode = (changes: Changes): ChangeNode =>
+export const decode = (changes: Changes): ChangeNode =>
   JSON.parse(changes === '' ? '{}' : changes, (key, value) => {
     if (isObject(value)) {
       const map = mapNew();
@@ -129,6 +129,14 @@ const decode = (changes: Changes): ChangeNode =>
     }
     return value;
   });
+
+export const syncChangesTreeToTargetTree = (fromTree, sync) => {
+  // const fromTree = decode(changes);
+  sync.getChanges();
+  const diffChanges = getDiff(fromTree, sync.getChangesTree());
+  console.log(';; diffChg ', diffChanges);
+  sync.setChanges(encode(diffChanges));
+};
 
 /** ✨ create a syncUtil to a store */
 export const createSync = (store1: Store, uniqueStoreId: Id, offset = 0) => {
@@ -234,14 +242,15 @@ export const createSync = (store1: Store, uniqueStoreId: Id, offset = 0) => {
 
     getLeaves(diffTree).forEach(([hlc, [tableId, rowId, cellId, cell]]) => {
       seenHlc(hlc);
-
-      const table = store[tableId];
-      const row = table.find((r) => r.id === rowId);
-      console.log(';; set-chg ', [hlc, [tableId, rowId, cellId, cell]], row);
-      if (!row) {
-        table.push({ id: rowId, [cellId]: cell });
-      } else {
-        row[cellId] = cell;
+      if (handleChange(hlc, tableId, rowId, cellId, cell)) {
+        const table = store[tableId];
+        const row = table.find((r) => r.id === rowId);
+        // console.log(';; set-chg ', [hlc, [tableId, rowId, cellId, cell]], row);
+        if (!row) {
+          table.push({ id: rowId, [cellId]: cell });
+        } else {
+          row[cellId] = cell;
+        }
       }
     });
 
@@ -258,7 +267,6 @@ export const createSync = (store1: Store, uniqueStoreId: Id, offset = 0) => {
     ];
     mapSet(undigestedChanges, hlc, changeOp);
 
-    // update store
     const table = store['movies'];
     const row = table.find((r) => r.id === changeOp[1]);
     if (!row) {
@@ -266,6 +274,8 @@ export const createSync = (store1: Store, uniqueStoreId: Id, offset = 0) => {
     } else {
       row[changeOp[2]] = changeOp[3];
     }
+    // @ts-expect-error fix-types
+    store1.setState(store);
   };
 
   const getUniqueStoreId = () => uniqueStoreId;
@@ -278,6 +288,7 @@ export const createSync = (store1: Store, uniqueStoreId: Id, offset = 0) => {
     mockChange,
     getUniqueStoreId,
     getStore,
+    getChangesTree: () => rootChangeNode,
   };
 
   // add listener to every cell change

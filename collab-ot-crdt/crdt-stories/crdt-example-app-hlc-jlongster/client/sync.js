@@ -31,7 +31,7 @@ async function post(data) {
 
 /**
  * Apply the data operation contained in a message to our local data store
- * (i.e., set a new property value for a secified dataset/table/row/column).
+ * (i.e., set a new property value for a specified dataset/table/row/column).
  * - 根据op-msg，更新全局数据`_data`
  * - 对于ui上的crud操作，create对应这里的push，update/delete对应属性赋值
  */
@@ -43,9 +43,9 @@ function apply(msg) {
 
   const row = table.find((row) => row.id === msg.row);
   if (!row) {
-    table.push({ id: msg.row, [msg.column]: msg.value });
+    table.push({ id: msg.row, [msg.column]: msg.value }); // 插入一行，代表新对象
   } else {
-    row[msg.column] = msg.value;
+    row[msg.column] = msg.value; // 修改现有行，更新对象
   }
 }
 
@@ -230,9 +230,9 @@ async function sync(initialMessages = [], since = null) {
       const errMsg = `since === diffTime: ${diffTime}; `;
       throw new Error(
         errMsg +
-          'A bug happened while syncing and the client ' +
-          'was unable to get in sync with the server. ' +
-          "This is an internal error that shouldn't happen",
+        'A bug happened while syncing and the client ' +
+        'was unable to get in sync with the server. ' +
+        "This is an internal error that shouldn't happen",
       );
     }
 

@@ -31,25 +31,25 @@ export const tinyWs =
       noServer: true,
     }),
   ) =>
-    async (req: TinyWSRequest, _: unknown, next: () => void | Promise<void>) => {
-      const upgradeHeader = (req.headers.upgrade || '')
-        .split(',')
-        .map((s) => s.trim());
+  async (req: TinyWSRequest, _: unknown, next: () => void | Promise<void>) => {
+    const upgradeHeader = (req.headers.upgrade || '')
+      .split(',')
+      .map((s) => s.trim());
 
-      // When upgrade header contains "websocket" it's index is 0
-      if (upgradeHeader.indexOf('websocket') === 0) {
-        // console.log(';; header ', upgradeHeader);
-        req.ws = () =>
-          new Promise((resolve) => {
-            wss.handleUpgrade(req, req.socket, Buffer.alloc(0), (ws) => {
-              wss.emit('connection', ws, req);
-              resolve(ws);
-            });
+    // When upgrade header contains "websocket" it's index is 0
+    if (upgradeHeader.indexOf('websocket') === 0) {
+      // console.log(';; header ', upgradeHeader);
+      req.ws = () =>
+        new Promise((resolve) => {
+          wss.handleUpgrade(req, req.socket, Buffer.alloc(0), (ws) => {
+            wss.emit('connection', ws, req);
+            resolve(ws);
           });
-      }
+        });
+    }
 
-      await next();
-    };
+    await next();
+  };
 
 const wss = new WebSocketServer({
   clientTracking: true,
@@ -58,7 +58,10 @@ const wss = new WebSocketServer({
 
 const wsBroadcast = (data, excludes = []) => {
   wss.clients.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN && excludes.indexOf(client) === -1) {
+    if (
+      client.readyState === WebSocket.OPEN &&
+      excludes.indexOf(client) === -1
+    ) {
       client.send(data, { binary: false });
     }
   });
@@ -77,12 +80,12 @@ export class WebSocketSyncServer implements SyncServerType {
   changesRootNode;
   changesContents = {};
 
-  constructor() { }
+  constructor() {}
 
   addClient(socket) {
     socket.send(
       JSON.stringify({
-        type: 'cs_init_connection',
+        type: 'css_init_connection',
         content: [1, '2'],
       }),
     );
@@ -90,15 +93,16 @@ export class WebSocketSyncServer implements SyncServerType {
 
     socket.on('message', (data) => {
       const msg = JSON.parse(data);
-      console.log(';; ', msg);
-      if (msg.type === 'cs_open_client') {
+      console.log(';; csc-msg', msg);
+
+      if (msg.type === 'csc_open_client') {
         console.log(';; open_client ', msg);
       }
-      if (msg.type === 'cs_send_changes') {
-        console.log(';; send_changes ', msg);
+      if (msg.type === 'csc_client_changes') {
+        console.log(';; client_changes ');
 
         const fromTree = decode(msg.content || '');
-        console.log(';; fromTree ', fromTree);
+        // console.log(';; fromTree ', fromTree);
         syncChangesTreeToTargetTree(fromTree, syncUtil);
         console.log(';; srvChangedTo ', store.getState());
         const currTrie = syncUtil.getChanges();
@@ -124,7 +128,7 @@ export class WebSocketSyncServer implements SyncServerType {
 
         wsBroadcast(
           JSON.stringify({
-            type: 'cs_remote_changes',
+            type: 'css_remote_changes',
             content: currTrie,
           }),
         );
@@ -175,4 +179,4 @@ app.use(
   },
 );
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3009);

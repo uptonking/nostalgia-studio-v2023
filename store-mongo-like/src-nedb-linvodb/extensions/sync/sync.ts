@@ -91,10 +91,10 @@ export const getDiff = (
       (smallerChild) =>
         depth
           ? mapSet(
-            diffNode,
-            key,
-            getDiff(largerChild as ChangeNode, smallerChild, depth - 1),
-          )
+              diffNode,
+              key,
+              getDiff(largerChild as ChangeNode, smallerChild, depth - 1),
+            )
           : 0,
       () => mapSet(diffNode, key, largerChild),
     );
@@ -130,11 +130,14 @@ export const decode = (changes: Changes): ChangeNode =>
     return value;
   });
 
+/**
+ * 计算fromTree相对于sync中targetTree的最小变更树T1，并用T1更新targetTree，同时更新store
+ */
 export const syncChangesTreeToTargetTree = (fromTree, sync) => {
   // const fromTree = decode(changes);
   sync.getChanges();
   const diffChanges = getDiff(fromTree, sync.getChangesTree());
-  console.log(';; diffChg ', diffChanges);
+  // console.log(';; diffChg ', diffChanges);
   sync.setChanges(encode(diffChanges));
 };
 
@@ -163,6 +166,7 @@ export const createSync = (store1: Store, uniqueStoreId: Id, offset = 0) => {
   /** will be called for every cell change to close over `undigestedChanges`
    * and try to update latestHlcDataByCell
    * - 将change保存到undigestedChanges，这里并没有构建change-tree
+   * - 在setChanges时用来判断lww
    */
   const handleChange = (
     hlc: Hlc,
@@ -197,7 +201,7 @@ export const createSync = (store1: Store, uniqueStoreId: Id, offset = 0) => {
     return 0;
   };
 
-  /** 将未处理过的changes添加到 rootChangeNode */
+  /** 用未处理过的undigestedChanges来更新rootChangeNode，在getChanges/setChanges会触发 */
   const digestChanges = () => {
     mapForEach(undigestedChanges, (hlc, change) =>
       addLeaf(rootChangeNode, hlc, change),
@@ -274,7 +278,7 @@ export const createSync = (store1: Store, uniqueStoreId: Id, offset = 0) => {
     } else {
       row[changeOp[2]] = changeOp[3];
     }
-    // @ts-expect-error fix-types
+    // @ts-expect-error fix-types 模拟change后，同时触发store的subscribe注册的方法
     store1.setState(store);
   };
 

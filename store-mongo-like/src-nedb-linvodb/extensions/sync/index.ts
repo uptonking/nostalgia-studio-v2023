@@ -1,4 +1,3 @@
-
 import { createSync } from './sync';
 
 type SyncUtil = ReturnType<typeof createSync>;

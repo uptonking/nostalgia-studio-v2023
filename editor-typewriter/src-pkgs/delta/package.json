@@ -1,0 +1,29 @@
+{
+  "name": "@typewriter/delta",
+  "version": "1.0.2111",
+  "description": "Format for representing rich text documents and changes.",
+  "license": "MIT",
+  "author": "Jason Chen <jhchen7@gmail.com>",
+  "type": "module",
+  "main": "src/index.ts",
+  "files": [
+    "tsconfig.json",
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint 'src/**/*.ts'",
+    "prepare1": "npm run build",
+    "test": "npm run build; jasmine test/*.js test/**/*.js",
+    "test:coverage": "nyc npm run test",
+    "test:coverage:report": "nyc report --reporter=lcov"
+  },
+  "dependencies": {
+    "fast-diff": "1.2.0"
+  },
+  "devDependencies": {
+    "jasmine": "^4.0.2",
+    "nyc": "^15.1.0"
+  }
+}

@@ -57,6 +57,8 @@ module.exports = {
     'no-dupe-keys': 1,
     'no-redeclare': 1,
     'no-unreachable': 1,
+    'no-useless-escape': 1,
+    'no-multi-assign': 1,
     eqeqeq: 1,
     'one-var': [2, 'never'],
     'guard-for-in': 1,

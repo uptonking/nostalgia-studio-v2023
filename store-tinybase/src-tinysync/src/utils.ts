@@ -32,9 +32,9 @@ const getLookupFunctions = (
     mapNew(),
   ],
 ): [
-    (value: string | number | boolean | undefined, safeB64?: 1) => number,
-    () => string[],
-  ] => {
+  (value: string | number | boolean | undefined, safeB64?: 1) => number,
+  () => string[],
+] => {
   const getTokenTyped = (value, tokenTableId) =>
     mapEnsure(tokenTables[tokenTableId], value, () =>
       collSize(tokenTables[tokenTableId]),
@@ -59,12 +59,12 @@ const encode2 = (
     depth
       ? encode2(child as ChangeNode, encoding, lookupFunctions, depth - 1)
       : arrayPush(
-        encoding,
-        ...arrayMap(
-          child as Change,
-          (changePart) => `,${lookupFunctions[0](changePart)}`,
-        ),
-      );
+          encoding,
+          ...arrayMap(
+            child as Change,
+            (changePart) => `,${lookupFunctions[0](changePart)}`,
+          ),
+        );
   });
   return [...lookupFunctions[1](), encoding.join('')].join('\n');
 };
@@ -98,9 +98,9 @@ const decode2 = (changes: Changes): ChangeNode => {
           depth
             ? parseNode(childString, depth - 1)
             : arrayMap(
-              childString.split(','),
-              (changePart) => lookupTable[changePart] ?? undefined,
-            ),
+                childString.split(','),
+                (changePart) => lookupTable[changePart] ?? undefined,
+              ),
         ),
     );
     return node;

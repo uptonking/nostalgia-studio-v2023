@@ -91,10 +91,10 @@ export const getDiff = (
       (smallerChild) =>
         depth
           ? mapSet(
-            diffNode,
-            key,
-            getDiff(largerChild as ChangeNode, smallerChild, depth - 1),
-          )
+              diffNode,
+              key,
+              getDiff(largerChild as ChangeNode, smallerChild, depth - 1),
+            )
           : 0,
       () => mapSet(diffNode, key, largerChild),
     );

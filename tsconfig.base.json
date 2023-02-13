@@ -19,7 +19,6 @@
     "noUnusedLocals": false,
     "skipLibCheck": true,
     "strictNullChecks": false,
-    "suppressImplicitAnyIndexErrors": true,
     "declaration": true,
     "esModuleInterop": true,
     "baseUrl": ".",
@@ -66,6 +65,9 @@
         "editor-prosemirror/src-pkgs/test-builder/src/"
       ],
       "orderedmap": ["editor-prosemirror/src-pkgs/orderedmap/"],
+      "@typewriter/delta": ["editor-typewriter/src-pkgs/delta/src/"],
+      "@typewriter/document": ["editor-typewriter/src-pkgs/document/src/"],
+      "typewriter-editor": ["editor-typewriter/src-pkgs/typewriter/src/"],
       "yjs": ["collab-yjs/src-pkgs/yjs/src"],
       "lib0": ["collab-yjs/src-pkgs/yjs-lib0"],
       "y-protocols": ["collab-yjs/src-pkgs/y-protocols"],

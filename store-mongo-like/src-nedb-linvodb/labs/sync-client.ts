@@ -8,7 +8,8 @@ import {
 } from '../extensions/sync/sync';
 import { createStore } from '../extensions/sync';
 
-const socket = new WebSocket('ws://localhost:3000/sync/trie');
+const COLLAB_SERVER = 'ws://localhost:3009';
+const socket = new WebSocket(COLLAB_SERVER + '/sync/trie');
 
 class LinvoDbAdapter extends EventEmitter {
   dbInstance: Model;
@@ -17,7 +18,7 @@ class LinvoDbAdapter extends EventEmitter {
 
   isSyncing = false;
 
-  sync: ReturnType<typeof createSync>;
+  syncUtil: ReturnType<typeof createSync>;
 
   constructor(dbInstance: Model) {
     super();
@@ -26,10 +27,10 @@ class LinvoDbAdapter extends EventEmitter {
     this.onStoreChanges = this.onStoreChanges.bind(this);
 
     // @ts-expect-error fix-types
-    this.sync = createSync(dbInstance, 'storeLocal');
+    this.syncUtil = createSync(dbInstance, 'storeLocal');
     // @ts-expect-error fix-types 本地store每次更新时会触发
     this.dbInstance.subscribe(() =>
-      this.onStoreChanges(this.sync.getChanges()),
+      this.onStoreChanges(this.syncUtil.getChanges()),
     );
     // model.on('updated', (items, quiet) => {
     //   if (!quiet) triggerSync();
@@ -45,32 +46,21 @@ class LinvoDbAdapter extends EventEmitter {
     // });
   }
 
-  // onInsert(cb) {
-  //   model.on('inserted', (items, quiet) => {
-  //     if (!quiet) cb();
-  //   });
-  // }
-  // onUpdate(cb) {
-  //   model.on('updated', (items, quiet) => {
-  //     if (!quiet) cb();
-  //   });
-  // }
-
   onStoreChanges(changes) {
-    this.emit('op_change', changes);
+    this.emit('local_changes', changes);
   }
 
   receiveChanges(changes) {
     if (!changes) return;
     const fromTree = decode(changes);
-    this.sync.getChanges();
-    syncChangesTreeToTargetTree(fromTree, this.sync);
+    this.syncUtil.getChanges();
+    syncChangesTreeToTargetTree(fromTree, this.syncUtil);
     // @ts-expect-error fix-types
     console.log(';; dbReceiveChanges ', this.dbInstance.getState());
   }
 
   mockChange() {
-    this.sync.mockChange();
+    this.syncUtil.mockChange();
   }
 
   triggerSync() {
@@ -88,9 +78,10 @@ class ServerAdapter extends EventEmitter {
     socket.addEventListener('message', ({ data }) => {
       // @ts-expect-error fix-types
       const msg = JSON.parse(data);
-      console.log(';; ', msg);
-      if (msg.type === 'cs_remote_changes') {
-        console.log(';; cl remote_changes ', msg);
+      console.log(';; css-msg ', msg);
+
+      if (msg.type === 'css_remote_changes') {
+        console.log(';; css remote_changes ');
         this.emit('remote_changes', msg.content);
       }
     });
@@ -99,7 +90,7 @@ class ServerAdapter extends EventEmitter {
   requestChangesMetedata() {
     this.socket.send(
       JSON.stringify({
-        type: 'cs_remote_changes_metadata',
+        type: 'csc_remote_changes_metadata',
         content: 'trie',
       }),
     );
@@ -108,7 +99,7 @@ class ServerAdapter extends EventEmitter {
   sendChanges(changes?: any) {
     this.socket.send(
       JSON.stringify({
-        type: 'cs_send_changes',
+        type: 'csc_client_changes',
         content: changes,
       }),
     );
@@ -131,7 +122,7 @@ class SyncClient {
     this.onLocalChanges = this.onLocalChanges.bind(this);
     this.onRemoteChanges = this.onRemoteChanges.bind(this);
 
-    this.storeAdapter.on('op_change', this.onLocalChanges);
+    this.storeAdapter.on('local_changes', this.onLocalChanges);
     this.serverAdapter.on('remote_changes', this.onRemoteChanges);
 
     storeAdapter.mockChange();
@@ -165,7 +156,7 @@ socket.addEventListener('open', () => {
   // send an opening message to the server
   socket.send(
     JSON.stringify({
-      type: 'cs_open_client',
+      type: 'csc_open_client',
       content: 'clientId-' + Math.round(Math.random() * 50),
     }),
   );
@@ -174,9 +165,9 @@ socket.addEventListener('open', () => {
 socket.addEventListener('message', ({ data }) => {
   // @ts-expect-error fix-types
   const msg = JSON.parse(data);
-  console.log(';; c-msg ', msg);
+  // console.log(';; css-msg ', msg);
 
-  if (msg.type === 'cs_init_connection') {
+  if (msg.type === 'css_init_connection') {
     // @ts-expect-error fix-types
     const linvoAdapter = new LinvoDbAdapter(store1);
     const serverAdapter = new ServerAdapter(socket);

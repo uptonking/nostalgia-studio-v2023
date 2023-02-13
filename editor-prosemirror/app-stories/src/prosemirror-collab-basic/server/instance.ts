@@ -12,7 +12,8 @@ import type { Waiting } from './server';
 /** max steps/operations on server */
 const MAX_STEP_HISTORY = 10000;
 
-/** 处理协作op的中心服务，决定op顺序。A collaborative editing document instance.
+/** ✨ 客户端doc对应的服务端doc，本示例支持服务端多个doc
+ * - 处理协作op的中心服务，决定op顺序。A collaborative editing document instance.
  * - ❓ 虽然能work，但控制台都是invalid version的异常信息
  * - ❓️ 如何在接收一个op后，拒绝另一个op
  *    - 接收一个op后，检查version变化
@@ -175,49 +176,53 @@ export class Instance {
   }
 }
 
-/** 全局映射表， */
+/** 全局映射表，保存服务端所有文档实例，{ id: docInstance } */
 const instances = Object.create(null);
 let instanceCount = 0;
 const maxCount = 20;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+// const saveFilePath = './src/prosemirror-collab-basic/demo-instances.json';
 const saveFilePath = __dirname + '/../demo-instances.json';
 console.log(';; saveFilePath, ', saveFilePath);
 
-// const saveFilePath = './src/prosemirror-collab-basic/demo-instances.json';
-let json: { [x: string]: { comments: any[] } };
+let persistedJson: { [x: string]: { comments: any[] } };
 
 if (process.argv.indexOf('--fresh') === -1) {
   try {
-    json = JSON.parse(readFileSync(saveFilePath, 'utf8'));
+    persistedJson = JSON.parse(readFileSync(saveFilePath, 'utf8'));
   } catch (e) {}
 }
 
-if (json) {
+if (persistedJson) {
   // eslint-disable-next-line guard-for-in
-  for (const prop in json)
+  for (const prop in persistedJson) {
+    // 对每个一级属性都创建一个对应的服务端文档实例，所有实例最后都保存在 instances 全局映射表
     newInstance(
       prop,
-      schema.nodeFromJSON(json[prop]['doc']),
-      new Comments(json[prop].comments.map((c) => Comment.fromJSON(c))),
+      schema.nodeFromJSON(persistedJson[prop]['doc']),
+      new Comments(
+        persistedJson[prop].comments.map((c) => Comment.fromJSON(c)),
+      ),
     );
+  }
 } else {
   populateDefaultInstances(newInstance);
 }
 
-let saveTimeout = null;
-/** 每个10s持久化一次文档实例 */
+let saveTimeoutId = null;
+/** 每10s持久化一次文档实例 */
 const saveEvery = 1e4;
 
-/** 每个10s持久化一次文档实例到本地。json文件 */
+/** 每10s持久化一次文档实例到本地.json文件 */
 function scheduleSave() {
-  if (saveTimeout != null) return;
-  saveTimeout = setTimeout(doSave, saveEvery);
+  if (saveTimeoutId != null) return;
+  saveTimeoutId = setTimeout(doSave, saveEvery);
 }
 
 function doSave() {
-  saveTimeout = null;
+  saveTimeoutId = null;
   const out = {};
   // eslint-disable-next-line guard-for-in
   for (const prop in instances)

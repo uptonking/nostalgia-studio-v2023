@@ -230,9 +230,9 @@ async function sync(initialMessages = [], since = null) {
       const errMsg = `since === diffTime: ${diffTime}; `;
       throw new Error(
         errMsg +
-        'A bug happened while syncing and the client ' +
-        'was unable to get in sync with the server. ' +
-        "This is an internal error that shouldn't happen",
+          'A bug happened while syncing and the client ' +
+          'was unable to get in sync with the server. ' +
+          "This is an internal error that shouldn't happen",
       );
     }
 

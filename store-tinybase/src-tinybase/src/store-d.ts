@@ -521,17 +521,17 @@ export type Schema = {
  */
 export type CellSchema =
   | {
-    type: 'string';
-    default?: string;
-  }
+      type: 'string';
+      default?: string;
+    }
   | {
-    type: 'number';
-    default?: number;
-  }
+      type: 'number';
+      default?: number;
+    }
   | {
-    type: 'boolean';
-    default?: boolean;
-  };
+      type: 'boolean';
+      default?: boolean;
+    };
 
 /**
  * The ChangedCells type describes the Cell values that have been changed during

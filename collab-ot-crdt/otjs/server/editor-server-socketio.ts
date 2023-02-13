@@ -50,8 +50,8 @@ export class EditorSocketServer extends OpOrchestrator {
       });
     });
 
-    socket.on('selection', obj => {
-      self.mayWrite(socket, mayWrite => {
+    socket.on('selection', (obj) => {
+      self.mayWrite(socket, (mayWrite) => {
         if (!mayWrite) {
           console.log("User doesn't have the right to edit.");
           return;

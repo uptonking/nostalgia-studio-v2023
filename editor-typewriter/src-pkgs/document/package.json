@@ -1,0 +1,35 @@
+{
+  "name": "@typewriter/document",
+  "version": "0.7.9111",
+  "description": "An immutable text document format using Delta format broken into lines for optimized rendering.",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.ts",
+  "directories": {
+    "lib": "lib",
+    "doc": "docs",
+    "example": "examples",
+    "test": "test",
+    "src": "src"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint 'src/**/*.ts'",
+    "prepublishOnly": "npm run build",
+    "start": "tsc --watch",
+    "tdd": "jest --watch",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@typewriter/delta": "1.0.2111"
+  },
+  "devDependencies": {
+    "jasmine": "^4.5.0",
+    "jest": "^29.3.1",
+    "nyc": "^15.1.0"
+  }
+}

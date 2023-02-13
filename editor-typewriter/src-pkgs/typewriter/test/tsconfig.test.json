@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "strictFunctionTypes": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "jsx": "react",
+    "module": "es6",
+    "target": "es6",
+    "lib": ["es2015", "es2016", "es2017", "dom"],
+    "types": ["@pyoner/svelte-types", "mocha"],
+    "baseUrl": "../src"
+  },
+  "include": ["."]
+}

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import type { Model } from '../src';
 
 export function setupSync(
-  model: { linvoSync: boolean; } & Model,
+  model: { linvoSync: boolean } & Model,
   api: {
     user?: { _id: any };
     request?: any;
@@ -21,7 +21,7 @@ export function setupSync(
 
   /** true only if sync is in progress */
   let dirty = false;
-  const triggerSync = _.debounce((cb = () => { }) => {
+  const triggerSync = _.debounce((cb = () => {}) => {
     dirty = true;
     queue.push({}, cb);
   }, options.debounce || 500);
@@ -138,9 +138,9 @@ export function setupSync(
             if (push.length)
               log(
                 'pushing ' +
-                push.length +
-                ' changes to remote for ' +
-                model.modelName,
+                  push.length +
+                  ' changes to remote for ' +
+                  model.modelName,
               );
 
             // @ts-expect-error fix-types

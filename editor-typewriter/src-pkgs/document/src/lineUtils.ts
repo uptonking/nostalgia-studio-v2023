@@ -7,6 +7,7 @@ export type LineRanges = Map<Line, EditorRange>;
 
 export const EMPTY_MAP = new Map();
 
+/** { id, attributes, content, length  } */
 export interface Line {
   id: string;
   attributes: AttributeMap;

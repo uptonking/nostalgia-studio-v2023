@@ -660,6 +660,7 @@ function indentLines(editor: Editor, direction: 1 | -1 = 1) {
     const type = lines.findByAttributes(line.attributes, true);
     if (!type.indentable) return;
     const range = doc.getLineRange(line);
+    // @ts-expect-error fix-types
     let indent = (line.attributes.indent || 0) + direction;
     if (indent <= 0) indent = null;
     change.formatLine(

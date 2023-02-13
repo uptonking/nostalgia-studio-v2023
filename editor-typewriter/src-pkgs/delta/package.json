@@ -15,7 +15,9 @@
     "build": "tsc",
     "lint": "eslint 'src/**/*.ts'",
     "prepare1": "npm run build",
-    "test": "npm run build; jasmine test/*.js test/**/*.js",
+    "test1": "NODE_OPTIONS='--experimental-loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node'  jasmine test/*.js test/**/*.js",
+    "test": "NODE_OPTIONS='--experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only' jasmine test/*.js test/**/*.js",
+    "test-draft": "NODE_OPTIONS='--experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only' jasmine test/attributes.js",
     "test:coverage": "nyc npm run test",
     "test:coverage:report": "nyc report --reporter=lcov"
   },
@@ -23,7 +25,7 @@
     "fast-diff": "1.2.0"
   },
   "devDependencies": {
-    "jasmine": "^4.0.2",
+    "jasmine": "^4.5.0",
     "nyc": "^15.1.0"
   }
 }

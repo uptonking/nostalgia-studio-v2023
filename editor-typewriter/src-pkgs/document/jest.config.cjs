@@ -8,4 +8,9 @@ const pkgConfig = {
 module.exports = {
   ...baseConfig,
   ...pkgConfig,
+  globals: {
+    'ts-jest': {
+      isolatedModules: true, // Disable type-checking
+    },
+  },
 };

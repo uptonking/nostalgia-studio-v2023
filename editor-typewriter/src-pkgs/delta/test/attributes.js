@@ -1,4 +1,4 @@
-import { AttributeMap } from '../../src';
+import { AttributeMap } from '../src';
 
 describe('AttributeMap', () => {
   describe('compose()', () => {

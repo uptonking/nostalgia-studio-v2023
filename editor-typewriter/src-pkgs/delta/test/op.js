@@ -1,4 +1,4 @@
-import { Delta, Op } from '../../src';
+import { Delta, Op } from '../src';
 
 describe('Op', () => {
   describe('length()', () => {

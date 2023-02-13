@@ -133,7 +133,7 @@ describe('diff()', () => {
 
   it('same document', () => {
     const a = new Delta().insert('A').insert('B', { bold: true });
-    expected = new Delta();
+    const expected = new Delta();
     expect(a.diff(a)).toEqual(expected);
   });
 

@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import diff from 'fast-diff';
 
-import AttributeMap from './AttributeMap';
+import { AttributeMap, type AttributeMapType } from './AttributeMap';
 import Op from './Op';
 import isEqual from './util/isEqual';
 
-const NULL_CHARACTER = String.fromCharCode(0); // Placeholder char for embed in diff()
+/** Placeholder char for embed in diff() */
+const NULL_CHARACTER = String.fromCharCode(0);
 
 export class Delta {
   static Op = Op;
@@ -23,7 +24,7 @@ export class Delta {
     }
   }
 
-  insert(arg: string | Record<string, any>, attributes?: AttributeMap): this {
+  insert(arg: string | Record<string, any>, attributes?: AttributeMapType): this {
     const newOp: Op = {};
     if (typeof arg === 'string' && arg.length === 0) {
       return this;
@@ -46,7 +47,7 @@ export class Delta {
     return this.push({ delete: length });
   }
 
-  retain(length: number, attributes?: AttributeMap): this {
+  retain(length: number, attributes?: AttributeMapType): this {
     if (length <= 0) {
       return this;
     }
@@ -334,7 +335,7 @@ export class Delta {
   eachLine(
     predicate: (
       line: Delta,
-      attributes: AttributeMap,
+      attributes: AttributeMapType,
       index: number,
     ) => boolean | void,
     newline = '\n',
@@ -400,7 +401,7 @@ export class Delta {
   transform(index: number, priority?: boolean): number;
   transform(other: Delta, priority?: boolean): Delta;
   transform(arg: number | Delta, priority = false): typeof arg {
-    priority = Boolean(priority);
+    priority = !!priority;
     if (typeof arg === 'number') {
       return this.transformPosition(arg, priority);
     }
@@ -442,7 +443,7 @@ export class Delta {
   }
 
   transformPosition(index: number, priority = false): number {
-    priority = Boolean(priority);
+    priority = !!priority;
     const thisIter = Op.iterator(this.ops);
     let offset = 0;
     while (thisIter.hasNext() && offset <= index) {
@@ -461,7 +462,6 @@ export class Delta {
   }
 }
 
-export default Delta;
 
 // if (typeof module === 'object') {
 //   module.exports = Delta;

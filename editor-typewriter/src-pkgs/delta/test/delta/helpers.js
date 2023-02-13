@@ -124,15 +124,18 @@ describe('helpers', () => {
   });
 
   describe('iteration', () => {
+
+    let thisDelta = {};
+
     beforeEach(() => {
-      this.delta = new Delta()
+      thisDelta = new Delta()
         .insert('Hello')
         .insert({ image: true })
         .insert('World!');
     });
 
     it('filter()', () => {
-      const arr = this.delta.filter(function (op) {
+      const arr = thisDelta.filter(function (op) {
         return typeof op.insert === 'string';
       });
       expect(arr.length).toEqual(2);
@@ -141,25 +144,25 @@ describe('helpers', () => {
     it('forEach()', () => {
       const spy = { predicate: () => {} };
       spyOn(spy, 'predicate').and.callThrough();
-      this.delta.forEach(spy.predicate);
+      thisDelta.forEach(spy.predicate);
       expect(spy.predicate.calls.count()).toEqual(3);
     });
 
     it('map()', () => {
-      const arr = this.delta.map(function (op) {
+      const arr = thisDelta.map(function (op) {
         return typeof op.insert === 'string' ? op.insert : '';
       });
       expect(arr).toEqual(['Hello', '', 'World!']);
     });
 
     it('partition()', () => {
-      const arr = this.delta.partition(function (op) {
+      const arr = thisDelta.partition(function (op) {
         return typeof op.insert === 'string';
       });
       const passed = arr[0];
       const failed = arr[1];
-      expect(passed).toEqual([this.delta.ops[0], this.delta.ops[2]]);
-      expect(failed).toEqual([this.delta.ops[1]]);
+      expect(passed).toEqual([thisDelta.ops[0], thisDelta.ops[2]]);
+      expect(failed).toEqual([thisDelta.ops[1]]);
     });
   });
 

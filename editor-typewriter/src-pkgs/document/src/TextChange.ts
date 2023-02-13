@@ -87,7 +87,7 @@ export class TextChange {
       this.selection = [end, end];
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // @ts-expect-error fix-types
     const { id, ...lineFormat } = this.doc.getLineAt(at).attributes;
 
     if (typeof insert !== 'string') {

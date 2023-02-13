@@ -1,8 +1,10 @@
-import { Delta, OpIterator } from '../../src';
+import { Delta, OpIterator } from '../src';
 
 describe('OpIterator', () => {
+  let thisDelta = {};
+
   beforeEach(() => {
-    this.delta = new Delta()
+    thisDelta = new Delta()
       .insert('Hello', { bold: true })
       .retain(3)
       .insert(2, { src: 'http://quilljs.com/' })
@@ -10,7 +12,7 @@ describe('OpIterator', () => {
   });
 
   it('hasNext() true', () => {
-    const iter = new OpIterator(this.delta.ops);
+    const iter = new OpIterator(thisDelta.ops);
     expect(iter.hasNext()).toEqual(true);
   });
 
@@ -20,7 +22,7 @@ describe('OpIterator', () => {
   });
 
   it('peekLength() offset === 0', () => {
-    const iter = new OpIterator(this.delta.ops);
+    const iter = new OpIterator(thisDelta.ops);
     expect(iter.peekLength()).toEqual(5);
     iter.next();
     expect(iter.peekLength()).toEqual(3);
@@ -31,7 +33,7 @@ describe('OpIterator', () => {
   });
 
   it('peekLength() offset > 0', () => {
-    const iter = new OpIterator(this.delta.ops);
+    const iter = new OpIterator(thisDelta.ops);
     iter.next(2);
     expect(iter.peekLength()).toEqual(5 - 2);
   });
@@ -42,7 +44,7 @@ describe('OpIterator', () => {
   });
 
   it('peekType()', () => {
-    const iter = new OpIterator(this.delta.ops);
+    const iter = new OpIterator(thisDelta.ops);
     expect(iter.peekType()).toEqual('insert');
     iter.next();
     expect(iter.peekType()).toEqual('retain');
@@ -55,9 +57,9 @@ describe('OpIterator', () => {
   });
 
   it('next()', () => {
-    const iter = new OpIterator(this.delta.ops);
-    for (let i = 0; i < this.delta.ops.length; i += 1) {
-      expect(iter.next()).toEqual(this.delta.ops[i]);
+    const iter = new OpIterator(thisDelta.ops);
+    for (let i = 0; i < thisDelta.ops.length; i += 1) {
+      expect(iter.next()).toEqual(thisDelta.ops[i]);
     }
     expect(iter.next()).toEqual({ retain: Infinity });
     expect(iter.next(4)).toEqual({ retain: Infinity });
@@ -65,7 +67,7 @@ describe('OpIterator', () => {
   });
 
   it('next(length)', () => {
-    const iter = new OpIterator(this.delta.ops);
+    const iter = new OpIterator(thisDelta.ops);
     expect(iter.next(2)).toEqual({
       insert: 'He',
       attributes: { bold: true },
@@ -79,7 +81,7 @@ describe('OpIterator', () => {
   });
 
   it('rest()', () => {
-    const iter = new OpIterator(this.delta.ops);
+    const iter = new OpIterator(thisDelta.ops);
     iter.next(2);
     expect(iter.rest()).toEqual([
       { insert: 'llo', attributes: { bold: true } },

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import AttributeMap from './AttributeMap';
+import type { AttributeMapType } from './AttributeMap';
 
 interface Op {
   // only one property out of {insert, delete, retain} will be present
@@ -7,9 +7,12 @@ interface Op {
   delete?: number;
   retain?: number;
 
-  attributes?: AttributeMap;
+  attributes?: AttributeMapType;
 }
 
+/**
+ * todo ❓ how to remove namespace
+ */
 namespace Op {
   export function iterator(ops: Op[]): OpIterator {
     return new OpIterator(ops);
@@ -40,7 +43,7 @@ export class OpIterator {
   }
 
   hasNext(): boolean {
-    return Boolean(this.peek());
+    return !!this.peek();
   }
 
   next(length?: number): Op {

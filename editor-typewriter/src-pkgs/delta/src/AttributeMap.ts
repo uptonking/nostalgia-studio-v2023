@@ -1,12 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import cloneDeep from './util/cloneDeep';
 import isEqual from './util/isEqual';
 
-interface AttributeMap {
+export interface AttributeMapType {
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
   [key: string]: any;
 }
 
-function isObject(value: unknown): value is AttributeMap {
+function isObject(value: unknown): value is AttributeMapType {
   return value === Object(value) && !Array.isArray(value);
 }
 
@@ -19,44 +19,11 @@ function isDeepNull(value: unknown): boolean {
   return true;
 }
 
-namespace AttributeMap {
-  export function compose(
-    a: AttributeMap = {},
-    b: AttributeMap = {},
-    keepNull?: boolean,
-  ): AttributeMap | undefined {
-    if (typeof a !== 'object') {
-      a = {};
-    }
-    if (typeof b !== 'object') {
-      b = {};
-    }
-    let attributes = cloneDeep(b);
-    for (const key in a) {
-      if (isObject(a[key]) && isObject(attributes[key])) {
-        attributes[key] = compose(a[key], attributes[key], keepNull);
-      }
-    }
-    if (!keepNull) {
-      attributes = Object.keys(attributes).reduce<AttributeMap>((copy, key) => {
-        if (!isDeepNull(attributes[key])) {
-          copy[key] = attributes[key];
-        }
-        return copy;
-      }, {});
-    }
-    for (const key in a) {
-      if (a[key] !== undefined && b[key] === undefined) {
-        attributes[key] = a[key];
-      }
-    }
-    return Object.keys(attributes).length > 0 ? attributes : undefined;
-  }
-
-  export function diff(
-    a: AttributeMap = {},
-    b: AttributeMap = {},
-  ): AttributeMap | undefined {
+export class AttributeMap {
+  static diff(
+    a: AttributeMapType = {},
+    b: AttributeMapType = {},
+  ): AttributeMapType | undefined {
     if (typeof a !== 'object') {
       a = {};
     }
@@ -65,12 +32,12 @@ namespace AttributeMap {
     }
     const attributes = Object.keys(a)
       .concat(Object.keys(b))
-      .reduce<AttributeMap>((attrs, key) => {
+      .reduce<AttributeMapType>((attrs, key) => {
         if (!isEqual(a[key], b[key])) {
           if (b[key] === undefined) {
             attrs[key] = null;
           } else if (isObject(a[key]) && isObject(b[key])) {
-            attrs[key] = diff(a[key], b[key]);
+            attrs[key] = AttributeMap.diff(a[key], b[key]);
           } else {
             attrs[key] = b[key];
           }
@@ -80,22 +47,25 @@ namespace AttributeMap {
     return Object.keys(attributes).length > 0 ? attributes : undefined;
   }
 
-  export function invert(
-    attr: AttributeMap = {},
-    base: AttributeMap = {},
-  ): AttributeMap {
+  static invert(
+    attr: AttributeMapType = {},
+    base: AttributeMapType = {},
+  ): AttributeMapType {
     attr = attr || {};
-    const baseInverted = Object.keys(base).reduce<AttributeMap>((memo, key) => {
-      if (!isEqual(base[key], attr[key]) && attr[key] !== undefined) {
-        if (isObject(attr[key]) && isObject(base[key])) {
-          memo[key] = invert(attr[key], base[key]);
-        } else {
-          memo[key] = base[key];
+    const baseInverted = Object.keys(base).reduce<AttributeMapType>(
+      (memo, key) => {
+        if (!isEqual(base[key], attr[key]) && attr[key] !== undefined) {
+          if (isObject(attr[key]) && isObject(base[key])) {
+            memo[key] = AttributeMap.invert(attr[key], base[key]);
+          } else {
+            memo[key] = base[key];
+          }
         }
-      }
-      return memo;
-    }, {});
-    return Object.keys(attr).reduce<AttributeMap>((memo, key) => {
+        return memo;
+      },
+      {},
+    );
+    return Object.keys(attr).reduce<AttributeMapType>((memo, key) => {
       if (attr[key] !== base[key] && base[key] === undefined) {
         memo[key] = null;
       }
@@ -103,11 +73,11 @@ namespace AttributeMap {
     }, baseInverted);
   }
 
-  export function transform(
-    a: AttributeMap | undefined,
-    b: AttributeMap | undefined,
+  static transform(
+    a: AttributeMapType | undefined,
+    b: AttributeMapType | undefined,
     priority = false,
-  ): AttributeMap | undefined {
+  ): AttributeMapType | undefined {
     if (typeof a !== 'object') {
       return b;
     }
@@ -117,16 +87,54 @@ namespace AttributeMap {
     if (!priority) {
       return b; // b simply overwrites us without priority
     }
-    const attributes = Object.keys(b).reduce<AttributeMap>((attrs, key) => {
+    const attributes = Object.keys(b).reduce<AttributeMapType>((attrs, key) => {
       if (a[key] === undefined) {
         attrs[key] = b[key]; // null is a valid value
       } else if (isObject(a[key]) && isObject(b[key])) {
-        attrs[key] = transform(a[key], b[key], true);
+        attrs[key] = AttributeMap.transform(a[key], b[key], true);
       }
       return attrs;
     }, {});
     return Object.keys(attributes).length > 0 ? attributes : undefined;
   }
-}
 
-export default AttributeMap;
+  static compose(
+    a: AttributeMapType = {},
+    b: AttributeMapType = {},
+    keepNull?: boolean,
+  ): AttributeMapType | undefined {
+    if (typeof a !== 'object') {
+      a = {};
+    }
+    if (typeof b !== 'object') {
+      b = {};
+    }
+    let attributes = cloneDeep(b);
+    for (const key in a) {
+      if (isObject(a[key]) && isObject(attributes[key])) {
+        attributes[key] = AttributeMap.compose(
+          a[key],
+          attributes[key],
+          keepNull,
+        );
+      }
+    }
+    if (!keepNull) {
+      attributes = Object.keys(attributes).reduce<AttributeMapType>(
+        (copy, key) => {
+          if (!isDeepNull(attributes[key])) {
+            copy[key] = attributes[key];
+          }
+          return copy;
+        },
+        {},
+      );
+    }
+    for (const key in a) {
+      if (a[key] !== undefined && b[key] === undefined) {
+        attributes[key] = a[key];
+      }
+    }
+    return Object.keys(attributes).length > 0 ? attributes : undefined;
+  }
+}

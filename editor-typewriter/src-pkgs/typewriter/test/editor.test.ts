@@ -264,14 +264,13 @@ describe('======== Editor ========', () => {
     });
   });
 
+
   describe('setText', () => {
     it('should drop trailing newline', () => {
       editor.setText('Testing');
       expect(editor.getText()).to.deep.equal('Testing');
     });
-  });
 
-  describe('setText', () => {
     it('should set text the text of a blank document', () => {
       editor.setText('Testing');
       expect(editor.getText()).to.deep.equal('Testing');

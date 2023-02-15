@@ -1,7 +1,7 @@
 import { Delta, TextChange, TextDocument } from '@typewriter/document';
 
 import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-change-event';
+import { EditorChangeEvent } from '../editor-event';
 import { Source } from '../Source';
 
 export interface StackEntry {
@@ -19,7 +19,7 @@ export interface Options {
   maxStack: number;
 }
 
-// Default history module
+/** Default history module */
 export const history = initHistory();
 
 export interface HistoryModule {

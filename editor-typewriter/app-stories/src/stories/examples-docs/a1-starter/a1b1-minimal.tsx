@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Editor } from 'typewriter-editor';
 
+import { ckEditorFullEgData, tinymce6EgData } from './examples-data';
+
 const initialValue = [
   {
     type: 'paragraph',
@@ -20,7 +22,8 @@ export const EditorMinimalApp = () => {
 
   useEffect(() => {
     const editor = new Editor({
-      html: '<p>Edit this <b>content</b> as u like</p><p>Edit this <b>content</b> as u like</p>',
+      // html: '<p>Edit this <b>content</b> as u like</p><p>Edit this <b>content</b> as u like</p>',
+      html: tinymce6EgData
     });
     view.current = editorContainer.current.appendChild(editor.root);
 

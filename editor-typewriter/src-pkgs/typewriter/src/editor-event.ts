@@ -1,8 +1,28 @@
-import { Delta, Line, TextChange, TextDocument } from '@typewriter/document';
+import {
+  type AttributeMapType,
+  Delta,
+  Line,
+  TextChange,
+  TextDocument,
+} from '@typewriter/document';
 
 import { type SourceString } from './Source';
 
 export const EMPTY_ARR = [];
+
+export interface EditorFormatEventInit extends EventInit {
+  formats: AttributeMapType;
+}
+
+export class EditorFormatEvent extends Event {
+  formats: AttributeMapType;
+
+  constructor(type: string, init: EditorFormatEventInit) {
+    super(type, init);
+    this.formats = init.formats;
+  }
+}
+
 
 export function getChangedLines(oldDoc: TextDocument, newDoc: TextDocument) {
   const set = new Set(oldDoc.lines);

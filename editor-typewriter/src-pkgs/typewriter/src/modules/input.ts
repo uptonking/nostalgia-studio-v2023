@@ -8,7 +8,7 @@ import {
   getLineNodeStart,
   HTMLLineElement,
 } from '../rendering/rendering';
-import { getSelection } from '../rendering/selection';
+import { getEditorSelectionFromHost } from '../rendering/selection';
 import { Source } from '../Source';
 
 const isIPad =
@@ -30,11 +30,15 @@ const MUTATION_OPTIONS = {
 
 type HTMLLineRange = [HTMLLineElement, HTMLLineElement];
 
+/**
+ * use `MutationObserver` as the main input recognition channel with `input` event as fallback.
+ */
 export function input(editor: Editor) {
   let gBoardEnter = false;
 
-  // Composition systems want to take full control over browser content while they operate.
-  // Let them, deferring handling all mutation events until after the composition is complete.
+  /** Composition systems want to take full control over browser content while they operate.
+   * - Let them, deferring handling all mutation events until after the composition is complete.
+   */
   let isComposing = false;
   let cachedMutations: MutationRecord[] = [];
 
@@ -50,8 +54,9 @@ export function input(editor: Editor) {
     }
   }
 
-  // Browsers have had issues in the past with mutation observers firing consistently, so use the observer with the input
-  // event as fallback
+  /** Browsers have had issues in the past with mutation observers firing consistently,
+   * so use the observer with the input event as fallback
+   */
   function onInput() {
     if (isComposing) return;
     const mutations = observer.takeRecords();
@@ -86,7 +91,7 @@ export function input(editor: Editor) {
 
     // Optimize for text changes (typing text)
     let change = getTextChange(list) as Delta;
-    const selection = getSelection(editor);
+    const selection = getEditorSelectionFromHost(editor);
 
     if (!change) {
       const range = getChangedLineRange(editor.root, list);
@@ -95,7 +100,7 @@ export function input(editor: Editor) {
 
     // Gboard fix to move to next line
     if (gBoardEnter) {
-      // Sometimes gBoard adds a br instead of a new line (seen with h2)
+      // Sometimes Gboard adds a br instead of a new line (seen with h2)
       if (isBr(change)) {
         change.ops.pop();
         change.insert('\n');
@@ -161,7 +166,7 @@ export function input(editor: Editor) {
     return change;
   }
 
-  // Fallback to commit whatever was changed, least performant
+  /** Fallback to commit whatever was changed, least performant */
   function getChangeFromRange(range?: HTMLLineRange) {
     const { doc } = editor;
     if (range) {
@@ -185,8 +190,9 @@ export function input(editor: Editor) {
 
   const observer = new window.MutationObserver(onMutate);
 
-  // Don't observe the changes that occur when the view updates, we only want to respond to changes that happen
-  // outside of our API to read them back in
+  /** Don't observe the changes that occur when the view updates,
+   * we only want to respond to changes that happen outside of our API to read them back in
+   * */
   function onRendering() {
     observer.disconnect();
   }
@@ -195,7 +201,7 @@ export function input(editor: Editor) {
     observer.observe(editor.root, MUTATION_OPTIONS);
   }
 
-  // Function to detect if Gboard is sending new lines with composed input
+  /**  Function to detect if Gboard is sending new lines with composed input */
   function onBeforeInput(event: InputEvent) {
     if (event.data && event.data?.includes('\n')) {
       gBoardEnter = true;
@@ -213,7 +219,7 @@ export function input(editor: Editor) {
       }
     },
     init() {
-      editor.root.addEventListener('input', onInput);
+      editor.root.addEventListener('input', onInput); // 👈🏻
       editor.on('rendering', onRendering);
       editor.on('render', onRender);
       if (isAndroid) {

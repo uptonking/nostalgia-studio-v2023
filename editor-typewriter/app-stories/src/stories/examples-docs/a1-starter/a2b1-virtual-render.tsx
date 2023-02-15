@@ -5,6 +5,8 @@ import {
   virtualRendering,
 } from 'typewriter-editor/src/modules/virtualRendering';
 
+import { ckEditorFullEgData } from './examples-data';
+
 /**
  * ✨ virtual render editor 。
  *
@@ -17,7 +19,8 @@ export const VirtualRenderEditor = () => {
 
   useEffect(() => {
     const editor = new Editor({
-      text: 'Hello\nWorld',
+      // text: 'Hello\nWorld',
+      // html: ckEditorFullEgData,
       modules: {
         rendering: virtualRendering,
       },

@@ -1,7 +1,7 @@
 import { AttributeMap, Delta, Op } from '@typewriter/document';
 
 import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-change-event';
+import { EditorChangeEvent } from '../editor-event';
 
 const straitQuotes = /['"]/g;
 const nonchar = /[\s\{\[\(\<'"\u2018\u201C]/;

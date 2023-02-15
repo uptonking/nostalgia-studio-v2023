@@ -9,7 +9,7 @@ import {
 } from '@typewriter/document';
 
 import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-change-event';
+import { EditorChangeEvent } from '../editor-event';
 import { h, Props, VNode } from '../rendering/vdom';
 import type { EmbedType, FormatType } from '../typesetting';
 

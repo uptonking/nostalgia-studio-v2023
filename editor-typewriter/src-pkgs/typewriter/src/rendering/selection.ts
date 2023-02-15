@@ -4,9 +4,9 @@ import type { Editor } from '../editor';
 import { getIndexFromNodeAndOffset, getNodesForRange } from './position';
 
 /**
- * Get the selection range from the current browser selection
+ * Get selection from browser, and convert to coresponding editor selection
  */
-export function getSelection(editor: Editor): EditorRange | null {
+export function getEditorSelectionFromHost(editor: Editor): EditorRange | null {
   const { root } = editor;
   const current = editor.doc.selection;
   if (!root.ownerDocument) return null;
@@ -34,6 +34,7 @@ export function getSelection(editor: Editor): EditorRange | null {
       editor.doc.getLineAt(anchorIndex)?.attributes,
       true,
     ).frozen;
+
     // selection.isCollapsed causes a re-layout on Chrome, manual detection does not.
     const focusIndex = isCollapsed
       ? anchorIndex

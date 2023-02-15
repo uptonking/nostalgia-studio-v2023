@@ -1,19 +1,28 @@
 import { isEqual } from '@typewriter/document';
 
 import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-change-event';
+import { EditorChangeEvent } from '../editor-event';
 import { getLineNodeStart } from '../rendering/rendering';
-import { getSelection, setSelection } from '../rendering/selection';
+import {
+  getEditorSelectionFromHost,
+  setSelection,
+} from '../rendering/selection';
 import { DecorationsModule } from './decorations';
 
+/**
+ *
+ */
 export function selection(editor: Editor) {
   let rootDocument: Document;
   let rootWindow: Window;
   let paused = false;
 
+  /**
+   * Get Selection from browser, and update editor.doc.selection
+   */
   function onSelectionChange() {
     if (!editor.enabled) return;
-    const selection = getSelection(editor);
+    const selection = getEditorSelectionFromHost(editor);
     if (!selection && paused) return;
     if (paused) paused = false;
     if (
@@ -123,6 +132,7 @@ export function selection(editor: Editor) {
     resume,
     renderSelection,
     init() {
+      // todo 🤔 use editorContainer instead of documentElement to allow for multi editor instances
       rootDocument = editor.root.ownerDocument;
       rootWindow = rootDocument.defaultView as Window;
 

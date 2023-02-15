@@ -94,11 +94,14 @@ export function getBoundingBrowserRange(
   return browserRange;
 }
 
+/**
+ * get editor index from browser selection.anchorNode/focusNode
+ */
 export function getIndexFromNodeAndOffset(
   editor: Editor,
   node: Node,
   offset: number,
-  current?: number | null,
+  current?: number | null, // current editor selection
 ): number {
   const { root } = editor;
   const { lines } = editor.typeset;
@@ -130,7 +133,7 @@ export function getIndexFromNodeAndOffset(
   return getIndexFromNode(editor, node) + offset;
 }
 
-// Get the index the node starts at in the content
+/** Get the index the node starts at in the content */
 export function getIndexFromNode(editor: Editor, startNode: Node): number {
   const { root } = editor;
   if (!root.ownerDocument) return -1;

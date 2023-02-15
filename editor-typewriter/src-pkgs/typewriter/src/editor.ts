@@ -1,5 +1,6 @@
 import {
   AttributeMap,
+  type AttributeMapType,
   Delta,
   EditorRange,
   hasFormat,
@@ -12,9 +13,10 @@ import {
 
 import {
   EditorChangeEvent,
+  EditorFormatEvent,
   EMPTY_ARR,
   getChangedLines,
-} from './editor-change-event';
+} from './editor-event';
 import { defaultModules } from './modules/defaults';
 import { docFromHTML, docToHTML } from './rendering/html';
 import {
@@ -22,6 +24,7 @@ import {
   getIndexFromPoint,
 } from './rendering/position';
 import { Source, type SourceString } from './Source';
+import { ModuleInitializers, Modules, Shortcuts } from './types/common';
 import { defaultTypes } from './typesetting/defaults';
 import { Commands, Types, Typeset, TypesetTypes } from './typesetting/typeset';
 import { EventDispatcher } from './utils/EventDispatcher';
@@ -39,6 +42,7 @@ const PROXIED_EVENTS = [
   'mouseup',
   'click',
 ] as const;
+
 /** { editor, its bound event dispatch function } */
 const eventProxies = new WeakMap<Editor, EventListener>();
 
@@ -55,50 +59,13 @@ export interface EditorOptions {
    */
   includeDefaultModules?: boolean;
   enabled?: boolean;
+  /** editor initial value in plain string */
   text?: string;
+  /** editor initial value in html string */
   html?: string;
   /** if true, errors will not be caught but to be thrown */
   dev?: boolean;
   isThrowOnErrorEnabled?: boolean;
-}
-
-export interface Shortcuts {
-  [shortcut: string]: string;
-}
-
-export interface Module {
-  init?: () => void;
-  destroy?: () => void;
-  shortcuts?: Shortcuts;
-  commands?: Commands;
-  getActive?: () => AttributeMap;
-  trimSelection?: (range: EditorRange) => EditorRange;
-  [name: string]: any;
-}
-
-export interface ModuleInitializers {
-  [name: string]: ModuleInitializer;
-}
-
-export interface ModuleInitializer {
-  (editor: Editor): Module;
-}
-
-export interface Modules {
-  [name: string]: Module;
-}
-
-export interface EditorFormatEventInit extends EventInit {
-  formats: AttributeMap;
-}
-
-export class EditorFormatEvent extends Event {
-  formats: AttributeMap;
-
-  constructor(type: string, init: EditorFormatEventInit) {
-    super(type, init);
-    this.formats = init.formats;
-  }
 }
 
 /**
@@ -114,7 +81,7 @@ export class Editor extends EventDispatcher {
   /** holds the state of the content and selection of the editor */
   doc: TextDocument;
   /** a map of currently active formatting */
-  activeFormats: AttributeMap = EMPTY_OBJ;
+  activeFormats: AttributeMapType = EMPTY_OBJ;
   /** an object that Modules and Types can provide API to for programmatic use */
   commands: Commands = {};
   /** keyboard shortcuts */
@@ -150,7 +117,7 @@ export class Editor extends EventDispatcher {
     this._modules = includeDefaultModules
       ? { ...defaultModules, ...options.modules }
       : { ...options.modules };
-    // console.log(';; editor-modules ', this._modules)
+    // console.log(';; edit-modules ', this._modules)
     if (options.root) this.setRoot(options.root);
   }
 
@@ -330,13 +297,14 @@ export class Editor extends EventDispatcher {
     return active;
   }
 
+  /** only update selection */
   select(at: EditorRange | number | null, source?: SourceString): this {
     return this.update(this.change.select(at), source);
   }
 
   insert(
     insert: string | object,
-    format?: AttributeMap,
+    format?: AttributeMapType,
     selection = this.doc.selection,
     options?: { dontFixNewline?: boolean },
   ): this {
@@ -412,7 +380,7 @@ export class Editor extends EventDispatcher {
   }
 
   formatText(
-    format: AttributeMap | string,
+    format: AttributeMapType | string,
     selection = this.doc.selection,
   ): this {
     if (!selection) return this;
@@ -430,7 +398,7 @@ export class Editor extends EventDispatcher {
   }
 
   toggleTextFormat(
-    format: AttributeMap | 'string',
+    format: AttributeMapType | 'string',
     selection = this.doc.selection,
   ): this {
     if (!selection) return this;
@@ -450,7 +418,7 @@ export class Editor extends EventDispatcher {
   }
 
   formatLine(
-    format: AttributeMap | string,
+    format: AttributeMapType | string,
     selection: EditorRange | number | null = this.doc.selection,
   ): this {
     if (typeof format === 'string') format = { [format]: true };
@@ -459,7 +427,7 @@ export class Editor extends EventDispatcher {
   }
 
   toggleLineFormat(
-    format: AttributeMap | string,
+    format: AttributeMapType | string,
     selection = this.doc.selection,
   ): this {
     if (typeof format === 'string') format = { [format]: true };
@@ -595,7 +563,7 @@ export class Editor extends EventDispatcher {
 function changeFormat(
   editor: Editor,
   op: string,
-  format: AttributeMap | null,
+  format: AttributeMapType | null,
   selection: EditorRange | number | null,
 ) {
   if (!selection) return;
@@ -611,7 +579,7 @@ function getActiveFormats(
   editor: Editor,
   doc: TextDocument,
   selection = doc.selection,
-): AttributeMap {
+): AttributeMapType {
   const { formats } = editor.typeset;
   if (!selection || selection[0] === 0) return EMPTY_OBJ;
   const at = normalizeRange(selection)[0];
@@ -620,7 +588,7 @@ function getActiveFormats(
   const formatTo = at + 1;
   const attributes = doc.getTextFormat(formatAt);
   const nextAttributes = doc.getTextFormat(formatTo);
-  const format: AttributeMap = {};
+  const format: AttributeMapType = {};
   // Sort them by the order found in marks and be efficient
   Object.keys(attributes).forEach((name) => {
     const type = formats.get(name);
@@ -733,5 +701,3 @@ function mergeShortcuts(shortcuts: Shortcuts, all: Shortcuts) {
     (shortcut) => (all[shortcut] = shortcuts[shortcut]),
   );
 }
-
-export { EditorChangeEvent };

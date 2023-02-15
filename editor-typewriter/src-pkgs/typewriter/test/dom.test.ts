@@ -140,6 +140,52 @@ describe('======== dom ========', () => {
     });
   });
 
+  describe('docToHTML', () => {
+    it('should convert a TextDocument to an HTML string', () => {
+      const doc = new TextDocument(
+        new Delta([
+          { insert: '<Quotes>' },
+          { insert: '\n', attributes: { header: 1 } },
+          {
+            insert: {
+              image: 'https://www.example.com/images/bertrand-russle.png',
+            },
+          },
+          { insert: '\n' },
+          {
+            insert: 'The whole problem with the world',
+            attributes: { italic: true },
+          },
+          {
+            insert:
+              ' is that fools and fanatics are always so certain of themselves, and ',
+          },
+          {
+            insert: 'wiser people so full of doubts.',
+            attributes: { bold: true },
+          },
+          { insert: '\n', attributes: { blockquote: true } },
+          { insert: '    —Bertrand Russell\n' },
+        ]),
+      );
+
+      const html = docToHTML(editor, doc);
+
+      expect(html).to.equal(
+        `<h1>&lt;Quotes&gt;</h1>` +
+        `<p><img src="https://www.example.com/images/bertrand-russle.png"></p>` +
+        `<blockquote>` +
+        `<p>` +
+        `<em>The whole problem with the world</em>` +
+        ` is that fools and fanatics are always so certain of themselves, and ` +
+        `<strong>wiser people so full of doubts.</strong>` +
+        `</p>` +
+        `</blockquote>` +
+        `<p>&nbsp; &nbsp; —Bertrand Russell</p>`,
+      );
+    });
+  });
+
   describe('deltaFromDom', () => {
     it('should create a delta from paragraph nodes and unformatted content', () => {
       const root = document.createElement('div');
@@ -202,51 +248,7 @@ describe('======== dom ========', () => {
     });
   });
 
-  describe('docToHTML', () => {
-    it('should convert a TextDocument to an HTML string', () => {
-      const doc = new TextDocument(
-        new Delta([
-          { insert: '<Quotes>' },
-          { insert: '\n', attributes: { header: 1 } },
-          {
-            insert: {
-              image: 'https://www.example.com/images/bertrand-russle.png',
-            },
-          },
-          { insert: '\n' },
-          {
-            insert: 'The whole problem with the world',
-            attributes: { italic: true },
-          },
-          {
-            insert:
-              ' is that fools and fanatics are always so certain of themselves, and ',
-          },
-          {
-            insert: 'wiser people so full of doubts.',
-            attributes: { bold: true },
-          },
-          { insert: '\n', attributes: { blockquote: true } },
-          { insert: '    —Bertrand Russell\n' },
-        ]),
-      );
 
-      const html = docToHTML(editor, doc);
-
-      expect(html).to.equal(
-        `<h1>&lt;Quotes&gt;</h1>` +
-          `<p><img src="https://www.example.com/images/bertrand-russle.png"></p>` +
-          `<blockquote>` +
-          `<p>` +
-          `<em>The whole problem with the world</em>` +
-          ` is that fools and fanatics are always so certain of themselves, and ` +
-          `<strong>wiser people so full of doubts.</strong>` +
-          `</p>` +
-          `</blockquote>` +
-          `<p>&nbsp; &nbsp; —Bertrand Russell</p>`,
-      );
-    });
-  });
 
   describe('deltaFromHTML', () => {
     it('should convert a string of HTML into a delta object', () => {

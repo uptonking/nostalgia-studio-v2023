@@ -1,7 +1,7 @@
 import { EditorRange, isEqual, TextDocument } from '@typewriter/document';
 
 import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-change-event';
+import { EditorChangeEvent } from '../editor-event';
 import {
   type Combined,
   combineLines,
@@ -23,7 +23,7 @@ export interface VirtualRenderWhat {
 type HeightInfo = [marginTop: number, height: number, marginBottom: number];
 
 /**
- *
+ * only render minimal editor contents in editor container
  */
 export function virtualRendering(editor: Editor) {
   let start = 0;
@@ -33,7 +33,7 @@ export function virtualRendering(editor: Editor) {
   let children: HTMLLineElement[] = [];
   let viewportHeight = 0;
   let offsetTop: number;
-  /** ❓ */
+  /** 不可见元素的默认高度 */
   let averageHeight = 40;
   /** editor lines items */
   let items: Combined;
@@ -288,6 +288,7 @@ export function virtualRendering(editor: Editor) {
     );
   }
 
+  /** 使用`getComputedStyle`计算元素高度 */
   function getHeightInfo(node: HTMLLineElement): HeightInfo {
     const styles = getComputedStyle(node);
     return [

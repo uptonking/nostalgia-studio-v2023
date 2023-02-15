@@ -1,5 +1,5 @@
 import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-change-event';
+import { EditorChangeEvent } from '../editor-event';
 import { h } from '../rendering/vdom';
 import { LineData, LineType } from '../typesetting';
 

@@ -38,7 +38,7 @@ export const header = registerLineType({
     'Mod+6': 'header6',
   },
   fromDom: (node: Node) => ({
-    header: parseInt(node.nodeName.replace('H', '')),
+    header: parseInt(node.nodeName.replace('H', ''), 10),
   }),
   render: (attributes, children) =>
     h(`h${attributes.header}` as any, null, children),
@@ -69,6 +69,7 @@ export const list = registerLineType({
     },
   }),
   shortcuts: {
+    // 'Mod+shift+l': 'bulletList',
     'Mod+Space': 'toggleCheck',
   },
   fromDom(node: HTMLElement) {

@@ -1,4 +1,4 @@
-import { AttributeMap, Delta, isEqual } from '@typewriter/delta';
+import { type AttributeMapType, Delta, isEqual } from '@typewriter/delta';
 
 import { EditorRange } from './editorRange';
 
@@ -7,11 +7,11 @@ export type LineRanges = Map<Line, EditorRange>;
 
 export const EMPTY_MAP = new Map();
 
-/** { id, attributes, content, length  } */
+/** { id, content, attributes, length } */
 export interface Line {
   id: string;
-  attributes: AttributeMap;
   content: Delta;
+  attributes: AttributeMapType;
   length: number;
 }
 
@@ -37,7 +37,10 @@ export function equal(value: Line, other: Line) {
   );
 }
 
-export function fromDelta(delta: Delta, existing?: LineIds) {
+/**
+ * create `Line[]` from a Delta
+ */
+export function fromDelta(delta: Delta, existing?: LineIds): Line[] {
   const lines: Line[] = [];
 
   const ids = new Map(existing || []);
@@ -64,14 +67,17 @@ export function toDelta(lines: Line[]): Delta {
   return delta;
 }
 
+/** create a Line object, create a new Delta if content is empty */
 export function create(
   content: Delta = new Delta(),
-  attributes: AttributeMap = {},
+  attributes: AttributeMapType = {},
   id?: string | LineIds,
 ): Line {
+  // use 1 because empty blocks are always filled with a `<br>` element to keep them open, otherwise they collapse and the user can't click into them to enter any text.
+  // ❓ why +1
   const length = content.length() + 1;
   if (typeof id !== 'string') id = createId(id);
-  return { id, attributes, content: content, length };
+  return { id, attributes, content, length };
 }
 
 export function createFrom(
@@ -93,6 +99,9 @@ export function getLineRanges(lines: Line[]) {
   return ranges;
 }
 
+/**
+ * todo better id
+ */
 export function createId(existing: LineIds = EMPTY_MAP) {
   let id: string;
   while (existing[(id = Math.random().toString(36).slice(2))]);

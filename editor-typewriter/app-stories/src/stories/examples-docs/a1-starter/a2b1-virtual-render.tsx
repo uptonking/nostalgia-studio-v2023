@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Editor, h } from 'typewriter-editor';
-import { virtualRendering } from 'typewriter-editor/src/modules/virtualRendering';
+import {
+  virtualRendering,
+} from 'typewriter-editor/src/modules/virtualRendering';
 
 /**
  * ✨ virtual render editor 。
@@ -15,6 +17,7 @@ export const VirtualRenderEditor = () => {
 
   useEffect(() => {
     const editor = new Editor({
+      text: 'Hello\nWorld',
       modules: {
         rendering: virtualRendering,
       },
@@ -22,10 +25,11 @@ export const VirtualRenderEditor = () => {
     editor.setRoot(editorContainer.current);
 
     let bigStr = '';
-    Array(100)
+    Array(16)
       .fill(0)
       .forEach((x, i) => {
-        bigStr += '\n' + (i + 1) + ' ' + Math.random();
+        // bigStr += '\n' + (i + 1) + ' ' + Math.random();
+        bigStr += '\n' + (i + 1) + 'Format for representing rich text documents and changes.';
       });
     editor.setText(bigStr);
 
@@ -39,7 +43,7 @@ export const VirtualRenderEditor = () => {
       <div
         ref={editorContainer}
         id='editor'
-        style={{ height: 300, overflowY: 'auto' }}
+        style={{ height: 240, overflowY: 'auto' }}
       />
     </>
   );

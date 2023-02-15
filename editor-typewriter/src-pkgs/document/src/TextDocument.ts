@@ -1,4 +1,10 @@
-import { AttributeMap, Delta, isEqual, Op } from '@typewriter/delta';
+import {
+  AttributeMap,
+  type AttributeMapType,
+  Delta,
+  isEqual,
+  Op,
+} from '@typewriter/delta';
 
 import { deltaToText } from './deltaToText';
 import { EditorRange, normalizeRange } from './editorRange';
@@ -20,24 +26,32 @@ export interface FormattingOptions {
 
 /**
  * Text Document represents editor contents and user selection in memory
- * - `TextDocument` can be converted to and from `Delta`
- * - TextDocument splits a Delta document into its lines allowing for performance optimizations which are noticeable in large documents.
+ * - `TextDocument` can be converted to and from `Delta`, so it can be used temporarily.
+ * - `TextDocument` splits a `Delta` document into its lines allowing for performance optimizations which are noticeable in large documents.
  */
 export class TextDocument {
-  /** { lineId, rangeInEditor } */
-  private _ranges: LineRanges;
-  byId: LineIds;
+  /** editor content by blocks/lines */
   lines: Line[];
+  /** { lineObj, rangeInEditor }, ❓ why not lineId */
+  private _ranges: LineRanges;
+  /** { lineId, lineObj } */
+  byId: LineIds;
+  /** total character count of all lines, including \n */
   length: number;
   /** current selection */
   selection: EditorRange | null;
 
+  /** init editor lines and selection */
   constructor(
     linesOrDocOrDelta?: TextDocument | Line[] | Delta,
     selection: EditorRange | null = null,
   ) {
-    if (linesOrDocOrDelta && (linesOrDocOrDelta as TextDocument).lines) {
-      const textDocument = linesOrDocOrDelta as TextDocument;
+    if (
+      linesOrDocOrDelta &&
+      linesOrDocOrDelta instanceof TextDocument &&
+      linesOrDocOrDelta.lines
+    ) {
+      const textDocument = linesOrDocOrDelta;
       this.lines = textDocument.lines;
       this.byId = textDocument.byId;
       this._ranges = textDocument._ranges;
@@ -68,11 +82,12 @@ export class TextDocument {
     }
     this.selection =
       selection &&
-      (selection.map((index) =>
-        Math.min(this.length - 1, Math.max(0, index)),
+    (selection.map((pointIndex) =>
+      Math.min(this.length - 1, Math.max(0, pointIndex)),
       ) as EditorRange);
   }
 
+  /** create a new TextChange obj */
   get change() {
     const change = new TextChange(this);
     change.apply = () => this.apply(change);
@@ -169,7 +184,7 @@ export class TextDocument {
   getFormats(
     at: number | EditorRange = this.selection as EditorRange,
     options?: FormattingOptions,
-  ): AttributeMap {
+  ): AttributeMapType {
     return {
       ...this.getTextFormat(at, options),
       ...this.getLineFormat(at, options),
@@ -397,6 +412,7 @@ export class TextDocument {
   }
 }
 
+// eslint-disable-next-line max-params
 function getAttributes(
   Type: any,
   data: any,
@@ -404,13 +420,13 @@ function getAttributes(
   to: number,
   filter?: (next: any) => boolean,
   options?: FormattingOptions,
-): AttributeMap {
+): AttributeMapType {
   const iter = Type.iterator(data);
-  let attributes: AttributeMap | undefined;
+  let attributes: AttributeMapType | undefined;
   let index = 0;
   if (iter.skip) index += iter.skip(from);
   while (index < to && iter.hasNext()) {
-    const next = iter.next() as { attributes: AttributeMap };
+    const next = iter.next() as { attributes: AttributeMapType };
     index += Type.length(next);
     if (index > from && (!filter || filter(next))) {
       if (!next.attributes) attributes = {};
@@ -432,8 +448,8 @@ function getAttributes(
  * Intersect 2 attribute maps, keeping only those that are equal in both
  */
 function intersectAttributes(
-  attributes: AttributeMap,
-  other: AttributeMap,
+  attributes: AttributeMapType,
+  other: AttributeMapType,
   nameOnly?: boolean,
 ) {
   return Object.keys(other).reduce(function (intersect, name) {

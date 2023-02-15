@@ -1,22 +1,22 @@
 import {
-  AttributeMap,
+  type AttributeMapType,
   Delta,
-  EditorRange,
+  type EditorRange,
   isEqual,
-  Line,
-  Op,
+  type Line,
+  type Op,
   TextDocument,
 } from '@typewriter/document';
 
 import type { Editor } from '../editor';
 import { applyDecorations } from '../modules/decorations';
-import { LineType } from '../typesetting/typeset';
+import type { LineType } from '../typesetting/typeset';
 import { h, patch, VChild, VNode } from './vdom';
 
 const EMPTY_ARR = [];
 const BR = h('br', {});
 const nodeFormatType = new WeakMap();
-const linesType = new WeakMap<AttributeMap, LineType>();
+const linesType = new WeakMap<AttributeMapType, LineType>();
 const linesMultiples = new WeakMap<Line, Line[]>();
 const linesCombined = new WeakMap<Line[], CombinedData>();
 const nodeRanges = new WeakMap<HTMLElement, WeakMap<Node, EditorRange>>();
@@ -156,6 +156,7 @@ export function renderLine(
     : renderSingleLine(editor, line, forHTML);
 }
 
+/** render line and decorations */
 export function renderSingleLine(
   editor: Editor,
   line: Line,
@@ -164,7 +165,7 @@ export function renderSingleLine(
   const type = getLineType(editor, line);
   if (!type.render) throw new Error('No render method defined for line');
   const node = type.render(
-    line.attributes as AttributeMap,
+    line.attributes as AttributeMapType,
     renderInline(editor, line.content),
     editor,
     forHTML,
@@ -195,7 +196,9 @@ export function renderMultiLine(
   return node;
 }
 
-// Join multi-lines into arrays. Memoize the results.
+/**
+ * 💡 Join multiple `shouldCombine`-type lines into arrays. Memoize the results.
+ */
 export function combineLines(editor: Editor, lines: Line[]): CombinedData {
   const cache = linesCombined.get(lines);
   if (cache) return cache;
@@ -237,11 +240,12 @@ export function combineLines(editor: Editor, lines: Line[]): CombinedData {
   });
 
   const data = { combined, byKey };
+  // cache
   linesCombined.set(lines, data);
   return data;
 }
 
-// Most changes will occur to adjacent lines, so the simplistic approach
+/** Most changes will occur to adjacent lines, so the simplistic approach */
 export function getChangedRanges(oldC: Combined, newC: Combined): LineRanges {
   const oldLength = oldC.length;
   const newLength = newC.length;
@@ -305,7 +309,7 @@ export function renderInline(editor: Editor, delta: Delta, forHTML?: boolean) {
           const type = formats.get(name);
           if (type?.render) {
             const node = type.render(
-              op.attributes as AttributeMap,
+              op.attributes as AttributeMapType,
               children,
               editor,
               forHTML,
@@ -338,6 +342,7 @@ function isSame(oldEntry: CombinedEntry, newEntry: CombinedEntry): boolean {
   );
 }
 
+/** get or set LineType */
 function getLineType(editor: Editor, line: Line): LineType {
   let type = linesType.get(line.attributes);
   if (!type) {
@@ -347,7 +352,7 @@ function getLineType(editor: Editor, line: Line): LineType {
   return type;
 }
 
-// Joins adjacent mark nodes
+/** Joins adjacent mark nodes */
 function mergeChildren(oldChildren: VChild[]) {
   const children: VChild[] = [];
   oldChildren.forEach((next, i) => {

@@ -1,60 +1,59 @@
 import {
-  NodeSelection,
-  EditorState,
-  Plugin,
-  PluginView,
-  Transaction,
-  Selection,
-} from 'prosemirror-state';
-import {
-  Slice,
-  ResolvedPos,
   DOMParser,
   DOMSerializer,
-  Node,
   Mark,
+  Node,
+  ResolvedPos,
+  Slice,
 } from 'prosemirror-model';
-
 import {
-  scrollRectIntoView,
-  posAtCoords as posAtCoordsUtil,
+  EditorState,
+  NodeSelection,
+  Plugin,
+  PluginView,
+  Selection,
+  Transaction,
+} from 'prosemirror-state';
+
+import * as browser from './browser';
+// Exported for testing
+import { parseFromClipboard, serializeForClipboard } from './clipboard';
+import { Decoration, DecorationSource, viewDecorations } from './decoration';
+import { DOMNode, DOMSelection } from './dom';
+import { readDOMChange } from './domchange';
+import {
   coordsAtPos,
   endOfTextblock,
-  storeScrollPos,
-  resetScrollPos,
   focusPreventScroll,
+  posAtCoords as posAtCoordsUtil,
+  resetScrollPos,
+  scrollRectIntoView,
+  storeScrollPos,
 } from './domcoords';
-import { docViewDesc, ViewDesc, NodeView, NodeViewDesc } from './viewdesc';
+import { DOMObserver } from './domobserver';
 import {
-  initInput,
+  clearComposition,
   destroyInput,
   dispatchEvent,
-  ensureListeners,
-  clearComposition,
-  InputState,
   endComposition,
+  ensureListeners,
+  initInput,
+  InputState,
 } from './input';
 import {
-  selectionToDOM,
   anchorInRightPlace,
+  selectionToDOM,
   syncNodeSelection,
 } from './selection';
-import { Decoration, viewDecorations, DecorationSource } from './decoration';
-import { DOMObserver } from './domobserver';
-import { readDOMChange } from './domchange';
-import { DOMSelection, DOMNode } from './dom';
-import * as browser from './browser';
+import { docViewDesc, NodeView, NodeViewDesc, ViewDesc } from './viewdesc';
 
 export {
   Decoration,
-  DecorationSet,
   type DecorationAttrs,
+  DecorationSet,
   type DecorationSource,
 } from './decoration';
 export { type NodeView } from './viewdesc';
-
-// Exported for testing
-import { serializeForClipboard, parseFromClipboard } from './clipboard';
 /// @internal
 export const __serializeForClipboard = serializeForClipboard;
 /// @internal

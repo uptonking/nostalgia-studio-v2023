@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import diff from 'fast-diff';
 
 import { AttributeMap, type AttributeMapType } from './AttributeMap';
@@ -8,11 +7,17 @@ import isEqual from './util/isEqual';
 /** Placeholder char for embed in diff() */
 const NULL_CHARACTER = String.fromCharCode(0);
 
+/** Typewriter modifies Quill's `Delta` to provide better memory usage with an immutable approach and adds a layer on top, `TextDocument`, which splits a Delta document into lines
+ * - Deltas are a simple, yet expressive format that to describe contents and changes.
+ * - This format is suitable for Operational Transform and defines several functions to support it.
+ */
 export class Delta {
   static Op = Op;
   static AttributeMap = AttributeMap;
 
+  /** A Delta is made up of an Array of Operations, which describe changes to a document.  */
   ops: Op[];
+
   constructor(ops?: Op[] | { ops: Op[] }) {
     // Assume we are given a well formed ops
     if (Array.isArray(ops)) {
@@ -24,7 +29,10 @@ export class Delta {
     }
   }
 
-  insert(arg: string | Record<string, any>, attributes?: AttributeMapType): this {
+  insert(
+    arg: string | Record<string, any>,
+    attributes?: AttributeMapType,
+  ): this {
     const newOp: Op = {};
     if (typeof arg === 'string' && arg.length === 0) {
       return this;
@@ -62,6 +70,7 @@ export class Delta {
     return this.push(newOp);
   }
 
+  /** 若newOp是delete类型，则合并到this.ops；若newOp是普通类型，则直接追加到this.ops */
   push(newOp: Op): this {
     let index = this.ops.length;
     let lastOp = this.ops[index - 1];
@@ -113,6 +122,7 @@ export class Delta {
     return this;
   }
 
+  /** if the last op of `this.ops` is `retain`, then remove the op */
   chop(): this {
     const lastOp = this.ops[this.ops.length - 1];
     if (lastOp && lastOp.retain && !lastOp.attributes) {
@@ -269,7 +279,7 @@ export class Delta {
   concat(other: Delta): Delta {
     const delta = new Delta(this.ops.slice());
     if (other.ops.length > 0) {
-      delta.push(other.ops[0]);
+      delta.push(other.ops[0]); // ❓ 为什么不直接一次性concat
       delta.ops = delta.ops.concat(other.ops.slice(1));
     }
     return delta;
@@ -332,6 +342,9 @@ export class Delta {
     return retDelta.chop();
   }
 
+  /**
+   * 遍历处理insert类型op，将insert的内容从换行符分成两段
+   */
   eachLine(
     predicate: (
       line: Delta,
@@ -341,32 +354,34 @@ export class Delta {
     newline = '\n',
   ): void {
     const iter = Op.iterator(this.ops);
-    let line = new Delta();
+    let deltaForLine = new Delta();
     let i = 0;
     while (iter.hasNext()) {
       if (iter.peekType() !== 'insert') {
         return;
       }
-      const thisOp = iter.peek();
-      const start = Op.length(thisOp) - iter.peekLength();
+      const currOp = iter.peek(); // not iterate here
+      const start = Op.length(currOp) - iter.peekLength();
       const index =
-        typeof thisOp.insert === 'string'
-          ? thisOp.insert.indexOf(newline, start) - start
+        typeof currOp.insert === 'string'
+          ? currOp.insert.indexOf(newline, start) - start
           : -1;
       if (index < 0) {
-        line.push(iter.next());
+        deltaForLine.push(iter.next()); // iterate
       } else if (index > 0) {
-        line.push(iter.next(index));
+        deltaForLine.push(iter.next(index));
       } else {
-        if (predicate(line, iter.next(1).attributes || {}, i) === false) {
+        // index === 0
+        if (predicate(deltaForLine, iter.next(1).attributes || {}, i) === false) {
           return;
         }
         i += 1;
-        line = new Delta();
+        deltaForLine = new Delta();
       }
     }
-    if (line.length() > 0) {
-      predicate(line, {}, i);
+
+    if (deltaForLine.length() > 0) {
+      predicate(deltaForLine, {}, i);
     }
   }
 
@@ -461,7 +476,6 @@ export class Delta {
     return index;
   }
 }
-
 
 // if (typeof module === 'object') {
 //   module.exports = Delta;

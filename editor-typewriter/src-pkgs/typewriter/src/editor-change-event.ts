@@ -1,6 +1,6 @@
 import { Delta, Line, TextChange, TextDocument } from '@typewriter/document';
 
-import { SourceString } from './Source';
+import { type SourceString } from './Source';
 
 export const EMPTY_ARR = [];
 
@@ -17,6 +17,7 @@ export interface EditorChangeEventInit extends EventInit {
   source: SourceString;
 }
 
+/** DOM event style */
 export class EditorChangeEvent extends Event {
   old: TextDocument;
   doc: TextDocument;
@@ -35,7 +36,7 @@ export class EditorChangeEvent extends Event {
     Object.setPrototypeOf(this, EditorChangeEvent.prototype);
   }
 
-  // Modify the data during a "changing" event before doc is committed
+  /** Modify the data during a "changing" event before doc is committed */
   modify(delta: Delta) {
     if (!this.cancelable)
       throw new Error(

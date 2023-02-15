@@ -1,7 +1,7 @@
 import { h } from '../rendering/vdom';
-import { format } from './typeset';
+import { registerFormatType } from './typeset';
 
-export const bold = format({
+export const bold = registerFormatType({
   name: 'bold',
   selector: 'strong, b',
   styleSelector: '[style*="font-weight:bold"], [style*="font-weight: bold"]',
@@ -10,7 +10,7 @@ export const bold = format({
   render: (attributes, children) => h('strong', null, children),
 });
 
-export const italic = format({
+export const italic = registerFormatType({
   name: 'italic',
   selector: 'em, i',
   styleSelector: '[style*="font-style:italic"], [style*="font-style: italic"]',
@@ -19,14 +19,14 @@ export const italic = format({
   render: (attributes, children) => h('em', null, children),
 });
 
-export const code = format({
+export const code = registerFormatType({
   name: 'code',
   selector: 'code',
   commands: (editor) => () => editor.toggleTextFormat({ code: true }),
   render: (attributes, children) => h('code', null, children),
 });
 
-export const link = format({
+export const link = registerFormatType({
   name: 'link',
   selector: 'a[href]',
   greedy: false,

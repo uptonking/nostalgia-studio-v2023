@@ -126,6 +126,7 @@ export function fromNode(editor: Editor, dom: HTMLElement) {
   return lines[0];
 }
 
+/** replace BAD_CHARS */
 export function cleanText(delta: Delta) {
   delta.forEach((op) => {
     if (typeof op.insert === 'string') {
@@ -142,7 +143,7 @@ export function deltaFromDom(
   const root = options.root || editor.root;
 
   const collapseWhitespace =
-    options.collapseWhitespace != undefined ? options.collapseWhitespace : true;
+    options.collapseWhitespace !== undefined ? options.collapseWhitespace : true;
 
   const walker = createTreeWalker(
     root,

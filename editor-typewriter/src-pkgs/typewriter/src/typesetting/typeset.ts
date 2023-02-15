@@ -1,4 +1,4 @@
-import { AttributeMap } from '@typewriter/document';
+import { type AttributeMapType } from '@typewriter/document';
 
 import type { Editor, Shortcuts } from '../editor';
 import { VChild, VNode } from '../rendering/vdom';
@@ -23,9 +23,9 @@ export class Typeset {
    * - non-text content, called embeds, exist within the document and take up a single space.  */
   embeds: Types<EmbedType>;
 
-  static line = line;
-  static format = format;
-  static embed = embed;
+  static line = registerLineType;
+  static format = registerFormatType;
+  static embed = registerEmbedType;
 
   constructor(types: TypesetTypes) {
     const lines = types.lines
@@ -43,28 +43,29 @@ export class Typeset {
   }
 }
 
-export function line(type: LineType) {
-  if (type.renderMultiple && !type.shouldCombine)
+export function registerLineType(type: LineType) {
+  if (type.renderMultiple && !type.shouldCombine) {
     type.shouldCombine = shouldCombine;
+  }
   return (lineTypes[type.name] = type);
 }
 
-export function format(type: FormatType) {
+export function registerFormatType(type: FormatType) {
   return (formatTypes[type.name] = type);
 }
 
-export function embed(type: EmbedType) {
+export function registerEmbedType(type: EmbedType) {
   return (embedTypes[type.name] = type);
 }
 
 export type FromDom = (node: Node) => any;
 export type LineData = [
-  attributes: AttributeMap,
+  attributes: AttributeMapType,
   children: VChild[],
   id: string,
 ];
 export type Renderer = (
-  attributes: AttributeMap,
+  attributes: AttributeMapType,
   children: VChild[],
   editor: Editor,
   forHTML?: boolean,
@@ -74,31 +75,34 @@ export type MultiLineRenderer = (
   editor: Editor,
   forHTML?: boolean,
 ) => VNode;
-export type ShouldCombine = (prev: AttributeMap, next: AttributeMap) => boolean;
+export type ShouldCombine = (
+  prev: AttributeMapType,
+  next: AttributeMapType,
+) => boolean;
 export interface Commands {
   [name: string]: Function;
 }
 
-// A basic DOM type used in Typewriter views, either a line, format, or embed
+/** A basic DOM type used in Typewriter views, either a line, format, or embed */
 export interface BasicType {
-  // Type name
+  /** Type name */
   name: string;
 
-  // A selector which matches this Type in the DOM
+  /** A selector which matches this Type in the DOM */
   selector: string;
 
-  // A selector which matches this Type when found in a style (e.g. '[style*="italic"]')
+  /** A selector which matches this Type when found in a style (e.g. '[style*="italic"]') */
   styleSelector?: string;
 
-  // Returns the attributes object for the Delta given a matching DOM node, or false if this DOM node should be ignored
+  /** Returns the attributes object for the Delta given a matching DOM node, or false if this DOM node should be ignored */
   fromDom?: FromDom | false;
 
   commands?: (editor: Editor) => Commands | Function;
 
-  // Map of shortcuts to their command name
+  /** Map of shortcuts to their command name */
   shortcuts?: Shortcuts | string;
 
-  // Renders the attributes from the format, or embed into a virtual dom representation
+  /** Renders the attributes from the format, or embed into a virtual dom representation */
   render?: Renderer;
 }
 
@@ -112,25 +116,25 @@ export interface EmbedType extends BasicType {
 }
 
 export interface LineType extends BasicType {
-  // Whether this line can be indented/unindented with the tab key
+  /** Whether this line can be indented/unindented with the tab key */
   indentable?: boolean;
 
-  // Whether the next line after this should be the default line or the same type
+  /** Whether the next line after this should be the default line or the same type */
   defaultFollows?: boolean;
 
-  // If this line is frozen, it cannot have contents and the selection cannot be inside it (an hr or custom line)
+  /** If this line is frozen, it cannot have contents and the selection cannot be inside it (an hr or custom line) */
   frozen?: boolean;
 
-  // If Enter and Delete on an empty line will remain contained within this line rather than converting it to a paragraph
+  /** If Enter and Delete on an empty line will remain contained within this line rather than converting it to a paragraph */
   contained?: boolean;
 
-  // When the Enter key is pressed within this line, what the next line's attributes should be
-  nextLineAttributes?: (attributes: AttributeMap) => AttributeMap;
+  /** When the Enter key is pressed within this line, what the next line's attributes should be */
+  nextLineAttributes?: (attributes: AttributeMapType) => AttributeMapType;
 
-  // Renders the attributes from the delta line, format, or embed into a virtual dom representation
+  /** Renders the attributes from the delta line, format, or embed into a virtual dom representation */
   render?: Renderer;
 
-  // Renders the attributes from multiple delta lines into a virtual dom representation
+  /** Renders the attributes from multiple delta lines into a virtual dom representation */
   renderMultiple?: MultiLineRenderer;
 
   shouldCombine?: ShouldCombine;
@@ -150,16 +154,16 @@ export interface TypeMap<T extends BasicType = BasicType> {
  * A type store to hold types and make it easy to manage them.
  */
 export class Types<T extends BasicType = BasicType> {
-  // An array of the types
+  /** An array of the types */
   list: T[];
 
-  // A selector which will match all nodes of this type (e.g. all lines)
+  /** A selector which will match all nodes of this type (e.g. all lines) */
   selector!: string;
 
-  // A map of all types by name
+  /** A map of all types by name */
   types!: TypeMap<T>;
 
-  // A reverse lookup of priority by type name
+  /** A reverse lookup of priority by type name */
   priorities!: { [name: string]: number };
 
   constructor(types: T[]) {
@@ -233,15 +237,15 @@ export class Types<T extends BasicType = BasicType> {
 
   // Find the first type by priority that matches this attributes object. Can return the default for no match.
   findByAttributes(
-    attributes: AttributeMap | undefined,
+    attributes: AttributeMapType | undefined,
     fallbackToDefault: true,
   ): T;
   findByAttributes(
-    attributes: AttributeMap | undefined,
+    attributes: AttributeMapType | undefined,
     fallbackToDefault?: boolean,
   ): T | undefined;
   findByAttributes(
-    attributes: AttributeMap | undefined,
+    attributes: AttributeMapType | undefined,
     fallbackToDefault = false,
   ): T | undefined {
     const keys = attributes && Object.keys(attributes);

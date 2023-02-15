@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AttributeMapType } from './AttributeMap';
 
+/** only one property out of {insert, delete, retain} will be present */
 interface Op {
-  // only one property out of {insert, delete, retain} will be present
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   insert?: string | Record<string, any>;
   delete?: number;
   retain?: number;
@@ -46,6 +46,7 @@ export class OpIterator {
     return !!this.peek();
   }
 
+  /** 与标准iterator的next方法不同，不返回 { done:false, value:val }  */
   next(length?: number): Op {
     if (!length) {
       length = Infinity;
@@ -97,6 +98,7 @@ export class OpIterator {
     }
   }
 
+  /** return the op type of current iterating op */
   peekType(): string {
     const op = this.ops[this.index];
     if (op) {

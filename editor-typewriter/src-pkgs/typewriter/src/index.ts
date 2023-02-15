@@ -1,6 +1,6 @@
-import Editor from './editor';
+export { Editor } from './editor';
 
-export { default as EventDispatcher } from './util/EventDispatcher';
+export { EventDispatcher } from './utils/EventDispatcher';
 export * from '@typewriter/document';
 
 export * from './rendering/vdom';
@@ -16,4 +16,3 @@ export * from './typesetting/defaults';
 export * from './Source';
 export * from './editor';
 
-export { Editor };

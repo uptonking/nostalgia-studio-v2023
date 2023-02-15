@@ -24,10 +24,13 @@ import {
 import { Source, type SourceString } from './Source';
 import { defaultTypes } from './typesetting/defaults';
 import { Commands, Types, Typeset, TypesetTypes } from './typesetting/typeset';
-import EventDispatcher from './util/EventDispatcher';
+import { EventDispatcher } from './utils/EventDispatcher';
 
 const EMPTY_OBJ = {};
 
+/**
+ * ❓ why not keyup
+ */
 const PROXIED_EVENTS = [
   'focus',
   'blur',
@@ -35,7 +38,8 @@ const PROXIED_EVENTS = [
   'mousedown',
   'mouseup',
   'click',
-];
+] as const;
+/** { editor, its bound event dispatch function } */
 const eventProxies = new WeakMap<Editor, EventListener>();
 
 export interface EditorOptions {
@@ -100,6 +104,7 @@ export class EditorFormatEvent extends Event {
 /**
  * manages the contents, dispatches change events,
  * and provides modules which render the contents to the DOM, handle keyboard shortcuts, add undo/redo, and more.
+ * - for updating editor contents, internally use update > set
  */
 export class Editor extends EventDispatcher {
   /**  */
@@ -169,6 +174,7 @@ export class Editor extends EventDispatcher {
     if (changed) this.dispatchEvent(new Event('enabledchange'));
   }
 
+  /** create a new TextChange obj */
   get change() {
     const change = new TextChange(this.doc);
     change.apply = (source: SourceString = Source.user) =>
@@ -197,14 +203,17 @@ export class Editor extends EventDispatcher {
       ? new TextChange(this.doc, changeOrDelta as Delta)
       : (changeOrDelta as TextChange);
     const old = this.doc;
-    const doc = old.apply(
+    const newDoc = old.apply(
       change as TextChange,
       undefined,
       this.isThrowOnErrorEnabled,
     );
     const changedLines =
-      old.lines === doc.lines ? EMPTY_ARR : getChangedLines(old, doc);
-    this.set(doc, source, change, changedLines);
+      old.lines === newDoc.lines
+        ? (EMPTY_ARR as Line[])
+        : getChangedLines(old, newDoc);
+
+    this.set(newDoc, source, change, changedLines);
     return this;
   }
 
@@ -234,8 +243,9 @@ export class Editor extends EventDispatcher {
       source,
     });
     this.dispatchEvent(changingEvent, this.isCatchErrorsEnabled);
-    if (changingEvent.defaultPrevented || old.equals(changingEvent.doc))
+    if (changingEvent.defaultPrevented || old.equals(changingEvent.doc)) {
       return this;
+    }
     this.activeFormats = change?.activeFormats
       ? change.activeFormats
       : getActiveFormats(this, changingEvent.doc);
@@ -279,6 +289,7 @@ export class Editor extends EventDispatcher {
     return this.doc.getText(range);
   }
 
+  /** 替换editor全部内容为text */
   setText(
     text: string,
     selection: EditorRange | null = this.doc.selection,
@@ -319,7 +330,7 @@ export class Editor extends EventDispatcher {
     return active;
   }
 
-  select(at: EditorRange | number | null, source?: Source): this {
+  select(at: EditorRange | number | null, source?: SourceString): this {
     return this.update(this.change.select(at), source);
   }
 
@@ -533,6 +544,7 @@ export class Editor extends EventDispatcher {
     return this;
   }
 
+  /**  */
   init() {
     const root = this._root as any;
     if (root.editor) root.editor.destroy();
@@ -660,7 +672,6 @@ function indentLines(editor: Editor, direction: 1 | -1 = 1) {
     const type = lines.findByAttributes(line.attributes, true);
     if (!type.indentable) return;
     const range = doc.getLineRange(line);
-    // @ts-expect-error fix-types
     let indent = (line.attributes.indent || 0) + direction;
     if (indent <= 0) indent = null;
     change.formatLine(
@@ -673,12 +684,12 @@ function indentLines(editor: Editor, direction: 1 | -1 = 1) {
 }
 
 function getEventProxy(editor: Editor) {
-  let proxy = eventProxies.get(editor);
-  if (!proxy) {
-    proxy = eventProxy.bind(editor);
-    eventProxies.set(editor, proxy);
+  let proxiedDispatch = eventProxies.get(editor);
+  if (!proxiedDispatch) {
+    proxiedDispatch = eventProxy.bind(editor);
+    eventProxies.set(editor, proxiedDispatch);
   }
-  return proxy;
+  return proxiedDispatch;
 }
 
 function eventProxy(this: Editor, event: Event) {
@@ -722,7 +733,5 @@ function mergeShortcuts(shortcuts: Shortcuts, all: Shortcuts) {
     (shortcut) => (all[shortcut] = shortcuts[shortcut]),
   );
 }
-
-export default Editor;
 
 export { EditorChangeEvent };

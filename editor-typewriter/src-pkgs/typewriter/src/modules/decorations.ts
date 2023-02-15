@@ -1,5 +1,5 @@
 import {
-  AttributeMap,
+  type AttributeMapType,
   Delta,
   EditorRange,
   isEqual,
@@ -224,6 +224,9 @@ export function decorations(editor: Editor): DecorationsModule {
   };
 }
 
+/**
+ * A decorator can alter the contents of the editor by adding classes, styles, and other HTML attributes
+ */
 export class Decorator {
   change: TextChange;
   private _name: string;
@@ -358,7 +361,7 @@ export class Decorator {
 
 export function applyDecorations(
   vnode: VNode,
-  attributes: AttributeMap | undefined,
+  attributes: AttributeMapType | undefined,
   defaultClasses?: string[],
 ) {
   if (!attributes || !attributes.decoration) return vnode;

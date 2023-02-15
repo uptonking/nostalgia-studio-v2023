@@ -19,7 +19,9 @@ export const EditorMinimalApp = () => {
   const view = useRef(null);
 
   useEffect(() => {
-    const editor = new Editor();
+    const editor = new Editor({
+      html: '<p>Edit this <b>content</b> as u like</p><p>Edit this <b>content</b> as u like</p>',
+    });
     view.current = editorContainer.current.appendChild(editor.root);
 
     window['ed'] = editor;

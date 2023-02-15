@@ -3,7 +3,7 @@ import chaiExclude from 'chai-exclude';
 
 import { Delta, TextDocument } from '@typewriter/document';
 
-import Editor from '../src/editor';
+import { Editor } from '../src/editor';
 import { deltaFromDom, deltaFromHTML, docToHTML } from '../src/rendering/html';
 import { renderDoc } from '../src/rendering/rendering';
 

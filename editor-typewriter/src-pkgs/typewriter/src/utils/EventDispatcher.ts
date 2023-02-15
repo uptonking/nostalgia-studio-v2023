@@ -5,7 +5,8 @@ type OnceEvents = { [type: string]: Map<EventListener, EventListener> };
 const dispatcherEvents = new WeakMap<EventDispatcher, Events>();
 const onceListeners = new WeakMap<EventDispatcher, OnceEvents>();
 
-export default class EventDispatcher {
+/** general eventemitter */
+export class EventDispatcher {
   on(type: string, listener: EventListener, options?: AddEventListenerOptions) {
     this.addEventListener(type, listener, options);
   }
@@ -40,6 +41,7 @@ export default class EventDispatcher {
   }
 
   dispatchEvent(event: Event, catchErrors?: boolean) {
+    // console.log(';; emit-evt ', event.type);
     const events = getEventListeners(this, event.type);
     if (!events) return;
     for (const listener of events) {
@@ -59,14 +61,16 @@ export default class EventDispatcher {
   }
 }
 
+/** get eventsFn from global dispatcherEvents */
 function getEventListeners(
   obj: EventDispatcher,
   type: string,
   autocreate = false,
 ) {
   let events = dispatcherEvents.get(obj) as Events;
-  if (!events && autocreate)
+  if (!events && autocreate) {
     dispatcherEvents.set(obj, (events = Object.create(null)));
+  }
   return (events && events[type]) || (autocreate && (events[type] = new Set()));
 }
 

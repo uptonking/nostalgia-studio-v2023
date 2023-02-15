@@ -1,8 +1,9 @@
-import { h } from '../rendering/vdom';
-import { embed } from './typeset';
-import { AttributeMap } from '@typewriter/document';
+import { type AttributeMapType } from '@typewriter/document';
 
-export const image = embed({
+import { h } from '../rendering/vdom';
+import { registerEmbedType } from './typeset';
+
+export const image = registerEmbedType({
   name: 'image',
   selector: 'img',
   commands: (editor) => (image: string, props?: object) =>
@@ -17,14 +18,14 @@ export const image = embed({
     });
     return image;
   },
-  render: (embed: AttributeMap) => {
+  render: (embed: AttributeMapType) => {
     const { image, ...props } = embed;
     props.src = image;
     return h('img', props);
   },
 });
 
-export const br = embed({
+export const br = registerEmbedType({
   name: 'br',
   selector: 'br',
   commands: (editor) => () => editor.insert({ br: true }),

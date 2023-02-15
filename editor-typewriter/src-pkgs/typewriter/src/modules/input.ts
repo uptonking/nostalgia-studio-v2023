@@ -31,7 +31,7 @@ const MUTATION_OPTIONS = {
 type HTMLLineRange = [HTMLLineElement, HTMLLineElement];
 
 export function input(editor: Editor) {
-  let gboardEnter = false;
+  let gBoardEnter = false;
 
   // Composition systems want to take full control over browser content while they operate.
   // Let them, deferring handling all mutation events until after the composition is complete.
@@ -71,7 +71,10 @@ export function input(editor: Editor) {
     return isBr;
   }
 
-  // Final fallback. Handles composition text etc. Detects text changes from e.g. spell-check or Opt+E to produce
+  /** Final fallback. Handles composition text etc.
+   * Detects text changes from e.g. spell-check or Opt+E to produce
+   *
+   */
   function onMutate(list: MutationRecord[]) {
     if (isComposing) {
       cachedMutations.push(...list);
@@ -91,7 +94,7 @@ export function input(editor: Editor) {
     }
 
     // Gboard fix to move to next line
-    if (gboardEnter) {
+    if (gBoardEnter) {
       // Sometimes gBoard adds a br instead of a new line (seen with h2)
       if (isBr(change)) {
         change.ops.pop();
@@ -103,7 +106,7 @@ export function input(editor: Editor) {
         selection[0]++;
         selection[1]++;
       }
-      gboardEnter = false;
+      gBoardEnter = false;
     }
 
     if (change && change.ops.length) {
@@ -195,7 +198,7 @@ export function input(editor: Editor) {
   // Function to detect if Gboard is sending new lines with composed input
   function onBeforeInput(event: InputEvent) {
     if (event.data && event.data?.includes('\n')) {
-      gboardEnter = true;
+      gBoardEnter = true;
     }
   }
 

@@ -1,11 +1,11 @@
-import { AttributeMap, Delta } from '@typewriter/document';
+import { type AttributeMapType, Delta } from '@typewriter/document';
 
 import type { Editor } from '../editor';
 import { EditorChangeEvent } from '../editor-change-event';
 
 export type Replacement = [
   RegExp,
-  (captured: string, attr: AttributeMap) => AttributeMap,
+  (captured: string, attr: AttributeMapType) => AttributeMapType,
 ];
 export type TextReplacement = [RegExp, (captured: string) => string];
 const httpExpr =

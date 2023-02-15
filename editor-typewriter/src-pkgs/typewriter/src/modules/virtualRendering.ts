@@ -3,16 +3,17 @@ import { EditorRange, isEqual, TextDocument } from '@typewriter/document';
 import type { Editor } from '../editor';
 import { EditorChangeEvent } from '../editor-change-event';
 import {
-  Combined,
+  type Combined,
   combineLines,
   getChangedRanges,
-  HTMLLineElement,
+  type HTMLLineElement,
   renderLine,
   setLineNodesRanges,
 } from '../rendering/rendering';
 import { setSelection } from '../rendering/selection';
-import { h, patch, VNode } from '../rendering/vdom';
+import { h, patch, type VNode } from '../rendering/vdom';
 
+/** old and new doc contents needed by virtual render*/
 export interface VirtualRenderWhat {
   old?: TextDocument;
   doc?: TextDocument;
@@ -21,15 +22,20 @@ export interface VirtualRenderWhat {
 
 type HeightInfo = [marginTop: number, height: number, marginBottom: number];
 
+/**
+ *
+ */
 export function virtualRendering(editor: Editor) {
   let start = 0;
   let end = 0;
+  /** Array<[mt,height,mb]> */
   let heightMap = [] as HeightInfo[];
   let children: HTMLLineElement[] = [];
-  const viewport = getScrollParent(editor.root);
-  let offsetTop: number;
   let viewportHeight = 0;
+  let offsetTop: number;
+  /** ❓ */
   let averageHeight = 40;
+  /** editor lines items */
   let items: Combined;
   let itemsDoc: TextDocument;
   let lastSelection: EditorRange | null = null;
@@ -38,24 +44,30 @@ export function virtualRendering(editor: Editor) {
   let hasChanged = false;
   let updateQueued = true;
 
-  viewport.addEventListener('scroll', onScroll, { passive: true });
-  editor.on('change', onChange);
-  const offResize = onResize(viewport, (width, height, changed) => {
+  /** editor's first scrollable ancestor */
+  const containerViewport = getScrollParent(editor.root);
+  containerViewport.addEventListener('scroll', onScroll, { passive: true });
+  const offResize = onResize(containerViewport, (width, height, changed) => {
     viewportHeight = height;
     if (changed & WIDTH) heightMap = []; // content may be different heights, recalculate everything
     update();
   });
 
+  editor.on('change', onChange);
+
+  /** trigger `update()` */
   function render(what?: VirtualRenderWhat) {
     if (!what || !items) {
-      const { doc } =
-        (editor.modules.decorations as { doc: TextDocument }) || editor;
+      // /first render to dom
+      const doc =
+        (editor.modules.decorations.doc as TextDocument) || editor.doc;
       items = combineLines(editor, doc.lines).combined;
       itemsDoc = doc;
       hasChanged = true;
       lastSelection = doc.selection;
       update();
     } else {
+      // /update existing dom
       const { doc, old } = what;
       const selection = what.selection || null;
       const newSelection =
@@ -96,17 +108,20 @@ export function virtualRendering(editor: Editor) {
     }
   }
 
-  // Determine start and end of visible range
+  /** Determine start and end of visible range, and cache rendered lines height */
   function update() {
     updateQueued = false;
     if (!items) return;
-    const { scrollTop } = viewport;
+    const { scrollTop } = containerViewport;
     offsetTop = getOffsetTop();
+    // console.log(';; offsetTop ', offsetTop, scrollTop);
+
     const oldStart = start;
     const previousHeights = heightMap.slice();
     let didUpdate = false;
     let count = 0; // failsafe
 
+    // use 20 to ensure logic can be finished in 1 frame
     while (shouldUpdate() && count++ < 20) {
       didUpdate = true;
       hasChanged = false;
@@ -114,6 +129,7 @@ export function virtualRendering(editor: Editor) {
       updateHeights();
     }
     if (count >= 20) console.error('Updated virtual max times');
+    // console.log(';; height ', averageHeight, heightMap);
 
     setSelection(editor, lastSelection);
     if (!didUpdate) return;
@@ -133,25 +149,31 @@ export function virtualRendering(editor: Editor) {
       }
 
       const d = actualHeight - expectedHeight;
-      viewport.scrollTo(0, scrollTop + d);
+      containerViewport.scrollTo(0, scrollTop + d);
     }
   }
 
+  /**
+   * calculate minimal items toRender, if changed, return true
+   */
   function shouldUpdate() {
-    const { scrollTop } = viewport;
+    const { scrollTop } = containerViewport;
 
+    /** render candidates blocks/lines */
     const renderSet = new Set([0, items.length - 1, ...(lineSelection || [])]);
 
     let i = 0;
     let y = offsetTop;
+    /** start index to render */
     let newStart = 0;
+    /** end index to render */
     let newEnd = 0;
 
     while (i < items.length) {
       const rowHeight = getHeightFor(i);
       if (y + rowHeight > scrollTop) {
         newStart = i;
-        break;
+        break; // 👈🏻
       }
       y += rowHeight;
       i += 1;
@@ -179,8 +201,9 @@ export function virtualRendering(editor: Editor) {
     return hasChanged;
   }
 
+  /**  render minimal editor lines/blocks content, and insert spacer  */
   function renderToDom() {
-    const nodes: VNode[] = [];
+    const vNodes: VNode[] = [];
 
     // Always render the first line, the last line, and the lines with the start/end selection so that deletion and
     // selection commands will work (e.g. selecting from one line to another no in-screen and let Select All work).
@@ -188,6 +211,7 @@ export function virtualRendering(editor: Editor) {
     let spacerKey: string = '';
     let spacerMarginTop = 0;
     let spacerMarginBottom = 0;
+    /** total height */
     let total = 0;
 
     for (let i = 0, space = 0; i < items.length; i++) {
@@ -202,11 +226,13 @@ export function virtualRendering(editor: Editor) {
             key: spacerKey,
           });
           spacerKey = '';
-          nodes.push(spacer);
+          vNodes.push(spacer);
         }
         space = 0;
+        // console.log(';; r ', i, items[i]); // single line
+
         const node = renderLine(editor, items[i]);
-        nodes.push(node);
+        vNodes.push(node);
       } else {
         if (i === 1) spacerKey = 'spacer-start';
         else if (i === items.length - 2) spacerKey = 'spacer-end';
@@ -222,12 +248,16 @@ export function virtualRendering(editor: Editor) {
     }
 
     editor.dispatchEvent(new Event('rendering'));
-    patch(editor.root, nodes);
+    // 👇🏻 commit to dom
+    patch(editor.root, vNodes);
     setLineNodesRanges(editor);
     editor.dispatchEvent(new Event('render'));
     editor.dispatchEvent(new Event('rendered'));
   }
 
+  /**
+   * update heightMap and averageHeight
+   */
   function updateHeights() {
     children = Array.from(editor.root.children).filter(
       (child) => child.className !== '-spacer-',
@@ -240,34 +270,36 @@ export function virtualRendering(editor: Editor) {
     const heights = heightMap.filter(Boolean);
     averageHeight = Math.round(
       getMarginBetween(0, -1, heights) +
-        heights.reduce((a, b, i, arr) => a + getHeightFor(i, arr), 0) /
-          heights.length,
+      heights.reduce((a, b, i, arr) => a + getHeightFor(i, arr), 0) /
+      heights.length,
     );
   }
 
   function getOffsetTop() {
-    const { scrollTop } = viewport;
+    const { scrollTop } = containerViewport;
     const { root } = editor;
-    if (viewport === root) return parseInt(getComputedStyle(root).paddingTop);
+    if (containerViewport === root)
+      return parseInt(getComputedStyle(root).paddingTop);
     return (
       root.getBoundingClientRect().top +
       parseInt(getComputedStyle(root).paddingTop) +
       scrollTop -
-      viewport.getBoundingClientRect().top
+      containerViewport.getBoundingClientRect().top
     );
   }
 
   function getHeightInfo(node: HTMLLineElement): HeightInfo {
     const styles = getComputedStyle(node);
     return [
-      parseInt(styles.marginTop),
+      parseInt(styles.marginTop, 10),
       node.offsetHeight,
-      parseInt(styles.marginBottom),
+      parseInt(styles.marginBottom, 10),
     ];
   }
 
+  /** 使用场景，计算最小更新范围，渲染时计算隐藏区域高度 */
   function getHeightFor(i: number, array = heightMap) {
-    if (!array[i]) return averageHeight;
+    if (!array[i]) return averageHeight; // 默认返回 mt+height+mb
     return (
       (i === 0 ? getMarginBetween(i, -1, array) : 0) +
       array[i][1] +
@@ -289,12 +321,16 @@ export function virtualRendering(editor: Editor) {
     return toRender.some((i) => i >= from && i < to);
   }
 
+  /** exec update() */
   function onScroll() {
     if (updateQueued) return;
     requestAnimationFrame(update);
     updateQueued = true;
   }
 
+  /**
+   * trigger `render()` using data from arguments
+   */
   function onChange(event: EditorChangeEvent) {
     const { old, doc } =
       (editor.modules.decorations as {
@@ -315,17 +351,19 @@ export function virtualRendering(editor: Editor) {
     },
     destroy() {
       offResize();
-      viewport.removeEventListener('scroll', onScroll);
+      containerViewport.removeEventListener('scroll', onScroll);
       editor.off('change', onChange);
     },
   };
 }
 
 const scrollable = /auto|scroll/;
-
 function getScrollParent(node: HTMLElement) {
   while (node && node !== node.ownerDocument.scrollingElement) {
-    if (scrollable.test(getComputedStyle(node).overflowY)) return node;
+    // if (scrollable.test(getComputedStyle(node).overflowY)) return node;
+    if (['auto', 'scroll'].includes(getComputedStyle(node).overflowY)) {
+      return node;
+    }
     node = node.parentNode as HTMLElement;
   }
   return node;
@@ -335,6 +373,7 @@ const WIDTH = 1;
 const HEIGHT = 2;
 const BOTH = 3;
 
+/** using `ResizeObserver` */
 function onResize(
   node: HTMLElement,
   callback: (width: number, height: number, changed: number) => void,
@@ -344,16 +383,16 @@ function onResize(
   callback(width, height, BOTH);
 
   if (typeof (window as any).ResizeObserver !== 'undefined') {
-    const observer = new (window as any).ResizeObserver(onResize);
+    const observer = new (window as any).ResizeObserver(onResizeWindow);
     observer.observe(node);
     return () => observer.disconnect();
   } else {
     const window = node.ownerDocument.defaultView as Window;
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    window.addEventListener('resize', onResizeWindow);
+    return () => window.removeEventListener('resize', onResizeWindow);
   }
 
-  function onResize() {
+  function onResizeWindow() {
     const { offsetWidth, offsetHeight } = node;
     const changed =
       (width !== offsetWidth ? WIDTH : 0) |

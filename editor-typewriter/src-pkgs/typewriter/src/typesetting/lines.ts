@@ -1,10 +1,14 @@
-import { AttributeMap, Delta, normalizeRange } from '@typewriter/document';
+import {
+  type AttributeMapType,
+  Delta,
+  normalizeRange,
+} from '@typewriter/document';
 
 import { applyDecorations } from '../modules/decorations';
 import { h, Props, VChild, VNode } from '../rendering/vdom';
-import { line } from './typeset';
+import { registerLineType } from './typeset';
 
-export const paragraph = line({
+export const paragraph = registerLineType({
   name: 'paragraph',
   selector: 'p',
   commands: (editor) => () => editor.formatLine({}),
@@ -12,7 +16,7 @@ export const paragraph = line({
   render: (attributes, children) => h('p', null, children),
 });
 
-export const header = line({
+export const header = registerLineType({
   name: 'header',
   selector: 'h1, h2, h3, h4, h5, h6',
   defaultFollows: true,
@@ -40,7 +44,7 @@ export const header = line({
     h(`h${attributes.header}` as any, null, children),
 });
 
-export const list = line({
+export const list = registerLineType({
   name: 'list',
   selector: 'ul > li, ol > li',
   indentable: true,
@@ -55,11 +59,11 @@ export const list = line({
         typeof id === 'string'
           ? editor.doc.getLineBy(id)
           : editor.doc.selection
-          ? editor.doc.getLineAt(editor.doc.selection[0])
-          : null;
+            ? editor.doc.getLineAt(editor.doc.selection[0])
+            : null;
       if (!line) return false;
       const [at] = editor.doc.getLineRange(line);
-      const format = { list: 'check' } as AttributeMap;
+      const format = { list: 'check' } as AttributeMapType;
       if (!line.attributes.checked) format.checked = true;
       editor.formatLine(format, at);
     },
@@ -74,8 +78,8 @@ export const list = line({
     const list = node.hasAttribute('data-checked')
       ? 'check'
       : parent && parent.nodeName === 'OL'
-      ? 'ordered'
-      : 'bullet';
+        ? 'ordered'
+        : 'bullet';
     while (parent) {
       if (/^UL|OL$/.test(parent.nodeName)) indent++;
       else if (parent.nodeName !== 'LI') break;
@@ -176,7 +180,7 @@ export const list = line({
       levels.length = index + 1;
     });
 
-    function compareLists(list: VNode, type: string, attributes: AttributeMap) {
+    function compareLists(list: VNode, type: string, attributes: AttributeMapType) {
       return (
         list.type === type &&
         (list.props.start === attributes.start ||
@@ -189,15 +193,15 @@ export const list = line({
   },
 });
 
-export const blockquote = line({
+export const blockquote = registerLineType({
   name: 'blockquote',
   selector: 'blockquote p',
   commands:
     (editor) =>
-    (blockquote: string | true | any = true) => {
-      if (typeof blockquote !== 'string') blockquote = true;
-      editor.toggleLineFormat({ blockquote });
-    },
+      (blockquote: string | true | any = true) => {
+        if (typeof blockquote !== 'string') blockquote = true;
+        editor.toggleLineFormat({ blockquote });
+      },
   fromDom(node: HTMLParagraphElement) {
     const { className } = node.parentNode as HTMLElement;
     const match = className.match(/quote-(\S+)/);
@@ -216,7 +220,7 @@ export const blockquote = line({
   },
 });
 
-export const codeblock = line({
+export const codeblock = registerLineType({
   name: 'code-block',
   selector: 'pre code',
   contained: true,
@@ -237,7 +241,7 @@ export const codeblock = line({
   },
 });
 
-export const hr = line({
+export const hr = registerLineType({
   name: 'hr',
   selector: 'hr',
   frozen: true,

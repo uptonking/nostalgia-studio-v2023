@@ -1,21 +1,31 @@
-import { AttributeMap, Delta, isEqual, Op } from '@typewriter/delta';
+import {
+  AttributeMap,
+  type AttributeMapType,
+  Delta,
+  isEqual,
+  Op,
+} from '@typewriter/delta';
 
 import { deltaToText } from './deltaToText';
 import { EditorRange, normalizeRange } from './editorRange';
 import type { TextDocument } from './TextDocument';
 
+/**
+ * a TextChange interface to roll up multiple change operations into one atomic change
+ * - 基于compose实现
+ */
 export class TextChange {
   private _pos: number;
   doc: TextDocument | null;
   delta: Delta;
   selection?: EditorRange | null;
-  activeFormats?: AttributeMap;
+  activeFormats?: AttributeMapType;
 
   constructor(
     doc: TextDocument | null,
     delta = new Delta(),
     selection?: EditorRange | null,
-    activeFormats?: AttributeMap,
+    activeFormats?: AttributeMapType,
   ) {
     this._pos = 0;
     this.doc = doc;
@@ -87,7 +97,6 @@ export class TextChange {
       this.selection = [end, end];
     }
 
-    // @ts-expect-error fix-types
     const { id, ...lineFormat } = this.doc.getLineAt(at).attributes;
 
     if (typeof insert !== 'string') {

@@ -59,9 +59,11 @@ const patchProp = (
     } else if (!oldVal) {
       dom.addEventListener(key, listener);
     }
+  // eslint-disable-next-line no-eq-null, eqeqeq
   } else if (newVal == null) {
     dom.removeAttribute(key);
   } else if (!isSvg && key !== 'list' && key !== 'form' && key in dom) {
+    // eslint-disable-next-line no-eq-null, eqeqeq
     dom[key] = newVal == null ? '' : newVal;
   } else {
     dom.setAttribute(key, newVal);
@@ -77,7 +79,11 @@ const createNode = (vdom: VChild, isSvg?: boolean) => {
     ? document.createElementNS(SVG_NS, vdom.type, { is: props.is })
     : document.createElement(vdom.type, { is: props.is });
 
-  for (const k in props) patchProp(dom as Element, k, null, props[k], isSvg);
+  for (const k in props) {
+    if (Object.hasOwn(props, k)) {
+      patchProp(dom as Element, k, null, props[k], isSvg);
+    }
+  }
   setKey(dom, getKey(vdom));
 
   vdom.children.forEach((kid) =>

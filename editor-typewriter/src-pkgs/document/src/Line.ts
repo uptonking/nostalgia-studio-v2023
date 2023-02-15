@@ -1,4 +1,4 @@
-import { AttributeMap, Delta } from '@typewriter/delta';
+import { Delta } from '@typewriter/delta';
 
 import type { Line, LineIds } from './lineUtils';
 import * as lineUtils from './lineUtils';

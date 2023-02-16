@@ -1,0 +1,34 @@
+{
+  "name": "@tanstack/react-table",
+  "version": "8.7.9111",
+  "description": "Headless UI for building powerful tables & datagrids for React.",
+  "license": "MIT",
+  "author": "Tanner Linsley",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.tsx",
+      "import": "./src/index.tsx",
+      "default": "./src/index.tsx"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "src/index.tsx",
+  "module": "src/index.tsx",
+  "types": "src/index.tsx",
+  "files": [
+    "build/lib/*",
+    "build/umd/*",
+    "src"
+  ],
+  "dependencies": {
+    "@tanstack/table-core": "8.7.9111"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16"
+  },
+  "engines": {
+    "node": ">=12"
+  }
+}

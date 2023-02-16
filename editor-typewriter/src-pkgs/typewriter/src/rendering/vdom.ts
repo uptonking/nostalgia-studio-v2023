@@ -59,7 +59,7 @@ const patchProp = (
     } else if (!oldVal) {
       dom.addEventListener(key, listener);
     }
-  // eslint-disable-next-line no-eq-null, eqeqeq
+    // eslint-disable-next-line no-eq-null, eqeqeq
   } else if (newVal == null) {
     dom.removeAttribute(key);
   } else if (!isSvg && key !== 'list' && key !== 'form' && key in dom) {

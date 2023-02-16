@@ -143,7 +143,9 @@ export function deltaFromDom(
   const root = options.root || editor.root;
 
   const collapseWhitespace =
-    options.collapseWhitespace !== undefined ? options.collapseWhitespace : true;
+    options.collapseWhitespace !== undefined
+      ? options.collapseWhitespace
+      : true;
 
   const walker = createTreeWalker(
     root,

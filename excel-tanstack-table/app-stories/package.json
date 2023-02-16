@@ -1,0 +1,51 @@
+{
+  "name": "@examples-hub/tanstack-table-app-stories",
+  "version": "0.0.1111",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "build": "rimraf dist && npm run build:prod",
+    "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
+    "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "build:types": "",
+    "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.cjs",
+    "demo2": "run-p demo dev:collab-basic-server",
+    "server:collab-basic": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./src/prosemirror-collab-basic/run.ts",
+    "server:collab-minimal": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm/transpile-only ./src/prosemirror-collab-minimal/server/server.ts",
+    "server": "npm run server:collab-minimal",
+    "start": "npm run demo",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:log": "node index.js --name nested-a"
+  },
+  "dependencies": {
+    "@emotion/css": "^11.10.0",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@faker-js/faker": "^7.6.0",
+    "@tanstack/match-sorter-utils": "8.7.9111",
+    "@tanstack/react-table": "8.7.9111",
+    "@tanstack/table-core": "8.7.9111",
+    "classnames": "^2.3.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "is-hotkey": "^0.1.6",
+    "is-url": "^1.2.2",
+    "react": "^18.2.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^18.2.0",
+    "socket.io": "^4.5.2",
+    "socket.io-client": "^4.5.2",
+    "typewriter-editor": "0.7.1611"
+  },
+  "devDependencies": {
+    "@types/is-url": "^1.2.30",
+    "@types/react": "18.0.26",
+    "@types/react-dom": "^18.0.10",
+    "nodemon": "^2.0.20",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0"
+  }
+}

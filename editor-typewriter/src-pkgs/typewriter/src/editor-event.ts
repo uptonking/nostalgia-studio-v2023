@@ -23,7 +23,6 @@ export class EditorFormatEvent extends Event {
   }
 }
 
-
 export function getChangedLines(oldDoc: TextDocument, newDoc: TextDocument) {
   const set = new Set(oldDoc.lines);
   return newDoc.lines.filter((line) => !set.has(line));

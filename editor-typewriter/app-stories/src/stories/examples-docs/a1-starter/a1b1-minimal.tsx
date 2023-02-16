@@ -23,7 +23,7 @@ export const EditorMinimalApp = () => {
   useEffect(() => {
     const editor = new Editor({
       // html: '<p>Edit this <b>content</b> as u like</p><p>Edit this <b>content</b> as u like</p>',
-      html: tinymce6EgData
+      html: tinymce6EgData,
     });
     view.current = editorContainer.current.appendChild(editor.root);
 

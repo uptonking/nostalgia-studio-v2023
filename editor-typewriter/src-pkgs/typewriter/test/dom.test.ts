@@ -173,15 +173,15 @@ describe('======== dom ========', () => {
 
       expect(html).to.equal(
         `<h1>&lt;Quotes&gt;</h1>` +
-        `<p><img src="https://www.example.com/images/bertrand-russle.png"></p>` +
-        `<blockquote>` +
-        `<p>` +
-        `<em>The whole problem with the world</em>` +
-        ` is that fools and fanatics are always so certain of themselves, and ` +
-        `<strong>wiser people so full of doubts.</strong>` +
-        `</p>` +
-        `</blockquote>` +
-        `<p>&nbsp; &nbsp; —Bertrand Russell</p>`,
+          `<p><img src="https://www.example.com/images/bertrand-russle.png"></p>` +
+          `<blockquote>` +
+          `<p>` +
+          `<em>The whole problem with the world</em>` +
+          ` is that fools and fanatics are always so certain of themselves, and ` +
+          `<strong>wiser people so full of doubts.</strong>` +
+          `</p>` +
+          `</blockquote>` +
+          `<p>&nbsp; &nbsp; —Bertrand Russell</p>`,
       );
     });
   });
@@ -247,8 +247,6 @@ describe('======== dom ========', () => {
       ]);
     });
   });
-
-
 
   describe('deltaFromHTML', () => {
     it('should convert a string of HTML into a delta object', () => {

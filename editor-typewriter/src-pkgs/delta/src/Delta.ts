@@ -372,7 +372,9 @@ export class Delta {
         deltaForLine.push(iter.next(index));
       } else {
         // index === 0
-        if (predicate(deltaForLine, iter.next(1).attributes || {}, i) === false) {
+        if (
+          predicate(deltaForLine, iter.next(1).attributes || {}, i) === false
+        ) {
           return;
         }
         i += 1;

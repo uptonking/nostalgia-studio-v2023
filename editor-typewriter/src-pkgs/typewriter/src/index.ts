@@ -15,4 +15,3 @@ export * from './typesetting/defaults';
 
 export * from './Source';
 export * from './editor';
-

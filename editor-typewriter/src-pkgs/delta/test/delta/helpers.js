@@ -124,7 +124,6 @@ describe('helpers', () => {
   });
 
   describe('iteration', () => {
-
     let thisDelta = {};
 
     beforeEach(() => {

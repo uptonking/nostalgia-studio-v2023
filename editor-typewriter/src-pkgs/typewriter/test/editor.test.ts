@@ -264,7 +264,6 @@ describe('======== Editor ========', () => {
     });
   });
 
-
   describe('setText', () => {
     it('should drop trailing newline', () => {
       editor.setText('Testing');

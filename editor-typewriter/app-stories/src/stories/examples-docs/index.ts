@@ -1,6 +1,4 @@
-export {
-  VirtualRenderEditor as a0b1VirtualRender,
-} from './a1-starter/a2b1-virtual-render';
+export { VirtualRenderEditor as a0b1VirtualRender } from './a1-starter/a2b1-virtual-render';
 export { EditorMinimalApp as a1b1MinimalApp } from './a1-starter/a1b1-minimal';
 // export { CustomElementEditor as A13CustomElementEditor } from './a1-starter/a13-custom-element-and-formatting';
 // export { CustomMenuToolbar as A14CustomMenuToolbar } from './a1-starter/a14-menu-toolbar';

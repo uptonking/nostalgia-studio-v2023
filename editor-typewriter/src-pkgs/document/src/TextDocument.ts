@@ -75,6 +75,7 @@ export class TextDocument {
           throw new Error('TextDocument has duplicate line ids: ' + line.id);
       });
       this._ranges = lineUtils.getLineRanges(this.lines);
+      // @ts-ignore ide complaint
       this.length = this.lines.reduce<number>(
         (length, line) => length + line.length,
         0,
@@ -82,8 +83,8 @@ export class TextDocument {
     }
     this.selection =
       selection &&
-    (selection.map((pointIndex) =>
-      Math.min(this.length - 1, Math.max(0, pointIndex)),
+      (selection.map((pointIndex) =>
+        Math.min(this.length - 1, Math.max(0, pointIndex)),
       ) as EditorRange);
   }
 

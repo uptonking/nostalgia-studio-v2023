@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Editor, h } from 'typewriter-editor';
-import {
-  virtualRendering,
-} from 'typewriter-editor/src/modules/virtualRendering';
+import { virtualRendering } from 'typewriter-editor/src/modules/virtualRendering';
 
 import { ckEditorFullEgData } from './examples-data';
 
@@ -32,7 +30,10 @@ export const VirtualRenderEditor = () => {
       .fill(0)
       .forEach((x, i) => {
         // bigStr += '\n' + (i + 1) + ' ' + Math.random();
-        bigStr += '\n' + (i + 1) + 'Format for representing rich text documents and changes.';
+        bigStr +=
+          '\n' +
+          (i + 1) +
+          'Format for representing rich text documents and changes.';
       });
     editor.setText(bigStr);
 

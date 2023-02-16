@@ -59,8 +59,8 @@ export const list = registerLineType({
         typeof id === 'string'
           ? editor.doc.getLineBy(id)
           : editor.doc.selection
-            ? editor.doc.getLineAt(editor.doc.selection[0])
-            : null;
+          ? editor.doc.getLineAt(editor.doc.selection[0])
+          : null;
       if (!line) return false;
       const [at] = editor.doc.getLineRange(line);
       const format = { list: 'check' } as AttributeMapType;
@@ -79,8 +79,8 @@ export const list = registerLineType({
     const list = node.hasAttribute('data-checked')
       ? 'check'
       : parent && parent.nodeName === 'OL'
-        ? 'ordered'
-        : 'bullet';
+      ? 'ordered'
+      : 'bullet';
     while (parent) {
       if (/^UL|OL$/.test(parent.nodeName)) indent++;
       else if (parent.nodeName !== 'LI') break;
@@ -181,7 +181,11 @@ export const list = registerLineType({
       levels.length = index + 1;
     });
 
-    function compareLists(list: VNode, type: string, attributes: AttributeMapType) {
+    function compareLists(
+      list: VNode,
+      type: string,
+      attributes: AttributeMapType,
+    ) {
       return (
         list.type === type &&
         (list.props.start === attributes.start ||
@@ -199,10 +203,10 @@ export const blockquote = registerLineType({
   selector: 'blockquote p',
   commands:
     (editor) =>
-      (blockquote: string | true | any = true) => {
-        if (typeof blockquote !== 'string') blockquote = true;
-        editor.toggleLineFormat({ blockquote });
-      },
+    (blockquote: string | true | any = true) => {
+      if (typeof blockquote !== 'string') blockquote = true;
+      editor.toggleLineFormat({ blockquote });
+    },
   fromDom(node: HTMLParagraphElement) {
     const { className } = node.parentNode as HTMLElement;
     const match = className.match(/quote-(\S+)/);

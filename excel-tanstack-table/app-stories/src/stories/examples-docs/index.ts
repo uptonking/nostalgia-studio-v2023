@@ -1,4 +1,4 @@
-export { A1b1MinimalApp } from './a1-starter/a1b1-minimal';
+export { A1b1MinimalApp } from './a1-starter/a1b2-minimal-react';
 export { A1c1ColumnOrder } from './a1-starter/a1c1-col-order';
 export { A1c2ColumnOrderDnd } from './a1-starter/a1c2-col-order-dnd';
 // export { PMExampleSetupBasicEditor as A12PMExampleSetupBasicEditor } from './a1-starter/a12-example-setup-basic-editor';

@@ -3,18 +3,32 @@ import { flattenBy, memo } from '../utils';
 import { createCell } from './cell';
 
 export interface CoreRow<TData extends RowData> {
+  /** resolved unique identifier for the row resolved via the `options.getRowId` option.
+   * - Defaults to the row's index (or relative index if it is a subRow)
+   */
   id: string;
+  /**  index of the row within its parent array (or the root data array) */
   index: number;
-  original: TData;
+  /** depth of the row (if nested or grouped) relative to the root row array. */
   depth: number;
+  /** The original row object provided to the table.
+   * - If the row is a grouped row, the original row object will be the first original in the group
+   */
+  original: TData;
   _valuesCache: Record<string, unknown>;
   _uniqueValuesCache: Record<string, unknown>;
+  /** Returns the value from the row for a given columnId */
   getValue: <TValue>(columnId: string) => TValue;
   getUniqueValues: <TValue>(columnId: string) => TValue[];
   renderValue: <TValue>(columnId: string) => TValue;
+  /** An array of subRows for the row as returned and created by the `options.getSubRows` option. */
   subRows: Row<TData>[];
-  getLeafRows: () => Row<TData>[];
+  /** An array of the original subRows as returned by the options.getSubRows option.
+   */
   originalSubRows?: TData[];
+  /** Returns the leaf rows for the row, not including any parent rows. */
+  getLeafRows: () => Row<TData>[];
+  /** Returns all of the Cells for the row. */
   getAllCells: () => Cell<TData, unknown>[];
   _getAllCellsByColumnId: () => Record<string, Cell<TData, unknown>>;
 }

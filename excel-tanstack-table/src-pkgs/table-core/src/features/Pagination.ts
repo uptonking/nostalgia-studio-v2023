@@ -16,10 +16,22 @@ export interface PaginationInitialTableState {
 }
 
 export interface PaginationOptions {
+  /** When manually controlling pagination, you should supply a total pageCount value to the table if you know it. If you do not know how many pages there are, you can set this to -1. */
   pageCount?: number;
+  /** Enables manual pagination.
+   * - If `true`, the table will not automatically paginate rows using `getPaginationRowModel()` and instead will expect you to manually paginate the rows before passing them to the table.
+   * - This is useful if you are doing server-side pagination and aggregation.
+   */
   manualPagination?: boolean;
   onPaginationChange?: OnChangeFn<PaginationState>;
+  /** If true, pagination will be reset to the first page when page-altering state changes eg. data is updated, filters change, grouping changes, etc.
+   * - This option defaults to false if `manualPagination` is set to true
+   */
   autoResetPageIndex?: boolean;
+  /** Returns the row model after pagination has taken place, but no further.
+   * - Pagination columns are automatically reordered by default to the start of the columns list.
+   * - If you would rather remove them or leave them as-is, set the appropriate mode here.
+   */
   getPaginationRowModel?: (table: Table<any>) => () => RowModel<any>;
 }
 

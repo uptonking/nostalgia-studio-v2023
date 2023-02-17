@@ -100,6 +100,9 @@ export type RowData = unknown | object | any[];
 
 export type AnyRender = (Comp: any, props: any) => any;
 
+/**
+ * The core table object containing both state and API
+ */
 export interface Table<TData extends RowData>
   extends CoreInstance<TData>,
     HeadersInstance<TData>,
@@ -163,6 +166,9 @@ interface CompleteInitialTableState
 
 export interface InitialTableState extends Partial<CompleteInitialTableState> {}
 
+/**
+ * Each row mirrors its respective row data and provides row-specific APIs
+ */
 export interface Row<TData extends RowData>
   extends CoreRow<TData>,
     VisibilityRow<TData>,
@@ -218,8 +224,16 @@ interface ColumnDefExtensions<TData extends RowData, TValue = unknown>
 export interface ColumnDefBase<TData extends RowData, TValue = unknown>
   extends ColumnDefExtensions<TData, TValue> {
   getUniqueValues?: AccessorFn<TData, unknown[]>;
+  /** The footer to display for the column.  */
   footer?: ColumnDefTemplate<HeaderContext<TData, TValue>>;
+  /** The cell to display each row for the column.
+   * - If a function is passed, it will be passed a props object for the cell and should return the rendered cell value
+   */
   cell?: ColumnDefTemplate<CellContext<TData, TValue>>;
+  /** metadata to associated with the column.
+   * - We can access it anywhere when the column is available via `column.columnDef.meta`.
+   * - This interface is extensible via declaration merging.
+   */
   meta?: ColumnMeta<TData, TValue>;
 }
 
@@ -227,7 +241,12 @@ export interface ColumnDefBase<TData extends RowData, TValue = unknown>
 
 export interface IdentifiedColumnDef<TData extends RowData, TValue = unknown>
   extends ColumnDefBase<TData, TValue> {
+  /** A column ID is optional when:
+   * - An accessor column is created with an object key accessor
+   * - The column header is defined as a string
+   */
   id?: string;
+  /** The header to display for the column.  */
   header?: StringOrTemplateHeader<TData, TValue>;
 }
 
@@ -238,6 +257,7 @@ export type DisplayColumnDef<
 
 interface GroupColumnDefBase<TData extends RowData, TValue = unknown>
   extends ColumnDefBase<TData, TValue> {
+  /** The child column defs to include in a group column. */
   columns?: ColumnDef<TData, any>[];
 }
 
@@ -248,6 +268,7 @@ export type GroupColumnDef<
 
 interface AccessorFnColumnDefBase<TData extends RowData, TValue = unknown>
   extends ColumnDefBase<TData, TValue> {
+  /** accessor function to use when extracting the value for the column from each row. */
   accessorFn: AccessorFn<TData, TValue>;
 }
 
@@ -258,7 +279,12 @@ export type AccessorFnColumnDef<
 
 interface AccessorKeyColumnDefBase<TData extends RowData, TValue = unknown>
   extends ColumnDefBase<TData, TValue> {
+  /** A column ID is optional when:
+   * - An accessor column is created with an object key accessor
+   * - The column header is defined as a string
+   */
   id?: string;
+  /** The key of the row object to use when extracting the value for the column. */
   accessorKey: (string & {}) | keyof TData;
 }
 
@@ -274,6 +300,13 @@ export type AccessorColumnDef<TData extends RowData, TValue = unknown> =
 
 //
 
+/**
+ * used to configure a column and its data model, display templates, and more
+ * - Building the underlying data model that will be used for filter/sort/group
+ * - Formatting the data model into what will be displayed
+ * - Creating header groups, headers and footers
+ * - Creating columns for display-only purposes, eg. action buttons, checkboxes, expanders, sparklines, etc.
+ */
 export type ColumnDef<TData extends RowData, TValue = unknown> =
   | DisplayColumnDef<TData, TValue>
   | GroupColumnDef<TData, TValue>
@@ -283,9 +316,13 @@ export type ColumnDefResolved<
   TData extends RowData,
   TValue = unknown,
 > = Partial<UnionToIntersection<ColumnDef<TData, TValue>>> & {
+    /** The key of the row object to use when extracting the value for the column. */
   accessorKey?: string;
 };
 
+/**
+ * Each column mirrors its respective column def and also provides column-specific APIs
+ */
 export interface Column<TData extends RowData, TValue = unknown>
   extends CoreColumn<TData, TValue>,
     ColumnVisibilityColumn,
@@ -295,13 +332,22 @@ export interface Column<TData extends RowData, TValue = unknown>
     GroupingColumn<TData>,
     ColumnSizingColumn {}
 
+/**
+ * Each cell mirrors its respective row-column intersection and provides cell-specific APIs
+ */
 export interface Cell<TData extends RowData, TValue>
   extends CoreCell<TData, TValue>,
     GroupingCell {}
 
+/**
+ * Each header is either directly associated with or derived from its column def and provides header-specific APIs
+ */
 export interface Header<TData extends RowData, TValue>
   extends CoreHeader<TData, TValue>,
     ColumnSizingHeader {}
 
+/**
+ * Header groups are computed slices of nested header levels, each containing a group of headers
+ */
 export interface HeaderGroup<TData extends RowData>
   extends CoreHeaderGroup<TData> {}

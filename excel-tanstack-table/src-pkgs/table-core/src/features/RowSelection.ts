@@ -16,6 +16,10 @@ export interface RowSelectionTableState {
 }
 
 export interface RowSelectionOptions<TData extends RowData> {
+  /**
+   * - boolean: Enables/disables row selection for all rows in the table
+   * - A function that given a row, returns whether to enable/disable row selection for that row
+   */
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean);
   enableMultiRowSelection?: boolean | ((row: Row<TData>) => boolean);
   enableSubRowSelection?: boolean | ((row: Row<TData>) => boolean);
@@ -330,8 +334,8 @@ export const RowSelection: TableFeature = {
         return table.getIsAllPageRowsSelected()
           ? false
           : paginationFlatRows.some(
-              (d) => d.getIsSelected() || d.getIsSomeSelected(),
-            );
+            (d) => d.getIsSelected() || d.getIsSomeSelected(),
+          );
       },
 
       getToggleAllRowsSelectedHandler: () => {

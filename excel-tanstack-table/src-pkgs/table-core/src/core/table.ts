@@ -60,49 +60,99 @@ const features = [
 export interface CoreTableState {}
 
 export interface CoreOptions<TData extends RowData> {
+  /** data for the table to display, could be an array of anything
+   * - When the `data` option changes reference (compared via `Object.is`), the table will reprocess the data.
+   * - Make sure your data option is only changing when you want the table to reprocess.
+   */
   data: TData[];
+  /** used when resetting various table states either automatically by the table (eg. options.autoResetPageIndex) or via functions like table.resetRowSelection().
+   * - Table state will not be reset when this object changes, which also means that the initial state object does not need to be stable
+   */
+  initialState?: InitialTableState;
+  /** used to optionally control part or all of the table state.
+   * - The state you pass here will merge with and overwrite the internal automatically-managed state to produce the final state for the table.
+   */
   state: Partial<TableState>;
+  /** listen to state changes within the table.
+   * - If you provide this options, you will be responsible for controlling and updating the table state yourself.
+   */
   onStateChange: (updater: Updater<TableState>) => void;
+
+  /** Set this option to override any of the `autoReset...` feature options. */
+  autoResetAll?: boolean;
+  /** implement the merging of table options.
+   * - Some framework like solid-js use proxies to track reactivity and usage, so merging reactive objects needs to be handled carefully.
+   * - This option inverts control of this process to the adapter.
+   */
+  mergeOptions?: (
+    defaultOptions: TableOptions<TData>,
+    options: Partial<TableOptions<TData>>,
+  ) => TableOptions<TData>;
+  /** You can pass any object to `options.meta` and access it anywhere the table is available via `table.options.meta`
+   * - Think of this option as an arbitrary "context" for your table.
+   * - A good example is passing a locale object to your table to use for formatting dates, numbers, etc or even a function that can be used to update editable data
+   */
+  meta?: TableMeta<TData>;
+  /** computes and returns the core row model for the table.
+   * - It is called once per table and should return a new function which will calculate and return the row model for the table.
+   * - If you need to identify individual rows that are originating from any server-side operations, it's suggested you use this function to return an ID
+   */
+  getCoreRowModel: (table: Table<any>) => () => RowModel<any>;
+  /** used to access the sub rows for any given row. */
+  getSubRows?: (originalRow: TData, index: number) => undefined | TData[];
+  /** used to derive a unique ID for any given row.
+   * - If not provided the rows index is used (nested rows join together with `.` using their grandparents' index
+   */
+  getRowId?: (originalRow: TData, index: number, parent?: Row<TData>) => string;
+  /**  array of column defs to use for the table */
+  columns: ColumnDef<TData, any>[];
+  /** Default column options to use for all column defs
+   * - All column definitions passed to `options.columns` are merged with this default column definition to produce the final column definitions.
+   */
+  defaultColumn?: Partial<ColumnDef<TData, unknown>>;
+  renderFallbackValue: any;
+
   debugAll?: boolean;
   debugTable?: boolean;
   debugHeaders?: boolean;
   debugColumns?: boolean;
   debugRows?: boolean;
-  initialState?: InitialTableState;
-  autoResetAll?: boolean;
-  mergeOptions?: (
-    defaultOptions: TableOptions<TData>,
-    options: Partial<TableOptions<TData>>,
-  ) => TableOptions<TData>;
-  meta?: TableMeta<TData>;
-  getCoreRowModel: (table: Table<any>) => () => RowModel<any>;
-  getSubRows?: (originalRow: TData, index: number) => undefined | TData[];
-  getRowId?: (originalRow: TData, index: number, parent?: Row<TData>) => string;
-  columns: ColumnDef<TData, any>[];
-  defaultColumn?: Partial<ColumnDef<TData, unknown>>;
-  renderFallbackValue: any;
 }
 
 export interface CoreInstance<TData extends RowData> {
+  /** resolved initial state of the table. */
   initialState: TableState;
+  /** reset the table state to the initial state. */
   reset: () => void;
+  /** A read-only reference to the table's current options. */
   options: RequiredKeys<TableOptionsResolved<TData>, 'state'>;
+  /** generally used by adapters to update the table options.  */
   setOptions: (newOptions: Updater<TableOptionsResolved<TData>>) => void;
+  /** get the table's current state.  */
   getState: () => TableState;
+  /** update the table state.
+   * - It's recommended you pass an updater function in the form of `(prevState) => newState` to update the state, but a direct object can also be passed.
+   */
   setState: (updater: Updater<TableState>) => void;
   _features: readonly TableFeature[];
   _queue: (cb: () => void) => void;
   _getRowId: (_: TData, index: number, parent?: Row<TData>) => string;
+  /** Returns the core row model before any processing has been applied. */
   getCoreRowModel: () => RowModel<TData>;
   _getCoreRowModel?: () => RowModel<TData>;
+  /** Returns the final model after all processing from other used features has been applied. */
   getRowModel: () => RowModel<TData>;
   getRow: (id: string) => Row<TData>;
   _getDefaultColumnDef: () => Partial<ColumnDef<TData, unknown>>;
   _getColumnDefs: () => ColumnDef<TData, unknown>[];
   _getAllFlatColumnsById: () => Record<string, Column<TData, unknown>>;
+  /** Returns all columns in the table in their normalized and nested hierarchy, mirrored from the column defs  */
   getAllColumns: () => Column<TData, unknown>[];
+  /** Returns all columns in the table flattened to a single level. This includes parent column objects throughout the hierarchy. */
   getAllFlatColumns: () => Column<TData, unknown>[];
+  /** Returns all leaf-node columns in the table flattened to a single level. This does not include parent columns. */
   getAllLeafColumns: () => Column<TData, unknown>[];
+  /** Returns a single column by its ID. */
   getColumn: (columnId: string) => Column<TData, unknown> | undefined;
 }
 

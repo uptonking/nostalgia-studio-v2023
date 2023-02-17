@@ -3,8 +3,11 @@ import { memo } from '../utils';
 import type { TableFeature } from './table';
 
 export interface CoreHeaderGroup<TData extends RowData> {
+  /** unique identifier for the header group */
   id: string;
+  /** depth of the header group, zero-indexed based. */
   depth: number;
+  /** An array of Header objects that belong to this header group */
   headers: Header<TData, unknown>[];
 }
 
@@ -16,16 +19,27 @@ export interface HeaderContext<TData, TValue> {
 
 export interface CoreHeader<TData extends RowData, TValue> {
   id: string;
+  /** index for the header within the header group. */
   index: number;
+  /** depth of the header, zero-indexed based. */
   depth: number;
+  /** header's associated Column object */
   column: Column<TData, TValue>;
+  /** header's associated HeaderGroup object */
   headerGroup: HeaderGroup<TData>;
+  /** header's hierarchical sub/child headers. Will be empty if the header's associated column is a leaf-column. */
   subHeaders: Header<TData, TValue>[];
+  /** col-span for the header. */
   colSpan: number;
+  /** row-span for the header. */
   rowSpan: number;
+  /** Returns the leaf headers hierarchically nested under this header. */
   getLeafHeaders: () => Header<TData, unknown>[];
+  /** A boolean denoting if the header is a placeholder header */
   isPlaceholder: boolean;
+  /** ID that does not conflict with any other headers across the table */
   placeholderId?: string;
+  /** Returns the rendering context (or props) for column-based components like headers, footers and filters.  */
   getContext: () => HeaderContext<TData, TValue>;
 }
 

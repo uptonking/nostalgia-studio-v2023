@@ -11,11 +11,16 @@ export interface CellContext<TData extends RowData, TValue> {
 }
 
 export interface CoreCell<TData extends RowData, TValue> {
+  /** unique ID for the cell across the entire table. */
   id: string;
+  /** Returns the value for the cell, accessed via the associated column's accessor key or accessor function. */
   getValue: CellContext<TData, TValue>['getValue'];
   renderValue: CellContext<TData, TValue>['renderValue'];
+  /** associated Row object for the cell. */
   row: Row<TData>;
+  /** associated Column object for the cell. */
   column: Column<TData, TValue>;
+  /** Returns the rendering context (or props) for cell-based components like cells and aggregated cells. */
   getContext: () => CellContext<TData, TValue>;
 }
 

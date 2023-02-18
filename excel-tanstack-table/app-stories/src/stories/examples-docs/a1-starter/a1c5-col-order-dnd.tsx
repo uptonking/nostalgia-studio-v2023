@@ -115,10 +115,11 @@ const DraggableColumnHeader = ({ header, table }: {
     </th>
   );
 };
+
 /**
  * ✨ 示例，仅展示
  */
-export const A1c2ColumnOrderDnd = () => {
+export const A1c5ColumnOrderDnd = () => {
   const [data, setData] = React.useState(() => makeData(20));
   const [columns] = React.useState(() => [...defaultColumns]);
 
@@ -146,7 +147,7 @@ export const A1c2ColumnOrderDnd = () => {
 
   return (
     <StyledRTableCore>
-      <h3> column order dnd Example </h3>
+      <h3> column order dnd example with react-dnd </h3>
       <DndProvider backend={HTML5Backend}>
         <div className='p-2'>
           <div className='h-4' />

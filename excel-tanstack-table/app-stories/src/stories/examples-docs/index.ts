@@ -1,6 +1,12 @@
 export { A1b1MinimalApp } from './a1-starter/a1b2-minimal-react';
-export { A1c1ColumnOrder } from './a1-starter/a1c1-col-order';
-export { A1c2ColumnOrderDnd } from './a1-starter/a1c2-col-order-dnd';
+export { A1c1Filter } from './a1-starter/a1c1-filter';
+export { A1c2Sort } from './a1-starter/a1c2-sort';
+export { A1c3Group } from './a1-starter/a1c3-group';
+export { A1c4ColumnOrder } from './a1-starter/a1c4-col-order';
+export { A1c5ColumnOrderDnd } from './a1-starter/a1c5-col-order-dnd';
+export { A1d1VirtualTable } from './a1-starter/a1d1-virtual';
+export { A1d2Pagination } from './a1-starter/a1d2-pagination';
+export { A1d3VirtualPage } from './a1-starter/a1d3-virtual-page';
 // export { PMExampleSetupBasicEditor as A12PMExampleSetupBasicEditor } from './a1-starter/a12-example-setup-basic-editor';
 // export { TeemuApp as A1b5TeemuApp } from '../teemu-examples/index';
 // export { Footnote2 as A1b1Footnote2 } from './a1-starter/a1b1-footnote2';

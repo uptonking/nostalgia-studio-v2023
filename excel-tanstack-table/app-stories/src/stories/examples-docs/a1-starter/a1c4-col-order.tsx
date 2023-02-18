@@ -67,7 +67,7 @@ const defaultColumns: ColumnDef<Person>[] = [
 /**
  * ✨ 示例，仅展示
  */
-export const A1c1ColumnOrder = () => {
+export const A1c4ColumnOrder = () => {
   const [data, setData] = React.useState(() => makeData(20))
   const [columns] = React.useState(() => [...defaultColumns])
 

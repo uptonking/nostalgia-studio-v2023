@@ -70,8 +70,19 @@
       "typewriter-editor": ["editor-typewriter/src-pkgs/typewriter/src/"],
       "@tanstack/table-core": ["excel-tanstack-table/src-pkgs/table-core"],
       "@tanstack/react-table": ["excel-tanstack-table/src-pkgs/react-table"],
-      "@tanstack/react-table-devtools": ["excel-tanstack-table/src-pkgs/react-table-devtools"],
-      "@tanstack/match-sorter-utils": ["excel-tanstack-table/src-pkgs/match-sorter-utils"],
+      "@tanstack/react-table-devtools": [
+        "excel-tanstack-table/src-pkgs/react-table-devtools"
+      ],
+      "@tanstack/match-sorter-utils": [
+        "excel-tanstack-table/src-pkgs/match-sorter-utils"
+      ],
+      "@tanstack/react-table-devtools": [
+        "excel-tanstack-table/src-pkgs/react-table-devtools"
+      ],
+      "@tanstack/virtual-core": ["excel-tanstack-table/src-pkgs/virtual-core"],
+      "@tanstack/react-virtual": [
+        "excel-tanstack-table/src-pkgs/react-virtual"
+      ],
       "yjs": ["collab-yjs/src-pkgs/yjs/src"],
       "lib0": ["collab-yjs/src-pkgs/yjs-lib0"],
       "y-protocols": ["collab-yjs/src-pkgs/y-protocols"],

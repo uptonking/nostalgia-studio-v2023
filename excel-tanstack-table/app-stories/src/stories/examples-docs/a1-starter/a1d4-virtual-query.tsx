@@ -277,7 +277,7 @@ function VirtualPage() {
 
 const queryClient = new QueryClient();
 
-export const A1d3VirtualPage = () => {
+export const A1d4VirtualQuery = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <VirtualPage />

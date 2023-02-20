@@ -334,8 +334,8 @@ export const RowSelection: TableFeature = {
         return table.getIsAllPageRowsSelected()
           ? false
           : paginationFlatRows.some(
-            (d) => d.getIsSelected() || d.getIsSomeSelected(),
-          );
+              (d) => d.getIsSelected() || d.getIsSomeSelected(),
+            );
       },
 
       getToggleAllRowsSelectedHandler: () => {

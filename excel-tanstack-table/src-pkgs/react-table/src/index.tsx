@@ -1,17 +1,19 @@
 import * as React from 'react';
-export * from '@tanstack/table-core';
 
 import {
+  createTable,
+  RowData,
   TableOptions,
   TableOptionsResolved,
-  RowData,
-  createTable,
 } from '@tanstack/table-core';
+
+export * from '@tanstack/table-core';
 
 export type Renderable<TProps> = React.ReactNode | React.ComponentType<TProps>;
 
 //
 
+/** used to render cell */
 export function flexRender<TProps extends object>(
   Comp: Renderable<TProps>,
   props: TProps,
@@ -51,6 +53,10 @@ function isExoticComponent(component: any) {
   );
 }
 
+/**
+ * a wrapper around the core table logic.
+ * - Most of its job is related to managing state the "react" way, providing types and the rendering implementation of cell/header/footer templates
+ */
 export function useReactTable<TData extends RowData>(
   options: TableOptions<TData>,
 ) {
@@ -62,7 +68,7 @@ export function useReactTable<TData extends RowData>(
     ...options,
   };
 
-  // Create a new table and store it in state
+  // 👇🏻 Create a new table and store it in state
   const [tableRef] = React.useState(() => ({
     current: createTable<TData>(resolvedOptions),
   }));
@@ -79,8 +85,7 @@ export function useReactTable<TData extends RowData>(
       ...state,
       ...options.state,
     },
-    // Similarly, we'll maintain both our internal state and any user-provided
-    // state.
+    // Similarly, we'll maintain both internal state and any user-provided state.
     onStateChange: (updater) => {
       setState(updater);
       options.onStateChange?.(updater);

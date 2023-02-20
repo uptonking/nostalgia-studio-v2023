@@ -64,7 +64,7 @@ export interface ColumnSizingColumnDef {
 export interface ColumnSizingColumn {
   getSize: () => number;
   /** Returns the offset measurement along the row-axis (usually the x-axis for standard tables) for the column.
- */
+   */
   getStart: (position?: ColumnPinningPosition) => number;
   getCanResize: () => boolean;
   getIsResizing: () => boolean;

@@ -1,4 +1,5 @@
-import * as React from 'react'
+import * as React from 'react';
+
 import {
   elementScroll,
   observeElementOffset,
@@ -9,47 +10,53 @@ import {
   Virtualizer,
   VirtualizerOptions,
   windowScroll,
-} from '@tanstack/virtual-core'
-export * from '@tanstack/virtual-core'
+} from '@tanstack/virtual-core';
+
+export * from '@tanstack/virtual-core';
 
 //
 
 const useIsomorphicLayoutEffect =
-  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect
+  typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
+/**
+ * create a virtualizerInstance, and trigger _didMount + _willUpdate
+ */
 function useVirtualizerBase<
   TScrollElement extends Element | Window,
   TItemElement extends Element,
 >(
   options: VirtualizerOptions<TScrollElement, TItemElement>,
 ): Virtualizer<TScrollElement, TItemElement> {
-  const rerender = React.useReducer(() => ({}), {})[1]
+  const rerender = React.useReducer(() => ({}), {})[1];
 
   const resolvedOptions: VirtualizerOptions<TScrollElement, TItemElement> = {
     ...options,
     onChange: (instance) => {
-      rerender()
-      options.onChange?.(instance)
+      rerender();
+      options.onChange?.(instance);
     },
-  }
+  };
 
+  /** 👇🏻 a stable virtualizerInstance */
   const [instance] = React.useState(
     () => new Virtualizer<TScrollElement, TItemElement>(resolvedOptions),
-  )
-
-  instance.setOptions(resolvedOptions)
+  );
+  instance.setOptions(resolvedOptions);
 
   React.useEffect(() => {
-    return instance._didMount()
-  }, [])
+    window['vir'] = instance;
+    return instance._didMount();
+  }, []);
 
   useIsomorphicLayoutEffect(() => {
-    return instance._willUpdate()
-  })
+    return instance._willUpdate();
+  });
 
-  return instance
+  return instance;
 }
 
+/** returns a standard Virtualizer instance configured to work with an HTML element as the scrollElement */
 export function useVirtualizer<
   TScrollElement extends Element,
   TItemElement extends Element,
@@ -64,9 +71,10 @@ export function useVirtualizer<
     observeElementOffset: observeElementOffset,
     scrollToFn: elementScroll,
     ...options,
-  })
+  });
 }
 
+/** returns a window-based Virtualizer instance configured to work with the `window` as the scrollElement */
 export function useWindowVirtualizer<TItemElement extends Element>(
   options: PartialKeys<
     VirtualizerOptions<Window, TItemElement>,
@@ -82,5 +90,5 @@ export function useWindowVirtualizer<TItemElement extends Element>(
     observeElementOffset: observeWindowOffset,
     scrollToFn: windowScroll,
     ...options,
-  })
+  });
 }

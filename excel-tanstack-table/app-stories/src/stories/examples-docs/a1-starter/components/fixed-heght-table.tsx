@@ -14,22 +14,21 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { Person } from '../../utils/makeData';
 
 type FixedHeightTableProps = {
-  // The data to render
+  /** The data to render */
   data: any;
-  // The columns to render
+  /** The columns to render */
   columns: ColumnDef<Person>[];
-  // The height of the table
-  // @default 500px
+  /** The height of the table, default 500px */
   height?: number;
 };
 
 /**
- * Renders fixed height virtualised table
+ * Renders fixed height virtualized table, with sorting
  */
 export function FixedHeightTable({
   data,
   columns,
-  height = 500,
+  height = 240,
 }: FixedHeightTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
@@ -51,11 +50,13 @@ export function FixedHeightTable({
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => tableContainerRef.current,
-    estimateSize: () => 54,
-    overscan: 10,
+    estimateSize: () => 30,
+    overscan: 2,
   });
 
+  /** current minimal rows to render */
   const virtualRows = rowVirtualizer.getVirtualItems();
+  /** total hight of all rows (including invisible rows) */
   const totalSize = rowVirtualizer.getTotalSize();
 
   // This is where the magic happens, essentially create a large row with height of total rows
@@ -66,17 +67,25 @@ export function FixedHeightTable({
       ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
       : 0;
 
+  // console.log(
+  //   ';; rows ',
+  //   totalSize,
+  //   paddingTop,
+  //   paddingBottom,
+  //   rows,
+  //   virtualRows,
+  //   rowVirtualizer,
+  // );
+
   return (
     <div
-      id='vTbFixedHeight'
       ref={tableContainerRef}
-      className="container"
-      style={{
-        height: height,
-      }}
+      id='vTbFixedHeight'
+      className='container'
+      style={{ height }}
     >
       <table>
-        <thead className="sticky-header">
+        <thead className='sticky-header'>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
@@ -90,18 +99,18 @@ export function FixedHeightTable({
                       <div
                         {...{
                           className: header.column.getCanSort()
-                            ? "cursor-pointer select-none"
-                            : "",
+                            ? 'cursor-pointer select-none'
+                            : '',
                           onClick: header.column.getToggleSortingHandler(),
                         }}
                       >
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                         {{
-                          asc: " 🔼",
-                          desc: " 🔽",
+                          asc: ' 🔼',
+                          desc: ' 🔽',
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
                     )}
@@ -126,7 +135,7 @@ export function FixedHeightTable({
                     <td key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </td>
                   );

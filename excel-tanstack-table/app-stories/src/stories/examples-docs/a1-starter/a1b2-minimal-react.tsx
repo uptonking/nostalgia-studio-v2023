@@ -47,15 +47,15 @@ const defaultData: Person[] = [
 
 const columnHelper = createColumnHelper<Person>();
 
-const columns = [
+const columns = (window['col'] = [
   columnHelper.accessor('firstName', {
     cell: (info) => info.getValue(),
     footer: (info) => info.column.id,
   }),
   columnHelper.accessor((row) => row.lastName, {
     id: 'lastName',
-    cell: (info) => <i>{info.getValue()}</i>,
     header: () => <span>Last Name</span>,
+    cell: (info) => <i>{info.getValue()}</i>,
     footer: (info) => info.column.id,
   }),
   columnHelper.accessor('age', {
@@ -75,26 +75,33 @@ const columns = [
     header: 'Profile Progress',
     footer: (info) => info.column.id,
   }),
-];
+]);
+
 /**
  * ✨ 最小react-table示例，仅展示
  */
-export const A1b1MinimalApp = () => {
-  const [data, setData] = React.useState(() => [...defaultData]);
+export const A1b1MinimalAppTb = () => {
+  const [data] = React.useState(() => [...defaultData]);
   const rerender = React.useReducer(() => ({}), {})[1];
 
-  const table = useReactTable({
+  const table = (window['table'] = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-  });
+  }));
+
+  const rowModel = table.getRowModel();
+  const headerGroups = table.getHeaderGroups();
+  const footerGroups = table.getFooterGroups();
+
+  console.log(';; rows-h ', rowModel, headerGroups, footerGroups);
 
   return (
     <StyledRTableCore>
-      <h3> react-table v8 Minimal Example 202302</h3>
+      <h2> react-table v8 Minimal Example 202302</h2>
       <table>
         <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
+          {headerGroups.map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th key={header.id}>
@@ -110,7 +117,7 @@ export const A1b1MinimalApp = () => {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map((row) => (
+          {rowModel.rows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id}>
@@ -121,7 +128,7 @@ export const A1b1MinimalApp = () => {
           ))}
         </tbody>
         <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
+          {footerGroups.map((footerGroup) => (
             <tr key={footerGroup.id}>
               {footerGroup.headers.map((header) => (
                 <th key={header.id}>
@@ -137,7 +144,7 @@ export const A1b1MinimalApp = () => {
           ))}
         </tfoot>
       </table>
-      <div className='h-4' />
+      {/* <div className='h-4' /> */}
       <button onClick={() => rerender()} className='border p-2'>
         Rerender
       </button>

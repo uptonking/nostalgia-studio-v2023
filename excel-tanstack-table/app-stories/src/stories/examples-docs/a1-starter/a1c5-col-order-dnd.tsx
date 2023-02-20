@@ -72,7 +72,10 @@ const reorderColumn = (
   return [...columnOrder];
 };
 
-const DraggableColumnHeader = ({ header, table }: {
+const DraggableColumnHeader = ({
+  header,
+  table,
+}: {
   header: Header<Person, unknown>;
   table: Table<Person>;
 }) => {
@@ -196,9 +199,9 @@ export const A1c5ColumnOrderDnd = () => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.footer,
-                          header.getContext(),
-                        )}
+                            header.column.columnDef.footer,
+                            header.getContext(),
+                          )}
                     </th>
                   ))}
                 </tr>

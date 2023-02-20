@@ -153,10 +153,10 @@ export const A1c3Group = () => {
                             background: cell.getIsGrouped()
                               ? '#0aff0082'
                               : cell.getIsAggregated()
-                                ? '#ffa50078'
-                                : cell.getIsPlaceholder()
-                                  ? '#ff000042'
-                                  : 'white',
+                              ? '#ffa50078'
+                              : cell.getIsPlaceholder()
+                              ? '#ff000042'
+                              : 'white',
                           },
                         }}
                       >
@@ -186,7 +186,7 @@ export const A1c3Group = () => {
                           // renderer for cell
                           flexRender(
                             cell.column.columnDef.aggregatedCell ??
-                            cell.column.columnDef.cell,
+                              cell.column.columnDef.cell,
                             cell.getContext(),
                           )
                         ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null

@@ -125,6 +125,7 @@ export function flattenBy<TNode>(
   return flat;
 }
 
+/** memoize a fn */
 export function memo<TDeps extends readonly any[], TResult>(
   getDeps: () => [...TDeps],
   fn: (...args: NoInfer<[...TDeps]>) => TResult,

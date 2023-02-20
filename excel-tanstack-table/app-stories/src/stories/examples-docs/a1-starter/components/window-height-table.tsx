@@ -67,8 +67,8 @@ export function WindowHeightTable({ data, columns }: FixedHeightTableProps) {
       const isHeaderSticky = tableContainerRect.top < 0;
       setIsHeaderSticky(isHeaderSticky);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // We need to add a padding row at top that grows as we scroll down to ensure
@@ -81,7 +81,7 @@ export function WindowHeightTable({ data, columns }: FixedHeightTableProps) {
   return (
     <div
       ref={tableContainerRef}
-      className="container"
+      className='container'
       style={{
         // Need to add 52px to totalSize to account for header height + container border top and bottom
         height: rowVirtualizer.getTotalSize() + 52,
@@ -102,18 +102,18 @@ export function WindowHeightTable({ data, columns }: FixedHeightTableProps) {
                       <div
                         {...{
                           className: header.column.getCanSort()
-                            ? "cursor-pointer select-none"
-                            : "",
+                            ? 'cursor-pointer select-none'
+                            : '',
                           onClick: header.column.getToggleSortingHandler(),
                         }}
                       >
                         {flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                         {{
-                          asc: " 🔼",
-                          desc: " 🔽",
+                          asc: ' 🔼',
+                          desc: ' 🔽',
                         }[header.column.getIsSorted() as string] ?? null}
                       </div>
                     )}
@@ -145,7 +145,7 @@ export function WindowHeightTable({ data, columns }: FixedHeightTableProps) {
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </td>
                   );

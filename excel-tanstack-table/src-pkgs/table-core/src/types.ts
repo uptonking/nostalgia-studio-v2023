@@ -316,7 +316,7 @@ export type ColumnDefResolved<
   TData extends RowData,
   TValue = unknown,
 > = Partial<UnionToIntersection<ColumnDef<TData, TValue>>> & {
-    /** The key of the row object to use when extracting the value for the column. */
+  /** The key of the row object to use when extracting the value for the column. */
   accessorKey?: string;
 };
 

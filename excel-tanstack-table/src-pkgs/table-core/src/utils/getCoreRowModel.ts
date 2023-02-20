@@ -2,6 +2,10 @@ import { createRow } from '../core/row';
 import type { Row, RowData, RowModel, Table } from '../types';
 import { memo } from '../utils';
 
+/**
+ * get a memoized rowModel object for table data
+ * - `{ rows: [], flatRows: [], rowsById: {}, }`
+ */
 export function getCoreRowModel<TData extends RowData>(): (
   table: Table<TData>,
 ) => () => RowModel<TData> {

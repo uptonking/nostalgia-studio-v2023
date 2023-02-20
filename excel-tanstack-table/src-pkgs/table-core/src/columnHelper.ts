@@ -67,6 +67,7 @@ export type ColumnHelper<TData extends RowData> = {
   group: (column: GroupColumnDef<TData>) => ColumnDef<TData, unknown>;
 };
 
+/** helper to deal with accessor/display/group */
 export function createColumnHelper<
   TData extends RowData,
 >(): ColumnHelper<TData> {

@@ -1,4 +1,3 @@
-//
 import { ColumnSizing } from '../features/ColumnSizing';
 import { Expanding } from '../features/Expanding';
 import { Filters } from '../features/Filters';
@@ -41,6 +40,7 @@ export interface TableFeature {
   createRow?: (row: any, table: any) => any;
 }
 
+/** features flag array */
 const features = [
   Headers,
   Visibility,
@@ -156,6 +156,13 @@ export interface CoreInstance<TData extends RowData> {
   getColumn: (columnId: string) => Column<TData, unknown> | undefined;
 }
 
+/**
+ * - createTable 的初始化流程
+ * - 计算插件options，~~合并feature options~~
+ * - 添加插件initialState到全局initialState
+ * - 合并coreInstance到table
+ * - 逐个执行插件的createTable方法，并更新table
+ */
 export function createTable<TData extends RowData>(
   options: TableOptionsResolved<TData>,
 ): Table<TData> {

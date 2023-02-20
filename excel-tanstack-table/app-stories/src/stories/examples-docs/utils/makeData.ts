@@ -57,12 +57,10 @@ export function makeData(...lens: number[]) {
 
 const data = makeData(10000);
 
-
 export async function fetchData(options: {
   pageIndex: number;
   pageSize: number;
 }) {
-
   // Simulate some network latency
   await new Promise((r) => setTimeout(r, 500));
 
@@ -112,38 +110,36 @@ export const tableColumns: ColumnDef<Person>[] = [
     header: 'Profile Progress',
     size: 80,
   },
-  {
-    accessorKey: 'createdAt',
-    header: 'Created At',
-    cell: (info) => info.getValue<Date>().toLocaleString(),
-  },
+  // {
+  //   accessorKey: 'createdAt',
+  //   header: 'Created At',
+  //   cell: (info) => info.getValue<Date>().toLocaleString(),
+  // },
 ];
 
-
-
 export type PersonApiResponse = {
-  data: Person[]
+  data: Person[];
   meta: {
-    totalRowCount: number
-  }
-}
+    totalRowCount: number;
+  };
+};
 
 //simulates a backend api
 export const fetchVirtualPagesData = (
   start: number,
   size: number,
-  sorting: SortingState
+  sorting: SortingState,
 ) => {
-  const dbData = [...data]
+  const dbData = [...data];
   if (sorting.length) {
-    const sort = sorting[0] as ColumnSort
-    const { id, desc } = sort as { id: keyof Person; desc: boolean }
+    const sort = sorting[0] as ColumnSort;
+    const { id, desc } = sort as { id: keyof Person; desc: boolean };
     dbData.sort((a, b) => {
       if (desc) {
-        return a[id] < b[id] ? 1 : -1
+        return a[id] < b[id] ? 1 : -1;
       }
-      return a[id] > b[id] ? 1 : -1
-    })
+      return a[id] > b[id] ? 1 : -1;
+    });
   }
 
   return {
@@ -151,5 +147,5 @@ export const fetchVirtualPagesData = (
     meta: {
       totalRowCount: dbData.length,
     },
-  }
-}
+  };
+};

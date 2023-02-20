@@ -24,6 +24,8 @@ type HeightInfo = [marginTop: number, height: number, marginBottom: number];
 
 /**
  * only render minimal editor contents in editor container
+ * - listen to `scroll` + `resize`
+ * - virtualize没有使用overscan
  */
 export function virtualRendering(editor: Editor) {
   let start = 0;
@@ -31,6 +33,7 @@ export function virtualRendering(editor: Editor) {
   /** Array<[mt,height,mb]> */
   let heightMap = [] as HeightInfo[];
   let children: HTMLLineElement[] = [];
+  /** container height */
   let viewportHeight = 0;
   let offsetTop: number;
   /** 不可见元素的默认高度 */
@@ -108,7 +111,7 @@ export function virtualRendering(editor: Editor) {
     }
   }
 
-  /** Determine start and end of visible range, and cache rendered lines height */
+  /** determine start and end of visible range, and cache rendered lines height */
   function update() {
     updateQueued = false;
     if (!items) return;
@@ -154,7 +157,8 @@ export function virtualRendering(editor: Editor) {
   }
 
   /**
-   * calculate minimal items toRender, if changed, return true
+   * calculate minimal/virtualized items toRender, if changed, return true
+   * - 没有使用overscan
    */
   function shouldUpdate() {
     const { scrollTop } = containerViewport;
@@ -191,6 +195,7 @@ export function virtualRendering(editor: Editor) {
 
     const newRender = Array.from(renderSet).sort((a, b) => a - b);
 
+    // 范围变化时，一定会rerender
     if (!isEqual(newRender, toRender)) {
       start = newStart;
       end = newEnd;
@@ -270,8 +275,8 @@ export function virtualRendering(editor: Editor) {
     const heights = heightMap.filter(Boolean);
     averageHeight = Math.round(
       getMarginBetween(0, -1, heights) +
-        heights.reduce((a, b, i, arr) => a + getHeightFor(i, arr), 0) /
-          heights.length,
+      heights.reduce((a, b, i, arr) => a + getHeightFor(i, arr), 0) /
+      heights.length,
     );
   }
 

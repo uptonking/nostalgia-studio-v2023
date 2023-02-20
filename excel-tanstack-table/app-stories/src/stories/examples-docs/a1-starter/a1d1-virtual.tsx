@@ -12,6 +12,7 @@ export const StyledContainer = styled(StyledRTableCore)`
   & .sticky-header {
     position: sticky;
     top: 0;
+    background-color: beige;
   }
   & .fixed-header {
     position: fixed;
@@ -26,16 +27,18 @@ export const StyledContainer = styled(StyledRTableCore)`
   }
 `;
 
+const MOCK_DATA_LEN = 20;
+
 /**
- * ✨ 示例，仅展示
+ * ✨ 每行元素固定高度，overscan为N时会在上下方都出现N个元素
  */
 export function A1d1VirtualTable() {
   const rerender = React.useReducer(() => ({}), {})[1];
 
   const columns = React.useMemo<ColumnDef<Person>[]>(() => tableColumns, []);
 
-  const [data, setData] = React.useState(() => makeData(50_000));
-  const refreshData = () => setData(() => makeData(50_000));
+  const [data, setData] = React.useState(() => makeData(MOCK_DATA_LEN));
+  const refreshData = () => setData(() => makeData(MOCK_DATA_LEN));
 
   const [tableType, setTableType] = React.useState<'fixed' | 'window'>('fixed');
 
@@ -63,7 +66,7 @@ export function A1d1VirtualTable() {
         </div>
         <div className='h-2' />
         {tableType === 'fixed' ? (
-          <FixedHeightTable data={data} columns={columns} height={500} />
+          <FixedHeightTable data={data} columns={columns} height={240} />
         ) : (
           <WindowHeightTable data={data} columns={columns} />
         )}

@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
-import { faker } from '@faker-js/faker';
 import {
   ColumnDef,
-  ColumnOrderState,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 
@@ -64,83 +63,41 @@ const defaultColumns: ColumnDef<Person>[] = [
   },
 ];
 
-/**
- * ✨ 示例，仅展示
- */
-export const A1c4ColumnOrder = () => {
-  const [data, setData] = React.useState(() => makeData(20));
-  const [columns] = React.useState(() => [...defaultColumns]);
+export function A1b3ControlledTable() {
+  const [data] = React.useState(() => makeData(1000));
+  const [columns] = React.useState<typeof defaultColumns>(() => [
+    ...defaultColumns,
+  ]);
 
-  const [columnVisibility, setColumnVisibility] = React.useState({});
-  const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>([]);
+  const rerender = React.useReducer(() => ({}), {})[1];
 
-  const rerender = () => setData(() => makeData(20));
-
+  // Create the table and pass your options
   const table = useReactTable({
     data,
     columns,
-    state: {
-      columnVisibility,
-      columnOrder,
-    },
-    onColumnVisibilityChange: setColumnVisibility,
-    onColumnOrderChange: setColumnOrder,
     getCoreRowModel: getCoreRowModel(),
-    debugTable: true,
-    debugHeaders: true,
-    debugColumns: true,
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
-  const randomizeColumns = () => {
-    table.setColumnOrder(
-      faker.helpers.shuffle(table.getAllLeafColumns().map((d) => d.id)),
-    );
-  };
+  // Manage your own state
+  const [state, setState] = React.useState(table.initialState);
+
+  // Override the state managers for the table to your own
+  table.setOptions((prev) => ({
+    ...prev,
+    state,
+    onStateChange: setState,
+    // These are just table options, so if things
+    // need to change based on your state, you can
+    // derive them here
+
+    // Just for fun, let's debug everything if the pageIndex is greater than 2
+    debugTable: state.pagination.pageIndex > 2,
+  }));
 
   return (
     <StyledRTableCore>
-      <h3> column order Example </h3>
       <div className='p-2'>
-        <div className='inline-block border border-black shadow rounded'>
-          <div className='px-1 border-b border-black'>
-            <label>
-              <input
-                {...{
-                  type: 'checkbox',
-                  checked: table.getIsAllColumnsVisible(),
-                  onChange: table.getToggleAllColumnsVisibilityHandler(),
-                }}
-              />{' '}
-              Toggle All
-            </label>
-          </div>
-          {table.getAllLeafColumns().map((column) => {
-            return (
-              <div key={column.id} className='px-1'>
-                <label>
-                  <input
-                    {...{
-                      type: 'checkbox',
-                      checked: column.getIsVisible(),
-                      onChange: column.getToggleVisibilityHandler(),
-                    }}
-                  />{' '}
-                  {column.id}
-                </label>
-              </div>
-            );
-          })}
-        </div>
-        <div className='h-4' />
-        <div className='flex flex-wrap gap-2'>
-          <button onClick={() => rerender()} className='border p-1'>
-            Regenerate
-          </button>
-          <button onClick={() => randomizeColumns()} className='border p-1'>
-            Shuffle Columns
-          </button>
-        </div>
-        <div className='h-4' />
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -186,8 +143,73 @@ export const A1c4ColumnOrder = () => {
             ))}
           </tfoot>
         </table>
-        <pre>{JSON.stringify(table.getState().columnOrder, null, 2)}</pre>
+        <div className='h-2' />
+        <div className='flex items-center gap-2'>
+          <button
+            className='border rounded p-1'
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {'<<'}
+          </button>
+          <button
+            className='border rounded p-1'
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {'<'}
+          </button>
+          <button
+            className='border rounded p-1'
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {'>'}
+          </button>
+          <button
+            className='border rounded p-1'
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+          >
+            {'>>'}
+          </button>
+          <span className='flex items-center gap-1'>
+            <div>Page</div>
+            <strong>
+              {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getPageCount()}
+            </strong>
+          </span>
+          <span className='flex items-center gap-1'>
+            | Go to page:
+            <input
+              type='number'
+              defaultValue={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                table.setPageIndex(page);
+              }}
+              className='border p-1 rounded w-16'
+            />
+          </span>
+          <select
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => {
+              table.setPageSize(Number(e.target.value));
+            }}
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className='h-4' />
+        <button onClick={() => rerender()} className='border p-2'>
+          Rerender
+        </button>
       </div>
     </StyledRTableCore>
   );
-};
+}

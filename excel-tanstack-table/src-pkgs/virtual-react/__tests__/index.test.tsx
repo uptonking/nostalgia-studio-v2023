@@ -1,7 +1,7 @@
-import * as React from 'react'
-import { render, screen, fireEvent } from '@testing-library/react'
+import * as React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
 
-import { useVirtualizer, Range } from '../src/index'
+import { useVirtualizer, Range } from '../src/index';
 
 beforeEach(() => {
   Object.defineProperties(HTMLElement.prototype, {
@@ -13,19 +13,19 @@ beforeEach(() => {
       configurable: true,
       get: () => Number.MAX_SAFE_INTEGER,
     },
-  })
-})
+  });
+});
 
-let renderer: jest.Mock<undefined, []>
+let renderer: jest.Mock<undefined, []>;
 
 interface ListProps {
-  count?: number
-  overscan?: number
-  height?: number
-  width?: number
-  itemSize?: number
-  rangeExtractor?: (range: Range) => number[]
-  dynamic?: boolean
+  count?: number;
+  overscan?: number;
+  height?: number;
+  width?: number;
+  itemSize?: number;
+  rangeExtractor?: (range: Range) => number[];
+  dynamic?: boolean;
 }
 
 function List({
@@ -37,9 +37,9 @@ function List({
   rangeExtractor,
   dynamic,
 }: ListProps) {
-  renderer()
+  renderer();
 
-  const parentRef = React.useRef<HTMLDivElement>(null)
+  const parentRef = React.useRef<HTMLDivElement>(null);
 
   const rowVirtualizer = useVirtualizer({
     count,
@@ -47,21 +47,21 @@ function List({
     estimateSize: () => 50,
     overscan,
     observeElementRect: (_, cb) => {
-      cb({ height, width })
+      cb({ height, width });
     },
     measureElement: () => itemSize ?? 0,
     rangeExtractor,
-  })
+  });
 
-  const measureElement = dynamic ? rowVirtualizer.measureElement : undefined
+  const measureElement = dynamic ? rowVirtualizer.measureElement : undefined;
 
-  const items = rowVirtualizer.getVirtualItems()
+  const items = rowVirtualizer.getVirtualItems();
 
   return (
     <div
       ref={parentRef}
       style={{ height, width, overflow: 'auto' }}
-      data-testid="scroller"
+      data-testid='scroller'
     >
       <div
         style={{
@@ -90,85 +90,85 @@ function List({
         ))}
       </div>
     </div>
-  )
+  );
 }
 
 beforeEach(() => {
-  renderer = jest.fn(() => undefined)
-})
+  renderer = jest.fn(() => undefined);
+});
 
 test('should render', () => {
-  render(<List />)
+  render(<List />);
 
-  expect(screen.queryByText('Row 0')).toBeInTheDocument()
-  expect(screen.queryByText('Row 4')).toBeInTheDocument()
-  expect(screen.queryByText('Row 5')).not.toBeInTheDocument()
+  expect(screen.queryByText('Row 0')).toBeInTheDocument();
+  expect(screen.queryByText('Row 4')).toBeInTheDocument();
+  expect(screen.queryByText('Row 5')).not.toBeInTheDocument();
 
-  expect(renderer).toHaveBeenCalledTimes(2)
-})
+  expect(renderer).toHaveBeenCalledTimes(2);
+});
 
 test('should render with overscan', () => {
-  render(<List overscan={0} />)
+  render(<List overscan={0} />);
 
-  expect(screen.queryByText('Row 0')).toBeInTheDocument()
-  expect(screen.queryByText('Row 3')).toBeInTheDocument()
-  expect(screen.queryByText('Row 4')).not.toBeInTheDocument()
+  expect(screen.queryByText('Row 0')).toBeInTheDocument();
+  expect(screen.queryByText('Row 3')).toBeInTheDocument();
+  expect(screen.queryByText('Row 4')).not.toBeInTheDocument();
 
-  expect(renderer).toHaveBeenCalledTimes(2)
-})
+  expect(renderer).toHaveBeenCalledTimes(2);
+});
 
 test('should render given dynamic size', async () => {
-  render(<List itemSize={100} dynamic />)
+  render(<List itemSize={100} dynamic />);
 
-  expect(screen.queryByText('Row 0')).toBeInTheDocument()
-  expect(screen.queryByText('Row 1')).toBeInTheDocument()
-  expect(screen.queryByText('Row 2')).toBeInTheDocument()
-  expect(screen.queryByText('Row 3')).not.toBeInTheDocument()
+  expect(screen.queryByText('Row 0')).toBeInTheDocument();
+  expect(screen.queryByText('Row 1')).toBeInTheDocument();
+  expect(screen.queryByText('Row 2')).toBeInTheDocument();
+  expect(screen.queryByText('Row 3')).not.toBeInTheDocument();
 
-  expect(renderer).toHaveBeenCalledTimes(3)
-})
+  expect(renderer).toHaveBeenCalledTimes(3);
+});
 
 test('should render given dynamic size after scroll', () => {
-  render(<List itemSize={100} dynamic />)
+  render(<List itemSize={100} dynamic />);
 
-  expect(screen.queryByText('Row 0')).toBeInTheDocument()
-  expect(screen.queryByText('Row 1')).toBeInTheDocument()
-  expect(screen.queryByText('Row 2')).toBeInTheDocument()
-  expect(screen.queryByText('Row 3')).not.toBeInTheDocument()
+  expect(screen.queryByText('Row 0')).toBeInTheDocument();
+  expect(screen.queryByText('Row 1')).toBeInTheDocument();
+  expect(screen.queryByText('Row 2')).toBeInTheDocument();
+  expect(screen.queryByText('Row 3')).not.toBeInTheDocument();
 
-  expect(renderer).toHaveBeenCalledTimes(3)
-  renderer.mockReset()
+  expect(renderer).toHaveBeenCalledTimes(3);
+  renderer.mockReset();
 
   fireEvent.scroll(screen.getByTestId('scroller'), {
     target: { scrollTop: 400 },
-  })
+  });
 
-  expect(screen.queryByText('Row 2')).not.toBeInTheDocument()
-  expect(screen.queryByText('Row 3')).toBeInTheDocument()
-  expect(screen.queryByText('Row 6')).toBeInTheDocument()
-  expect(screen.queryByText('Row 7')).not.toBeInTheDocument()
+  expect(screen.queryByText('Row 2')).not.toBeInTheDocument();
+  expect(screen.queryByText('Row 3')).toBeInTheDocument();
+  expect(screen.queryByText('Row 6')).toBeInTheDocument();
+  expect(screen.queryByText('Row 7')).not.toBeInTheDocument();
 
-  expect(renderer).toHaveBeenCalledTimes(3)
-})
+  expect(renderer).toHaveBeenCalledTimes(3);
+});
 
 test('should use rangeExtractor', () => {
-  render(<List rangeExtractor={() => [0, 1]} />)
+  render(<List rangeExtractor={() => [0, 1]} />);
 
-  expect(screen.queryByText('Row 0')).toBeInTheDocument()
-  expect(screen.queryByText('Row 1')).toBeInTheDocument()
-  expect(screen.queryByText('Row 2')).not.toBeInTheDocument()
-})
+  expect(screen.queryByText('Row 0')).toBeInTheDocument();
+  expect(screen.queryByText('Row 1')).toBeInTheDocument();
+  expect(screen.queryByText('Row 2')).not.toBeInTheDocument();
+});
 
 test('should handle count change', () => {
-  const { rerender } = render(<List count={2} />)
+  const { rerender } = render(<List count={2} />);
 
-  expect(screen.queryByText('Row 0')).toBeInTheDocument()
-  expect(screen.queryByText('Row 1')).toBeInTheDocument()
-  expect(screen.queryByText('Row 2')).not.toBeInTheDocument()
+  expect(screen.queryByText('Row 0')).toBeInTheDocument();
+  expect(screen.queryByText('Row 1')).toBeInTheDocument();
+  expect(screen.queryByText('Row 2')).not.toBeInTheDocument();
 
-  rerender(<List count={10} />)
+  rerender(<List count={10} />);
 
-  expect(screen.queryByText('Row 2')).toBeInTheDocument()
-  expect(screen.queryByText('Row 4')).toBeInTheDocument()
-  expect(screen.queryByText('Row 5')).not.toBeInTheDocument()
-})
+  expect(screen.queryByText('Row 2')).toBeInTheDocument();
+  expect(screen.queryByText('Row 4')).toBeInTheDocument();
+  expect(screen.queryByText('Row 5')).not.toBeInTheDocument();
+});

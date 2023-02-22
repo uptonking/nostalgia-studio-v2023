@@ -12,9 +12,9 @@ import {
   RangeRef,
   Text,
   Transforms,
-} from './';
+} from '.';
 import { TextUnit } from './interfaces/types';
-import { DIRTY_PATHS, DIRTY_PATH_KEYS, FLUSHING } from './utils/weak-maps';
+import { DIRTY_PATH_KEYS, DIRTY_PATHS, FLUSHING } from './utils/weak-maps';
 
 /**
  * - Create a new Slate `Editor` object.
@@ -30,6 +30,9 @@ export const createEditor = (): Editor => {
     isVoid: () => false,
     onChange: () => {},
 
+    /**
+     * 
+     */
     apply: (op: Operation) => {
       for (const ref of Editor.pathRefs(editor)) {
         PathRef.transform(ref, op);

@@ -22,8 +22,8 @@ import {
   splitByCharacterDistance,
 } from '../utils/string';
 import {
-  DIRTY_PATHS,
   DIRTY_PATH_KEYS,
+  DIRTY_PATHS,
   NORMALIZING,
   PATH_REFS,
   POINT_REFS,
@@ -108,6 +108,7 @@ export interface BaseEditor {
    */
   addMark: (key: string, value: any) => void;
   removeMark: (key: string) => void;
+  /** apply is implemented in `createEditor()` */
   apply: (operation: Operation) => void;
   deleteBackward: (unit: TextUnit) => void;
   deleteForward: (unit: TextUnit) => void;

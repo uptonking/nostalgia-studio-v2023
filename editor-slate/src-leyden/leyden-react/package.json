@@ -12,14 +12,14 @@
   "devDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "slate": "0.78.0111",
-    "slate-react": "0.79.0111",
+    "slate": "0.78.1111",
+    "slate-react": "0.79.1111",
     "leyden": "0.32.0111"
   },
   "peerDependencies": {
     "leyden": "0.32.0111",
-    "slate": "0.78.0111",
-    "slate-react": "0.79.0111"
+    "slate": "0.78.1111",
+    "slate-react": "0.79.1111"
   },
   "umdGlobals": {
     "react": "React",

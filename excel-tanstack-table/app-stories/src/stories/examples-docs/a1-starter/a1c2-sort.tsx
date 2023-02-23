@@ -96,7 +96,6 @@ export const A1c2Sort = () => {
 
   // console.log(';; rdr');
 
-
   return (
     <StyledRTableCore>
       <div className='p-2'>

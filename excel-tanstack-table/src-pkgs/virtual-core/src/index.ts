@@ -203,7 +203,7 @@ export const measureElement = <TItemElement extends Element>(
   }
   return Math.round(
     element.getBoundingClientRect()[
-    instance.options.horizontal ? 'width' : 'height'
+      instance.options.horizontal ? 'width' : 'height'
     ],
   );
 };
@@ -403,7 +403,7 @@ export class Virtualizer<
       horizontal: false,
       getItemKey: defaultKeyExtractor,
       rangeExtractor: defaultRangeExtractor,
-      onChange: () => { },
+      onChange: () => {},
       measureElement,
       initialRect: { width: 0, height: 0 },
       scrollMargin: 0,
@@ -705,12 +705,12 @@ export class Virtualizer<
 
     return notUndefined(
       measurements[
-      findNearestBinarySearch(
-        0,
-        measurements.length - 1,
-        (index: number) => notUndefined(measurements[index]).start,
-        offset,
-      )
+        findNearestBinarySearch(
+          0,
+          measurements.length - 1,
+          (index: number) => notUndefined(measurements[index]).start,
+          offset,
+        )
       ],
     );
   };
@@ -884,8 +884,8 @@ export class Virtualizer<
       adjustments,
       behavior,
     }: {
-        adjustments: number | undefined;
-        behavior: ScrollBehavior | undefined;
+      adjustments: number | undefined;
+      behavior: ScrollBehavior | undefined;
     },
   ) => {
     this.options.scrollToFn(offset, { behavior, adjustments }, this);
@@ -931,9 +931,9 @@ function calculateRangeIndex({
   outerSize,
   scrollOffset,
 }: {
-    measurements: VirtualItem[];
-    outerSize: number;
-    scrollOffset: number;
+  measurements: VirtualItem[];
+  outerSize: number;
+  scrollOffset: number;
 }) {
   const count = measurements.length - 1;
   const getOffset = (index: number) => measurements[index]!.start;

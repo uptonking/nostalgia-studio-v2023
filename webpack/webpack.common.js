@@ -52,6 +52,25 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.less$/i,
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+          },
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                strictMath: true,
+              },
+            },
+          },
+        ],
+      },
       // Fonts
       {
         test: /\.(ttf|eot|woff|woff2)$/,

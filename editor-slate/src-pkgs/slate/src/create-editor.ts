@@ -31,7 +31,7 @@ export const createEditor = (): Editor => {
     onChange: () => {},
 
     /**
-     * 
+     *
      */
     apply: (op: Operation) => {
       for (const ref of Editor.pathRefs(editor)) {

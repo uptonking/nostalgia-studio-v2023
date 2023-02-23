@@ -20,8 +20,8 @@
     "leyden-react": "0.32.0111",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "slate": "0.78.0111",
-    "slate-history": "0.66.0111",
-    "slate-react": "0.79.0111"
+    "slate": "0.78.1111",
+    "slate-history": "0.66.1111",
+    "slate-react": "0.79.1111"
   }
 }

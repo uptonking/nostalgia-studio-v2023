@@ -275,8 +275,8 @@ export function virtualRendering(editor: Editor) {
     const heights = heightMap.filter(Boolean);
     averageHeight = Math.round(
       getMarginBetween(0, -1, heights) +
-      heights.reduce((a, b, i, arr) => a + getHeightFor(i, arr), 0) /
-      heights.length,
+        heights.reduce((a, b, i, arr) => a + getHeightFor(i, arr), 0) /
+          heights.length,
     );
   }
 

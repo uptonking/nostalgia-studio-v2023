@@ -69,13 +69,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
   /** total hight of all rows (including invisible rows) */
   const totalSize = rowVirtualizer.getTotalSize();
 
-  console.log(
-    ';; rows ',
-    totalSize,
-    rows,
-    virtualRows,
-    rowVirtualizer,
-  );
+  console.log(';; rows ', totalSize, rows, virtualRows, rowVirtualizer);
 
   return (
     <div
@@ -83,7 +77,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
       id='vTbFixedHeight'
       className='container'
       style={{ height }}
-    // style={{ height, width: 640 }}
+      // style={{ height, width: 640 }}
     >
       <div
         style={{
@@ -135,7 +129,8 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
                     );
                   })}
                 </tr>
-              ))}n
+              ))}
+              n
             </thead>
             <tbody>
               {virtualRows.map((virtualRow) => {
@@ -151,18 +146,16 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
                     // style={{ height: virtualRow.index % 2 === 0 ? 60 : 40 }}
                     style={{ height: 25 + row.original.age }}
                   >
-                    {
-                      row.getVisibleCells().map((cell) => {
-                        return (
-                          <td key={cell.id}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
-                          </td>
-                        );
-                      })
-                    }
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <td key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </td>
+                      );
+                    })}
                   </tr>
                 );
               })}
@@ -170,7 +163,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
           </table>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

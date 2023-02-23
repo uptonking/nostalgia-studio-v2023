@@ -1,0 +1,51 @@
+{
+  "name": "@wangeditor/basic-modules",
+  "version": "1.1.7111",
+  "description": "wangEditor basic modules",
+  "homepage": "https://github.com/wangeditor-team/wangEditor#readme",
+  "license": "MIT",
+  "author": "wangfupeng1988 <wangfupeng1988@163.com>",
+  "contributors": [],
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "browser": {
+    "./dist/index.js": "./src/index.ts",
+    "./dist/index.esm.js": "./src/index.ts"
+  },
+  "types": "src/index.ts",
+  "directories": {
+    "lib": "dist",
+    "test": "__tests__"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
+    "dev": "cross-env NODE_ENV=development rollup -c rollup.config.js",
+    "dev-size-stats": "cross-env NODE_ENV=development:size_stats rollup -c rollup.config.js",
+    "dev-watch": "cross-env NODE_ENV=development rollup -c rollup.config.js -w",
+    "size-stats": "cross-env NODE_ENV=production:size_stats rollup -c rollup.config.js",
+    "test": "jest",
+    "test-c": "jest --coverage"
+  },
+  "dependencies": {
+    "is-url": "^1.2.4"
+  },
+  "devDependencies": {
+    "@types/is-url": "^1.2.29"
+  },
+  "peerDependencies": {
+    "@wangeditor/core": "1.1.1911",
+    "dom7": "^3.0.0",
+    "lodash.throttle": "^4.1.1",
+    "nanoid": "^3.2.0",
+    "slate": "0.78.1111",
+    "snabbdom": "^3.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.com/"
+  }
+}

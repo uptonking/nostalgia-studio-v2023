@@ -4,8 +4,10 @@
  */
 
 import { Element as SlateElement } from 'slate';
-import { jsx, VNode } from 'snabbdom';
+import { h, jsx, VNode } from 'snabbdom';
+
 import { IDomEditor } from '@wangeditor/core';
+
 import { LinkElement } from './custom-types';
 
 /**
@@ -21,11 +23,12 @@ function renderLink(
   editor: IDomEditor,
 ): VNode {
   const { url, target = '_blank' } = elemNode as LinkElement;
-  const vnode = (
-    <a href={url} target={target}>
-      {children}
-    </a>
-  );
+  // const vnode = (
+  //   <a href={url} target={target}>
+  //     {children}
+  //   </a>
+  // );
+  const vnode = h('a', { attrs: { href: url, target } }, children);
 
   return vnode;
 }

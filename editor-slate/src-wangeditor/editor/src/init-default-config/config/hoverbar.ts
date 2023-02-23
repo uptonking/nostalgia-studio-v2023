@@ -36,20 +36,20 @@ const COMMON_HOVERBAR_KEYS = {
   divider: {
     menuKeys: ['enter'],
   },
-  video: {
-    menuKeys: ['enter', 'editVideoSize'],
-  },
+  // video: {
+  //   menuKeys: ['enter', 'editVideoSize'],
+  // },
 };
 
 export function genDefaultHoverbarKeys() {
   return {
-    // ...COMMON_HOVERBAR_KEYS,
+    ...COMMON_HOVERBAR_KEYS,
 
     // 也可以自定义 match 来匹配元素，此时 key 就随意了
     text: {
       menuKeys: [
         'headerSelect',
-        // 'insertLink',
+        'insertLink',
         'bulletedList',
         '|',
         'bold',

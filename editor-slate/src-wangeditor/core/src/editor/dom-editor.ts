@@ -5,32 +5,19 @@
 
 import toArray from 'lodash.toarray';
 import {
+  Ancestor,
   Editor,
-  Node,
   Element,
+  Node,
   Path,
   Point,
   Range,
-  Ancestor,
   Text,
 } from 'slate';
-import type { IDomEditor } from './interface';
-import { Key } from '../utils/key';
-import TextArea from '../text-area/TextArea';
-import Toolbar from '../menus/bar/Toolbar';
+
 import HoverBar from '../menus/bar/HoverBar';
-import {
-  EDITOR_TO_ELEMENT,
-  ELEMENT_TO_NODE,
-  KEY_TO_ELEMENT,
-  NODE_TO_INDEX,
-  NODE_TO_KEY,
-  NODE_TO_PARENT,
-  EDITOR_TO_TEXTAREA,
-  EDITOR_TO_TOOLBAR,
-  EDITOR_TO_HOVER_BAR,
-  EDITOR_TO_WINDOW,
-} from '../utils/weak-maps';
+import Toolbar from '../menus/bar/Toolbar';
+import TextArea from '../text-area/TextArea';
 import $, {
   DOMElement,
   DOMNode,
@@ -38,13 +25,27 @@ import $, {
   DOMRange,
   DOMSelection,
   DOMStaticRange,
-  isDOMElement,
-  normalizeDOMPoint,
-  isDOMSelection,
   hasShadowRoot,
+  isDOMElement,
+  isDOMSelection,
+  normalizeDOMPoint,
   walkTextNodes,
 } from '../utils/dom';
+import { Key } from '../utils/key';
 import { IS_CHROME, IS_FIREFOX } from '../utils/ua';
+import {
+  EDITOR_TO_ELEMENT,
+  EDITOR_TO_HOVER_BAR,
+  EDITOR_TO_TEXTAREA,
+  EDITOR_TO_TOOLBAR,
+  EDITOR_TO_WINDOW,
+  ELEMENT_TO_NODE,
+  KEY_TO_ELEMENT,
+  NODE_TO_INDEX,
+  NODE_TO_KEY,
+  NODE_TO_PARENT,
+} from '../utils/weak-maps';
+import type { IDomEditor } from './interface';
 
 /**
  * 自定义全局 command
@@ -135,6 +136,7 @@ export const DomEditor = {
 
     if (
       (root instanceof Document || root instanceof ShadowRoot) &&
+      // @ts-expect-error fix-types
       root.getSelection != null
     ) {
       return root;
@@ -405,6 +407,7 @@ export const DomEditor = {
     if (document.caretRangeFromPoint) {
       domRange = document.caretRangeFromPoint(x, y);
     } else {
+      // @ts-expect-error fix-types
       const position = document.caretPositionFromPoint(x, y);
       if (position) {
         domRange = document.createRange();
@@ -496,9 +499,9 @@ export const DomEditor = {
     const focus = isCollapsed
       ? anchor
       : DomEditor.toSlatePoint(editor, [focusNode, focusOffset], {
-          exactMatch,
-          suppressThrow,
-        });
+        exactMatch,
+        suppressThrow,
+      });
     if (!focus) {
       return null as T extends true ? Range | null : Range;
     }

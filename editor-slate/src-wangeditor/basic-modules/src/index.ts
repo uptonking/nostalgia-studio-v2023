@@ -8,24 +8,23 @@ import './assets/index.less';
 import './locale/index';
 
 import wangEditorBlockQuoteModule from './modules/blockquote';
+import wangEditorCodeBlockModule from './modules/code-block';
 import wangEditorColorModule from './modules/color';
 import wangEditorCommonModule from './modules/common';
 import wangEditorDividerModule from './modules/divider';
+import wangEditorEmotionModule from './modules/emotion';
 import wangEditorFontSizeAndFamilyModule from './modules/font-size-family';
+import wangEditorFullScreenModule from './modules/full-screen';
 import wangEditorHeaderModule from './modules/header';
 import wangEditorImageModule from './modules/image';
 import wangEditorIndentModule from './modules/indent';
 import wangEditorJustifyModule from './modules/justify';
 import wangEditorLineHeightModule from './modules/line-height';
+import wangEditorLinkModule from './modules/link';
 import wangEditorParagraphModule from './modules/paragraph';
 import wangEditorTextStyleModule from './modules/text-style';
 import wangEditorTodoModule from './modules/todo';
-
-// import wangEditorCodeBlockModule from './modules/code-block';
-// import wangEditorEmotionModule from './modules/emotion';
-// import wangEditorFullScreenModule from './modules/full-screen';
-// import wangEditorLinkModule from './modules/link';
-// import wangEditorUndoRedoModule from './modules/undo-redo';
+import wangEditorUndoRedoModule from './modules/undo-redo';
 
 export default [
   // text style
@@ -43,19 +42,19 @@ export default [
   wangEditorDividerModule,
 
   // inline node
-  // wangEditorEmotionModule,
-  // wangEditorLinkModule,
+  wangEditorEmotionModule,
+  wangEditorLinkModule,
 
   // block node —— 【注意】要放在 void-node 和 inline-node 后面！！！
-  // wangEditorCodeBlockModule,
+  wangEditorCodeBlockModule,
   wangEditorBlockQuoteModule,
   wangEditorHeaderModule,
   wangEditorParagraphModule,
   wangEditorTodoModule,
 
   // command
-  // wangEditorUndoRedoModule,
-  // wangEditorFullScreenModule,
+  wangEditorUndoRedoModule,
+  wangEditorFullScreenModule,
   wangEditorCommonModule,
 ];
 

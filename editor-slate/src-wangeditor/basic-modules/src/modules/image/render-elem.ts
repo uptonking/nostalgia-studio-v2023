@@ -5,7 +5,7 @@
 
 import throttle from 'lodash.throttle';
 import { Element as SlateElement, Transforms } from 'slate';
-import { jsx, VNode } from 'snabbdom';
+import { h, jsx, VNode } from 'snabbdom';
 
 import { DomEditor, IDomEditor } from '@wangeditor/core';
 
@@ -39,10 +39,19 @@ function renderContainer(
 
   const containerId = genContainerId(editor, elemNode);
 
-  return (
-    <div id={containerId} style={style} className='w-e-image-container'>
-      {imageVnode}
-    </div>
+  // return (
+  //   <div id={containerId} style={style} className='w-e-image-container'>
+  //     {imageVnode}
+  //   </div>
+  // );
+  return h(
+    'div',
+    {
+      attrs: { id: containerId },
+      style,
+      class: { 'w-e-image-container': true },
+    },
+    imageVnode,
   );
 }
 
@@ -144,13 +153,46 @@ function renderResizeContainer(
   if (height) style.height = height;
   // style.boxShadow = '0 0 0 1px #B4D5FF' // 自定义 selected 样式，因为有拖拽触手
 
-  return (
-    <div
-      id={containerId}
-      style={style}
-      className='w-e-image-container w-e-selected-image-container'
-      // eslint-disable-next-line react/no-unknown-property
-      on={{
+  // return (
+  //   <div
+  //     id={containerId}
+  //     style={style}
+  //     className='w-e-image-container w-e-selected-image-container'
+  //     // eslint-disable-next-line react/no-unknown-property
+  //     on={{
+  //       // 统一绑定拖拽触手的 mousedown 事件
+  //       mousedown: (e: MouseEvent) => {
+  //         const $target = $(e.target as Element);
+  //         if (!$target.hasClass('w-e-image-dragger')) {
+  //           // target 不是 .w-e-image-dragger 拖拽触手，则忽略
+  //           return;
+  //         }
+  //         e.preventDefault();
+
+  //         if ($target.hasClass('left-top') || $target.hasClass('left-bottom')) {
+  //           revers = true; // 反转。向右拖拽，减少宽度
+  //         }
+  //         init(e.clientX); // 初始化
+  //       },
+  //     }}
+  //   >
+  //     {imageVnode}
+
+  //     {/* 拖拽的触手，会统一在上级 DOM 绑定拖拽事件 */}
+  //     <div className='w-e-image-dragger left-top'></div>
+  //     <div className='w-e-image-dragger right-top'></div>
+  //     <div className='w-e-image-dragger left-bottom'></div>
+  //     <div className='w-e-image-dragger right-bottom'></div>
+  //   </div>
+  // );
+
+  return h(
+    'div',
+    {
+      attrs: { id: containerId },
+      style,
+      class: { 'w-e-image-container w-e-selected-image-container': true },
+      on: {
         // 统一绑定拖拽触手的 mousedown 事件
         mousedown: (e: MouseEvent) => {
           const $target = $(e.target as Element);
@@ -165,16 +207,15 @@ function renderResizeContainer(
           }
           init(e.clientX); // 初始化
         },
-      }}
-    >
-      {imageVnode}
-
-      {/* 拖拽的触手，会统一在上级 DOM 绑定拖拽事件 */}
-      <div className='w-e-image-dragger left-top'></div>
-      <div className='w-e-image-dragger right-top'></div>
-      <div className='w-e-image-dragger left-bottom'></div>
-      <div className='w-e-image-dragger right-bottom'></div>
-    </div>
+      },
+    },
+    [
+      imageVnode,
+      h('div', { class: { 'w-e-image-dragger left-top': true } }, []),
+      h('div', { class: { 'w-e-image-dragger right-top': true } }, []),
+      h('div', { class: { 'w-e-image-dragger left-bottom': true } }, []),
+      h('div', { class: { 'w-e-image-dragger right-bottom': true } }, []),
+    ],
   );
 }
 
@@ -192,8 +233,8 @@ function renderImage(
   if (height) imageStyle.height = '100%';
 
   // 【注意】void node 中，renderElem 不用处理 children 。core 会统一处理。
-  const vnode = <img style={imageStyle} src={src} alt={alt} data-href={href} />;
-
+  // const vnode = <img style={imageStyle} src={src} alt={alt} data-href={href} />;
+  const vnode = h('img', { style: imageStyle, attrs: { src, alt, "data-href": href } }, [])
   const isDisabled = editor.isDisabled();
 
   if (selected && !isDisabled) {

@@ -4,7 +4,8 @@
  */
 
 import { Element as SlateElement } from 'slate';
-import { jsx, VNode } from 'snabbdom';
+import { h, jsx, VNode } from 'snabbdom';
+
 import { IDomEditor } from '@wangeditor/core';
 
 function renderPre(
@@ -12,7 +13,8 @@ function renderPre(
   children: VNode[] | null,
   editor: IDomEditor,
 ): VNode {
-  const vnode = <pre>{children}</pre>;
+  // const vnode = <pre>{children}</pre>;
+  const vnode = h('pre', {}, children);
   return vnode;
 }
 
@@ -22,7 +24,8 @@ function renderCode(
   editor: IDomEditor,
 ): VNode {
   // 和 basic/simple-style module 的“行内代码”并不冲突。一个是根据 mark 渲染，一个是根据 node.type 渲染
-  const vnode = <code>{children}</code>;
+  // const vnode = <code>{children}</code>;
+  const vnode = h('pre', {}, children);
   return vnode;
 }
 

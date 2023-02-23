@@ -4,13 +4,14 @@
  */
 
 import { Element } from 'slate';
+
 import { DomEditor } from '../../editor/dom-editor';
 import { IDomEditor } from '../../editor/interface';
-import TextArea from '../TextArea';
-import { hasEditableTarget } from '../helpers';
 import { isDOMElement, isDOMNode } from '../../utils/dom';
-import { IS_FOCUSED } from '../../utils/weak-maps';
 import { IS_SAFARI } from '../../utils/ua';
+import { IS_FOCUSED } from '../../utils/weak-maps';
+import { hasEditableTarget } from '../helpers';
+import TextArea from '../TextArea';
 
 function handleOnBlur(e: Event, textarea: TextArea, editor: IDomEditor) {
   const event = e as FocusEvent;
@@ -21,7 +22,7 @@ function handleOnBlur(e: Event, textarea: TextArea, editor: IDomEditor) {
   if (readOnly) return;
   if (isUpdatingSelection) return;
   if (!hasEditableTarget(editor, event.target)) return;
-  const root = DomEditor.findDocumentOrShadowRoot(editor);
+  const root = DomEditor.findDocumentOrShadowRoot(editor) as Document;
 
   // COMPAT: If the current `activeElement` is still the previous
   // one, this is due to the window being blurred when the tab

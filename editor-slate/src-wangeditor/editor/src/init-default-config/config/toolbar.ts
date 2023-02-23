@@ -78,8 +78,8 @@ export function genDefaultToolbarKeys() {
       iconSvg: VIDEO_SVG,
       menuKeys: ['insertVideo', 'uploadVideo'],
     },
-    // 'deleteVideo',
     'insertTable',
+    // 'deleteVideo',
     'codeBlock',
     // 'codeSelectLang',
     'divider',
@@ -93,23 +93,6 @@ export function genDefaultToolbarKeys() {
 }
 
 export function genSimpleToolbarKeys() {
-  return [
-    'blockquote',
-    'header1',
-    'header2',
-    'header3',
-    '|',
-    'bold',
-    'underline',
-    'italic',
-    'through',
-    'color',
-    'bgColor',
-    'clearStyle',
-    '|',
-  ];
-}
-export function genSimpleToolbarKeys11() {
   return [
     'blockquote',
     'header1',
@@ -138,9 +121,9 @@ export function genSimpleToolbarKeys11() {
       iconSvg: IMAGE_SVG,
       menuKeys: ['insertImage', 'uploadImage'],
     },
-    'insertVideo',
     'insertTable',
-    'codeBlock',
+    // 'insertVideo',
+    // 'codeBlock',
     '|',
     'undo',
     'redo',

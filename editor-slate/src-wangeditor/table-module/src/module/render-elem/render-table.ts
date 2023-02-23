@@ -4,7 +4,7 @@
  */
 
 import { Editor, Element as SlateElement, Path, Point, Range } from 'slate';
-import { jsx, VNode } from 'snabbdom';
+import { h, jsx, VNode } from 'snabbdom';
 
 import { DomEditor, IDomEditor } from '@wangeditor/core';
 
@@ -65,12 +65,51 @@ function renderTable(
   // 第一行的 cells ，以计算列宽
   const firstRowCells = getFirstRowCells(elemNode as TableElement);
 
-  const vnode = (
-    <div
-      className='table-container'
-      data-selected={selected}
-      // eslint-disable-next-line react/no-unknown-property
-      on={{
+  // const vnode = (
+  //   <div
+  //     className='table-container'
+  //     data-selected={selected}
+  //     // eslint-disable-next-line react/no-unknown-property
+  //     on={{
+  //       mousedown: (e: MouseEvent) => {
+  //         // @ts-ignore 阻止光标定位到 table 后面
+  //         if (e.target.tagName === 'DIV') e.preventDefault();
+
+  //         if (editor.isDisabled()) return;
+
+  //         // 是否需要定位到 table 内部
+  //         const tablePath = DomEditor.findPath(editor, elemNode);
+  //         const tableStart = Editor.start(editor, tablePath);
+  //         const { selection } = editor;
+  //         if (selection == null) {
+  //           editor.select(tableStart); // 选中 table 内部
+  //           return;
+  //         }
+  //         const { path } = selection.anchor;
+  //         if (path[0] === tablePath[0]) return; // 当前选区，就在 table 内部
+
+  //         editor.select(tableStart); // 选中 table 内部
+  //       },
+  //     }}
+  //   >
+  //     <table width={width} contentEditable={editable}>
+  //       <colgroup>
+  //         {firstRowCells.map((cell) => {
+  //           const { width = 'auto' } = cell;
+  //           return <col width={width}></col>;
+  //         })}
+  //       </colgroup>
+  //       <tbody>{children}</tbody>
+  //     </table>
+  //   </div>
+  // );
+
+  const vnode = h(
+    'div',
+    {
+      class: { 'table-container': true },
+      attrs: { 'data-selected': selected },
+      on: {
         mousedown: (e: MouseEvent) => {
           // @ts-ignore 阻止光标定位到 table 后面
           if (e.target.tagName === 'DIV') e.preventDefault();
@@ -90,19 +129,22 @@ function renderTable(
 
           editor.select(tableStart); // 选中 table 内部
         },
-      }}
-    >
-      <table width={width} contentEditable={editable}>
-        <colgroup>
-          {firstRowCells.map((cell) => {
-            const { width = 'auto' } = cell;
-            return <col width={width}></col>;
-          })}
-        </colgroup>
-        <tbody>{children}</tbody>
-      </table>
-    </div>
+      },
+    },
+    h('table', { attrs: { width, contentEditable: editable } }, [
+      h(
+        'colgroup',
+        {},
+        firstRowCells.map((cell) => {
+          const { width = 'auto' } = cell;
+          return h('col', { attrs: { width } }, []);
+          // <col width={width}></col>;
+        }),
+      ),
+      h('tbody', {}, children),
+    ]),
   );
+
   return vnode;
 }
 

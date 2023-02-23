@@ -146,8 +146,7 @@ function renderListElem(
     h('span', {
       style: { marginRight: '0.5em', color: prefixColor },
       attrs: { 'data-w-e-reserve': true },
-      prefix,
-    }),
+    }, prefix,),
     h('span', {}, children),
   ]);
 

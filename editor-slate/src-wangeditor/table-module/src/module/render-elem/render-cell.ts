@@ -4,12 +4,14 @@
  */
 
 import throttle from 'lodash.throttle';
-import { Element as SlateElement, Transforms, Location } from 'slate';
-import { jsx, VNode } from 'snabbdom';
-import { IDomEditor, DomEditor } from '@wangeditor/core';
+import { Element as SlateElement, Location, Transforms } from 'slate';
+import { h, jsx, VNode } from 'snabbdom';
+
+import { DomEditor, IDomEditor } from '@wangeditor/core';
+
+import $ from '../../utils/dom';
 import { TableCellElement } from '../custom-types';
 import { isCellInFirstRow } from '../helpers';
-import $ from '../../utils/dom';
 
 // 拖拽列宽相关信息
 let isMouseDownForResize = false;
@@ -85,22 +87,59 @@ function renderTableCell(
 
   // ------------------ 不是第一行，直接渲染 <td> ------------------
   if (!isFirstRow) {
-    return (
-      <td colSpan={colSpan} rowSpan={rowSpan}>
-        {children}
-      </td>
-    );
+    // return (
+    //   <td colSpan={colSpan} rowSpan={rowSpan}>
+    //     {children}
+    //   </td>
+    // );
+    return h('td', { attrs: { colSpan, rowSpan } }, children);
   }
 
   // ------------------ 是第一行：1. 判断 th ；2. 拖拽列宽 ------------------
   const Tag = isHeader ? 'th' : 'td';
 
-  const vnode = (
-    <Tag
-      colSpan={colSpan}
-      rowSpan={rowSpan}
-      style={{ borderRightWidth: '3px' }}
-      on={{
+  // const vnode = (
+  //   <Tag
+  //     colSpan={colSpan}
+  //     rowSpan={rowSpan}
+  //     style={{ borderRightWidth: '3px' }}
+  //     on={{
+  //       mousemove: throttle(function (this: VNode, event: MouseEvent) {
+  //         const elem = this.elm as HTMLElement;
+  //         if (elem == null) return;
+  //         const { left, width, top, height } = elem.getBoundingClientRect();
+  //         const { clientX, clientY } = event;
+
+  //         if (isMouseDownForResize) return; // 此时正在修改列宽
+
+  //         // 非 mousedown 状态，计算 cursor 样式
+  //         const matchX = clientX > left + width - 5 && clientX < left + width; // X 轴，是否接近 cell 右侧？
+  //         const matchY = clientY > top && clientY < top + height; // Y 轴，是否在 cell 之内
+  //         // X Y 轴都接近，则修改鼠标样式
+  //         if (matchX && matchY) {
+  //           elem.style.cursor = 'col-resize';
+  //           editorWhenMouseDown = editor;
+  //           cellPathWhenMouseDown = DomEditor.findPath(editor, cellNode);
+  //         } else {
+  //           if (!isMouseDownForResize) {
+  //             elem.style.cursor = 'auto';
+  //             editorWhenMouseDown = null;
+  //             cellPathWhenMouseDown = null;
+  //           }
+  //         }
+  //       }, 100),
+  //     }}
+  //   >
+  //     {children}
+  //   </Tag>
+  // );
+
+  const vnode = h(
+    Tag,
+    {
+      attrs: { rowSpan, colSpan },
+      style: { borderRightWidth: '3px' },
+      on: {
         mousemove: throttle(function (this: VNode, event: MouseEvent) {
           const elem = this.elm as HTMLElement;
           if (elem == null) return;
@@ -125,10 +164,9 @@ function renderTableCell(
             }
           }
         }, 100),
-      }}
-    >
-      {children}
-    </Tag>
+      },
+    },
+    children,
   );
   return vnode;
 }

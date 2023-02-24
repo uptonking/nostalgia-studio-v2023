@@ -78,7 +78,6 @@ export const SelectionTransforms: SelectionTransforms = {
   /**
    * Move the selection's point forward or backward.
    */
-
   move(editor: Editor, options: SelectionMoveOptions = {}): void {
     const { selection } = editor;
     const { distance = 1, unit = 'character', reverse = false } = options;
@@ -186,7 +185,6 @@ export const SelectionTransforms: SelectionTransforms = {
   /**
    * Set new properties on the selection.
    */
-
   setSelection(editor: Editor, props: Partial<Range>): void {
     const { selection } = editor;
     const oldProps: Partial<Range> | null = {};

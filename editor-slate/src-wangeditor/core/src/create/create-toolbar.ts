@@ -35,7 +35,6 @@ export default function (
   const toolbarConfig = genToolbarConfig(config);
   // console.log(';; toolbarConfig ', toolbarConfig, config);
 
-
   // 创建 toolbar ，并记录和 editor 关系
   const toolbar = new Toolbar(selector, toolbarConfig);
   TOOLBAR_TO_EDITOR.set(toolbar, editor);

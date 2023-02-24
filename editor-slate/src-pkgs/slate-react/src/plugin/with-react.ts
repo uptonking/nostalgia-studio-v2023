@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+
 import { Editor, Node, Operation, Path, Range, Transforms } from 'slate';
 
 import {
@@ -18,8 +19,7 @@ import { ReactEditor } from './react-editor';
 
 /**
  * - `withReact` adds React and DOM specific behaviors to the editor.
- * - If you are using TypeScript, you must extend Slate's CustomTypes to use
- * this plugin.
+ * - If you are using TypeScript, extend Slate's CustomTypes to use this plugin.
  * - See https://docs.slatejs.org/concepts/11-typescript to learn how.
  */
 export const withReact = <T extends Editor>(editor: T) => {
@@ -30,36 +30,9 @@ export const withReact = <T extends Editor>(editor: T) => {
   // avoid collisions between editors in the DOM that share the same value.
   EDITOR_TO_KEY_TO_ELEMENT.set(e, new WeakMap());
 
-  e.deleteBackward = (unit) => {
-    if (unit !== 'line') {
-      return deleteBackward(unit);
-    }
-
-    if (editor.selection && Range.isCollapsed(editor.selection)) {
-      const parentBlockEntry = Editor.above(editor, {
-        match: (n) => Editor.isBlock(editor, n),
-        at: editor.selection,
-      });
-
-      if (parentBlockEntry) {
-        const [, parentBlockPath] = parentBlockEntry;
-        const parentElementRange = Editor.range(
-          editor,
-          parentBlockPath,
-          editor.selection.anchor,
-        );
-
-        const currentLineRange = findCurrentLineRange(e, parentElementRange);
-
-        if (!Range.isCollapsed(currentLineRange)) {
-          Transforms.delete(editor, { at: currentLineRange });
-        }
-      }
-    }
-  };
-
-  // This attempts to reset the NODE_TO_KEY entry to the correct value
-  // as apply() changes the object reference and hence invalidates the NODE_TO_KEY entry
+  /** This attempts to reset the NODE_TO_KEY entry to the correct value
+   * as apply() changes the object reference and hence invalidates the NODE_TO_KEY entry
+   */
   e.apply = (op: Operation) => {
     const matches: [Path, Key][] = [];
 
@@ -106,6 +79,53 @@ export const withReact = <T extends Editor>(editor: T) => {
     for (const [path, key] of matches) {
       const [node] = Editor.node(e, path);
       NODE_TO_KEY.set(node, key);
+    }
+  };
+
+  /**
+   * 会在editor.apply()的末尾执行
+   */
+  e.onChange = () => {
+    // COMPAT: React doesn't batch `setState` hook calls, which means that the
+    // children and selection can get out of sync for one render pass. So we
+    // have to use this unstable API to ensure it batches them. (2019/12/03)
+    // https://github.com/facebook/react/issues/14259#issuecomment-439702367
+    // 使用了react内部api
+    ReactDOM.unstable_batchedUpdates(() => {
+      const onContextChange = EDITOR_TO_ON_CHANGE.get(e);
+      if (onContextChange) {
+        onContextChange(); // 会触发编辑器所有children元素rerender
+      }
+
+      onChange();
+    });
+  };
+
+  e.deleteBackward = (unit) => {
+    if (unit !== 'line') {
+      return deleteBackward(unit);
+    }
+
+    if (editor.selection && Range.isCollapsed(editor.selection)) {
+      const parentBlockEntry = Editor.above(editor, {
+        match: (n) => Editor.isBlock(editor, n),
+        at: editor.selection,
+      });
+
+      if (parentBlockEntry) {
+        const [, parentBlockPath] = parentBlockEntry;
+        const parentElementRange = Editor.range(
+          editor,
+          parentBlockPath,
+          editor.selection.anchor,
+        );
+
+        const currentLineRange = findCurrentLineRange(e, parentElementRange);
+
+        if (!Range.isCollapsed(currentLineRange)) {
+          Transforms.delete(editor, { at: currentLineRange });
+        }
+      }
     }
   };
 
@@ -236,23 +256,6 @@ export const withReact = <T extends Editor>(editor: T) => {
       return true;
     }
     return false;
-  };
-
-  e.onChange = () => {
-    // COMPAT: React doesn't batch `setState` hook calls, which means that the
-    // children and selection can get out of sync for one render pass. So we
-    // have to use this unstable API to ensure it batches them. (2019/12/03)
-    // https://github.com/facebook/react/issues/14259#issuecomment-439702367
-    // @ts-expect-error 使用了react内部api
-    ReactDOM.unstable_batchedUpdates(() => {
-      const onContextChange = EDITOR_TO_ON_CHANGE.get(e);
-
-      if (onContextChange) {
-        onContextChange();
-      }
-
-      onChange();
-    });
   };
 
   return e;

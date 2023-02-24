@@ -18,7 +18,6 @@ import { DIRTY_PATH_KEYS, DIRTY_PATHS, FLUSHING } from './utils/weak-maps';
 
 /**
  * - Create a new Slate `Editor` object.
- * - 使用了工厂模式。editor factory
  */
 export const createEditor = (): Editor => {
   const editor: Editor = {
@@ -31,7 +30,8 @@ export const createEditor = (): Editor => {
     onChange: () => {},
 
     /**
-     *
+     * selection和内容的更新都是通过op触发，apply的末尾会执行 editor.onChange()
+     * - 在withReact中会被加强
      */
     apply: (op: Operation) => {
       for (const ref of Editor.pathRefs(editor)) {

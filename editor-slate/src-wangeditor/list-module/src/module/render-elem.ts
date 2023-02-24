@@ -143,10 +143,14 @@ function renderListElem(
   // );
 
   const vnode = h('div', { style: listStyle }, [
-    h('span', {
-      style: { marginRight: '0.5em', color: prefixColor },
-      attrs: { 'data-w-e-reserve': true },
-    }, prefix,),
+    h(
+      'span',
+      {
+        style: { marginRight: '0.5em', color: prefixColor },
+        attrs: { 'data-w-e-reserve': true },
+      },
+      prefix,
+    ),
     h('span', {}, children),
   ]);
 

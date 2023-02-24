@@ -499,9 +499,9 @@ export const DomEditor = {
     const focus = isCollapsed
       ? anchor
       : DomEditor.toSlatePoint(editor, [focusNode, focusOffset], {
-        exactMatch,
-        suppressThrow,
-      });
+          exactMatch,
+          suppressThrow,
+        });
     if (!focus) {
       return null as T extends true ? Range | null : Range;
     }

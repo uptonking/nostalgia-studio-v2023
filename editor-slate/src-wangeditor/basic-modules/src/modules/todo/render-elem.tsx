@@ -72,8 +72,8 @@ function renderTodo(
               checked: event.target.checked,
             };
             Transforms.setNodes(editor, newProps, { at: path });
-          }
-        }
+          },
+        },
       }),
     ),
     h('span', {}, children),

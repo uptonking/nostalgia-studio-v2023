@@ -6,7 +6,7 @@ const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
   // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('B1b1WangEditSimple');
+  const [currentStory, setCurrentStory] = useState('A32TableCtxMenu');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

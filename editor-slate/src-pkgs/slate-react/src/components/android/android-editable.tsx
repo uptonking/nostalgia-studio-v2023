@@ -5,49 +5,49 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Editor, Element, Node, Range, Transforms, Path, Text } from 'slate';
-import throttle from 'lodash/throttle';
+
 import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 import scrollIntoView from 'scroll-into-view-if-needed';
+import { Editor, Element, Node, Path, Range, Text, Transforms } from 'slate';
 
 import { DefaultPlaceholder, ReactEditor } from '../..';
+import useChildren from '../../hooks/use-children';
+import { useContentKey } from '../../hooks/use-content-key';
+import { DecorateContext } from '../../hooks/use-decorate';
+import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect';
 import { ReadOnlyContext } from '../../hooks/use-read-only';
 import { useSlate } from '../../hooks/use-slate';
-import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-effect';
-import { DecorateContext } from '../../hooks/use-decorate';
 import {
   DOMElement,
+  getClipboardData,
+  getDefaultView,
   isDOMElement,
   isDOMNode,
-  getDefaultView,
-  getClipboardData,
 } from '../../utils/dom';
 import {
+  EDITOR_ON_COMPOSITION_TEXT,
   EDITOR_TO_ELEMENT,
   EDITOR_TO_WINDOW,
   ELEMENT_TO_NODE,
+  IS_COMPOSING,
   IS_FOCUSED,
+  IS_ON_COMPOSITION_END,
   IS_READ_ONLY,
   NODE_TO_ELEMENT,
   PLACEHOLDER_SYMBOL,
-  IS_COMPOSING,
-  IS_ON_COMPOSITION_END,
-  EDITOR_ON_COMPOSITION_TEXT,
 } from '../../utils/weak-maps';
-import { normalizeTextInsertionRange } from './diff-text';
-
-import { EditableProps, hasTarget } from '../editable';
-import useChildren from '../../hooks/use-children';
 import {
   defaultDecorate,
+  EditableProps,
   hasEditableTarget,
-  isEventHandled,
+  hasTarget,
   isDOMEventHandled,
+  isEventHandled,
   isTargetInsideNonReadonlyVoid,
 } from '../editable';
-
+import { normalizeTextInsertionRange } from './diff-text';
 import { useAndroidInputManager } from './use-android-input-manager';
-import { useContentKey } from '../../hooks/use-content-key';
 
 /**
  * Editable.
@@ -110,6 +110,7 @@ export const AndroidEditable = (props: EditableProps): JSX.Element => {
       // Make sure the DOM selection state is in sync.
       const { selection } = editor;
       const root = ReactEditor.findDocumentOrShadowRoot(editor);
+      // @ts-expect-error fix-types
       const domSelection = root.getSelection();
 
       if (
@@ -229,6 +230,7 @@ export const AndroidEditable = (props: EditableProps): JSX.Element => {
           const root = ReactEditor.findDocumentOrShadowRoot(editor);
           const { activeElement } = root;
           const el = ReactEditor.toDOMNode(editor, editor);
+          // @ts-expect-error fix-types
           const domSelection = root.getSelection();
 
           if (activeElement === el) {

@@ -38,12 +38,10 @@ describe('TableModule module', () => {
         type: 'table-cell',
         children: [],
       };
-      jest
-        .spyOn(core.DomEditor, 'getParentNode')
-        .mockReturnValue({
-          type: 'table-row',
-          children: [{ text: '' }],
-        } as any);
+      jest.spyOn(core.DomEditor, 'getParentNode').mockReturnValue({
+        type: 'table-row',
+        children: [{ text: '' }],
+      } as any);
       try {
         tableCellToHtmlConf.elemToHtml(element, '<span>123</span>');
       } catch (err) {

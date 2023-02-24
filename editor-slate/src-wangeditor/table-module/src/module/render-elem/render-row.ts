@@ -14,7 +14,7 @@ function renderTableRow(
   editor: IDomEditor,
 ): VNode {
   // const vnode = <tr>{children}</tr>;
-  const vnode = h('tr', {}, children)
+  const vnode = h('tr', {}, children);
   return vnode;
 }
 

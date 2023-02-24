@@ -45,11 +45,7 @@ function renderText(
     strVnode = addTextVnodeStyle(leafNode, strVnode);
     // 生成每一个 leaf 节点
     // return <span data-slate-leaf>{strVnode}</span>;
-    return h(
-      'span',
-      { attrs: { 'data-slate-leaf': true } },
-      strVnode,
-    );
+    return h('span', { attrs: { 'data-slate-leaf': true } }, strVnode);
   });
 
   // 生成 text vnode

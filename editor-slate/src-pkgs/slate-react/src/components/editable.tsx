@@ -1,6 +1,3 @@
-import getDirection from 'direction';
-import debounce from 'lodash/debounce';
-import throttle from 'lodash/throttle';
 import React, {
   useCallback,
   useEffect,
@@ -8,6 +5,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
+
+import getDirection from 'direction';
+import debounce from 'lodash/debounce';
+import throttle from 'lodash/throttle';
 import scrollIntoView from 'scroll-into-view-if-needed';
 import {
   Editor,
@@ -21,6 +22,7 @@ import {
   Transforms,
 } from 'slate';
 
+import { ReactEditor } from '..';
 import { useChildren } from '../hooks/use-children';
 import { DecorateContext } from '../hooks/use-decorate';
 import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
@@ -61,7 +63,6 @@ import {
   NODE_TO_ELEMENT,
   PLACEHOLDER_SYMBOL,
 } from '../utils/weak-maps';
-import { ReactEditor } from '..';
 
 type DeferredOperation = () => void;
 
@@ -108,7 +109,7 @@ export type EditableProps = {
   role?: string;
   style?: React.CSSProperties;
   renderElement?: (props: RenderElementProps) => JSX.Element;
-  /** - When text-level formatting is rendered, the characters are grouped into "leaves" of text that each contain the same formatting applied to them.
+  /** When text-level formatting is rendered, the characters are grouped into "leaves" of text that each contain the same formatting applied to them.
    * - To customize the rendering of each leaf, you use a custom renderLeaf prop */
   renderLeaf?: (props: RenderLeafProps) => JSX.Element;
   renderPlaceholder?: (props: RenderPlaceholderProps) => JSX.Element;
@@ -1239,6 +1240,7 @@ export const Editable = (props: EditableProps) => {
                   event.preventDefault();
 
                   if (selection && Range.isCollapsed(selection)) {
+                    console.log(';; key-mvBack ');
                     Transforms.move(editor, { reverse: !isRTL });
                   } else {
                     Transforms.collapse(editor, { edge: 'start' });
@@ -1251,6 +1253,7 @@ export const Editable = (props: EditableProps) => {
                   event.preventDefault();
 
                   if (selection && Range.isCollapsed(selection)) {
+                    console.log(';; key-mvForward');
                     Transforms.move(editor, { reverse: isRTL });
                   } else {
                     Transforms.collapse(editor, { edge: 'end' });

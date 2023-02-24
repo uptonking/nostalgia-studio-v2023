@@ -5,14 +5,15 @@ import React, {
   useRef,
   useState,
 } from 'react';
+
 import { Descendant, Editor, Element, Node } from 'slate';
 
 import { FocusedContext } from '../hooks/use-focused';
 import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
 import { SlateContext } from '../hooks/use-slate';
 import {
-  SlateSelectorContext,
   getSelectorContext,
+  SlateSelectorContext,
 } from '../hooks/use-slate-selector';
 import { EditorContext } from '../hooks/use-slate-static';
 import { ReactEditor } from '../plugin/react-editor';
@@ -65,6 +66,10 @@ export const Slate = (props: SlateProps) => {
   const { selectorContext, onChange: handleSelectorChange } =
     getSelectorContext(editor);
 
+  /**
+   * 💡 依次执行 props.onChange(editor.children), `emitter`.onChange(editor)
+   * - 还会触发children元素rerender
+   */
   const onContextChange = useCallback(() => {
     if (onChange) {
       // console.log(';; s-e onChange ', editor);
@@ -76,6 +81,7 @@ export const Slate = (props: SlateProps) => {
     handleSelectorChange(editor);
   }, [onChange]);
 
+  /** 将onContextChange暴露到全局 */
   EDITOR_TO_ON_CHANGE.set(editor, onContextChange);
 
   useEffect(() => {

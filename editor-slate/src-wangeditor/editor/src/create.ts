@@ -79,7 +79,6 @@ export function createToolbar(option: ICreateToolbarOption): Toolbar {
     throw new Error(`Cannot find 'selector' when create toolbar`);
   }
 
-
   let globalConfig =
     mode === 'simple' ? Boot.simpleToolbarConfig : Boot.toolbarConfig;
   // console.log(';; toolb ', mode, globalConfig);

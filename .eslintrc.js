@@ -133,6 +133,7 @@ module.exports = {
     'react/no-deprecated': 1,
     'react/no-did-update-set-state': 1,
     'react/no-unescaped-entities': 1,
+    'react/no-unknown-property': 1,
     'react/jsx-no-constructed-context-values': 1,
     'react/prop-types': 0,
     'react/display-name': 0,

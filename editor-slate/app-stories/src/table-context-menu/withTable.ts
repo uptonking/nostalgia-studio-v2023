@@ -9,7 +9,7 @@ import {
   Transforms,
 } from 'slate';
 
-import { isEditableInTable } from './utils/util';
+import { isEditableInTable } from './utils/common';
 
 const HEADER_LIST = new Set(['h1', 'h2', 'h3', 'h4']);
 

@@ -9,7 +9,7 @@ import {
   getRealPathByPath,
   rangeType,
   tableRange,
-} from './util';
+} from './common';
 
 /**
  * 根据真实单元格位置获取源表格中数据/范围

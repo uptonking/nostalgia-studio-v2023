@@ -17,7 +17,7 @@ const exec =
 
 export const Toolbar: React.FC<CardbarProps> = (props) => {
   return (
-    <div className={cx('cardbar', props.className)}>
+    <div className={cx('cardbar', props.className)} contentEditable={false}>
       <div style={{ display: 'flex', gap: 4 }}>
         {props.children}
         {props.delete && (

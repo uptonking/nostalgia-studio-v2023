@@ -31,7 +31,7 @@ export function TableContextMenu() {
     () => withTable(withTableUtils(withReact(createEditor()))),
     [],
   );
-  const [value, setValue] = useState<Descendant[]>(initialValue);
+  const [value] = useState<Descendant[]>(initialValue);
   const renderElement = useCallback(
     (props) => <CustomElement {...props} />,
     [],
@@ -43,7 +43,7 @@ export function TableContextMenu() {
         editor={editor}
         value={value}
         onChange={(newValue) => {
-          console.log(';;onChg ', newValue);
+          // console.log(';;onChg ', newValue);
           // setValue(newValue);
         }}
       >

@@ -10,7 +10,7 @@ import {
   getTableByCellPath,
   isContainPath,
   rangeType,
-} from '../utils/util';
+} from '../utils/common';
 
 type IRangePath = [path: Path, rowNum: number, needMove: boolean][];
 
@@ -55,7 +55,7 @@ function getNeedHandleData(
   return rangePath;
 }
 
-export default function deleteRow(editor: Editor, cellPaths: Path[]) {
+export   function deleteRow(editor: Editor, cellPaths: Path[]) {
   const newCell: Path[] = getCellBySelectOrFocus(editor, cellPaths);
 
   if (!newCell[0]) return;

@@ -75,7 +75,7 @@ export const initialValue = [
     type: 'paragraph',
     children: [
       {
-        text: 'p ',
+        text: 'text1 ',
       },
     ],
   },
@@ -168,7 +168,7 @@ export const initialValue = [
     type: 'paragraph',
     children: [
       {
-        text: 'p ',
+        text: 'text2 ',
       },
     ],
   },

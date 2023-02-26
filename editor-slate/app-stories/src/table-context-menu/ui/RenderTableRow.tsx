@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 
-import { getNextRowSpan } from '../utils/util';
+import { getNextRowSpan } from '../utils/common';
 
 export function CustomTableRow(props: RenderElementProps) {
   const { attributes, children, element } = props;

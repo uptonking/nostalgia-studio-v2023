@@ -5,14 +5,14 @@ import ReactDOM from 'react-dom';
 
 import { Editor, Path } from 'slate';
 
-import deleteCol from '../commands/deleteCol';
-import deleteRow from '../commands/deleteRow';
+import {deleteCol} from '../commands/deleteCol';
+import {deleteRow} from '../commands/deleteRow';
 import { insertColLeft, insertColRight } from '../commands/insertCol';
 import { insertRowAbove, insertRowBelow } from '../commands/insertRow';
-import mergeCells from '../commands/mergeCells';
-import splitCells from '../commands/splitCells';
+import {mergeCells} from '../commands/mergeCells';
+import {splitCells} from '../commands/splitCells';
 import { TableCellElement } from '../customTypes';
-import { getCellBySelectOrFocus, setTableNodeOrigin } from '../utils/util';
+import { getCellBySelectOrFocus, setTableNodeOrigin } from '../utils/common';
 
 interface Props {
   editor: Editor;
@@ -26,6 +26,9 @@ interface Props {
 
 const CURSOR_DISTANCE = 10;
 
+/**
+ * 通过createPortal渲染在 document.body
+ */
 export const ContextMenu: FC<Props> = ({
   editor,
   selectCells,

@@ -24,8 +24,7 @@ import { EDITOR_TO_ON_CHANGE } from '../utils/weak-maps';
 
 export type SlateProps = {
   editor: ReactEditor;
-  /**
-   * - Slate Provider's `value` prop is only used as initial state for `editor.children`.
+  /** Slate Provider's `value` prop is only used as initial state for `editor.children`.
    * - If your code relies on replacing `editor.children`, you should do so by replacing it directly instead of relying on the "value" prop to do this for you.
    * - https://github.com/ianstormtaylor/slate/pull/4540
    */
@@ -60,7 +59,7 @@ export const Slate = (props: SlateProps) => {
         `[Slate] editor is invalid! you passed:` + `${JSON.stringify(editor)}`,
       );
     }
-    editor.children = value;
+    editor.children = value; // 👈🏻 直接赋值
     Object.assign(editor, rest);
     return [editor];
   });

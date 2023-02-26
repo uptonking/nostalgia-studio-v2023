@@ -2,7 +2,12 @@ import { Editor, Path } from 'slate';
 import { ReactEditor } from 'slate-react';
 
 import { TableElement } from '../customTypes';
-import { getOriginTable, getRange, getRealPathByPath, rangeType } from './util';
+import {
+  getOriginTable,
+  getRange,
+  getRealPathByPath,
+  rangeType,
+} from './common';
 
 export default function selectionBound(editor: Editor, selectPath: Path[]) {
   // 不能直接根据 selectPath 获取左上 右下单元格计算

@@ -1,7 +1,7 @@
 import { Descendant, Editor, Element, Path, Transforms } from 'slate';
 
 import { TableCellElement, TableRowElement } from '../customTypes';
-import { getCellsSpan, getTableByCellPath, isEmptyCell } from '../utils/util';
+import { getCellsSpan, getTableByCellPath, isEmptyCell } from '../utils/common';
 
 /**
  * 合并单元格数据
@@ -57,7 +57,7 @@ function removeCellByPath(editor: Editor, cellPaths: Path[], tablePath: Path) {
   });
 }
 
-export default function mergeCells(editor: Editor, cellPaths: Path[]) {
+export   function mergeCells(editor: Editor, cellPaths: Path[]) {
   if (cellPaths.length < 2) return;
   const [, tablePath, table] = getTableByCellPath(editor, cellPaths[0]);
   const children = mergeChildren(editor, cellPaths) as Element[];

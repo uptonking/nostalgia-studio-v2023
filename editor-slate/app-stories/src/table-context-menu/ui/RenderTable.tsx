@@ -13,13 +13,13 @@ import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 
 import { TableElement } from '../customTypes';
 import { ContextMenu } from '../menu/ContextMenu';
-import { getSelection } from '../utils/selection';
-import selectionBound from '../utils/selectionBound';
 import {
   getTableCellNode,
   isEditableInTable,
   setTableNodeOrigin,
-} from '../utils/util';
+} from '../utils/common';
+import { getSelection } from '../utils/selection';
+import selectionBound from '../utils/selectionBound';
 
 /**
  * table with context menu
@@ -30,7 +30,7 @@ export function CustomTable(props: RenderElementProps) {
   const tableRef = useRef<HTMLTableElement>(null);
   const [startPath, setStartPath] = useState<Path | null>(null);
   const [selectCells, setSelectCells] = useState<Path[]>([]);
-  const [bound, setBound] = useState({
+  const [selBound, setSelBound] = useState({
     x: 0,
     y: 0,
     left: 0,
@@ -117,7 +117,7 @@ export function CustomTable(props: RenderElementProps) {
 
   useEffect(() => {
     if (!editor || selectCells.length < 2) return;
-    setBound(selectionBound(editor, selectCells));
+    setSelBound(selectionBound(editor, selectCells));
   }, [editor, editor.children, selectCells]);
 
   useEffect(() => {
@@ -182,10 +182,10 @@ export function CustomTable(props: RenderElementProps) {
         className='yt-e-table-selection'
         style={{
           display: `${showWrap ? 'block' : 'none'}`,
-          top: `${bound.y}px`,
-          left: `${bound.x}px`,
-          width: `${bound.right - bound.left}px`,
-          height: `${bound.bottom - bound.top}px`,
+          top: `${selBound.y}px`,
+          left: `${selBound.x}px`,
+          width: `${selBound.right - selBound.left}px`,
+          height: `${selBound.bottom - selBound.top}px`,
         }}
       />
       <ContextMenu

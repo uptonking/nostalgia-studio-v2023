@@ -11,9 +11,9 @@ import {
   getRealPathByPath,
   getTableByCellPath,
   rangeType,
-} from '../utils/util';
+} from '../utils/common';
 
-export default function deleteCol(editor: Editor, cellPaths: Path[]) {
+export   function deleteCol(editor: Editor, cellPaths: Path[]) {
   /**
    * 根据原始表格的数据计算，保证数据获取准确
    * 1. 获取 col 范围

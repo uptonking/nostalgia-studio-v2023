@@ -10,7 +10,7 @@ import {
   getRealPathByPath,
   getRowNode,
   getTableByCellPath,
-} from '../utils/util';
+} from '../utils/common';
 
 type Direction = 'left' | 'right';
 

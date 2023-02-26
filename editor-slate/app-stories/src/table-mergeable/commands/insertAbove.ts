@@ -1,15 +1,17 @@
 import { Editor, NodeEntry, Transforms } from 'slate';
 
 import { createRow } from '../table/creator';
-import { Col, splitedTable } from '../table/selection';
+import { Col, splitTable } from '../table/selection';
 
 export function insertAbove(table: NodeEntry, editor: Editor) {
+  console.log('insertAbove-ing')
+
   const { selection } = editor;
   if (!selection || !table) return;
 
   const yIndex = table[1].length;
 
-  const { gridTable, getCol } = splitedTable(editor, table);
+  const { gridTable, getCol } = splitTable(editor, table);
 
   const [startCell] = Editor.nodes(editor, {
     // @ts-expect-error fix-types

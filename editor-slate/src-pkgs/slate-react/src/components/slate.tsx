@@ -9,7 +9,9 @@ import React, {
 import { Descendant, Editor, Element, Node } from 'slate';
 
 import { FocusedContext } from '../hooks/use-focused';
-import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
+import {
+  useIsomorphicLayoutEffect,
+} from '../hooks/use-isomorphic-layout-effect';
 import { SlateContext } from '../hooks/use-slate';
 import {
   getSelectorContext,
@@ -74,10 +76,10 @@ export const Slate = (props: SlateProps) => {
     if (onChange) {
       // console.log(';; s-e onChange ', editor);
 
-      onChange(editor.children);
+      onChange(editor.children); // onChange在withReact中被增强
     }
 
-    setContext([editor]);
+    setContext([editor]); // 👈🏻 每次都是新数组对象，会触发children重渲染
     handleSelectorChange(editor);
   }, [onChange]);
 

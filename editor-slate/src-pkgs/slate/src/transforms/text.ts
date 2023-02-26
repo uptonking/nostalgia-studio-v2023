@@ -465,6 +465,7 @@ export const TextTransforms: TextTransforms = {
       }
 
       if (Path.isPath(at)) {
+        // 如果是 Path，则需要先找到对应的Range
         at = Editor.range(editor, at);
       }
 
@@ -494,6 +495,7 @@ export const TextTransforms: TextTransforms = {
 
       const { path, offset } = at;
       if (text.length > 0)
+      // 最后将新的 text 文本插入到对应的位置
         editor.apply({ type: 'insert_text', path, offset, text });
     });
   },

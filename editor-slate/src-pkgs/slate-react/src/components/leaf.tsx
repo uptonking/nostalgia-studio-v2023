@@ -1,9 +1,15 @@
 import React, { useEffect, useRef } from 'react';
+
 import { Element, Text } from 'slate';
 
 import { PLACEHOLDER_SYMBOL } from '../utils/weak-maps';
 import { RenderLeafProps, RenderPlaceholderProps } from './editable';
 import String from './string';
+
+export const DefaultLeaf = (props: RenderLeafProps) => {
+  const { attributes, children } = props;
+  return <span {...attributes}>{children}</span>;
+};
 
 /**
  * Individual leaves in a text node with unique formatting.
@@ -31,7 +37,7 @@ const Leaf = (props: {
     const placeholderEl = placeholderRef?.current;
     const editorEl = document.querySelector<HTMLDivElement>(
       '[data-slate-editor="true"]',
-    );
+    ) as HTMLElement;
 
     if (!placeholderEl || !editorEl) {
       return;
@@ -100,9 +106,6 @@ const MemoizedLeaf = React.memo(Leaf, (prev, next) => {
   );
 });
 
-export const DefaultLeaf = (props: RenderLeafProps) => {
-  const { attributes, children } = props;
-  return <span {...attributes}>{children}</span>;
-};
+
 
 export default MemoizedLeaf;

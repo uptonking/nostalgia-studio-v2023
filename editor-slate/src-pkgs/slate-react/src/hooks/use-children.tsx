@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { Ancestor, Descendant, Editor, Element, Range } from 'slate';
 
+import { ReactEditor } from '..';
 import {
   RenderElementProps,
   RenderLeafProps,
@@ -11,12 +13,11 @@ import TextComponent from '../components/text';
 import { NODE_TO_INDEX, NODE_TO_PARENT } from '../utils/weak-maps';
 import { SelectedContext } from './use-selected';
 import { useSlateStatic } from './use-slate-static';
-import { ReactEditor } from '..';
 
 /**
  * Children.
+ * - 广度优先遍历
  */
-
 export const useChildren = (props: {
   decorations: Range[];
   node: Ancestor;
@@ -35,6 +36,7 @@ export const useChildren = (props: {
   } = props;
   const editor = useSlateStatic();
   const path = ReactEditor.findPath(editor, node);
+  /** 所有model元素对应的react元素，广度优先遍历 */
   const children = [];
   const isLeafBlock =
     Element.isElement(node) &&

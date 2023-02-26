@@ -15,6 +15,7 @@ import {
   useEditor,
   useSelected,
   useSlate,
+  useSlateStatic,
 } from 'slate-react';
 
 import { options } from './options';
@@ -27,7 +28,7 @@ import { HorizontalToolbar, TableCardbar, VerticalToolbar } from './ui';
 export const Table = (props) => {
   const { attributes, children, element } = props;
   const selected = useSelected();
-  const editor = useEditor();
+  const editor = useSlateStatic();
 
   switch (element.type) {
     case 'table': {
@@ -55,7 +56,7 @@ export const Table = (props) => {
       }
 
       return (
-        <div style={{ position: 'relative' }}>
+        <div style={{ position: 'relative' }} {...attributes}>
           <TableCardbar
             className={cx({ selected: selected || existSelectedCell })}
           />
@@ -86,8 +87,6 @@ export const Table = (props) => {
       return (
         <CellComponent
           {...props}
-          dataKey={element.key}
-          node={children.props.node}
         >
           {children}
         </CellComponent>
@@ -107,11 +106,8 @@ export const Table = (props) => {
   }
 };
 
-const TableComponent: React.FC<
-  {
-    table: NodeEntry | null;
-  } & RenderElementProps
-> = (props) => {
+const TableComponent = (props: RenderElementProps) => {
+  // @ts-expect-error fix-types
   const { table, children } = props;
   const editor = useSlate();
   const selected = useSelected();
@@ -217,19 +213,11 @@ const TableComponent: React.FC<
   );
 };
 
-const CellComponent: React.FC<
-  {
-    node: {
-      width: number;
-      height: number;
-      selectedCell?: boolean;
-      colspan?: number;
-      rowspan?: number;
-    };
-    dataKey: string;
-  } & RenderElementProps
-> = ({ attributes, node, dataKey, children }) => {
-  const { selectedCell } = node;
+const CellComponent = (props: RenderElementProps) => {
+
+  const { attributes, children, element } = props;
+  // @ts-expect-error fix-types
+  const { key: dataKey, selectedCell, colspan, rowspan, width, height } = element;
 
   return (
     <td
@@ -237,28 +225,16 @@ const CellComponent: React.FC<
       className={cx('table-td', { selectedCell })}
       slate-table-element='td'
       data-key={dataKey}
-      colSpan={node.colspan}
-      rowSpan={node.rowspan}
+      colSpan={colspan}
+      rowSpan={rowspan}
       onDragStart={(e) => e.preventDefault()}
       style={{
         position: 'relative',
         minWidth: '50px',
-        width: node.width ? `${node.width}px` : 'auto',
-        height: node.width ? `${node.height}px` : 'auto',
+        width: width ? `${width}px` : 'auto',
+        height: width ? `${height}px` : 'auto',
       }}
     >
-      {/* <span
-        contentEditable={false}
-        style={{
-          userSelect: 'none',
-          position: 'absolute',
-          right: 0,
-          color: 'red',
-          fontSize: 5,
-        }}
-      >
-        {node.width}, {node.height}
-      </span> */}
       {children}
     </td>
   );

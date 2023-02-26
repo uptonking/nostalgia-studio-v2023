@@ -11,8 +11,11 @@ import React, {
 
 import cx from 'classnames';
 import { Editor, NodeEntry, Transforms } from 'slate';
-import { useEditor, useSlate } from 'slate-react';
+import { useSlate, useSlateStatic } from 'slate-react';
 
+import {
+  preventDefault,
+} from '../../../../../utils/dnd-kit/packages/core/src/sensors/events';
 import {
   insertAbove,
   insertBelow,
@@ -24,11 +27,11 @@ import {
   splitCell,
 } from '../commands';
 import { removeTable } from '../table';
-import { Cardbar } from '../toolbar';
+import { Toolbar } from '../toolbar';
 import { options } from './options';
-import { splitedTable } from './selection';
+import { splitTable } from './selection';
 
-interface TableCardbarProps extends HTMLAttributes<HTMLDivElement> {}
+interface TableCardbarProps extends HTMLAttributes<HTMLDivElement> { }
 
 export const TableCardbar: React.FC<TableCardbarProps> = (props) => {
   const editor = useSlate();
@@ -40,47 +43,68 @@ export const TableCardbar: React.FC<TableCardbarProps> = (props) => {
     }),
   );
 
-  const run = (action: (table: any, editor: Editor) => any) => () =>
+  const run = (action: (table: any, editor: Editor) => any) => () => {
     action(table, editor);
+  };
 
   return (
-    <Cardbar
+    <Toolbar
       className={cx(props.className, 'table-cardbar')}
       delete={run(removeTable)}
     >
       <button
         // icon={<InsertRowAboveOutlined />}
         onMouseDown={run(insertAbove)}
-      />
+      >
+        insertAbove
+      </button>
       <button
         // icon={<InsertRowBelowOutlined />}
-        onMouseDown={run(insertBelow)}
-      />
+        onMouseDown={(e) => {
+          // e.preventDefault();
+          console.log('ins')
+          run(insertBelow);
+        }}
+      >
+        insertBelow
+      </button>
       <button
         // icon={<InsertRowLeftOutlined />}
-        onMouseDown={run(insertLeft)}
-      />
+        onMouseDown={(e) => run(insertLeft)}
+      >
+        insertLeft
+      </button>
       <button
         // icon={<InsertRowRightOutlined />}
         onMouseDown={run(insertRight)}
-      />
+      >
+        insertRight
+      </button>
       <button
         // icon={<MergeCellsOutlined />}
         onMouseDown={run(mergeSelection)}
-      />
-      <button
-        // icon={<DeleteColumnOutlined />}
-        onMouseDown={run(removeColumn)}
-      />
-      <button
-        // icon={<DeleteRowOutlined />}
-        onMouseDown={run(removeRow)}
-      />
+      >
+        merge
+      </button>
       <button
         // icon={<SplitCellsOutlined />}
         onMouseDown={run(splitCell)}
-      />
-    </Cardbar>
+      >
+        split
+      </button>
+      <button
+        // icon={<DeleteColumnOutlined />}
+        onMouseDown={run(removeColumn)}
+      >
+        removeColumn
+      </button>
+      <button
+        // icon={<DeleteRowOutlined />}
+        onMouseDown={run(removeRow)}
+      >
+        removeRow
+      </button>
+    </Toolbar>
   );
 };
 
@@ -91,12 +115,12 @@ export const HorizontalToolbar: React.FC<{
   tableNode: NodeEntry;
 }> = ({ table, tableNode }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const editor = useEditor();
+  const editor = useSlateStatic();
   const [cols, setCols] = useState<{ width: number; el: HTMLElement[] }[]>([]);
   const widthFnObject = {};
 
   useEffect(() => {
-    const { gridTable = [] } = splitedTable(editor, tableNode);
+    const { gridTable = [] } = splitTable(editor, tableNode);
     if (!gridTable.length) return;
 
     const colsArray = [] as { width: number; el: HTMLElement[] }[];
@@ -275,12 +299,12 @@ export const VerticalToolbar: React.FC<{
   tableNode: NodeEntry;
 }> = ({ table, tableNode }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const editor = useEditor();
+  const editor = useSlateStatic();
   const [rows, setRows] = useState<{ height: number; el: HTMLElement[] }[]>([]);
   const heightFnObject = {};
 
   useEffect(() => {
-    const { gridTable = [] } = splitedTable(editor, tableNode);
+    const { gridTable = [] } = splitTable(editor, tableNode);
     if (!gridTable.length) return;
 
     const rowsArray = [] as { height: number; el: HTMLElement[] }[];

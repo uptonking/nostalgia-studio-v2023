@@ -3,37 +3,37 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { createEditor, Descendant } from 'slate';
 import {
   DefaultEditable as Editable,
-  RenderElementProps,
+  type RenderElementProps,
   Slate,
   withReact,
 } from 'slate-react';
 
-import { RenderTable, RenderTableCell, RenderTableRow, withTable } from '.';
+import { CustomTable, CustomTableCell, CustomTableRow, withTable } from '.';
 import { initialValue } from './tableData';
 import { withTableUtils } from './withCustom';
 
-const CustomElements = (elementProp: RenderElementProps) => {
-  const { attributes, children, element } = elementProp;
+const CustomElement = (props: RenderElementProps) => {
+  const { attributes, children, element } = props;
   switch (element.type) {
     case 'table':
-      return <RenderTable {...elementProp} />;
+      return <CustomTable {...props} />;
     case 'tableRow':
-      return <RenderTableRow {...elementProp} />;
+      return <CustomTableRow {...props} />;
     case 'tableCell':
-      return <RenderTableCell {...elementProp} />;
+      return <CustomTableCell {...props} />;
     default:
       return <p {...attributes}>{children}</p>;
   }
 };
 
-export function TableCtxMenu() {
+export function TableContextMenu() {
   const editor = useMemo(
     () => withTable(withTableUtils(withReact(createEditor()))),
     [],
   );
   const [value, setValue] = useState<Descendant[]>(initialValue);
   const renderElement = useCallback(
-    (props) => <CustomElements {...props} />,
+    (props) => <CustomElement {...props} />,
     [],
   );
 

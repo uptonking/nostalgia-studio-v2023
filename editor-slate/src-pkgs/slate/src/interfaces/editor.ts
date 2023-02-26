@@ -97,6 +97,7 @@ export interface BaseEditor {
    * - One thing to understand about normalizeNode constraints is that they are multi-pass.
    */
   normalizeNode: (entry: NodeEntry) => void;
+  /** 内容或选区op执行完后，还需要执行的逻辑 */
   onChange: () => void;
 
   // Overrideable core actions.
@@ -287,6 +288,9 @@ export interface EditorInterface {
     options?: EditorFragmentDeletionOptions,
   ) => void;
   edges: (editor: Editor, at: Location) => [Point, Point];
+  /**
+   * Get the end point of a location.
+   */
   end: (editor: Editor, at: Location) => Point;
   /** Get the first node at a location. */
   first: (editor: Editor, at: Location) => NodeEntry;
@@ -580,7 +584,6 @@ export const Editor: EditorInterface = {
   /**
    * Get the end point of a location.
    */
-
   end(editor: Editor, at: Location): Point {
     return Editor.point(editor, at, { edge: 'end' });
   },
@@ -588,7 +591,6 @@ export const Editor: EditorInterface = {
   /**
    * Get the first node at a location.
    */
-
   first(editor: Editor, at: Location): NodeEntry {
     const path = Editor.path(editor, at, { edge: 'start' });
     return Editor.node(editor, path);
@@ -1065,10 +1067,24 @@ export const Editor: EditorInterface = {
       yield* matches;
     }
   },
+
+  /**
+   * Call a function, deferring normalization until after it completes.
+   */
+  withoutNormalizing(editor: Editor, fn: () => void): void {
+    const value = Editor.isNormalizing(editor);
+    Editor.setNormalizing(editor, false);
+    try {
+      fn();
+    } finally {
+      Editor.setNormalizing(editor, value);
+    }
+    Editor.normalize(editor);
+  },
+
   /**
    * Normalize any dirty objects in the editor.
    */
-
   normalize(editor: Editor, options: EditorNormalizeOptions = {}): void {
     const { force = false } = options;
     const getDirtyPaths = (editor: Editor) => {
@@ -1109,6 +1125,7 @@ export const Editor: EditorInterface = {
       */
       for (const dirtyPath of getDirtyPaths(editor)) {
         if (Node.has(editor, dirtyPath)) {
+          // 通过 Path 找到 Node
           const entry = Editor.node(editor, dirtyPath);
           const [node, _] = entry;
 
@@ -1128,6 +1145,7 @@ export const Editor: EditorInterface = {
       const max = getDirtyPaths(editor).length * 42; // HACK: better way?
       let m = 0;
 
+      // 💡 创建一个循环，从 model 树的叶节点自底向上地不断获取脏路径并调用 nomalizeNode 检验路径所对应的节点是否合法
       while (getDirtyPaths(editor).length !== 0) {
         if (m > max) {
           throw new Error(`
@@ -1754,21 +1772,6 @@ export const Editor: EditorInterface = {
       ...options,
       match: (n) => Editor.isVoid(editor, n),
     });
-  },
-
-  /**
-   * Call a function, deferring normalization until after it completes.
-   */
-
-  withoutNormalizing(editor: Editor, fn: () => void): void {
-    const value = Editor.isNormalizing(editor);
-    Editor.setNormalizing(editor, false);
-    try {
-      fn();
-    } finally {
-      Editor.setNormalizing(editor, value);
-    }
-    Editor.normalize(editor);
   },
 };
 

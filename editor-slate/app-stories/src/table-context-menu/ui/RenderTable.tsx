@@ -1,6 +1,6 @@
 import React, {
-  FC,
   KeyboardEvent,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -17,12 +17,16 @@ import { getSelection } from '../utils/selection';
 import selectionBound from '../utils/selectionBound';
 import {
   getTableCellNode,
-  isCanEditInTable,
+  isEditableInTable,
   setTableNodeOrigin,
 } from '../utils/util';
 
-const TableComponent: FC<RenderElementProps> = (props: RenderElementProps) => {
-  const { children, element } = props;
+/**
+ * table with context menu
+ * - 自绘表格选区
+ */
+export function CustomTable(props: RenderElementProps) {
+  const { attributes, children, element } = props;
   const tableRef = useRef<HTMLTableElement>(null);
   const [startPath, setStartPath] = useState<Path | null>(null);
   const [selectCells, setSelectCells] = useState<Path[]>([]);
@@ -48,7 +52,7 @@ const TableComponent: FC<RenderElementProps> = (props: RenderElementProps) => {
       const editorDom = ReactEditor.toDOMNode(editor, editor);
 
       if (
-        !isCanEditInTable(editor) &&
+        !isEditableInTable(editor) &&
         !isHotkey(['delete', 'backspace'], e) &&
         editorDom.getAttribute('contenteditable') === 'true'
       ) {
@@ -56,7 +60,7 @@ const TableComponent: FC<RenderElementProps> = (props: RenderElementProps) => {
         editorDom.setAttribute('contenteditable', 'false');
         Promise.resolve()
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
-          .catch(() => {});
+          .catch(() => { });
       }
     };
     editor.on('keydown', handleKeydown);
@@ -128,8 +132,8 @@ const TableComponent: FC<RenderElementProps> = (props: RenderElementProps) => {
     };
   }, [editor, selectCells, showWrap]);
 
-  const updateSelection = useMemo(
-    () => (endPath: Path) => {
+  const updateSelection = useCallback(
+    (endPath: Path) => {
       if (!startPath) return;
       if (Path.equals(startPath, endPath)) {
         // 当选区为一个
@@ -144,7 +148,7 @@ const TableComponent: FC<RenderElementProps> = (props: RenderElementProps) => {
   );
 
   return (
-    <>
+    <div className='yt-e-table-wrap' {...attributes}>
       <table
         ref={tableRef}
         className={`yt-e-table${showWrap ? ' ye-e-table-selected' : ''}`}
@@ -190,14 +194,7 @@ const TableComponent: FC<RenderElementProps> = (props: RenderElementProps) => {
         editor={editor}
         selectCells={selectCells}
       />
-    </>
-  );
-};
-
-export function RenderTable(props: RenderElementProps) {
-  return (
-    <div className='yt-e-table-wrap'>
-      <TableComponent {...props} />
     </div>
   );
 }
+

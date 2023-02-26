@@ -412,6 +412,7 @@ export function setTableNodeOrigin(editor: Editor, tablePath: Path) {
   Transforms.setNodes(
     editor,
     {
+      // @ts-expect-error fix-types
       originTable,
     },
     {
@@ -425,7 +426,7 @@ export function setTableNodeOrigin(editor: Editor, tablePath: Path) {
  * @param editor
  * @returns
  */
-export function isCanEditInTable(editor: Editor) {
+export function isEditableInTable(editor: Editor) {
   // 未聚焦 或者选中 collapsed
   if (!editor.selection || Range.isCollapsed(editor.selection)) return true;
   const [...match] = Editor.nodes(editor, {

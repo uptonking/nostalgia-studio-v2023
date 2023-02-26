@@ -32,6 +32,7 @@ const applyToDraft = (editor: Editor, selection: Selection, op: Operation) => {
         );
       }
 
+       // 修改选区 Parent Node 节点内容，把新的 Node 插入到 Path 位置
       parent.children.splice(index, 0, node);
 
       if (selection) {
@@ -47,6 +48,7 @@ const applyToDraft = (editor: Editor, selection: Selection, op: Operation) => {
       const { path, offset, text } = op;
       if (text.length === 0) break;
       const node = Node.leaf(editor, path);
+       // 通过 offset 把 text node 做拆分，然后把新的 text 拼接到传入的位置
       const before = node.text.slice(0, offset);
       const after = node.text.slice(offset);
       node.text = before + text + after;
@@ -232,6 +234,7 @@ const applyToDraft = (editor: Editor, selection: Selection, op: Operation) => {
       const { newProperties } = op;
 
       if (newProperties == null) {
+        // @ts-expect-error fix-types
         selection = newProperties;
       } else {
         if (selection == null) {
@@ -312,15 +315,18 @@ const applyToDraft = (editor: Editor, selection: Selection, op: Operation) => {
 };
 
 export const GeneralTransforms: GeneralTransforms = {
+
   /**
    * Transform the editor by an operation.
+   * - 所有对editor的操作最后都会调用这个transform方法来修改
    */
-
   transform(editor: Editor, op: Operation): void {
+    // 为了实现undo/redo，在修改editor状态前，需要先保留之前的快照再修改
     editor.children = createDraft(editor.children);
     let selection = editor.selection && createDraft(editor.selection);
 
     try {
+
       selection = applyToDraft(editor, selection, op);
     } finally {
       editor.children = finishDraft(editor.children);

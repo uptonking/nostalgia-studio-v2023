@@ -1,7 +1,7 @@
 import { Editor, Node, NodeEntry, Transforms } from 'slate';
 
 import { Cell } from '../table/creator';
-import { Col, splitedTable } from '../table/selection';
+import { Col, splitTable } from '../table/selection';
 
 export function mergeSelection(table: NodeEntry, editor: Editor) {
   if (!table || !editor.selection) return;
@@ -16,7 +16,7 @@ export function mergeSelection(table: NodeEntry, editor: Editor) {
   if (!startCell) return;
 
   // @ts-expect-error fix-types
-  const { gridTable } = splitedTable(editor, table, startCell[0].key);
+  const { gridTable } = splitTable(editor, table, startCell[0].key);
 
   const selectedTable = checkMerge(gridTable);
   if (!selectedTable) return;
@@ -127,7 +127,7 @@ export function mergeSelection(table: NodeEntry, editor: Editor) {
     }
   }
 
-  const { gridTable: mergedGridTable } = splitedTable(editor, table);
+  const { gridTable: mergedGridTable } = splitTable(editor, table);
   for (let idx = 0; idx < mergedGridTable[0].length; idx++) {
     let allColumnIsReal = true;
     let minColWidth = Infinity;

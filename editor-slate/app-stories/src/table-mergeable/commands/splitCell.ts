@@ -1,7 +1,7 @@
 import { Editor, NodeEntry, Transforms } from 'slate';
 
 import { createCell } from '../table/creator';
-import { Col, splitedTable } from '../table/selection';
+import { Col, splitTable } from '../table/selection';
 
 export function splitCell(table: NodeEntry, editor: Editor) {
   const { selection } = editor;
@@ -10,7 +10,7 @@ export function splitCell(table: NodeEntry, editor: Editor) {
   const yIndex = table[1].length;
   const xIndex = table[1].length + 1;
 
-  const { getCol } = splitedTable(editor, table);
+  const { getCol } = splitTable(editor, table);
 
   const [start, end] = Editor.edges(editor, selection);
   const [startNode] = Editor.nodes(editor, {

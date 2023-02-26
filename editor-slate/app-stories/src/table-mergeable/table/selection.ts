@@ -2,26 +2,27 @@ import { Editor, NodeEntry, Path, Transforms } from 'slate';
 
 import { Cell } from './creator';
 
-export const splitedTable: (
+/**
+ * 将slate-table节点转换成二维数组并返回
+ */
+export const splitTable = (
   editor: Editor,
   table: NodeEntry,
   startKey?: string | undefined,
-) => {
+): {
   tableDepth?: number;
   gridTable: Col[][];
   getCol: (match?: (node: Col) => boolean) => Col[];
-} = (editor, table, startKey) => {
+} => {
   const tableDepth = table[1].length;
-
   const cells = [] as { cell: Cell; path: Path; realPath: Path }[];
-
-  const nodes = Editor.nodes(editor, {
+  const currCells = Editor.nodes(editor, {
     at: table[1],
     // @ts-expect-error fix-types
     match: (n) => n.type === 'table-cell',
   });
 
-  for (const node of nodes) {
+  for (const node of currCells) {
     const [cell, path] = node as [Cell, Path];
     cells.push({
       cell,
@@ -36,7 +37,7 @@ export const splitedTable: (
   for (let i = 0; i < cells.length; i++) {
     const { cell, path, realPath } = cells[i];
     const { rowspan = 1, colspan = 1 } = cell;
-    let y = path[tableDepth];
+    const y = path[tableDepth];
     let x = path[tableDepth + 1];
 
     if (!gridTable[y]) {
@@ -44,13 +45,13 @@ export const splitedTable: (
     }
 
     while (gridTable[y][x]) {
-      x++;
+      x++; // 找到最后一列
     }
 
     for (let j = 0; j < rowspan; j++) {
       for (let k = 0; k < colspan; k++) {
-        let _y = y + j;
-        let _x = x + k;
+        const _y = y + j;
+        const _x = x + k;
 
         if (!gridTable[_y]) {
           gridTable[_y] = [];
@@ -95,9 +96,9 @@ export const splitedTable: (
 export type Col = {
   cell: Cell;
   isReal: boolean;
+  isInsertPosition?: boolean;
   path: Path;
   originPath: Path;
-  isInsertPosition?: boolean;
 };
 
 export function addSelection(
@@ -111,15 +112,15 @@ export function addSelection(
 
   if (!table) return [];
 
-  const { gridTable, getCol } = splitedTable(editor, table);
+  const { gridTable, getCol } = splitTable(editor, table);
 
   if (!getCol || !gridTable) return [];
 
-  let [head] = getCol(
+  const [head] = getCol(
     (n: Col) =>
       Path.equals(Editor.path(editor, n.originPath), startPath) && n.isReal,
   );
-  let [tail] = getCol(
+  const [tail] = getCol(
     (n: Col) =>
       Path.equals(Editor.path(editor, n.originPath), endPath) && n.isReal,
   );
@@ -175,7 +176,7 @@ export function removeSelection(editor: Editor) {
   Transforms.unsetNodes(editor, 'selectedCell', {
     at: [],
     // @ts-expect-error fix-types
-    match: (n) => !!n.selectedCell,
+    match: (n) => Boolean(n.selectedCell),
   });
 }
 

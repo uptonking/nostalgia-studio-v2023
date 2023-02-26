@@ -30,7 +30,7 @@ export const renderElement = (props: RenderElementProps) => {
     case 'table-content':
       return <Table {...props} />;
     default:
-      return <span {...props.attributes}>{props.children}</span>;
+      return <p {...props.attributes}>{props.children}</p>;
   }
 };
 
@@ -110,22 +110,26 @@ const maybePreserveSpace = (
  * 🚨 demo not working
  */
 export const MergeableTable = () => {
-  const [value, setValue] = useState<any[]>(initialValue);
+  // const [value, setValue] = useState<any[]>(initialValue);
 
   const editor = useMemo(
     () => withTableSchema(withHistory(withReact(createEditor()))),
     [],
-  ) as ReactEditor;
+  );
 
   return (
     <div className='editor-box'>
       <Slate
         editor={editor}
-        value={value}
-        // onChange={setValue}
+        value={initialValue}
+      // onChange={setValue}
       >
         <div className='toolbar'>
-          <button onClick={() => insertTable(editor)} />
+          <button
+            onClick={() => {
+              insertTable(editor);
+            }}
+          >createTable</button>
         </div>
         <Editable renderElement={renderElement} renderLeaf={renderLeaf} />
       </Slate>

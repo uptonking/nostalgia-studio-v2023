@@ -1,10 +1,14 @@
-import getDirection from 'direction';
 import React, { Fragment, useRef } from 'react';
-import { Editor, Node, Range, Element as SlateElement } from 'slate';
 
+import getDirection from 'direction';
+import { Editor, Element as SlateElement, Node, Range } from 'slate';
+
+import { ReactEditor, useReadOnly, useSlateStatic } from '..';
 import useChildren from '../hooks/use-children';
 import { useContentKey } from '../hooks/use-content-key';
-import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
+import {
+  useIsomorphicLayoutEffect,
+} from '../hooks/use-isomorphic-layout-effect';
 import { IS_ANDROID } from '../utils/environment';
 import { isDecoratorRangeListEqual } from '../utils/range-list';
 import {
@@ -20,12 +24,23 @@ import {
   RenderPlaceholderProps,
 } from './editable';
 import Text from './text';
-import { ReactEditor, useReadOnly, useSlateStatic } from '..';
+
+/** The default element renderer. */
+export const DefaultElement = (props: RenderElementProps) => {
+  const { attributes, children, element } = props;
+  const editor = useSlateStatic();
+  const Tag = editor.isInline(element) ? 'span' : 'div';
+  return (
+    <Tag {...attributes} style={{ position: 'relative' }}>
+      {children}
+    </Tag>
+  );
+};
 
 /**
  * Element.
+ *
  */
-
 const Element = (props: {
   decorations: Range[];
   element: SlateElement;
@@ -47,6 +62,7 @@ const Element = (props: {
   const readOnly = useReadOnly();
   const isInline = editor.isInline(element);
   const key = ReactEditor.findKey(editor, element);
+  // 👇🏻 递归渲染
   let children: React.ReactNode = useChildren({
     decorations,
     node: element,
@@ -155,20 +171,5 @@ const MemoizedElement = React.memo(Element, (prev, next) => {
         Range.equals(prev.selection, next.selection)))
   );
 });
-
-/**
- * The default element renderer.
- */
-
-export const DefaultElement = (props: RenderElementProps) => {
-  const { attributes, children, element } = props;
-  const editor = useSlateStatic();
-  const Tag = editor.isInline(element) ? 'span' : 'div';
-  return (
-    <Tag {...attributes} style={{ position: 'relative' }}>
-      {children}
-    </Tag>
-  );
-};
 
 export default MemoizedElement;

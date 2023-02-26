@@ -1,15 +1,17 @@
-import { Editor, NodeEntry, Path, Transforms } from 'slate';
+import { Editor, Node, NodeEntry, Path, Transforms } from 'slate';
 
 import { createRow } from '../table/creator';
-import { Col, splitedTable } from '../table/selection';
+import { Col, splitTable } from '../table/selection';
 
 export function insertBelow(table: NodeEntry, editor: Editor) {
+  console.log('insertBelow-ing')
   const { selection } = editor;
   if (!selection || !table) return;
 
   const yIndex = table[1].length;
 
-  const { gridTable, getCol } = splitedTable(editor, table);
+  const { gridTable, getCol } = splitTable(editor, table);
+  console.log(';; gridTable ', gridTable)
 
   const [startCell] = Editor.nodes(editor, {
     // @ts-expect-error fix-types
@@ -64,8 +66,16 @@ export function insertBelow(table: NodeEntry, editor: Editor) {
     path[yIndex] += 1;
   }
 
-  // @ts-expect-error fix-types
-  Transforms.insertNodes(editor, newRow, {
+  Transforms.insertNodes(editor, newRow as Node, {
     at: Path.next(path),
   });
+
+  console.log(';; insertPath ', path, Path.next(path))
+
+  // model修改完成后，将选区光标移到新行的第一个单元格
+  // const focusPath = [...tablePath, insertRowIndex, 0];
+  // Transforms.select(editor, {
+  //   anchor: Editor.end(editor, focusPath),
+  //   focus: Editor.end(editor, focusPath),
+  // });
 }

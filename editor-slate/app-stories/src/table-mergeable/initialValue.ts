@@ -3,7 +3,23 @@ export const initialValue = [
     type: 'paragraph',
     children: [
       {
-        text: 'Consequat qui anim Lorem aute exercitation dolor adipisicing officia consectetur cillum. Ut dolor ullamco est consectetur. Et enim dolore reprehenderit laborum cillum veniam mollit qui proident occaecat et sunt fugiat. Reprehenderit velit exercitation ullamco nisi quis adipisicing nostrud id qui occaecat culpa culpa velit. Mollit officia dolore proident mollit dolor sit adipisicing cillum sunt veniam sint deserunt ex. Exercitation amet ea ut aliqua magna tempor sunt sint nisi tempor exercitation Lorem culpa.',
+        text: 'table HTML element represents tabular data — that is, information presented in a two-dimensional table comprised of rows and columns of cells containing data.',
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    children: [
+      {
+        text: ' '
+      },
+    ],
+  },
+  {
+    type: 'paragraph',
+    children: [
+      {
+        text: ' '
       },
     ],
   },
@@ -17,7 +33,7 @@ export const initialValue = [
           {
             type: 'table-cell',
             key: 'cell_9',
-            width: 100,
+            width: 150,
             children: [
               {
                 type: 'table-content',
@@ -33,6 +49,7 @@ export const initialValue = [
           {
             type: 'table-cell',
             key: 'cell_10',
+            width: 150,
             colspan: 1,
             children: [
               {
@@ -49,6 +66,7 @@ export const initialValue = [
           {
             type: 'table-cell',
             key: 'cell_11',
+            width: 150,
             children: [
               {
                 type: 'table-content',

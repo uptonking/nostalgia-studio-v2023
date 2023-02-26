@@ -1,14 +1,14 @@
 import { Editor, NodeEntry, Transforms } from 'slate';
 
 import { Cell } from '../table/creator';
-import { Col, splitedTable } from '../table/selection';
+import { Col, splitTable } from '../table/selection';
 import { splitCell } from './splitCell';
 
 export function removeColumn(table: NodeEntry, editor: Editor) {
   const { selection } = editor;
   if (!selection || !table) return;
 
-  const { gridTable, getCol } = splitedTable(editor, table);
+  const { gridTable, getCol } = splitTable(editor, table);
   const xIndex = table[1].length + 1;
 
   const [start, end] = Editor.edges(editor, selection);
@@ -42,7 +42,7 @@ export function removeColumn(table: NodeEntry, editor: Editor) {
 
   splitCell(table, editor);
 
-  const { gridTable: splitedGridTable } = splitedTable(editor, table);
+  const { gridTable: splitedGridTable } = splitTable(editor, table);
 
   const removedCells = splitedGridTable.reduce((p: Col[], c: Col[]) => {
     const cells = c.slice(xLeft, xRight + 1);
@@ -113,7 +113,7 @@ export function removeColumn(table: NodeEntry, editor: Editor) {
     }
   }
 
-  const { gridTable: removedGridTable } = splitedTable(editor, table);
+  const { gridTable: removedGridTable } = splitTable(editor, table);
 
   if (!removedGridTable.length) {
     const contentAfterRemove = Editor.string(editor, table[1]);

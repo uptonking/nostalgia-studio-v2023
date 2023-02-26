@@ -1,14 +1,13 @@
 import eventemitter from 'event-emitter';
 import { Editor } from 'slate';
 
+import type { ExtendedEditor } from './customTypes';
+
+/**
+ * editor plugin with event-emitter
+ */
 export const withTableUtils = <T extends Editor>(editor: T) => {
-  const e = editor as T & {
-    tableState: any;
-    on: any;
-    once: any;
-    off: any;
-    emit: any;
-  };
+  const e = editor as T & ExtendedEditor;
 
   const { onChange } = e;
 

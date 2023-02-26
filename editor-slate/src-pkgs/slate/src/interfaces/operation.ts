@@ -125,6 +125,7 @@ export type NodeOperation =
   | SetNodeOperation
   | SplitNodeOperation;
 
+  /** 实际上对于选区的底层的 Operations 只有一种，统一叫做：set_selection */
 export type SelectionOperation = SetSelectionOperation;
 
 export type TextOperation = InsertTextOperation | RemoveTextOperation;

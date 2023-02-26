@@ -164,7 +164,6 @@ export const NodeTransforms: NodeTransforms = {
   /**
    * Insert nodes at a specific location in the Editor.
    */
-
   insertNodes<T extends Node>(
     editor: Editor,
     nodes: Node | Node[],
@@ -284,7 +283,6 @@ export const NodeTransforms: NodeTransforms = {
    * Lift nodes at a specific location upwards in the document tree, splitting
    * their parent in two if necessary.
    */
-
   liftNodes<T extends Node>(
     editor: Editor,
     options: {
@@ -491,7 +489,6 @@ export const NodeTransforms: NodeTransforms = {
   /**
    * Move the nodes at a location to a new location.
    */
-
   moveNodes<T extends Node>(
     editor: Editor,
     options: {

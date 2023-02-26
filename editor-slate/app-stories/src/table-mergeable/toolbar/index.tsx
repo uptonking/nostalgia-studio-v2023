@@ -10,12 +10,12 @@ interface CardbarProps extends HTMLAttributes<HTMLDivElement> {
 
 const exec =
   (func: Function, ...args: any[]) =>
-  (e?: React.MouseEvent) => {
-    e && e.preventDefault();
-    return func(...args);
-  };
+    (e?: React.MouseEvent) => {
+      e && e.preventDefault();
+      return func(...args);
+    };
 
-export const Cardbar: React.FC<CardbarProps> = (props) => {
+export const Toolbar: React.FC<CardbarProps> = (props) => {
   return (
     <div className={cx('cardbar', props.className)}>
       <div style={{ display: 'flex', gap: 4 }}>
@@ -24,7 +24,7 @@ export const Cardbar: React.FC<CardbarProps> = (props) => {
           <button
             // icon={<DeleteOutlined />}
             onMouseDown={exec(props.delete)}
-          />
+          >DEL</button>
         )}
       </div>
     </div>

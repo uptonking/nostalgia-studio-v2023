@@ -5,6 +5,7 @@ import { getCellsSpan, getTableByCellPath, isEmptyCell } from '../utils/util';
 
 /**
  * 合并单元格数据
+ * - 以合并竖向两行单元格为例，合并后前一行单元格rowspan变为2，👀 后一行少了一个td
  * @param editor
  * @param cellPaths
  * @returns
@@ -20,11 +21,11 @@ function mergeChildren(editor: Editor, cellPaths: Path[]) {
   return newChildren.length > 0
     ? newChildren
     : [
-        {
-          type: 'paragraph',
-          children: [{ text: '' }],
-        },
-      ];
+      {
+        type: 'paragraph',
+        children: [{ text: '' }],
+      },
+    ];
 }
 
 /**

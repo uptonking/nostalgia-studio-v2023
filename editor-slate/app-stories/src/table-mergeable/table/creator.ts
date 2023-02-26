@@ -1,6 +1,14 @@
 import { Element, Node } from 'slate';
 import { v4 as uuid } from 'uuid';
 
+// @ts-expect-error fix-types
+export interface Row extends Element {
+  type: 'table-row';
+  key: string;
+  data: any;
+  children: Cell[];
+}
+
 export function createTable(columns: number, rows: number): any {
   const rowNodes = [...new Array(rows)].map(() => createRow(columns));
 
@@ -11,14 +19,7 @@ export function createTable(columns: number, rows: number): any {
   };
 }
 
-// @ts-expect-error fix-types
-export interface Row extends Element {
-  type: 'table-row';
-  key: string;
-  data: any;
-  children: Cell[];
-}
-
+/** create a row object, cellNodes as children */
 export function createRow(columns: number): Row {
   const cellNodes = [...new Array(columns)].map(() => createCell());
 

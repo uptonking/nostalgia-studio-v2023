@@ -26,7 +26,7 @@ type CustomElements =
   | TableCellElement;
 type CustomText = { text: string; bold?: true };
 
-type ExtendedEditor = {
+export type ExtendedEditor = {
   tableState: {
     showSelection: boolean;
     selection: Path[];

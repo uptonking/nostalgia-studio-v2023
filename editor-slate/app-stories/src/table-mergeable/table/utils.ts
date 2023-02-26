@@ -2,6 +2,13 @@ import { Editor, NodeEntry, Path, Transforms } from 'slate';
 
 import { createContent } from './creator';
 
+export const TableSchemaTypes = {
+  Table: 'table',
+  TableRow: 'table-row',
+  TableCell: 'table-cell',
+  TableContent: 'table-content',
+} as const;
+
 export const withTable = (editor: Editor) => {
   const { addMark, removeMark, deleteBackward, deleteFragment } = editor;
 
@@ -24,7 +31,7 @@ export const withTable = (editor: Editor) => {
 
         const [content] = Editor.nodes(editor, {
           // @ts-expect-error fix-types
-          match: (n) => n.type === 'table-content',
+          match: (n) => n.type === TableSchemaTypes.TableContent,
           at: cell[1],
         });
 
@@ -62,7 +69,7 @@ export const withTable = (editor: Editor) => {
 
         const [content] = Editor.nodes(editor, {
           // @ts-expect-error fix-types
-          match: (n) => n.type === 'table-content',
+          match: (n) => n.type === TableSchemaTypes.TableContent,
           at: cell[1],
         });
 
@@ -94,7 +101,7 @@ export const withTable = (editor: Editor) => {
 
         const [content] = Editor.nodes(editor, {
           // @ts-expect-error fix-types
-          match: (n) => n.type === 'table-content',
+          match: (n) => n.type === TableSchemaTypes.TableContent,
         });
 
         // @ts-expect-error fix-types
@@ -107,7 +114,7 @@ export const withTable = (editor: Editor) => {
 
     Transforms.removeNodes(editor, {
       // @ts-expect-error fix-types
-      match: (n) => n.type === 'table',
+      match: (n) => n.type === TableSchemaTypes.Table,
     });
 
     deleteFragment(...args);
@@ -120,7 +127,7 @@ export const withTable = (editor: Editor) => {
     if (selection && Range.isCollapsed(selection)) {
       const isInTable = Editor.above(editor, {
         // @ts-expect-error fix-types
-        match: (n) => n.type === 'table',
+        match: (n) => n.type === TableSchemaTypes.Table,
       });
 
       if (isInTable) {
@@ -129,7 +136,7 @@ export const withTable = (editor: Editor) => {
 
         const currCell = Editor.above(editor, {
           // @ts-expect-error fix-types
-          match: (n) => n.type === 'table-cell',
+          match: (n) => n.type === TableSchemaTypes.TableCell,
         });
 
         if (isStart && currCell && !Editor.string(editor, currCell[1])) {
@@ -149,7 +156,7 @@ export function checkTableIsExist(editor: Editor, table: NodeEntry) {
     Editor.nodes(editor, {
       at: table[1],
       // @ts-expect-error fix-types
-      match: (n) => n.type === 'table-cell',
+      match: (n) => n.type === TableSchemaTypes.TableCell,
     }),
   );
 
@@ -157,12 +164,13 @@ export function checkTableIsExist(editor: Editor, table: NodeEntry) {
 }
 
 export function isTableElement(type: string) {
-  return (
-    type === 'table' ||
-    type === 'table-row' ||
-    type === 'table-cell' ||
-    type === 'table-content'
-  );
+  return Object.values(TableSchemaTypes).includes(type as any);
+  //  (
+  //   type === 'table' ||
+  //   type === 'table-row' ||
+  //   type === 'table-cell' ||
+  //   type === 'table-content'
+  // );
 }
 
 export function isInSameTable(editor: Editor): boolean {

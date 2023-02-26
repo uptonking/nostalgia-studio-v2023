@@ -46,6 +46,7 @@ export const createEditor = (): Editor => {
         RangeRef.transform(ref, op);
       }
 
+      // 一部分脏路径是在 operation apply 之前的 oldDirtypath，这一部分根据op的类型做路径转换处理
       const oldDirtyPaths = DIRTY_PATHS.get(editor) || [];
       const oldDirtyPathKeys = DIRTY_PATH_KEYS.get(editor) || new Set();
       let dirtyPaths: Path[];
@@ -74,6 +75,7 @@ export const createEditor = (): Editor => {
         dirtyPathKeys = oldDirtyPathKeys;
       }
 
+      // 另一部分脏路径是 operation 自己创建的，由 getDirthPaths 方法获取
       const newDirtyPaths = getDirtyPaths(op);
       for (const path of newDirtyPaths) {
         add(path);
@@ -91,9 +93,11 @@ export const createEditor = (): Editor => {
       }
 
       if (!FLUSHING.get(editor)) {
+        // 设置状态，表明正在执行onChange
         FLUSHING.set(editor, true);
 
         Promise.resolve().then(() => {
+          // 💡 在剩余脚本宏任务完成后才执行onChange
           FLUSHING.set(editor, false);
           editor.onChange();
           editor.operations = [];

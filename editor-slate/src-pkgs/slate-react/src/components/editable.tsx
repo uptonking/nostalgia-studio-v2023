@@ -25,7 +25,9 @@ import {
 import { ReactEditor } from '..';
 import { useChildren } from '../hooks/use-children';
 import { DecorateContext } from '../hooks/use-decorate';
-import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
+import {
+  useIsomorphicLayoutEffect,
+} from '../hooks/use-isomorphic-layout-effect';
 import { ReadOnlyContext } from '../hooks/use-read-only';
 import { useSlate } from '../hooks/use-slate';
 import { TRIPLE_CLICK } from '../utils/constants';
@@ -66,6 +68,9 @@ import {
 
 type DeferredOperation = () => void;
 
+/**
+ *  递归渲染model层数据
+ */
 const Children = (props: Parameters<typeof useChildren>[0]) => (
   <React.Fragment>{useChildren(props)}</React.Fragment>
 );
@@ -163,9 +168,9 @@ export const Editable = (props: EditableProps) => {
   // Whenever the editor updates...
   useIsomorphicLayoutEffect(() => {
     // Update element-related weak maps with the DOM element ref.
-    let window;
-    if (ref.current && (window = getDefaultView(ref.current))) {
-      EDITOR_TO_WINDOW.set(editor, window);
+    let hostWindow;
+    if (ref.current && (hostWindow = getDefaultView(ref.current))) {
+      EDITOR_TO_WINDOW.set(editor, hostWindow);
       EDITOR_TO_ELEMENT.set(editor, ref.current);
       NODE_TO_ELEMENT.set(editor, ref.current);
       ELEMENT_TO_NODE.set(ref.current, editor);
@@ -235,6 +240,7 @@ export const Editable = (props: EditableProps) => {
     const newDomRange = selection && ReactEditor.toDOMRange(editor, selection);
     if (newDomRange) {
       if (Range.isBackward(selection!)) {
+        // 💡 将 model 中的选区同步到 DOM 上
         domSelection.setBaseAndExtent(
           newDomRange.endContainer,
           newDomRange.endOffset,
@@ -274,12 +280,14 @@ export const Editable = (props: EditableProps) => {
   }, [autoFocus]);
 
   /**
+   * todo remove throttle for easier debug
    * - Listen on the native `selectionchange` event to be able to update any time the selection changes.
    * - This is required because React's `onSelect` is leaky and non-standard so it doesn't fire until after a selection has been released.
    * - This causes issues in situations where another change happens while a selection is being dragged.
    */
   const onDOMSelectionChange = useCallback(
-    throttle(() => {
+    // throttle(() => {
+    () => {
       if (
         !ReactEditor.isComposing(editor) &&
         !state.isUpdatingSelection &&
@@ -319,13 +327,16 @@ export const Editable = (props: EditableProps) => {
           Transforms.select(editor, range);
         }
       }
-    }, 100),
+    },
+    // }, 100),
     [readOnly],
   );
 
   /** 只是debounce去抖 onDOMSelectionChange 方法，但暂停时间为0 */
   const scheduleOnDOMSelectionChange = useMemo(
-    () => debounce(onDOMSelectionChange, 0),
+    // () => debounce(onDOMSelectionChange, 0),
+    // todo remove debounce for easier debug
+    () => onDOMSelectionChange,
     [onDOMSelectionChange],
   );
 
@@ -348,8 +359,10 @@ export const Editable = (props: EditableProps) => {
         // Some IMEs/Chrome extensions like e.g. Grammarly set the selection immediately before
         // triggering a `beforeinput` expecting the change to be applied to the immediately before
         // set selection.
-        scheduleOnDOMSelectionChange.flush();
-        onDOMSelectionChange.flush();
+        // scheduleOnDOMSelectionChange.flush();
+        // onDOMSelectionChange.flush();
+        // scheduleOnDOMSelectionChange();
+        // onDOMSelectionChange();
 
         const { selection } = editor;
         const { inputType: type } = event;
@@ -1169,7 +1182,7 @@ export const Editable = (props: EditableProps) => {
                 const { selection } = editor;
                 const element =
                   editor.children[
-                    selection !== null ? selection.focus.path[0] : 0
+                  selection !== null ? selection.focus.path[0] : 0
                   ];
                 const isRTL = getDirection(Node.string(element)) === 'rtl';
 

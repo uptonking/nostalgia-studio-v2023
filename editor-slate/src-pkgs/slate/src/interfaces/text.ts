@@ -14,6 +14,7 @@ export interface BaseText {
   text: string;
 }
 
+/** only prop required is `text` */
 export type Text = ExtendedType<'Text', BaseText>;
 
 export interface TextEqualsOptions {

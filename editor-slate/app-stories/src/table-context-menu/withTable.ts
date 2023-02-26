@@ -9,9 +9,10 @@ import {
   Transforms,
 } from 'slate';
 
-import { isCanEditInTable } from './utils/util';
+import { isEditableInTable } from './utils/util';
 
 const HEADER_LIST = new Set(['h1', 'h2', 'h3', 'h4']);
+
 /**
  * 处理表格选区存在时，操作功能
  * @param editor
@@ -115,6 +116,9 @@ const resetCellContent = (editor: Editor, cellPath: Path) => {
   });
 };
 
+/**
+ * table utils as editor plugin
+ */
 export const withTable = <T extends Editor>(editor: T) => {
   const e = editor;
   const {
@@ -226,7 +230,7 @@ export const withTable = <T extends Editor>(editor: T) => {
       });
       return;
     }
-    if (!isCanEditInTable(editor)) return;
+    if (!isEditableInTable(editor)) return;
 
     deleteFragment(...args);
   };

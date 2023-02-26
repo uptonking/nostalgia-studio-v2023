@@ -126,15 +126,16 @@ export const ReactEditor = {
 
   /**
    * Find the DOM node that implements DocumentOrShadowRoot for the editor.
+   * - 一般返回`document`对象，而不是document.documentElement
    */
-
   findDocumentOrShadowRoot(editor: ReactEditor): Document | ShadowRoot {
     const el = ReactEditor.toDOMNode(editor, editor);
+    //
     const root = el.getRootNode();
 
     if (
-      // (root instanceof Document || root instanceof ShadowRoot) &&
-      root instanceof Document &&
+      (root instanceof Document || root instanceof ShadowRoot) &&
+      // @ts-expect-error fix-types
       root.getSelection != null
     ) {
       return root;
@@ -244,9 +245,9 @@ export const ReactEditor = {
       (!editable || targetEl.isContentEditable
         ? true
         : (typeof targetEl.isContentEditable === 'boolean' && // isContentEditable exists only on HTMLElement, and on other nodes it will be undefined
-            // this is the core logic that lets you know you got the right editor.selection instead of null when editor is contenteditable="false"(readOnly)
-            targetEl.closest('[contenteditable="false"]') === editorEl) ||
-          !!targetEl.getAttribute('data-slate-zero-width'))
+          // this is the core logic that lets you know you got the right editor.selection instead of null when editor is contenteditable="false"(readOnly)
+          targetEl.closest('[contenteditable="false"]') === editorEl) ||
+        !!targetEl.getAttribute('data-slate-zero-width'))
     );
   },
 
@@ -609,7 +610,6 @@ export const ReactEditor = {
   /**
    * Find a Slate range from a DOM range or selection.
    */
-
   toSlateRange<T extends boolean>(
     editor: ReactEditor,
     domRange: DOMRange | DOMStaticRange | DOMSelection,
@@ -677,9 +677,9 @@ export const ReactEditor = {
     const focus = isCollapsed
       ? anchor
       : ReactEditor.toSlatePoint(editor, [focusNode, focusOffset], {
-          exactMatch,
-          suppressThrow,
-        });
+        exactMatch,
+        suppressThrow,
+      });
     if (!focus) {
       return null as T extends true ? Range | null : Range;
     }

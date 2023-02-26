@@ -19,6 +19,7 @@ export interface BaseElement {
   children: Descendant[];
 }
 
+/** only prop required is `children` */
 export type Element = ExtendedType<'Element', BaseElement>;
 
 export interface ElementInterface {

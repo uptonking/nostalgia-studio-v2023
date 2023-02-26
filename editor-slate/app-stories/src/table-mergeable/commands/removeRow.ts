@@ -1,14 +1,14 @@
 import { Editor, NodeEntry, Transforms } from 'slate';
 
 import { Cell } from '../table/creator';
-import { Col, splitedTable } from '../table/selection';
+import { Col, splitTable } from '../table/selection';
 import { splitCell } from './splitCell';
 
 export function removeRow(table: NodeEntry, editor: Editor) {
   const { selection } = editor;
   if (!selection || !table) return;
 
-  const { gridTable, getCol } = splitedTable(editor, table);
+  const { gridTable, getCol } = splitTable(editor, table);
 
   const yIndex = table[1].length;
 
@@ -43,7 +43,7 @@ export function removeRow(table: NodeEntry, editor: Editor) {
 
   splitCell(table, editor);
 
-  const { gridTable: splitedGridTable } = splitedTable(editor, table);
+  const { gridTable: splitedGridTable } = splitTable(editor, table);
 
   const removeCols = splitedGridTable
     .slice(yTop, yBottom + 1)

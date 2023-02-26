@@ -4,7 +4,7 @@ import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 
 import { getNextRowSpan } from '../utils/util';
 
-function TableRow(props: RenderElementProps) {
+export function CustomTableRow(props: RenderElementProps) {
   const { attributes, children, element } = props;
 
   const editor = useSlate();
@@ -25,6 +25,3 @@ function TableRow(props: RenderElementProps) {
   );
 }
 
-export function RenderTableRow(props: RenderElementProps) {
-  return <TableRow {...props} />;
-}

@@ -62,7 +62,6 @@ export const SelectionTransforms: SelectionTransforms = {
   /**
    * Unset the selection.
    */
-
   deselect(editor: Editor): void {
     const { selection } = editor;
 
@@ -125,7 +124,6 @@ export const SelectionTransforms: SelectionTransforms = {
   /**
    * Set the selection to a new value.
    */
-
   select(editor: Editor, target: Location): void {
     const { selection } = editor;
     target = Editor.range(editor, target);
@@ -210,6 +208,7 @@ export const SelectionTransforms: SelectionTransforms = {
     }
 
     if (Object.keys(oldProps).length > 0) {
+      // console.log(';; opSelApply ', JSON.stringify(oldProps), JSON.stringify(newProps))
       editor.apply({
         type: 'set_selection',
         properties: oldProps,

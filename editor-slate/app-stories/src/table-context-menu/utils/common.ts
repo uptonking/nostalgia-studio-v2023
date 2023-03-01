@@ -206,13 +206,14 @@ export function getOriginTable(table: TableElement) {
  * @returns
  */
 export function getTableCellNode(editor: Editor, target: HTMLElement) {
-  const data = ReactEditor.toSlateNode(editor, target);
-  const path = ReactEditor.findPath(editor, data);
+  const slaNode = ReactEditor.toSlateNode(editor, target);
+  const path = ReactEditor.findPath(editor, slaNode);
   const [node] = Editor.nodes(editor, {
     at: path,
     match: (n) =>
       !Editor.isEditor(n) && Element.isElement(n) && n.type === 'tableCell',
   });
+  // console.log(';; slNode-path-node ', slaNode, path, node)
   return node;
 }
 
@@ -263,9 +264,9 @@ export function isEmptyCell(editor: Editor, cellNode: TableCellElement) {
 }
 
 /**
- * 生产空 cell node
+ * 创建slate model中的 cell node
  */
-export function getEmptyCellNode(): TableCellElement {
+export function createEmptyCellNode(): TableCellElement {
   return {
     type: 'tableCell',
     children: [
@@ -278,9 +279,9 @@ export function getEmptyCellNode(): TableCellElement {
 }
 
 /**
- * 生产空 row node
+ * 创建slate model中的 row node
  */
-export function getRowNode(children: TableCellElement[]): TableRowElement {
+export function createRowNode(children: TableCellElement[]): TableRowElement {
   return {
     type: 'tableRow',
     children,
@@ -404,11 +405,12 @@ export function getTableByCellPath(
 /**
  * table node 设置 originTable 数据，便于转换为 word
  * @param editor
- * @param element
+ * @param tablePath
  */
 export function setTableNodeOrigin(editor: Editor, tablePath: Path) {
   const [tableNode] = Editor.node(editor, tablePath);
   const originTable = getOriginTable(tableNode as TableElement);
+  // console.log(';; originTable ', originTable)
   Transforms.setNodes(
     editor,
     {

@@ -77,8 +77,8 @@ export const ReactEditor = {
 
   /**
    * Find a key for a Slate node.
+   * - if not found, generate a numeric auto-incremental key for the slaNode.
    */
-
   findKey(editor: ReactEditor, node: Node): Key {
     let key = NODE_TO_KEY.get(node);
 
@@ -92,8 +92,8 @@ export const ReactEditor = {
 
   /**
    * Find the path of Slate node.
+   * - 从输入node的parent不断向上找，直到根节点
    */
-
   findPath(editor: ReactEditor, node: Node): Path {
     const path: Path = [];
     let child = node;
@@ -288,9 +288,9 @@ export const ReactEditor = {
   },
 
   /**
-   * Find the native DOM element from a Slate node.
+   * 💡 Find the native DOM element from a Slate node.
+   * ? why not just get from NODE_TO_ELEMENT
    */
-
   toDOMNode(editor: ReactEditor, node: Node): HTMLElement {
     const KEY_TO_ELEMENT = EDITOR_TO_KEY_TO_ELEMENT.get(editor);
     const domNode = Editor.isEditor(node)
@@ -358,8 +358,8 @@ export const ReactEditor = {
     return domPoint;
   },
 
-  /**
-   * - Find a native DOM range from a Slate `range`.
+  /** 💡 Find a native DOM range from a Slate `range`.
+   * - 实现基于 toDOMPoint + 处理方向 + 处理零宽字符
    * - Notice: the returned range will always be ordinal regardless of the direction of Slate `range` due to DOM API limit.
    * - there is no way to create a reverse DOM Range using Range.setStart/setEnd
    * according to https://dom.spec.whatwg.org/#concept-range-bp-set.
@@ -395,9 +395,8 @@ export const ReactEditor = {
   },
 
   /**
-   * Find a Slate node from a native DOM `element`.
+   * 💡 Find a Slate node from a native DOM element.
    */
-
   toSlateNode(editor: ReactEditor, domNode: DOMNode): Node {
     let domEl = isDOMElement(domNode) ? domNode : domNode.parentElement;
 
@@ -490,6 +489,7 @@ export const ReactEditor = {
 
   /**
    * Find a Slate point from a DOM selection's `domNode` and `domOffset`.
+   * - 处理leafNode和voidNode
    */
   toSlatePoint<T extends boolean>(
     editor: ReactEditor,
@@ -608,7 +608,7 @@ export const ReactEditor = {
   },
 
   /**
-   * Find a Slate range from a DOM range or selection.
+   * 💡 Find a Slate range from a DOM range or selection.
    */
   toSlateRange<T extends boolean>(
     editor: ReactEditor,

@@ -124,7 +124,7 @@ export type EditableProps = {
 
 /**
  * 💡 Editable. The main Slate editor.
- * - 事件顺序：keydown > beforeinput > onchange > keyup
+ * - 事件顺序: keydown > beforeinput > input > keyup
  * - 对于接收的事件处理器props如onKeyDown，若return true则会跳过此处slate自己的逻辑
  * - By default, the Editable component comes with a set of event handlers that handle typical rich-text editing behaviors (for example, it implements its own onCopy, onPaste, onDrop, and onKeyDown handlers).
  * - you may want to extend or override Slate's default behavior, which can be done by passing your own event handler(s) to the Editable component.
@@ -148,7 +148,8 @@ export const Editable = (props: EditableProps) => {
   const editor = useSlate();
   // Rerender editor when composition status changed
   const [isComposing, setIsComposing] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const editableDomRef = useRef<HTMLDivElement>(null);
+  /** 将修改编辑器model的ops，在beforeInput里面收集，延迟到input里面执行 */
   const deferredOperations = useRef<DeferredOperation[]>([]);
 
   // Update internal state on each render.
@@ -169,17 +170,21 @@ export const Editable = (props: EditableProps) => {
   useIsomorphicLayoutEffect(() => {
     // Update element-related weak maps with the DOM element ref.
     let hostWindow;
-    if (ref.current && (hostWindow = getDefaultView(ref.current))) {
+    if (
+      editableDomRef.current &&
+      (hostWindow = getDefaultView(editableDomRef.current))
+    ) {
       EDITOR_TO_WINDOW.set(editor, hostWindow);
-      EDITOR_TO_ELEMENT.set(editor, ref.current);
-      NODE_TO_ELEMENT.set(editor, ref.current);
-      ELEMENT_TO_NODE.set(ref.current, editor);
+      EDITOR_TO_ELEMENT.set(editor, editableDomRef.current);
+      NODE_TO_ELEMENT.set(editor, editableDomRef.current);
+      ELEMENT_TO_NODE.set(editableDomRef.current, editor);
     } else {
       NODE_TO_ELEMENT.delete(editor);
     }
 
     // Make sure the DOM selection state is in sync.
     const { selection } = editor;
+    // console.log(';; chk-sel ',JSON.stringify(selection))
     const root = ReactEditor.findDocumentOrShadowRoot(editor) as Document;
     const domSelection = root.getSelection();
 
@@ -212,11 +217,11 @@ export const Editable = (props: EditableProps) => {
     if (hasDomSelection && hasDomSelectionInEditor && selection) {
       const slateRange = ReactEditor.toSlateRange(editor, domSelection, {
         exactMatch: true,
-
         // domSelection is not necessarily a valid Slate range
         // (e.g. when clicking on contentEditable:false element)
         suppressThrow: true,
       });
+      // console.log(';; chk-range ',JSON.stringify(slateRange))
       if (slateRange && Range.equals(slateRange, selection)) {
         return;
       }
@@ -239,6 +244,7 @@ export const Editable = (props: EditableProps) => {
 
     const newDomRange = selection && ReactEditor.toDOMRange(editor, selection);
     if (newDomRange) {
+      // console.log(';; slateSel-TO-domSel')
       if (Range.isBackward(selection!)) {
         // 💡 将 model 中的选区同步到 DOM 上
         domSelection.setBaseAndExtent(
@@ -274,8 +280,8 @@ export const Editable = (props: EditableProps) => {
 
   // The autoFocus TextareaHTMLAttribute doesn't do anything on a div, so it needs to be manually focused.
   useEffect(() => {
-    if (ref.current && autoFocus) {
-      ref.current.focus();
+    if (editableDomRef.current && autoFocus) {
+      editableDomRef.current.focus();
     }
   }, [autoFocus]);
 
@@ -320,10 +326,16 @@ export const Editable = (props: EditableProps) => {
           isTargetInsideNonReadonlyVoid(editor, focusNode);
 
         if (anchorNodeSelectable && focusNodeSelectable) {
+          // 💡 将DOM selection转化为slate的range对象
           const range = ReactEditor.toSlateRange(editor, domSelection, {
             exactMatch: false,
             suppressThrow: false,
           });
+          // console.log(
+          //   ';; domSel-TO-slateSel ',
+          //   JSON.stringify(editor.selection),
+          //   JSON.stringify(range),
+          // );
           Transforms.select(editor, range);
         }
       }
@@ -334,8 +346,8 @@ export const Editable = (props: EditableProps) => {
 
   /** 只是debounce去抖 onDOMSelectionChange 方法，但暂停时间为0 */
   const scheduleOnDOMSelectionChange = useMemo(
-    // () => debounce(onDOMSelectionChange, 0),
     // todo remove debounce for easier debug
+    // () => debounce(onDOMSelectionChange, 0),
     () => onDOMSelectionChange,
     [onDOMSelectionChange],
   );
@@ -367,6 +379,7 @@ export const Editable = (props: EditableProps) => {
         const { selection } = editor;
         const { inputType: type } = event;
         const data = (event as any).dataTransfer || event.data || undefined;
+        // console.log(';; beforeInput ', type, JSON.stringify(editor.selection));
 
         // These two types occur while a user is composing text and can't be
         // cancelled. Let them through and wait for the composition to end.
@@ -595,15 +608,18 @@ export const Editable = (props: EditableProps) => {
   // real `beforeinput` events sadly... (2019/11/04)
   // https://github.com/facebook/react/issues/11211
   useIsomorphicLayoutEffect(() => {
-    if (ref.current && HAS_BEFORE_INPUT_SUPPORT) {
+    if (editableDomRef.current && HAS_BEFORE_INPUT_SUPPORT) {
       // @ts-ignore The `beforeinput` event isn't recognized.
-      ref.current.addEventListener('beforeinput', onDOMBeforeInput);
+      editableDomRef.current.addEventListener('beforeinput', onDOMBeforeInput);
     }
 
     return () => {
-      if (ref.current && HAS_BEFORE_INPUT_SUPPORT) {
+      if (editableDomRef.current && HAS_BEFORE_INPUT_SUPPORT) {
         // @ts-ignore The `beforeinput` event isn't recognized.
-        ref.current.removeEventListener('beforeinput', onDOMBeforeInput);
+        editableDomRef.current.removeEventListener(
+          'beforeinput',
+          onDOMBeforeInput,
+        );
       }
     };
   }, [onDOMBeforeInput]);
@@ -650,8 +666,10 @@ export const Editable = (props: EditableProps) => {
   return (
     <ReadOnlyContext.Provider value={readOnly}>
       <DecorateContext.Provider value={decorate}>
-        {/* @ts-ignore */}
         <Component
+          // explicitly set this
+          contentEditable={!readOnly}
+          ref={editableDomRef}
           role={readOnly ? undefined : 'textbox'}
           {...attributes}
           // COMPAT: Certain browsers don't support the `beforeinput` event, so we'd
@@ -676,14 +694,11 @@ export const Editable = (props: EditableProps) => {
           }
           data-slate-editor
           data-slate-node='value'
-          // explicitly set this
-          contentEditable={!readOnly}
           // in some cases, a decoration needs access to the range / selection to decorate a text node,
           // then you will select the whole text node when you select part the of text
           // this magic zIndex="-1" will fix it
           zindex={-1}
           suppressContentEditableWarning
-          ref={ref}
           style={{
             // Allow positioning relative to the editable element.
             position: 'relative',
@@ -1157,7 +1172,7 @@ export const Editable = (props: EditableProps) => {
           /** 处理热键 */
           onKeyDown={useCallback(
             (event: React.KeyboardEvent<HTMLDivElement>) => {
-              // console.log(';; s-e onKeyDown ', event);
+              console.log(';; s-e onKeyDown ', JSON.stringify(editor.selection), event);
 
               if (!readOnly && hasEditableTarget(editor, event.target)) {
                 const { nativeEvent } = event;
@@ -1253,7 +1268,7 @@ export const Editable = (props: EditableProps) => {
                   event.preventDefault();
 
                   if (selection && Range.isCollapsed(selection)) {
-                    console.log(';; key-mvBack ');
+                    // console.log(';; key-mvBack ');
                     Transforms.move(editor, { reverse: !isRTL });
                   } else {
                     Transforms.collapse(editor, { edge: 'start' });

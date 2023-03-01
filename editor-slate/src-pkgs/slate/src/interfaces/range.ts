@@ -37,6 +37,7 @@ export interface RangeInterface {
   isExpanded: (range: Range) => boolean;
   isForward: (range: Range) => boolean;
   isRange: (value: any) => value is Range;
+  /** Iterate through all of the point entries in a range. */
   points: (range: Range) => Generator<PointEntry, void, undefined>;
   start: (range: Range) => Point;
   transform: (
@@ -192,7 +193,6 @@ export const Range: RangeInterface = {
   /**
    * Iterate through all of the point entries in a range.
    */
-
   *points(range: Range): Generator<PointEntry, void, undefined> {
     yield [range.anchor, 'anchor'];
     yield [range.focus, 'focus'];

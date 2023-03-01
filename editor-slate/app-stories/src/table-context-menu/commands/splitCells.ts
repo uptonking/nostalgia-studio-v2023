@@ -2,11 +2,11 @@ import { Editor, Node, NodeEntry, Path, Transforms } from 'slate';
 
 import { TableCellElement, TableElement } from '../customTypes';
 import {
+  createEmptyCellNode,
+  createRowNode,
   getCellBySelectOrFocus,
-  getEmptyCellNode,
   getNextInsertRowPosition,
   getOriginTable,
-  getRowNode,
 } from '../utils/common';
 
 /**
@@ -80,7 +80,7 @@ function dealCell(
     if (rowIndex === 0 && colSpan > 1) {
       // 处理当前单元格同行且需要拆分
       const nodes = Array.from({ length: colSpan - 1 }).map(() =>
-        getEmptyCellNode(),
+        createEmptyCellNode(),
       );
       Transforms.insertNodes(editor, nodes, {
         at: Path.next(cellNode[1]),
@@ -90,7 +90,7 @@ function dealCell(
       // 存在跨行数是拆分
       currentRow = Path.next(currentRow);
       const nodes = Array.from({ length: colSpan }).map(() =>
-        getEmptyCellNode(),
+        createEmptyCellNode(),
       );
 
       // 处理下一行拆分后单元起点
@@ -123,7 +123,7 @@ function splitCell(editor: Editor, cellNode: NodeEntry<Node>) {
 
       insertRowArr.forEach(([insertRow, position]) => {
         const rowNodes = Array.from({ length: insertRow }).map(() =>
-          getRowNode([]),
+          createRowNode([]),
         );
 
         Transforms.insertNodes(editor, rowNodes, {

@@ -692,7 +692,6 @@ export const Editor: EditorInterface = {
   /**
    * Check if a value is an `Editor` object.
    */
-
   isEditor(value: any): value is Editor {
     if (!isPlainObject(value)) return false;
     const cachedIsEditor = IS_EDITOR_CACHE.get(value);

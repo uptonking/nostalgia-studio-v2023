@@ -5,12 +5,12 @@ import ReactDOM from 'react-dom';
 
 import { Editor, Path } from 'slate';
 
-import {deleteCol} from '../commands/deleteCol';
-import {deleteRow} from '../commands/deleteRow';
+import { deleteCol } from '../commands/deleteCol';
+import { deleteRow } from '../commands/deleteRow';
 import { insertColLeft, insertColRight } from '../commands/insertCol';
 import { insertRowAbove, insertRowBelow } from '../commands/insertRow';
-import {mergeCells} from '../commands/mergeCells';
-import {splitCells} from '../commands/splitCells';
+import { mergeCells } from '../commands/mergeCells';
+import { splitCells } from '../commands/splitCells';
 import { TableCellElement } from '../customTypes';
 import { getCellBySelectOrFocus, setTableNodeOrigin } from '../utils/common';
 
@@ -58,6 +58,7 @@ export const ContextMenu: FC<Props> = ({
     }
   }, [visible, position]);
 
+  /** update slateTableNode with originTable */
   const updateTableNode = (cellPaths: Path[]) => {
     const cells = getCellBySelectOrFocus(editor, cellPaths);
     setTableNodeOrigin(editor, Path.parent(Path.parent(cells[0])));

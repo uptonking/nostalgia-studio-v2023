@@ -9,7 +9,7 @@ import {
   rangeType,
 } from './common';
 
-export default function selectionBound(editor: Editor, selectPath: Path[]) {
+export function selectionBound(editor: Editor, selectPath: Path[]) {
   // 不能直接根据 selectPath 获取左上 右下单元格计算
   const tablePath = Path.parent(Path.parent(selectPath[0]));
   const [tableNode] = Editor.node(editor, tablePath);

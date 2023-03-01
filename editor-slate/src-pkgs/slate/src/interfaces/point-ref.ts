@@ -6,7 +6,6 @@ import { TextDirection } from './types';
  * operations are applied to the editor. You can access their `current` property
  * at any time for the up-to-date point value.
  */
-
 export interface PointRef {
   current: Point | null;
   affinity: TextDirection | null;

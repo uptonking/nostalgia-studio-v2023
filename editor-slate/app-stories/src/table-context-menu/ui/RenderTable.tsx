@@ -19,7 +19,7 @@ import {
   setTableNodeOrigin,
 } from '../utils/common';
 import { getSelection } from '../utils/selection';
-import selectionBound from '../utils/selectionBound';
+import { selectionBound } from '../utils/selectionBound';
 
 /**
  * table with context menu
@@ -27,8 +27,8 @@ import selectionBound from '../utils/selectionBound';
  */
 export function CustomTable(props: RenderElementProps) {
   const { attributes, children, element } = props;
-  const tableRef = useRef<HTMLTableElement>(null);
-  const [startPath, setStartPath] = useState<Path | null>(null);
+  const tblRef = useRef<HTMLTableElement>(null);
+  const [tblSelStart, setTblSelStart] = useState<Path | null>(null);
   const [selectCells, setSelectCells] = useState<Path[]>([]);
   const [selBound, setSelBound] = useState({
     x: 0,
@@ -38,8 +38,8 @@ export function CustomTable(props: RenderElementProps) {
     top: 0,
     bottom: 0,
   });
-  const [showWrap, setShowWrap] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
+  const [showTblSel, setShowTblSel] = useState(false);
+  const [showCtxMenu, setShowCtxMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState({
     left: -9999,
     top: -9999,
@@ -72,26 +72,26 @@ export function CustomTable(props: RenderElementProps) {
 
   useEffect(() => {
     const mousedownCallback = (e: MouseEvent) => {
-      const isTable = e.target && tableRef.current?.contains(e.target as Node);
+      const isTable = e.target && tblRef.current?.contains(e.target as Node);
       if (!isTable || e.button !== 2) {
         // 不在表格位置 || 不是鼠标右键
         // collapse 选区
         Transforms.collapse(editor);
-        setShowWrap(false);
-        setShowMenu(false);
+        setShowTblSel(false);
+        setShowCtxMenu(false);
         setSelectCells([]);
       }
     };
     const mouseupCallback = () => {
-      setStartPath(null);
+      setTblSelStart(null);
     };
 
     const blurCallback = () => {
-      setShowMenu(false);
+      setShowCtxMenu(false);
     };
 
     const reset = () => {
-      setShowWrap(false);
+      setShowTblSel(false);
       setSelectCells([]);
     };
     if (editor) {
@@ -122,54 +122,58 @@ export function CustomTable(props: RenderElementProps) {
 
   useEffect(() => {
     if (selectCells.length < 2) return;
-    setShowWrap(true);
+    setShowTblSel(true);
   }, [selectCells]);
 
   useEffect(() => {
     editor.tableState = {
-      showSelection: showWrap,
+      showSelection: showTblSel,
       selection: selectCells,
     };
-  }, [editor, selectCells, showWrap]);
+  }, [editor, selectCells, showTblSel]);
 
   const updateSelection = useCallback(
     (endPath: Path) => {
-      if (!startPath) return;
-      if (Path.equals(startPath, endPath)) {
+      if (!tblSelStart) return;
+      if (Path.equals(tblSelStart, endPath)) {
         // 当选区为一个
-        setShowWrap(false);
+        setShowTblSel(false);
         return;
       }
       setSelectCells(
-        getSelection(editor, startPath, endPath, element as TableElement),
+        getSelection(editor, tblSelStart, endPath, element as TableElement),
       );
     },
-    [editor, element, startPath],
+    [editor, element, tblSelStart],
   );
 
   return (
     <div className='yt-e-table-wrap' {...attributes}>
       <table
-        ref={tableRef}
-        className={`yt-e-table${showWrap ? ' ye-e-table-selected' : ''}`}
+        ref={tblRef}
+        className={`yt-e-table${showTblSel ? ' ye-e-table-selected' : ''}`}
         onDragStart={(e) => e.preventDefault()}
         onMouseDown={(e) => {
+          // console.log(';; mouse-down table ', e.target)
+
           const node = getTableCellNode(editor, e.target as HTMLElement);
           if (!node || e.button !== 0) return;
-          setStartPath(node[1]);
+          setTblSelStart(node[1]);
         }}
         onMouseLeave={() => {
-          startPath && setShowWrap(false);
+          tblSelStart && setShowTblSel(false);
         }}
         onMouseMove={(e) => {
-          if (startPath) {
+          // to-enhance 在跨单元格时新单元格不应该显示文字选区，应该直接显示单元格选区
+          // e.preventDefault();
+          if (tblSelStart) {
             const endNode = getTableCellNode(editor, e.target as HTMLElement);
             if (endNode[1]) updateSelection(endNode[1]);
           }
         }}
         onContextMenu={(e) => {
           e.preventDefault();
-          setShowMenu(true);
+          setShowCtxMenu(true);
           setMenuPosition({
             left: e.clientX,
             top: e.clientY,
@@ -181,7 +185,7 @@ export function CustomTable(props: RenderElementProps) {
       <div
         className='yt-e-table-selection'
         style={{
-          display: `${showWrap ? 'block' : 'none'}`,
+          display: `${showTblSel ? 'block' : 'none'}`,
           top: `${selBound.y}px`,
           left: `${selBound.x}px`,
           width: `${selBound.right - selBound.left}px`,
@@ -189,7 +193,7 @@ export function CustomTable(props: RenderElementProps) {
         }}
       />
       <ContextMenu
-        visible={showMenu}
+        visible={showCtxMenu}
         position={menuPosition}
         editor={editor}
         selectCells={selectCells}

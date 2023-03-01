@@ -27,11 +27,14 @@ const CustomElement = (props: RenderElementProps) => {
 };
 
 export function TableContextMenu() {
-  const editor = useMemo(
+
+  const [value] = useState<Descendant[]>(initialValue);
+
+  const editor = window['edit'] = useMemo(
     () => withTable(withTableUtils(withReact(createEditor()))),
     [],
   );
-  const [value] = useState<Descendant[]>(initialValue);
+
   const renderElement = useCallback(
     (props) => <CustomElement {...props} />,
     [],
@@ -43,7 +46,8 @@ export function TableContextMenu() {
         editor={editor}
         value={value}
         onChange={(newValue) => {
-          // console.log(';;onChg ', newValue);
+          console.log(';;onChg ', JSON.stringify(editor.selection),);
+          console.log(JSON.stringify(editor.operations), editor);
           // setValue(newValue);
         }}
       >
@@ -56,6 +60,7 @@ export function TableContextMenu() {
             editor.emit('keydown', e);
           }}
           onMouseDown={(e) => {
+            // console.log(';; mouse-down editable ')
             editor.emit('mousedown', e);
           }}
           onBlur={() => {

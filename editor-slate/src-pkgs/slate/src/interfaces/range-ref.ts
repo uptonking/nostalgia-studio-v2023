@@ -5,7 +5,6 @@ import { Operation, Range } from '../../src';
  * operations are applied to the editor. You can access their `current` property
  * at any time for the up-to-date range value.
  */
-
 export interface RangeRef {
   current: Range | null;
   affinity: 'forward' | 'backward' | 'outward' | 'inward' | null;

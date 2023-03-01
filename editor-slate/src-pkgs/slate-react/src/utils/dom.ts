@@ -14,13 +14,13 @@ import DOMSelection = globalThis.Selection;
 import DOMStaticRange = globalThis.StaticRange;
 
 export {
-  DOMNode,
   DOMComment,
   DOMElement,
-  DOMText,
+  DOMNode,
   DOMRange,
   DOMSelection,
   DOMStaticRange,
+  DOMText,
 };
 
 declare global {
@@ -71,7 +71,6 @@ export const isDOMNode = (value: any): value is DOMNode => {
 /**
  * Check if a value is a DOM selection.
  */
-
 export const isDOMSelection = (value: any): value is DOMSelection => {
   const window = value && value.anchorNode && getDefaultView(value.anchorNode);
   return !!window && value instanceof window.Selection;

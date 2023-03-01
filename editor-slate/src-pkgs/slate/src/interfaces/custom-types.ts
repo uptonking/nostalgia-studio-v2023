@@ -2,7 +2,7 @@
  * Extendable Custom Types Interface
  */
 
-/** 支持覆盖的接口名 */
+/** user Extendable Types */
 type ExtendableTypes =
   | 'Editor'
   | 'Element'

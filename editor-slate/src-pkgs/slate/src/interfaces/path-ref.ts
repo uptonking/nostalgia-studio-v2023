@@ -5,7 +5,6 @@ import { Operation, Path } from '../../src';
  * operations are applied to the editor. You can access their `current` property
  * at any time for the up-to-date path value.
  */
-
 export interface PathRef {
   current: Path | null;
   affinity: 'forward' | 'backward' | null;

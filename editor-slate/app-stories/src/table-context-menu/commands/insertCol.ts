@@ -2,13 +2,13 @@ import { Editor, Path, Transforms } from 'slate';
 
 import { TableCellElement, TableElement } from '../customTypes';
 import {
+  createEmptyCellNode,
+  createRowNode,
   getCellBySelectOrFocus,
-  getEmptyCellNode,
   getNextInsertRowPosition,
   getNextRowSpan,
   getRangeByOrigin,
   getRealPathByPath,
-  getRowNode,
   getTableByCellPath,
 } from '../utils/common';
 
@@ -47,13 +47,13 @@ function insertColByCell(
   // 在 insertNodes 前获取跨行数，避免获取不准确
   const rowSpan = getNextRowSpan(editor, [...tablePath, index]);
 
-  Transforms.insertNodes(editor, getEmptyCellNode(), {
+  Transforms.insertNodes(editor, createEmptyCellNode(), {
     at: [...tablePath, index, cellIndex],
   });
 
   if (rowSpan > 1) {
     Array.from({ length: rowSpan - 1 }).forEach((_, i) => {
-      Transforms.insertNodes(editor, getRowNode([getEmptyCellNode()]), {
+      Transforms.insertNodes(editor, createRowNode([createEmptyCellNode()]), {
         at: [...tablePath, index + i + 1],
       });
     });

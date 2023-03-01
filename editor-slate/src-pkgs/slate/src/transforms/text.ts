@@ -450,7 +450,6 @@ export const TextTransforms: TextTransforms = {
   /**
    * Insert a string of text in the Editor.
    */
-
   insertText(
     editor: Editor,
     text: string,
@@ -485,6 +484,7 @@ export const TextTransforms: TextTransforms = {
           const endPoint = endRef.unref();
 
           at = startPoint || endPoint!;
+          console.log(';; 更新选区 ', JSON.stringify(at))
           Transforms.setSelection(editor, { anchor: at, focus: at });
         }
       }
@@ -495,8 +495,9 @@ export const TextTransforms: TextTransforms = {
 
       const { path, offset } = at;
       if (text.length > 0)
-      // 最后将新的 text 文本插入到对应的位置
-        editor.apply({ type: 'insert_text', path, offset, text });
+        // console.log(';; 更新文本 ', JSON.stringify(at))
+      // 最后将新的text文本插入到对应的位置
+      editor.apply({ type: 'insert_text', path, offset, text });
     });
   },
 };

@@ -178,6 +178,7 @@ export function getOriginTable(table: TableElement) {
     let colOriginIndex = 0;
     row.children.forEach((cell: TableCellElement) => {
       const { rowSpan = 1, colSpan = 1 } = cell;
+      // eslint-disable-next-line no-constant-condition
       while (true) {
         const target = [rowIndex, colOriginIndex];
         if (!isContainPath(originTable, target)) break;
@@ -429,8 +430,11 @@ export function setTableNodeOrigin(editor: Editor, tablePath: Path) {
  * @returns
  */
 export function isEditableInTable(editor: Editor) {
-  // 未聚焦 或者选中 collapsed
-  if (!editor.selection || Range.isCollapsed(editor.selection)) return true;
+  // ? 未聚焦 或者 collapsed
+  if (!editor.selection || Range.isCollapsed(editor.selection)) {
+    return true;
+  }
+
   const [...match] = Editor.nodes(editor, {
     match: (n) =>
       !Editor.isEditor(n) && Element.isElement(n) && n.type === 'tableCell',
@@ -454,12 +458,12 @@ export function isEditableInTable(editor: Editor) {
     type: 'tableRow',
   });
 
-  if (+isRowByFocus + +isRowByAnchor > 0 && match.length > 1) {
+  if (Number(isRowByFocus) + Number(isRowByAnchor) > 0 && match.length > 1) {
     // 选区首尾至少有一个在表格中 && 选中多个单元格
     return false;
   }
 
-  if (+isRowByFocus + +isRowByAnchor === 0 && match.length > 0) {
+  if (Number(isRowByFocus) + Number(isRowByAnchor) === 0 && match.length > 0) {
     // 选区首尾不在表格中 && 存在选中表格（注：说明选中的是完整表格，不影响）
     return true;
   }
@@ -468,5 +472,38 @@ export function isEditableInTable(editor: Editor) {
     // 选区存在表格，比较选区首尾
     return Path.equals(anchorNode[1], focusNode[1]);
   }
+
   return true;
+}
+
+
+/**
+ * 获取原始数据列数
+ * 注：表格第一行肯定是所有列数据都有的
+ * @param tableNode
+ * @returns
+ */
+export function getColNumber(tableNode: TableElement) {
+  const rowNode = tableNode.children[0];
+  let colNum = 0;
+  rowNode.children.forEach((cellNode) => {
+    const { colSpan = 1 } = cellNode;
+    colNum += colSpan;
+  });
+  return colNum;
+}
+
+/**
+ * 获取原始数据 行数
+ * @param tableNode
+ * @returns
+ */
+export function getRowNumber(originTable: (number | number[])[][][]) {
+  const lastRowOriginCell = originTable[originTable.length - 1][0];
+  const rowIndex = (
+    Array.isArray(lastRowOriginCell[0]) && Array.isArray(lastRowOriginCell[1])
+      ? lastRowOriginCell[1][0]
+      : lastRowOriginCell[0]
+  ) as number;
+  return rowIndex + 1;
 }

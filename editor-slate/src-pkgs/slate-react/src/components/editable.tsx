@@ -1172,7 +1172,7 @@ export const Editable = (props: EditableProps) => {
           /** 处理热键 */
           onKeyDown={useCallback(
             (event: React.KeyboardEvent<HTMLDivElement>) => {
-              console.log(';; s-e onKeyDown ', JSON.stringify(editor.selection), event);
+              // console.log(';; s-e onKeyDown ', JSON.stringify(editor.selection), event);
 
               if (!readOnly && hasEditableTarget(editor, event.target)) {
                 const { nativeEvent } = event;

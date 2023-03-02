@@ -183,11 +183,16 @@ export interface EditorNodeOptions {
 }
 
 export interface EditorNodesOptions<T extends Node> {
+  /** selects a Location in the editor. It defaults to the user's current selection. */
   at?: Location | Span;
+  /** filters the set of Nodes with a custom function.  */
   match?: NodeMatch<T>;
+  /** If `lowest`, returns the lowest matching ancestor.
+   * - If `highest`, returns the highest matching ancestor. */
   mode?: SelectionMode;
   universal?: boolean;
   reverse?: boolean;
+  /** When voids is false, void Elements are filtered out. */
   voids?: boolean;
 }
 

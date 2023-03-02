@@ -2,8 +2,9 @@
 - features
   - 支持合并单元格
 
-- issues
+- dev-to
   - 如何去掉event-emitter
+  - 将选区变化的逻辑移出react
 
 
 - model层结构

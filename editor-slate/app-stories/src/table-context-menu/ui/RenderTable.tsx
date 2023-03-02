@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 import { isHotkey } from 'is-hotkey';
-import { Path, Transforms } from 'slate';
+import { type Location, Path, Transforms } from 'slate';
 import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 
 import { TableElement } from '../customTypes';
@@ -18,6 +18,7 @@ import {
   isEditableInTable,
   setTableNodeOrigin,
 } from '../utils/common';
+import { handleKeyDownPress, handleKeyUpPress } from '../utils/keyboard';
 import { getSelection } from '../utils/selection';
 import { selectionBound } from '../utils/selectionBound';
 
@@ -46,65 +47,78 @@ export function CustomTable(props: RenderElementProps) {
   });
 
   const editor = useSlate();
-
   useEffect(() => {
-    const handleKeydown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const handleKeydown = (e: KeyboardEvent<HTMLTableElement>) => {
       const editorDom = ReactEditor.toDOMNode(editor, editor);
+      // console.log(';; tbKeyDown');
 
       if (
         !isEditableInTable(editor) &&
         !isHotkey(['delete', 'backspace'], e) &&
         editorDom.getAttribute('contenteditable') === 'true'
       ) {
-        // 非 delete backspace 按键时
+        // /非 delete backspace 按键时
         editorDom.setAttribute('contenteditable', 'false');
         Promise.resolve()
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
           .catch(() => { });
       }
+      if (isEditableInTable) {
+        let locationToSelect: Location | undefined = undefined;
+        if (isHotkey('down', e)) {
+          locationToSelect = handleKeyDownPress(editor, selectCells);
+        }
+        if (isHotkey('up', e)) {
+          locationToSelect = handleKeyUpPress(editor, selectCells);
+        }
+        if (locationToSelect) {
+          Transforms.select(editor, locationToSelect);
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      }
     };
     editor.on('keydown', handleKeydown);
-
     return () => {
       editor.off('keydown', handleKeydown);
     };
-  }, [editor]);
+  }, [editor, selectCells]);
+
+  const mousedownCallback = (e: MouseEvent) => {
+    const isTable = e.target && tblRef.current?.contains(e.target as Node);
+    if (!isTable || e.button !== 2) {
+      // 不在表格位置 || 不是鼠标右键
+      // collapse 选区
+      Transforms.collapse(editor);
+      setShowTblSel(false);
+      setShowCtxMenu(false);
+      setSelectCells([]);
+    }
+  };
+
+  const mouseupCallback = () => {
+    setTblSelStart(null);
+  };
 
   useEffect(() => {
-    const mousedownCallback = (e: MouseEvent) => {
-      const isTable = e.target && tblRef.current?.contains(e.target as Node);
-      if (!isTable || e.button !== 2) {
-        // 不在表格位置 || 不是鼠标右键
-        // collapse 选区
-        Transforms.collapse(editor);
-        setShowTblSel(false);
-        setShowCtxMenu(false);
-        setSelectCells([]);
-      }
-    };
-    const mouseupCallback = () => {
-      setTblSelStart(null);
-    };
-
     const blurCallback = () => {
       setShowCtxMenu(false);
     };
-
     const reset = () => {
       setShowTblSel(false);
       setSelectCells([]);
     };
     if (editor) {
-      editor.on('mousedown', mousedownCallback);
+      // editor.on('mousedown', mousedownCallback);
+      // window.addEventListener('mouseup', mouseupCallback);
       editor.on('blur', blurCallback);
       editor.on('resetTableSelection', reset);
-      window.addEventListener('mouseup', mouseupCallback);
     }
     return () => {
-      editor.off('mousedown', mousedownCallback);
+      // editor.off('mousedown', mousedownCallback);
+      // window.removeEventListener('mouseup', mouseupCallback);
       editor.off('blur', blurCallback);
       editor.off('resetTableSelection', reset);
-      window.removeEventListener('mouseup', mouseupCallback);
     };
   }, [editor]);
 
@@ -159,7 +173,10 @@ export function CustomTable(props: RenderElementProps) {
           const node = getTableCellNode(editor, e.target as HTMLElement);
           if (!node || e.button !== 0) return;
           setTblSelStart(node[1]);
+          // @ts-expect-error fix-types
+          mousedownCallback(e);
         }}
+        onMouseUp={mouseupCallback}
         onMouseLeave={() => {
           tblSelStart && setShowTblSel(false);
         }}
@@ -201,4 +218,3 @@ export function CustomTable(props: RenderElementProps) {
     </div>
   );
 }
-

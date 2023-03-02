@@ -24,5 +24,5 @@ export {
   TableContextMenu as A32TableContextMenu,
 } from '../../table-context-menu/example';
 export {
-  SlateWrappedInContenteditableApp as A71InlineLinkButtonApp,
+  SlateContenteditableEvents as A71InlineLinkButtonApp,
 } from './a7-issues/a71-slate-wrapped-in-contenteditable';

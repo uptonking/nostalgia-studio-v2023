@@ -52,7 +52,7 @@ const isInTable = (editor: Editor) => {
       !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
     mode: 'highest',
   });
-  return !!tableNode;
+  return Boolean(tableNode);
 };
 
 const getCellChildren = (fragment: Element[], pasteData: Element[]) => {

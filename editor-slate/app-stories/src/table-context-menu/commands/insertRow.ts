@@ -4,76 +4,25 @@
 import { Editor, Path, Transforms } from 'slate';
 
 import { TableCellElement, TableElement } from '../customTypes';
+import type { Direction } from '../types';
 import {
   createEmptyCellNode,
   createRowNode,
   getCellBySelectOrFocus,
+  getColNumber,
   getRangeByOrigin,
   getRealPathByPath,
+  getRowNumber,
   getTableByCellPath,
 } from '../utils/common';
-
-type Direction = 'above' | 'below';
-/**
- * 获取原始数据列数
- * 注：表格第一行肯定是所有列数据都有的
- * @param tableNode
- * @returns
- */
-function getColNumber(tableNode: TableElement) {
-  const rowNode = tableNode.children[0];
-  let colNum = 0;
-  rowNode.children.forEach((cellNode) => {
-    const { colSpan = 1 } = cellNode;
-    colNum += colSpan;
-  });
-  return colNum;
-}
+import { getTargetTableCellInfoForUpOrDown } from '../utils/keyboard';
 
 /**
- * 获取原始数据 行数
- * @param tableNode
- * @returns
- */
-function getRowNumber(originTable: (number | number[])[][][]) {
-  const lastRowOriginCell = originTable[originTable.length - 1][0];
-  const rowIndex = (
-    Array.isArray(lastRowOriginCell[0]) && Array.isArray(lastRowOriginCell[1])
-      ? lastRowOriginCell[1][0]
-      : lastRowOriginCell[0]
-  ) as number;
-  return rowIndex + 1;
-}
-
-/**
- * 插入行
- * @param editor
- * @param cellPaths
+ * insert row above/below cellPaths
  */
 function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
-  const newCell: Path[] = getCellBySelectOrFocus(editor, cellPaths);
-  console.log(';; insertRow ', direction, JSON.stringify(newCell));
-
-  if (!newCell[0]) return;
-
-  // 获取源表格数据
-  const [originTable, tablePath, tableNode] = getTableByCellPath(
-    editor,
-    newCell[0],
-  );
-  const colNum = getColNumber(tableNode);
-  const rowNum = getRowNumber(originTable);
-  // ?
-  const targetIndex = direction === 'above' ? 0 : newCell.length - 1;
-  /**  */
-  const targetCell = Path.relative(newCell[targetIndex], tablePath);
-  console.log(
-    ';; origin-target ',
-    JSON.stringify(originTable), // 表格所有单元格位置 [[0,0],[0,1]]
-    tablePath, // 表格路径 [1]
-    tableNode, // 表格内容
-    targetCell, // 焦点单元格位置
-  );
+  const { originTable, targetCell, rowNum, colNum, tablePath, tableNode } =
+    getTargetTableCellInfoForUpOrDown({ editor, direction, cellPaths });
 
   const addConstant = direction === 'above' ? -1 : 1;
   const targetOriginCell = originTable[targetCell[0]][targetCell[1]];
@@ -88,7 +37,7 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
   const toUpdateCellPaths: Path[] = [];
   const toInsertCells: TableCellElement[] = [];
 
-  let insertRowIndex: number;
+  let toInsertRowIndex: number;
 
   if (direction === 'above' && insertOriginRowIndex === -1) {
     // /在首行上方插入一行
@@ -98,7 +47,7 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
     Transforms.insertNodes(editor, insertRows, {
       at: [...tablePath, 0],
     });
-    insertRowIndex = 0;
+    toInsertRowIndex = 0;
   } else if (direction === 'below' && insertOriginRowIndex === rowNum) {
     // /在尾行下方插入一行
     const insertRows = createRowNode(
@@ -107,7 +56,7 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
     Transforms.insertNodes(editor, insertRows, {
       at: [...tablePath, tableNode.children.length],
     });
-    insertRowIndex = tableNode.children.length;
+    toInsertRowIndex = tableNode.children.length;
   } else {
     // /非首行上方、非尾行下方插入行，创建新行各列的内容
     Array.from({ length: colNum }).forEach((_, currColIndex) => {
@@ -122,7 +71,7 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
       const edgeRowIndex =
         direction === 'above' ? currOriginCell[1][0] : currOriginCell[0][0];
 
-      console.log(';; curr-cell ', currCell, currOriginCell, edgeRowIndex)
+      console.log(';; curr-cell ', currCell, currOriginCell, edgeRowIndex);
 
       if (
         !Array.isArray(currOriginCell[0]) ||
@@ -159,20 +108,19 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
       direction === 'above' ? targetCell[0] : nextRowCell[0],
     ];
 
-
     // 👇🏻 更新model
     Transforms.insertNodes(editor, createRowNode(toInsertCells), {
       at: insertPath,
     });
 
-    insertRowIndex = direction === 'above' ? targetCell[0] : nextRowCell[0];
-    console.log(';; addRowCells ', insertPath, nextRowCell, insertRowIndex)
+    toInsertRowIndex = direction === 'above' ? targetCell[0] : nextRowCell[0];
+    console.log(';; addRowCells ', insertPath, nextRowCell, toInsertRowIndex);
   }
 
-  console.log(';; insertPath ', tablePath, insertRowIndex)
+  console.log(';; insertPath ', tablePath, toInsertRowIndex);
 
   // model修改完成后，将选区光标移到新行的第一个单元格
-  const focusPath = [...tablePath, insertRowIndex, 0];
+  const focusPath = [...tablePath, toInsertRowIndex, 0];
   Transforms.select(editor, {
     anchor: Editor.end(editor, focusPath),
     focus: Editor.end(editor, focusPath),

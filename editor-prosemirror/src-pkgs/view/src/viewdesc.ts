@@ -15,7 +15,7 @@ import {
   WidgetConstructor,
   WidgetType,
 } from './decoration';
-import { DOMNode, domIndex, isEquivalentPosition, nodeSize } from './dom';
+import { domIndex, DOMNode, isEquivalentPosition, nodeSize } from './dom';
 import { EditorView } from './index';
 
 declare global {
@@ -1077,6 +1077,7 @@ export class NodeViewDesc extends ViewDesc {
    * separate step, syncs the DOM inside `this.contentDOM` to
    * `this.children`.
    * - 先创建ViewTreeUpdater工具，分别调用 onNode 以及 onDeco 方法更新
+   * - 采用深度优先遍历的方式来将视图描述同步到文档节点树
    */
   updateChildren(view: EditorView, pos: number) {
     const inline = this.node.inlineContent;

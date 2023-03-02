@@ -46,8 +46,8 @@ export function TableContextMenu() {
         editor={editor}
         value={value}
         onChange={(newValue) => {
-          console.log(';;onChg ', JSON.stringify(editor.selection),);
-          console.log(JSON.stringify(editor.operations), editor);
+          // console.log(';;onChg ', JSON.stringify(editor.selection),);
+          // console.log(JSON.stringify(editor.operations), editor);
           // setValue(newValue);
         }}
       >
@@ -61,7 +61,7 @@ export function TableContextMenu() {
           }}
           onMouseDown={(e) => {
             // console.log(';; mouse-down editable ')
-            editor.emit('mousedown', e);
+            // editor.emit('mousedown', e);
           }}
           onBlur={() => {
             editor.emit('blur');

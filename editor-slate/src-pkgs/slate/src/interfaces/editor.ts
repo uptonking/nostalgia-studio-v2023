@@ -297,6 +297,7 @@ export interface EditorInterface {
    * Get the end point of a location.
    */
   end: (editor: Editor, at: Location) => Point;
+  start: (editor: Editor, at: Location) => Point;
   /** Get the first node at a location. */
   first: (editor: Editor, at: Location) => NodeEntry;
   /** Get the fragment at a location. */
@@ -400,8 +401,8 @@ Note: If you are looking for the previous Point, and not the previous Node, you 
   ) => RangeRef;
   rangeRefs: (editor: Editor) => Set<RangeRef>;
   setNormalizing: (editor: Editor, isNormalizing: boolean) => void;
-  start: (editor: Editor, at: Location) => Point;
   /** Get the text string content of a location.
+   *
    * Note: by default text of void nodes is considered to be an empty string, regardless of content, unless you pass in true for the voids option */
   string: (
     editor: Editor,
@@ -591,6 +592,12 @@ export const Editor: EditorInterface = {
    */
   end(editor: Editor, at: Location): Point {
     return Editor.point(editor, at, { edge: 'end' });
+  },
+  /**
+   * Get the start point of a location.
+   */
+  start(editor: Editor, at: Location): Point {
+    return Editor.point(editor, at, { edge: 'start' });
   },
 
   /**
@@ -1670,14 +1677,6 @@ export const Editor: EditorInterface = {
    */
   setNormalizing(editor: Editor, isNormalizing: boolean): void {
     NORMALIZING.set(editor, isNormalizing);
-  },
-
-  /**
-   * Get the start point of a location.
-   */
-
-  start(editor: Editor, at: Location): Point {
-    return Editor.point(editor, at, { edge: 'start' });
   },
 
   /**

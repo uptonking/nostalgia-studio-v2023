@@ -3,6 +3,10 @@ import { Editor, Path, type Point, Transforms } from 'slate';
 import { CustomEditor, TableCellElement, TableElement } from '../customTypes';
 import { Direction } from '../types';
 import {
+  isCursorOnFirstLine,
+  isCursorOnLastLine,
+} from './commands/is-cursor-on-edge-of-container';
+import {
   createEmptyCellNode,
   createRowNode,
   getCellBySelectOrFocus,
@@ -23,7 +27,7 @@ export function getTargetTableCellInfoForUpOrDown({
   cellPaths: Path[];
 }) {
   const newCell: Path[] = getCellBySelectOrFocus(editor, cellPaths);
-  console.log(';; getRow ', direction, JSON.stringify(newCell));
+  // console.log(';; getRow ', direction, JSON.stringify(newCell));
 
   if (!newCell[0]) return undefined;
 
@@ -39,15 +43,23 @@ export function getTargetTableCellInfoForUpOrDown({
   /**  */
   const targetCell = Path.relative(newCell[targetIndex], tablePath);
 
-  console.log(
-    ';; origin-target ',
-    JSON.stringify(originTable), // 表格所有单元格位置 [[0,0],[0,1]]
-    tablePath, // 表格路径 [1]
-    tableNode, // 表格内容
-    targetCell, // 焦点单元格位置
-  );
+  // console.log(
+  //   ';; origin-target ',
+  //   JSON.stringify(originTable), // 表格所有单元格位置 [[0,0],[0,1]]
+  //   tablePath, // 表格路径 [1]
+  //   tableNode, // 表格内容
+  //   targetCell, // 焦点单元格位置
+  // );
 
-  return { originTable, targetCell, rowNum, colNum, tablePath, tableNode };
+  return {
+    originTable,
+    targetCell,
+    rowNum,
+    colNum,
+    tablePath,
+    tableNode,
+    activeCell: newCell[0],
+  };
 }
 
 export function handleKeyDownPress(
@@ -58,7 +70,7 @@ export function handleKeyDownPress(
     return undefined;
   }
 
-  const { originTable, targetCell, rowNum, tablePath } =
+  const { originTable, targetCell, rowNum, tablePath, activeCell } =
     getTargetTableCellInfoForUpOrDown({
       editor,
       direction: 'below',
@@ -72,18 +84,32 @@ export function handleKeyDownPress(
       ? targetOriginCell[1][0]
       : targetOriginCell[0]) as number) + addConstant; // 普通场景直接到这里
 
-  const isCursorOnLastLine = insertOriginRowIndex === rowNum;
+  const activeCellEnd = Editor.end(editor, activeCell);
+  const isCursorOnLastLineOfCell = isCursorOnLastLine(
+    editor,
+    activeCellEnd,
+    editor.selection.anchor,
+  );
+  // console.log(
+  //   ';; isCursorOnLastLineOfCell ', cellPaths,
+  //   isCursorOnLastLineOfCell,
+  //   activeCell, activeCellEnd,
+  //   editor.selection.anchor,
+  // );
 
-  if (isCursorOnLastLine) {
-    console.log(';; 尾行向下要特殊处理 ');
-  } else {
-    const nextRowCell = getRealPathByPath(originTable, [
-      insertOriginRowIndex,
-      targetCell[1],
-    ]);
+  if (isCursorOnLastLineOfCell) {
+    if (insertOriginRowIndex === rowNum) {
+      // todo
+      console.log(';; 尾行向下要特殊处理 ');
+    } else {
+      const nextRowCell = getRealPathByPath(originTable, [
+        insertOriginRowIndex,
+        targetCell[1],
+      ]);
 
-    const focusPath = [...tablePath, nextRowCell[0], targetCell[1]];
-    return Editor.end(editor, focusPath);
+      const focusPath = [...tablePath, nextRowCell[0], targetCell[1]];
+      return Editor.end(editor, focusPath);
+    }
   }
 
   return undefined;
@@ -96,7 +122,7 @@ export function handleKeyUpPress(
     return undefined;
   }
 
-  const { originTable, targetCell, tablePath } =
+  const { originTable, targetCell, tablePath, activeCell } =
     getTargetTableCellInfoForUpOrDown({
       editor,
       direction: 'above',
@@ -110,18 +136,28 @@ export function handleKeyUpPress(
       ? targetOriginCell[0][0]
       : targetOriginCell[0]) as number) + addConstant; // 普通场景直接到这里
 
-  const isCursorOnFirstLine = insertOriginRowIndex === -1;
+  const activeCellStart = Editor.start(editor, activeCell);
+  const isCursorOnFirstLineOfCell = isCursorOnFirstLine(
+    editor,
+    activeCellStart,
+    editor.selection.anchor,
+  );
+  // console.log(
+  //   ';; isCursorOnFirstLineOfCell ',
+  //   cellPaths,
+  //   isCursorOnFirstLineOfCell,
+  //   activeCell,
+  //   activeCellStart,
+  //   editor.selection.anchor,
+  // );
 
-  if (isCursorOnFirstLine) {
-    console.log(';; 首行向上要特殊处理 ');
-  } else {
-    // const nextRowCell = getRealPathByPath(originTable, [
-    //   insertOriginRowIndex,
-    //   targetCell[1],
-    // ]);
-
-    const focusPath = [...tablePath, insertOriginRowIndex, targetCell[1]];
-    return Editor.end(editor, focusPath);
+  if (isCursorOnFirstLineOfCell) {
+    if (insertOriginRowIndex === -1) {
+      console.log(';; 首行向上要特殊处理 ');
+    } else {
+      const focusPath = [...tablePath, insertOriginRowIndex, targetCell[1]];
+      return Editor.end(editor, focusPath);
+    }
   }
 
   return undefined;

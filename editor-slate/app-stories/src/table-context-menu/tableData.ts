@@ -87,6 +87,7 @@ export const initialValue = [
         children: [
           {
             type: 'tableCell',
+            header: 'visible',
             children: [
               {
                 type: 'paragraph',
@@ -96,6 +97,7 @@ export const initialValue = [
           },
           {
             type: 'tableCell',
+            header: 'visible',
             children: [
               {
                 type: 'paragraph',
@@ -109,6 +111,7 @@ export const initialValue = [
           },
           {
             type: 'tableCell',
+            header: 'visible',
             children: [
               {
                 type: 'paragraph',
@@ -164,14 +167,14 @@ export const initialValue = [
       },
     ],
   },
-  {
-    type: 'paragraph',
-    children: [
-      {
-        text: 'text2 ',
-      },
-    ],
-  },
+  // {
+  //   type: 'paragraph',
+  //   children: [
+  //     {
+  //       text: 'text2 ',
+  //     },
+  //   ],
+  // },
 ];
 
 export const initialValue11 = [

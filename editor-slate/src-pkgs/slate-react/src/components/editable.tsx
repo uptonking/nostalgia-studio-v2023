@@ -1268,7 +1268,7 @@ export const Editable = (props: EditableProps) => {
                   event.preventDefault();
 
                   if (selection && Range.isCollapsed(selection)) {
-                    // console.log(';; key-mvBack ');
+                    // console.log(';; key-arrow-back ');
                     Transforms.move(editor, { reverse: !isRTL });
                   } else {
                     Transforms.collapse(editor, { edge: 'start' });
@@ -1281,7 +1281,7 @@ export const Editable = (props: EditableProps) => {
                   event.preventDefault();
 
                   if (selection && Range.isCollapsed(selection)) {
-                    console.log(';; key-mvForward');
+                    // console.log(';; key-arrow-forward');
                     Transforms.move(editor, { reverse: isRTL });
                   } else {
                     Transforms.collapse(editor, { edge: 'end' });

@@ -60,10 +60,11 @@ export function TableContextMenu() {
             editor.emit('keydown', e);
           }}
           onMouseDown={(e) => {
-            // console.log(';; mouse-down editable ')
-            // editor.emit('mousedown', e);
+            // console.log(';; ed-mouse-down ')
+            editor.emit('mousedown', e);
           }}
           onBlur={() => {
+            // console.log(';; ed-blur ')
             editor.emit('blur');
           }}
         />

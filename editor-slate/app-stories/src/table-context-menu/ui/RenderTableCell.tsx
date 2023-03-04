@@ -1,5 +1,6 @@
 import React from 'react';
 
+import cx from 'classnames';
 import { RenderElementProps } from 'slate-react';
 
 import { TableCellElement } from '../customTypes';
@@ -14,7 +15,9 @@ export function CustomTableCell(props: RenderElementProps) {
       {...attributes}
       colSpan={colSpan}
       rowSpan={rowSpan}
-      className='yt-e-table-cell'
+      className={cx('yt-e-table-cell', {
+        headerCell: (element as TableCellElement).header === 'visible',
+      })}
     >
       {children}
     </td>

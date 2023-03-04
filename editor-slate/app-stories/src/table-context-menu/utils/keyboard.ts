@@ -3,10 +3,6 @@ import { Editor, Path, type Point, Transforms } from 'slate';
 import { CustomEditor, TableCellElement, TableElement } from '../customTypes';
 import { Direction } from '../types';
 import {
-  isCursorOnFirstLine,
-  isCursorOnLastLine,
-} from './commands/is-cursor-on-edge-of-container';
-import {
   createEmptyCellNode,
   createRowNode,
   getCellBySelectOrFocus,
@@ -16,6 +12,10 @@ import {
   getRowNumber,
   getTableByCellPath,
 } from './common';
+import {
+  isCursorOnFirstLine,
+  isCursorOnLastLine,
+} from './queries/is-cursor-on-edge-of-container';
 
 export function getTargetTableCellInfoForUpOrDown({
   editor,
@@ -62,7 +62,7 @@ export function getTargetTableCellInfoForUpOrDown({
   };
 }
 
-export function handleKeyDownPress(
+export function handleKeyArrowDownPress(
   editor: CustomEditor,
   cellPaths: Path[],
 ): Point | undefined {
@@ -100,7 +100,8 @@ export function handleKeyDownPress(
   if (isCursorOnLastLineOfCell) {
     if (insertOriginRowIndex === rowNum) {
       // todo
-      console.log(';; 尾行向下要特殊处理 ');
+      // console.log(';; 尾行向下要特殊处理 ');
+      return Editor.after(editor, tablePath, { unit: 'block' });
     } else {
       const nextRowCell = getRealPathByPath(originTable, [
         insertOriginRowIndex,
@@ -114,7 +115,8 @@ export function handleKeyDownPress(
 
   return undefined;
 }
-export function handleKeyUpPress(
+
+export function handleKeyArrowUpPress(
   editor: CustomEditor,
   cellPaths: Path[],
 ): Point | undefined {
@@ -153,7 +155,8 @@ export function handleKeyUpPress(
 
   if (isCursorOnFirstLineOfCell) {
     if (insertOriginRowIndex === -1) {
-      console.log(';; 首行向上要特殊处理 ');
+      // console.log(';; 首行向上要特殊处理 ');
+      return Editor.before(editor, tablePath, { unit: 'block' });
     } else {
       const focusPath = [...tablePath, insertOriginRowIndex, targetCell[1]];
       return Editor.end(editor, focusPath);

@@ -16,19 +16,27 @@ import { ContextMenu } from '../menu/ContextMenu';
 import {
   getTableCellNode,
   isEditableInTable,
+  isSelectionInTable,
   setTableNodeOrigin,
 } from '../utils/common';
-import { handleKeyDownPress, handleKeyUpPress } from '../utils/keyboard';
-import { getSelection } from '../utils/selection';
+import {
+  handleKeyArrowDownPress,
+  handleKeyArrowUpPress,
+} from '../utils/keyboard';
+import { getRealPathFromTableSelection } from '../utils/selection';
 import { selectionBound } from '../utils/selectionBound';
 
 /**
  * table with context menu
  * - 自绘表格选区
+ *
+ * todo
+ * - 统一editor.selection和单元格选区selectCells
  */
 export function CustomTable(props: RenderElementProps) {
   const { attributes, children, element } = props;
   const tblRef = useRef<HTMLTableElement>(null);
+  // todo edge-cases: cleanup when sel change
   const [tblSelStart, setTblSelStart] = useState<Path | null>(null);
   const [selectCells, setSelectCells] = useState<Path[]>([]);
   const [selBound, setSelBound] = useState({
@@ -63,13 +71,16 @@ export function CustomTable(props: RenderElementProps) {
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
           .catch(() => { });
       }
-      if (isEditableInTable) {
+
+      const isSelInTable = isSelectionInTable(editor)
+      if (isSelInTable) {
+        // /only when cursor is in table
         let locationToSelect: Location | undefined = undefined;
         if (isHotkey('down', e)) {
-          locationToSelect = handleKeyDownPress(editor, selectCells);
+          locationToSelect = handleKeyArrowDownPress(editor, selectCells);
         }
         if (isHotkey('up', e)) {
-          locationToSelect = handleKeyUpPress(editor, selectCells);
+          locationToSelect = handleKeyArrowUpPress(editor, selectCells);
         }
         if (locationToSelect) {
           Transforms.select(editor, locationToSelect);
@@ -82,25 +93,25 @@ export function CustomTable(props: RenderElementProps) {
     return () => {
       editor.off('keydown', handleKeydown);
     };
-  }, [editor, selectCells]);
-
-  const mousedownCallback = (e: MouseEvent) => {
-    const isTable = e.target && tblRef.current?.contains(e.target as Node);
-    if (!isTable || e.button !== 2) {
-      // 不在表格位置 || 不是鼠标右键
-      // collapse 选区
-      Transforms.collapse(editor);
-      setShowTblSel(false);
-      setShowCtxMenu(false);
-      setSelectCells([]);
-    }
-  };
-
-  const mouseupCallback = () => {
-    setTblSelStart(null);
-  };
+    // }, [editor, selectCells]);
+  });
 
   useEffect(() => {
+    const mousedownCallback = (e: MouseEvent) => {
+      const isTable = e.target && tblRef.current?.contains(e.target as Node);
+      if (!isTable || e.button !== 2) {
+        // /不在表格位置 || 不是鼠标右键
+        // collapse 选区, and hide cotext menu
+        Transforms.collapse(editor);
+        setShowTblSel(false);
+        setSelectCells([]);
+        setShowCtxMenu(false);
+      }
+    };
+    const mouseupCallback = () => {
+      setTblSelStart(null);
+    };
+
     const blurCallback = () => {
       setShowCtxMenu(false);
     };
@@ -108,15 +119,16 @@ export function CustomTable(props: RenderElementProps) {
       setShowTblSel(false);
       setSelectCells([]);
     };
+
     if (editor) {
-      // editor.on('mousedown', mousedownCallback);
-      // window.addEventListener('mouseup', mouseupCallback);
+      editor.on('mousedown', mousedownCallback);
+      window.addEventListener('mouseup', mouseupCallback);
       editor.on('blur', blurCallback);
       editor.on('resetTableSelection', reset);
     }
     return () => {
-      // editor.off('mousedown', mousedownCallback);
-      // window.removeEventListener('mouseup', mouseupCallback);
+      editor.off('mousedown', mousedownCallback);
+      window.removeEventListener('mouseup', mouseupCallback);
       editor.off('blur', blurCallback);
       editor.off('resetTableSelection', reset);
     };
@@ -155,7 +167,12 @@ export function CustomTable(props: RenderElementProps) {
         return;
       }
       setSelectCells(
-        getSelection(editor, tblSelStart, endPath, element as TableElement),
+        getRealPathFromTableSelection(
+          editor,
+          tblSelStart,
+          endPath,
+          element as TableElement,
+        ),
       );
     },
     [editor, element, tblSelStart],
@@ -168,21 +185,16 @@ export function CustomTable(props: RenderElementProps) {
         className={`yt-e-table${showTblSel ? ' ye-e-table-selected' : ''}`}
         onDragStart={(e) => e.preventDefault()}
         onMouseDown={(e) => {
-          // console.log(';; mouse-down table ', e.target)
-
+          // console.log(';; mouse-down table ', e.target);
           const node = getTableCellNode(editor, e.target as HTMLElement);
           if (!node || e.button !== 0) return;
           setTblSelStart(node[1]);
-          // @ts-expect-error fix-types
-          mousedownCallback(e);
         }}
-        onMouseUp={mouseupCallback}
         onMouseLeave={() => {
           tblSelStart && setShowTblSel(false);
         }}
         onMouseMove={(e) => {
           // to-enhance 在跨单元格时新单元格不应该显示文字选区，应该直接显示单元格选区
-          // e.preventDefault();
           if (tblSelStart) {
             const endNode = getTableCellNode(editor, e.target as HTMLElement);
             if (endNode[1]) updateSelection(endNode[1]);

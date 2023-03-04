@@ -268,18 +268,6 @@ export interface EditorInterface {
    */
   addMark: (editor: Editor, key: string, value: any) => void;
   removeMark: (editor: Editor, key: string) => void;
-  /** Get the point after a location. If there is no point after the location (e.g. we are at the bottom of the document) returns undefined. */
-  after: (
-    editor: Editor,
-    at: Location,
-    options?: EditorAfterOptions,
-  ) => Point | undefined;
-  /** Get the point before a location. If there is no point before the location (e.g. we are at the top of the document) returns undefined. */
-  before: (
-    editor: Editor,
-    at: Location,
-    options?: EditorBeforeOptions,
-  ) => Point | undefined;
   deleteBackward: (
     editor: Editor,
     options?: EditorDirectedDeletionOptions,
@@ -292,6 +280,18 @@ export interface EditorInterface {
     editor: Editor,
     options?: EditorFragmentDeletionOptions,
   ) => void;
+  /** Get the point after a location. If there is no point after the location (e.g. we are at the bottom of the document) returns undefined. */
+  after: (
+    editor: Editor,
+    at: Location,
+    options?: EditorAfterOptions,
+  ) => Point | undefined;
+  /** Get the point before a location. If there is no point before the location (e.g. we are at the top of the document) returns undefined. */
+  before: (
+    editor: Editor,
+    at: Location,
+    options?: EditorBeforeOptions,
+  ) => Point | undefined;
   edges: (editor: Editor, at: Location) => [Point, Point];
   /**
    * Get the end point of a location.
@@ -977,8 +977,8 @@ export const Editor: EditorInterface = {
 
   /**
    * Iterate through all of the nodes in the Editor.
+   * - `mode` defaults to `all`
    */
-
   *nodes<T extends Node>(
     editor: Editor,
     options: EditorNodesOptions<T> = {},

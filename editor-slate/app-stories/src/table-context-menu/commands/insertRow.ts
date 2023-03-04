@@ -32,7 +32,7 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
         ? targetOriginCell[0][0]
         : targetOriginCell[1][0]
       : targetOriginCell[0]) as number) + addConstant; // 普通场景直接到这里
-  console.log(';; targetOriginCell ', targetOriginCell, insertOriginRowIndex);
+  // console.log(';; targetOriginCell ', targetOriginCell, insertOriginRowIndex);
 
   const toUpdateCellPaths: Path[] = [];
   const toInsertCells: TableCellElement[] = [];
@@ -71,7 +71,7 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
       const edgeRowIndex =
         direction === 'above' ? currOriginCell[1][0] : currOriginCell[0][0];
 
-      console.log(';; curr-cell ', currCell, currOriginCell, edgeRowIndex);
+      // console.log(';; curr-cell ', currCell, currOriginCell, edgeRowIndex);
 
       if (
         !Array.isArray(currOriginCell[0]) ||
@@ -114,10 +114,10 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
     });
 
     toInsertRowIndex = direction === 'above' ? targetCell[0] : nextRowCell[0];
-    console.log(';; addRowCells ', insertPath, nextRowCell, toInsertRowIndex);
+    // console.log(';; addRowCells ', insertPath, nextRowCell, toInsertRowIndex);
   }
 
-  console.log(';; insertPath ', tablePath, toInsertRowIndex);
+  // console.log(';; insertPath ', tablePath, toInsertRowIndex);
 
   // model修改完成后，将选区光标移到新行的第一个单元格
   const focusPath = [...tablePath, toInsertRowIndex, 0];

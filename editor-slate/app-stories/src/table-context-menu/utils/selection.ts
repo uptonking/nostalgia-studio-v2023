@@ -150,7 +150,7 @@ function getRealPaths(relativePaths: Path[], tablePath: Path) {
   return relativePaths.map((relativePath) => [...tablePath, ...relativePath]);
 }
 
-export function getSelection(
+export function getRealPathFromTableSelection(
   editor: Editor,
   start: Path,
   end: Path,
@@ -167,8 +167,8 @@ export function getSelection(
     endPath,
   ) as tableRange;
 
-  const realRealtivePaths = getRealRelativePaths(originTable, originRange);
-  const realPaths = getRealPaths(realRealtivePaths, tablePath);
+  const realRelativePaths = getRealRelativePaths(originTable, originRange);
+  const realPaths = getRealPaths(realRelativePaths, tablePath);
 
   return realPaths;
 }

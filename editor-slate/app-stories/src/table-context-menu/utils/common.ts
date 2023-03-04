@@ -13,6 +13,21 @@ export interface tableRange {
   xRange: rangeType;
   yRange: rangeType;
 }
+
+/**
+ * 是否在表格中
+ * @returns
+ */
+export const isSelectionInTable = (editor: Editor) => {
+  if (!editor.selection || editor.children.length === 0) return false;
+  const [tableNode] = Editor.nodes(editor, {
+    match: (n) =>
+      !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
+    mode: 'highest',
+  });
+  return Boolean(tableNode);
+};
+
 /**
  * 获取range的范围数据
  * @param args
@@ -415,7 +430,7 @@ export function setTableNodeOrigin(editor: Editor, tablePath: Path) {
   Transforms.setNodes(
     editor,
     {
-      // @ts-expect-error fix-types
+      // @ts-ignore fix-types
       originTable,
     },
     {
@@ -475,7 +490,6 @@ export function isEditableInTable(editor: Editor) {
 
   return true;
 }
-
 
 /**
  * 获取原始数据列数

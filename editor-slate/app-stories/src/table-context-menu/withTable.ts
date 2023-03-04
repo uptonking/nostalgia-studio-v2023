@@ -9,7 +9,7 @@ import {
   Transforms,
 } from 'slate';
 
-import { isEditableInTable } from './utils/common';
+import { isEditableInTable, isSelectionInTable } from './utils/common';
 
 const HEADER_LIST = new Set(['h1', 'h2', 'h3', 'h4']);
 
@@ -42,18 +42,7 @@ const dealSelectionInTable = (
   });
 };
 
-/**
- * 是否在表格中
- * @returns
- */
-const isInTable = (editor: Editor) => {
-  const [tableNode] = Editor.nodes(editor, {
-    match: (n) =>
-      !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
-    mode: 'highest',
-  });
-  return Boolean(tableNode);
-};
+
 
 const getCellChildren = (fragment: Element[], pasteData: Element[]) => {
   let data: Element[] = [...pasteData];
@@ -179,7 +168,7 @@ export const withTable = <T extends Editor>(editor: T) => {
 
   e.insertFragment = (fragment) => {
     const { selection } = e;
-    if (!selection || !isInTable(e)) {
+    if (!selection || !isSelectionInTable(e)) {
       insertFragment(fragment);
       return;
     }

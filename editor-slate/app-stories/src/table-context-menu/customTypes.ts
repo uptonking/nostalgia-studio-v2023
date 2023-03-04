@@ -4,6 +4,7 @@ import { ReactEditor } from 'slate-react';
 
 export type TableCellElement = {
   type: 'tableCell';
+  header?: string;
   colSpan?: number;
   rowSpan?: number;
   children: Element[];
@@ -19,7 +20,7 @@ export type TableElement = {
 };
 
 type ParagraphElement = { type: 'paragraph'; children: Descendant[] };
-type CustomElements =
+type CustomElement =
   | ParagraphElement
   | TableElement
   | TableRowElement
@@ -42,7 +43,7 @@ export type CustomEditor = BaseEditor & ReactEditor & ExtendedEditor;
 declare module 'slate' {
   interface CustomTypes {
     Editor: CustomEditor;
-    // Element: CustomElements;
+    // Element: CustomElement;
     // Text: CustomText;
   }
 }

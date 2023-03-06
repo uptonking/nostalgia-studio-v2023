@@ -47,8 +47,7 @@ wss.on('connection', (client) => {
   });
 
   client.on('message', function (data, isBinary) {
-    // @ts-ignore
-    const msg = JSON.parse(data);
+    const msg = JSON.parse(data as any);
     console.log(';; on-msg-binary', isBinary, msg);
     // 👇🏻 响应客户端向服务端发送的消息
 

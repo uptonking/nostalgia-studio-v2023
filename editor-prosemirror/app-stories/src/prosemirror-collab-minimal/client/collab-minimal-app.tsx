@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+
 import {
   collab,
   getVersion,
@@ -5,17 +7,16 @@ import {
   sendableSteps,
 } from 'prosemirror-collab';
 import { exampleSetup } from 'prosemirror-example-setup';
-import { DOMParser, Schema, type Node } from 'prosemirror-model';
+import { DOMParser, type Node, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
 import { EditorState } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import React, { useEffect } from 'react';
-import { io, type Socket } from 'socket.io-client';
 import type { Step } from 'prosemirror-transform';
+import { EditorView } from 'prosemirror-view';
+import { io, type Socket } from 'socket.io-client';
 
-import { Authority } from './central-authority';
 import { StyledContainer } from '../../stories/examples-docs/editor-examples.styles';
+import { Authority } from './central-authority';
 
 const API_BASE_URL = 'http://127.0.0.1:4001';
 

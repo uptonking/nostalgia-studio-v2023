@@ -17,33 +17,34 @@
 // - Conflict resolving methods to make a backup move location in the operation
 // - remove N items in a list - it'd be nice to be able to express this in O(1) instead of O(n).
 
-// import log from './log'
-import deepEqual from './deepEqual.js';
-import deepClone from './deepClone.js';
 import {
-  ReadCursor,
-  WriteCursor,
-  readCursor,
-  writeCursor,
   advancer,
   eachChildOf,
   isValidPathItem,
+  readCursor,
+  ReadCursor,
+  writeCursor,
+  WriteCursor,
 } from './cursor.js';
+import deepClone from './deepClone.js';
+// import log from './log'
+import deepEqual from './deepEqual.js';
 import {
-  Doc,
-  JSONOpComponent,
-  Path,
-  Key,
-  JSONOp,
-  JSONOpList,
   Conflict,
   ConflictType,
+  Doc,
+  JSONOp,
+  JSONOpComponent,
+  JSONOpList,
+  Key,
+  Path,
 } from './types.js';
 
 const RELEASE_MODE = process.env.JSON1_RELEASE_MODE;
 const log: (...args: any) => void = RELEASE_MODE
   ? () => {}
-  : require('./log').default;
+  : // eslint-disable-next-line node/no-missing-require
+    require('./log').default;
 
 // Not using assert to decrease how much stuff we pull in in the browser
 // const assert = !RELEASE_MODE ? require('assert') : (pred: boolean, msg?: string) => {if (!pred) throw new Error(msg)}

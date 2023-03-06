@@ -1,7 +1,11 @@
 import async from 'async';
 import _ from 'lodash';
+
 import type { Model } from '../src';
 
+/**
+ * 这里同步的粒度在row/一条数据代表的对象
+ */
 export function setupSync(
   model: { linvoSync: boolean } & Model,
   api: {
@@ -116,6 +120,7 @@ export function setupSync(
                 // @ts-expect-error fix-types
                 if (err) return callback(err);
 
+                // 💡 changes就是数据库的rows
                 push = res;
                 // @ts-expect-error fix-types
                 callback();
@@ -200,7 +205,7 @@ export function setupSync(
                   // @ts-expect-error fix-types
                   return callback(new Error('uid changed while syncing'));
 
-                // pull到本地的数据必须包含完整内容
+                // 💡 pull到本地的results数据必须包含row对象的完整内容
                 model.save(
                   results,
                   (err) => {

@@ -4,14 +4,14 @@ import { createRow } from '../table/creator';
 import { Col, splitTable } from '../table/selection';
 
 export function insertBelow(table: NodeEntry, editor: Editor) {
-  console.log('insertBelow-ing')
+  console.log('insertBelow-ing');
   const { selection } = editor;
   if (!selection || !table) return;
 
   const yIndex = table[1].length;
 
   const { gridTable, getCol } = splitTable(editor, table);
-  console.log(';; gridTable ', gridTable)
+  console.log(';; gridTable ', gridTable);
 
   const [startCell] = Editor.nodes(editor, {
     // @ts-expect-error fix-types
@@ -70,7 +70,7 @@ export function insertBelow(table: NodeEntry, editor: Editor) {
     at: Path.next(path),
   });
 
-  console.log(';; insertPath ', path, Path.next(path))
+  console.log(';; insertPath ', path, Path.next(path));
 
   // model修改完成后，将选区光标移到新行的第一个单元格
   // const focusPath = [...tablePath, insertRowIndex, 0];

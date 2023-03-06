@@ -13,9 +13,7 @@ import cx from 'classnames';
 import { Editor, NodeEntry, Transforms } from 'slate';
 import { useSlate, useSlateStatic } from 'slate-react';
 
-import {
-  preventDefault,
-} from '../../../../../utils/dnd-kit/packages/core/src/sensors/events';
+import { preventDefault } from '../../../../../utils/dnd-kit/packages/core/src/sensors/events';
 import {
   insertAbove,
   insertBelow,
@@ -31,7 +29,7 @@ import { Toolbar } from '../toolbar';
 import { options } from './options';
 import { splitTable } from './selection';
 
-interface TableCardbarProps extends HTMLAttributes<HTMLDivElement> { }
+interface TableCardbarProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const TableCardbar: React.FC<TableCardbarProps> = (props) => {
   const editor = useSlate();
@@ -62,7 +60,7 @@ export const TableCardbar: React.FC<TableCardbarProps> = (props) => {
         // icon={<InsertRowBelowOutlined />}
         onMouseDown={(e) => {
           // e.preventDefault();
-          console.log('ins')
+          console.log('ins');
           run(insertBelow);
         }}
       >

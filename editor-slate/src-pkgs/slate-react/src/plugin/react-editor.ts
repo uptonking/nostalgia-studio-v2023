@@ -245,9 +245,9 @@ export const ReactEditor = {
       (!editable || targetEl.isContentEditable
         ? true
         : (typeof targetEl.isContentEditable === 'boolean' && // isContentEditable exists only on HTMLElement, and on other nodes it will be undefined
-          // this is the core logic that lets you know you got the right editor.selection instead of null when editor is contenteditable="false"(readOnly)
-          targetEl.closest('[contenteditable="false"]') === editorEl) ||
-        !!targetEl.getAttribute('data-slate-zero-width'))
+            // this is the core logic that lets you know you got the right editor.selection instead of null when editor is contenteditable="false"(readOnly)
+            targetEl.closest('[contenteditable="false"]') === editorEl) ||
+          !!targetEl.getAttribute('data-slate-zero-width'))
     );
   },
 
@@ -677,9 +677,9 @@ export const ReactEditor = {
     const focus = isCollapsed
       ? anchor
       : ReactEditor.toSlatePoint(editor, [focusNode, focusOffset], {
-        exactMatch,
-        suppressThrow,
-      });
+          exactMatch,
+          suppressThrow,
+        });
     if (!focus) {
       return null as T extends true ? Range | null : Range;
     }

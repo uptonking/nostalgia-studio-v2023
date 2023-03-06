@@ -11,7 +11,7 @@ export const initialValue = [
     type: 'paragraph',
     children: [
       {
-        text: ' '
+        text: ' ',
       },
     ],
   },
@@ -19,7 +19,7 @@ export const initialValue = [
     type: 'paragraph',
     children: [
       {
-        text: ' '
+        text: ' ',
       },
     ],
   },

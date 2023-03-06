@@ -24,4 +24,3 @@ export function CustomTableRow(props: RenderElementProps) {
     </>
   );
 }
-

@@ -157,7 +157,7 @@ function splitCell(editor: Editor, cellNode: NodeEntry<Node>) {
   dealCell(editor, cellNode, sourceOriginCol);
 }
 
-export   function splitCells(editor: Editor, cellPaths: Path[]) {
+export function splitCells(editor: Editor, cellPaths: Path[]) {
   const newCell: Path[] = getCellBySelectOrFocus(editor, cellPaths);
 
   if (!newCell[0]) return; // 倒序拆分，避免拆分后续单元格找不到对应的位置

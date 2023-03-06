@@ -85,13 +85,7 @@ export const Table = (props) => {
     case 'table-cell': {
       console.log(';; cell ', props);
 
-      return (
-        <CellComponent
-          {...props}
-        >
-          {children}
-        </CellComponent>
-      );
+      return <CellComponent {...props}>{children}</CellComponent>;
     }
 
     case 'table-content': {
@@ -215,10 +209,16 @@ const TableComponent = (props: RenderElementProps) => {
 };
 
 const CellComponent = (props: RenderElementProps) => {
-
   const { attributes, children, element } = props;
   // @ts-expect-error fix-types
-  const { key: dataKey, selectedCell, colspan, rowspan, width, height } = element;
+  const {
+    key: dataKey,
+    selectedCell,
+    colspan,
+    rowspan,
+    width,
+    height,
+  } = element;
 
   return (
     <td

@@ -4,7 +4,7 @@ import { createCell } from '../table/creator';
 import { Col, splitTable } from '../table/selection';
 
 export function insertRight(table: NodeEntry, editor: Editor) {
-  console.log('insertRight-ing')
+  console.log('insertRight-ing');
 
   const { selection } = editor;
   if (!selection || !table) return;

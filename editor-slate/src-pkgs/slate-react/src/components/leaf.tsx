@@ -106,6 +106,4 @@ const MemoizedLeaf = React.memo(Leaf, (prev, next) => {
   );
 });
 
-
-
 export default MemoizedLeaf;

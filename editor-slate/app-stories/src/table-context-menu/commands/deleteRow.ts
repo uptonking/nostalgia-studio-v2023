@@ -55,7 +55,7 @@ function getNeedHandleData(
   return rangePath;
 }
 
-export   function deleteRow(editor: Editor, cellPaths: Path[]) {
+export function deleteRow(editor: Editor, cellPaths: Path[]) {
   const newCell: Path[] = getCellBySelectOrFocus(editor, cellPaths);
 
   if (!newCell[0]) return;

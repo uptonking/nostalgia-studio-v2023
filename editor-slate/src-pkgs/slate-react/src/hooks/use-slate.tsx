@@ -7,6 +7,8 @@ import { ReactEditor } from '../plugin/react-editor';
 /**
  * A React context for sharing the editor object, in a way that re-renders the
  * context whenever changes occur.
+ *
+ * ? 为什么用数组
  */
 export const SlateContext = createContext<[ReactEditor] | null>(null);
 

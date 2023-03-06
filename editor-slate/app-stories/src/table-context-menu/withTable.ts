@@ -42,8 +42,6 @@ const dealSelectionInTable = (
   });
 };
 
-
-
 const getCellChildren = (fragment: Element[], pasteData: Element[]) => {
   let data: Element[] = [...pasteData];
   for (const el of fragment) {

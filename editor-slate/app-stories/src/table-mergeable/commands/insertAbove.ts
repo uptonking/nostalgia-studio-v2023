@@ -4,7 +4,7 @@ import { createRow } from '../table/creator';
 import { Col, splitTable } from '../table/selection';
 
 export function insertAbove(table: NodeEntry, editor: Editor) {
-  console.log('insertAbove-ing')
+  console.log('insertAbove-ing');
 
   const { selection } = editor;
   if (!selection || !table) return;

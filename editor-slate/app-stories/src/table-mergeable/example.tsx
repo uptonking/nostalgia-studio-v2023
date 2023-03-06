@@ -122,14 +122,16 @@ export const MergeableTable = () => {
       <Slate
         editor={editor}
         value={initialValue}
-      // onChange={setValue}
+        // onChange={setValue}
       >
         <div className='toolbar'>
           <button
             onClick={() => {
               insertTable(editor);
             }}
-          >createTable</button>
+          >
+            createTable
+          </button>
         </div>
         <Editable renderElement={renderElement} renderLeaf={renderLeaf} />
       </Slate>

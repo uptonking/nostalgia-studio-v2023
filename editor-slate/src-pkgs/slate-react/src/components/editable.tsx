@@ -25,9 +25,7 @@ import {
 import { ReactEditor } from '..';
 import { useChildren } from '../hooks/use-children';
 import { DecorateContext } from '../hooks/use-decorate';
-import {
-  useIsomorphicLayoutEffect,
-} from '../hooks/use-isomorphic-layout-effect';
+import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
 import { ReadOnlyContext } from '../hooks/use-read-only';
 import { useSlate } from '../hooks/use-slate';
 import { TRIPLE_CLICK } from '../utils/constants';
@@ -244,7 +242,7 @@ export const Editable = (props: EditableProps) => {
 
     const newDomRange = selection && ReactEditor.toDOMRange(editor, selection);
     if (newDomRange) {
-      // console.log(';; slateSel-TO-domSel')
+      // console.log(';; slateSel-TO-domSel ', newDomRange )
       if (Range.isBackward(selection!)) {
         // 💡 将 model 中的选区同步到 DOM 上
         domSelection.setBaseAndExtent(
@@ -449,10 +447,8 @@ export const Editable = (props: EditableProps) => {
 
             if (!selection || !Range.equals(selection, range)) {
               native = false;
-
               const selectionRef =
                 editor.selection && Editor.rangeRef(editor, editor.selection);
-
               Transforms.select(editor, range);
 
               if (selectionRef) {
@@ -644,6 +640,7 @@ export const Editable = (props: EditableProps) => {
     };
   }, [scheduleOnDOMSelectionChange]);
 
+  /** flat ranges */
   const decorations = [...Node.nodes(editor)].flatMap(([n, p]) =>
     decorate([n, p]),
   );
@@ -694,7 +691,7 @@ export const Editable = (props: EditableProps) => {
           }
           data-slate-editor
           data-slate-node='value'
-          // in some cases, a decoration needs access to the range / selection to decorate a text node,
+          // in some cases, a decoration needs access to the range/selection to decorate a text node,
           // then you will select the whole text node when you select part the of text
           // this magic zIndex="-1" will fix it
           zindex={-1}
@@ -860,6 +857,7 @@ export const Editable = (props: EditableProps) => {
                   endVoid &&
                   Path.equals(startVoid[1], endVoid[1])
                 ) {
+                  console.log(';; onclick-void ', startVoid, endVoid);
                   const range = Editor.range(editor, start);
                   Transforms.select(editor, range);
                 }
@@ -1197,7 +1195,7 @@ export const Editable = (props: EditableProps) => {
                 const { selection } = editor;
                 const element =
                   editor.children[
-                  selection !== null ? selection.focus.path[0] : 0
+                    selection !== null ? selection.focus.path[0] : 0
                   ];
                 const isRTL = getDirection(Node.string(element)) === 'rtl';
 
@@ -1264,11 +1262,11 @@ export const Editable = (props: EditableProps) => {
                 // hotkeys manually because browsers won't be able to skip over
                 // the void node with the zero-width space not being an empty
                 // string.
+                // console.log(';; key-arrow-back/forward ', nativeEvent);
                 if (Hotkeys.isMoveBackward(nativeEvent)) {
                   event.preventDefault();
 
                   if (selection && Range.isCollapsed(selection)) {
-                    // console.log(';; key-arrow-back ');
                     Transforms.move(editor, { reverse: !isRTL });
                   } else {
                     Transforms.collapse(editor, { edge: 'start' });
@@ -1281,7 +1279,6 @@ export const Editable = (props: EditableProps) => {
                   event.preventDefault();
 
                   if (selection && Range.isCollapsed(selection)) {
-                    // console.log(';; key-arrow-forward');
                     Transforms.move(editor, { reverse: isRTL });
                   } else {
                     Transforms.collapse(editor, { edge: 'end' });
@@ -1447,8 +1444,8 @@ export const Editable = (props: EditableProps) => {
             decorations={decorations}
             node={editor}
             renderElement={renderElement}
-            renderPlaceholder={renderPlaceholder}
             renderLeaf={renderLeaf}
+            renderPlaceholder={renderPlaceholder}
             selection={editor.selection}
           />
         </Component>
@@ -1457,9 +1454,7 @@ export const Editable = (props: EditableProps) => {
   );
 };
 
-/**
- * The props that get passed to renderPlaceholder
- */
+/** The props that get passed to renderPlaceholder */
 export type RenderPlaceholderProps = {
   children: any;
   attributes: {
@@ -1478,7 +1473,6 @@ export const DefaultPlaceholder = ({
   attributes,
   children,
 }: RenderPlaceholderProps) => <span {...attributes}>{children}</span>;
-
 /**
  * A default memoized decorate function.
  */

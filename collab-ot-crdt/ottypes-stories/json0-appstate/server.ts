@@ -1,6 +1,7 @@
+import http from 'node:http';
+
 import cors from 'cors';
 import express from 'express';
-import http from 'node:http';
 import { type } from 'ot-json0';
 import Websocket, { WebSocketServer } from 'ws';
 

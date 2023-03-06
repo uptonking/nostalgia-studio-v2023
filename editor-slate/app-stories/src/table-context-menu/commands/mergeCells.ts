@@ -21,11 +21,11 @@ function mergeChildren(editor: Editor, cellPaths: Path[]) {
   return newChildren.length > 0
     ? newChildren
     : [
-      {
-        type: 'paragraph',
-        children: [{ text: '' }],
-      },
-    ];
+        {
+          type: 'paragraph',
+          children: [{ text: '' }],
+        },
+      ];
 }
 
 /**
@@ -57,7 +57,7 @@ function removeCellByPath(editor: Editor, cellPaths: Path[], tablePath: Path) {
   });
 }
 
-export   function mergeCells(editor: Editor, cellPaths: Path[]) {
+export function mergeCells(editor: Editor, cellPaths: Path[]) {
   if (cellPaths.length < 2) return;
   const [, tablePath, table] = getTableByCellPath(editor, cellPaths[0]);
   const children = mergeChildren(editor, cellPaths) as Element[];

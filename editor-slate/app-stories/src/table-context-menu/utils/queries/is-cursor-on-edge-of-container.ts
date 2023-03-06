@@ -6,11 +6,19 @@ import { CustomEditor } from '../../customTypes';
 
 export type ContainerEdge = 'top' | 'bottom';
 
-export function isCursorOnFirstLine(editor: CustomEditor, container: Point, cursor: Point): boolean {
+export function isCursorOnFirstLine(
+  editor: CustomEditor,
+  container: Point,
+  cursor: Point,
+): boolean {
   return isCursorOnEdgeOfContainer(editor, container, cursor, 'top');
 }
 
-export function isCursorOnLastLine(editor: CustomEditor, container: Point, cursor: Point): boolean {
+export function isCursorOnLastLine(
+  editor: CustomEditor,
+  container: Point,
+  cursor: Point,
+): boolean {
   return isCursorOnEdgeOfContainer(editor, container, cursor, 'bottom');
 }
 
@@ -36,8 +44,10 @@ export function isCursorOnEdgeOfContainer(
 }
 
 function getPointRect(editor: CustomEditor, point: Point) {
-
-  const range = Editor.range(editor, { ...point, offset: Math.max(point.offset, 0) });
+  const range = Editor.range(editor, {
+    ...point,
+    offset: Math.max(point.offset, 0),
+  });
   try {
     return getRangeRect(editor, range);
   } catch {

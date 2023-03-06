@@ -67,7 +67,8 @@
       "orderedmap": ["editor-prosemirror/src-pkgs/orderedmap/"],
       "@typewriter/delta": ["editor-typewriter/src-pkgs/delta/src/"],
       "@typewriter/document": ["editor-typewriter/src-pkgs/document/src/"],
-      "typewriter-editor": ["editor-typewriter/src-pkgs/typewriter/src/"],
+      "@typewriter-editor": ["editor-typewriter/src-pkgs/typewriter/src/"],
+      "@typewriter/json-patch": ["collab-ot-crdt/src-json-patch/src/"],
       "@tanstack/table-core": ["excel-tanstack-table/src-pkgs/table-core"],
       "@tanstack/react-table": ["excel-tanstack-table/src-pkgs/react-table"],
       "@tanstack/react-table-devtools": [
@@ -75,9 +76,6 @@
       ],
       "@tanstack/match-sorter-utils": [
         "excel-tanstack-table/src-pkgs/match-sorter-utils"
-      ],
-      "@tanstack/react-table-devtools": [
-        "excel-tanstack-table/src-pkgs/react-table-devtools"
       ],
       "@tanstack/virtual-core": ["excel-tanstack-table/src-pkgs/virtual-core"],
       "@tanstack/react-virtual": [

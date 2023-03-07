@@ -116,6 +116,7 @@ export class DocumentController {
    * This should be called when we notice a change in our text view. It compares the old text
    * against the new, generates the appropriate WStringOperations, and sends them to the server
    * for broadcasting.
+   * - 💡 执行diff，将diff结果转换成WOOT对应的insert/delete
    */
   processLocalTextDiff(oldText: string, newText: string) {
     const startTimeMs = performance.now();

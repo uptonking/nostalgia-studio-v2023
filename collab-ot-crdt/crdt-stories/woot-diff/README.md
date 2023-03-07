@@ -4,3 +4,13 @@
 
 - forked from https://github.com/ryankaplan/woot-collaborative-editor /MIT
   - v20161225
+# usage
+
+```shell
+# client
+npm run demo:woot-diff
+# server
+npm run demo:woot-diff-server
+```
+
+- open http://localhost:8999

@@ -21,7 +21,6 @@ const monitor = new TextareaMonitor(editorElem, (change) => {
   }
 
   site.rcvOp(doc1, op, () => {
-    console.log(';; op-pub ', op)
     eventBus.publish(site.id, { op });
   });
 });
@@ -37,6 +36,5 @@ editorElem.value = doc1.string;
 
 monitor.resync();
 monitor.monitor();
-
 
 window['doc'] = doc1;

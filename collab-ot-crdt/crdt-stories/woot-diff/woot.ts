@@ -18,14 +18,18 @@ function compareNumbers(first: number, second: number) {
 
 /**
  * In our algorithm, every character in a document gets a unique id that it
- * keeps forever. The id has two parts: the clientId of the siteNumber where it
+ * keeps forever.
+ * The id has two parts: the clientId of the siteNumber where it
  * was generated, and a 'opNumber' that increments every time a client generates
  * a new character.
  */
 export class WCharId {
-  private _stringVal: string = '';
+  /** the clientId of the siteNumber where it was generated */
   _siteNumber: number;
+  /** increments every time a client generates a new character. */
   _opNumber: number;
+  /** used as cache */
+  private _stringVal: string = '';
 
   constructor(_siteNumber: number, _opNumber: number) {
     this._siteNumber = _siteNumber;
@@ -80,10 +84,8 @@ class WChar {
   constructor(
     /** The id assigned at creation-time that this character keeps forever */
     private _id: WCharId,
-
     /** The user-visible character that this WChar represents */
     private _character: string,
-
     /** As per the algorithm outlines in the document, each character specifies
      * which two characters it belongs between. These are the ids of the chars
      * that must go somewhere before and somewhere after this character respectively.
@@ -201,12 +203,13 @@ export class WString {
   /** List of all WChars that comprise our string */
   _chars: Array<WChar> = [];
   /** { charId: Wchar } */
-  _charById: { [charId: string]: WChar } = {};
+  _charById: Record<string, WChar> = {};
 
-  constructor(
-    /** Function that generates WCharIds for a particular siteNumber */
-    private _idGenerator: () => WCharId,
-  ) {
+  /** Function that generates WCharIds for a particular siteNumber */
+  private _idGenerator: () => WCharId;
+
+  constructor(idGenerator: () => WCharId) {
+    this._idGenerator = idGenerator;
     const begin = WChar.begin();
     const end = WChar.end();
     this._chars.push(begin);
@@ -293,6 +296,12 @@ export class WString {
   /** This function is an iterative version of the logic in the code block at the top
    * of page 11 in the paper. We were hitting maximum call stack issues with the recursive
    * version.
+   * - http://www.pierrehedkvist.com/posts/collaborative-editing-using-crdts
+   * - The tricker operation is integrating inserts from other sites.
+   * - The algorithm has to find the right position between the previous and next character.
+   * - There could potentially be characters that have already been added in between these two characters, or either one of them could have been removed already.
+   * - The algorithm will take a subsequence of the characters between idcp and idcn, if its empty it can be inserted here.
+   * - Otherwise it will sort all characters and find a smaller subsequence where the character belongs, and make a recursive call until its found its place in the sequence.
    */
   private _integrateInsertionHelper(
     newChar: WChar,

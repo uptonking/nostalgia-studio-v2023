@@ -22,12 +22,12 @@ export class TextareaMonitor {
         const valNext = this.el.value;
         const ctx = {
           insert: function (pos, str) {
-            for (var idx = 0; idx < str.length; idx++) {
+            for (let idx = 0; idx < str.length; idx++) {
               this.callback(['ins', pos + idx, str.slice(idx, idx + 1)]);
             }
           }.bind(this),
           remove: function (pos, len) {
-            for (var idx = len - 1; idx >= 0; idx--) {
+            for (let idx = len - 1; idx >= 0; idx--) {
               this.callback(['del', pos + idx + 1]);
             }
           }.bind(this),

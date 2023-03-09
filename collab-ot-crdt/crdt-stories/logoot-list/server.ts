@@ -3,15 +3,15 @@ import http from 'http';
 import pathLib from 'path';
 
 /** global ops/changes */
-var events: any[] = [];
+const events: any[] = [];
 /** {clientId: eventLength}
  * ?似乎每个clientId的值都相同
  */
-var cursors: Record<string, number> = {};
+const cursors: Record<string, number> = {};
 
-var server = http.createServer((req, res) => {
-  var path = req.url;
-  var reqBody = '';
+const server = http.createServer((req, res) => {
+  const path = req.url;
+  let reqBody = '';
 
   req.on('data', function (data) {
     reqBody += data;
@@ -27,7 +27,7 @@ var server = http.createServer((req, res) => {
     //   return;
     // }
 
-    var params;
+    let params;
     try {
       params = JSON.parse(reqBody);
     } catch (error) {
@@ -44,11 +44,11 @@ var server = http.createServer((req, res) => {
       res.end('ok');
     } else if (path === '/rcv') {
       console.log('/rcv', reqBody);
-      var clientId = params.clientId;
-      var data: any[] = [];
+      const clientId = params.clientId;
+      const data: any[] = [];
       if (typeof cursors[clientId] === 'undefined') cursors[clientId] = 0;
-      for (var idx = cursors[clientId]; idx < events.length; idx++) {
-        var event = events[idx];
+      for (let idx = cursors[clientId]; idx < events.length; idx++) {
+        const event = events[idx];
         data.push(event);
       }
       cursors[clientId] = events.length;
@@ -74,10 +74,10 @@ server.listen(PORT, () => {
 });
 
 function serve(res, file) {
-  var filePath = pathLib.join(__dirname, file);
-  var stat = fileSystem.statSync(filePath);
+  const filePath = pathLib.join(__dirname, file);
+  const stat = fileSystem.statSync(filePath);
 
-  var contentType = 'text/html';
+  let contentType = 'text/html';
   if (file.endsWith('.js')) {
     contentType = 'text/js';
   }
@@ -87,10 +87,10 @@ function serve(res, file) {
     'Content-Length': stat.size,
   });
 
-  var readStream = fileSystem.createReadStream(filePath);
+  const readStream = fileSystem.createReadStream(filePath);
   readStream.pipe(res);
 }
 
-setInterval(() => {
-  console.log(';; srv-data ', cursors, events);
-}, 30 * 1000);
+// setInterval(() => {
+//   console.log(';; srv-data ', cursors, events);
+// }, 30 * 1000);

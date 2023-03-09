@@ -1,10 +1,11 @@
-import * as crdt from './crdt.js';
+import fs from 'fs';
+import http from 'http';
+import path from 'path';
 import polka from 'polka';
 import sirv from 'sirv';
 import { WebSocketServer } from 'ws';
-import http from 'http';
-import fs from 'fs';
-import path from 'path';
+
+import * as crdt from './crdt.js';
 
 const dir = path.dirname(new URL(import.meta.url).pathname);
 const app = polka().use(

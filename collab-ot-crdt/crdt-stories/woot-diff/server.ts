@@ -31,6 +31,7 @@ io.on('connection', (socket: any) => {
   });
 });
 
-httpServer.listen(3000, function () {
-  console.log('listening on *:3000');
+const PORT = Number(process.env.PORT) || 3000;
+httpServer.listen(PORT, function () {
+  console.log('listening on http://localhost:' + PORT);
 });

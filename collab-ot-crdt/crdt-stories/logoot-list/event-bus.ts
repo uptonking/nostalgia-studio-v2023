@@ -13,21 +13,23 @@ export class EventBus {
     //     subscriber.callback(eventClone);
     //   }
     // }
-    var body = JSON.stringify({ clientId: clientId, event: event });
+    const body = JSON.stringify({ clientId: clientId, event: event });
+    console.log(';; op-pub ', event);
 
     fetch('http://localhost:8089/snd', { method: 'POST', body: body });
   }
 
   subscribe(clientId, callback) {
     // this.subscribers.push({ clientId: clientId, callback: callback });
-    var body = JSON.stringify({ clientId: clientId });
+    const body = JSON.stringify({ clientId: clientId });
 
-    var poll = () => {
+    const poll = () => {
       fetch('http://localhost:8089/rcv', { method: 'POST', body: body })
         .then((res) => res.json())
         .then((msgs) => {
-          for (var idx = 0; idx < msgs.length; idx++) {
-            var msg = msgs[idx];
+          for (let idx = 0; idx < msgs.length; idx++) {
+            const msg = msgs[idx];
+            console.log(';; op-sub ', msg.event);
             if (msg.clientId !== clientId) callback(msg.event);
           }
           window.setTimeout(poll, 1500);

@@ -9,10 +9,11 @@ export type InsertOp<Item> = {
   content: Item[] | string;
   predecessor: Id;
 
-  // Used when inserted into the doc tree.
+  /** Used when inserted into the doc tree. */
   seq?: number; // Calculated from the txn's id
   treeItem?: DocTreeItem<Item>;
 };
+
 export type Op<Item> =
   | InsertOp<Item>
   | {

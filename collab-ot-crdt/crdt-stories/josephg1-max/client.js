@@ -34,7 +34,7 @@ incrButton.onclick = () => {
  */
 decrButton.onclick = () => {
   // db = crdt.merge(db, db - 1);
-  db = crdt.merge(db - 1, db - 2);
+  db = crdt.merge(db, db - 1);
   console.log(';; 点击减号 ', db);
   send(db);
   rerender();

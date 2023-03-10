@@ -33,8 +33,6 @@ socket.on('init', ({ id, history }) => {
   editor.focus();
 });
 
-
-
 // socket.onmessage = (e) => {
 //   const data = JSON.parse(e.data);
 
@@ -63,4 +61,3 @@ socket.on('init', ({ id, history }) => {
 //     client.receive(data.op);
 //   }
 // };
-

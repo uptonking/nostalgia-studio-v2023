@@ -29,7 +29,7 @@ export class RgaText {
 
   constructor(id) {
     this.id = id;
-    // @ts-expect-error fix-types
+    // @ts-expect-error fix-types ❓ 首次插入时需要一个前驱节点
     this.left = { timestamp: 0, removed: false, chr: '' };
     this.index = new Map([[this.left.timestamp, this.left]]);
     // this.timestamp = null;

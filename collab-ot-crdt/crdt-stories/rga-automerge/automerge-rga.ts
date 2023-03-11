@@ -3,9 +3,13 @@ import bs from 'binary-search';
 import Map2 from 'map2';
 import { uniCount, uniToStrPos } from 'unicount';
 
-import { DocTreeItem, Id, InsertOp, Op, ROOT_ID, Txn } from './types';
+import type { DocTreeItem, Id, InsertOp, Op, Txn } from './automerge-rga-types';
 
-export { Id, InsertOp, Op, ROOT_ID, Txn } from './types';
+export { Id, InsertOp, Op, Txn } from './automerge-rga-types';
+
+/** The root has this ID and an order of -1. */
+export const ROOT_ID = Object.freeze({ agent: 'ROOT', seq: 0 });
+
 
 type LocalTxn<Item> = Txn<Item> & {
   order: number

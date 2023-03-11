@@ -1,9 +1,6 @@
 /** {agent: string, seq: number} */
 export type Id = { agent: string; seq: number };
 
-/** The root has this ID and an order of -1. */
-export const ROOT_ID = Object.freeze({ agent: 'ROOT', seq: 0 });
-
 export type InsertOp<Item> = {
   type: 'insert';
   content: Item[] | string;

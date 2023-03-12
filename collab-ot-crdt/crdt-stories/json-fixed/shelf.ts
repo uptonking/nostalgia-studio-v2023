@@ -1,3 +1,11 @@
+/** A shelf is an array with two elements: (1) X, and (2) version number.
+ * - forked from https://github.com/dglittle/shelf
+ * - [shelf](https://braid.org/algorithms/shelf)
+ * - 🚨 shelf supports most of JSON, however, it does not:
+ *   - Support CRDT insertions or deletions in sequences (arrays/strings)
+ *   - Distinguish null from undefined
+ */
+
 // const shelf = {};
 
 function is_obj(o) {
@@ -19,12 +27,9 @@ export const wrap = (s) =>
     ? Object.fromEntries(Object.entries(s).map(([k, v]) => [k, wrap(v)]))
     : [s];
 
-export const create = (init) => {
-  const x = [null, -1];
-  if (init !== undefined) merge(x, wrap(init));
-  return x;
-};
-
+/**
+ * recursively filter object keys whose value is null/undefined
+ */
 export const read = (s, ...path) => {
   s = path.reduce((s, x) => s?.[0]?.[x], s);
   if (s && is_obj(s[0])) {
@@ -33,10 +38,18 @@ export const read = (s, ...path) => {
         .map(([k, v]) => [k, read(v)])
         .filter(([k, v]) => v != null),
     );
-  } else return s?.[0];
+  } else {
+    return s?.[0];
+  }
 };
 
 export const get = read;
+
+export const create = (init) => {
+  const x = [null, -1];
+  if (init !== undefined) merge(x, wrap(init));
+  return x;
+};
 
 export const get_change = (a, b) => {
   return merge(a, b, true);
@@ -86,13 +99,13 @@ export const mask = (s, mask) => {
   return mask == true || !is_obj(s[0])
     ? s
     : [
-        Object.fromEntries(
-          Object.entries(mask)
-            .filter(([k, v]) => s[0][k])
-            .map(([k, v]) => [k, mask(s[0][k], v)]),
-        ),
-        s[1],
-      ];
+      Object.fromEntries(
+        Object.entries(mask)
+          .filter(([k, v]) => s[0][k])
+          .map(([k, v]) => [k, mask(s[0][k], v)]),
+      ),
+      s[1],
+    ];
 };
 
 export const proxy = (s, cb) => {
@@ -120,7 +133,18 @@ export const proxy = (s, cb) => {
   });
 };
 
-export const local_update = (backend, frontend, override_new_version) => {
+/**
+ *
+ * @param backend
+ * @param frontend
+ * @param override_new_version
+ * @returns
+ */
+export const local_update = (
+  backend,
+  frontend,
+  override_new_version?: number,
+) => {
   if (equal(backend[0], frontend)) {
     if (is_obj(frontend)) {
       const ret = [{}, backend[1]];
@@ -155,6 +179,13 @@ export const local_update = (backend, frontend, override_new_version) => {
   }
 };
 
+/**
+ *
+ * @param a backend_shelf
+ * @param f frontend
+ * @param b remote_shelf
+ * @returns
+ */
 export const remote_update = (a, f, b) => {
   if (b[1] > (a[1] ?? -1) || (b[1] == a[1] && greater_than(b[0], a[0]))) {
     a[1] = b[1];
@@ -179,46 +210,47 @@ export const remote_update = (a, f, b) => {
   return f;
 };
 
-// to_braid = (s) => {
-//   const vs = [];
-//   const values = [];
-//   function f(s) {
-//     let x = s[0];
-//     if (is_obj(x))
-//       x = Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]));
-//     else {
-//       values.push(x);
-//       x = values.length - 1;
-//     }
-//     vs.push(s[1]);
-//     return x;
-//   }
-//   return {
-//     json_slice: f(s),
-//     values,
-//     version: `${Math.random().toString(36).slice(2)}:${vs.join(',')}`,
-//   };
-// };
 
-// from_braid = ({ version, json_slice, values }) => {
-//   let f = (x) => {
-//     if (typeof x === 'object')
-//       return Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]));
-//     else return values[x];
-//   };
-//   const x = f(json_slice);
+export const to_braid = (s) => {
+  const vs: any[] = [];
+  const values: any[] = [];
+  function f(s) {
+    let x = s[0];
+    if (is_obj(x))
+      x = Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]));
+    else {
+      values.push(x);
+      x = values.length - 1;
+    }
+    vs.push(s[1]);
+    return x;
+  }
+  return {
+    json_slice: f(s),
+    values,
+    version: `${Math.random().toString(36).slice(2)}:${vs.join(',')}`,
+  };
+};
 
-//   const vs = version
-//     .split(':')[1]
-//     .split(',')
-//     .map((x) => Number(x));
-//   f = (x) => {
-//     return [
-//       is_obj(x)
-//         ? Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]))
-//         : x,
-//       vs.shift(),
-//     ];
-//   };
-//   return f(x);
-// };
+export const from_braid = ({ version, json_slice, values }) => {
+  let f = (x) => {
+    if (typeof x === 'object')
+      return Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]));
+    else return values[x];
+  };
+  const x = f(json_slice);
+
+  const vs = version
+    .split(':')[1]
+    .split(',')
+    .map((x) => Number(x));
+  f = (x) => {
+    return [
+      is_obj(x)
+        ? Object.fromEntries(Object.entries(x).map(([k, v]) => [k, f(v)]))
+        : x,
+      vs.shift(),
+    ];
+  };
+  return f(x);
+};

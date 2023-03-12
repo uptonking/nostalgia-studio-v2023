@@ -1,35 +1,52 @@
 import { rga } from './rga-peer';
 
+/**
+ * 💡 `<` is backspace 1 character
+ * 💡 number is insert number at postion-number
+ * 💡 Array is sequential ops; Set is concurrent ops
+ */
+
 describe('crdt-rga test', () => {
   it('gets the expected result after applying all the messages', () => {
-    const valueAfter = withTypeUtils(rga);
-    expect(valueAfter('hello world')).to.equal('hello world');
-    expect(valueAfter('he<el<<ello  <world<d')).to.equal('hello world');
+    const valueAfter = withCrdtUtils(rga);
+    expect(valueAfter('hello world')).toBe('hello world');
+    expect(valueAfter('he<el<<ello  <world<d')).toBe('hello world');
     expect(
       valueAfter([
         ['he', 'llo'],
         [' wor', 'ld'],
       ]),
-    ).to.equal('hello world');
-    expect(valueAfter(new Set(['hello', ' world']))).to.equal(' worldhello');
-    expect(
-      valueAfter([new Set(['hel', 'lo']), new Set([' wo', 'rld'])]),
-    ).to.equal('lohelrld wo');
-    expect(valueAfter('hello world0')).to.equal('0hello world');
-    expect(valueAfter('hello world1')).to.equal('h1ello world');
+    ).toBe('hello world');
+    expect(valueAfter(new Set(['hello', ' world']))).toBe(' worldhello');
+    expect(valueAfter([new Set(['hel', 'lo']), new Set([' wo', 'rld'])])).toBe(
+      'lohelrld wo',
+    );
+    expect(valueAfter('hello world0')).toBe('0hello world');
+    expect(valueAfter('hello world1')).toBe('h1ello world');
   });
 });
 
-function withTypeUtils(type) {
+/**
+ * add utils to crdt type
+ */
+function withCrdtUtils(crdt) {
   return valueAfter;
 
+  /**
+   * get crdt state as string
+   * @param spec test text to generate ops
+   * @returns crdt state after spec-ops
+   */
   function valueAfter(spec) {
-    const state = stateFromOps(type.first(), opsFrom(spec));
-    return type.valueOf(state).join('');
+    const state = stateFromOps(crdt.first(), opsFrom(spec));
+    return crdt.valueOf(state).join('');
   }
 
+  /**
+   * apply ops to state
+   */
   function stateFromOps(state, ops) {
-    const changed = () => { };
+    const changed = () => {};
 
     if (ops instanceof Set) {
       // concurrent state changes
@@ -61,7 +78,7 @@ function withTypeUtils(type) {
 
         // newState = messages.reduce((state, message) => type.reduce(message, state, changed), state)
       } else {
-        newState = type.reduce(message, state, changed);
+        newState = crdt.reduce(message, state, changed);
       }
     }
 
@@ -69,10 +86,10 @@ function withTypeUtils(type) {
   }
 
   function concurrent(state, ops) {
-    const changed = () => { };
+    const changed = () => {};
     const messages = concurrentMessages(state, ops);
     return messages.reduce(
-      (state, message) => type.reduce(message, state, changed),
+      (state, message) => crdt.reduce(message, state, changed),
       state,
     );
   }
@@ -98,23 +115,26 @@ function withTypeUtils(type) {
   }
 
   function sequentialMessages(state, ops) {
-    const changed = () => { };
+    const changed = () => {};
     const messages: any[] = [];
     ops.reduce((state, op) => {
       const message = messageFromOp(state, op);
       if (message) {
         messages.push(message);
-        return type.reduce(message, state, changed);
+        return crdt.reduce(message, state, changed);
       }
     }, state);
     return messages;
   }
 
   function messageFromOp(state, op) {
-    return type.mutators[op.mutator].apply(state, op.args);
+    return crdt.mutators[op.mutator].apply(state, op.args);
   }
 
-  function opsFrom(spec) {
+  /**
+   * convert spec-input to array of operations
+   */
+  function opsFrom(spec: Set<string> | Array<string> | string) {
     if (spec instanceof Set) {
       return new Set(Array.from(spec).map(opsFrom));
     }
@@ -122,8 +142,8 @@ function withTypeUtils(type) {
       return spec.map(opsFrom);
     }
     let index = -1;
-    return spec.split('').map((c) => {
-      if (c === '<') {
+    return spec.split('').map((c, idx) => {
+      if (c === '<' && idx !== 0) {
         const i = index;
         index--;
         return {
@@ -132,7 +152,7 @@ function withTypeUtils(type) {
         };
       } else {
         index++;
-        const pos = parseInt(c);
+        const pos = parseInt(c, 10);
         if (Number.isInteger(pos)) {
           return {
             mutator: 'insertAt',

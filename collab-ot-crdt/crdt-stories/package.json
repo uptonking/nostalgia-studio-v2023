@@ -24,8 +24,11 @@
     "demo:gdrive": "cd public && serve -C -l 8999",
     "start": "npm run demo:json-fixed",
     "server": "npm run demo:rga-ace-server",
-    "test": "npm run test:crunch-rga",
-    "test:crunch-rga": "mocha --experimental-loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,js 'rga-automerge/crunch-rga.test.ts' --reporter spec --timeout 10000",
+    "test": "npm run test:shelf",
+    "test:rga-peer": "jest ./rga-automerge/rga-peer.test.ts",
+    "test:rga-crunch": "mocha --experimental-loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --extensions ts,js 'rga-automerge/crunch-rga.test.ts' --reporter spec --timeout 10000",
+    "test:map-lww": "jest ./crdt-map/lww-map.test.ts",
+    "test:shelf": "node --experimental-specifier-resolution=node --loader ts-node/esm/transpile-only ./json-fixed/shelf.test.ts",
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {

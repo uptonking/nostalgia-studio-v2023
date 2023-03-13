@@ -1,0 +1,33 @@
+{
+  "name": "@slate-yjs/react",
+  "version": "0.3.1111",
+  "description": "React specific components/utils for slate-yjs.",
+  "homepage": "https://github.com/BitPhinix/slate-yjs#readme",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    "require": "./src/index.ts",
+    "default": "./src/index.ts"
+  },
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "yarn run tsup && tsc --emitDeclarationOnly",
+    "dev": "yarn run tsup --watch"
+  },
+  "dependencies": {
+    "use-sync-external-store": "^1.2.0",
+    "y-protocols": "1.0.5111"
+  },
+  "devDependencies": {
+    "@slate-yjs/core": "0.3.1111",
+    "@types/react": "^18.0.0",
+    "@types/use-sync-external-store": "^0.0.3",
+    "react": "^18.2.0",
+    "slate": "0.78.1111",
+    "slate-react": "0.79.1111",
+    "yjs": "13.5.4111"
+  }
+}

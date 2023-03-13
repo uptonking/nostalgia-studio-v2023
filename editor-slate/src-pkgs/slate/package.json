@@ -1,12 +1,13 @@
 {
   "name": "slate",
-  "description": "A completely customizable framework for building rich text editors.",
   "version": "0.78.1111",
-  "license": "MIT",
+  "description": "A completely customizable framework for building rich text editors.",
   "repository": "git://github.com/ianstormtaylor/slate.git",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
-  "sideEffects": false,
   "files": [
     "dist/"
   ],
@@ -18,26 +19,5 @@
   "devDependencies": {
     "lodash": "^4.17.21",
     "slate-hyperscript": "0.77.1111"
-  },
-  "keywords": [
-    "canvas",
-    "contenteditable",
-    "custom",
-    "document",
-    "edit",
-    "editor",
-    "html",
-    "immutable",
-    "markdown",
-    "medium",
-    "paper",
-    "react",
-    "rich",
-    "richtext",
-    "richtext",
-    "slate",
-    "text",
-    "wysiwyg",
-    "wysiwym"
-  ]
+  }
 }

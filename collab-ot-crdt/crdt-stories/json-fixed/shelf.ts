@@ -99,13 +99,13 @@ export const mask = (s, mask) => {
   return mask == true || !is_obj(s[0])
     ? s
     : [
-      Object.fromEntries(
-        Object.entries(mask)
-          .filter(([k, v]) => s[0][k])
-          .map(([k, v]) => [k, mask(s[0][k], v)]),
-      ),
-      s[1],
-    ];
+        Object.fromEntries(
+          Object.entries(mask)
+            .filter(([k, v]) => s[0][k])
+            .map(([k, v]) => [k, mask(s[0][k], v)]),
+        ),
+        s[1],
+      ];
 };
 
 export const proxy = (s, cb) => {
@@ -209,7 +209,6 @@ export const remote_update = (a, f, b) => {
   }
   return f;
 };
-
 
 export const to_braid = (s) => {
   const vs: any[] = [];

@@ -1,12 +1,13 @@
 {
   "name": "slate-history",
-  "description": "An operation-based history implementation for Slate editors.",
   "version": "0.66.1111",
-  "license": "MIT",
+  "description": "An operation-based history implementation for Slate editors.",
   "repository": "git://github.com/ianstormtaylor/slate.git",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
-  "sideEffects": false,
   "files": [
     "dist/"
   ],
@@ -18,20 +19,7 @@
     "slate": "0.78.1111",
     "slate-hyperscript": "0.77.1111"
   },
-  "peerDependencies": {
-    "slate": "0.78.1111"
-  },
   "umdGlobals": {
     "slate": "Slate"
-  },
-  "keywords": [
-    "editor",
-    "history",
-    "operation",
-    "redo",
-    "save",
-    "slate",
-    "stack",
-    "undo"
-  ]
+  }
 }

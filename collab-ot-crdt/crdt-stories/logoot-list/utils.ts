@@ -15,6 +15,9 @@ export function hashItem(item) {
   return item[0].join(',');
 }
 
+/**
+ * 💡 compare logoot item id, find the generated-id-item position
+ */
 export function compareItems(item_a, item_b) {
   const pos_a = item_a[0] || [];
   const pos_b = item_b[0] || [];

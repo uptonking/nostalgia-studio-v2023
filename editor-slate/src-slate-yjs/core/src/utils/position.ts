@@ -1,5 +1,6 @@
 import { BasePoint, BaseRange, Node, Text } from 'slate';
 import * as Y from 'yjs';
+
 import { InsertDelta, RelativeRange, TextRange } from '../model/types';
 import { getInsertDeltaLength, yTextToInsertDelta } from './delta';
 import { getSlatePath, getYTarget, yOffsetToSlateOffsets } from './location';
@@ -94,6 +95,7 @@ export function getStoredPositions(
   sharedRoot: Y.XmlText,
 ): Record<string, Y.RelativePosition> {
   return Object.fromEntries(
+    // @ts-expect-error fix-types
     Object.entries(sharedRoot.getAttributes())
       .filter(([key]) => key.startsWith(STORED_POSITION_PREFIX))
       .map(([key, position]) => [
@@ -107,6 +109,7 @@ function getStoredPositionsAbsolute(sharedRoot: Y.XmlText) {
   assertDocumentAttachment(sharedRoot);
 
   return Object.fromEntries(
+    // @ts-expect-error fix-types
     Object.entries(sharedRoot.getAttributes())
       .filter(([key]) => key.startsWith(STORED_POSITION_PREFIX))
       .map(

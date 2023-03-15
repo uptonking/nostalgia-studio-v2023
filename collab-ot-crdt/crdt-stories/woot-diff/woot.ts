@@ -202,7 +202,7 @@ export interface InsertTimingStats {
 export class WString {
   /** List of all WChars that comprise our string */
   _chars: Array<WChar> = [];
-  /** { charId: Wchar } */
+  /** { charId: WChar } */
   _charById: Record<string, WChar> = {};
 
   /** Function that generates WCharIds for a particular siteNumber */
@@ -301,7 +301,7 @@ export class WString {
    * - The algorithm has to find the right position between the previous and next character.
    * - There could potentially be characters that have already been added in between these two characters, or either one of them could have been removed already.
    * - The algorithm will take a subsequence of the characters between idcp and idcn, if its empty it can be inserted here.
-   * - Otherwise it will sort all characters and find a smaller subsequence where the character belongs, and make a recursive call until its found its place in the sequence.
+   * - 👉🏻 Otherwise it will sort all characters and find a smaller subsequence where the character belongs, and make a recursive call until its found its place in the sequence.
    */
   private _integrateInsertionHelper(
     newChar: WChar,

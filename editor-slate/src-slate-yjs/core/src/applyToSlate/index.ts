@@ -1,9 +1,10 @@
 import { Editor, Operation } from 'slate';
 import * as Y from 'yjs';
+
 import { translateYTextEvent } from './textEvent';
 
 /**
- * Translate a yjs event into slate operations. The editor state has to match the
+ * Translate a yjs YTextEvent into slate operations. The editor state has to match the
  * yText state before the event occurred.
  *
  * @param sharedType

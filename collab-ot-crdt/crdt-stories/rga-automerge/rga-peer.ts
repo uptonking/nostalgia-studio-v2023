@@ -27,6 +27,7 @@ const randomId = () => counter++;
 /**
  * Replicated Growable Array / RGA
  * - forked from https://github.com/ipfs-shipyard/peer-crdt/blob/master/src/types/rga.js
+ *
  * todo
  * - insert should consider timestamp and siteId
  */
@@ -92,8 +93,8 @@ export const rga = {
         let r = edges.get(beforeVertex)!;
 
         // id maybe null in production, but number 3>null still true
-        while (addedItems.has(r) && r > id!) {
-          // /find id > r
+        while (addedItems.has(r) && id! < r) {
+          // / find id > r, 💡 insert-id be right to beforeVertex ,and bigger than left
           l = r;
           r = edges.get(r)!;
         }

@@ -45,6 +45,7 @@ export function RemoteCursorsOverlayPage() {
   }, [provider, connected]);
 
   const editor = useMemo(() => {
+    /** 👇🏻 to connect yjsType and slateEditor */
     const sharedType = provider.document.get('content', Y.XmlText) as Y.XmlText;
 
     return withMarkdown(

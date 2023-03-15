@@ -1,6 +1,7 @@
 import { Editor, Range } from 'slate';
 import { Awareness } from 'y-protocols/awareness';
 import * as Y from 'yjs';
+
 import { RelativeRange } from '../model/types';
 import { slateRangeToRelativeRange } from '../utils/position';
 import { YjsEditor } from './withYjs';
@@ -147,10 +148,10 @@ export const CursorEditor = {
 export type WithCursorsOptions<
   TCursorData extends Record<string, unknown> = Record<string, unknown>,
 > = {
-  // Local state field used to store the user selection
+  /** Local state field used to store the user selection */
   cursorStateField?: string;
 
-  // Local state field used to store data attached to the local client
+  /** Local state field used to store data attached to the local client */
   cursorDataField?: string;
 
   data?: TCursorData;

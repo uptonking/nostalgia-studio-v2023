@@ -60,6 +60,6 @@ const broadcastOp = (op, clients, exclude = undefined) => {
 // });
 
 const PORT = Number(process.env.PORT) || 3000;
-httpServer.listen(PORT, function () {
+httpServer.listen(PORT, () => {
   console.log('listening on http://localhost:' + PORT);
 });

@@ -1,5 +1,6 @@
 import { BaseEditor, Descendant, Editor, Operation, Point } from 'slate';
 import * as Y from 'yjs';
+
 import { applyYjsEvents } from '../applyToSlate';
 import { applySlateOp } from '../applyToYjs';
 import { yTextToSlateElement } from '../utils/convert';
@@ -32,6 +33,7 @@ export type YjsEditor = BaseEditor & {
   localOrigin: unknown;
   positionStorageOrigin: unknown;
 
+  /** convert yOp to slateOp, and apply to slate editor */
   applyRemoteEvents: (events: Y.YEvent<Y.XmlText>[], origin: unknown) => void;
 
   storeLocalChange: (op: Operation) => void;
@@ -39,6 +41,7 @@ export type YjsEditor = BaseEditor & {
 
   isLocalOrigin: (origin: unknown) => boolean;
 
+  /** listen to changes from yjs-delta with observeDeep, then editor.onChange */
   connect: () => void;
   disconnect: () => void;
 };
@@ -100,6 +103,7 @@ export const YjsEditor = {
     return origin !== undefined ? origin : editor.localOrigin;
   },
 
+  /** exec `fn` with `origin` */
   withOrigin(editor: YjsEditor, origin: unknown, fn: () => void): void {
     const prev = YjsEditor.origin(editor);
     ORIGIN.set(editor, origin);
@@ -114,6 +118,7 @@ export const YjsEditor = {
     const position = slatePointToRelativePosition(sharedRoot, editor, point);
 
     sharedRoot.doc.transact(() => {
+      // 👇🏻 stored position is set as attribute on sharedRoot
       setStoredPosition(sharedRoot, key, position);
     }, locationStorageOrigin);
   },
@@ -145,11 +150,9 @@ export const YjsEditor = {
 
 export type WithYjsOptions = {
   autoConnect?: boolean;
-
-  // Origin used when applying local slate operations to yjs
+  /** Origin used when applying local slate operations to yjs */
   localOrigin?: unknown;
-
-  // Origin used when storing positions
+  /** Origin used when storing positions */
   positionStorageOrigin?: unknown;
 };
 
@@ -170,6 +173,7 @@ export function withYjs<T extends Editor>(
   e.positionStorageOrigin =
     positionStorageOrigin ?? DEFAULT_POSITION_STORAGE_ORIGIN;
 
+  // yOp to slateOp, then apply
   e.applyRemoteEvents = (events, origin) => {
     YjsEditor.flushLocalChanges(e);
 
@@ -182,6 +186,9 @@ export function withYjs<T extends Editor>(
 
   e.isLocalOrigin = (origin) => origin === e.localOrigin;
 
+  /**
+   * ignore local yop; convert yOp to slateOp, and apply to slate editor
+   */
   const handleYEvents = (
     events: Y.YEvent<Y.XmlText>[],
     transaction: Y.Transaction,
@@ -247,7 +254,6 @@ export function withYjs<T extends Editor>(
       if (currentGroup && currentGroup[0].origin === change.origin) {
         return currentGroup.push(change);
       }
-
       txGroups.push([change]);
     });
 
@@ -264,19 +270,20 @@ export function withYjs<T extends Editor>(
   };
 
   const { apply, onChange } = e;
+
+  // 在slateOp执行前，将其保存到本地缓存
   e.apply = (op) => {
     if (YjsEditor.connected(e) && YjsEditor.isLocal(e)) {
       YjsEditor.storeLocalChange(e, op);
     }
-
     apply(op);
   };
 
+  // 在slateOp执行后，从本地缓存删除，将slateOp转换后apply到ytext
   e.onChange = () => {
     if (YjsEditor.connected(e)) {
       YjsEditor.flushLocalChanges(e);
     }
-
     onChange();
   };
 

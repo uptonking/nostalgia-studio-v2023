@@ -30,8 +30,9 @@ export function isPlainObject(o: unknown): o is InspectableObject {
   return true;
 }
 
-// Slates deep equality function: https://github.com/ianstormtaylor/slate/blob/68aff89e892fe15a16314398ff052ade6068900b/packages/slate/src/utils/deep-equal.ts#L13
-// We have to match slates deepEquals behavior to merge insert deltas in the same way slate does.
+/** Slate deep equality function: https://github.com/ianstormtaylor/slate/blob/main/packages/slate/src/utils/deep-equal.ts
+ * - We have to match slates deepEquals behavior to merge insert deltas in the same way slate does.
+ */
 export function deepEquals(
   node: InspectableObject,
   another: InspectableObject,

@@ -82,6 +82,7 @@ export class RgaText {
     }
 
     while (prev.next && op.t < prev.next.timestamp) {
+      // 💡 insert timestamp should be right to prevNode ,and bigger than left
       prev = prev.next;
     }
 

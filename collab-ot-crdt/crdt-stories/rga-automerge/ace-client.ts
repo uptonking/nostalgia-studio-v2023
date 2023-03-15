@@ -17,6 +17,7 @@ socket.on('init', ({ id, history }) => {
     client = new ACERgaAdapter(id, editor);
     window['doc'] = client.rga;
 
+    // ❓ lamport时钟未处理取本地和远程的最大值
     client.subscribe((op) => {
       console.log(';; op-send ', op);
       socket.emit('message', op);

@@ -94,6 +94,7 @@ export const withReact = <T extends Editor>(editor: T) => {
     ReactDOM.unstable_batchedUpdates(() => {
       const onContextChange = EDITOR_TO_ON_CHANGE.get(e);
       if (onContextChange) {
+        // console.log(';; slate-context-change ', onContextChange)
         onContextChange(); // 会触发编辑器所有children元素rerender
       }
 

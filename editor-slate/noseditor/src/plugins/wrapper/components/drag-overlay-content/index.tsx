@@ -6,10 +6,11 @@ import { useResizeDetector } from 'react-resize-detector';
 import { Editor } from 'slate';
 import { useSlateStatic } from 'slate-react';
 
-import DragOverlayEditor from '../../../../components/drag-overlay-editor';
-// import { RenderElementProps } from "slate-react/dist/components/editable";
+import { DragOverlayEditor } from '../../../../components/drag-overlay-editor';
 import { listIndentWidth } from '../../../../config/editor';
 import { ExtendedEditor } from '../../../../slate-extended/extended-editor';
+
+// import { RenderElementProps } from "slate-react/dist/components/editable";
 
 type RenderElementProps = any;
 
@@ -19,7 +20,7 @@ type Props = {
   onHeightChange: (height: number) => void;
 };
 
-const DragOverlayContent = (props: Props) => {
+export const DragOverlayContent = (props: Props) => {
   const { editor, activeId, onHeightChange } = props;
   const { ref, height = 0 } = useResizeDetector();
 
@@ -38,6 +39,7 @@ const DragOverlayContent = (props: Props) => {
       const baseDepth = element.depth;
 
       content = clone(
+        // @ts-expect-error fix-types
         element.folded
           ? [element]
           : [
@@ -92,5 +94,3 @@ export const DragOverlayWrapper = (props: RenderElementProps) => {
     </div>
   );
 };
-
-export default DragOverlayContent;

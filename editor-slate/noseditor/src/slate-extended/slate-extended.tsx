@@ -5,9 +5,14 @@ import { useSlate } from 'slate-react';
 import { ExtendedEditor } from './extended-editor';
 import { ELEMENT_TO_SEMANTIC_PATH } from './weakmaps';
 
-const SlateExtended = (props: { children: React.ReactNode }) => {
+/**
+ * compute `semanticChildren` and add to editor instance
+ */
+export const SlateExtended = (props: { children: React.ReactNode }) => {
   const editor = useSlate();
   const { children } = props;
+  // console.log(';; render-SlateExtended');
+
 
   const initializeExtendedEditor = () => {
     editor.semanticChildren = ExtendedEditor.getSemanticChildren(
@@ -19,12 +24,18 @@ const SlateExtended = (props: { children: React.ReactNode }) => {
         },
       },
     );
+    // console.log(';; sem-chd ', editor.children[0].children[0], ELEMENT_TO_SEMANTIC_PATH);
   };
 
-  useState(initializeExtendedEditor);
+  // todo refactor to useLayoutEffect
+  useState(() => {
+    // console.log(';; sem-chd-init ',);
+    return initializeExtendedEditor();
+  });
+  // no return ?
   useMemo(initializeExtendedEditor, [editor.children]);
+  // initializeExtendedEditor()
 
   return <Fragment>{children}</Fragment>;
 };
 
-export default SlateExtended;

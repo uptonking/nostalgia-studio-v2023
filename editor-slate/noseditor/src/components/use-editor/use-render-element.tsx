@@ -4,8 +4,11 @@ import { Editor } from 'slate';
 import { DefaultElement, ReactEditor, RenderElementProps } from 'slate-react';
 
 import { ElementProps, SlatePlugin } from '../../plugins/types';
-import Wrapper from '../../plugins/wrapper';
+import { Wrapper } from '../../plugins/wrapper';
 
+/**
+ * may wrap element in dragSort container
+ */
 export const useRenderElement = (editor: Editor, plugins: SlatePlugin[]) => {
   const renderers = plugins
     .filter((x) => x.renderElement)
@@ -45,8 +48,6 @@ export const useRenderElement = (editor: Editor, plugins: SlatePlugin[]) => {
 
   return renderElement;
 };
-
-export default useRenderElement;
 
 export const renderElementContent = (
   props: ElementProps,

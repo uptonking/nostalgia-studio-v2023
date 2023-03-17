@@ -25,7 +25,9 @@ import {
 import { ReactEditor } from '..';
 import { useChildren } from '../hooks/use-children';
 import { DecorateContext } from '../hooks/use-decorate';
-import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
+import {
+  useIsomorphicLayoutEffect,
+} from '../hooks/use-isomorphic-layout-effect';
 import { ReadOnlyContext } from '../hooks/use-read-only';
 import { useSlate } from '../hooks/use-slate';
 import { TRIPLE_CLICK } from '../utils/constants';
@@ -143,6 +145,8 @@ export const Editable = (props: EditableProps) => {
     as: Component = 'div',
     ...attributes
   } = props;
+  // console.log(';; render-top-editable');
+
   const editor = useSlate();
   // Rerender editor when composition status changed
   const [isComposing, setIsComposing] = useState(false);
@@ -867,6 +871,8 @@ export const Editable = (props: EditableProps) => {
           )}
           onCompositionStart={useCallback(
             (event: React.CompositionEvent<HTMLDivElement>) => {
+              // console.log(';; s-e compsitStart ', event)
+
               if (
                 hasEditableTarget(editor, event.target) &&
                 !isEventHandled(event, attributes.onCompositionStart)
@@ -914,6 +920,7 @@ export const Editable = (props: EditableProps) => {
           )}
           onCompositionEnd={useCallback(
             (event: React.CompositionEvent<HTMLDivElement>) => {
+              // console.log(';; s-e compsitEnd ', event)
               if (
                 hasEditableTarget(editor, event.target) &&
                 !isEventHandled(event, attributes.onCompositionEnd)
@@ -922,6 +929,7 @@ export const Editable = (props: EditableProps) => {
                   setIsComposing(false);
                   IS_COMPOSING.set(editor, false);
                 }
+                console.log(';; event.data ', event.data)
 
                 // COMPAT: In Chrome, `beforeinput` events for compositions
                 // aren't correct and never fire the "insertFromComposition"
@@ -936,6 +944,7 @@ export const Editable = (props: EditableProps) => {
                   !IS_UC_MOBILE &&
                   event.data
                 ) {
+                  // /chrome comes here
                   Editor.insertText(editor, event.data);
                 }
 
@@ -1168,9 +1177,10 @@ export const Editable = (props: EditableProps) => {
             [readOnly, attributes.onFocus],
           )}
           /** 处理热键 */
+          // console.log(';; s-e onKeyDown ', JSON.stringify(editor.selection), event);
           onKeyDown={useCallback(
             (event: React.KeyboardEvent<HTMLDivElement>) => {
-              // console.log(';; s-e onKeyDown ', JSON.stringify(editor.selection), event);
+              // console.log(';; s-e onKeyDown ', event, JSON.stringify(editor.selection));
 
               if (!readOnly && hasEditableTarget(editor, event.target)) {
                 const { nativeEvent } = event;
@@ -1195,7 +1205,7 @@ export const Editable = (props: EditableProps) => {
                 const { selection } = editor;
                 const element =
                   editor.children[
-                    selection !== null ? selection.focus.path[0] : 0
+                  selection !== null ? selection.focus.path[0] : 0
                   ];
                 const isRTL = getDirection(Node.string(element)) === 'rtl';
 

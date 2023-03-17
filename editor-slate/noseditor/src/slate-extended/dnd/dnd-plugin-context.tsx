@@ -48,7 +48,7 @@ type DndPluginContextProps = {
   }) => React.ReactElement;
 };
 
-const DndPluginContext = ({
+export const DndPluginContext = ({
   editor,
   onDragStart,
   onDragEnd,

@@ -7,13 +7,19 @@ import { listIndentWidth } from '../../config/editor';
 import { useDndState } from '../../slate-extended/dnd/use-dnd-state';
 import { ExtendedEditor } from '../../slate-extended/extended-editor';
 import { foldElement } from '../../slate-extended/transforms/fold-element';
+import { ELEMENT_TO_SEMANTIC_PATH } from '../../slate-extended/weakmaps';
 import { isTodoListItemElement } from '../list/utils';
 import { makeListItemAttributes } from '../serialization/utils';
 import { Item, ItemProps } from './components/item';
 import { Sortable } from './components/sortable';
-import useWrapperIntersectionObserver from './use-wrapper-intersection-observer';
+import {
+  useWrapperIntersectionObserver,
+} from './use-wrapper-intersection-observer';
 
-const Wrapper = (
+/**
+ * may wrap item in sortable container
+ */
+export const Wrapper = (
   props: Omit<RenderElementProps, 'children'> & { children: React.ReactNode },
 ) => {
   const { attributes, children, element } = props;
@@ -21,10 +27,24 @@ const Wrapper = (
     useDndState();
 
   const editor = useSlateStatic();
-  const id = element.id!;
   const selected = useSelected();
+  const id = element.id!;
 
+  // 🚨 hack，在Editable新渲染而Slate未更新时手动跟新dargSort信息
+  // todo 减少计算量
+  editor.semanticChildren = ExtendedEditor.getSemanticChildren(
+    editor,
+    editor.children,
+    {
+      setPath: (element, path) => {
+        ELEMENT_TO_SEMANTIC_PATH.set(element, path);
+      },
+    },
+  );
+
+  // console.log(';; getSemNode0 ');
   const semanticNode = ExtendedEditor.semanticNode(element);
+  // console.log(';; getSemNode ', semanticNode.element.children[0]);
   const { listIndex } = semanticNode;
   const isHiddenById =
     ExtendedEditor.isNestingElement(editor, activeElement) &&
@@ -38,7 +58,7 @@ const Wrapper = (
     [hidden],
   );
 
-  const sortableEnabled =
+  const isSortableEnabled =
     !hidden && (selected || isInViewport || activeId === element.id);
 
   const handleFold = useCallback(() => {
@@ -73,12 +93,12 @@ const Wrapper = (
       {...attributes}
       {...(ExtendedEditor.isNestingElement(editor, element)
         ? makeListItemAttributes({
-            depth: element.depth,
-            // @ts-expect-error fix-types
-            listType: element.listType,
-            index: listIndex,
-            checked: isTodoListItemElement(element) && element.checked,
-          })
+          depth: element.depth,
+          // @ts-expect-error fix-types
+          listType: element.listType,
+          index: listIndex,
+          checked: isTodoListItemElement(element) && element.checked,
+        })
         : {})}
       data-slate-node-type={element.type}
       className={cx('item-container', 'clipboardSkipLinebreak', {
@@ -90,13 +110,13 @@ const Wrapper = (
           '--spacing': `${isDragging ? dragSpacing : realSpacing}px`,
           ...(dragOverlayHeight
             ? {
-                '--drag-overlay-height': `${dragOverlayHeight}px`,
-              }
+              '--drag-overlay-height': `${dragOverlayHeight}px`,
+            }
             : null),
         } as React.CSSProperties
       }
     >
-      {sortableEnabled ? (
+      {isSortableEnabled ? (
         <Sortable id={id} {...itemProps}>
           {children}
         </Sortable>
@@ -106,5 +126,3 @@ const Wrapper = (
     </Tag>
   );
 };
-
-export default Wrapper;

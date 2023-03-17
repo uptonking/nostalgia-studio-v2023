@@ -9,7 +9,9 @@ import React, {
 import { Descendant, Editor, Element, Node } from 'slate';
 
 import { FocusedContext } from '../hooks/use-focused';
-import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
+import {
+  useIsomorphicLayoutEffect,
+} from '../hooks/use-isomorphic-layout-effect';
 import { SlateContext } from '../hooks/use-slate';
 import {
   getSelectorContext,
@@ -78,17 +80,17 @@ export const Slate = (props: SlateProps) => {
 
     setContext([editor]); // 👈🏻 每次都是新数组对象，会触发children重渲染
     handleSelectorChange(editor);
-  }, [onChange]);
-
-  /** 将onContextChange暴露到全局 */
-  EDITOR_TO_ON_CHANGE.set(editor, onContextChange);
+  }, [editor, handleSelectorChange, onChange]);
 
   useEffect(() => {
+    /** 将onContextChange暴露到全局 */
+    EDITOR_TO_ON_CHANGE.set(editor, onContextChange);
+
     return () => {
       EDITOR_TO_ON_CHANGE.set(editor, () => {});
       unmountRef.current = true;
     };
-  }, []);
+  }, [editor, onContextChange]);
 
   const [isFocused, setIsFocused] = useState(ReactEditor.isFocused(editor));
 
@@ -117,6 +119,8 @@ export const Slate = (props: SlateProps) => {
       };
     }
   }, []);
+
+  // console.log(';; render-top-slate');
 
   return (
     <SlateSelectorContext.Provider value={selectorContext}>

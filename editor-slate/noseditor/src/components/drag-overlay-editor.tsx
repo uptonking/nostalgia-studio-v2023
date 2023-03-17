@@ -3,12 +3,14 @@ import React, { useState } from 'react';
 import { createEditor, Descendant } from 'slate';
 import { DefaultEditable as Editable, Slate } from 'slate-react';
 
-import DndPluginContext from '../slate-extended/dnd/dnd-plugin-context';
-import SlateExtended from '../slate-extended/slate-extended';
-import useDragOverlayRenderElement from './use-editor/use-drag-overlay-render-element';
-import useEditor from './use-editor/use-editor';
-import usePlugins from './use-editor/use-plugins';
-import useRenderLeaf from './use-editor/use-render-leaf';
+import { DndPluginContext } from '../slate-extended/dnd/dnd-plugin-context';
+import { SlateExtended } from '../slate-extended/slate-extended';
+import {
+  useDragOverlayRenderElement,
+} from './use-editor/use-drag-overlay-render-element';
+import { useEditor } from './use-editor/use-editor';
+import { usePlugins } from './use-editor/use-plugins';
+import { useRenderLeaf } from './use-editor/use-render-leaf';
 
 type DragOverlayEditorProps = {
   initialValue: Descendant[];
@@ -45,4 +47,3 @@ export const DragOverlayEditor = (props: DragOverlayEditorProps) => {
   );
 };
 
-export default DragOverlayEditor;

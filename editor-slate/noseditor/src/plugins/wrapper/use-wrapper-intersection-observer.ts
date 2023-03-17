@@ -31,7 +31,7 @@ export const createState = () =>
     result: false,
   }));
 
-const useWrapperIntersectionObserver = (
+export const useWrapperIntersectionObserver = (
   ref: any,
   isDragging: boolean,
   deps: any[] = [],

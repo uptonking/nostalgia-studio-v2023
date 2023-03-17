@@ -10,12 +10,12 @@ import { initialData } from './config/initial-data';
 // import { SimplePage } from './pages/Simple';
 
 export const NosEditorApp = () => (
-  <StrictMode>
+  <>
     <div className='app'>
       <NosEditor id='main' initialValue={initialData} />
     </div>
-
-    {/* <BrowserRouter>
+    <StrictMode>
+      {/* <BrowserRouter>
       <Routes>
         <Route path='/simple' element={<SimplePage />} />
         <Route
@@ -31,7 +31,8 @@ export const NosEditorApp = () => (
       </Routes>
       <Navigator />
     </BrowserRouter> */}
-  </StrictMode>
+    </StrictMode>
+  </>
 );
 
 

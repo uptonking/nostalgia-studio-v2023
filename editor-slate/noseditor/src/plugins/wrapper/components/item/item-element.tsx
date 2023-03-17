@@ -117,13 +117,15 @@ const ItemComponent = (props: React.PropsWithChildren<ItemProps>) => {
   );
 };
 
+/** memoized ItemComponent,
+ * - areEqual: returns true if props are equal and false if the props not equal
+ */
 export const Item = memo(ItemComponent, (prev, next) => {
   for (const key of [...Object.keys(prev), ...Object.keys(next)]) {
     if (key === 'children' || key === 'listeners') {
       continue;
     }
 
-    // @ts-ignore
     if (prev[key] !== next[key]) {
       return false;
     }

@@ -419,6 +419,9 @@ Note: If you are looking for the previous Point, and not the previous Node, you 
     range: Range,
     options?: EditorUnhangRangeOptions,
   ) => Range;
+   /**
+   * Match a void node in the current branch of the editor.
+   */
   void: (
     editor: Editor,
     options?: EditorVoidOptions,
@@ -801,7 +804,6 @@ export const Editor: EditorInterface = {
   /**
    * Check if a value is a void `Element` object.
    */
-
   isVoid(editor: Editor, value: any): value is Element {
     return Element.isElement(value) && editor.isVoid(value);
   },
@@ -1766,7 +1768,6 @@ export const Editor: EditorInterface = {
   /**
    * Match a void node in the current branch of the editor.
    */
-
   void(
     editor: Editor,
     options: EditorVoidOptions = {},

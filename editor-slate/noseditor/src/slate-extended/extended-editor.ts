@@ -14,6 +14,10 @@ export interface ExtendedEditor extends BaseEditor {
 }
 
 export const ExtendedEditor = {
+
+  /**
+   * compute list-info of all nodes from `children`
+   */
   getSemanticChildren(
     editor: Editor,
     children: Descendant[],
@@ -23,12 +27,16 @@ export const ExtendedEditor = {
   ) {
     const { setPath } = options;
 
+    /**  */
     const tree: SemanticNode[] = [];
+    /**  */
     const path: SemanticNode[] = [];
     let index = 0;
 
-    let depthCounters: Record<string, number> = {}; // depth-counters map
+    /** depth-counters map */
+    let depthCounters: Record<string, number> = {};
 
+    // /iterate top-level elements, and compute their list-info
     for (const element of children) {
       if (!Element.isElement(element)) {
         continue;
@@ -37,9 +45,8 @@ export const ExtendedEditor = {
       const edgeIndex = path.findIndex(
         (p) => editor.compareLevels(p.element, element) !== -1,
       );
-
       if (edgeIndex !== -1) {
-        // keep only current element parents
+        // keep only current element parents, path updated to be [0, edgeIndex-1]
         path.splice(edgeIndex);
       }
 
@@ -95,7 +102,7 @@ export const ExtendedEditor = {
         descendants: [],
       });
 
-      setPath && setPath(element, [...path]);
+      if (setPath) setPath(element, [...path]);
 
       const last = path[path.length - 1];
       const parent = path[path.length - 2];

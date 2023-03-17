@@ -17,6 +17,9 @@ export type NestingElement = {
   depth: number;
 };
 
+/**
+ * slateElement with dragSortInfo
+ */
 export type SemanticNode<T extends Element = Element> = {
   element: T;
   children: SemanticNode[];

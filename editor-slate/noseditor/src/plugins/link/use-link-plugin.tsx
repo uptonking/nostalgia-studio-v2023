@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import Link from './components/link';
 import { isLinkElement } from './utils';
 import { withLink } from './with-link';
 
-const useLinkPlugin: UseSlatePlugin = () => {
+export const useLinkPlugin: UseNosPlugin = () => {
   return {
     withOverrides: withLink,
     renderElement: (props) => {

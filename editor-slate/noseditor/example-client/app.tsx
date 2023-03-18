@@ -5,14 +5,15 @@ import React, { StrictMode } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import { NosEditor } from '../src';
-import { initialData } from './config/initial-data';
+import { CustomEditor, CustomElement, CustomText } from '../src/types/slate.d';
+import { initialData, initialDataLong, simpleTableData } from './config';
 
 // import { SimplePage } from './pages/Simple';
 
 export const NosEditorApp = () => (
   <>
     <div className='app'>
-      <NosEditor id='main' initialValue={initialData} />
+      <NosEditor id='main' initialValue={simpleTableData} />
     </div>
     <StrictMode>
       {/* <BrowserRouter>
@@ -35,4 +36,11 @@ export const NosEditorApp = () => (
   </>
 );
 
-
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: CustomEditor;
+    Element: CustomElement;
+    Text: CustomText;
+    // Range: BaseRange | RemoteCursorDecoratedRange<CursorData>;
+  }
+}

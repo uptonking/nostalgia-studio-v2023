@@ -7,9 +7,9 @@ import { CursorData } from './types';
 
 declare module 'slate' {
   interface CustomTypes {
-    Editor: CustomEditor;
-    Element: CustomElement;
-    Text: CustomText;
-    // Range: BaseRange | RemoteCursorDecoratedRange<CursorData>;
+    // Editor: CustomEditor;
+    // Element: CustomElement;
+    // Text: CustomText;
+    Range: BaseRange | RemoteCursorDecoratedRange<CursorData>;
   }
 }

@@ -2,7 +2,7 @@ import { Editor } from 'slate';
 
 import { isHeadingElement } from './utils';
 
-const withHeading = (editor: Editor) => {
+export const withHeading = (editor: Editor) => {
   const { isFoldingElement } = editor;
 
   editor.isFoldingElement = (element) => {

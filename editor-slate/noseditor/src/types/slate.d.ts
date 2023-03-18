@@ -14,6 +14,12 @@ import { LinkElement } from '../plugins/link/types';
 import { ListItemElement } from '../plugins/list/types';
 import { FormattedText } from '../plugins/marks/types';
 import { ParagraphElement } from '../plugins/paragraph/types';
+import type {
+  TableCellElement,
+  TableElement,
+  TableRowElement,
+  WithTableEditor,
+} from '../plugins/table/types';
 import { ExtendedEditor } from '../slate-extended/extended-editor';
 import { HashedElement, IdentityElement } from '../slate-extended/types';
 
@@ -21,7 +27,8 @@ export type CustomEditor = Omit<
   BaseEditor & ReactEditor & HistoryEditor,
   'children'
 > &
-  ExtendedEditor;
+  ExtendedEditor &
+  WithTableEditor;
 
 export type EditorUIElement =
   | ParagraphElement
@@ -32,7 +39,10 @@ export type EditorUIElement =
   | LinkElement
   | BlockquoteElement
   | DividerElement
-  | ListItemElement;
+  | ListItemElement
+  | TableElement
+  | TableRowElement
+  | TableCellElement;
 
 export type CustomElement = EditorUIElement & IdentityElement & HashedElement;
 

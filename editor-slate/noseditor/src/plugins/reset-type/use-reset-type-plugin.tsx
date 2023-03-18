@@ -1,7 +1,7 @@
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import { withResetType } from './with-reset-type';
 
-const useResetTypePlugin: UseSlatePlugin = () => {
+export const useResetTypePlugin: UseNosPlugin = () => {
   return {
     withOverrides: withResetType,
   };

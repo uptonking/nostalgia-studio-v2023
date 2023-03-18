@@ -18,7 +18,7 @@ import { MaximizeMode, RangeMode } from '../interfaces/types';
 export interface NodeTransforms {
   /**
    * - Atomically inserts nodes at the specified location in the document.
-   * - If no location is specified, inserts at the current selection.
+   * - If no location is specified, inserts with `at = editor.selection`
    * - If there is no selection, inserts at the end of the document.
    */
   insertNodes: <T extends Node>(
@@ -163,6 +163,7 @@ export interface NodeTransforms {
 export const NodeTransforms: NodeTransforms = {
   /**
    * Insert nodes at a specific location in the Editor.
+   * - `at = editor.selection` by default
    */
   insertNodes<T extends Node>(
     editor: Editor,

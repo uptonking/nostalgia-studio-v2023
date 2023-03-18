@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import Divider from './components/divider';
 import { isDividerElement } from './utils';
 import { withDivider } from './with-divider';
 
-const useDividerPlugin: UseSlatePlugin = () => {
+export const useDividerPlugin: UseNosPlugin = () => {
   return {
     withOverrides: withDivider,
     renderElement: (props) => {

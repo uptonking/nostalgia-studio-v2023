@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import Image from './components/image';
 import { isImageElement } from './utils';
 import { withImage } from './with-image';
 
-const useImagePlugin: UseSlatePlugin = () => {
+export const useImagePlugin: UseNosPlugin = () => {
   return {
     withOverrides: withImage,
     renderElement: (props) => {

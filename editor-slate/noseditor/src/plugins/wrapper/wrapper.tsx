@@ -12,9 +12,7 @@ import { isTodoListItemElement } from '../list/utils';
 import { makeListItemAttributes } from '../serialization/utils';
 import { Item, ItemProps } from './components/item';
 import { Sortable } from './components/sortable';
-import {
-  useWrapperIntersectionObserver,
-} from './use-wrapper-intersection-observer';
+import { useWrapperIntersectionObserver } from './use-wrapper-intersection-observer';
 
 /**
  * may wrap item in sortable container
@@ -93,12 +91,12 @@ export const Wrapper = (
       {...attributes}
       {...(ExtendedEditor.isNestingElement(editor, element)
         ? makeListItemAttributes({
-          depth: element.depth,
-          // @ts-expect-error fix-types
-          listType: element.listType,
-          index: listIndex,
-          checked: isTodoListItemElement(element) && element.checked,
-        })
+            depth: element.depth,
+            // @ts-expect-error fix-types
+            listType: element.listType,
+            index: listIndex,
+            checked: isTodoListItemElement(element) && element.checked,
+          })
         : {})}
       data-slate-node-type={element.type}
       className={cx('item-container', 'clipboardSkipLinebreak', {
@@ -110,8 +108,8 @@ export const Wrapper = (
           '--spacing': `${isDragging ? dragSpacing : realSpacing}px`,
           ...(dragOverlayHeight
             ? {
-              '--drag-overlay-height': `${dragOverlayHeight}px`,
-            }
+                '--drag-overlay-height': `${dragOverlayHeight}px`,
+              }
             : null),
         } as React.CSSProperties
       }

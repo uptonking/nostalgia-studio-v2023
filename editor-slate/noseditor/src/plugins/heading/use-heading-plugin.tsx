@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import { Heading1, Heading2, Heading3 } from './components/heading';
 import {
   isHeading1Element,
   isHeading2Element,
   isHeading3Element,
 } from './utils';
-import withHeading from './with-heading';
+import { withHeading } from './with-heading';
 
-const useHeadingPlugin: UseSlatePlugin = () => {
+export const useHeadingPlugin: UseNosPlugin = () => {
   return {
     withOverrides: withHeading,
     renderElement: (props) => {

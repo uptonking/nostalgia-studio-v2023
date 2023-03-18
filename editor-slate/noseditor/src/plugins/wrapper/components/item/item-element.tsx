@@ -5,7 +5,7 @@ import { isIOS } from 'react-device-detect';
 import { Element, Node } from 'slate';
 import { useSlateStatic } from 'slate-react';
 
-import { DraggableSyntheticListeners } from '@dnd-kit/core';
+import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 import { useSortable } from '@dnd-kit/sortable';
 import { Transform } from '@dnd-kit/utilities';
 

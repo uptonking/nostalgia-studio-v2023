@@ -1,12 +1,12 @@
 import { Element } from 'slate';
 
 import {
-  Heading1Type,
   Heading1Element,
-  Heading2Type,
+  Heading1Type,
   Heading2Element,
-  Heading3Type,
+  Heading2Type,
   Heading3Element,
+  Heading3Type,
 } from './types';
 
 export const isHeading1Element = (value: any): value is Heading1Element => {

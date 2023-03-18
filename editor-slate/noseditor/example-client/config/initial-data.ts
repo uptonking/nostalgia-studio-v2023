@@ -124,19 +124,130 @@ const listValue: Descendant[] = [
   },
 ];
 
+export function addIdToEditorData(validData: Descendant[]) {
+  const makeId = () => nanoid(16);
+
+  const assignIdRecursively = (node: Node) => {
+    if (Element.isElement(node)) {
+      node.id = node.id ?? makeId();
+
+      node.children.forEach(assignIdRecursively);
+    }
+  };
+
+  validData.forEach(assignIdRecursively);
+}
+
 const data: Descendant[] = [...listValue];
+addIdToEditorData(data);
 
-const makeId = () => nanoid(16);
+const simpleTableData: Descendant[] = [
+  {
+    type: 'p',
+    children: [
+      {
+        text: 'text1 ',
+      },
+    ],
+  },
+  {
+    type: 'table',
+    children: [
+      {
+        type: 'tableRow',
+        children: [
+          {
+            type: 'tableCell',
+            header: 'visible',
+            children: [
+              {
+                type: 'p',
+                children: [{ text: '测试11 ', bold: true }],
+              },
+            ],
+          },
+          {
+            type: 'tableCell',
+            header: 'visible',
+            children: [
+              {
+                type: 'p',
+                children: [
+                  {
+                    text: '测试12 represents tabular data — that is, information presented in a two-dimensional table comprised of rows and columns of cells containing data',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'tableCell',
+            header: 'visible',
+            children: [
+              {
+                type: 'p',
+                children: [
+                  {
+                    text: '测试13 table 元素表示表格数据——即通过二维数据表表示的信息',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'tableRow',
+        children: [
+          {
+            type: 'tableCell',
+            children: [
+              {
+                type: 'p',
+                children: [{ text: '测试21 ' }],
+              },
+            ],
+          },
+          {
+            type: 'tableCell',
+            children: [
+              {
+                type: 'p',
+                children: [
+                  {
+                    text: '测试22 represents tabular data — that is, information presented in a two-dimensional table comprised of rows and columns of cells containing data',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            type: 'tableCell',
+            children: [
+              {
+                type: 'p',
+                children: [
+                  {
+                    text: '测试23 table 元素表示表格数据——即通过二维数据表表示的信息',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: 'p',
+    children: [
+      {
+        text: 'text2 ',
+      },
+    ],
+  },
+];
 
-const assignIdRecursively = (node: Node) => {
-  if (Element.isElement(node)) {
-    // @ts-expect-error fix-types
-    node.id = node.id ?? makeId();
+addIdToEditorData(simpleTableData);
 
-    node.children.forEach(assignIdRecursively);
-  }
-};
-
-data.forEach(assignIdRecursively);
-
-export { data as initialData };
+export { data as initialData, simpleTableData };

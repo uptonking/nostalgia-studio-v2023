@@ -1,5 +1,8 @@
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 
+/**
+ * persist editor content to localStorage
+ */
 export const usePersistedState = <S>(
   id: string,
   initialState: (restored: any) => S,

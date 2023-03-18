@@ -27,6 +27,10 @@ export interface ElementInterface {
   isElement: (value: any) => value is Element;
   isElementList: (value: any) => value is Element[];
   isElementProps: (props: any) => props is Partial<Element>;
+  /**
+   * Check if a value implements the `Element` interface and has elementKey with selected value.
+   * Default it check to `type` key value
+   */
   isElementType: <T extends Element>(
     value: any,
     elementVal: string,
@@ -84,7 +88,6 @@ export const Element: ElementInterface = {
    * Check if a value implements the `Element` interface and has elementKey with selected value.
    * Default it check to `type` key value
    */
-
   isElementType: <T extends Element>(
     value: any,
     elementVal: string,

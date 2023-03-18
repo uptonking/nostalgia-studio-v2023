@@ -1,7 +1,7 @@
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import * as handlers from './handlers';
 
-const useSoftBreakPlugin: UseSlatePlugin = () => {
+export const useSoftBreakPlugin: UseNosPlugin = () => {
   return {
     handlers,
   };

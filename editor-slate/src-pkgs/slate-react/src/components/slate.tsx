@@ -9,9 +9,7 @@ import React, {
 import { Descendant, Editor, Element, Node } from 'slate';
 
 import { FocusedContext } from '../hooks/use-focused';
-import {
-  useIsomorphicLayoutEffect,
-} from '../hooks/use-isomorphic-layout-effect';
+import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
 import { SlateContext } from '../hooks/use-slate';
 import {
   getSelectorContext,

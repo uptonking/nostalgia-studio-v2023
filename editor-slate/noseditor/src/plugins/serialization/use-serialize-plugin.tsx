@@ -1,7 +1,7 @@
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import { withSerialize } from './with-serialize';
 
-const useSerializePlugin: UseSlatePlugin = () => {
+export const useSerializePlugin: UseNosPlugin = () => {
   return {
     withOverrides: withSerialize,
   };

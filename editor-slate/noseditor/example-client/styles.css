@@ -1,14 +1,15 @@
 .app {
+  display: flex;
+  flex-direction: column;
   max-width: 850px;
   margin: 24px auto;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
 
 @media only screen and (max-width: 768px) {
   .app {
-    padding: 24px;
+    /* padding: 24px; */
+    margin: 24px ;
   }
 }
 

@@ -1,6 +1,6 @@
 import { Editor, Element, Node, Transforms } from 'slate';
 
-import { Active, Over } from '@dnd-kit/core';
+import type { Active, Over } from '@dnd-kit/core';
 
 import { ExtendedEditor } from '../extended-editor';
 

@@ -419,7 +419,7 @@ Note: If you are looking for the previous Point, and not the previous Node, you 
     range: Range,
     options?: EditorUnhangRangeOptions,
   ) => Range;
-   /**
+  /**
    * Match a void node in the current branch of the editor.
    */
   void: (

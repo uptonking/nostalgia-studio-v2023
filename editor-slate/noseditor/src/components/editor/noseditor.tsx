@@ -1,21 +1,11 @@
-import React, { useReducer, useState } from 'react';
+import React, { useCallback, useReducer, useState } from 'react';
 
 import { createEditor, Descendant, Editor } from 'slate';
 import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
-import {
-  IS_FIREFOX_LEGACY,
-  IS_IOS,
-  IS_QQBROWSER,
-  IS_SAFARI,
-  IS_UC_MOBILE,
-  IS_WECHATBROWSER,
-} from 'slate-react/src/utils/environment';
 
 import { NosIconProvider } from '../../config/icon-provider';
 import { usePersistedState } from '../../hooks/use-persisted-state';
-import {
-  DragOverlayContent,
-} from '../../plugins/wrapper/components/drag-overlay-content';
+import { DragOverlayContent } from '../../plugins/wrapper/components/drag-overlay-content';
 import { DndPluginContext } from '../../slate-extended/dnd/dnd-plugin-context';
 import { SlateExtended } from '../../slate-extended/slate-extended';
 import { EditorToolbar } from '../editor-toolbar';
@@ -33,6 +23,11 @@ export type NosEditorProps = {
   readOnly?: boolean;
 };
 
+/**
+ * A ready-to-use rich text editor built with slate.
+ *
+ * It can be used as an reference implementation to build your own block editor.
+ */
 export const NosEditor = (props: NosEditorProps) => {
   const { id, initialValue, readOnly = false } = props;
 
@@ -48,7 +43,7 @@ export const NosEditor = (props: NosEditorProps) => {
       handlers: {
         onKeyDown: () => () => {
           // after dnd ends then ReactEditor.focus call, to continue typing
-          // forceRerender();
+          forceRerender();
         },
       },
     },
@@ -67,12 +62,17 @@ export const NosEditor = (props: NosEditorProps) => {
       <Slate editor={editor} value={value} onChange={setValue}>
         <SlateExtended>
           <DndPluginContext
-            onDragEnd={() => {
+            editor={editor}
+            onDragEnd={useCallback(() => {
               // after dnd ends to provide the right DragOverlay drop animation
               forceRerender();
-            }}
-            editor={editor}
-            renderDragOverlay={(props) => <DragOverlayContent {...props} />}
+            }, [forceRerender])}
+            renderDragOverlay={useCallback(
+              (props) => (
+                <DragOverlayContent {...props} />
+              ),
+              [],
+            )}
           >
             <EditorToolbar />
             <Editable
@@ -80,30 +80,6 @@ export const NosEditor = (props: NosEditorProps) => {
               {...handlers}
               renderElement={renderElement}
               renderLeaf={renderLeaf}
-              onCompositionEnd={(
-                event: React.CompositionEvent<HTMLDivElement>,
-              ) => {
-                if (ReactEditor.isComposing(editor)) {
-                  // COMPAT: In Chrome, `beforeinput` events for compositions
-                  // aren't correct and never fire the "insertFromComposition"
-                  // type that we need. So instead, insert whenever a composition
-                  // ends since it will already have been committed to the DOM.
-                  if (
-                    !IS_SAFARI &&
-                    !IS_FIREFOX_LEGACY &&
-                    !IS_IOS &&
-                    !IS_QQBROWSER &&
-                    !IS_WECHATBROWSER &&
-                    !IS_UC_MOBILE &&
-                    event.data
-                  ) {
-                    // /chrome comes here
-                    Editor.insertText(editor, event.data);
-                    // 🚨 hack for update slateValue earlier to avoid
-                    event.data = null;
-                  }
-                }
-              }}
             />
           </DndPluginContext>
         </SlateExtended>

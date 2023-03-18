@@ -2,7 +2,7 @@ import React from 'react';
 
 import cx from 'classnames';
 
-import { DraggableSyntheticListeners } from '@dnd-kit/core';
+import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 
 type Props = {
   listeners?: DraggableSyntheticListeners;

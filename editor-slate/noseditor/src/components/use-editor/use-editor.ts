@@ -2,13 +2,14 @@ import { useMemo } from 'react';
 
 import { Editor } from 'slate';
 
-import { SlatePlugin } from '../../plugins/types';
+import { NosPlugin } from '../../plugins/types';
 import { composePlugins } from '../../utils/slate-plugin';
 
-export const useEditor = (
-  createEditor: () => Editor,
-  plugins: SlatePlugin[],
-) => {
+/** reversely compose plugins with `withOverrides`-not-undefined
+ *
+ * todo name not start with use
+ */
+export const useEditor = (createEditor: () => Editor, plugins: NosPlugin[]) => {
   return useMemo(
     () =>
       composePlugins(

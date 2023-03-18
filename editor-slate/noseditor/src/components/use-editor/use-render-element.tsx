@@ -3,13 +3,13 @@ import React, { useCallback } from 'react';
 import { Editor } from 'slate';
 import { DefaultElement, ReactEditor, RenderElementProps } from 'slate-react';
 
-import { ElementProps, SlatePlugin } from '../../plugins/types';
+import { ElementProps, NosPlugin } from '../../plugins/types';
 import { Wrapper } from '../../plugins/wrapper';
 
 /**
  * may wrap element in dragSort container
  */
-export const useRenderElement = (editor: Editor, plugins: SlatePlugin[]) => {
+export const useRenderElement = (editor: Editor, plugins: NosPlugin[]) => {
   const renderers = plugins
     .filter((x) => x.renderElement)
     .map((x) => x.renderElement!);
@@ -21,6 +21,7 @@ export const useRenderElement = (editor: Editor, plugins: SlatePlugin[]) => {
       const path = ReactEditor.findPath(editor, element);
 
       if (path.length === 1) {
+        // /only wrap top level element
         return (
           <Wrapper attributes={attributes} element={element}>
             {renderElementContent(

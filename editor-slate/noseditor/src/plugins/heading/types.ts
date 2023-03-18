@@ -1,6 +1,6 @@
-import { Descendant } from 'slate';
+import type { Descendant } from 'slate';
 
-import { FoldingElement } from '../../slate-extended/types';
+import type { FoldingElement } from '../../slate-extended/types';
 
 export const Heading1Type: Heading1Type = 'h1';
 export const Heading2Type: Heading2Type = 'h2';

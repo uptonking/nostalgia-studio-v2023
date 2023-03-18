@@ -1,7 +1,7 @@
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import { withTrailingLine } from './with-trailing-line';
 
-const useTrailingLinePlugin: UseSlatePlugin = () => {
+export const useTrailingLinePlugin: UseNosPlugin = () => {
   return {
     withOverrides: withTrailingLine,
   };

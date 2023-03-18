@@ -43,6 +43,9 @@ export interface PathInterface {
   isPath: (value: any) => value is Path;
   isSibling: (path: Path, another: Path) => boolean;
   levels: (path: Path, options?: PathLevelsOptions) => Path[];
+  /**
+   * Given a path, get the path to the next sibling node.
+   */
   next: (path: Path) => Path;
   operationCanTransformPath: (operation: Operation) => boolean;
   parent: (path: Path) => Path;
@@ -285,7 +288,6 @@ export const Path: PathInterface = {
   /**
    * Given a path, get the path to the next sibling node.
    */
-
   next(path: Path): Path {
     if (path.length === 0) {
       throw new Error(

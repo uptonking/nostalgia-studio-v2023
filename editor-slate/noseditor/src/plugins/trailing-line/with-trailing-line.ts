@@ -15,18 +15,21 @@ const isTrailingLine = (node: Node) => {
   return isParagraphElement(node) && Node.string(node) === '';
 };
 
+/**
+ * insert a empty paragraph as trailing line
+ */
 const insertTrailingLine = (editor: Editor, at: Location) => {
   Transforms.insertNodes(
     editor,
     {
       type: ParagraphType,
       children: [{ text: '' }],
-    } as any,
+    },
     { at },
   );
 };
 
-export const withTrailingLine = (editor: any) => {
+export const withTrailingLine = (editor: Editor) => {
   const { insertBreak, normalizeNode } = editor;
 
   editor.insertBreak = () => {
@@ -66,7 +69,7 @@ export const withTrailingLine = (editor: any) => {
           insertTrailingLine(editor, Path.next(lastPath));
         }
       } else {
-        // if  no children insert trailing line
+        // if no children insert trailing line
         insertTrailingLine(editor, [0]);
       }
     }

@@ -7,12 +7,13 @@ import { ELEMENT_TO_SEMANTIC_PATH } from './weakmaps';
 
 /**
  * compute `semanticChildren` and add to editor instance
+ *
+ * todo move logic inside Editable to avoid error when Editable rerendered but SlateExtended not
  */
 export const SlateExtended = (props: { children: React.ReactNode }) => {
   const editor = useSlate();
   const { children } = props;
   // console.log(';; render-SlateExtended');
-
 
   const initializeExtendedEditor = () => {
     editor.semanticChildren = ExtendedEditor.getSemanticChildren(
@@ -38,4 +39,3 @@ export const SlateExtended = (props: { children: React.ReactNode }) => {
 
   return <Fragment>{children}</Fragment>;
 };
-

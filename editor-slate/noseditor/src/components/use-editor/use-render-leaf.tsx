@@ -3,9 +3,9 @@ import React, { useCallback } from 'react';
 import { Editor } from 'slate';
 import { DefaultLeaf, RenderLeafProps } from 'slate-react';
 
-import { SlatePlugin } from '../../plugins/types';
+import { NosPlugin } from '../../plugins/types';
 
-export const useRenderLeaf = (editor: Editor, plugins: SlatePlugin[]) => {
+export const useRenderLeaf = (editor: Editor, plugins: NosPlugin[]) => {
   const renderers = plugins
     .filter((x) => x.renderLeaf)
     .map((x) => x.renderLeaf!);

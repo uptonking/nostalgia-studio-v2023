@@ -27,7 +27,7 @@ const FoldingLine = (props: Props & { element: Element }) => {
 
   useEffect(() => {
     if (!hasFoldingLine) {
-      height && setHeight(0);
+      if (height) setHeight(0);
       return;
     }
 

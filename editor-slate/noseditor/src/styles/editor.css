@@ -302,20 +302,22 @@ body.dragging .handle {
 }
 
 .pointer {
+  /* cursor: pointer; */
+  pointer-events: none;
   float: left;
   min-width: 18px;
-  cursor: pointer;
   transform: rotate(0deg);
-
-  background: none;
   border: none;
+  background: none;
   user-select: none;
 }
 
-.checkbox-pointer {
+.list-item .checkbox-pointer {
   float: left;
   margin-top: 3px;
   user-select: none;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .list-item .folding-pointer:hover,

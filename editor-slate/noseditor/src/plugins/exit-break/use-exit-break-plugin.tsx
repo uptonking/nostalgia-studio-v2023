@@ -1,7 +1,7 @@
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import * as handlers from './handlers';
 
-export const useExitBreakPlugin: UseSlatePlugin = () => {
+export const useExitBreakPlugin: UseNosPlugin = () => {
   return {
     handlers,
   };

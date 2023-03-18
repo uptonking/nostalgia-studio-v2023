@@ -14,7 +14,6 @@ export interface ExtendedEditor extends BaseEditor {
 }
 
 export const ExtendedEditor = {
-
   /**
    * compute list-info of all nodes from `children`
    */

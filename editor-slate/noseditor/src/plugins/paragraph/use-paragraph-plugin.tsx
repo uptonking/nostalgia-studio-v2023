@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { UseSlatePlugin } from '../types';
+import { UseNosPlugin } from '../types';
 import Paragraph from './components/paragraph';
 import { isParagraphElement } from './utils';
 
-const useParagraphPlugin: UseSlatePlugin = () => {
+const useParagraphPlugin: UseNosPlugin = () => {
   return {
     renderElement: (props) => {
       if (isParagraphElement(props.element)) {

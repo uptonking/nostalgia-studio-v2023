@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { UseSlatePlugin } from '../types';
-import Blockquote from './components/blockquote';
+import { UseNosPlugin } from '../types';
+import { Blockquote } from './components/blockquote';
 import { isBlockquoteElement } from './utils';
 
-export const useBlockquotePlugin: UseSlatePlugin = () => {
+export const useBlockquotePlugin: UseNosPlugin = () => {
   return {
     renderElement: (props) => {
       if (isBlockquoteElement(props.element)) {

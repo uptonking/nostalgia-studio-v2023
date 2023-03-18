@@ -2,10 +2,14 @@ import { useMemo } from 'react';
 
 import { Editor } from 'slate';
 
-import { SlatePlugin } from '../../plugins/types';
+import { NosPlugin } from '../../plugins/types';
 import { composeHandlers } from '../../utils/slate-plugin';
 
-export const usePluginsHandlers = (editor: Editor, plugins: SlatePlugin[]) => {
+/** compose plugins with `handlers`-not-undefined
+ *
+ * todo name not start with use
+ */
+export const usePluginsHandlers = (editor: Editor, plugins: NosPlugin[]) => {
   return useMemo(
     () =>
       composeHandlers(

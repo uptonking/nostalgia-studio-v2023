@@ -1,6 +1,7 @@
 {
   "name": "@datalking/noseditor",
   "version": "0.0.1111",
+  "description": "A collabortive block-style editor optimized for tables.",
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
@@ -63,6 +64,7 @@
     "@types/ramda": "^0.28.0",
     "@types/react": "18.0.26",
     "@types/react-dom": "^18.0.10",
+    "event-emitter": "^0.3.5",
     "nodemon": "^2.0.20",
     "npm-run-all": "^4.1.5",
     "ts-node": "^10.9.1"

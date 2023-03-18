@@ -3,13 +3,13 @@ import React, { useCallback } from 'react';
 import { Editor } from 'slate';
 import { DefaultElement } from 'slate-react';
 
-import { ElementProps, SlatePlugin } from '../../plugins/types';
+import { ElementProps, NosPlugin } from '../../plugins/types';
 import { DragOverlayWrapper } from '../../plugins/wrapper/components/drag-overlay-content';
 import { ExtendedEditor } from '../../slate-extended/extended-editor';
 
 export const useDragOverlayRenderElement = (
   editor: Editor,
-  plugins: SlatePlugin[],
+  plugins: NosPlugin[],
 ) => {
   const renderers = plugins
     .filter((x) => x.renderElement)

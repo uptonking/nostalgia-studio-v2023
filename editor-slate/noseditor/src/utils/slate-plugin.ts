@@ -26,6 +26,8 @@ type DOMHandlersKeys = KeysMatching<DOMAttributes<Element>, Handler>;
 
 /**
  * compose event handlers of the same name into one event
+ *
+ * todo remove ramda
  */
 export const composeHandlers = (
   editor: Editor,
@@ -35,11 +37,18 @@ export const composeHandlers = (
     (acc, x) => mergeWith((a, b) => flatten([a, b]), acc, x),
     {},
   ) as Record<DOMHandlersKeys, Array<EditorHandler>>;
+  // console.log(';; grouped ', grouped, handlersConfig);
 
   const composed: Partial<Record<string, Handler>> = {};
   for (const [eventName, callbacks] of Object.entries(grouped)) {
-    composed[eventName] = (e: SyntheticEvent) =>
-      callbacks.forEach((handler) => handler && handler(editor)!(e));
+    let _callbacks = callbacks;
+    if (!Array.isArray(callbacks)) {
+      _callbacks = [callbacks];
+    }
+
+    composed[eventName] = (e: SyntheticEvent) => {
+      _callbacks.forEach((handler) => handler && handler(editor)!(e));
+    };
   }
 
   return composed as Partial<Record<DOMHandlersKeys, Handler>>;

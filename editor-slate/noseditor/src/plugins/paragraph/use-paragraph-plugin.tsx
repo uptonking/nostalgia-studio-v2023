@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { UseNosPlugin } from '../types';
-import Paragraph from './components/paragraph';
+import { Paragraph } from './components/paragraph';
 import { isParagraphElement } from './utils';
 
-const useParagraphPlugin: UseNosPlugin = () => {
+export const useParagraphPlugin: UseNosPlugin = () => {
   return {
     renderElement: (props) => {
       if (isParagraphElement(props.element)) {

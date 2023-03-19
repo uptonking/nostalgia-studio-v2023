@@ -1,4 +1,5 @@
 import { Editor, Range } from 'slate';
+
 import {
   autoformatBlock,
   autoformatMark,
@@ -8,7 +9,7 @@ import {
 
 /**
  * Enables support for autoformatting actions.
- * Once a match rule is validated, it does not check the following rules.
+ * - Once a match rule is validated, it does not check the following rules.
  */
 export const withAutoformat = (rules: AutoformatRule[]) => (editor: Editor) => {
   const { insertText } = editor;

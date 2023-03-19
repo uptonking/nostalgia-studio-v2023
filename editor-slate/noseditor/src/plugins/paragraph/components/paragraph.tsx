@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { ElementProps } from '../../types';
-import { ParagraphElement } from '../types';
+import type { ElementProps } from '../../types';
+import type { ParagraphElement } from '../types';
 
-const Paragraph = (props: ElementProps & { element: ParagraphElement }) => {
+export const Paragraph = (props: ElementProps & { element: ParagraphElement }) => {
   const { children, attributes } = props;
 
   return (
-    <p {...attributes} className='slate-p'>
+    <p {...attributes} className='nos-elem text-p'>
       {children}
     </p>
   );

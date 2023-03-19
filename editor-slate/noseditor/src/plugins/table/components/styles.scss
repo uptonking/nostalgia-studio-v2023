@@ -1,5 +1,6 @@
-.yt-e-table-wrap {
+.nos-elem.block-table {
   position: relative;
+  font-size: 14px;
 
   table,
   th,
@@ -16,7 +17,7 @@
   td {
     min-width: 20px;
     min-height: 20px;
-    padding: 4px 8px;
+    padding: 8px;
     overflow: hidden;
     word-break: break-all;
     overflow-wrap: break-word;
@@ -26,16 +27,16 @@
     background-color: #f7f7f7;
   }
 
-  .yt-e-table-row {
+  .nos-table-row {
     height: 45px;
   }
 
-  .ye-e-table-selected tr ::selection {
+  .nos-table-selected tr ::selection {
     color: inherit;
     background: none;
   }
 
-  .yt-e-table-selection {
+  .nos-table-selection {
     position: absolute;
     z-index: 1;
     box-sizing: border-box;
@@ -46,7 +47,7 @@
   }
 }
 
-.yt-e-table-context-menu {
+.nos-table-context-menu {
   position: absolute;
   z-index: 1;
   display: flex;
@@ -55,14 +56,14 @@
   box-sizing: border-box;
   width: 130px;
   padding: 10px 4px;
-  font-size: 14px;
   line-height: 20px;
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 9px 28px rgb(0 0 0 / 5%), 0 6px 16px rgb(0 0 0 / 8%),
     0 3px 6px rgb(0 0 0 / 12%);
+  font-size: 14px;
 
-  .yt-e-split-line {
+  .nos-split-line {
     width: 100%;
     margin: 1px 0;
     border-bottom: 1px solid rgb(0 0 0 / 10%);
@@ -81,7 +82,7 @@
     }
   }
 
-  .yt-e-disabled {
+  .nos-disabled {
     color: rgb(0 0 0 / 25%);
     cursor: not-allowed;
   }

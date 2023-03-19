@@ -1,9 +1,9 @@
-import './blockquote.css';
+import './styles.scss';
 
 import React from 'react';
 
-import { ElementProps } from '../../types';
-import { BlockquoteElement } from '../types';
+import type { ElementProps } from '../../types';
+import type { BlockquoteElement } from '../types';
 
 export const Blockquote = (
   props: ElementProps & { element: BlockquoteElement },
@@ -11,7 +11,7 @@ export const Blockquote = (
   const { children, attributes } = props;
 
   return (
-    <blockquote className='nos-elem-blockquote' {...attributes}>
+    <blockquote className='nos-elem blockquote' {...attributes}>
       {children}
     </blockquote>
   );

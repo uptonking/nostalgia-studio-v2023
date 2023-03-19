@@ -82,7 +82,7 @@ export const ContextMenu: FC<Props> = ({
   return ReactDOM.createPortal(
     <div
       ref={menuRef}
-      className='yt-e-table-context-menu'
+      className='nos-table-context-menu'
       style={{
         display: visible ? 'flex' : 'none',
         left: `${point.left + 10}px`,
@@ -124,7 +124,7 @@ export const ContextMenu: FC<Props> = ({
       >
         向右插入 1 列
       </div>
-      <span className='yt-e-split-line' />
+      <span className='nos-split-line' />
       <div
         onMouseDown={(e) => {
           e.preventDefault();
@@ -141,9 +141,9 @@ export const ContextMenu: FC<Props> = ({
       >
         删除列
       </div>
-      <span className='yt-e-split-line' />
+      <span className='nos-split-line' />
       <div
-        className={selectCells.length > 1 ? '' : 'yt-e-disabled'}
+        className={selectCells.length > 1 ? '' : 'nos-disabled'}
         onMouseDown={(e) => {
           e.preventDefault();
           if (selectCells.length < 2) return;
@@ -153,7 +153,7 @@ export const ContextMenu: FC<Props> = ({
         合并单元格
       </div>
       <div
-        className={isMergeCell() ? '' : 'yt-e-disabled'}
+        className={isMergeCell() ? '' : 'nos-disabled'}
         onMouseDown={(e) => {
           e.preventDefault();
           if (!isMergeCell()) return;

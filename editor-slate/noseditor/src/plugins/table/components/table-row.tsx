@@ -18,7 +18,7 @@ export function CustomTableRow(
 
   return (
     <>
-      <tr {...attributes} className='yt-e-table-row'>
+      <tr {...attributes} className='nos-table-row'>
         {children}
       </tr>
       {minRow > 1 &&

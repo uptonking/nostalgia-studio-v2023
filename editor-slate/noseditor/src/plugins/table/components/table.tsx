@@ -1,4 +1,4 @@
-import './table.scss';
+import './styles.scss';
 
 import React, {
   KeyboardEvent,
@@ -68,7 +68,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         !isHotkey(['delete', 'backspace'], e) &&
         editorDom.getAttribute('contenteditable') === 'true'
       ) {
-        // /非 delete backspace 按键时
+        // /if key is not delete backspace
         editorDom.setAttribute('contenteditable', 'false');
         Promise.resolve()
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
@@ -182,10 +182,10 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
   );
 
   return (
-    <div className='yt-e-table-wrap' {...attributes}>
+    <div className='nos-elem block-table' {...attributes}>
       <table
         ref={tblRef}
-        className={`yt-e-table${showTblSel ? ' ye-e-table-selected' : ''}`}
+        className={`nos-table${showTblSel ? ' ye-e-table-selected' : ''}`}
         onDragStart={(e) => e.preventDefault()}
         onMouseDown={(e) => {
           // console.log(';; mouse-down table ', e.target);
@@ -215,7 +215,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         <tbody>{children}</tbody>
       </table>
       <div
-        className='yt-e-table-selection'
+        className='nos-table-selection'
         style={{
           display: `${showTblSel ? 'block' : 'none'}`,
           top: `${selBound.y}px`,

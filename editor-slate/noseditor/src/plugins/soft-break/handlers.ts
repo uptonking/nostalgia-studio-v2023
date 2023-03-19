@@ -1,6 +1,11 @@
 import React from 'react';
-import { Editor } from 'slate';
+
 import isHotkey from 'is-hotkey';
+import { Editor } from 'slate';
+
+// export const onBlur = (editor: Editor) => (e: React.KeyboardEvent) => {
+//   console.log(';; brBlur');
+// };
 
 export const onKeyDown = (editor: Editor) => {
   const handleEvent = (e: any) => {

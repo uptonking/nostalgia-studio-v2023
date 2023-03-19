@@ -18,7 +18,7 @@ export function CustomTableCell(
       {...attributes}
       colSpan={colSpan}
       rowSpan={rowSpan}
-      className={cx('yt-e-table-cell', {
+      className={cx('nos-table-cell', {
         headerCell: element.header === 'visible',
       })}
     >

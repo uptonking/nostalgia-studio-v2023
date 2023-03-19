@@ -6,9 +6,15 @@
   min-height: 100vh;
 }
 
+@media only screen and (max-width: 992px) {
+  .app {
+    margin: 40px ;
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .app {
-    /* padding: 24px; */
+    padding: 24px;
     margin: 24px ;
   }
 }

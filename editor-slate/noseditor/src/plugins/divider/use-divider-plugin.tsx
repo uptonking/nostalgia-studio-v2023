@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { UseNosPlugin } from '../types';
-import Divider from './components/divider';
+import { Divider } from './components/divider';
 import { isDividerElement } from './utils';
 import { withDivider } from './with-divider';
 

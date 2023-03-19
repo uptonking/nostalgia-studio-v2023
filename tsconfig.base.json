@@ -52,6 +52,7 @@
       "@slate-yjs/react": ["editor-slate/src-slate-yjs/react/src"],
       "@wangeditor/core": ["editor-slate/src-wangeditor/core/src"],
       "@wangeditor/editor": ["editor-slate/src-wangeditor/editor/src"],
+      "@datalking/noseditor": ["editor-slate/noseditor/src"],
       "prosemirror-state": ["editor-prosemirror/src-pkgs/state/src/"],
       "prosemirror-view": ["editor-prosemirror/src-pkgs/view/src/"],
       "prosemirror-model": ["editor-prosemirror/src-pkgs/model/src/"],

@@ -1,5 +1,9 @@
+/**
+ * '●', '○', '■'
+ */
 export const getBulletedPointerContent = (depth: number) => {
-  const pointers = ['●', '○', '■'];
+  // const pointers = ['●', '○', '■'];
+  const pointers = ['•', '◦', '▪'];
   return pointers[depth % pointers.length];
 };
 

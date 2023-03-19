@@ -13,7 +13,7 @@ import { initialData, initialDataLong, simpleTableData } from './config';
 export const NosEditorApp = () => (
   <>
     <div className='app'>
-      <NosEditor id='main' initialValue={simpleTableData} />
+      <NosEditor id='main' initialValue={initialData} />
     </div>
     <StrictMode>
       {/* <BrowserRouter>

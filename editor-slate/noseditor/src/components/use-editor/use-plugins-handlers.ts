@@ -10,6 +10,7 @@ import { composeHandlers } from '../../utils/slate-plugin';
  * todo name not start with use
  */
 export const usePluginsHandlers = (editor: Editor, plugins: NosPlugin[]) => {
+  // console.log(';; plugins ', plugins)
   return useMemo(
     () =>
       composeHandlers(

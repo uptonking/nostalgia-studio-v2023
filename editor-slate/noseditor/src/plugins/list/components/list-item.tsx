@@ -1,3 +1,5 @@
+import './styles.scss';
+
 import React from 'react';
 
 import cx from 'classnames';
@@ -28,18 +30,22 @@ export const ListItem = (
         <button
           contentEditable={false}
           className='pointer clipboardSkip'
-          style={
-            {
-              '--pointer-content': `"${getBulletedPointerContent(depth)}"`,
-            } as React.CSSProperties
-          }
-          onMouseDown={() => {
-            foldElement(editor, element);
-          }}
-        />
+        // style={
+        //   {
+        //     '--pointer-content': `"${getBulletedPointerContent(depth)}"`,
+        //   } as React.CSSProperties
+        // }
+        // onMouseDown={() => {
+        //   foldElement(editor, element);
+        // }}
+        >
+          {getBulletedPointerContent(depth)}
+        </button>
       )}
-      {listType === ListTypes.Numbered && <NumberedPointer element={element} />}
-      {isTodoListItemElement(element) && (
+      {listType === ListTypes.Numbered ? (
+        <NumberedPointer element={element} />
+      ) : null}
+      {isTodoListItemElement(element) ? (
         <div contentEditable={false} className='pointer clipboardSkip'>
           <input
             className='checkbox-pointer'
@@ -48,12 +54,13 @@ export const ListItem = (
             onChange={(e) => checkTodoItem(editor, element, e.target.checked)}
           />
         </div>
-      )}
+      ) : null}
       <div>{children}</div>
     </div>
   );
 };
 
+/** ordered list number */
 const NumberedPointer = (props: { element: ListItemElement }) => {
   const editor = useSlate(); // useSlate to rerender pointer content (index) when this element isn't changed directly
 
@@ -67,18 +74,20 @@ const NumberedPointer = (props: { element: ListItemElement }) => {
     <button
       contentEditable={false}
       className='pointer clipboardSkip'
-      style={
-        {
-          '--pointer-content': `"${getNumberedPointerContent(
-            depth,
-            listIndex,
-          )}"`,
-        } as React.CSSProperties
-      }
-      onMouseDown={() => {
-        foldElement(editor, element);
-      }}
-    />
+    // style={
+    //   {
+    //     '--pointer-content': `"${getNumberedPointerContent(
+    //       depth,
+    //       listIndex,
+    //     )}"`,
+    //   } as React.CSSProperties
+    // }
+    // onMouseDown={() => {
+    //   foldElement(editor, element);
+    // }}
+    >
+      {getNumberedPointerContent(depth, listIndex) + '.'}
+    </button>
   );
 };
 

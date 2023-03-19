@@ -12,7 +12,9 @@ import { isTodoListItemElement } from '../list/utils';
 import { makeListItemAttributes } from '../serialization/utils';
 import { Item, ItemProps } from './components/item';
 import { Sortable } from './components/sortable';
-import { useWrapperIntersectionObserver } from './use-wrapper-intersection-observer';
+import {
+  useWrapperIntersectionObserver,
+} from './use-wrapper-intersection-observer';
 
 /**
  * may wrap item in sortable container
@@ -98,6 +100,7 @@ export const Wrapper = (
             checked: isTodoListItemElement(element) && element.checked,
           })
         : {})}
+        // ? data-slate-node-type only used for css?
       data-slate-node-type={element.type}
       className={cx('item-container', 'clipboardSkipLinebreak', {
         'item-container-list': ExtendedEditor.isNestingElement(editor, element),

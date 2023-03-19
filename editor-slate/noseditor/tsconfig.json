@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.base",
   "compilerOptions": {
     "outDir": "dist",
-    "module": "esnext"
+    "module": "esnext",
+    "lib": ["DOM.Iterable"]
   },
-  "include": ["./src/", "example-client/components/common"]
+  "include": ["./src/", "./example-client/","./example-server/"]
 }

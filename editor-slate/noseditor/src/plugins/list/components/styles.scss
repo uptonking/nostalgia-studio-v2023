@@ -1,0 +1,74 @@
+.list-item {
+  position: relative;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.list-item .checkbox-pointer {
+  float: left;
+  margin-top: 3px;
+  user-select: none;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.list-item .folding-pointer:hover,
+.list-item.folded .folding-pointer {
+  transition: 300ms transform;
+  transform: rotate(-90deg);
+}
+
+.list-item:not(.folded) .folding-pointer:hover {
+  transform: rotate(0deg);
+}
+
+.list-item-numbered .pointer {
+  // margin-right: 3px;
+  padding-left: 1px
+}
+.list-item-bulleted .pointer {
+  margin-right: 3px;
+  padding-left: 1px
+}
+.list-item-todoList .pointer {
+  margin-right: 3px;
+}
+
+// .list-item-numbered .pointer::before {
+//   content: var(--pointer-content) '.';
+//   pointer-events: none;
+// }
+// .list-item-bulleted .pointer::before {
+//   content: var(--pointer-content);
+//   font-size: 8px;
+//   vertical-align: middle;
+// }
+
+.list-line {
+  user-select: none;
+  position: absolute;
+  width: 20px;
+  height: var(--height);
+  top: 26px;
+  /*left: calc(39px + var(--spacing));*/
+  z-index: 1000;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.list-line::before {
+  width: 2px;
+  height: 100%;
+  background-color: lightgrey;
+  display: block;
+  /* uncomment to show vertical indicator-line */
+  /* content: ''; */
+  margin-left: 10px;
+  transition: 200ms box-shadow, 200ms background-color;
+}
+
+.list-line:hover::before {
+  background-color: #0177ff;
+  box-shadow: 0 0 1px #0177ff;
+}

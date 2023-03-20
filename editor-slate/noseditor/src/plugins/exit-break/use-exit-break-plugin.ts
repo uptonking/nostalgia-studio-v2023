@@ -7,4 +7,3 @@ export const useExitBreakPlugin: UseNosPlugin = () => {
   };
 };
 
-export default useExitBreakPlugin;

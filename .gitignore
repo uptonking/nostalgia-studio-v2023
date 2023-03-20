@@ -39,6 +39,8 @@ store-level-like/app-stories-level-nodejs/tests/testdata
 store-text-search/src-search-fergies-inverted-index/tests/sandbox
 store-text-search/src-search-index/tests/sandbox
 editor-slate/app-stories/db.sqlite
+editor-slate/noseditor/db.sqlite
+
 
 # below Created by https://www.gitignore.io/api/node
 

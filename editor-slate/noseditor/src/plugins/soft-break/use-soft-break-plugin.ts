@@ -7,4 +7,3 @@ export const useSoftBreakPlugin: UseNosPlugin = () => {
   };
 };
 
-export default useSoftBreakPlugin;

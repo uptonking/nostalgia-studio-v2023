@@ -18,4 +18,3 @@ export const useLinkPlugin: UseNosPlugin = () => {
   };
 };
 
-export default useLinkPlugin;

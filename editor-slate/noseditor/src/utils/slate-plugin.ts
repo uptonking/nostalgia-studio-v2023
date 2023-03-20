@@ -3,14 +3,23 @@ import React, { DOMAttributes, SyntheticEvent } from 'react';
 import { flatten, mergeWith } from 'ramda';
 import { Editor } from 'slate';
 
-/** a typical slate plugin. a function that takes an Editor object and returns it after augment it */
-type Plugin = (editor: Editor) => Editor;
+import type { EnhanceEditorFnOrWithArgs } from '../plugins/types';
 
 /** apply plugin in reverse order */
-export const composePlugins = (plugins: Plugin[], _editor: Editor) => {
+export const composePlugins = (
+  plugins: EnhanceEditorFnOrWithArgs[],
+  _editor: Editor,
+) => {
   let editor = _editor;
   for (const plugin of plugins.reverse()) {
-    editor = plugin(editor);
+    if (typeof plugin === 'function') {
+      editor = plugin(editor);
+    } else {
+      editor = plugin.withEnhance.apply(
+        null,
+        plugin.withArgs ? [editor, ...plugin.withArgs] : [editor],
+      );
+    }
   }
 
   return editor;

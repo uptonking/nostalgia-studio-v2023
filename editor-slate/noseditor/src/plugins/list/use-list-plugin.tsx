@@ -20,4 +20,3 @@ export const useListPlugin: UseNosPlugin = () => {
   };
 };
 
-export default useListPlugin;

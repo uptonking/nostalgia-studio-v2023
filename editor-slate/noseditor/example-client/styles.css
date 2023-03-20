@@ -8,24 +8,133 @@
 
 @media only screen and (max-width: 992px) {
   .app {
-    margin: 40px ;
+    margin: 40px;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .app {
     padding: 24px;
-    margin: 24px ;
+    margin: 24px;
   }
 }
 
-/* todo delete */
-.card {
+/* todo delete legacy css */
+.fixed {
+  position: fixed;
+}
+.top-4 {
+  top: 16px;
+}
+.left-4 {
+  left: 16px;
+}
+.right-4 {
+  right: 16px;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.w-full {
+  width: 100%;
+}
+.my-32 {
+  margin-top: 128px;
+  margin-bottom: 128px;
+}
+.my-5 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.mx-10 {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+.mb-2 {
+  margin-bottom: 8px;
+}
+.py-1 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.px-2 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.h-8 {
+  height: 32px;
+}
+.w-8 {
+  width: 32px;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex {
   display: flex;
-  flex: 1;
-  min-height: 100%;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  border: 1px solid gray;
-  border-radius: 8px;
+}
+.gap-2 {
+  gap: 8px;
+}
+.gap-3 {
+  gap: 12px;
+}
+.gap-4 {
+  gap: 16px;
+}
+.justify-center {
+  justify-contents: center;
+}
+.items-center {
+  align-items: center;
+}
+.opacity-0 {
+  opacity: 0;
+}
+.text-5xl {
+  font-size: 48px;
+}
+.text-3xl {
+  font-size: 30px;
+}
+.text-color {
+  color: #ddd;
+}
+.bg-transparent {
+  background-color: transparent;
+}
+.bg-gray-100 {
+  background-color: #fefefe;
+}
+.text-gray-400 {
+}
+.nav-link {
+  color: #333;
+  text-decoration: none;
+}
+.format-button {
+  border: 0;
+  background-color: #fafafa;
+  cursor: pointer;
+}
+.format-button:hover {
+  background-color: #ddd;
+}
+.border-none {
+  border: 0;
+}
+.border-radius-md {
+  border-radius: 4px;
+}
+.cursor-pointer {
+  cursor: pointer;
 }

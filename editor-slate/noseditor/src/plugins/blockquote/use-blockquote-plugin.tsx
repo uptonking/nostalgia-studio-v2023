@@ -16,4 +16,3 @@ export const useBlockquotePlugin: UseNosPlugin = () => {
   };
 };
 
-export default useBlockquotePlugin;

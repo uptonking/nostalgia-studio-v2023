@@ -156,6 +156,7 @@ export class HLClock {
     const nextTime = Math.max(Math.max(ourHlcTime, systemTime), theirHlcTime);
 
     // By default, assume the physical time is changing (i.e., that the counter will "reset" to zero).
+    // 💡 本地的物理时间最大时，会将counter置0
     let nextCounter = 0;
 
     // Now check to see if the physical time didn't actually change (in which case we need to increment thee counter).

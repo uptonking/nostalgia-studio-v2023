@@ -7,4 +7,3 @@ export const useNodeIdPlugin: UseNosPlugin = () => {
   };
 };
 
-export default useNodeIdPlugin;

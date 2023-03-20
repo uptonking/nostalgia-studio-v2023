@@ -7,4 +7,3 @@ export const useTrailingLinePlugin: UseNosPlugin = () => {
   };
 };
 
-export default useTrailingLinePlugin;

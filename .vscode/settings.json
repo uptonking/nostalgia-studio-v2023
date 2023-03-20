@@ -84,8 +84,6 @@
       "foldEndRegex": "//[\\s]*#endregion(.*)"
     }
   },
-  "sort-imports.default-sort-style": "module-scoped",
-  "sort-imports.on-save": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "files.autoSave": "onFocusChange",
@@ -94,5 +92,10 @@
     "*.ts": "${capture}.test.ts,${capture}.spec.ts",
     "*.js": "${capture}.test.js,${capture}.spec.js"
   },
-  "tsImportSorter.configuration.autoFormat": "onSave"
+  "tsImportSorter.configuration.autoFormat": "onSave",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": false,
+    "source.organizeImports": false,
+    "source.sortMembers": false
+  }
 }

@@ -18,4 +18,3 @@ export const useDividerPlugin: UseNosPlugin = () => {
   };
 };
 
-export default useDividerPlugin;

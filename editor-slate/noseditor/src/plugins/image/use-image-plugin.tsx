@@ -18,4 +18,3 @@ export const useImagePlugin: UseNosPlugin = () => {
   };
 };
 
-export default useImagePlugin;

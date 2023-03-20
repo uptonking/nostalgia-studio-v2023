@@ -7,4 +7,3 @@ export const useResetTypePlugin: UseNosPlugin = () => {
   };
 };
 
-export default useResetTypePlugin;

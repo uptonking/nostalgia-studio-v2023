@@ -12,13 +12,15 @@ import {
   useDecorateRemoteCursors,
 } from '@slate-yjs/react';
 
-import { ConnectionToggle } from '../components/ConnectionToggle/ConnectionToggle';
+import {
+  ConnectionToggle,
+} from '../components/ConnectionToggle/ConnectionToggle';
 import { CustomEditable } from '../components/CustomEditable/CustomEditable';
 import { FormatToolbar } from '../components/FormatToolbar/FormatToolbar';
 import { Leaf } from '../components/Leaf/Leaf';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../config';
 import { withMarkdown } from '../plugins/withMarkdown';
-import { withNormalize } from '../plugins/withNormalize';
+import { withEnsureOneChildren } from '../plugins/withNormalize';
 import type { SyncableEditor } from '../types';
 import { CursorData } from '../types';
 import { addAlpha, randomCursorData } from '../utils';
@@ -101,7 +103,7 @@ export function RemoteCursorDecorations() {
     const sharedType = provider.document.get('content', Y.XmlText) as Y.XmlText;
 
     return withMarkdown(
-      withNormalize(
+      withEnsureOneChildren(
         withReact(
           withCursors(
             withYHistory(

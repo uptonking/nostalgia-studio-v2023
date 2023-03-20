@@ -107,7 +107,8 @@ Timestamp.init = function (options = {}) {
   }
 };
 
-/** 创建并返回一个新的hybrid logical clock时间戳对象。 每次crud操作都会带有一个新时间戳。
+/** 创建并返回一个新的hybrid logical clock时间戳对象。
+ * - 每次crud操作都会带有一个新时间戳。一般是counter+1
  * - create a new timestamp every time a message is sent
  *  (i.e., every time a database CRUD operation causes a new message to be created/sent)
  * - Generates a unique, monotonic(单调的) timestamp suitable
@@ -201,6 +202,7 @@ Timestamp.recv = function (clock, msg) {
       ? cOld + 1
       : lNew === lMsg
       ? cMsg + 1
+      // 💡 若本地物理时钟大，则重置counter为0
       : 0;
 
   // Check the result for drift and counter overflow

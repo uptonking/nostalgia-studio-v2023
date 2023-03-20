@@ -5,7 +5,10 @@ import { SQLite } from '@hocuspocus/extension-sqlite';
 import { Server } from '@hocuspocus/server';
 import { slateNodesToInsertDelta } from '@slate-yjs/core';
 
-import { initialValue } from './data/initialValue';
+import { simpleTableData as initialValue } from '../example-client/config';
+
+// import { initialData as initialValue } from '../example-client/config';
+// import { initialDataLong as initialValue } from '../example-client/config';
 
 // Minimal hocuspocus server setup with logging. For more in-depth examples
 // take a look at: https://github.com/ueberdosis/hocuspocus/tree/main/demos/backend

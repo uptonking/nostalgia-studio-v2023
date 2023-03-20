@@ -13,3 +13,26 @@ export {
   useRenderElement,
   useRenderLeaf,
 } from './components/use-editor';
+export { usePersistedState } from './hooks/use-persisted-state';
+
+// export all plugins
+export * from './plugins';
+export {
+  DndPluginContext,
+  SlateExtended,
+  useExtendedPlugin,
+} from './slate-extended';
+
+// export components
+export { NosIconProvider } from './config/icon-provider';
+
+export { DragOverlayContent } from './plugins/wrapper';
+export { EditorToolbar } from './components/editor-toolbar';
+
+// export utils
+
+export { composePlugins } from './utils/slate-plugin';
+
+// export types
+export type { CustomEditor, CustomElement, CustomText } from './types/slate.d';
+export type { NosPlugin } from './plugins/types';

@@ -30,4 +30,3 @@ export const useHeadingPlugin: UseNosPlugin = () => {
   };
 };
 
-export default useHeadingPlugin;

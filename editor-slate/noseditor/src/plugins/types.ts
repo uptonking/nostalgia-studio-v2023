@@ -16,6 +16,9 @@ export type ElementProps = {
 export type EventHandler = (editor: Editor) => (event: any) => unknown;
 export type EventHandlers = Record<string, EventHandler>;
 
+export type EnhanceEditor = (editor: Editor, ...args: any[]) => Editor;
+export type EnhanceEditorFnOrWithArgs = EnhanceEditor | { withEnhance: EnhanceEditor, withArgs?: any[] }
+
 /**
  * A plugin provides config for slate editor.
  * - it can add commands to editor
@@ -24,7 +27,7 @@ export type EventHandlers = Record<string, EventHandler>;
  */
 export type NosPlugin = {
   /** a typical slate plugin */
-  withOverrides?: (editor: Editor) => Editor;
+  withOverrides?: EnhanceEditorFnOrWithArgs;
   handlers?: EventHandlers;
   renderElement?: (props: ElementProps) => JSX.Element | null;
   renderLeaf?: (props: RenderLeafProps) => JSX.Element | null;

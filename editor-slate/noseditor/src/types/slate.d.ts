@@ -48,10 +48,10 @@ export type CustomElement = EditorUIElement & IdentityElement & HashedElement;
 
 export type CustomText = FormattedText;
 
-declare module 'slate' {
-  interface CustomTypes {
-    Editor: CustomEditor;
-    Element: CustomElement;
-    Text: CustomText;
-  }
-}
+// declare module 'slate' {
+//   interface CustomTypes {
+//     Editor: CustomEditor;
+//     Element: CustomElement;
+//     Text: CustomText;
+//   }
+// }

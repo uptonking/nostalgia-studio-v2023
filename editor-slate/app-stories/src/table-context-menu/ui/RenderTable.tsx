@@ -69,7 +69,7 @@ export function CustomTable(props: RenderElementProps) {
         editorDom.setAttribute('contenteditable', 'false');
         Promise.resolve()
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
-          .catch(() => {});
+          .catch(() => { });
       }
 
       const isSelInTable = isSelectionInTable(editor);
@@ -191,7 +191,7 @@ export function CustomTable(props: RenderElementProps) {
           setTblSelStart(node[1]);
         }}
         onMouseLeave={() => {
-          tblSelStart && setShowTblSel(false);
+          if (tblSelStart) setShowTblSel(false);
         }}
         onMouseMove={(e) => {
           // to-enhance 在跨单元格时新单元格不应该显示文字选区，应该直接显示单元格选区

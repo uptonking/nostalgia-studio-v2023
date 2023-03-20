@@ -1,6 +1,11 @@
 import { Editor, Transforms } from 'slate';
 
-export function withNormalize(editor: Editor) {
+/**
+ * - When collaborating with other users the asynchronous nature of applying changes can result in a state where slate has no children.
+ * - Rendering this state will result in a crash.
+ * - To avoid the issue we have to add a normalization rule to ensure the slate state is always valid.
+ */
+export function withEnsureOneChildren(editor: Editor) {
   const { normalizeNode } = editor;
 
   // Ensure editor always has at least one child.
@@ -13,7 +18,7 @@ export function withNormalize(editor: Editor) {
     Transforms.insertNodes(
       editor,
       {
-        type: 'paragraph',
+        type: 'p',
         children: [{ text: '' }],
       },
       { at: [0] },

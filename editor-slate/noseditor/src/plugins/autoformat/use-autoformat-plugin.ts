@@ -14,4 +14,3 @@ export const useAutoformatPlugin: UseNosPlugin<Options> = (
   };
 };
 
-export default useAutoformatPlugin;

@@ -5,7 +5,9 @@ import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
 import { NosIconProvider } from '../../config/icon-provider';
 import { usePersistedState } from '../../hooks/use-persisted-state';
-import { DragOverlayContent } from '../../plugins/wrapper/components/drag-overlay-content';
+import {
+  DragOverlayContent,
+} from '../../plugins/wrapper/components/drag-overlay-content';
 import { DndPluginContext } from '../../slate-extended/dnd/dnd-plugin-context';
 import { SlateExtended } from '../../slate-extended/slate-extended';
 import { EditorToolbar } from '../editor-toolbar';

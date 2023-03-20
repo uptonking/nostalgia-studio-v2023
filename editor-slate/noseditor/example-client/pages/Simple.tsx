@@ -7,12 +7,14 @@ import * as Y from 'yjs';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { withYHistory, withYjs, YjsEditor } from '@slate-yjs/core';
 
-import { ConnectionToggle } from '../components/ConnectionToggle/ConnectionToggle';
+import {
+  ConnectionToggle,
+} from '../components/ConnectionToggle/ConnectionToggle';
 import { CustomEditable } from '../components/CustomEditable/CustomEditable';
 import { FormatToolbar } from '../components/FormatToolbar/FormatToolbar';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../config';
 import { withMarkdown } from '../plugins/withMarkdown';
-import { withNormalize } from '../plugins/withNormalize';
+import { withEnsureOneChildren } from '../plugins/withNormalize';
 import type { SyncableEditor } from '../types';
 
 export function SimplePage() {
@@ -43,7 +45,7 @@ export function SimplePage() {
     const sharedType = provider.document.get('content', Y.XmlText) as Y.XmlText;
 
     return withMarkdown(
-      withNormalize(
+      withEnsureOneChildren(
         withReact(
           withYHistory(
             withYjs(createEditor(), sharedType, { autoConnect: false }),

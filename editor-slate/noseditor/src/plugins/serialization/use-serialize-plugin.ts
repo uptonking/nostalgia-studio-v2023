@@ -7,4 +7,3 @@ export const useSerializePlugin: UseNosPlugin = () => {
   };
 };
 
-export default useSerializePlugin;

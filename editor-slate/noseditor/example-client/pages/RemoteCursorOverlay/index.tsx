@@ -1,24 +1,39 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from 'react';
 
-import type { Descendant } from 'slate';
-import { createEditor } from 'slate';
-import { Slate, withReact } from 'slate-react';
-import * as Y from 'yjs';
+import { type Descendant } from 'slate';
+import { DefaultEditable as Editable, Slate } from 'slate-react';
 
 import { HocuspocusProvider } from '@hocuspocus/provider';
-import { withCursors, withYHistory, withYjs, YjsEditor } from '@slate-yjs/core';
+import { YjsEditor } from '@slate-yjs/core';
 
-import { ConnectionToggle } from '../../components/ConnectionToggle/ConnectionToggle';
-import { CustomEditable } from '../../components/CustomEditable/CustomEditable';
-import { FormatToolbar } from '../../components/FormatToolbar/FormatToolbar';
+import {
+  DndPluginContext,
+  DragOverlayContent,
+  EditorToolbar,
+  NosIconProvider,
+  SlateExtended,
+  usePluginsHandlers,
+  useRenderElement,
+  useRenderLeaf,
+} from '../../../src';
+import {
+  ConnectionToggle,
+} from '../../components/ConnectionToggle/ConnectionToggle';
+import { Spinner } from '../../components/Spinner/Spinner';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../../config';
-import { withMarkdown } from '../../plugins/withMarkdown';
-import { withNormalize } from '../../plugins/withNormalize';
-import type { SyncableEditor } from '../../types';
-import { randomCursorData } from '../../utils';
+import { useSyncableEditor } from '../../hooks/use-syncable-Editor';
 import { RemoteCursorOverlay } from './Overlay';
 
-export function RemoteCursorsOverlayPage() {
+export function EditorWithCursorOverlay(props) {
+  // const { id, initialValue, readOnly = false } = props;
+  const forceRerender = useReducer(() => ({}), {})[1];
+
   const [value, setValue] = useState<Descendant[]>([]);
   const [connected, setConnected] = useState(false);
 
@@ -38,30 +53,29 @@ export function RemoteCursorsOverlayPage() {
     if (connected) {
       return provider.disconnect();
     }
-
     provider.connect();
   }, [provider, connected]);
 
-  const editor = useMemo(() => {
-    /** 👇🏻 to connect yjsType and slateEditor */
-    const sharedType = provider.document.get('content', Y.XmlText) as Y.XmlText;
+  const { editor, plugins } = useSyncableEditor({ provider });
+  window['ed'] = editor;
 
-    return withMarkdown(
-      withNormalize(
-        withReact(
-          withYHistory(
-            withCursors(
-              withYjs(createEditor(), sharedType, { autoConnect: false }),
-              provider.awareness,
-              {
-                data: randomCursorData(),
-              },
-            ),
-          ),
-        ),
-      ),
-    ) as unknown as SyncableEditor;
-  }, [provider.awareness, provider.document]);
+  // const editor = useMemo(() => {
+  //   return withMarkdown(
+  //     withEnsureOneChildren(
+  //       withReact(
+  //         withYHistory(
+  //           withCursors(
+  //             withYjs(createEditor(), sharedType, { autoConnect: false }),
+  //             provider.awareness,
+  //             {
+  //               data: randomCursorData(),
+  //             },
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   ) as unknown as SyncableEditor;
+  // }, [provider.awareness, provider.document]);
 
   // Connect editor and provider in useEffect to comply with concurrent mode
   // requirements.
@@ -74,13 +88,57 @@ export function RemoteCursorsOverlayPage() {
     return () => YjsEditor.disconnect(editor);
   }, [editor]);
 
+  const handlers = usePluginsHandlers(editor, [
+    ...plugins,
+    {
+      handlers: {
+        onKeyDown: () => () => {
+          // after dnd ends then ReactEditor.focus call, to continue typing
+          forceRerender();
+        },
+      },
+    },
+  ]);
+
+  const renderElement = useRenderElement(editor, plugins);
+  const renderLeaf = useRenderLeaf(editor, plugins);
+
+  if ('sharedRoot' in editor && editor.sharedRoot['length'] === 0) {
+    return <Spinner className='m-auto' />;
+  }
+
   return (
-    <Slate value={value} onChange={setValue} editor={editor}>
-      <RemoteCursorOverlay className='flex justify-center my-32 mx-10'>
-        <FormatToolbar />
-        <CustomEditable className='max-w-4xl w-full flex-col break-words' />
-      </RemoteCursorOverlay>
-      <ConnectionToggle connected={connected} onClick={toggleConnection} />
-    </Slate>
+    <NosIconProvider>
+      <Slate editor={editor} value={value} onChange={setValue}>
+        <SlateExtended>
+          <DndPluginContext
+            editor={editor}
+            onDragEnd={() => {
+              // after dnd ends to provide the right DragOverlay drop animation
+              forceRerender();
+            }}
+            renderDragOverlay={(props) => <DragOverlayContent {...props} />}
+          >
+            <EditorToolbar />
+            <RemoteCursorOverlay className='flex'>
+              <Editable
+                className='nos-editable'
+                {...handlers}
+                renderElement={renderElement}
+                renderLeaf={renderLeaf}
+              />
+            </RemoteCursorOverlay>
+          </DndPluginContext>
+        </SlateExtended>
+        <ConnectionToggle connected={connected} onClick={toggleConnection} />
+      </Slate>
+    </NosIconProvider>
   );
 }
+
+// <Slate value={value} onChange={setValue} editor={editor}>
+//   <RemoteCursorOverlay className='flex justify-center my-32 mx-10'>
+//     <CustomEditable className='max-w-4xl w-full flex-col break-words' />
+//   </RemoteCursorOverlay>
+//   <ConnectionToggle connected={connected} onClick={toggleConnection} />
+// </Slate>

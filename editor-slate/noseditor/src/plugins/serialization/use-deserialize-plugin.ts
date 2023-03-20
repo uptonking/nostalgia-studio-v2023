@@ -7,4 +7,3 @@ export const useDeserializePlugin: UseNosPlugin = () => {
   };
 };
 
-export default useDeserializePlugin;

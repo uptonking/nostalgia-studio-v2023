@@ -16,4 +16,3 @@ export const useParagraphPlugin: UseNosPlugin = () => {
   };
 };
 
-export default useParagraphPlugin;

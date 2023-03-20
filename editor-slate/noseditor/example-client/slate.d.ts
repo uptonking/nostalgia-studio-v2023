@@ -1,15 +1,16 @@
 import { BaseRange } from 'slate';
 
+import type { YHistoryEditor, YjsEditor } from '@slate-yjs/core';
 import { RemoteCursorDecoratedRange } from '@slate-yjs/react';
 
-import { CustomEditor, CustomElement, CustomText } from '../src/types/slate.d';
-import { CursorData } from './types';
+import type { CustomEditor, CustomElement, CustomText } from '../src';
+import type { CursorData, SyncableEditor } from './types';
 
 declare module 'slate' {
   interface CustomTypes {
-    // Editor: CustomEditor;
-    // Element: CustomElement;
-    // Text: CustomText;
+    Editor: SyncableEditor;
+    Element: CustomElement;
+    Text: CustomText;
     Range: BaseRange | RemoteCursorDecoratedRange<CursorData>;
   }
 }

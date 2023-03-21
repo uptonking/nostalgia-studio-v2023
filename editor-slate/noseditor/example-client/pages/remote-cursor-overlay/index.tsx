@@ -28,7 +28,7 @@ import {
 import { Spinner } from '../../components/Spinner/Spinner';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../../config';
 import { useSyncableEditor } from '../../hooks/use-syncable-Editor';
-import { RemoteCursorOverlay } from './Overlay';
+import { RemoteCursorOverlay } from './overlay';
 
 export function EditorWithCursorOverlay(props) {
   // const { id, initialValue, readOnly = false } = props;

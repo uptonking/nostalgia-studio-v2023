@@ -1,5 +1,6 @@
 import { Editor, Transforms } from 'slate';
 import * as Y from 'yjs';
+
 import { HistoryStackItem, RelativeRange } from '../model/types';
 import {
   relativeRangeToSlateRange,
@@ -149,8 +150,8 @@ export function withYHistory<T extends YjsEditor>(
   };
 
   const { connect, disconnect } = e;
-  e.connect = () => {
-    connect();
+  e.connect = (...args) => {
+    connect(...args);
 
     e.undoManager.on('stack-item-added', handleStackItemAdded);
     e.undoManager.on('stack-item-popped', handleStackItemPopped);

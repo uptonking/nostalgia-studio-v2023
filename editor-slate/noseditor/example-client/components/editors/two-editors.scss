@@ -1,0 +1,12 @@
+.collab-app {
+  .main {
+    display: flex;
+    justify-content: space-around;
+    gap: 24px;
+  }
+
+  .editor-container {
+    max-width: 640px;
+    border: 1px solid #fafafa;
+  }
+}

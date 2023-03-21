@@ -20,8 +20,8 @@ type LocalChange = {
   origin: unknown;
 };
 
-const DEFAULT_LOCAL_ORIGIN = Symbol('slate-yjs-operation');
-const DEFAULT_POSITION_STORAGE_ORIGIN = Symbol('slate-yjs-position-storage');
+const DEFAULT_LOCAL_ORIGIN = 'slate-yjs-operation';
+const DEFAULT_POSITION_STORAGE_ORIGIN = 'slate-yjs-position-storage';
 
 const ORIGIN: WeakMap<Editor, unknown> = new WeakMap();
 const LOCAL_CHANGES: WeakMap<Editor, LocalChange[]> = new WeakMap();
@@ -29,20 +29,23 @@ const CONNECTED: WeakSet<Editor> = new WeakSet();
 
 export type YjsEditor = BaseEditor & {
   sharedRoot: Y.XmlText;
+  id: string;
 
   localOrigin: unknown;
   positionStorageOrigin: unknown;
 
   /** convert yOp to slateOp, and apply to slate editor */
+  // @ts-expect-error fix-types
   applyRemoteEvents: (events: Y.YEvent<Y.XmlText>[], origin: unknown) => void;
 
   storeLocalChange: (op: Operation) => void;
+  getLocalChanges: () => LocalChange[];
   flushLocalChanges: () => void;
 
   isLocalOrigin: (origin: unknown) => boolean;
 
   /** listen to changes from yjs-delta with observeDeep, then editor.onChange */
-  connect: () => void;
+  connect: (afterConnect?: (editor: YjsEditor) => unknown) => void;
   disconnect: () => void;
 };
 
@@ -68,6 +71,7 @@ export const YjsEditor = {
 
   applyRemoteEvents(
     editor: YjsEditor,
+    // @ts-expect-error fix-types
     events: Y.YEvent<Y.XmlText>[],
     origin: unknown,
   ): void {
@@ -86,8 +90,11 @@ export const YjsEditor = {
     return CONNECTED.has(editor);
   },
 
-  connect(editor: YjsEditor): void {
-    editor.connect();
+  connect(
+    editor: YjsEditor,
+    afterConnect?: (editor: YjsEditor) => unknown,
+  ): void {
+    editor.connect(afterConnect);
   },
 
   disconnect(editor: YjsEditor): void {
@@ -154,6 +161,10 @@ export type WithYjsOptions = {
   localOrigin?: unknown;
   /** Origin used when storing positions */
   positionStorageOrigin?: unknown;
+  /** allow to disable listening to remote changes */
+  shouldObserveYEvent?: boolean;
+  /** used to identify editor in current session  */
+  id?: string;
 };
 
 export function withYjs<T extends Editor>(
@@ -162,18 +173,23 @@ export function withYjs<T extends Editor>(
   {
     localOrigin,
     positionStorageOrigin,
+    id,
     autoConnect = false,
+    shouldObserveYEvent = true,
   }: WithYjsOptions = {},
 ): T & YjsEditor {
   const e = editor as T & YjsEditor;
 
   e.sharedRoot = sharedRoot;
+  // todo auto create id
+  e.id = id || 'eid' + new Date().toISOString();
+  console.log(';; editor.id ', e.id);
 
-  e.localOrigin = localOrigin ?? DEFAULT_LOCAL_ORIGIN;
+  e.localOrigin = localOrigin ?? e.id + '-' + DEFAULT_LOCAL_ORIGIN;
   e.positionStorageOrigin =
     positionStorageOrigin ?? DEFAULT_POSITION_STORAGE_ORIGIN;
 
-  // yOp to slateOp, then apply
+  // yOp to slateOp, then apply to slateDoc
   e.applyRemoteEvents = (events, origin) => {
     YjsEditor.flushLocalChanges(e);
 
@@ -190,12 +206,14 @@ export function withYjs<T extends Editor>(
    * ignore local yop; convert yOp to slateOp, and apply to slate editor
    */
   const handleYEvents = (
+    // @ts-expect-error fix-types
     events: Y.YEvent<Y.XmlText>[],
     transaction: Y.Transaction,
   ) => {
     if (e.isLocalOrigin(transaction.origin)) {
       return;
     }
+    console.log(';; y-observeDeep ', events);
 
     YjsEditor.applyRemoteEvents(e, events, transaction.origin);
   };
@@ -208,14 +226,22 @@ export function withYjs<T extends Editor>(
     });
   }
 
-  e.connect = () => {
-    if (YjsEditor.connected(e)) {
+  e.connect = (afterConnect?: (editor: YjsEditor) => unknown) => {
+    const isConnected = YjsEditor.connected(e);
+    if (isConnected) {
       throw new Error('already connected');
     }
 
-    e.sharedRoot.observeDeep(handleYEvents);
+    if (shouldObserveYEvent) {
+      e.sharedRoot.observeDeep(handleYEvents);
+    }
     const content = yTextToSlateElement(e.sharedRoot);
     e.children = content.children;
+
+    // console.log(';; afterConnect ',YjsEditor.connected(e) )
+    // if (typeof afterConnect === 'function' && !YjsEditor.connected(e)) {
+    //   afterConnect(e)
+    // }
     CONNECTED.add(e);
 
     Editor.normalize(editor, { force: true });
@@ -241,6 +267,9 @@ export function withYjs<T extends Editor>(
     ]);
   };
 
+  e.getLocalChanges = () => LOCAL_CHANGES.get(e);
+
+  /**  apply slateOp to ydoc */
   e.flushLocalChanges = () => {
     assertDocumentAttachment(e.sharedRoot);
     const localChanges = YjsEditor.localChanges(e);
@@ -263,6 +292,7 @@ export function withYjs<T extends Editor>(
       e.sharedRoot.doc.transact(() => {
         txGroup.forEach((change) => {
           assertDocumentAttachment(e.sharedRoot);
+          // 💡 apply slateOp to ydoc
           applySlateOp(e.sharedRoot, { children: change.doc }, change.op);
         });
       }, txGroup[0].origin);

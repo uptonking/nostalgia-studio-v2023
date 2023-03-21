@@ -8,15 +8,20 @@ import type { YHistoryEditor, YjsEditor } from '@slate-yjs/core';
 
 import { NosEditor } from '../src';
 import { CustomEditor, CustomElement, CustomText } from '../src/types/slate.d';
+import {
+  SlateYjsEditorMinimal,
+  TwoEditorsCollabNoServer,
+} from './components/editors';
 import { initialData, initialDataLong, simpleTableData } from './config';
-import { EditorWithCursorOverlay } from './pages/RemoteCursorOverlay';
+import { EditorWithCursorOverlay } from './pages/remote-cursor-overlay';
 
 // import { SimplePage } from './pages/Simple';
 
 export const NosEditorApp = () => (
   <>
     <div className='app'>
-      <EditorWithCursorOverlay />
+      <TwoEditorsCollabNoServer />
+      {/* <EditorWithCursorOverlay /> */}
       {/* <NosEditor id='main' initialValue={simpleTableData} /> */}
     </div>
     <StrictMode>
@@ -39,4 +44,3 @@ export const NosEditorApp = () => (
     </StrictMode>
   </>
 );
-

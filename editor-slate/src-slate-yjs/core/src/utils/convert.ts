@@ -1,5 +1,6 @@
 import { Element, Node, Text } from 'slate';
 import * as Y from 'yjs';
+
 import { DeltaInsert, InsertDelta } from '../model/types';
 import { yTextToInsertDelta } from './delta';
 import { getProperties } from './slate';
@@ -28,7 +29,6 @@ export function slateNodesToInsertDelta(nodes: Node[]): InsertDelta {
       return { insert: node.text, attributes: getProperties(node) };
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     return { insert: slateElementToYText(node) };
   });
 }

@@ -1,5 +1,6 @@
 import { Editor, Element, Node, Operation, Path, Text } from 'slate';
 import * as Y from 'yjs';
+
 import { Delta } from '../model/types';
 import { deltaInsertToSlateNode } from '../utils/convert';
 import {
@@ -210,6 +211,7 @@ export function translateYTextEvent(
 ): Operation[] {
   const { target, changes } = event;
   const delta = event.delta as Delta;
+  console.log(';; event-delta ', delta, target)
 
   if (!(target instanceof Y.XmlText)) {
     throw new Error('Unexpected target node type');

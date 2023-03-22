@@ -16,6 +16,11 @@ import {
 } from '../../src';
 
 export interface GeneralTransforms {
+  /**
+   * Transform the editor by an operation.
+   * - 所有对editor的操作最后都会调用这个transform方法来修改，基于immer实现
+   * - 执行完op直接 editor.children = newChildren
+   */
   transform: (editor: Editor, op: Operation) => void;
 }
 
@@ -56,6 +61,7 @@ const applyToDraft = (editor: Editor, selection: Selection, op: Operation) => {
       // console.log(';; opText1 ', JSON.stringify(selection));
       if (selection) {
         for (const [point, key] of Range.points(selection)) {
+          // 💡 after updating text, update selection
           selection[key] = Point.transform(point, op)!;
         }
       }
@@ -208,6 +214,7 @@ const applyToDraft = (editor: Editor, selection: Selection, op: Operation) => {
 
       const node = Node.get(editor, path);
 
+      // eslint-disable-next-line guard-for-in
       for (const key in newProperties) {
         if (key === 'children' || key === 'text') {
           throw new Error(`Cannot set the "${key}" property of nodes!`);
@@ -251,6 +258,7 @@ const applyToDraft = (editor: Editor, selection: Selection, op: Operation) => {
           selection = { ...newProperties };
         }
 
+        // eslint-disable-next-line guard-for-in
         for (const key in newProperties) {
           const value = newProperties[key];
 
@@ -319,7 +327,8 @@ const applyToDraft = (editor: Editor, selection: Selection, op: Operation) => {
 export const GeneralTransforms: GeneralTransforms = {
   /**
    * Transform the editor by an operation.
-   * - 所有对editor的操作最后都会调用这个transform方法来修改
+   * - 所有对editor的操作最后都会调用这个transform方法来修改，基于immer实现
+   * - 执行完op直接 editor.children = newChildren
    */
   transform(editor: Editor, op: Operation): void {
     // 为了实现undo/redo，在修改editor状态前，需要先保留之前的快照再修改

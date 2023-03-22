@@ -41,7 +41,6 @@ export const Point: PointInterface = {
    * Compare a point to another, returning an integer indicating whether the
    * point was before, at, or after the other.
    */
-
   compare(point: Point, another: Point): -1 | 0 | 1 {
     const result = Path.compare(point.path, another.path);
 
@@ -96,7 +95,6 @@ export const Point: PointInterface = {
   /**
    * Transform a point by an operation.
    */
-
   transform(
     point: Point | null,
     op: Operation,

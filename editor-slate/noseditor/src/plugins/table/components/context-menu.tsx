@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 
 import { Editor, Path } from 'slate';
 
-import { deleteCol } from '../commands/deleteCol';
-import { deleteRow } from '../commands/deleteRow';
-import { insertColLeft, insertColRight } from '../commands/insertCol';
-import { insertRowAbove, insertRowBelow } from '../commands/insertRow';
-import { mergeCells } from '../commands/mergeCells';
-import { splitCells } from '../commands/splitCells';
+import { deleteCol } from '../commands/delete-col';
+import { deleteRow } from '../commands/delete-row';
+import { insertColLeft, insertColRight } from '../commands/insert-col';
+import { insertRowAbove, insertRowBelow } from '../commands/insert-row';
+import { mergeCells } from '../commands/merge-cells';
+import { splitCells } from '../commands/split-cells';
 import type { TableCellElement } from '../types';
 import { getCellBySelectOrFocus, setTableNodeOrigin } from '../utils/common';
 

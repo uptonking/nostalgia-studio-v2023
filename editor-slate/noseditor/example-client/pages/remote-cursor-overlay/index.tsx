@@ -22,6 +22,7 @@ import {
   useRenderElement,
   useRenderLeaf,
 } from '../../../src';
+import { ErrorBoundary } from '../../components/common/error-boundary';
 import {
   ConnectionToggle,
 } from '../../components/ConnectionToggle/ConnectionToggle';
@@ -30,8 +31,7 @@ import { HOCUSPOCUS_ENDPOINT_URL } from '../../config';
 import { useSyncableEditor } from '../../hooks/use-syncable-Editor';
 import { RemoteCursorOverlay } from './overlay';
 
-export function EditorWithCursorOverlay(props) {
-  // const { id, initialValue, readOnly = false } = props;
+export function EditorWithCursorOverlay() {
   const forceRerender = useReducer(() => ({}), {})[1];
 
   const [value, setValue] = useState<Descendant[]>([]);
@@ -59,26 +59,7 @@ export function EditorWithCursorOverlay(props) {
   const { editor, plugins } = useSyncableEditor({ provider });
   window['ed'] = editor;
 
-  // const editor = useMemo(() => {
-  //   return withMarkdown(
-  //     withEnsureOneChildren(
-  //       withReact(
-  //         withYHistory(
-  //           withCursors(
-  //             withYjs(createEditor(), sharedType, { autoConnect: false }),
-  //             provider.awareness,
-  //             {
-  //               data: randomCursorData(),
-  //             },
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   ) as unknown as SyncableEditor;
-  // }, [provider.awareness, provider.document]);
-
-  // Connect editor and provider in useEffect to comply with concurrent mode
-  // requirements.
+  // Connect editor and provider in useEffect to comply with concurrent mode requirements.
   useEffect(() => {
     provider.connect();
     return () => provider.disconnect();
@@ -120,14 +101,18 @@ export function EditorWithCursorOverlay(props) {
             renderDragOverlay={(props) => <DragOverlayContent {...props} />}
           >
             <EditorToolbar />
-            <RemoteCursorOverlay className='flex'>
-              <Editable
-                className='nos-editable'
-                {...handlers}
-                renderElement={renderElement}
-                renderLeaf={renderLeaf}
-              />
-            </RemoteCursorOverlay>
+            <ErrorBoundary
+              fallback={<h3>cursor is not rendering properly.</h3>}
+            >
+              <RemoteCursorOverlay className='flex'>
+                <Editable
+                  className='nos-editable'
+                  {...handlers}
+                  renderElement={renderElement}
+                  renderLeaf={renderLeaf}
+                />
+              </RemoteCursorOverlay>
+            </ErrorBoundary>
           </DndPluginContext>
         </SlateExtended>
         <ConnectionToggle connected={connected} onClick={toggleConnection} />
@@ -135,10 +120,3 @@ export function EditorWithCursorOverlay(props) {
     </NosIconProvider>
   );
 }
-
-// <Slate value={value} onChange={setValue} editor={editor}>
-//   <RemoteCursorOverlay className='flex justify-center my-32 mx-10'>
-//     <CustomEditable className='max-w-4xl w-full flex-col break-words' />
-//   </RemoteCursorOverlay>
-//   <ConnectionToggle connected={connected} onClick={toggleConnection} />
-// </Slate>

@@ -43,9 +43,9 @@ export type YjsEditor = BaseEditor & {
   flushLocalChanges: () => void;
 
   isLocalOrigin: (origin: unknown) => boolean;
-
   /** listen to changes from yjs-delta with observeDeep, then editor.onChange */
-  connect: (afterConnect?: (editor: YjsEditor) => unknown) => void;
+  connect: () => void;
+
   disconnect: () => void;
 };
 
@@ -91,10 +91,9 @@ export const YjsEditor = {
   },
 
   connect(
-    editor: YjsEditor,
-    afterConnect?: (editor: YjsEditor) => unknown,
+    editor: YjsEditor
   ): void {
-    editor.connect(afterConnect);
+    editor.connect();
   },
 
   disconnect(editor: YjsEditor): void {
@@ -183,7 +182,7 @@ export function withYjs<T extends Editor>(
   e.sharedRoot = sharedRoot;
   // todo auto create id
   e.id = id || 'eid' + new Date().toISOString();
-  console.log(';; editor.id ', e.id);
+  // console.log(';; editor.id ', e.id);
 
   e.localOrigin = localOrigin ?? e.id + '-' + DEFAULT_LOCAL_ORIGIN;
   e.positionStorageOrigin =
@@ -213,7 +212,7 @@ export function withYjs<T extends Editor>(
     if (e.isLocalOrigin(transaction.origin)) {
       return;
     }
-    console.log(';; y-observeDeep ', events);
+    // console.log(';; y-observeDeep ', events);
 
     YjsEditor.applyRemoteEvents(e, events, transaction.origin);
   };
@@ -226,22 +225,19 @@ export function withYjs<T extends Editor>(
     });
   }
 
-  e.connect = (afterConnect?: (editor: YjsEditor) => unknown) => {
+  e.connect = () => {
     const isConnected = YjsEditor.connected(e);
     if (isConnected) {
       throw new Error('already connected');
     }
 
     if (shouldObserveYEvent) {
+      // after updated, then change events emits to here
       e.sharedRoot.observeDeep(handleYEvents);
     }
     const content = yTextToSlateElement(e.sharedRoot);
     e.children = content.children;
 
-    // console.log(';; afterConnect ',YjsEditor.connected(e) )
-    // if (typeof afterConnect === 'function' && !YjsEditor.connected(e)) {
-    //   afterConnect(e)
-    // }
     CONNECTED.add(e);
 
     Editor.normalize(editor, { force: true });

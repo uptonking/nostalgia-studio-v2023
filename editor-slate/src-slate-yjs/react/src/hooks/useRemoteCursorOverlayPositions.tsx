@@ -1,4 +1,3 @@
-import { CursorState } from '@slate-yjs/core';
 import {
   RefObject,
   useCallback,
@@ -7,7 +6,11 @@ import {
   useRef,
   useState,
 } from 'react';
+
 import { BaseRange, NodeMatch, Text } from 'slate';
+
+import { CursorState } from '@slate-yjs/core';
+
 import { getCursorRange } from '../utils/getCursorRange';
 import {
   CaretPosition,
@@ -24,13 +27,13 @@ const FROZEN_EMPTY_ARRAY = Object.freeze([]);
 export type UseRemoteCursorOverlayPositionsOptions<T extends HTMLElement> = {
   shouldGenerateOverlay?: NodeMatch<Text>;
 } & (
-  | {
+    | {
       // Container the overlay will be rendered in. If set, all returned overlay positions
       // will be relative to this container and the cursor positions will be automatically
       // updated on container resize.
       containerRef?: undefined;
     }
-  | {
+    | {
       containerRef: RefObject<T>;
 
       // Whether to refresh the cursor overlay positions on container resize. Defaults
@@ -38,7 +41,7 @@ export type UseRemoteCursorOverlayPositionsOptions<T extends HTMLElement> = {
       // each animation frame.
       refreshOnResize?: boolean | 'debounced';
     }
-);
+  );
 
 export type CursorOverlayData<TCursorData extends Record<string, unknown>> =
   CursorState<TCursorData> & {
@@ -129,7 +132,7 @@ export function useRemoteCursorOverlayPositions<
           ...state,
           range,
           caretPosition: overlayPosition?.caretPosition ?? null,
-          selectionRects: overlayPosition?.selectionRects ?? FROZEN_EMPTY_ARRAY,
+          selectionRects: overlayPosition?.selectionRects ?? FROZEN_EMPTY_ARRAY as any,
         };
       }),
     [cursorStates, editor, overlayPositions],

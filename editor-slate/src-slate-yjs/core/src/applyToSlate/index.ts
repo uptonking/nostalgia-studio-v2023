@@ -24,12 +24,9 @@ export function translateYjsEvent(
 }
 
 /**
- * Translates yjs events into slate operations and applies them to the editor. The
- * editor state has to match the yText state before the events occurred.
+ * Translates yjs events into slate operations and applies them to the editor.
+ * - The editor state has to match the yText state before the events occurred.
  *
- * @param sharedRoot
- * @param editor
- * @param events
  */
 export function applyYjsEvents(
   sharedRoot: Y.XmlText,
@@ -38,9 +35,10 @@ export function applyYjsEvents(
   events: Y.YEvent<Y.XmlText>[],
 ) {
   Editor.withoutNormalizing(editor, () => {
-    console.log(';; yevents ', events)
+    // console.log(';; yEvents ', events);
     events.forEach((event) => {
-      translateYjsEvent(sharedRoot, editor, event).forEach((op) => {
+      const slateOps = translateYjsEvent(sharedRoot, editor, event);
+      slateOps.forEach((op) => {
         editor.apply(op);
       });
     });

@@ -1,7 +1,9 @@
 import * as Y from 'yjs';
+
 import { DeltaInsert, InsertDelta } from '../model/types';
 import { deepEquals } from './object';
 
+/** merge multi insert into one */
 export function normalizeInsertDelta(delta: InsertDelta): InsertDelta {
   const normalized: InsertDelta = [];
 

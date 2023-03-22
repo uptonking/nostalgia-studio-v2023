@@ -8,6 +8,7 @@ import type { YHistoryEditor, YjsEditor } from '@slate-yjs/core';
 
 import { NosEditor } from '../src';
 import { CustomEditor, CustomElement, CustomText } from '../src/types/slate.d';
+import { ErrorBoundary } from './components/common/error-boundary';
 import {
   SlateYjsEditorMinimal,
   TwoEditorsCollabNoServer,
@@ -20,9 +21,11 @@ import { EditorWithCursorOverlay } from './pages/remote-cursor-overlay';
 export const NosEditorApp = () => (
   <>
     <div className='app'>
-      <TwoEditorsCollabNoServer />
-      {/* <EditorWithCursorOverlay /> */}
-      {/* <NosEditor id='main' initialValue={simpleTableData} /> */}
+      <ErrorBoundary fallback={<h3>editor is not rendering properly.</h3>}>
+        {/* <EditorWithCursorOverlay /> */}
+      </ErrorBoundary>
+      {/* <TwoEditorsCollabNoServer /> */}
+      <NosEditor id='main' initialValue={simpleTableData} />
     </div>
     <StrictMode>
       {/* <BrowserRouter>

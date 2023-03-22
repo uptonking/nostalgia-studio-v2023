@@ -94,11 +94,15 @@ export const createEditor = (): Editor => {
 
       if (!FLUSHING.get(editor)) {
         // 设置状态，表明正在执行onChange
+        // 当执行某个复杂命令时，浏览器会在一个 task 中执行多次 apply，这意味着 onChange 会被调用多次，
+        // 这里用了一个巧妙的方式：将 onChange 放在 Promise 的回调中，在当前 task 完成后才会调用一次 onChange 方法。
+        // slate 这里多次执行的 apply ，会将其中的 Promise.then 放到队列中，当同步任务执行完，在 DOM 重新渲染之前执行其中的 onChange 事件。
         FLUSHING.set(editor, true);
 
         Promise.resolve().then(() => {
-          // 💡 在剩余脚本宏任务完成后才执行onChange
+          // 💡 在多个apply任务完成后才执行onChange
           FLUSHING.set(editor, false);
+          // slate-react会增强onChange，触发视图组件rerender
           editor.onChange();
           editor.operations = [];
         });

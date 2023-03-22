@@ -11,6 +11,9 @@ import {
 import { deepEquals, omitNullEntries, pick } from '../utils/object';
 import { getProperties } from '../utils/slate';
 
+/**
+ * convert Delta to slate op
+ */
 function applyDelta(node: Element, slatePath: Path, delta: Delta): Operation[] {
   const ops: Operation[] = [];
 
@@ -39,6 +42,7 @@ function applyDelta(node: Element, slatePath: Path, delta: Delta): Operation[] {
         { assoc: -1 },
       );
 
+      // / from end to start
       for (
         let pathOffset = endPathOffset;
         pathOffset >= startPathOffset;
@@ -95,6 +99,7 @@ function applyDelta(node: Element, slatePath: Path, delta: Delta): Operation[] {
     }
 
     if ('retain' in change) {
+      // /retain op doesnot exist in slate
       yOffset -= change.retain;
     }
 
@@ -204,6 +209,9 @@ function applyDelta(node: Element, slatePath: Path, delta: Delta): Operation[] {
   return ops;
 }
 
+/**
+ * convert yEvent to slate operation
+ */
 export function translateYTextEvent(
   sharedRoot: Y.XmlText,
   editor: Editor,
@@ -211,13 +219,14 @@ export function translateYTextEvent(
 ): Operation[] {
   const { target, changes } = event;
   const delta = event.delta as Delta;
-  console.log(';; event-delta ', delta, target)
+  // console.log(';; event-delta ', delta, target);
 
   if (!(target instanceof Y.XmlText)) {
     throw new Error('Unexpected target node type');
   }
 
   const ops: Operation[] = [];
+  // get yEventTarget slate path and element
   const slatePath = getSlatePath(sharedRoot, editor, target);
   const targetElement = Node.get(editor, slatePath);
 
@@ -227,6 +236,7 @@ export function translateYTextEvent(
 
   const keyChanges = Array.from(changes.keys.entries());
   if (slatePath.length > 0 && keyChanges.length > 0) {
+    // /if op is setProps, not-text
     const newProperties = Object.fromEntries(
       keyChanges.map(([key, info]) => [
         key,
@@ -242,7 +252,9 @@ export function translateYTextEvent(
   }
 
   if (delta.length > 0) {
-    ops.push(...applyDelta(targetElement, slatePath, delta));
+    // /for text op
+    const deltaToOps = applyDelta(targetElement, slatePath, delta);
+    ops.push(...deltaToOps);
   }
 
   return ops;

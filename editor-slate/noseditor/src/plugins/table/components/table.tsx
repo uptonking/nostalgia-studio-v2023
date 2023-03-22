@@ -26,7 +26,7 @@ import {
   handleKeyArrowUpPress,
 } from '../utils/keyboard';
 import { getRealPathFromTableSelection } from '../utils/selection';
-import { selectionBound } from '../utils/selectionBound';
+import { selectionBound } from '../utils/selection-bound';
 import { ContextMenu } from './context-menu';
 
 /**

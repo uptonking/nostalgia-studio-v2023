@@ -1,13 +1,13 @@
-import { Editor, Element, Node } from 'slate';
 import { nanoid } from 'nanoid';
 import { clone } from 'ramda';
+import { Editor, Element, Node } from 'slate';
 
 const makeId = () => nanoid(16);
 
+/** only add id to slate element, not text */
 export const assignIdRecursively = (node: Node) => {
   if (Element.isElement(node)) {
     node.id = makeId();
-
     node.children.forEach(assignIdRecursively);
   }
 };

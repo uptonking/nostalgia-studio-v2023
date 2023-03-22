@@ -5,6 +5,7 @@ import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
 import { NosIconProvider } from '../../config/icon-provider';
 import { usePersistedState } from '../../hooks/use-persisted-state';
+import { isParagraphElement } from '../../plugins/paragraph/utils';
 import {
   DragOverlayContent,
 } from '../../plugins/wrapper/components/drag-overlay-content';
@@ -46,6 +47,9 @@ export const NosEditor = (props: NosEditorProps) => {
         onKeyDown: () => () => {
           // after dnd ends then ReactEditor.focus call, to continue typing
           forceRerender();
+        },
+        onClick: () => () => {
+          console.log(';; ed-sel-start ', editor.selection);
         },
       },
     },

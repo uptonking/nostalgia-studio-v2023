@@ -379,7 +379,7 @@ class AbstractType {
   _map: Map<string, any>;
   _start: null | any;
   _length: any;
-  _item: null | any;
+  _item: null | Item;
   doc: null | Doc;
   _eH: EventHandler;
   _dEH: EventHandler;
@@ -534,8 +534,11 @@ class AbstractType {
  * @template {AbstractType<any>} T
  */
 class YEvent {
-  target: any;
-  // currentTarget: any;
+  /** The shared type that this event was created on. This event describes the changes on target. */
+  target: AbstractType;
+  /** It refers to the type on which the event handler (observe/observeDeep) has been attached.
+   * - Similar to dom Event.currentTarget.
+   */
   currentTarget: AbstractType;
   transaction: Transaction;
   _changes: null | Record<string, any>;
@@ -1298,8 +1301,8 @@ class Item extends AbstractStruct {
   parentSub: string | null;
   redone: ID | null;
   right: Item | null;
-  origin: ID | null;
   rightOrigin: ID | null;
+  origin: ID | null;
   info: number;
 
   /**
@@ -1708,7 +1711,7 @@ class Item extends AbstractStruct {
       right.redone === null &&
       this.content.constructor === right.content.constructor &&
       // @ts-ignore
-      this.content.mergeWith(right.content)
+      (this.content.mergeWith(right.content) as unknown as boolean)
     ) {
       const searchMarker =
         // @ts-ignore
@@ -6216,6 +6219,7 @@ const getPathTo = (parent: AbstractType, child: AbstractType) => {
     } else {
       // parent is array-ish
       let i = 0;
+      // @ts-ignore
       let c = /** @type {AbstractType<any>} */ child._item.parent._start;
       while (c !== child._item && c !== null) {
         if (!c.deleted) {
@@ -6225,6 +6229,7 @@ const getPathTo = (parent: AbstractType, child: AbstractType) => {
       }
       path.unshift(i);
     }
+    // @ts-ignore
     child = /** @type {AbstractType<any>} */ child._item.parent;
   }
   return path;

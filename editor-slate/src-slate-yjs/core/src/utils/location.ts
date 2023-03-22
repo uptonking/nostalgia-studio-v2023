@@ -1,5 +1,6 @@
 import { Element, Node, Path, Text } from 'slate';
 import * as Y from 'yjs';
+
 import { YTarget } from '../model/types';
 import { sliceInsertDelta, yTextToInsertDelta } from './delta';
 
@@ -64,6 +65,13 @@ export function getYTarget(
   };
 }
 
+/**
+ *
+ * @param parent
+ * @param yOffset
+ * @param opts
+ * @returns [lastNonEmptyPathOffset, textOffset]
+ */
 export function yOffsetToSlateOffsets(
   parent: Element,
   yOffset: number,
@@ -105,6 +113,13 @@ export function yOffsetToSlateOffsets(
   return [lastNonEmptyPathOffset, textOffset];
 }
 
+/**
+ * compute yText in slate path
+ * @param sharedRoot
+ * @param slateRoot eg. slate-editor
+ * @param yText yEvent target
+ * @returns the path to slate element
+ */
 export function getSlatePath(
   sharedRoot: Y.XmlText,
   slateRoot: Node,
@@ -117,11 +132,10 @@ export function getSlatePath(
     if (!yParent) {
       throw new Error("yText isn't a descendant of root element");
     }
-
     if (!(yParent instanceof Y.XmlText)) {
       throw new Error('Unexpected y parent type');
     }
-
+    // insert parent at the start
     yNodePath.unshift(yParent);
   }
 
@@ -130,6 +144,7 @@ export function getSlatePath(
   }
 
   let slateParent = slateRoot;
+
   return yNodePath.reduce<Path>((path, yParent, idx) => {
     const yChild = yNodePath[idx + 1];
     if (!yChild) {

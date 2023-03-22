@@ -13,6 +13,7 @@ import {
   type Descendant,
   Editor,
   Node as SlateNode,
+  Range,
   Transforms,
 } from 'slate';
 import { DefaultEditable as Editable, Slate, withReact } from 'slate-react';
@@ -41,6 +42,10 @@ export type EditClientType = {
   onSelect?: (siteId: string, range: number) => void;
 };
 
+/**
+ * show two editors on the same page to mock collab.
+ * - all changes are synced simultaneously.
+ */
 export const TwoEditorsCollabNoServer = () => {
   const [client1, setClient1] = useState<EditClientType>({
     siteId: 'alice',
@@ -56,29 +61,38 @@ export const TwoEditorsCollabNoServer = () => {
      */
     const handleYEvents =
       (editor: YjsEditor) =>
-      (
-        // @ts-expect-error fix-types
-        events: Y.YEvent<Y.XmlText>[],
-        transaction: Y.Transaction,
-      ) => {
-        console.log(
-          ';; y-observeDeep ',
-          editor.isLocalOrigin(transaction.origin),
-          transaction.origin,
-          events,
-        );
-        if (editor.isLocalOrigin(transaction.origin)) {
-          return;
-        }
-        YjsEditor.applyRemoteEvents(editor, events, transaction.origin);
-      };
+        (
+          // @ts-expect-error fix-types
+          events: Y.YEvent<Y.XmlText>[],
+          transaction: Y.Transaction,
+        ) => {
+          // console.log(
+          //   ';; y-observeDeep ',
+          //   editor.isLocalOrigin(transaction.origin),
+          //   transaction.origin,
+          //   events,
+          // );
+          if (editor.isLocalOrigin(transaction.origin)) {
+            return;
+          }
+          YjsEditor.applyRemoteEvents(editor, events, transaction.origin);
+        };
 
     if (client1?.editor?.sharedRoot && client2?.editor?.sharedRoot) {
+      //   client1.editor.ydoc.on('update', (update) => {
+      //     console.log(';; ydoc c1 to c2');
+      //     Y.applyUpdate(client2.editor.ydoc, update);
+      //   });
+      //   client2.editor.ydoc.on('update', (update) => {
+      //     console.log(';; ydoc c2 to c1');
+      //     Y.applyUpdate(client1.editor.ydoc, update);
+      //   });
+
       const handle1 = handleYEvents(client2.editor);
       const handle2 = handleYEvents(client1.editor);
 
-      client1.editor.sharedRoot.observeDeep(handle1);
-      client2.editor.sharedRoot.observeDeep(handle2);
+      // client1.editor.sharedRoot.observeDeep(handle1);
+      // client2.editor.sharedRoot.observeDeep(handle2);
 
       return () => {
         if (handle1 && handle2) {
@@ -107,7 +121,7 @@ export const TwoEditorsCollabNoServer = () => {
             <h2>{client1.siteId}</h2>
             <button
               className={`btn ${client1.isOnline ? 'online' : 'offline'}`}
-              // onClick={() => toggleOnline(siteA, setSiteA, siteB)}
+            // onClick={() => toggleOnline(siteA, setSiteA, siteB)}
             >
               {client1.isOnline ? 'Online' : 'Offline'}
             </button>
@@ -124,12 +138,12 @@ export const TwoEditorsCollabNoServer = () => {
                 },
                 [client1],
               )}
-              // updateContentListener={(payload: any) =>
-              //   updateEditorContent(payload, client1, client2)
-              // }
-              // updateSelection={(fromIndex: number, toIndex: number) =>
-              //   updateSelection(fromIndex, toIndex, siteA, siteB)
-              // }
+            // updateContentListener={(payload: any) =>
+            //   updateEditorContent(payload, client1, client2)
+            // }
+            // updateSelection={(fromIndex: number, toIndex: number) =>
+            //   updateSelection(fromIndex, toIndex, siteA, siteB)
+            // }
             />
           </div>
         </div>
@@ -139,7 +153,7 @@ export const TwoEditorsCollabNoServer = () => {
             <h2>{client2.siteId}</h2>
             <button
               className={`btn ${client2.isOnline ? 'online' : 'offline'}`}
-              // onClick={() => toggleOnline(siteA, setSiteA, siteB)}
+            // onClick={() => toggleOnline(siteA, setSiteA, siteB)}
             >
               {client2.isOnline ? 'Online' : 'Offline'}
             </button>
@@ -156,12 +170,12 @@ export const TwoEditorsCollabNoServer = () => {
                 },
                 [client2],
               )}
-              // updateContentListener={(payload: any) =>
-              //   updateEditorContent(payload, client2, client1)
-              // }
-              // updateSelection={(fromIndex: number, toIndex: number) =>
-              //   updateSelection(fromIndex, toIndex, siteA, siteB)
-              // }
+            // updateContentListener={(payload: any) =>
+            //   updateEditorContent(payload, client2, client1)
+            // }
+            // updateSelection={(fromIndex: number, toIndex: number) =>
+            //   updateSelection(fromIndex, toIndex, siteA, siteB)
+            // }
             />
           </div>
         </div>
@@ -214,6 +228,7 @@ const CollabEditor = ({ clientData, setClientData }: CollabEditorProps) => {
         );
       };
       editor['id'] = clientData.siteId;
+      editor['ydoc'] = yDoc;
       setClientData(editor);
     }
     window[clientData.siteId] = clientData.editor;
@@ -230,7 +245,15 @@ const CollabEditor = ({ clientData, setClientData }: CollabEditorProps) => {
 
   return clientData.editor ? (
     <Slate editor={clientData.editor as any} value={[]}>
-      <Editable />
+      <Editable
+      // onClick={() =>
+      //   console.log(
+      //     ';; ed-sel-start ',
+      //     clientData.editor.selection.anchor,
+      //     Range.isCollapsed(clientData.editor.selection),
+      //   )
+      // }
+      />
     </Slate>
   ) : null;
 };

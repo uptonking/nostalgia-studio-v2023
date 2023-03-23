@@ -51,7 +51,6 @@ const ItemComponent = (props: React.PropsWithChildren<ItemProps>) => {
     selected = false,
     onFold,
     isDragOverlay = false,
-    isInViewport = false,
     hidden = false,
     dragDepth = 0,
     attributes,
@@ -59,15 +58,16 @@ const ItemComponent = (props: React.PropsWithChildren<ItemProps>) => {
 
   const editor = useSlateStatic();
 
-  if (isHeadingElement(element)) {
-    // console.log(';; h-ele ', element);
-  }
 
   return (
     <Fragment>
       <DragHandle
         listeners={listeners}
-        classes={cx({ isHeading: isHeadingElement(element) })}
+        classes={cx({
+          hidden: hidden,
+          "is-heading": isHeadingElement(element),
+          "is-foldable": ExtendedEditor.hasSemanticChildren(element)
+        })}
       />
       {isParagraphElement(element) &&
         Node.string(element) === '' &&
@@ -98,6 +98,7 @@ const ItemComponent = (props: React.PropsWithChildren<ItemProps>) => {
       >
         {ExtendedEditor.isNestingElement(editor, element) &&
           ExtendedEditor.isFoldingElement(editor, element) && (
+            // vertical line indicating folding
             <FoldingLine
               element={element}
               onFold={onFold}
@@ -108,7 +109,7 @@ const ItemComponent = (props: React.PropsWithChildren<ItemProps>) => {
           <FoldingArrow
             element={element}
             onFold={onFold}
-            classes={cx({ isHeading: isHeadingElement(element) })}
+            classes={cx({ "is-heading": isHeadingElement(element) })}
           />
         )}
         {children}

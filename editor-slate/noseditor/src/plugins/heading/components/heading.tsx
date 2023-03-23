@@ -1,3 +1,5 @@
+import './styles.scss';
+
 import React from 'react';
 
 import type { ElementProps } from '../../types';
@@ -12,7 +14,11 @@ export const Heading1 = (
 ) => {
   const { children, attributes } = props;
 
-  return <h1 {...attributes}>{children}</h1>;
+  return (
+    <h1 className='nos-elem' {...attributes}>
+      {children}
+    </h1>
+  );
 };
 
 export const Heading2 = (
@@ -20,7 +26,11 @@ export const Heading2 = (
 ) => {
   const { children, attributes } = props;
 
-  return <h2 {...attributes}>{children}</h2>;
+  return (
+    <h2 className='nos-elem' {...attributes}>
+      {children}
+    </h2>
+  );
 };
 
 export const Heading3 = (
@@ -28,5 +38,9 @@ export const Heading3 = (
 ) => {
   const { children, attributes } = props;
 
-  return <h3 {...attributes}>{children}</h3>;
+  return (
+    <h3 className='nos-elem' {...attributes}>
+      {children}
+    </h3>
+  );
 };

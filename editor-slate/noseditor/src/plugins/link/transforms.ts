@@ -8,7 +8,7 @@ export const insertLink = (editor: Editor, url: string) => {
   Transforms.move(editor, { unit: 'offset' });
 };
 
-export const unwarpLinks = (editor: Editor) => {
+export const unwrapLinks = (editor: Editor) => {
   Transforms.unwrapNodes(editor, {
     match: isLinkElement,
   });

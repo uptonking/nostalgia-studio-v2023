@@ -14,13 +14,13 @@ body.dragging {
   cursor: grabbing;
 }
 
-h1,
-h2,
-h3 {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  margin: 0;
-  line-height: 32px;
+body.dragging .item {
+  transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
+    scaleX(var(--scale-x, 1)) scaleY(var(--scale-y, 1));
+}
+
+body.dragging .handle {
+  display: none;
 }
 
 .nos-editable {
@@ -30,7 +30,7 @@ h3 {
 
 .nos-editable p {
   margin: 0;
-  /* color: #1d2129; */
+  color: #1d2129;
   line-height: 1.5;
 }
 
@@ -44,17 +44,16 @@ h3 {
   position: relative;
   transform-origin: 0 0;
 
-  padding: 4px 0px;
   margin: 0;
+  padding: 4px 0px;
   outline: none;
 
   touch-action: manipulation;
 
-  /*padding-left: var(--spacing);*/
   /*border: 1px solid lightslategrey;*/
   /*background-color: white;*/
   /*z-index: 0;*/
-  /*will-change: transform;*/
+  will-change: transform;
 }
 
 .item.item-list {
@@ -69,12 +68,11 @@ h3 {
 
 .item-container-list {
   /* extra spacing for every list */
-  /* margin-left: calc(40px + var(--spacing)); */
   margin-left: calc(0px + var(--spacing));
 }
 
 .item-container-list.dragging {
-  transition: 200ms margin-left;
+  transition: 125ms margin-left;
 }
 
 .item {
@@ -87,15 +85,6 @@ h3 {
   z-index: 1;
   background-color: rgba(255, 255, 255, 0.3);
   height: var(--drag-overlay-height, auto);
-}
-
-body.dragging .item {
-  transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0)
-    scaleX(var(--scale-x, 1)) scaleY(var(--scale-y, 1));
-}
-
-body.dragging .handle {
-  display: none;
 }
 
 .item.dragging:not(.dragOverlay) {
@@ -121,53 +110,48 @@ body.dragging .handle {
   box-shadow: 0px 0px 13px 2px rgba(34, 60, 80, 0.2);
 }
 
-@media only screen and (max-width: 768px) {
-  .actions {
-    /*left: -20px;*/
-    /*width: 20px;*/
-  }
-}
-
 .handle {
   position: absolute;
-  left: -30px;
-  width: 29px;
-  user-select: none;
-  background: none;
-  border: none;
-  font-size: 23px;
-  cursor: grab;
-  opacity: 0;
-  color: lightslategray;
+  left: -24px;
+  width: 20px;
   height: 100%;
   padding: 0;
-
-  /*background-color: blue;*/
-}
-
-.handle.isHeading {
-  left: -48px;
-}
-
-.item-container-list .handle {
-  /* left drag handle */
-  /* left: calc(-70px - var(--spacing)); */
-  left: calc(-40px - var(--spacing));
-  width: 29px;
-}
-
-.item-container-list .folding {
-  /* must not overlap with drag handle */
-  left: -16px;
+  user-select: none;
+  background: none;
+  opacity: 0;
 }
 
 .handle:hover {
-  background-color: whitesmoke;
+  /* background-color: whitesmoke; */
+}
+
+.handle .drag-trigger {
+  margin-top: 2px;
+  padding-left: 0;
+  border: none;
+  color: lightslategray;
+  background: none;
+  font-size: 23px;
+  cursor: grab;
+}
+
+.handle .drag-trigger svg {
+  height: 18px;
+}
+
+.handle.is-heading.is-foldable {
+  left: -48px;
+  margin-top: 12px;
+}
+
+.handle.is-foldable {
+  left: -40px;
+  margin-top: -2px;
 }
 
 @media only screen and (max-width: 768px) {
   .handle {
-    opacity: 1;
+    /* opacity: 1; */
   }
 }
 
@@ -207,14 +191,14 @@ body.dragging .handle {
   /*background-color: green;*/
 }
 
-.folding.isHeading {
-  left: -32px;
+.folding.is-heading {
+  left: -36px;
 }
 
 .folding-list {
-  /*left: calc(16px + var(--spacing));*/
   left: -22px;
-  width: 19px;
+  width: 24px;
+  padding-top: 2px;
 }
 
 /* todo make div more specific */
@@ -231,6 +215,9 @@ body.dragging .handle {
 .hidden {
   display: none;
   height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
 }
 
 .disableSelection * {
@@ -273,13 +260,6 @@ body.dragging .handle {
   content: ' ';
 }
 
-.hidden {
-  height: 0;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-}
-
 .list-item {
   position: relative;
   list-style: none;
@@ -289,7 +269,7 @@ body.dragging .handle {
 
 .folding-pointer {
   cursor: pointer;
-  float: left;
+  /* float: left; */
   font-size: 12px;
   background: none;
   border: none;
@@ -301,7 +281,7 @@ body.dragging .handle {
 .pointer {
   /* cursor: pointer; */
   pointer-events: none;
-  float: left;
+  /* float: left; */
   min-width: 18px;
   transform: rotate(0deg);
   border: none;
@@ -331,17 +311,19 @@ body.dragging .handle {
 
 .placeholder {
   position: absolute;
-  cursor: pointer;
-  top: 3px;
-  left: 40px;
-  background: transparent;
+  top: 6px;
+  /* left: 40px; */
+  width: calc(100% - 46px);
   border-radius: 8px;
   vertical-align: middle;
   text-align: start;
+  line-height: 1.5;
+  background: transparent;
   pointer-events: none;
   user-select: none;
-  width: calc(100% - 46px);
   overflow: hidden;
   z-index: 1;
   opacity: 0.3;
+  cursor: pointer;
+  /* font-style: italic; */
 }

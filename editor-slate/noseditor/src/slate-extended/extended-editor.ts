@@ -7,13 +7,21 @@ import { ELEMENT_TO_SEMANTIC_PATH } from './weakmaps';
 export interface ExtendedEditor extends BaseEditor {
   children: Element[];
   compareLevels: (a: Element, b: Element) => number;
-  isFoldingElement: (element: any) => boolean;
-  isNestingElement: (element: any) => boolean;
+  /** default false */
+  isFoldingElement: (element: Element) => boolean;
+  /** default false */
+  isNestingElement: (element: Element) => boolean;
   semanticChildren: SemanticNode[];
   getSemanticChildren: (children: Descendant[]) => SemanticNode[];
+  hasSemanticChildren: (element: Element) => boolean;
 }
 
 export const ExtendedEditor = {
+  hasSemanticChildren(element: Element) {
+    const editorElem = ExtendedEditor.semanticNode(element);
+    return editorElem.children.length > 0;
+  },
+
   /**
    * compute list-info of all nodes from `children`
    */

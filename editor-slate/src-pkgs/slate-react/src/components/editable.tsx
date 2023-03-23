@@ -25,7 +25,9 @@ import {
 import { ReactEditor } from '..';
 import { useChildren } from '../hooks/use-children';
 import { DecorateContext } from '../hooks/use-decorate';
-import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
+import {
+  useIsomorphicLayoutEffect,
+} from '../hooks/use-isomorphic-layout-effect';
 import { ReadOnlyContext } from '../hooks/use-read-only';
 import { useSlate } from '../hooks/use-slate';
 import { TRIPLE_CLICK } from '../utils/constants';
@@ -221,7 +223,7 @@ export const Editable = (props: EditableProps) => {
         // (e.g. when clicking on contentEditable:false element)
         suppressThrow: true,
       });
-      // console.log(';; chk-range ',JSON.stringify(slateRange))
+      // console.log(';; chk-domSel-slateSel ', JSON.stringify(slateRange), slateRange ? Range.equals(slateRange, selection) : 'slateSel-is-null')
       if (slateRange && Range.equals(slateRange, selection)) {
         return;
       }
@@ -303,6 +305,7 @@ export const Editable = (props: EditableProps) => {
         const { activeElement } = root;
         const el = ReactEditor.toDOMNode(editor, editor);
         const domSelection = root.getSelection();
+        // console.log(';; domSelChg ', domSelection);
 
         if (activeElement === el) {
           state.latestElement = activeElement;
@@ -859,7 +862,7 @@ export const Editable = (props: EditableProps) => {
                   endVoid &&
                   Path.equals(startVoid[1], endVoid[1])
                 ) {
-                  console.log(';; onclick-void ', startVoid, endVoid);
+                  // console.log(';; onclick-void ', startVoid, endVoid);
                   const range = Editor.range(editor, start);
                   Transforms.select(editor, range);
                 }
@@ -1203,7 +1206,7 @@ export const Editable = (props: EditableProps) => {
                 const { selection } = editor;
                 const element =
                   editor.children[
-                    selection !== null ? selection.focus.path[0] : 0
+                  selection !== null ? selection.focus.path[0] : 0
                   ];
                 const isRTL = getDirection(Node.string(element)) === 'rtl';
 

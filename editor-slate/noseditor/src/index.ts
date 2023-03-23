@@ -30,8 +30,7 @@ export { DragOverlayContent } from './plugins/wrapper';
 export { EditorToolbar } from './components/editor-toolbar';
 
 // export utils
-
-export { composePlugins } from './utils/slate-plugin';
+export { composePlugins } from './utils/plugins-config-compose';
 
 // export types
 export type { CustomEditor, CustomElement, CustomText } from './types/slate.d';

@@ -7,7 +7,7 @@ import {
   Heading2Type,
   Heading3Type,
 } from '../plugins/heading/types';
-import { insertLink, unwarpLinks } from '../plugins/link/transforms';
+import { insertLink, unwrapLinks } from '../plugins/link/transforms';
 import { toggleList } from '../plugins/list/transforms';
 import { ListTypes } from '../plugins/list/types';
 import { ParagraphType } from '../plugins/paragraph/types';
@@ -123,7 +123,7 @@ export const EditorToolbar = () => {
           style={{ position: 'relative' }}
           onMouseDown={(e) => {
             e.preventDefault();
-            unwarpLinks(editor);
+            unwrapLinks(editor);
           }}
           className='toolbar-button'
         >

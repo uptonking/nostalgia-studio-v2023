@@ -19,10 +19,11 @@ interface Props {
   position: {
     left: number;
     top: number;
+    pageY: number;
   };
 }
 
-const CURSOR_DISTANCE = 10;
+const CURSOR_DISTANCE = 8;
 
 /**
  * 通过createPortal渲染在 document.body
@@ -42,15 +43,24 @@ export const ContextMenu: FC<Props> = ({
   useEffect(() => {
     if (visible && menuRef.current) {
       const { offsetHeight, offsetWidth } = menuRef.current;
-      const { innerHeight, innerWidth } = window;
+      const {  innerHeight,  innerWidth } = window;
       const top =
         offsetHeight + position.top > innerHeight - CURSOR_DISTANCE
-          ? position.top - offsetHeight
-          : position.top + CURSOR_DISTANCE;
+          ? position.pageY - offsetHeight
+          : position.pageY + CURSOR_DISTANCE;
       const left =
         offsetWidth + position.left > innerWidth - CURSOR_DISTANCE
           ? position.left - offsetWidth
           : position.left - CURSOR_DISTANCE;
+
+      console.log(
+        ';; offsetHeight-position.top-innerHeight ', offsetHeight + position.top > innerHeight - CURSOR_DISTANCE,
+        offsetHeight,
+        position.top,
+        position.pageY,
+        innerHeight,
+        top,
+      );
 
       setPoint({ top, left });
     }

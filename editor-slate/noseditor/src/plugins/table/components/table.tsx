@@ -29,6 +29,8 @@ import { getRealPathFromTableSelection } from '../utils/selection';
 import { selectionBound } from '../utils/selection-bound';
 import { ContextMenu } from './context-menu';
 
+const ABSOLUTE_HIDDEN_MENU_POS = { left: -9999, top: -9999, pageY: -9999 };
+
 /**
  * table with context menu
  * - 自绘表格选区
@@ -52,10 +54,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
   });
   const [showTblSel, setShowTblSel] = useState(false);
   const [showCtxMenu, setShowCtxMenu] = useState(false);
-  const [menuPosition, setMenuPosition] = useState({
-    left: -9999,
-    top: -9999,
-  });
+  const [menuPosition, setMenuPosition] = useState(ABSOLUTE_HIDDEN_MENU_POS);
 
   const editor = useSlate();
   useEffect(() => {
@@ -72,7 +71,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         editorDom.setAttribute('contenteditable', 'false');
         Promise.resolve()
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
-          .catch(() => {});
+          .catch(() => { });
       }
 
       const isSelInTable = isSelectionInTable(editor);
@@ -109,6 +108,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         setShowTblSel(false);
         setSelectCells([]);
         setShowCtxMenu(false);
+        // setMenuPosition(ABSOLUTE_HIDDEN_MENU_POS);
       }
     };
     const mouseupCallback = () => {
@@ -117,6 +117,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
 
     const blurCallback = () => {
       setShowCtxMenu(false);
+      // setMenuPosition(ABSOLUTE_HIDDEN_MENU_POS);
     };
     const reset = () => {
       setShowTblSel(false);
@@ -206,9 +207,11 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         onContextMenu={(e) => {
           e.preventDefault();
           setShowCtxMenu(true);
+          console.log(';; ctx-menu-pos-clientX-offsetX ', e, e.clientX, e.clientY, e.pageY);
           setMenuPosition({
             left: e.clientX,
             top: e.clientY,
+            pageY: e.pageY,
           });
         }}
       >
@@ -226,6 +229,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
       />
       <ContextMenu
         visible={showCtxMenu}
+        // visible={true}
         position={menuPosition}
         editor={editor}
         selectCells={selectCells}

@@ -10,6 +10,7 @@ import {
   DragOverlayContent,
 } from '../../plugins/wrapper/components/drag-overlay-content';
 import { DndPluginContext } from '../../slate-extended/dnd/dnd-plugin-context';
+import { ExtendedEditor } from '../../slate-extended/extended-editor';
 import { SlateExtended } from '../../slate-extended/slate-extended';
 import { EditorToolbar } from '../editor-toolbar';
 import {
@@ -49,7 +50,22 @@ export const NosEditor = (props: NosEditorProps) => {
           forceRerender();
         },
         onClick: () => () => {
-          console.log(';; ed-sel-start ', editor.selection);
+
+          if(editor.selection?.anchor){
+            const pathClone = [...editor.selection.anchor.path];
+            pathClone.pop(); // get rid of trailing text node postion in path.
+            const anchorNode = pathClone.reduce((node, pathPosition) => {
+              if (!node) return editor.children[pathPosition];
+              // @ts-expect-error fix-types
+              return node.children[pathPosition];
+            }, null);
+            console.log(
+              ';; ed-sel-start ',
+              editor.selection?.anchor,
+              anchorNode,
+              ExtendedEditor.semanticNode(anchorNode),
+            );
+          }
         },
       },
     },
@@ -83,9 +99,9 @@ export const NosEditor = (props: NosEditorProps) => {
             <EditorToolbar />
             <Editable
               className='nos-editable'
-              {...handlers}
               renderElement={renderElement}
               renderLeaf={renderLeaf}
+              {...handlers}
             />
           </DndPluginContext>
         </SlateExtended>

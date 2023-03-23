@@ -97,6 +97,7 @@ export const withExtended =
     e.compareLevels = compareLevels(e);
     e.isFoldingElement = () => false;
     e.isNestingElement = () => false;
+    e.hasSemanticChildren = () => false;
 
     return e;
   };

@@ -25,21 +25,27 @@ export const ListItem = (
   const { depth, listType } = element;
 
   return (
-    <div {...attributes} className={cx('list-item', `list-item-${listType}`)}>
+    <div
+      {...attributes}
+      className={cx('nos-elem', 'list-item', `list-item-${listType}`)}
+    >
       {listType === ListTypes.Bulleted && (
         <button
           contentEditable={false}
           className='pointer clipboardSkip'
-        // style={
-        //   {
-        //     '--pointer-content': `"${getBulletedPointerContent(depth)}"`,
-        //   } as React.CSSProperties
-        // }
-        // onMouseDown={() => {
-        //   foldElement(editor, element);
-        // }}
+          // style={
+          //   {
+          //     '--pointer-content': `"${getBulletedPointerContent(depth)}"`,
+          //   } as React.CSSProperties
+          // }
+          // onMouseDown={() => {
+          //   foldElement(editor, element);
+          // }}
         >
-          {getBulletedPointerContent(depth)}
+          {
+            // 👀 `+''` is a trick to show cursor when clicking in zero-width string
+            getBulletedPointerContent(depth) + ''
+          }
         </button>
       )}
       {listType === ListTypes.Numbered ? (
@@ -48,19 +54,25 @@ export const ListItem = (
       {isTodoListItemElement(element) ? (
         <div contentEditable={false} className='pointer clipboardSkip'>
           <input
-            className='checkbox-pointer'
             type='checkbox'
             checked={Boolean(element.checked)}
             onChange={(e) => checkTodoItem(editor, element, e.target.checked)}
+            className='checkbox-pointer'
           />
         </div>
       ) : null}
-      <div>{children}</div>
+      <div
+        className={cx({
+          'list-checkbox-item-content': isTodoListItemElement(element),
+        })}
+      >
+        {children}
+      </div>
     </div>
   );
 };
 
-/** ordered list number */
+/** preceding number of ordered list  */
 const NumberedPointer = (props: { element: ListItemElement }) => {
   const editor = useSlate(); // useSlate to rerender pointer content (index) when this element isn't changed directly
 
@@ -74,17 +86,17 @@ const NumberedPointer = (props: { element: ListItemElement }) => {
     <button
       contentEditable={false}
       className='pointer clipboardSkip'
-    // style={
-    //   {
-    //     '--pointer-content': `"${getNumberedPointerContent(
-    //       depth,
-    //       listIndex,
-    //     )}"`,
-    //   } as React.CSSProperties
-    // }
-    // onMouseDown={() => {
-    //   foldElement(editor, element);
-    // }}
+      // style={
+      //   {
+      //     '--pointer-content': `"${getNumberedPointerContent(
+      //       depth,
+      //       listIndex,
+      //     )}"`,
+      //   } as React.CSSProperties
+      // }
+      // onMouseDown={() => {
+      //   foldElement(editor, element);
+      // }}
     >
       {getNumberedPointerContent(depth, listIndex) + '.'}
     </button>

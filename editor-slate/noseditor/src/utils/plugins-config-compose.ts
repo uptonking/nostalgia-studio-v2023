@@ -45,7 +45,7 @@ export const composeHandlers = (
   const grouped = handlersConfig.reduce(
     (acc, x) => mergeWith((a, b) => flatten([a, b]), acc, x),
     {},
-  ) as Record<DOMHandlersKeys, Array<EditorHandler>>;
+  ) as unknown as Record<DOMHandlersKeys, Array<EditorHandler>>;
   // console.log(';; grouped ', grouped, handlersConfig);
 
   const composed: Partial<Record<string, Handler>> = {};

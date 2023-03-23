@@ -4,6 +4,8 @@ import cx from 'classnames';
 
 import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 
+import { DragIcon } from '../../../../components/icons';
+
 type Props = {
   listeners?: DraggableSyntheticListeners;
   classes?: string;
@@ -11,13 +13,14 @@ type Props = {
 
 export const DragHandle = ({ listeners, classes }: Props) => {
   return (
-    <button
+    <div
       contentEditable={false}
       className={'handle clipboardSkip ' + (classes || '')}
-      {...listeners}
     >
-      ⠿
-    </button>
+      <button className='drag-trigger' {...listeners}>
+        <DragIcon />
+      </button>
+    </div>
   );
 };
 

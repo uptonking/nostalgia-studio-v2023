@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { Range } from 'slate';
 import { useSlate } from 'slate-react';
 
-const Placeholder = () => {
+export const Placeholder = () => {
   const editor = useSlate();
 
   if (!(editor.selection && Range.isCollapsed(editor.selection))) {
@@ -11,7 +12,7 @@ const Placeholder = () => {
 
   return (
     <div contentEditable={false} className='placeholder clipboardSkip'>
-      Type something here..
+      Start writing and creating...
     </div>
   );
 };

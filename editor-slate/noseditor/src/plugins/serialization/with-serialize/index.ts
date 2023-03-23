@@ -4,12 +4,14 @@ import { getClipboardPlainText } from './get-clipboard-plain-text';
 import { patchCopiedClipboardHtml } from './patch-copied-clipboard-html';
 import { removeSkippedElements } from './remove-skipped-elements';
 
+/**
+ * create temporary hidden div for clipboardNode
+ */
 const getClipboardDataHtmlNode = (data: any) => {
   const clipboardNode = document.createElement('div');
   clipboardNode.innerHTML = data.getData('text/html');
   clipboardNode.setAttribute('hidden', 'true');
   document.body.appendChild(clipboardNode);
-
   return clipboardNode;
 };
 

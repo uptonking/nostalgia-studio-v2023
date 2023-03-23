@@ -42,7 +42,6 @@ export const Wrapper = (
     },
   );
 
-  // console.log(';; getSemNode0 ');
   const semanticNode = ExtendedEditor.semanticNode(element);
   // console.log(';; getSemNode ', semanticNode.element.children[0]);
   const { listIndex } = semanticNode;
@@ -87,20 +86,21 @@ export const Wrapper = (
 
   const Tag = ExtendedEditor.isNestingElement(editor, element) ? 'li' : 'div';
 
+  // console.log(';; isSortableEnabled ', isSortableEnabled)
   return (
     <Tag
       spellCheck={spellCheck}
       {...attributes}
       {...(ExtendedEditor.isNestingElement(editor, element)
         ? makeListItemAttributes({
-            depth: element.depth,
-            // @ts-expect-error fix-types
-            listType: element.listType,
-            index: listIndex,
-            checked: isTodoListItemElement(element) && element.checked,
-          })
+          depth: element.depth,
+          // @ts-expect-error fix-types
+          listType: element.listType,
+          index: listIndex,
+          checked: isTodoListItemElement(element) && element.checked,
+        })
         : {})}
-        // ? data-slate-node-type only used for css?
+      // ? data-slate-node-type only used for css?
       data-slate-node-type={element.type}
       className={cx('item-container', 'clipboardSkipLinebreak', {
         'item-container-list': ExtendedEditor.isNestingElement(editor, element),
@@ -111,14 +111,15 @@ export const Wrapper = (
           '--spacing': `${isDragging ? dragSpacing : realSpacing}px`,
           ...(dragOverlayHeight
             ? {
-                '--drag-overlay-height': `${dragOverlayHeight}px`,
-              }
+              '--drag-overlay-height': `${dragOverlayHeight}px`,
+            }
             : null),
         } as React.CSSProperties
       }
     >
       {isSortableEnabled ? (
         <Sortable id={id} {...itemProps}>
+          {/* <span>{realSpacing}{' - '   + ' - ' +ExtendedEditor.hasSemanticChildren(element)}</span> */}
           {children}
         </Sortable>
       ) : (

@@ -23,9 +23,9 @@ export const NosEditorApp = () => (
     <div className='app'>
       <ErrorBoundary fallback={<h3>editor is not rendering properly.</h3>}>
         {/* <EditorWithCursorOverlay /> */}
+        {/* <TwoEditorsCollabNoServer /> */}
+        <NosEditor id='main' initialValue={initialData} />
       </ErrorBoundary>
-      {/* <TwoEditorsCollabNoServer /> */}
-      <NosEditor id='main' initialValue={simpleTableData} />
     </div>
     <StrictMode>
       {/* <BrowserRouter>

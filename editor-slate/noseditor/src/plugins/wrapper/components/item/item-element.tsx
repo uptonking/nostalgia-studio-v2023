@@ -15,7 +15,7 @@ import { isParagraphElement } from '../../../paragraph/utils';
 import { DragHandle } from '../drag-handle';
 import { FoldingArrow } from '../folding-arrow';
 import FoldingLine from '../folding-line';
-import Placeholder from '../placeholder';
+import { Placeholder } from '../placeholder';
 
 type SortableAttributes = ReturnType<typeof useSortable>['attributes'];
 
@@ -69,9 +69,11 @@ const ItemComponent = (props: React.PropsWithChildren<ItemProps>) => {
           "is-foldable": ExtendedEditor.hasSemanticChildren(element)
         })}
       />
-      {isParagraphElement(element) &&
-        Node.string(element) === '' &&
-        selected && <Placeholder />}
+      {
+      // isParagraphElement(element) &&
+      //   Node.string(element) === '' &&
+      //   selected && <Placeholder />
+        }
       <div
         {...attributes}
         className={cx('item', 'clipboardSkipLinebreak', {

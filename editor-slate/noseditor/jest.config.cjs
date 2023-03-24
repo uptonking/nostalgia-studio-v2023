@@ -1,6 +1,6 @@
 const baseConfig = require('../../config/jest.base');
 const pkgConfig = {
-  displayName: 'slate-app-stories',
+  displayName: 'noseditor',
   rootDir: '../..',
   setupFilesAfterEnv: ['<rootDir>/config/setupTests.js'],
 };

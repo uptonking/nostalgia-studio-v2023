@@ -1,22 +1,26 @@
 import { nanoid } from 'nanoid';
 
 import { createPluginFactory } from '@udecode/plate-core';
-import type { DeserializeHtml } from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
-import type { PlatePlugin } from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
+import type {
+  DeserializeHtml,
+} from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
+import type {
+  PlatePlugin,
+} from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
 
 import { BlockquoteType } from '../../blockquote/types';
 import { DividerType } from '../../divider/types';
-import { Heading1Type, Heading2Type, Heading3Type } from '../../heading/types';
+import { Heading1Spec, Heading2Spec, Heading3Spec } from '../../heading/utils';
 import { ImageType } from '../../image/types';
 import { LinkType } from '../../link/types';
-import { ListItemType } from '../../list/types';
-import { ParagraphType } from '../../paragraph/types';
+import { ListItemSpec } from '../../list/utils';
+import { ParagraphSpec } from '../../paragraph/utils';
 import { getListItemProps } from '../utils';
 
 const rules: DeserializeHtml[] = [
   {
     isElement: true,
-    getNode: () => ({ type: ParagraphType }),
+    getNode: () => ({ type: ParagraphSpec }),
     rules: [
       {
         validNodeName: ['P', 'H4', 'H5', 'H6'],
@@ -24,7 +28,7 @@ const rules: DeserializeHtml[] = [
     ],
   },
   {
-    getNode: () => ({ type: Heading1Type }),
+    getNode: () => ({ type: Heading1Spec }),
     isElement: true,
     rules: [
       {
@@ -33,7 +37,7 @@ const rules: DeserializeHtml[] = [
     ],
   },
   {
-    getNode: () => ({ type: Heading2Type }),
+    getNode: () => ({ type: Heading2Spec }),
     isElement: true,
     rules: [
       {
@@ -42,7 +46,7 @@ const rules: DeserializeHtml[] = [
     ],
   },
   {
-    getNode: () => ({ type: Heading3Type }),
+    getNode: () => ({ type: Heading3Spec }),
     isElement: true,
     rules: [
       {
@@ -94,7 +98,7 @@ const rules: DeserializeHtml[] = [
       const { listType, depth } = getListItemProps(el);
 
       return {
-        type: ListItemType,
+        type: ListItemSpec,
         depth,
         listType,
       };

@@ -8,8 +8,7 @@ import {
   Transforms,
 } from 'slate';
 
-import { ParagraphType } from '../paragraph/types';
-import { isParagraphElement } from '../paragraph/utils';
+import { isParagraphElement, ParagraphSpec } from '../paragraph/utils';
 
 const isTrailingLine = (node: Node) => {
   return isParagraphElement(node) && Node.string(node) === '';
@@ -22,7 +21,7 @@ const insertTrailingLine = (editor: Editor, at: Location) => {
   Transforms.insertNodes(
     editor,
     {
-      type: ParagraphType,
+      type: ParagraphSpec,
       children: [{ text: '' }],
     },
     { at },

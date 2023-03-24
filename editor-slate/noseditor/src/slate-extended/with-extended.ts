@@ -1,12 +1,10 @@
 import { nanoid } from 'nanoid';
 import { Editor, Element, Path, Range, Transforms } from 'slate';
 
-import {
-  ListItemElement,
-  ListItemType,
-  ListTypes,
-} from '../plugins/list/types';
-import { ParagraphElement, ParagraphType } from '../plugins/paragraph/types';
+import { type ListItemElement } from '../plugins/list/types';
+import { ListItemSpec, ListTypes } from '../plugins/list/utils';
+import { type ParagraphElement } from '../plugins/paragraph/types';
+import { ParagraphSpec } from '../plugins/paragraph/utils';
 import { ExtendedEditor } from './extended-editor';
 import { FoldingElement } from './types';
 
@@ -104,7 +102,7 @@ export const withExtended =
 
 const getEmptyParagraph = (): ParagraphElement => {
   return {
-    type: ParagraphType,
+    type: ParagraphSpec,
     children: [
       {
         text: '',
@@ -117,7 +115,7 @@ const getEmptyListItem = (
   listItem: Partial<ListItemElement>,
 ): ListItemElement => {
   return {
-    type: ListItemType,
+    type: ListItemSpec,
     children: [
       {
         text: '',

@@ -1,6 +1,6 @@
 import { BaseEditor, Editor, Node, Path, Range, Transforms } from 'slate';
 
-import { ParagraphType } from '../../paragraph/types';
+import { ParagraphSpec } from '../../paragraph/utils';
 import { moveItemsBack } from '../transforms';
 import { isListItemElement } from '../utils';
 
@@ -27,7 +27,7 @@ const makeDeleteBackward = (editor: Editor): BaseEditor['deleteBackward'] => {
             Transforms.setNodes(
               editor,
               {
-                type: ParagraphType,
+                type: ParagraphSpec,
               },
               {
                 at: path,

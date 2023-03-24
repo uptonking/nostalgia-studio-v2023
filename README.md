@@ -22,5 +22,4 @@
 <img src='https://github.com/datalking/nostalgia-studio-lab/blob/main/packages/materials-repo/doc/img/mtl-docs-viewer.png' width = '800'>
 
 # license
-
-[MIT](https://opensource.org/licenses/MIT)
+- see license under each package.

@@ -1,7 +1,9 @@
 {
   "name": "@datalking/noseditor",
-  "version": "0.0.1111",
-  "description": "A collabortive block-style editor optimized for tables.",
+  "version": "0.0.1",
+  "description": "A collabortive block-style editor built with slate.",
+  "license": "(MIT OR AGPL-3.0-or-later)",
+  "author": "jinyaoo <jinyaoo@qq.com>",
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",

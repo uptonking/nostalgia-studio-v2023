@@ -1,4 +1,4 @@
-import { ListTypes } from '../../list/types';
+import { ListTypes } from '../../list/utils';
 import { getListItemProps, isDOMListItem } from '../utils';
 import { getPlainText, isDOMElement, isDOMText } from './utils';
 

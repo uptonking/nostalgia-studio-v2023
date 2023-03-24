@@ -19,7 +19,8 @@ body.dragging .item {
     scaleX(var(--scale-x, 1)) scaleY(var(--scale-y, 1));
 }
 
-body.dragging .handle {
+body.dragging .handle,
+.nos-readonly .handle {
   display: none;
 }
 
@@ -105,8 +106,6 @@ body.dragging .handle {
   /*box-shadow: 0 0 0 calc(1px / var(--scale-x, 1)) rgba(63, 63, 68, 0.05),*/
   /*  -1px 0 15px 0 rgba(34, 33, 81, 0.01), 0px 15px 15px 0 rgba(34, 33, 81, 0.25);*/
 
-  -webkit-box-shadow: 0px 0px 13px 2px rgba(34, 60, 80, 0.2);
-  -moz-box-shadow: 0px 0px 13px 2px rgba(34, 60, 80, 0.2);
   box-shadow: 0px 0px 13px 2px rgba(34, 60, 80, 0.2);
 }
 
@@ -141,7 +140,7 @@ body.dragging .handle {
 
 .handle.is-heading.is-foldable {
   left: -48px;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .handle.is-foldable {
@@ -222,7 +221,6 @@ body.dragging .handle {
 
 .disableSelection * {
   user-select: none;
-  -webkit-user-select: none;
 }
 
 .disableInteraction {

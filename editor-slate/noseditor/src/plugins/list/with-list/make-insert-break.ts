@@ -1,7 +1,7 @@
 import { BaseEditor, Editor, Transforms } from 'slate';
 
 import { isEmptyNode } from '../../../queries';
-import { ParagraphType } from '../../paragraph/types';
+import { ParagraphSpec } from '../../paragraph/utils';
 import { moveItemsBack } from '../transforms';
 import { isListItemElement } from '../utils';
 
@@ -23,7 +23,7 @@ const makeInsertBreak = (editor: Editor): BaseEditor['insertBreak'] => {
           return;
         } else {
           // turn list item into paragraph if it is empty
-          Transforms.setNodes(editor, { type: ParagraphType });
+          Transforms.setNodes(editor, { type: ParagraphSpec });
           // Transforms.unwrapNodes(editor, { match: isListItemElement });
           return;
         }

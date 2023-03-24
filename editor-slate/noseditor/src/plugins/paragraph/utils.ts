@@ -1,7 +1,9 @@
 import { Element } from 'slate';
 
-import { ParagraphType, ParagraphElement } from './types';
+import type { ParagraphElement, ParagraphType } from './types';
+
+export const ParagraphSpec: ParagraphType = 'p';
 
 export const isParagraphElement = (value: any): value is ParagraphElement => {
-  return Element.isElementType<ParagraphElement>(value, ParagraphType);
+  return Element.isElementType<ParagraphElement>(value, ParagraphSpec);
 };

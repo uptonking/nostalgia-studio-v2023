@@ -3,7 +3,7 @@ import React from 'react';
 import isHotkey from 'is-hotkey';
 import { Editor, Path, Range, Transforms } from 'slate';
 
-import { ParagraphType } from '../paragraph/types';
+import { ParagraphSpec } from '../paragraph/utils';
 
 export const onKeyDown = (editor: Editor) => (e: React.KeyboardEvent) => {
   if (!editor.selection || Range.isExpanded(editor.selection)) {
@@ -16,7 +16,7 @@ export const onKeyDown = (editor: Editor) => (e: React.KeyboardEvent) => {
     Transforms.insertNodes(
       editor,
       {
-        type: ParagraphType,
+        type: ParagraphSpec,
         children: [{ text: '' }],
       },
       { at: Path.next(path), select: true },
@@ -29,7 +29,7 @@ export const onKeyDown = (editor: Editor) => (e: React.KeyboardEvent) => {
     Transforms.insertNodes(
       editor,
       {
-        type: ParagraphType,
+        type: ParagraphSpec,
         children: [{ text: '' }],
       },
       { at: path, select: true },

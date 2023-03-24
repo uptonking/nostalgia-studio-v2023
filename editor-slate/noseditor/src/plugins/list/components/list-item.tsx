@@ -13,8 +13,8 @@ import {
   getNumberedPointerContent,
 } from '../get-pointer-content';
 import { checkTodoItem } from '../transforms';
-import { ListItemElement, ListTypes } from '../types';
-import { isTodoListItemElement } from '../utils';
+import type { ListItemElement } from '../types';
+import { isTodoListItemElement, ListTypes } from '../utils';
 
 export const ListItem = (
   props: ElementProps & { element: ListItemElement },
@@ -33,14 +33,14 @@ export const ListItem = (
         <button
           contentEditable={false}
           className='pointer clipboardSkip'
-          // style={
-          //   {
-          //     '--pointer-content': `"${getBulletedPointerContent(depth)}"`,
-          //   } as React.CSSProperties
-          // }
-          // onMouseDown={() => {
-          //   foldElement(editor, element);
-          // }}
+        // style={
+        //   {
+        //     '--pointer-content': `"${getBulletedPointerContent(depth)}"`,
+        //   } as React.CSSProperties
+        // }
+        // onMouseDown={() => {
+        //   foldElement(editor, element);
+        // }}
         >
           {
             // 👀 `+''` is a trick to show cursor when clicking in zero-width string
@@ -86,17 +86,17 @@ const NumberedPointer = (props: { element: ListItemElement }) => {
     <button
       contentEditable={false}
       className='pointer clipboardSkip'
-      // style={
-      //   {
-      //     '--pointer-content': `"${getNumberedPointerContent(
-      //       depth,
-      //       listIndex,
-      //     )}"`,
-      //   } as React.CSSProperties
-      // }
-      // onMouseDown={() => {
-      //   foldElement(editor, element);
-      // }}
+    // style={
+    //   {
+    //     '--pointer-content': `"${getNumberedPointerContent(
+    //       depth,
+    //       listIndex,
+    //     )}"`,
+    //   } as React.CSSProperties
+    // }
+    // onMouseDown={() => {
+    //   foldElement(editor, element);
+    // }}
     >
       {getNumberedPointerContent(depth, listIndex) + '.'}
     </button>

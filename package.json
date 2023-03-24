@@ -6,7 +6,6 @@
   "keywords": [
     "markdown"
   ],
-  "license": "MIT",
   "author": "jinyaoo <jinyaoo@qq.com>",
   "workspaces": [
     "examples/*",

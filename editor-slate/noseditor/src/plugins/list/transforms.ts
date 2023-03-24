@@ -3,8 +3,7 @@ import { ReactEditor } from 'slate-react';
 
 import { NestingElement } from '../../slate-extended/types';
 import { isParagraphElement } from '../paragraph/utils';
-import { ListItemType, ListTypes } from './types';
-import { isListItemElement } from './utils';
+import { isListItemElement, ListItemSpec, ListTypes } from './utils';
 
 export const moveItemsForward = (
   editor: Editor,
@@ -47,7 +46,7 @@ export const checkTodoItem = (
 
 export const toggleList = (
   editor: Editor,
-  { listType }: { listType: ListTypes },
+  { listType }: { listType: typeof ListTypes[keyof typeof ListTypes] },
 ) => {
   Editor.withoutNormalizing(editor, () => {
     const { selection } = editor;
@@ -58,7 +57,7 @@ export const toggleList = (
 
     Transforms.setNodes(
       editor,
-      { type: ListItemType, listType },
+      { type: ListItemSpec, listType },
       {
         match: isListItemElement,
       },
@@ -66,7 +65,7 @@ export const toggleList = (
 
     Transforms.setNodes(
       editor,
-      { type: ListItemType, depth: 0, listType },
+      { type: ListItemSpec, depth: 0, listType },
       {
         match: (node, path) =>
           Range.isExpanded(selection)

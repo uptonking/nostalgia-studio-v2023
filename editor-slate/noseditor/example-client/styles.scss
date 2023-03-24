@@ -19,6 +19,95 @@
   }
 }
 
+.nosedit-full {
+  color: #434c5e;
+  .nosedit-header {
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    width: 100%;
+    background-color: #fff;
+    z-index: 1;
+  }
+
+  .nosedit-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+
+  .nosedit-logo {
+    font-size: 20px;
+  }
+
+  .nosedit-toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    height: 48px;
+    border-top: 1px solid #e5e9f0;
+    border-bottom: 1px solid #e5e9f0;
+  }
+
+  .nos-body {
+    display: flex;
+    justify-content: center;
+    margin-top: 96px;
+    background-color: #f2f4f8;
+  }
+
+  .nos-editor-container {
+    width: 100%;
+    max-width: 900px;
+    min-height: 960px;
+    margin-top: 22px;
+
+    background-color: #fff;
+  }
+
+  .nos-editable {
+    padding-top: 32px;
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+
+  @media only screen and (max-width: 992px) {
+    .nos-editable {
+    padding-top: 24px;
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .nos-editable {
+      padding-top: 6px;
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
+
+  .nos-icon-btn {
+    width: 28px;
+    height: 28px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: 0;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #4c566a;
+    cursor: pointer;
+    &:hover {
+      background-color: #f3f4f5;
+    }
+  }
+}
+
 /* todo delete legacy css */
 .fixed {
   position: fixed;

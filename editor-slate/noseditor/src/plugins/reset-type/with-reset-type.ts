@@ -1,7 +1,7 @@
 import { Editor, Range, Transforms } from 'slate';
 
 import { isHeadingElement } from '../heading/utils';
-import { ParagraphType } from '../paragraph/types';
+import { ParagraphSpec } from '../paragraph/utils';
 
 export const withResetType = (editor: Editor) => {
   const { insertBreak } = editor;
@@ -19,7 +19,7 @@ export const withResetType = (editor: Editor) => {
 
     if (headerEntry) {
       Transforms.insertNodes(editor, {
-        type: ParagraphType,
+        type: ParagraphSpec,
         children: [
           {
             text: '',

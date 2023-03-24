@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { Descendant, Element, Node } from 'slate';
 
-import { ListTypes } from '../../src/plugins/list/types';
+import { ListTypes } from '../../src/plugins/list/utils';
 
 const listValue: Descendant[] = [
   {

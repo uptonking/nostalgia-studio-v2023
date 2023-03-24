@@ -195,7 +195,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
           setTblSelStart(node[1]);
         }}
         onMouseLeave={() => {
-          tblSelStart && setShowTblSel(false);
+          if (tblSelStart) setShowTblSel(false);
         }}
         onMouseMove={(e) => {
           // to-enhance 在跨单元格时新单元格不应该显示文字选区，应该直接显示单元格选区
@@ -207,7 +207,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         onContextMenu={(e) => {
           e.preventDefault();
           setShowCtxMenu(true);
-          console.log(';; ctx-menu-pos-clientX-offsetX ', e, e.clientX, e.clientY, e.pageY);
+          // console.log(';; ctx-menu-pos-clientX-pageY ', e, e.clientX, e.clientY, e.pageY);
           setMenuPosition({
             left: e.clientX,
             top: e.clientY,

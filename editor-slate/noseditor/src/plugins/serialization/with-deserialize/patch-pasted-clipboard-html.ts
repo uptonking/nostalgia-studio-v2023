@@ -1,4 +1,4 @@
-import { ListTypes } from '../../list/types';
+import { ListTypes } from '../../list/utils';
 import { crawlDOM, isDOMList, makeListItemAttributes } from '../utils';
 import { isDOMElement } from '../with-serialize/utils';
 

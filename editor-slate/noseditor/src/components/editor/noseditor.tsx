@@ -5,7 +5,6 @@ import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
 import { NosIconProvider } from '../../config/icon-provider';
 import { usePersistedState } from '../../hooks/use-persisted-state';
-import { isParagraphElement } from '../../plugins/paragraph/utils';
 import {
   DragOverlayContent,
 } from '../../plugins/wrapper/components/drag-overlay-content';
@@ -22,8 +21,8 @@ import {
 } from '../use-editor';
 
 export type NosEditorProps = {
-  id: string;
-  initialValue: Descendant[];
+  initialValue?: Descendant[];
+  id?: string;
   readOnly?: boolean;
 };
 
@@ -33,7 +32,11 @@ export type NosEditorProps = {
  * It can be used as an reference implementation to build your own block editor.
  */
 export const NosEditor = (props: NosEditorProps) => {
-  const { id, initialValue, readOnly = false } = props;
+  const {
+    initialValue,
+    id = 'main',
+    readOnly = false,
+  } = props;
 
   const forceRerender = useReducer(() => ({}), {})[1];
 
@@ -50,8 +53,7 @@ export const NosEditor = (props: NosEditorProps) => {
           forceRerender();
         },
         onClick: () => () => {
-
-          if(editor.selection?.anchor){
+          if (editor.selection?.anchor) {
             const pathClone = [...editor.selection.anchor.path];
             pathClone.pop(); // get rid of trailing text node postion in path.
             const anchorNode = pathClone.reduce((node, pathPosition) => {
@@ -63,7 +65,7 @@ export const NosEditor = (props: NosEditorProps) => {
               ';; ed-sel-start ',
               editor.selection?.anchor,
               anchorNode,
-              ExtendedEditor.semanticNode(anchorNode),
+              // ExtendedEditor.semanticNode(anchorNode),
             );
           }
         },
@@ -82,7 +84,7 @@ export const NosEditor = (props: NosEditorProps) => {
   return (
     <NosIconProvider>
       <Slate editor={editor} value={value} onChange={setValue}>
-        <SlateExtended>
+        {/* <SlateExtended> */}
           <DndPluginContext
             editor={editor}
             onDragEnd={useCallback(() => {
@@ -104,7 +106,7 @@ export const NosEditor = (props: NosEditorProps) => {
               {...handlers}
             />
           </DndPluginContext>
-        </SlateExtended>
+        {/* </SlateExtended> */}
       </Slate>
     </NosIconProvider>
   );

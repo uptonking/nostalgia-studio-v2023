@@ -1,40 +1,87 @@
-import React from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 
 import { useSlateStatic } from 'slate-react';
+
+import {
+  Code as CodeIcon,
+  DownOne as TriangleDownIcon,
+  Drag as DragIcon,
+  Link as LinkIcon,
+  ListCheckbox as ListUnorderedIcon,
+  OrderedList as ListOrderedIcon,
+  RightOne as TriangleRightIcon,
+  TextBold as BoldIcon,
+  TextItalic as ItalicIcon,
+  TextUnderline as UnderlineIcon,
+  UnorderedList as ListCheckboxIcon,
+} from '@icon-park/react';
 
 import {
   Heading1Spec,
   Heading2Spec,
   Heading3Spec,
-} from '../plugins/heading/utils';
-import { insertLink, unwrapLinks } from '../plugins/link/transforms';
-import { toggleList } from '../plugins/list/transforms';
-import { ListTypes } from '../plugins/list/utils';
-import { ParagraphSpec } from '../plugins/paragraph/utils';
-import { toggleElement, toggleMark } from '../transforms';
-import {
-  BoldIcon,
-  CodeIcon,
-  ItalicIcon,
-  LinkIcon,
-  ListCheckboxIcon,
-  ListOrderedIcon,
-  ListUnorderedIcon,
-} from './icons';
+} from '../../../src/plugins/heading/utils';
+import { insertLink, unwrapLinks } from '../../../src/plugins/link/transforms';
+import { toggleList } from '../../../src/plugins/list/transforms';
+import { ListTypes } from '../../../src/plugins/list/utils';
+import { ParagraphSpec } from '../../../src/plugins/paragraph/utils';
+import { toggleElement, toggleMark } from '../../../src/transforms';
+import { IconButton } from '../common/icon-button';
 
-export const EditorToolbar = () => {
+const editorFormatHandler =
+  (editor, format) => (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    toggleMark(editor, format);
+  };
+
+const toolbarActionsData = [
+  {
+    type: 'button',
+    icon: BoldIcon,
+    format: 'bold',
+    title: 'toggle bold',
+  },
+  {
+    type: 'button',
+    icon: ItalicIcon,
+    format: 'italic',
+    title: 'toggle italic',
+  },
+  {
+    type: 'button',
+    icon: UnderlineIcon,
+    format: 'underline',
+    title: 'toggle underline',
+  },
+  {
+    type: 'button',
+    icon: CodeIcon,
+    format: 'code',
+    title: 'toggle text as code',
+  },
+];
+
+export const NosToolbar = () => {
   const editor = useSlateStatic();
 
   return (
-    <div
-      style={{
-        marginBottom: 18,
-        userSelect: 'none',
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}
-    >
-      <div>
+    <div className='nosedit-toolbar'>
+      {toolbarActionsData.map(({ type, icon: Icon, format, title }) => {
+        if (type === 'button') {
+          return (
+            <IconButton
+              onMouseDown={editorFormatHandler(editor, format)}
+              title={title}
+              key={title}
+            >
+              <Icon title={title} />
+            </IconButton>
+          );
+        }
+        return null;
+      })}
+
+      {/* <div>
         <button
           onMouseDown={(e) => {
             e.preventDefault();
@@ -140,49 +187,7 @@ export const EditorToolbar = () => {
             x
           </span>
         </button>
-      </div>
-
-      <div>
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleMark(editor, 'bold');
-          }}
-          className='toolbar-button'
-        >
-          <BoldIcon />
-        </button>
-
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleMark(editor, 'italic');
-          }}
-          className='toolbar-button'
-        >
-          <ItalicIcon />
-        </button>
-
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleMark(editor, 'code');
-          }}
-          className='toolbar-button'
-        >
-          <CodeIcon />
-        </button>
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleMark(editor, 'underline');
-          }}
-          className='toolbar-button'
-        >
-          U̲
-        </button>
-      </div>
+      </div> */}
     </div>
   );
 };
-

@@ -52,16 +52,14 @@ export const ContextMenu: FC<Props> = ({
         offsetWidth + position.left > innerWidth - CURSOR_DISTANCE
           ? position.left - offsetWidth
           : position.left - CURSOR_DISTANCE;
-
-      console.log(
-        ';; offsetHeight-position.top-innerHeight ', offsetHeight + position.top > innerHeight - CURSOR_DISTANCE,
-        offsetHeight,
-        position.top,
-        position.pageY,
-        innerHeight,
-        top,
-      );
-
+      // console.log(
+      //   ';; offsetHeight-position.top-innerHeight ', offsetHeight + position.top > innerHeight - CURSOR_DISTANCE,
+      //   offsetHeight,
+      //   position.top,
+      //   position.pageY,
+      //   innerHeight,
+      //   top,
+      // );
       setPoint({ top, left });
     }
   }, [visible, position]);

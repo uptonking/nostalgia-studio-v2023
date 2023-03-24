@@ -1,9 +1,13 @@
 import { Descendant } from 'slate';
 
-import { FoldingElement, NestingElement } from '../../slate-extended/types';
+import type {
+  FoldingElement,
+  NestingElement,
+} from '../../slate-extended/types';
+import type { ListTypes } from './utils';
 
 export type ListItemType = 'list_item';
-export const ListItemType: ListItemType = 'list_item';
+
 
 type BaseListItemElement = {
   type: ListItemType;
@@ -11,22 +15,17 @@ type BaseListItemElement = {
 } & NestingElement &
   FoldingElement;
 
-export enum ListTypes {
-  Bulleted = 'bulleted',
-  Numbered = 'numbered',
-  TodoList = 'todoList',
-}
 
 type BulletedListItemElement = BaseListItemElement & {
-  listType: ListTypes.Bulleted;
+  listType: typeof ListTypes['Bulleted'];
 };
 
 type NumberedListItemElement = BaseListItemElement & {
-  listType: ListTypes.Numbered;
+  listType: typeof ListTypes['Numbered'];
 };
 
 export type TodoListItemElement = BaseListItemElement & {
-  listType: ListTypes.TodoList;
+  listType: typeof ListTypes['TodoList'];
   checked: boolean;
 };
 

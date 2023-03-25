@@ -30,7 +30,9 @@ bak/
 repos-caches/
 
 # temp/test files
-collab-ot-crdt/crdt-stories/crdt-example-app-hlc-jlongster/db.sqlite
+*.sqlite
+*.sqlite3
+*.db
 tests/testdata/
 store-mongo-like/src-nedb/tests/testdata/
 store-mongo-like/src-nedb-linvodb/tests/testdata
@@ -38,9 +40,6 @@ store-mongo-like/src-nedb-linvodb-node/tests/testdata
 store-level-like/app-stories-level-nodejs/tests/testdata
 store-text-search/src-search-fergies-inverted-index/tests/sandbox
 store-text-search/src-search-index/tests/sandbox
-editor-slate/app-stories/db.sqlite
-editor-slate/noseditor/db.sqlite
-
 
 # below Created by https://www.gitignore.io/api/node
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 import { RenderElementProps } from 'slate-react';
 
 import type { ElementProps } from '../../types';

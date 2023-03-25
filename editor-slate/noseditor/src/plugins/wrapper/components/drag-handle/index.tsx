@@ -1,6 +1,6 @@
 import React from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 
 import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 

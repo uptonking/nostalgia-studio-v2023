@@ -2,7 +2,7 @@ import './styles.scss';
 
 import React from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 import { useSlate, useSlateStatic } from 'slate-react';
 
 import { ExtendedEditor } from '../../../slate-extended/extended-editor';

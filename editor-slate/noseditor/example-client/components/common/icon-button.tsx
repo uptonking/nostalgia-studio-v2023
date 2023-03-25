@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 
 import type { IIconProps } from '@icon-park/react/lib/runtime';
 

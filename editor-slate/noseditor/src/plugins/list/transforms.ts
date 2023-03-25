@@ -1,8 +1,10 @@
 import { Editor, Element, Path, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import { NestingElement } from '../../slate-extended/types';
+import { findSelectionAnchorElement } from '../../queries';
+import type { NestingElement } from '../../slate-extended/types';
 import { isParagraphElement } from '../paragraph/utils';
+import type { ListItemElement } from './types';
 import { isListItemElement, ListItemSpec, ListTypes } from './utils';
 
 export const moveItemsForward = (
@@ -44,6 +46,18 @@ export const checkTodoItem = (
   );
 };
 
+export const isBlockActive = (editor, type, listType) => {
+  const [match] = Editor.nodes(editor, {
+    match: (n) =>
+      !Editor.isEditor(n) &&
+      Element.isElement(n) &&
+      n.type === type &&
+      n['listType'] === listType,
+  });
+
+  return !!match;
+};
+
 export const toggleList = (
   editor: Editor,
   { listType }: { listType: typeof ListTypes[keyof typeof ListTypes] },
@@ -55,23 +69,35 @@ export const toggleList = (
       return;
     }
 
-    Transforms.setNodes(
-      editor,
-      { type: ListItemSpec, listType },
-      {
-        match: isListItemElement,
-      },
-    );
+    const isActive = isBlockActive(editor, ListItemSpec, listType)
+    console.log(';; isActive', listType, isActive)
 
-    Transforms.setNodes(
-      editor,
-      { type: ListItemSpec, depth: 0, listType },
-      {
-        match: (node, path) =>
-          Range.isExpanded(selection)
-            ? isParagraphElement(node)
-            : !isListItemElement(node) && path.length === 1,
-      },
-    );
+    if (isActive) {
+      Transforms.unsetNodes(editor, 'listType');
+      Transforms.setNodes(editor, { type: 'p' });
+    } else {
+      // change list type to args' listType
+      Transforms.setNodes(
+        editor,
+        { type: ListItemSpec, listType },
+        {
+          match: isListItemElement,
+        },
+      );
+
+      const currElem = findSelectionAnchorElement(editor) as ListItemElement;
+
+      // change paragraph or non-list to list
+      Transforms.setNodes(
+        editor,
+        { type: ListItemSpec, depth: currElem?.depth ?? 0, listType },
+        {
+          match: (node, path) =>
+            Range.isExpanded(selection)
+              ? isParagraphElement(node)
+              : !isListItemElement(node) && path.length === 1,
+        },
+      );
+    }
   });
 };

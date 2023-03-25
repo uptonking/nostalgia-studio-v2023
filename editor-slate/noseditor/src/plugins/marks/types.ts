@@ -2,6 +2,10 @@ export type FormattedText = {
   text: string;
   bold?: true;
   italic?: true;
-  code?: true;
   underline?: true;
+  strikethrough?: true;
+  code?: true;
 };
+
+
+export type TextFormats = keyof Omit<FormattedText, 'text'>;

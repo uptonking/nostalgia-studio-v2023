@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 import { RenderElementProps, useSelected, useSlateStatic } from 'slate-react';
 
 import { listIndentWidth } from '../../config/editor';
@@ -75,6 +75,8 @@ export const Wrapper = (
   };
 
   const isDragging = activeId === id;
+
+  console.log(';; isNestingElem ', ExtendedEditor.isNestingElement(editor, element))
   /** indent for list */
   const realSpacing = ExtendedEditor.isNestingElement(editor, element)
     ? listIndentWidth * element.depth

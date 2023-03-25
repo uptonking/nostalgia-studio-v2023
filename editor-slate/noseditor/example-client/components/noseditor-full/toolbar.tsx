@@ -1,5 +1,6 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
 
+import { type Editor } from 'slate';
 import { useSlateStatic } from 'slate-react';
 
 import {
@@ -7,14 +8,16 @@ import {
   DownOne as TriangleDownIcon,
   Drag as DragIcon,
   Link as LinkIcon,
-  ListCheckbox as ListUnorderedIcon,
+  ListCheckbox as ListCheckboxIcon,
   OrderedList as ListOrderedIcon,
   RightOne as TriangleRightIcon,
+  Strikethrough as StrikethroughIcon,
   TextBold as BoldIcon,
   TextItalic as ItalicIcon,
   TextUnderline as UnderlineIcon,
-  UnorderedList as ListCheckboxIcon,
+  UnorderedList as ListUnorderedIcon,
 } from '@icon-park/react';
+import type { Icon } from '@icon-park/react/lib/runtime';
 
 import {
   Heading1Spec,
@@ -24,17 +27,35 @@ import {
 import { insertLink, unwrapLinks } from '../../../src/plugins/link/transforms';
 import { toggleList } from '../../../src/plugins/list/transforms';
 import { ListTypes } from '../../../src/plugins/list/utils';
+import { TextFormats } from '../../../src/plugins/marks/types';
 import { ParagraphSpec } from '../../../src/plugins/paragraph/utils';
 import { toggleElement, toggleMark } from '../../../src/transforms';
 import { IconButton } from '../common/icon-button';
 
+type ToolbarConfigType = {
+  type: 'button' | 'dropdown' | 'listbox';
+  icon: Icon;
+  format?: TextFormats;
+  list?: typeof ListTypes[keyof typeof ListTypes];
+  title: string;
+};
+
 const editorFormatHandler =
-  (editor, format) => (event: MouseEvent<HTMLButtonElement>) => {
+  (editor: Editor, format: TextFormats) =>
+  (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     toggleMark(editor, format);
   };
 
-const toolbarActionsData = [
+const listToggleHandler =
+  (editor: Editor, list: typeof ListTypes[keyof typeof ListTypes]) =>
+  (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    toggleList(editor, { listType: list });
+  };
+
+const toolbarActionsData: ToolbarConfigType[] = [
   {
     type: 'button',
     icon: BoldIcon,
@@ -55,9 +76,33 @@ const toolbarActionsData = [
   },
   {
     type: 'button',
+    icon: StrikethroughIcon,
+    format: 'strikethrough',
+    title: 'toggle strikethrough',
+  },
+  {
+    type: 'button',
     icon: CodeIcon,
     format: 'code',
     title: 'toggle text as code',
+  },
+  {
+    type: 'button',
+    icon: ListUnorderedIcon,
+    list: ListTypes.Bulleted,
+    title: 'toggle bullet list',
+  },
+  {
+    type: 'button',
+    icon: ListOrderedIcon,
+    list: ListTypes.Numbered,
+    title: 'toggle ordered list',
+  },
+  {
+    type: 'button',
+    icon: ListCheckboxIcon,
+    list: ListTypes.TodoList,
+    title: 'toggle checkbox list',
   },
 ];
 
@@ -66,91 +111,35 @@ export const NosToolbar = () => {
 
   return (
     <div className='nosedit-toolbar'>
-      {toolbarActionsData.map(({ type, icon: Icon, format, title }) => {
+      {toolbarActionsData.map(({ type, icon: Icon, format, list, title }) => {
         if (type === 'button') {
-          return (
-            <IconButton
-              onMouseDown={editorFormatHandler(editor, format)}
-              title={title}
-              key={title}
-            >
-              <Icon title={title} />
-            </IconButton>
-          );
+          if (format) {
+            return (
+              <IconButton
+                onMouseDown={editorFormatHandler(editor, format)}
+                key={title}
+              >
+                <Icon title={title} />
+              </IconButton>
+            );
+          }
+          if (list) {
+            return (
+              <IconButton
+                onMouseDown={listToggleHandler(editor, list)}
+                key={title}
+              >
+                <Icon title={title} />
+              </IconButton>
+            );
+          }
         }
+
         return null;
       })}
 
       {/* <div>
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleElement(editor, ParagraphSpec);
-          }}
-          className='toolbar-button'
-        >
-          P
-        </button>
 
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleElement(editor, Heading1Spec);
-          }}
-          className='toolbar-button'
-        >
-          H1
-        </button>
-
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleElement(editor, Heading2Spec);
-          }}
-          className='toolbar-button'
-        >
-          H2
-        </button>
-
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleElement(editor, Heading3Spec);
-          }}
-          className='toolbar-button'
-        >
-          H3
-        </button>
-
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleList(editor, { listType: ListTypes.Bulleted });
-          }}
-          className='toolbar-button'
-        >
-          <ListUnorderedIcon />
-        </button>
-
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleList(editor, { listType: ListTypes.Numbered });
-          }}
-          className='toolbar-button'
-        >
-          <ListOrderedIcon />
-        </button>
-
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            toggleList(editor, { listType: ListTypes.TodoList });
-          }}
-          className='toolbar-button'
-        >
-          <ListCheckboxIcon />
-        </button>
 
         <button
           onMouseDown={(e) => {

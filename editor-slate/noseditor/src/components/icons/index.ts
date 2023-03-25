@@ -4,11 +4,11 @@ export {
   Code as CodeIcon,
   DownOne as TriangleDownIcon,
   Link as LinkIcon,
-  ListCheckbox as ListUnorderedIcon,
+  ListCheckbox as ListCheckboxIcon,
   OrderedList as ListOrderedIcon,
   RightOne as TriangleRightIcon,
   TextBold as BoldIcon,
   TextItalic as ItalicIcon,
-  UnorderedList as ListCheckboxIcon,
+  UnorderedList as ListUnorderedIcon ,
   Drag as DragIcon
 } from '@icon-park/react';

@@ -1,4 +1,4 @@
-import { UseNosPlugin } from '../types';
+import type { UseNosPlugin } from '../types';
 import * as handlers from './handlers';
 import { renderLeaf } from './renderLeaf';
 

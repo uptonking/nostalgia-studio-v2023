@@ -1,6 +1,6 @@
 import React, { Fragment, memo } from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 import { isIOS } from 'react-device-detect';
 import { Element, Node } from 'slate';
 import { useSlateStatic } from 'slate-react';

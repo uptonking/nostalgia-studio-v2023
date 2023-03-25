@@ -126,7 +126,8 @@ export interface NodeTransforms {
       voids?: boolean;
     },
   ) => void;
-  /** Unwrap nodes at the specified location.
+  /** Unwrap nodes at the specified location. 将at指向的节点内容展开并提升至上一层的位置
+   * - 如果传入的 at 为Range type 则会拆分父层节点，为了确保只有展开Range 涵盖的内容
    * - If necessary, the parent node is split.
    * - If no location is specified, use the selection. */
   unwrapNodes: <T extends Node>(
@@ -886,7 +887,6 @@ export const NodeTransforms: NodeTransforms = {
    * Unwrap the nodes at a location from a parent node, splitting the parent if
    * necessary to ensure that only the content in the range is unwrapped.
    */
-
   unwrapNodes<T extends Node>(
     editor: Editor,
     options: {
@@ -951,7 +951,6 @@ export const NodeTransforms: NodeTransforms = {
    * Wrap the nodes at a location in a new container node, splitting the edges
    * of the range first to ensure that only the content in the range is wrapped.
    */
-
   wrapNodes<T extends Node>(
     editor: Editor,
     element: Element,

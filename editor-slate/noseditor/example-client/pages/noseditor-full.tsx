@@ -1,6 +1,6 @@
 import React, { useCallback, useReducer, useRef, useState } from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 import { createEditor, Descendant, Editor } from 'slate';
 import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
@@ -77,7 +77,7 @@ export const NosEditorFullFeatures = (props) => {
     setEditorKey(String(Math.random()) + Math.random());
   }, [editor, setValue]);
 
-  console.log(';; editorKey ', editorKey, value, editor.children);
+  // console.log(';; editorKey ', editorKey, value, editor.children);
 
   return (
     <div className='nosedit-full'>

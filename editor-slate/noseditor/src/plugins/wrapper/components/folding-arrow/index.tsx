@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useReducer, useState } from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 import { Element } from 'slate';
 import { useSlate } from 'slate-react';
 

@@ -1,6 +1,6 @@
 import { BaseEditor, Descendant, Editor, Element } from 'slate';
 
-import { FoldingElement, NestingElement, SemanticNode } from './types';
+import type { FoldingElement, NestingElement, SemanticNode } from './types';
 import { crawlChildren } from './utils';
 import { ELEMENT_TO_SEMANTIC_PATH } from './weakmaps';
 

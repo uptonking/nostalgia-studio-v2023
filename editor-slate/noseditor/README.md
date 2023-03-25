@@ -8,7 +8,7 @@
   - customizable with your own plugins
   - block-style editor with draggable ux
   - collapsible headings and lists
-  - support offline mode
+  - offline editing by default
   - support markdown shortcuts
   - collaboration (wip)
 # overview
@@ -51,7 +51,7 @@ npm run demo
   - [x] italic
   - [x] underline
   - [x] strike-through
-  - [ ] code
+  - [x] code
   - [ ] sub/sup
   - [ ] font-color
   - [ ] background-color
@@ -95,4 +95,4 @@ npm run demo
 - [more dependencies](./package.json)
 # license
 - core modules are licensed under [MIT](https://spdx.org/licenses/MIT.html)
-- some plugin/helper packages are licensed under [AGPL-3.0](https://spdx.org/licenses/AGPL-3.0-or-later.html)
+- some plugins/utils packages are licensed under [AGPL-3.0](https://spdx.org/licenses/AGPL-3.0-or-later.html)

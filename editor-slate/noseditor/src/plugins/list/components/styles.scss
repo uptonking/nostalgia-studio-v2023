@@ -1,9 +1,9 @@
 .nos-elem {
   &.list-item {
     position: relative;
-    list-style: none;
     display: flex;
-    align-items: center;
+    align-items: start;
+    list-style: none;
 
     &.folded .folding-pointer,
     & .folding-pointer:hover {

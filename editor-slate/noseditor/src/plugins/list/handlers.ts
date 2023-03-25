@@ -7,6 +7,10 @@ import { ExtendedEditor } from '../../slate-extended/extended-editor';
 import { moveItemsBack, moveItemsForward } from './transforms';
 import { isListItemElement } from './utils';
 
+/**
+ * tab           ->  indent
+ * shift + tab   ->  unindent
+ */
 export const onKeyDown = (editor: Editor) => (e: React.KeyboardEvent) => {
   if (isHotkey(['tab'], e)) {
     e.preventDefault();

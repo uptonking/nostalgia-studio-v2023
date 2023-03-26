@@ -1,5 +1,6 @@
-import { test, expect } from '@playwright/test';
-import { click } from './utils/click';
+import {expect, test} from '@playwright/test';
+
+import {click} from './utils/click';
 
 [
   'referenceScrollParent',
@@ -18,12 +19,12 @@ import { click } from './utils/click';
     }
 
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${node}.png`,
+      `${node}.png`
     );
 
     await click(page, `[data-testid="strategy-fixed"]`);
     expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-      `${node}--fixed.png`,
+      `${node}--fixed.png`
     );
   });
 });

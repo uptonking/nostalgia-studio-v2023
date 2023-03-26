@@ -1,19 +1,29 @@
-import { getNodeName } from './getNodeName';
-import { getParentNode } from './getParentNode';
-import { getWindow } from './window';
+import {getComputedStyle} from './getComputedStyle';
+import {getParentNode} from './getParentNode';
+import {getWindow} from './getWindow';
 import {
   isContainingBlock,
   isHTMLElement,
-  isShadowRoot,
+  isLastTraversableNode,
   isTableElement,
 } from './is';
+import {getNodeName} from './node';
 
-function getTrueOffsetParent(element: Element): Element | null {
+type Polyfill = (element: HTMLElement) => Element | null;
+
+function getTrueOffsetParent(
+  element: Element,
+  polyfill: Polyfill | undefined
+): Element | null {
   if (
     !isHTMLElement(element) ||
     getComputedStyle(element).position === 'fixed'
   ) {
     return null;
+  }
+
+  if (polyfill) {
+    return polyfill(element);
   }
 
   return element.offsetParent;
@@ -22,18 +32,11 @@ function getTrueOffsetParent(element: Element): Element | null {
 function getContainingBlock(element: Element) {
   let currentNode: Node | null = getParentNode(element);
 
-  if (isShadowRoot(currentNode)) {
-    currentNode = currentNode.host;
-  }
-
-  while (
-    isHTMLElement(currentNode) &&
-    !['html', 'body'].includes(getNodeName(currentNode))
-  ) {
+  while (isHTMLElement(currentNode) && !isLastTraversableNode(currentNode)) {
     if (isContainingBlock(currentNode)) {
       return currentNode;
     } else {
-      currentNode = currentNode.parentNode;
+      currentNode = getParentNode(currentNode);
     }
   }
 
@@ -42,17 +45,24 @@ function getContainingBlock(element: Element) {
 
 // Gets the closest ancestor positioned element. Handles some edge cases,
 // such as table ancestors and cross browser bugs.
-export function getOffsetParent(element: Element): Element | Window {
+export function getOffsetParent(
+  element: Element,
+  polyfill?: Polyfill
+): Element | Window {
   const window = getWindow(element);
 
-  let offsetParent = getTrueOffsetParent(element);
+  if (!isHTMLElement(element)) {
+    return window;
+  }
+
+  let offsetParent = getTrueOffsetParent(element, polyfill);
 
   while (
     offsetParent &&
     isTableElement(offsetParent) &&
     getComputedStyle(offsetParent).position === 'static'
   ) {
-    offsetParent = getTrueOffsetParent(offsetParent);
+    offsetParent = getTrueOffsetParent(offsetParent, polyfill);
   }
 
   if (

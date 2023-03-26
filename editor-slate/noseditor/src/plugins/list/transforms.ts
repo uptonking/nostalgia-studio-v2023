@@ -70,7 +70,7 @@ export const toggleList = (
     }
 
     const isActive = isBlockActive(editor, ListItemSpec, listType)
-    console.log(';; isActive', listType, isActive)
+    // console.log(';; isActive', listType, isActive)
 
     if (isActive) {
       Transforms.unsetNodes(editor, 'listType');

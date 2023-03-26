@@ -14,7 +14,7 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@floating-ui/core": "0.6.1111",
-    "@floating-ui/dom": "0.4.2111"
+    "@floating-ui/core": "1.2.5111",
+    "@floating-ui/dom": "1.2.5111"
   }
 }

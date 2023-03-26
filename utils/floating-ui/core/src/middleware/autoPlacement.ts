@@ -1,26 +1,26 @@
-import type { Middleware, Placement, Alignment } from '../types';
 import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import { getSide } from '../utils/getSide';
-import { getAlignment } from '../utils/getAlignment';
-import { getAlignmentSides } from '../utils/getAlignmentSides';
-import { getOppositeAlignmentPlacement } from '../utils/getOppositeAlignmentPlacement';
-import { allPlacements } from '../enums';
+import {allPlacements} from '../enums';
+import type {Alignment, Middleware, Placement} from '../types';
+import {getAlignment} from '../utils/getAlignment';
+import {getAlignmentSides} from '../utils/getAlignmentSides';
+import {getOppositeAlignmentPlacement} from '../utils/getOppositeAlignmentPlacement';
+import {getSide} from '../utils/getSide';
 
 export function getPlacementList(
   alignment: Alignment | null,
   autoAlignment: boolean,
-  allowedPlacements: Array<Placement>,
+  allowedPlacements: Array<Placement>
 ) {
   const allowedPlacementsSortedByAlignment = alignment
     ? [
         ...allowedPlacements.filter(
-          (placement) => getAlignment(placement) === alignment,
+          (placement) => getAlignment(placement) === alignment
         ),
         ...allowedPlacements.filter(
-          (placement) => getAlignment(placement) !== alignment,
+          (placement) => getAlignment(placement) !== alignment
         ),
       ]
     : allowedPlacements.filter((placement) => getSide(placement) === placement);
@@ -41,73 +41,78 @@ export function getPlacementList(
 
 export interface Options {
   /**
+   * The axis that runs along the alignment of the floating element. Determines
+   * whether to check for most space along this axis.
+   * @default false
+   */
+  crossAxis: boolean;
+
+  /**
    * Choose placements with a particular alignment.
-   * @default null
+   * @default undefined
    */
   alignment: Alignment | null;
+
   /**
-   * Which placements are allowed to be chosen. Placements must be within the
-   * `alignment` option set.
-   * @default allPlacements (variable)
-   */
-  allowedPlacements: Array<Placement>;
-  /**
-   * Whether to choose placements with the opposite alignment if they will fit
-   * better.
+   * Whether to choose placements with the opposite alignment if the preferred
+   * alignment does not fit.
    * @default true
    */
   autoAlignment: boolean;
+
+  /**
+   * Which placements are allowed to be chosen. Placements must be within the
+   * `alignment` option if explicitly set.
+   * @default allPlacements (variable)
+   */
+  allowedPlacements: Array<Placement>;
 }
 
 /**
- * Automatically chooses the `placement` which has the most space available.
+ * Optimizes the visibility of the floating element by choosing the placement
+ * that has the most space available automatically, without needing to specify a
+ * preferred placement. Alternative to `flip`.
  * @see https://floating-ui.com/docs/autoPlacement
  */
 export const autoPlacement = (
-  options: Partial<Options & DetectOverflowOptions> = {},
+  options: Partial<Options & DetectOverflowOptions> = {}
 ): Middleware => ({
   name: 'autoPlacement',
   options,
-  async fn(middlewareArguments) {
-    const { x, y, rects, middlewareData, placement, platform, elements } =
-      middlewareArguments;
+  async fn(state) {
+    const {rects, middlewareData, placement, platform, elements} = state;
 
     const {
-      alignment = null,
+      crossAxis = false,
+      alignment,
       allowedPlacements = allPlacements,
       autoAlignment = true,
       ...detectOverflowOptions
     } = options;
 
-    const placements = getPlacementList(
-      alignment,
-      autoAlignment,
-      allowedPlacements,
-    );
+    const placements =
+      alignment !== undefined || allowedPlacements === allPlacements
+        ? getPlacementList(alignment || null, autoAlignment, allowedPlacements)
+        : allowedPlacements;
 
-    const overflow = await detectOverflow(
-      middlewareArguments,
-      detectOverflowOptions,
-    );
+    const overflow = await detectOverflow(state, detectOverflowOptions);
 
-    const currentIndex = middlewareData.autoPlacement?.index ?? 0;
+    const currentIndex = middlewareData.autoPlacement?.index || 0;
     const currentPlacement = placements[currentIndex];
 
     if (currentPlacement == null) {
       return {};
     }
 
-    const { main, cross } = getAlignmentSides(
+    const {main, cross} = getAlignmentSides(
       currentPlacement,
       rects,
-      await platform.isRTL?.(elements.floating),
+      await platform.isRTL?.(elements.floating)
     );
 
-    // Make `computeCoords` start from the right place
+    // Make `computeCoords` start from the right place.
     if (placement !== currentPlacement) {
       return {
-        x,
-        y,
         reset: {
           placement: placements[0],
         },
@@ -121,13 +126,13 @@ export const autoPlacement = (
     ];
 
     const allOverflows = [
-      ...(middlewareData.autoPlacement?.overflows ?? []),
-      { placement: currentPlacement, overflows: currentOverflows },
+      ...(middlewareData.autoPlacement?.overflows || []),
+      {placement: currentPlacement, overflows: currentOverflows},
     ];
 
     const nextPlacement = placements[currentIndex + 1];
 
-    // There are more placements to check
+    // There are more placements to check.
     if (nextPlacement) {
       return {
         data: {
@@ -140,16 +145,35 @@ export const autoPlacement = (
       };
     }
 
-    const placementsSortedByLeastOverflow = allOverflows
-      .slice()
-      .sort((a, b) => a.overflows[0] - b.overflows[0]);
-    const placementThatFitsOnAllSides = placementsSortedByLeastOverflow.find(
-      ({ overflows }) => overflows.every((overflow) => overflow <= 0),
-    )?.placement;
+    const placementsSortedByMostSpace = allOverflows
+      .map((d) => {
+        const alignment = getAlignment(d.placement);
+        return [
+          d.placement,
+          alignment && crossAxis
+            ? // Check along the mainAxis and main crossAxis side.
+              d.overflows.slice(0, 2).reduce((acc, v) => acc + v, 0)
+            : // Check only the mainAxis.
+              d.overflows[0],
+          d.overflows,
+        ] as const;
+      })
+      .sort((a, b) => a[1] - b[1]);
+
+    const placementsThatFitOnEachSide = placementsSortedByMostSpace.filter(
+      (d) =>
+        d[2]
+          .slice(
+            0,
+            // Aligned placements should not check their opposite crossAxis
+            // side.
+            getAlignment(d[0]) ? 2 : 3
+          )
+          .every((v) => v <= 0)
+    );
 
     const resetPlacement =
-      placementThatFitsOnAllSides ??
-      placementsSortedByLeastOverflow[0].placement;
+      placementsThatFitOnEachSide[0]?.[0] || placementsSortedByMostSpace[0][0];
 
     if (resetPlacement !== placement) {
       return {

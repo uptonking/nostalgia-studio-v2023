@@ -1,9 +1,38 @@
-import type { Middleware, Padding } from '../types';
-import { getSide } from '../utils/getSide';
-import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
-import { getSideObjectFromPadding } from '../utils/getPaddingObject';
-import { max, min } from '../utils/math';
-import { rectToClientRect } from '../utils/rectToClientRect';
+import type {ClientRectObject, Middleware, Padding} from '../types';
+import {getMainAxisFromPlacement} from '../utils/getMainAxisFromPlacement';
+import {getSideObjectFromPadding} from '../utils/getPaddingObject';
+import {getSide} from '../utils/getSide';
+import {max, min} from '../utils/math';
+import {rectToClientRect} from '../utils/rectToClientRect';
+
+function getBoundingRect(rects: Array<ClientRectObject>) {
+  const minX = min(...rects.map((rect) => rect.left));
+  const minY = min(...rects.map((rect) => rect.top));
+  const maxX = max(...rects.map((rect) => rect.right));
+  const maxY = max(...rects.map((rect) => rect.bottom));
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY,
+  };
+}
+
+export function getRectsByLine(rects: Array<ClientRectObject>) {
+  const sortedRects = rects.slice().sort((a, b) => a.y - b.y);
+  const groups = [];
+  let prevRect: ClientRectObject | null = null;
+  for (let i = 0; i < sortedRects.length; i++) {
+    const rect = sortedRects[i];
+    if (!prevRect || rect.y - prevRect.y > prevRect.height / 2) {
+      groups.push([rect]);
+    } else {
+      groups[groups.length - 1].push(rect);
+    }
+    prevRect = rect;
+  }
+  return groups.map((rect) => rectToClientRect(getBoundingRect(rect)));
+}
 
 export interface Options {
   /**
@@ -19,7 +48,7 @@ export interface Options {
   y: number;
 
   /**
-   * @experimental
+   * Represents the padding around a disjoined rect when choosing it.
    * @default 2
    */
   padding: Padding;
@@ -33,48 +62,42 @@ export interface Options {
 export const inline = (options: Partial<Options> = {}): Middleware => ({
   name: 'inline',
   options,
-  async fn(middlewareArguments) {
-    const { placement, elements, rects, platform, strategy } =
-      middlewareArguments;
+  async fn(state) {
+    const {placement, elements, rects, platform, strategy} = state;
     // A MouseEvent's client{X,Y} coords can be up to 2 pixels off a
     // ClientRect's bounds, despite the event listener being triggered. A
     // padding of 2 seems to handle this issue.
-    const { padding = 2, x, y } = options;
+    const {padding = 2, x, y} = options;
 
-    const fallback = rectToClientRect(
-      platform.convertOffsetParentRelativeRectToViewportRelativeRect
-        ? await platform.convertOffsetParentRelativeRectToViewportRelativeRect({
-            rect: rects.reference,
-            offsetParent: await platform.getOffsetParent?.(elements.floating),
-            strategy,
-          })
-        : rects.reference,
+    const nativeClientRects = Array.from(
+      (await platform.getClientRects?.(elements.reference)) || []
     );
-    const clientRects =
-      (await platform.getClientRects?.(elements.reference)) ?? [];
+
+    const clientRects = getRectsByLine(nativeClientRects);
+    const fallback = rectToClientRect(getBoundingRect(nativeClientRects));
     const paddingObject = getSideObjectFromPadding(padding);
 
     function getBoundingClientRect() {
-      // There are two rects and they are disjoined
+      // There are two rects and they are disjoined.
       if (
         clientRects.length === 2 &&
         clientRects[0].left > clientRects[1].right &&
         x != null &&
         y != null
       ) {
-        // Find the first rect in which the point is fully inside
+        // Find the first rect in which the point is fully inside.
         return (
           clientRects.find(
             (rect) =>
               x > rect.left - paddingObject.left &&
               x < rect.right + paddingObject.right &&
               y > rect.top - paddingObject.top &&
-              y < rect.bottom + paddingObject.bottom,
-          ) ?? fallback
+              y < rect.bottom + paddingObject.bottom
+          ) || fallback
         );
       }
 
-      // There are 2 or more connected rects
+      // There are 2 or more connected rects.
       if (clientRects.length >= 2) {
         if (getMainAxisFromPlacement(placement) === 'x') {
           const firstRect = clientRects[0];
@@ -104,7 +127,7 @@ export const inline = (options: Partial<Options> = {}): Middleware => ({
         const maxRight = max(...clientRects.map((rect) => rect.right));
         const minLeft = min(...clientRects.map((rect) => rect.left));
         const measureRects = clientRects.filter((rect) =>
-          isLeftSide ? rect.left === minLeft : rect.right === maxRight,
+          isLeftSide ? rect.left === minLeft : rect.right === maxRight
         );
 
         const top = measureRects[0].top;
@@ -130,7 +153,7 @@ export const inline = (options: Partial<Options> = {}): Middleware => ({
     }
 
     const resetRects = await platform.getElementRects({
-      reference: { getBoundingClientRect },
+      reference: {getBoundingClientRect},
       floating: elements.floating,
       strategy,
     });

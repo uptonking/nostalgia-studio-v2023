@@ -1,8 +1,8 @@
 import './index.css';
 
-import { A21HelloVirtualElementMouseMove } from './examples-author';
+import { A2b1HelloVirtualElementMouseMove } from './examples-docs';
 
-A21HelloVirtualElementMouseMove();
+A2b1HelloVirtualElementMouseMove();
 
 // const change = (msg) => {
 //   // document.querySelector('root').innerText = msg;

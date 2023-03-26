@@ -1,7 +1,7 @@
-import type { ReferenceElement, FloatingElement } from './types';
-import { getBoundingClientRect } from './utils/getBoundingClientRect';
-import { getOverflowAncestors } from './utils/getOverflowAncestors';
-import { isElement } from './utils/is';
+import type {FloatingElement, ReferenceElement} from './types';
+import {getBoundingClientRect} from './utils/getBoundingClientRect';
+import {getOverflowAncestors} from './utils/getOverflowAncestors';
+import {isElement} from './utils/is';
 
 export interface Options {
   /**
@@ -34,42 +34,54 @@ export interface Options {
 
 /**
  * Automatically updates the position of the floating element when necessary.
+ * Should only be called when the floating element is mounted on the DOM or
+ * visible on the screen.
+ * @returns cleanup function that should be invoked when the floating element is
+ * removed from the DOM or hidden from the screen.
  * @see https://floating-ui.com/docs/autoUpdate
  */
 export function autoUpdate(
   reference: ReferenceElement,
   floating: FloatingElement,
   update: () => void,
-  options: Partial<Options> = {},
+  options: Partial<Options> = {}
 ) {
   const {
     ancestorScroll: _ancestorScroll = true,
-    ancestorResize: _ancestorResize = true,
+    ancestorResize = true,
     elementResize = true,
     animationFrame = false,
   } = options;
 
   const ancestorScroll = _ancestorScroll && !animationFrame;
-  const ancestorResize = _ancestorResize && !animationFrame;
 
   const ancestors =
     ancestorScroll || ancestorResize
       ? [
-          ...(isElement(reference) ? getOverflowAncestors(reference) : []),
+          ...(isElement(reference)
+            ? getOverflowAncestors(reference)
+            : reference.contextElement
+            ? getOverflowAncestors(reference.contextElement)
+            : []),
           ...getOverflowAncestors(floating),
         ]
       : [];
 
   ancestors.forEach((ancestor) => {
     ancestorScroll &&
-      ancestor.addEventListener('scroll', update, { passive: true });
+      ancestor.addEventListener('scroll', update, {passive: true});
     ancestorResize && ancestor.addEventListener('resize', update);
   });
 
   let observer: ResizeObserver | null = null;
   if (elementResize) {
-    observer = new ResizeObserver(update);
+    observer = new ResizeObserver(() => {
+      update();
+    });
     isElement(reference) && !animationFrame && observer.observe(reference);
+    if (!isElement(reference) && reference.contextElement && !animationFrame) {
+      observer.observe(reference.contextElement);
+    }
     observer.observe(floating);
   }
 
@@ -97,9 +109,7 @@ export function autoUpdate(
     frameId = requestAnimationFrame(frameLoop);
   }
 
-  if (!elementResize) {
-    update();
-  }
+  update();
 
   return () => {
     ancestors.forEach((ancestor) => {

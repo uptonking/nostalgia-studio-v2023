@@ -10,7 +10,6 @@ import {
 } from '../../plugins/wrapper/components/drag-overlay-content';
 import { DndPluginContext } from '../../slate-extended/dnd/dnd-plugin-context';
 import { ExtendedEditor } from '../../slate-extended/extended-editor';
-import { SlateExtended } from '../../slate-extended/slate-extended';
 import { EditorToolbar } from '../editor-toolbar';
 import {
   useEditor,

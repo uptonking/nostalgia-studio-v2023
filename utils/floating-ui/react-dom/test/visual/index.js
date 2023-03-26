@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
-import { render } from 'react-dom';
-import { useFloating, offset, flip, getScrollParents } from '../../src';
+import {useEffect, useRef, useState} from 'react';
+import {render} from 'react-dom';
+
+import {flip, getScrollParents, offset, useFloating} from '../../src';
 
 function App() {
   const [middleware, setMiddleware] = useState();
@@ -11,7 +12,7 @@ function App() {
     reference,
     floating,
     update,
-    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
+    middlewareData: {arrow: {x: arrowX, y: arrowY} = {}},
   } = useFloating({
     placement: 'right',
     middleware,
@@ -42,11 +43,11 @@ function App() {
 
   return (
     <>
-      <div id='reference' ref={reference}>
+      <div id="reference" ref={reference}>
         Reference
       </div>
       <div
-        id='floating'
+        id="floating"
         ref={floating}
         style={{
           position: 'absolute',
@@ -56,7 +57,7 @@ function App() {
       >
         Floating
         <div
-          id='arrow'
+          id="arrow"
           ref={arrowRef}
           style={{
             position: 'absolute',

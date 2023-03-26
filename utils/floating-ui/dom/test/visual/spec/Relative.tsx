@@ -1,13 +1,14 @@
-import { useFloating } from '@floating-ui/react-dom';
-import { useState, useLayoutEffect } from 'react';
-import { Controls } from '../utils/Controls';
+import {useFloating} from '@floating-ui/react-dom';
+import {useLayoutEffect, useState} from 'react';
+
+import {Controls} from '../utils/Controls';
 
 type Node = null | 'html' | 'body' | 'offsetParent';
 export const NODES: Node[] = [null, 'html', 'body', 'offsetParent'];
 
 export function Relative() {
   const [node, setNode] = useState<Node>(null);
-  const { x, y, reference, floating, strategy, update } = useFloating();
+  const {x, y, reference, floating, strategy, update} = useFloating();
 
   useLayoutEffect(() => {
     let element: HTMLElement | null = null;
@@ -43,15 +44,15 @@ export function Relative() {
         certain parent node has <code>position: relative</code> applied.
       </p>
       <div
-        className='container'
-        style={{ position: node === 'offsetParent' ? 'relative' : undefined }}
+        className="container"
+        style={{position: node === 'offsetParent' ? 'relative' : undefined}}
       >
-        <div ref={reference} className='reference'>
+        <div ref={reference} className="reference">
           Reference
         </div>
         <div
           ref={floating}
-          className='floating'
+          className="floating"
           style={{
             position: strategy,
             top: y ?? '',

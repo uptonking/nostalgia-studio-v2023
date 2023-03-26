@@ -1,4 +1,4 @@
-import { Rect, ClientRectObject } from '../types';
+import type {ClientRectObject, Rect} from '../types';
 
 export function rectToClientRect(rect: Rect): ClientRectObject {
   return {

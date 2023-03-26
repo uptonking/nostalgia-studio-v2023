@@ -1,13 +1,13 @@
-import { getParentNode } from './getParentNode';
-import { getNodeName } from './getNodeName';
-import { isOverflowElement, isHTMLElement } from './is';
+import {getParentNode} from './getParentNode';
+import {isHTMLElement, isLastTraversableNode, isOverflowElement} from './is';
 
 export function getNearestOverflowAncestor(node: Node): HTMLElement {
   const parentNode = getParentNode(node);
 
-  if (['html', 'body', '#document'].includes(getNodeName(parentNode))) {
-    // @ts-ignore assume body is always available
-    return node.ownerDocument.body;
+  if (isLastTraversableNode(parentNode)) {
+    // `getParentNode` will never return a `Document` due to the fallback
+    // check, so it's either the <html> or <body> element.
+    return (parentNode as HTMLElement).ownerDocument.body;
   }
 
   if (isHTMLElement(parentNode) && isOverflowElement(parentNode)) {

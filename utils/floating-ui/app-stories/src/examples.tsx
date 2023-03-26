@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 
-import * as stories from './stories/slate-author';
-
-// import * as stories from './stories/dnd-kit';
+import * as stories from './stories/examples-docs';
 
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
-  // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('A22InlineToolbarApp');
+  const [currentStory, setCurrentStory] = useState(storiesNames[0]);
+  // const [currentStory, setCurrentStory] = useState('A22InlineToolbarApp');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]
@@ -16,7 +14,7 @@ export function ExamplesApp() {
 
   return (
     <div>
-      <h1>examples for react stories</h1>
+      <h1>examples for floating-ui stories</h1>
       <h2>当前示例: {currentStory}</h2>
       <div style={{ display: 'flex' }}>
         <div

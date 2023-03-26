@@ -1,57 +1,7 @@
 {
   "name": "@floating-ui/dom",
-  "version": "0.4.2111",
-  "@rollingversions": {
-    "baseVersion": [
-      0,
-      0,
-      0
-    ]
-  },
+  "version": "1.2.5111",
   "description": "Floating UI for the web",
-  "publishConfig": {
-    "access": "public"
-  },
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "unpkg": "./dist/floating-ui.dom.umd.min.js",
-  "types": "./index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": {
-        "browser": {
-          "development": "./src/index.ts",
-          "default": "./src/index.ts"
-        },
-        "default": "./src/index.ts"
-      },
-      "module": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
-    "./package.json": "./package.json"
-  },
-  "sideEffects": false,
-  "files": [
-    "dist/",
-    "index.d.ts",
-    "src/**/*.d.ts"
-  ],
-  "browserslist": "> 0.5%, not dead, not IE 11",
-  "scripts": {
-    "dev": "parcel test/visual/index.html",
-    "build": "NODE_ENV=build rollup -c",
-    "test": "jest test/unit"
-  },
-  "author": "atomiks",
-  "license": "MIT",
-  "bugs": "https://github.com/floating-ui/floating-ui",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/floating-ui/floating-ui.git",
-    "directory": "packages/dom"
-  },
-  "homepage": "https://floating-ui.com",
   "keywords": [
     "tooltip",
     "popover",
@@ -60,13 +10,47 @@
     "popup",
     "positioning"
   ],
+  "homepage": "https://floating-ui.com",
+  "bugs": "https://github.com/floating-ui/floating-ui",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/floating-ui/floating-ui.git",
+    "directory": "packages/dom"
+  },
+  "license": "MIT",
+  "author": "atomiks",
+  "sideEffects": false,
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "dist/",
+    "index.d.ts",
+    "src/**/*.d.ts"
+  ],
+  "scripts": {
+    "build": "NODE_ENV=build rollup -c",
+    "dev": "parcel test/visual/index.html",
+    "test": "jest test/unit"
+  },
+  "browserslist": "> 0.5%, not dead, not IE 11",
   "dependencies": {
-    "@floating-ui/core": "0.6.1111"
+    "@floating-ui/core": "1.2.5111"
   },
   "devDependencies": {
     "@types/react": "18.0.26",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "@rollingversions": {
+    "baseVersion": [
+      0,
+      0,
+      0
+    ]
   }
 }

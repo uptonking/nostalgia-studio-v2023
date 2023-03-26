@@ -1,9 +1,9 @@
-import type { Middleware, Rect, SideObject } from '../types';
-import { sides } from '../enums';
 import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
+import {sides} from '../enums';
+import type {Middleware, Rect, SideObject} from '../types';
 
 function getSideOffsets(overflow: SideObject, rect: Rect) {
   return {
@@ -19,6 +19,9 @@ function isAnySideFullyClipped(overflow: SideObject) {
 }
 
 export interface Options {
+  /**
+   * The strategy used to determine when to hide the floating element.
+   */
   strategy: 'referenceHidden' | 'escaped';
 }
 
@@ -27,17 +30,18 @@ export interface Options {
  * when it is not in the same clipping context as the reference element.
  * @see https://floating-ui.com/docs/hide
  */
-export const hide = ({
-  strategy = 'referenceHidden',
-  ...detectOverflowOptions
-}: Partial<Options & DetectOverflowOptions> = {}): Middleware => ({
+export const hide = (
+  options: Partial<Options & DetectOverflowOptions> = {}
+): Middleware => ({
   name: 'hide',
-  async fn(middlewareArguments) {
-    const { rects } = middlewareArguments;
+  options,
+  async fn(state) {
+    const {strategy = 'referenceHidden', ...detectOverflowOptions} = options;
+    const {rects} = state;
 
     switch (strategy) {
       case 'referenceHidden': {
-        const overflow = await detectOverflow(middlewareArguments, {
+        const overflow = await detectOverflow(state, {
           ...detectOverflowOptions,
           elementContext: 'reference',
         });
@@ -50,7 +54,7 @@ export const hide = ({
         };
       }
       case 'escaped': {
-        const overflow = await detectOverflow(middlewareArguments, {
+        const overflow = await detectOverflow(state, {
           ...detectOverflowOptions,
           altBoundary: true,
         });

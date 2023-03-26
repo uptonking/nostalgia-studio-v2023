@@ -76,18 +76,61 @@ module.exports = function (api) {
       '@babel/preset-typescript',
       {
         // later: 支持其他框架的jsx
-        isTSX: !!isEnvReact,
+        isTSX: Boolean(isEnvReact),
         allExtensions: true,
         onlyRemoveTypeImports: true,
         allowNamespaces: true,
         allowDeclareFields: true,
       },
     ],
-    isEnvReact && [
+    // isEnvReact &&
+    [
       '@babel/preset-react',
       {
         development: env !== 'production',
         ...babelPresetReactConfig,
+      },
+    ],
+    [
+      '@linaria',
+      {
+        evaluate: true,
+        displayName: true,
+        babelOptions: {
+          rootMode: 'upward',
+          plugins: [
+            '@babel/plugin-syntax-jsx',
+            '@babel/plugin-proposal-class-properties',
+            [
+              // required for legacy desktop to parse the syntax
+              '@babel/plugin-proposal-decorators',
+              {
+                decoratorsBeforeExport: true,
+              },
+            ],
+          ],
+          presets: [
+            '@babel/preset-env',
+            [
+              '@babel/preset-typescript',
+              {
+                isTSX: true,
+                allExtensions: true,
+                onlyRemoveTypeImports: true,
+                allowNamespaces: true,
+                allowDeclareFields: true,
+              },
+            ],
+            '@babel/preset-react',
+            [
+              '@linaria',
+              {
+                evaluate: true,
+                displayName: true,
+              },
+            ],
+          ],
+        },
       },
     ],
   ].filter(Boolean);

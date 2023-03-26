@@ -41,9 +41,7 @@
       "@floating-ui/core": ["utils/floating-ui/core/src/"],
       "@floating-ui/dom": ["utils/floating-ui/dom/src/"],
       "@floating-ui/react-dom": ["utils/floating-ui/reacat-dom/src/"],
-      "@floating-ui/react-dom-interactions": [
-        "utils/floating-ui/reacat-dom-interactions/src/"
-      ],
+      "@floating-ui/react": ["utils/floating-ui/reacat/src/"],
       "slate": ["editor-slate/src-pkgs/slate/src"],
       "slate-history": ["editor-slate/src-pkgs/slate-history/src"],
       "slate-react": ["editor-slate/src-pkgs/slate-react/src"],

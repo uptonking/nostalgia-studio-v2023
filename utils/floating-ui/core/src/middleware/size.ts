@@ -1,11 +1,12 @@
-import type { Middleware, MiddlewareArguments } from '../types';
 import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import { getSide } from '../utils/getSide';
-import { getAlignment } from '../utils/getAlignment';
-import { max } from '../utils/math';
+import type {Middleware, MiddlewareState} from '../types';
+import {getAlignment} from '../utils/getAlignment';
+import {getMainAxisFromPlacement} from '../utils/getMainAxisFromPlacement';
+import {getSide} from '../utils/getSide';
+import {max, min} from '../utils/math';
 
 export interface Options {
   /**
@@ -14,34 +15,34 @@ export interface Options {
    * @default undefined
    */
   apply(
-    args: MiddlewareArguments & {
+    args: MiddlewareState & {
       availableWidth: number;
       availableHeight: number;
-    },
-  ): void;
+    }
+  ): void | Promise<void>;
 }
 
 /**
- * Provides data to change the size of the floating element. For instance,
- * prevent it from overflowing its clipping boundary or match the width of the
- * reference element.
+ * Provides data that allows you to change the size of the floating element —
+ * for instance, prevent it from overflowing the clipping boundary or match the
+ * width of the reference element.
  * @see https://floating-ui.com/docs/size
  */
 export const size = (
-  options: Partial<Options & DetectOverflowOptions> = {},
+  options: Partial<Options & DetectOverflowOptions> = {}
 ): Middleware => ({
   name: 'size',
   options,
-  async fn(middlewareArguments) {
-    const { placement, rects, platform, elements } = middlewareArguments;
-    const { apply, ...detectOverflowOptions } = options;
+  async fn(state) {
+    const {placement, rects, platform, elements} = state;
+    const {apply = () => {}, ...detectOverflowOptions} = options;
 
-    const overflow = await detectOverflow(
-      middlewareArguments,
-      detectOverflowOptions,
-    );
+    const overflow = await detectOverflow(state, detectOverflowOptions);
     const side = getSide(placement);
     const alignment = getAlignment(placement);
+    const axis = getMainAxisFromPlacement(placement);
+    const isXAxis = axis === 'x';
+    const {width, height} = rects.floating;
 
     let heightSide: 'top' | 'bottom';
     let widthSide: 'left' | 'right';
@@ -58,43 +59,54 @@ export const size = (
       heightSide = alignment === 'end' ? 'top' : 'bottom';
     }
 
-    const xMin = max(overflow.left, 0);
-    const xMax = max(overflow.right, 0);
-    const yMin = max(overflow.top, 0);
-    const yMax = max(overflow.bottom, 0);
+    const overflowAvailableHeight = height - overflow[heightSide];
+    const overflowAvailableWidth = width - overflow[widthSide];
 
-    const dimensions = {
-      availableHeight:
-        rects.floating.height -
-        (['left', 'right'].includes(placement)
-          ? 2 *
-            (yMin !== 0 || yMax !== 0
-              ? yMin + yMax
-              : max(overflow.top, overflow.bottom))
-          : overflow[heightSide]),
-      availableWidth:
-        rects.floating.width -
-        (['top', 'bottom'].includes(placement)
-          ? 2 *
+    let availableHeight = overflowAvailableHeight;
+    let availableWidth = overflowAvailableWidth;
+
+    if (isXAxis) {
+      availableWidth = min(
+        // Maximum clipping viewport width
+        width - overflow.right - overflow.left,
+        overflowAvailableWidth
+      );
+    } else {
+      availableHeight = min(
+        // Maximum clipping viewport height
+        height - overflow.bottom - overflow.top,
+        overflowAvailableHeight
+      );
+    }
+
+    if (!state.middlewareData.shift && !alignment) {
+      const xMin = max(overflow.left, 0);
+      const xMax = max(overflow.right, 0);
+      const yMin = max(overflow.top, 0);
+      const yMax = max(overflow.bottom, 0);
+
+      if (isXAxis) {
+        availableWidth =
+          width -
+          2 *
             (xMin !== 0 || xMax !== 0
               ? xMin + xMax
-              : max(overflow.left, overflow.right))
-          : overflow[widthSide]),
-    };
+              : max(overflow.left, overflow.right));
+      } else {
+        availableHeight =
+          height -
+          2 *
+            (yMin !== 0 || yMax !== 0
+              ? yMin + yMax
+              : max(overflow.top, overflow.bottom));
+      }
+    }
 
-    const prevDimensions = await platform.getDimensions(elements.floating);
-
-    apply?.({
-      ...middlewareArguments,
-      ...dimensions,
-    });
+    await apply({...state, availableWidth, availableHeight});
 
     const nextDimensions = await platform.getDimensions(elements.floating);
 
-    if (
-      prevDimensions.width !== nextDimensions.width ||
-      prevDimensions.height !== nextDimensions.height
-    ) {
+    if (width !== nextDimensions.width || height !== nextDimensions.height) {
       return {
         reset: {
           rects: true,

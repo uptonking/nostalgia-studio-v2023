@@ -1,57 +1,7 @@
 {
   "name": "@floating-ui/core",
-  "version": "0.6.1111",
-  "@rollingversions": {
-    "baseVersion": [
-      0,
-      0,
-      0
-    ]
-  },
+  "version": "1.2.5111",
   "description": "Positioning library for floating elements: tooltips, popovers, dropdowns, and more",
-  "publishConfig": {
-    "access": "public"
-  },
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "unpkg": "./dist/floating-ui.core.umd.min.js",
-  "types": "./index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "import": {
-        "browser": {
-          "development": "./src/index.ts",
-          "default": "./src/index.ts"
-        },
-        "default": "./src/index.ts"
-      },
-      "module": "./src/index.ts",
-      "default": "./src/index.ts"
-    },
-    "./package.json": "./package.json"
-  },
-  "sideEffects": false,
-  "files": [
-    "dist/",
-    "index.d.ts",
-    "src/**/*.d.ts"
-  ],
-  "browserslist": "> 0.5%, not dead, not IE 11",
-  "scripts": {
-    "test": "jest test",
-    "dev": "rollup -c -w",
-    "build": "NODE_ENV=build rollup -c"
-  },
-  "author": "atomiks",
-  "license": "MIT",
-  "bugs": "https://github.com/floating-ui/floating-ui",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/floating-ui/floating-ui.git",
-    "directory": "packages/core"
-  },
-  "homepage": "https://floating-ui.com",
   "keywords": [
     "tooltip",
     "popover",
@@ -59,5 +9,39 @@
     "menu",
     "popup",
     "positioning"
-  ]
+  ],
+  "homepage": "https://floating-ui.com",
+  "bugs": "https://github.com/floating-ui/floating-ui",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/floating-ui/floating-ui.git",
+    "directory": "packages/core"
+  },
+  "license": "MIT",
+  "author": "atomiks",
+  "sideEffects": false,
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "dist/",
+    "index.d.ts",
+    "src/**/*.d.ts"
+  ],
+  "scripts": {
+    "build": "NODE_ENV=build rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest test"
+  },
+  "browserslist": "> 0.5%, not dead, not IE 11",
+  "publishConfig": {
+    "access": "public"
+  },
+  "@rollingversions": {
+    "baseVersion": [
+      0,
+      0,
+      0
+    ]
+  }
 }

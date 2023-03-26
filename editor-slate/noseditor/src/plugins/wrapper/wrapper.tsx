@@ -76,7 +76,6 @@ export const Wrapper = (
 
   const isDragging = activeId === id;
 
-  console.log(';; isNestingElem ', ExtendedEditor.isNestingElement(editor, element))
   /** indent for list */
   const realSpacing = ExtendedEditor.isNestingElement(editor, element)
     ? listIndentWidth * element.depth

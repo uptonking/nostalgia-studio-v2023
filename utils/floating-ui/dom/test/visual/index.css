@@ -191,6 +191,7 @@ main {
   width: fit-content;
   padding: 5px;
   border-radius: 5px;
+  display: none;
 }
 
 .prose {
@@ -206,5 +207,16 @@ main {
 
   to {
     transform: scale(1.25);
+  }
+}
+
+@media (max-width: 600px) {
+  nav {
+    display: none;
+  }
+
+  main {
+    margin: 0;
+    padding: 0 1rem;
   }
 }

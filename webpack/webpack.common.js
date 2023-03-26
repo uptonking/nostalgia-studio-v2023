@@ -29,6 +29,46 @@ module.exports = {
               rootMode: 'upward',
             },
           },
+          {
+            loader: '@linaria/webpack5-loader',
+            options: {
+              sourceMap: process.env.NODE_ENV !== 'production',
+              babelOptions: {
+                rootMode: 'upward',
+                plugins: [
+                  '@babel/plugin-syntax-jsx',
+                  '@babel/plugin-proposal-class-properties',
+                  [
+                    // required for legacy desktop to parse the syntax
+                    '@babel/plugin-proposal-decorators',
+                    {
+                      decoratorsBeforeExport: true,
+                    },
+                  ],
+                ],
+                presets: [
+                  '@babel/preset-env',
+                  [
+                    '@babel/preset-typescript',
+                    {
+                      isTSX: true,
+                      allExtensions: true,
+                      onlyRemoveTypeImports: true,
+                      allowNamespaces: true,
+                      allowDeclareFields: true,
+                    },
+                  ],
+                  "@babel/preset-react",
+                  ["@linaria", {
+                    evaluate: true,
+                    displayName: true,
+                  }]
+
+
+                ],
+              },
+            },
+          }
         ],
         resolve: {
           fullySpecified: false,
@@ -38,8 +78,14 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-          'css-loader',
+          // isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: process.env.NODE_ENV !== 'production',
+            },
+          },
           {
             loader: 'sass-loader',
             options: {
@@ -98,6 +144,9 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'styles.css',
+    }),
     // new CircularDependencyPlugin({
     //   // exclude detection of files based on a RegExp
     //   exclude: /a\.js|node_modules/,

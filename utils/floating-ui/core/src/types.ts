@@ -38,11 +38,12 @@ export interface Platform {
   getDocumentElement?: (element: any) => Promisable<any>;
   getClientRects?: (element: any) => Promisable<Array<ClientRectObject>>;
   isRTL?: (element: any) => Promisable<boolean>;
+  getScale?: (element: any) => Promisable<{x: number; y: number}>;
 }
 
-export type Coords = { [key in Axis]: number };
+export type Coords = {[key in Axis]: number};
 
-export type SideObject = { [key in Side]: number };
+export type SideObject = {[key in Side]: number};
 
 export interface MiddlewareData {
   [key: string]: any;
@@ -77,7 +78,7 @@ export interface ComputePositionConfig {
   platform: Platform;
   placement?: Placement;
   strategy?: Strategy;
-  middleware?: Array<Middleware>;
+  middleware?: Array<Middleware | null | undefined | false>;
 }
 
 export interface ComputePositionReturn extends Coords {
@@ -89,7 +90,7 @@ export interface ComputePositionReturn extends Coords {
 export type ComputePosition = (
   reference: unknown,
   floating: unknown,
-  config: ComputePositionConfig,
+  config: ComputePositionConfig
 ) => Promise<ComputePositionReturn>;
 
 export interface MiddlewareReturn extends Partial<Coords> {
@@ -107,12 +108,10 @@ export interface MiddlewareReturn extends Partial<Coords> {
 export type Middleware = {
   name: string;
   options?: any;
-  fn: (
-    middlewareArguments: MiddlewareArguments,
-  ) => Promisable<MiddlewareReturn>;
+  fn: (state: MiddlewareState) => Promisable<MiddlewareReturn>;
 };
 
-export type Dimensions = { [key in Length]: number };
+export type Dimensions = {[key in Length]: number};
 
 export type Rect = Coords & Dimensions;
 
@@ -137,7 +136,7 @@ export interface Elements {
   floating: FloatingElement;
 }
 
-export interface MiddlewareArguments extends Coords {
+export interface MiddlewareState extends Coords {
   initialPlacement: Placement;
   placement: Placement;
   strategy: Strategy;
@@ -146,22 +145,36 @@ export interface MiddlewareArguments extends Coords {
   rects: ElementRects;
   platform: Platform;
 }
+/**
+ * @deprecated use `MiddlewareState` instead.
+ */
+export type MiddlewareArguments = MiddlewareState;
 
 export type ClientRectObject = Rect & SideObject;
-export type Padding = number | SideObject;
+export type Padding = number | Partial<SideObject>;
 export type Boundary = any;
-export type RootBoundary = 'viewport' | 'document';
+export type RootBoundary = 'viewport' | 'document' | Rect;
 export type ElementContext = 'reference' | 'floating';
 
-export { computePosition } from './computePosition';
-export { rectToClientRect } from './utils/rectToClientRect';
-export { detectOverflow } from './detectOverflow';
-
-export { arrow } from './middleware/arrow';
-export { autoPlacement } from './middleware/autoPlacement';
-export { flip } from './middleware/flip';
-export { hide } from './middleware/hide';
-export { offset } from './middleware/offset';
-export { shift, limitShift } from './middleware/shift';
-export { size } from './middleware/size';
-export { inline } from './middleware/inline';
+export {computePosition} from './computePosition';
+export {
+  detectOverflow,
+  type Options as DetectOverflowOptions,
+} from './detectOverflow';
+export {arrow, type Options as ArrowOptions} from './middleware/arrow';
+export {
+  autoPlacement,
+  type Options as AutoPlacementOptions,
+} from './middleware/autoPlacement';
+export {flip, type Options as FlipOptions} from './middleware/flip';
+export {hide, type Options as HideOptions} from './middleware/hide';
+export {inline, type Options as InlineOptions} from './middleware/inline';
+export {offset, type Options as OffsetOptions} from './middleware/offset';
+export {
+  limitShift,
+  type LimitShiftOptions,
+  shift,
+type  Options as ShiftOptions,
+} from './middleware/shift';
+export {size, type Options as SizeOptions} from './middleware/size';
+export {rectToClientRect} from './utils/rectToClientRect';

@@ -23,11 +23,6 @@ export function findSelectionAnchorElement(editor: Editor) {
       if (!node) return editor.children[pathPosition];
       return node.children[pathPosition];
     }, null);
-    console.log(
-      ';; find-sel-start ',
-      editor.selection?.anchor,
-      anchorNode,
-    );
     return anchorNode;
   }
 

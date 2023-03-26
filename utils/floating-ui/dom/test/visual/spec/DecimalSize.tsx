@@ -1,7 +1,8 @@
-import type { Dimensions } from '@floating-ui/core';
-import { useFloating } from '@floating-ui/react-dom';
-import { useState, useLayoutEffect } from 'react';
-import { Controls } from '../utils/Controls';
+import type {Dimensions} from '@floating-ui/core';
+import {size as sizeM, useFloating} from '@floating-ui/react-dom';
+import {useLayoutEffect, useState} from 'react';
+
+import {Controls} from '../utils/Controls';
 
 type Size = string;
 const SIZES: Size[] = ['.0', '.25', '.5', '.75'];
@@ -13,9 +14,20 @@ export function DecimalSize() {
     width: INTEGER,
     height: INTEGER,
   });
-  const { x, y, reference, floating, strategy, update } = useFloating();
+  const [truncate, setTruncate] = useState(false);
+  const {x, y, reference, floating, strategy, update} = useFloating({
+    middleware: [
+      sizeM({
+        apply({elements, rects}) {
+          Object.assign(elements.floating.style, {
+            width: `${rects.floating.width}px`,
+          });
+        },
+      }),
+    ],
+  });
 
-  useLayoutEffect(update, [size, update]);
+  useLayoutEffect(update, [size, truncate, update]);
 
   return (
     <>
@@ -25,21 +37,30 @@ export function DecimalSize() {
         the reference and floating elements have a non-integer size
         (width/height).
       </p>
-      <div className='container'>
-        <div ref={reference} className='reference' style={size}>
+      <div className="container">
+        <div ref={reference} className="reference" style={size}>
           Reference
         </div>
         <div
           ref={floating}
-          className='floating'
+          className="floating"
           style={{
             position: strategy,
             top: y ?? '',
             left: x ?? '',
-            ...size,
+            ...(truncate
+              ? {
+                  width: 'auto',
+                  height: 'auto',
+                  display: 'block',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                }
+              : size),
           }}
         >
-          Floating
+          {truncate ? 'Long text that will be truncated' : 'Floating'}
         </div>
       </div>
 
@@ -60,6 +81,22 @@ export function DecimalSize() {
             }}
           >
             {localSize}
+          </button>
+        ))}
+      </Controls>
+
+      <h2>Truncate</h2>
+      <Controls>
+        {[true, false].map((localTruncate) => (
+          <button
+            key={String(localTruncate)}
+            data-testid={`truncate-${localTruncate}`}
+            onClick={() => setTruncate(localTruncate)}
+            style={{
+              backgroundColor: truncate === localTruncate ? 'black' : '',
+            }}
+          >
+            {String(localTruncate)}
           </button>
         ))}
       </Controls>

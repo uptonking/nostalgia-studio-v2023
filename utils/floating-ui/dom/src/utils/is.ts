@@ -1,7 +1,7 @@
-import {getComputedStyle} from './getComputedStyle';
-import {getWindow} from './getWindow';
-import {getNodeName} from './node';
-import {getUAString} from './userAgent';
+import { getComputedStyle } from './getComputedStyle';
+import { getWindow } from './getWindow';
+import { getNodeName } from './node';
+import { getUAString } from './userAgent';
 
 declare global {
   interface Window {
@@ -31,7 +31,7 @@ export function isShadowRoot(node: Node): node is ShadowRoot {
 }
 
 export function isOverflowElement(element: Element): boolean {
-  const {overflow, overflowX, overflowY, display} = getComputedStyle(element);
+  const { overflow, overflowX, overflowY, display } = getComputedStyle(element);
   return (
     /auto|scroll|overlay|hidden|clip/.test(overflow + overflowY + overflowX) &&
     !['inline', 'contents'].includes(display)
@@ -59,7 +59,7 @@ export function isContainingBlock(element: Element): boolean {
     (isFirefox && css.willChange === 'filter') ||
     (isFirefox && (css.filter ? css.filter !== 'none' : false)) ||
     ['transform', 'perspective'].some((value) =>
-      css.willChange.includes(value)
+      css.willChange.includes(value),
     ) ||
     ['paint', 'layout', 'strict', 'content'].some((value) => {
       // Add type check for old browsers.

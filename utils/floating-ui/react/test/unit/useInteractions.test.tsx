@@ -1,5 +1,5 @@
-import {render} from '@testing-library/react';
-import {useEffect, useRef, useState} from 'react';
+import { render } from '@testing-library/react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   useClick,
@@ -21,8 +21,8 @@ test('correctly merges functions', () => {
   const userOnClick = jest.fn();
 
   function App() {
-    const {getReferenceProps} = useInteractions([
-      {reference: {onClick: firstInteractionOnClick}},
+    const { getReferenceProps } = useInteractions([
+      { reference: { onClick: firstInteractionOnClick } },
       {
         reference: {
           onClick: secondInteractionOnClick,
@@ -31,7 +31,7 @@ test('correctly merges functions', () => {
       },
     ]);
 
-    const {onClick, onKeyDown} = getReferenceProps({onClick: userOnClick});
+    const { onClick, onKeyDown } = getReferenceProps({ onClick: userOnClick });
 
     // @ts-expect-error
     onClick();
@@ -51,12 +51,14 @@ test('correctly merges functions', () => {
 
 test('does not error with undefined user supplied functions', () => {
   function App() {
-    const {getReferenceProps} = useInteractions([{reference: {onClick() {}}}]);
+    const { getReferenceProps } = useInteractions([
+      { reference: { onClick() {} } },
+    ]);
     return null;
 
     expect(() =>
       // @ts-expect-error
-      getReferenceProps({onClick: undefined}).onClick()
+      getReferenceProps({ onClick: undefined }).onClick(),
     ).not.toThrowError();
   }
 
@@ -65,7 +67,7 @@ test('does not error with undefined user supplied functions', () => {
 
 test('does not break props that start with `on`', () => {
   function App() {
-    const {getReferenceProps} = useInteractions([]);
+    const { getReferenceProps } = useInteractions([]);
 
     const props = getReferenceProps({
       // @ts-expect-error
@@ -84,7 +86,7 @@ test('does not break props that start with `on`', () => {
 
 test('does not break props that return values', () => {
   function App() {
-    const {getReferenceProps} = useInteractions([]);
+    const { getReferenceProps } = useInteractions([]);
 
     const props = getReferenceProps({
       // @ts-expect-error
@@ -107,18 +109,18 @@ test('prop getters are memoized', () => {
     c;
 
     const handleClose = () => () => {};
-    handleClose.__options = {blockPointerEvents: true};
+    handleClose.__options = { blockPointerEvents: true };
 
     const listRef = useRef([]);
-    const overflowRef = useRef({top: 0, left: 0, bottom: 0, right: 0});
-    const {context} = useFloating({open, onOpenChange: setOpen});
+    const overflowRef = useRef({ top: 0, left: 0, bottom: 0, right: 0 });
+    const { context } = useFloating({ open, onOpenChange: setOpen });
 
     // NOTE: if `ref`-related props are not memoized, this will cause
     // an infinite loop as they must be memoized externally (as done by React).
     // Other non-primitives like functions and arrays get memoized by the hooks.
-    const {getReferenceProps, getFloatingProps, getItemProps} = useInteractions(
-      [
-        useHover(context, {handleClose}),
+    const { getReferenceProps, getFloatingProps, getItemProps } =
+      useInteractions([
+        useHover(context, { handleClose }),
         useFocus(context),
         useClick(context),
         useRole(context),
@@ -140,8 +142,7 @@ test('prop getters are memoized', () => {
           onChange: () => {},
           overflowRef,
         }),
-      ]
-    );
+      ]);
 
     useEffect(() => {
       // Should NOT cause an infinite loop as the prop getters are memoized.

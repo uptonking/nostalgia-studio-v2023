@@ -1,17 +1,17 @@
-import type {Placement} from '@floating-ui/core';
-import {shift, useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useState} from 'react';
+import type { Placement } from '@floating-ui/core';
+import { shift, useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useState } from 'react';
 
-import {allPlacements} from '../utils/allPlacements';
-import {Controls} from '../utils/Controls';
-import {useSize} from '../utils/useSize';
+import { allPlacements } from '../utils/allPlacements';
+import { Controls } from '../utils/Controls';
+import { useSize } from '../utils/useSize';
 
 export function Scrollbars() {
   const [rtl, setRtl] = useState(false);
   const [placement, setPlacement] = useState<Placement>('bottom');
-  const {x, y, reference, floating, strategy, update} = useFloating({
+  const { x, y, reference, floating, strategy, update } = useFloating({
     placement,
-    middleware: [shift({crossAxis: true, altBoundary: true})],
+    middleware: [shift({ crossAxis: true, altBoundary: true })],
   });
   const [size, handleSizeChange] = useSize(300);
 
@@ -22,15 +22,15 @@ export function Scrollbars() {
       <h1>Scrollbars</h1>
       <p>The floating element should avoid scrollbars.</p>
       <div
-        className="container"
-        style={{overflow: 'scroll', direction: rtl ? 'rtl' : 'ltr'}}
+        className='container'
+        style={{ overflow: 'scroll', direction: rtl ? 'rtl' : 'ltr' }}
       >
-        <div ref={reference} className="reference">
+        <div ref={reference} className='reference'>
           Reference
         </div>
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? '',
@@ -44,12 +44,12 @@ export function Scrollbars() {
       </div>
 
       <Controls>
-        <label htmlFor="size">Size</label>
+        <label htmlFor='size'>Size</label>
         <input
-          id="size"
-          type="range"
-          min="1"
-          max="400"
+          id='size'
+          type='range'
+          min='1'
+          max='400'
           value={size}
           onChange={handleSizeChange}
         />

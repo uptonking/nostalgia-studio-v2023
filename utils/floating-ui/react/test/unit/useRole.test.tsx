@@ -1,19 +1,19 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react';
-import {useState} from 'react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { useState } from 'react';
 
-import {useFloating, useId, useInteractions, useRole} from '../../src';
-import type {Props} from '../../src/hooks/useRole';
+import { useFloating, useId, useInteractions, useRole } from '../../src';
+import type { Props } from '../../src/hooks/useRole';
 
 function App({
   initiallyOpen = false,
   ...props
-}: Props & {initiallyOpen?: boolean}) {
+}: Props & { initiallyOpen?: boolean }) {
   const [open, setOpen] = useState(initiallyOpen);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useRole(context, props),
   ]);
 
@@ -38,17 +38,17 @@ function App({
   );
 }
 
-function AppWithExternalRef(props: Props & {initiallyOpen?: boolean}) {
+function AppWithExternalRef(props: Props & { initiallyOpen?: boolean }) {
   const [open, setOpen] = useState(props.initiallyOpen ?? false);
   const nodeId = useId();
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     nodeId,
     open,
     onOpenChange: setOpen,
   });
   // External ref can use it's own set of interactions hooks, but share context
-  const {getFloatingProps} = useInteractions([useRole(context, props)]);
-  const {getReferenceProps} = useInteractions([useRole(context, props)]);
+  const { getFloatingProps } = useInteractions([useRole(context, props)]);
+  const { getReferenceProps } = useInteractions([useRole(context, props)]);
 
   return (
     <>
@@ -73,13 +73,13 @@ function AppWithExternalRef(props: Props & {initiallyOpen?: boolean}) {
 
 describe('tooltip', () => {
   test('has correct role', () => {
-    render(<App role="tooltip" initiallyOpen />);
+    render(<App role='tooltip' initiallyOpen />);
     expect(screen.queryByRole('tooltip')).toBeInTheDocument();
     cleanup();
   });
 
   test('sets correct aria attributes based on the open state', () => {
-    render(<App role="tooltip" />);
+    render(<App role='tooltip' />);
     const button = screen.getByRole('button');
     fireEvent.click(button);
     expect(button.hasAttribute('aria-describedby')).toBe(true);
@@ -91,7 +91,7 @@ describe('tooltip', () => {
 
 describe('dialog', () => {
   test('sets correct aria attributes based on the open state', () => {
-    render(<App role="dialog" />);
+    render(<App role='dialog' />);
 
     const button = screen.getByRole('button');
 
@@ -102,7 +102,7 @@ describe('dialog', () => {
 
     expect(screen.queryByRole('dialog')).toBeInTheDocument();
     expect(button.getAttribute('aria-controls')).toBe(
-      screen.getByRole('dialog').getAttribute('id')
+      screen.getByRole('dialog').getAttribute('id'),
     );
     expect(button.hasAttribute('aria-describedby')).toBe(false);
     expect(button.getAttribute('aria-expanded')).toBe('true');
@@ -118,7 +118,7 @@ describe('dialog', () => {
   });
 
   test('sets correct aria attributes with external ref, multiple useRole calls', () => {
-    render(<AppWithExternalRef role="dialog" />);
+    render(<AppWithExternalRef role='dialog' />);
 
     const button = screen.getByRole('button');
 
@@ -129,7 +129,7 @@ describe('dialog', () => {
 
     expect(screen.queryByRole('dialog')).toBeInTheDocument();
     expect(button.getAttribute('aria-controls')).toBe(
-      screen.getByRole('dialog').getAttribute('id')
+      screen.getByRole('dialog').getAttribute('id'),
     );
     expect(button.hasAttribute('aria-describedby')).toBe(false);
     expect(button.getAttribute('aria-expanded')).toBe('true');
@@ -147,7 +147,7 @@ describe('dialog', () => {
 
 describe('menu', () => {
   test('sets correct aria attributes based on the open state', () => {
-    render(<App role="menu" />);
+    render(<App role='menu' />);
 
     const button = screen.getByRole('button');
 
@@ -158,10 +158,10 @@ describe('menu', () => {
 
     expect(screen.queryByRole('menu')).toBeInTheDocument();
     expect(button.getAttribute('id')).toBe(
-      screen.getByRole('menu').getAttribute('aria-labelledby')
+      screen.getByRole('menu').getAttribute('aria-labelledby'),
     );
     expect(button.getAttribute('aria-controls')).toBe(
-      screen.getByRole('menu').getAttribute('id')
+      screen.getByRole('menu').getAttribute('id'),
     );
     expect(button.hasAttribute('aria-describedby')).toBe(false);
     expect(button.getAttribute('aria-expanded')).toBe('true');
@@ -179,7 +179,7 @@ describe('menu', () => {
 
 describe('listbox', () => {
   test('sets correct aria attributes based on the open state', () => {
-    render(<App role="listbox" />);
+    render(<App role='listbox' />);
 
     const button = screen.getByRole('combobox');
 
@@ -190,7 +190,7 @@ describe('listbox', () => {
 
     expect(screen.queryByRole('listbox')).toBeInTheDocument();
     expect(button.getAttribute('aria-controls')).toBe(
-      screen.getByRole('listbox').getAttribute('id')
+      screen.getByRole('listbox').getAttribute('id'),
     );
     expect(button.hasAttribute('aria-describedby')).toBe(false);
     expect(button.getAttribute('aria-expanded')).toBe('true');

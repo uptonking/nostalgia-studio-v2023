@@ -13,20 +13,20 @@ import type {
 import type { DismissPayload } from './hooks/useDismiss';
 
 export * from '.';
-export { type Props as FloatingArrowProps} from './components/FloatingArrow';
-export { type Props as UseClickProps} from './hooks/useClick';
-export { type Props as UseClientPointProps} from './hooks/useClientPoint';
-export { type Props as UseDismissProps} from './hooks/useDismiss';
-export { type Props as UseFocusProps} from './hooks/useFocus';
-export { type Props as UseHoverProps} from './hooks/useHover';
-export { type Props as UseListNavigationProps} from './hooks/useListNavigation';
-export { type Props as UseRoleProps} from './hooks/useRole';
+export { type Props as FloatingArrowProps } from './components/FloatingArrow';
+export { type Props as UseClickProps } from './hooks/useClick';
+export { type Props as UseClientPointProps } from './hooks/useClientPoint';
+export { type Props as UseDismissProps } from './hooks/useDismiss';
+export { type Props as UseFocusProps } from './hooks/useFocus';
+export { type Props as UseHoverProps } from './hooks/useHover';
+export { type Props as UseListNavigationProps } from './hooks/useListNavigation';
+export { type Props as UseRoleProps } from './hooks/useRole';
 export {
   type Props as UseTransitionStatusProps,
   type UseTransitionStylesProps,
 } from './hooks/useTransition';
-export { type Props as UseTypeaheadProps} from './hooks/useTypeahead';
-export { type InnerProps,  type UseInnerOffsetProps} from './inner';
+export { type Props as UseTypeaheadProps } from './hooks/useTypeahead';
+export { type InnerProps, type UseInnerOffsetProps } from './inner';
 export type {
   AlignedPlacement,
   Alignment,
@@ -111,7 +111,7 @@ export interface ExtendedElements<RT> {
 export interface FloatingEvents {
   emit<T extends string>(
     event: T,
-    data?: T extends 'dismiss' ? DismissPayload : any
+    data?: T extends 'dismiss' ? DismissPayload : any,
   ): void;
   on(event: string, handler: (data: any) => void): void;
   off(event: string, handler: (data: any) => void): void;
@@ -200,6 +200,6 @@ export interface UseFloatingProps<RT extends ReferenceType = ReferenceType> {
   whileElementsMounted?: (
     reference: RT,
     floating: HTMLElement,
-    update: () => void
+    update: () => void,
   ) => void | (() => void);
 }

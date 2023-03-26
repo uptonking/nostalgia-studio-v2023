@@ -1,5 +1,5 @@
 interface NavigatorUAData {
-  brands: Array<{brand: string; version: string}>;
+  brands: Array<{ brand: string; version: string }>;
   mobile: boolean;
   platform: string;
 }
@@ -24,7 +24,7 @@ export function getUserAgent(): string {
 
   if (uaData && Array.isArray(uaData.brands)) {
     return uaData.brands
-      .map(({brand, version}) => `${brand}/${version}`)
+      .map(({ brand, version }) => `${brand}/${version}`)
       .join(' ');
   }
 

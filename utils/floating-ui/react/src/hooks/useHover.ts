@@ -11,10 +11,10 @@ import type {
   FloatingTreeType,
   ReferenceType,
 } from '../types';
-import {contains} from '../utils/contains';
-import {getDocument} from '../utils/getDocument';
-import {isElement, isMouseLikePointerType} from '../utils/is';
-import {useLatestRef} from './utils/useLatestRef';
+import { contains } from '../utils/contains';
+import { getDocument } from '../utils/getDocument';
+import { isElement, isMouseLikePointerType } from '../utils/is';
+import { useLatestRef } from './utils/useLatestRef';
 
 const safePolygonIdentifier = 'data-floating-ui-safe-polygon';
 
@@ -24,7 +24,7 @@ export interface HandleCloseFn<RT extends ReferenceType = ReferenceType> {
       onClose: () => void;
       tree?: FloatingTreeType<RT> | null;
       leave?: boolean;
-    }
+    },
   ): (event: MouseEvent) => void;
   __options: {
     blockPointerEvents: boolean;
@@ -34,7 +34,7 @@ export interface HandleCloseFn<RT extends ReferenceType = ReferenceType> {
 export function getDelay(
   value: Props['delay'],
   prop: 'open' | 'close',
-  pointerType?: PointerEvent['pointerType']
+  pointerType?: PointerEvent['pointerType'],
 ) {
   if (pointerType && !isMouseLikePointerType(pointerType)) {
     return 0;
@@ -51,7 +51,7 @@ export interface Props<RT extends ReferenceType = ReferenceType> {
   enabled?: boolean;
   handleClose?: HandleCloseFn<RT> | null;
   restMs?: number;
-  delay?: number | Partial<{open: number; close: number}>;
+  delay?: number | Partial<{ open: number; close: number }>;
   mouseOnly?: boolean;
   move?: boolean;
 }
@@ -63,14 +63,14 @@ export interface Props<RT extends ReferenceType = ReferenceType> {
  */
 export const useHover = <RT extends ReferenceType = ReferenceType>(
   context: FloatingContext<RT>,
-  props: Props<RT> = {}
+  props: Props<RT> = {},
 ): ElementProps => {
   const {
     open,
     onOpenChange,
     dataRef,
     events,
-    elements: {domReference, floating},
+    elements: { domReference, floating },
     refs,
   } = context;
   const {
@@ -150,7 +150,7 @@ export const useHover = <RT extends ReferenceType = ReferenceType>(
       const closeDelay = getDelay(
         delayRef.current,
         'close',
-        pointerTypeRef.current
+        pointerTypeRef.current,
       );
       if (closeDelay && !handlerRef.current) {
         clearTimeout(timeoutRef.current);
@@ -160,7 +160,7 @@ export const useHover = <RT extends ReferenceType = ReferenceType>(
         onOpenChange(false);
       }
     },
-    [delayRef, onOpenChange]
+    [delayRef, onOpenChange],
   );
 
   const cleanupMouseMoveHandler = React.useCallback(() => {
@@ -207,7 +207,7 @@ export const useHover = <RT extends ReferenceType = ReferenceType>(
       const openDelay = getDelay(
         delayRef.current,
         'open',
-        pointerTypeRef.current
+        pointerTypeRef.current,
       );
 
       if (openDelay) {
@@ -294,7 +294,7 @@ export const useHover = <RT extends ReferenceType = ReferenceType>(
       const ref = domReference as unknown as HTMLElement;
       open && ref.addEventListener('mouseleave', onScrollMouseLeave);
       floating?.addEventListener('mouseleave', onScrollMouseLeave);
-      move && ref.addEventListener('mousemove', onMouseEnter, {once: true});
+      move && ref.addEventListener('mousemove', onMouseEnter, { once: true });
       ref.addEventListener('mouseenter', onMouseEnter);
       ref.addEventListener('mouseleave', onMouseLeave);
       return () => {
@@ -347,7 +347,7 @@ export const useHover = <RT extends ReferenceType = ReferenceType>(
         const ref = domReference as unknown as HTMLElement | SVGSVGElement;
 
         const parentFloating = tree?.nodesRef.current.find(
-          (node) => node.id === parentId
+          (node) => node.id === parentId,
         )?.context?.elements.floating;
 
         if (parentFloating) {

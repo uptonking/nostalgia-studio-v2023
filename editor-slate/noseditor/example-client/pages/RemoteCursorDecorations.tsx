@@ -12,9 +12,7 @@ import {
   useDecorateRemoteCursors,
 } from '@slate-yjs/react';
 
-import {
-  ConnectionToggle,
-} from '../components/ConnectionToggle/ConnectionToggle';
+import { ConnectionToggle } from '../components/ConnectionToggle/ConnectionToggle';
 import { CustomEditable } from '../components/CustomEditable/CustomEditable';
 import { FormatToolbar } from '../components/FormatToolbar/FormatToolbar';
 import { Leaf } from '../components/Leaf/Leaf';

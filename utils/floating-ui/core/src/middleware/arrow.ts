@@ -1,9 +1,9 @@
-import type {Middleware, Padding} from '../types';
-import {getAlignment} from '../utils/getAlignment';
-import {getLengthFromAxis} from '../utils/getLengthFromAxis';
-import {getMainAxisFromPlacement} from '../utils/getMainAxisFromPlacement';
-import {getSideObjectFromPadding} from '../utils/getPaddingObject';
-import {within} from '../utils/within';
+import type { Middleware, Padding } from '../types';
+import { getAlignment } from '../utils/getAlignment';
+import { getLengthFromAxis } from '../utils/getLengthFromAxis';
+import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
+import { getSideObjectFromPadding } from '../utils/getPaddingObject';
+import { within } from '../utils/within';
 
 export interface Options {
   /**
@@ -30,15 +30,15 @@ export const arrow = (options: Options): Middleware => ({
   options,
   async fn(state) {
     // Since `element` is required, we don't Partial<> the type.
-    const {element, padding = 0} = options || {};
-    const {x, y, placement, rects, platform, elements} = state;
+    const { element, padding = 0 } = options || {};
+    const { x, y, placement, rects, platform, elements } = state;
 
     if (element == null) {
       return {};
     }
 
     const paddingObject = getSideObjectFromPadding(padding);
-    const coords = {x, y};
+    const coords = { x, y };
     const axis = getMainAxisFromPlacement(placement);
     const length = getLengthFromAxis(axis);
     const arrowDimensions = await platform.getDimensions(element);

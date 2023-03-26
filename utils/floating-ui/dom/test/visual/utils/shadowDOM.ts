@@ -5,7 +5,7 @@ import {
   platform,
   Strategy,
 } from '@floating-ui/dom';
-import {HTMLAttributes} from 'react';
+import { HTMLAttributes } from 'react';
 
 interface FloatingUICustomElement {
   reference: HTMLElement;
@@ -16,7 +16,7 @@ interface FloatingUICustomElement {
   cleanup: () => void;
 }
 
-type CustomElement<T> = Partial<T & HTMLAttributes<T> & {children: any}>;
+type CustomElement<T> = Partial<T & HTMLAttributes<T> & { children: any }>;
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -57,7 +57,7 @@ export function defineElements(): void {
       constructor() {
         super();
 
-        const shadow = this.attachShadow({mode: 'open'});
+        const shadow = this.attachShadow({ mode: 'open' });
         this.reference = createReferenceElement();
         this.floating = createFloatingElement();
         const style = recreateDocumentStyle();
@@ -66,7 +66,7 @@ export function defineElements(): void {
 
       attributeChangedCallback<
         N extends Extract<keyof this, 'placement' | 'strategy' | 'polyfill'>,
-        V extends Placement | Strategy
+        V extends Placement | Strategy,
       >(name: N, _oldValue: V, value: V): void {
         if (name === 'placement') {
           this.placement = value as Placement;
@@ -87,7 +87,7 @@ export function defineElements(): void {
       disconnectedCallback(): void {
         this.cleanup?.();
       }
-    }
+    },
   );
 
   defineIfNeeded(
@@ -108,7 +108,7 @@ export function defineElements(): void {
       constructor() {
         super();
 
-        const shadow = this.attachShadow({mode: 'open'});
+        const shadow = this.attachShadow({ mode: 'open' });
         this.reference = createReferenceElement();
         this.floating = createFloatingElement();
         this.container = document.createElement('div');
@@ -119,7 +119,7 @@ export function defineElements(): void {
 
       attributeChangedCallback<
         N extends Extract<keyof this, 'placement' | 'strategy' | 'polyfill'>,
-        V extends Placement | Strategy
+        V extends Placement | Strategy,
       >(name: N, _oldValue: V, value: V): void {
         if (name === 'placement') {
           this.placement = value as Placement;
@@ -140,7 +140,7 @@ export function defineElements(): void {
       disconnectedCallback(): void {
         this.cleanup?.();
       }
-    }
+    },
   );
 
   defineIfNeeded(
@@ -149,7 +149,7 @@ export function defineElements(): void {
       constructor() {
         super();
 
-        const shadow = this.attachShadow({mode: 'open'});
+        const shadow = this.attachShadow({ mode: 'open' });
         const wrapper = document.createElement('div');
         wrapper.style.position = 'relative';
         const slot = document.createElement('slot');
@@ -157,7 +157,7 @@ export function defineElements(): void {
         const style = recreateDocumentStyle();
         shadow.append(style, wrapper);
       }
-    }
+    },
   );
 
   defineIfNeeded(
@@ -180,7 +180,7 @@ export function defineElements(): void {
       constructor() {
         super();
 
-        const shadow = this.attachShadow({mode: 'open'});
+        const shadow = this.attachShadow({ mode: 'open' });
         this.floating = createFloatingElement();
         const style = recreateDocumentStyle();
         shadow.append(style, this.floating);
@@ -188,7 +188,7 @@ export function defineElements(): void {
 
       attributeChangedCallback<
         N extends Extract<keyof this, 'placement' | 'strategy' | 'polyfill'>,
-        V extends Placement | Strategy
+        V extends Placement | Strategy,
       >(name: N, _oldValue: V, value: V): void {
         if (name === 'placement') {
           this.placement = value as Placement;
@@ -211,13 +211,13 @@ export function defineElements(): void {
       disconnectedCallback(): void {
         this.cleanup?.();
       }
-    }
+    },
   );
 }
 
 function defineIfNeeded(
   tag: string,
-  customElementConstructor: CustomElementConstructor
+  customElementConstructor: CustomElementConstructor,
 ): void {
   if (!customElements.get(tag)) {
     customElements.define(tag, customElementConstructor);
@@ -272,7 +272,7 @@ async function position({
           ? (element) => platform.getOffsetParent(element, composedOffsetParent)
           : platform.getOffsetParent,
     },
-  }).then(({x, y}) => {
+  }).then(({ x, y }) => {
     Object.assign(floating.style, {
       position: strategy,
       left: `${x ?? 0}px`,
@@ -282,7 +282,7 @@ async function position({
 }
 
 function setUpAutoUpdate(element: FloatingUICustomElement): () => void {
-  const {floating, reference} = element;
+  const { floating, reference } = element;
 
   if (!floating || !reference) {
     return () => {};
@@ -307,12 +307,12 @@ function isShadowRoot(node: Node): node is ShadowRoot {
  * https://github.com/w3c/csswg-drafts/issues/159
  */
 export function composedOffsetParent(element: HTMLElement) {
-  let {offsetParent} = element;
+  let { offsetParent } = element;
   let ancestor: any = element;
   let foundInsideSlot = false;
 
   while (ancestor && ancestor !== offsetParent) {
-    const {assignedSlot} = ancestor;
+    const { assignedSlot } = ancestor;
 
     if (assignedSlot) {
       let newOffsetParent = assignedSlot.offsetParent;

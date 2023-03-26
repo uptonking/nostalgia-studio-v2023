@@ -1,16 +1,16 @@
 import * as React from 'react';
 
-import type {ElementProps} from './types';
+import type { ElementProps } from './types';
 
 function mergeProps(
   userProps: React.HTMLProps<Element> | undefined,
   propsList: Array<ElementProps | void>,
-  elementKey: 'reference' | 'floating' | 'item'
+  elementKey: 'reference' | 'floating' | 'item',
 ): Record<string, unknown> {
   const map = new Map<string, Array<(...args: unknown[]) => void>>();
 
   return {
-    ...(elementKey === 'floating' && {tabIndex: -1}),
+    ...(elementKey === 'floating' && { tabIndex: -1 }),
     ...userProps,
     ...propsList
       .map((value) => (value ? value[elementKey] : null))
@@ -55,14 +55,14 @@ export const useInteractions = (propsList: Array<ElementProps | void> = []) => {
     (userProps?: React.HTMLProps<Element>) =>
       mergeProps(userProps, propsList, 'reference'),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    deps
+    deps,
   );
 
   const getFloatingProps = React.useCallback(
     (userProps?: React.HTMLProps<HTMLElement>) =>
       mergeProps(userProps, propsList, 'floating'),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    deps
+    deps,
   );
 
   const getItemProps = React.useCallback(
@@ -73,11 +73,11 @@ export const useInteractions = (propsList: Array<ElementProps | void> = []) => {
     // a prop to many components. All `item` key values must therefore be
     // memoized.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    propsList.map((key) => key?.item)
+    propsList.map((key) => key?.item),
   );
 
   return React.useMemo(
-    () => ({getReferenceProps, getFloatingProps, getItemProps}),
-    [getReferenceProps, getFloatingProps, getItemProps]
+    () => ({ getReferenceProps, getFloatingProps, getItemProps }),
+    [getReferenceProps, getFloatingProps, getItemProps],
   );
 };

@@ -1,7 +1,7 @@
-import {useLayoutEffect, useState} from 'react';
+import { useLayoutEffect, useState } from 'react';
 
-import {Controls} from './Controls';
-import {positions} from './positions';
+import { Controls } from './Controls';
+import { positions } from './positions';
 
 type Props = {
   children?: React.ReactNode;
@@ -13,32 +13,32 @@ const getStyleForPosition = (position: string) => {
     case 'top-left':
       return {};
     case 'top':
-      return {justifyItems: 'center'};
+      return { justifyItems: 'center' };
     case 'top-right':
-      return {justifyItems: 'end'};
+      return { justifyItems: 'end' };
     case 'left':
-      return {alignItems: 'center'};
+      return { alignItems: 'center' };
     case 'center':
-      return {placeItems: 'center'};
+      return { placeItems: 'center' };
     case 'right':
-      return {alignItems: 'center', justifyItems: 'end'};
+      return { alignItems: 'center', justifyItems: 'end' };
     case 'bottom-left':
-      return {alignItems: 'end'};
+      return { alignItems: 'end' };
     case 'bottom':
-      return {alignItems: 'end', justifyItems: 'center'};
+      return { alignItems: 'end', justifyItems: 'center' };
     case 'bottom-right':
-      return {alignItems: 'end', justifyItems: 'end'};
+      return { alignItems: 'end', justifyItems: 'end' };
   }
 };
 
-export function Container({children, update}: Props) {
+export function Container({ children, update }: Props) {
   const [position, setPosition] = useState<string>('center');
   useLayoutEffect(update, [update, position]);
 
   return (
     <>
       <div
-        className="container"
+        className='container'
         style={{
           position: 'relative',
           overflow: 'scroll',

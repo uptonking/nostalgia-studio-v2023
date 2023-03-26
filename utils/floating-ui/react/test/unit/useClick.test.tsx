@@ -1,21 +1,21 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react';
-import {useState} from 'react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { useState } from 'react';
 
-import {useClick, useFloating, useInteractions} from '../../src';
-import type {Props} from '../../src/hooks/useClick';
+import { useClick, useFloating, useInteractions } from '../../src';
+import type { Props } from '../../src/hooks/useClick';
 
 function App({
   button = true,
   typeable = false,
   initialOpen = false,
   ...props
-}: Props & {button?: boolean; typeable?: boolean; initialOpen?: boolean}) {
+}: Props & { button?: boolean; typeable?: boolean; initialOpen?: boolean }) {
   const [open, setOpen] = useState(initialOpen);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useClick(context, props),
   ]);
 
@@ -23,8 +23,8 @@ function App({
 
   return (
     <>
-      <Tag {...getReferenceProps({ref: reference})} data-testid="reference" />
-      {open && <div role="tooltip" {...getFloatingProps({ref: floating})} />}
+      <Tag {...getReferenceProps({ ref: reference })} data-testid='reference' />
+      {open && <div role='tooltip' {...getFloatingProps({ ref: floating })} />}
     </>
   );
 }
@@ -58,7 +58,7 @@ describe('default', () => {
 
 describe('mousedown `event` prop', () => {
   test('changes `open` state to `true` after click', () => {
-    render(<App event="mousedown" />);
+    render(<App event='mousedown' />);
     const button = screen.getByRole('button');
 
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
@@ -71,7 +71,7 @@ describe('mousedown `event` prop', () => {
   });
 
   test('changes `open` state to `false` after two clicks', () => {
-    render(<App event="mousedown" />);
+    render(<App event='mousedown' />);
     const button = screen.getByRole('button');
 
     fireEvent.click(button);
@@ -110,7 +110,7 @@ describe('`toggle` prop', () => {
   });
 
   test('`open` state remains `true` after two clicks with `mousedown`', () => {
-    render(<App toggle={false} event="mousedown" />);
+    render(<App toggle={false} event='mousedown' />);
     const button = screen.getByRole('button');
 
     fireEvent.click(button);
@@ -142,7 +142,7 @@ describe('non-buttons', () => {
     render(<App button={false} />);
 
     const button = screen.getByTestId('reference');
-    fireEvent.keyDown(button, {key: 'Enter'});
+    fireEvent.keyDown(button, { key: 'Enter' });
 
     expect(screen.queryByRole('tooltip')).toBeInTheDocument();
     cleanup();
@@ -152,7 +152,7 @@ describe('non-buttons', () => {
     render(<App button={false} />);
 
     const button = screen.getByTestId('reference');
-    fireEvent.keyUp(button, {key: ' '});
+    fireEvent.keyUp(button, { key: ' ' });
 
     expect(screen.queryByRole('tooltip')).toBeInTheDocument();
     cleanup();
@@ -162,8 +162,8 @@ describe('non-buttons', () => {
     render(<App typeable={true} />);
 
     const button = screen.getByTestId('reference');
-    fireEvent.keyDown(button, {key: ' '});
-    fireEvent.keyUp(button, {key: ' '});
+    fireEvent.keyDown(button, { key: ' ' });
+    fireEvent.keyUp(button, { key: ' ' });
 
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
     cleanup();
@@ -173,7 +173,7 @@ describe('non-buttons', () => {
     render(<App typeable={true} />);
 
     const button = screen.getByTestId('reference');
-    fireEvent.keyDown(button, {key: 'Enter'});
+    fireEvent.keyDown(button, { key: 'Enter' });
 
     expect(screen.queryByRole('tooltip')).toBeInTheDocument();
     cleanup();

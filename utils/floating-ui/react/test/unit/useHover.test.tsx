@@ -1,28 +1,34 @@
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
-import {useState} from 'react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
+import { useState } from 'react';
 
-import {useFloating, useHover, useInteractions} from '../../src';
-import type {Props} from '../../src/hooks/useHover';
+import { useFloating, useHover, useInteractions } from '../../src';
+import type { Props } from '../../src/hooks/useHover';
 
 jest.useFakeTimers();
 
 function App({
   showReference = true,
   ...props
-}: Props & {showReference?: boolean}) {
+}: Props & { showReference?: boolean }) {
   const [open, setOpen] = useState(false);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useHover(context, props),
   ]);
 
   return (
     <>
-      {showReference && <button {...getReferenceProps({ref: reference})} />}
-      {open && <div role="tooltip" {...getFloatingProps({ref: floating})} />}
+      {showReference && <button {...getReferenceProps({ ref: reference })} />}
+      {open && <div role='tooltip' {...getFloatingProps({ ref: floating })} />}
     </>
   );
 }
@@ -68,7 +74,7 @@ describe('delay', () => {
   });
 
   test('open', async () => {
-    render(<App delay={{open: 500}} />);
+    render(<App delay={{ open: 500 }} />);
 
     fireEvent.mouseEnter(screen.getByRole('button'));
 
@@ -88,7 +94,7 @@ describe('delay', () => {
   });
 
   test('close', async () => {
-    render(<App delay={{close: 500}} />);
+    render(<App delay={{ close: 500 }} />);
 
     fireEvent.mouseEnter(screen.getByRole('button'));
     fireEvent.mouseLeave(screen.getByRole('button'));
@@ -109,7 +115,7 @@ describe('delay', () => {
   });
 
   test('open with close 0', async () => {
-    render(<App delay={{open: 500}} />);
+    render(<App delay={{ open: 500 }} />);
 
     fireEvent.mouseEnter(screen.getByRole('button'));
 
@@ -167,7 +173,7 @@ test('mouseleave on the floating element closes it (mouse)', async () => {
     screen.getByRole('button'),
     new MouseEvent('mouseleave', {
       relatedTarget: screen.getByRole('tooltip'),
-    })
+    }),
   );
 
   expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();

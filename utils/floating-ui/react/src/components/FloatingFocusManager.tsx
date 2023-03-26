@@ -1,39 +1,39 @@
-import {hideOthers} from 'aria-hidden';
+import { hideOthers } from 'aria-hidden';
 import * as React from 'react';
-import {FocusableElement, tabbable} from 'tabbable';
+import { FocusableElement, tabbable } from 'tabbable';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import {DismissPayload} from '../hooks/useDismiss';
-import {useLatestRef} from '../hooks/utils/useLatestRef';
-import type {FloatingContext, ReferenceType} from '../types';
-import {activeElement} from '../utils/activeElement';
-import {contains} from '../utils/contains';
-import {enqueueFocus} from '../utils/enqueueFocus';
-import {getAncestors} from '../utils/getAncestors';
-import {getChildren} from '../utils/getChildren';
-import {getDocument} from '../utils/getDocument';
-import {getTarget} from '../utils/getTarget';
-import {isHTMLElement} from '../utils/is';
-import {isTypeableElement} from '../utils/isTypeableElement';
-import {stopEvent} from '../utils/stopEvent';
+import { DismissPayload } from '../hooks/useDismiss';
+import { useLatestRef } from '../hooks/utils/useLatestRef';
+import type { FloatingContext, ReferenceType } from '../types';
+import { activeElement } from '../utils/activeElement';
+import { contains } from '../utils/contains';
+import { enqueueFocus } from '../utils/enqueueFocus';
+import { getAncestors } from '../utils/getAncestors';
+import { getChildren } from '../utils/getChildren';
+import { getDocument } from '../utils/getDocument';
+import { getTarget } from '../utils/getTarget';
+import { isHTMLElement } from '../utils/is';
+import { isTypeableElement } from '../utils/isTypeableElement';
+import { stopEvent } from '../utils/stopEvent';
 import {
   getNextTabbable,
   getPreviousTabbable,
   getTabbableOptions,
   isOutsideEvent,
 } from '../utils/tabbable';
-import {usePortalContext} from './FloatingPortal';
-import {useFloatingTree} from './FloatingTree';
-import {FocusGuard, HIDDEN_STYLES} from './FocusGuard';
+import { usePortalContext } from './FloatingPortal';
+import { useFloatingTree } from './FloatingTree';
+import { FocusGuard, HIDDEN_STYLES } from './FocusGuard';
 
 const VisuallyHiddenDismiss = React.forwardRef(function VisuallyHiddenDismiss(
   props: React.ButtonHTMLAttributes<HTMLButtonElement>,
-  ref: React.Ref<HTMLButtonElement>
+  ref: React.Ref<HTMLButtonElement>,
 ) {
   return (
     <button
       {...props}
-      type="button"
+      type='button'
       ref={ref}
       tabIndex={-1}
       style={HIDDEN_STYLES}
@@ -75,7 +75,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
     onOpenChange,
     events,
     dataRef,
-    elements: {domReference, floating},
+    elements: { domReference, floating },
   } = context;
 
   const orderRef = useLatestRef(order);
@@ -114,7 +114,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
     (container: HTMLElement | null = floating) => {
       return container ? tabbable(container, getTabbableOptions()) : [];
     },
-    [floating]
+    [floating],
   );
 
   const getTabbableElements = React.useCallback(
@@ -136,7 +136,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
         .filter(Boolean)
         .flat() as Array<FocusableElement>;
     },
-    [domReference, floating, orderRef, getTabbableContent]
+    [domReference, floating, orderRef, getTabbableContent],
   );
 
   React.useEffect(() => {
@@ -216,12 +216,12 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
           (getChildren(tree.nodesRef.current, nodeId).find(
             (node) =>
               contains(node.context?.elements.floating, relatedTarget) ||
-              contains(node.context?.elements.domReference, relatedTarget)
+              contains(node.context?.elements.domReference, relatedTarget),
           ) ||
             getAncestors(tree.nodesRef.current, nodeId).find(
               (node) =>
                 node.context?.elements.floating === relatedTarget ||
-                node.context?.elements.domReference === relatedTarget
+                node.context?.elements.domReference === relatedTarget,
             )))
       );
 
@@ -265,8 +265,8 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
     // Don't hide portals nested within the parent portal.
     const portalNodes = Array.from(
       portalContext?.portalNode?.querySelectorAll(
-        '[data-floating-ui-portal]'
-      ) || []
+        '[data-floating-ui-portal]',
+      ) || [],
     );
 
     function getDismissButtons() {
@@ -281,7 +281,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
       const cleanup = hideOthers(
         orderRef.current.includes('reference') || isTypeableCombobox
           ? insideNodes.concat(domReference || [])
-          : insideNodes
+          : insideNodes,
       );
 
       return () => {
@@ -306,7 +306,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
 
       // Exclude all tabbable elements that are part of the order
       const elements = allTabbable.filter(
-        (el) => !floatingTabbable.includes(el)
+        (el) => !floatingTabbable.includes(el),
       );
 
       elements.forEach((el, i) => {
@@ -349,7 +349,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
     // because it has its own handling of the initial focus.
     !ignoreInitialFocus &&
       open &&
-      enqueueFocus(elToFocus, {preventScroll: elToFocus === floating});
+      enqueueFocus(elToFocus, { preventScroll: elToFocus === floating });
 
     // Dismissing via outside press should always ignore `returnFocus` to
     // prevent unwanted scrolling.
@@ -382,7 +382,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
         contains(floating, activeEl) ||
         (tree &&
           getChildren(tree.nodesRef.current, nodeId).some((node) =>
-            contains(node.context?.elements.floating, activeEl)
+            contains(node.context?.elements.floating, activeEl),
           )) ||
         (contextData.openEvent &&
           ['click', 'mousedown'].includes(contextData.openEvent.type));
@@ -451,7 +451,7 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
 
     if (typeof MutationObserver === 'function') {
       const observer = new MutationObserver(setState);
-      observer.observe(floating, {childList: true, subtree: true});
+      observer.observe(floating, { childList: true, subtree: true });
       return () => {
         observer.disconnect();
       };
@@ -478,13 +478,13 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
     <>
       {shouldRenderGuards && (
         <FocusGuard
-          data-type="inside"
+          data-type='inside'
           ref={portalContext?.beforeInsideRef}
           onFocus={(event) => {
             if (modal) {
               const els = getTabbableElements();
               enqueueFocus(
-                order[0] === 'reference' ? els[0] : els[els.length - 1]
+                order[0] === 'reference' ? els[0] : els[els.length - 1],
               );
             } else if (
               portalContext?.preserveTabOrder &&
@@ -509,13 +509,13 @@ export function FloatingFocusManager<RT extends ReferenceType = ReferenceType>({
       {React.cloneElement(
         children,
         tabbableContentLength === 0 || order.includes('floating')
-          ? {tabIndex: 0}
-          : {}
+          ? { tabIndex: 0 }
+          : {},
       )}
       {renderDismissButton('end')}
       {shouldRenderGuards && (
         <FocusGuard
-          data-type="inside"
+          data-type='inside'
           ref={portalContext?.afterInsideRef}
           onFocus={(event) => {
             if (modal) {

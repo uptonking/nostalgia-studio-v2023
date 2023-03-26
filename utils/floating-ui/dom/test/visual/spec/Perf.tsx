@@ -9,21 +9,21 @@ import {
   useFloating,
 } from '@floating-ui/react-dom';
 
-import {Controls} from '../utils/Controls';
-import {useSize} from '../utils/useSize';
+import { Controls } from '../utils/Controls';
+import { useSize } from '../utils/useSize';
 
 const arrowEl = document.createElement('div');
 
 export function Perf() {
-  const {x, y, reference, floating, strategy} = useFloating({
+  const { x, y, reference, floating, strategy } = useFloating({
     placement: 'top',
     whileElementsMounted: autoUpdate,
     middleware: [
       offset(1),
       flip(),
-      shift({crossAxis: true, limiter: limitShift()}),
+      shift({ crossAxis: true, limiter: limitShift() }),
       hide(),
-      arrow({element: arrowEl}),
+      arrow({ element: arrowEl }),
     ],
   });
 
@@ -31,12 +31,12 @@ export function Perf() {
 
   let jsx = (
     <>
-      <div ref={reference} className="reference">
+      <div ref={reference} className='reference'>
         Reference
       </div>
       <div
         ref={floating}
-        className="floating"
+        className='floating'
         style={{
           position: strategy,
           top: y ?? 0,
@@ -51,7 +51,7 @@ export function Perf() {
   );
 
   for (let i = 0; i < 100; i++) {
-    jsx = <div style={{position: 'relative'}}>{jsx}</div>;
+    jsx = <div style={{ position: 'relative' }}>{jsx}</div>;
   }
 
   return (
@@ -62,7 +62,7 @@ export function Perf() {
         containers and forced to flip. With 6x CPU slow down on an M1 Mac,
         `computePosition` updates should take less than <strong>15ms</strong>.
       </p>
-      <div className="container">
+      <div className='container'>
         <div
           style={{
             position: 'relative',
@@ -76,12 +76,12 @@ export function Perf() {
       </div>
 
       <Controls>
-        <label htmlFor="size">Size</label>
+        <label htmlFor='size'>Size</label>
         <input
-          id="size"
-          type="range"
-          min="1"
-          max="200"
+          id='size'
+          type='range'
+          min='1'
+          max='200'
           value={size}
           onChange={handleSizeChange}
         />

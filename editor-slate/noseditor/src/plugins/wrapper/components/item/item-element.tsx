@@ -58,22 +58,21 @@ const ItemComponent = (props: React.PropsWithChildren<ItemProps>) => {
 
   const editor = useSlateStatic();
 
-
   return (
     <Fragment>
       <DragHandle
         listeners={listeners}
         classes={cx({
           hidden: hidden,
-          "is-heading": isHeadingElement(element),
-          "is-foldable": ExtendedEditor.hasSemanticChildren(element)
+          'is-heading': isHeadingElement(element),
+          'is-foldable': ExtendedEditor.hasSemanticChildren(element),
         })}
       />
       {
-      // isParagraphElement(element) &&
-      //   Node.string(element) === '' &&
-      //   selected && <Placeholder />
-        }
+        // isParagraphElement(element) &&
+        //   Node.string(element) === '' &&
+        //   selected && <Placeholder />
+      }
       <div
         {...attributes}
         className={cx('item', 'clipboardSkipLinebreak', {
@@ -111,7 +110,7 @@ const ItemComponent = (props: React.PropsWithChildren<ItemProps>) => {
           <FoldingArrow
             element={element}
             onFold={onFold}
-            classes={cx({ "is-heading": isHeadingElement(element) })}
+            classes={cx({ 'is-heading': isHeadingElement(element) })}
           />
         )}
         {children}

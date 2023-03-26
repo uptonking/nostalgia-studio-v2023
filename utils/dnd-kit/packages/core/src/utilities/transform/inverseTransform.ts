@@ -5,7 +5,11 @@ export function inverseTransform(
   transform: string,
   transformOrigin: string,
 ): ClientRect {
-  let ta, sx, sy, dx, dy;
+  let ta;
+  let sx;
+  let sy;
+  let dx;
+  let dy;
 
   if (transform.startsWith('matrix3d(')) {
     ta = transform.slice(9, -1).split(/, /);

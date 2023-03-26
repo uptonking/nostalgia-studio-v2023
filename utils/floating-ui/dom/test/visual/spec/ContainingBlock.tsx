@@ -1,13 +1,13 @@
-import {autoUpdate, useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useState} from 'react';
+import { autoUpdate, useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useState } from 'react';
 
-import {Controls} from '../utils/Controls';
+import { Controls } from '../utils/Controls';
 
 export function ContainingBlock() {
   const [willChange, setWillChange] =
     useState<CSSStyleDeclaration['willChange']>('transform');
   const [contain, setContain] = useState('paint');
-  const {x, y, reference, floating, strategy, update} = useFloating({
+  const { x, y, reference, floating, strategy, update } = useFloating({
     strategy: 'fixed',
     whileElementsMounted: autoUpdate,
   });
@@ -18,13 +18,13 @@ export function ContainingBlock() {
     <>
       <h1>Containing Block</h1>
       <p>The floating element should be correctly positioned.</p>
-      <div className="container" style={{willChange, contain}}>
-        <div ref={reference} className="reference">
+      <div className='container' style={{ willChange, contain }}>
+        <div ref={reference} className='reference'>
           Reference
         </div>
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? '',
@@ -49,7 +49,7 @@ export function ContainingBlock() {
             >
               {localWillChange}
             </button>
-          )
+          ),
         )}
       </Controls>
 
@@ -67,7 +67,7 @@ export function ContainingBlock() {
             >
               {localContain}
             </button>
-          )
+          ),
         )}
       </Controls>
     </>

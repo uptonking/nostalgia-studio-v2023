@@ -1,4 +1,4 @@
-import {Coords, Placement} from '@floating-ui/core';
+import { Coords, Placement } from '@floating-ui/core';
 import {
   autoUpdate,
   flip,
@@ -6,10 +6,10 @@ import {
   size,
   useFloating,
 } from '@floating-ui/react-dom';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-import {allPlacements} from '../utils/allPlacements';
-import {Controls} from '../utils/Controls';
+import { allPlacements } from '../utils/allPlacements';
+import { Controls } from '../utils/Controls';
 
 type ConnectedStatus = '1' | '2-disjoined' | '2-joined' | '3';
 const CONNECTED_STATUSES: ConnectedStatus[] = [
@@ -24,14 +24,14 @@ export function Inline() {
   const [open, setOpen] = useState(false);
   const [status, setStatus] = useState<ConnectedStatus>('2-disjoined');
   const [mouseCoords, setMouseCoords] = useState<Coords | undefined>();
-  const {x, y, strategy, refs} = useFloating({
+  const { x, y, strategy, refs } = useFloating({
     placement,
     middleware: [inline(mouseCoords), flip(), size()],
     whileElementsMounted: autoUpdate,
   });
 
   const handleMouseEnter = (event: React.MouseEvent<HTMLElement>) => {
-    setMouseCoords({x: event.clientX, y: event.clientY});
+    setMouseCoords({ x: event.clientX, y: event.clientY });
     setOpen(true);
   };
 
@@ -110,12 +110,12 @@ export function Inline() {
     <>
       <h1>Inline</h1>
       <p>The floating element should choose the most appropriate rect.</p>
-      <div className="container">
-        <p className="prose" style={{padding: 10}}>
+      <div className='container'>
+        <p className='prose' style={{ padding: 10 }}>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.{' '}
           <strong
             ref={refs.setReference}
-            style={{color: 'royalblue'}}
+            style={{ color: 'royalblue' }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -125,13 +125,13 @@ export function Inline() {
           gravida, mi nec sodales tincidunt, lorem orci aliquam ex, id commodo
           erat libero ut risus. Nam molestie non lectus sit amet tempus. Vivamus
           accumsan{' '}
-          <strong style={{color: 'red'}}>nunc quis faucibus egestas</strong>.
+          <strong style={{ color: 'red' }}>nunc quis faucibus egestas</strong>.
           Duis cursus nisi massa, non dictum turpis interdum at.
         </p>
         {open && (
           <div
             ref={refs.setFloating}
-            className="floating"
+            className='floating'
             style={{
               position: strategy,
               top: y ?? 0,

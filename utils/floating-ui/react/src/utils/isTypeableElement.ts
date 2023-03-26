@@ -1,4 +1,4 @@
-import {isHTMLElement} from './is';
+import { isHTMLElement } from './is';
 
 export const TYPEABLE_SELECTOR =
   "input:not([type='hidden']):not([disabled])," +

@@ -22,7 +22,7 @@ import {
   useTransitionStyles,
   useTypeahead,
 } from '@floating-ui/react';
-import {ChevronRightIcon} from '@radix-ui/react-icons';
+import { ChevronRightIcon } from '@radix-ui/react-icons';
 import c from 'clsx';
 import * as React from 'react';
 
@@ -34,19 +34,19 @@ interface MenuItemProps {
 export const MenuItem = React.forwardRef<
   HTMLButtonElement,
   MenuItemProps & React.ButtonHTMLAttributes<HTMLButtonElement>
->(({label, disabled, ...props}, ref) => {
+>(({ label, disabled, ...props }, ref) => {
   return (
     <button
-      type="button"
+      type='button'
       {...props}
       className={c(
         'text-left flex py-1 px-2 focus:bg-blue-500 focus:text-white outline-none rounded',
         {
           'opacity-40': disabled,
-        }
+        },
       )}
       ref={ref}
-      role="menuitem"
+      role='menuitem'
       disabled={disabled}
     >
       {label}
@@ -63,7 +63,7 @@ interface MenuProps {
 export const MenuComponent = React.forwardRef<
   HTMLButtonElement,
   MenuProps & React.HTMLProps<HTMLButtonElement>
->(({children, label, ...props}, forwardedRef) => {
+>(({ children, label, ...props }, forwardedRef) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
   const [allowHover, setAllowHover] = React.useState(false);
@@ -77,7 +77,7 @@ export const MenuComponent = React.forwardRef<
     React.Children.forEach(children, (child) => {
       if (React.isValidElement(child)) {
         strings.push(
-          child.props.label && !child.props.disabled ? child.props.label : null
+          child.props.label && !child.props.disabled ? child.props.label : null,
         );
       }
     });
@@ -89,13 +89,13 @@ export const MenuComponent = React.forwardRef<
   const parentId = useFloatingParentNodeId();
   const isNested = parentId != null;
 
-  const {x, y, strategy, refs, context} = useFloating<HTMLButtonElement>({
+  const { x, y, strategy, refs, context } = useFloating<HTMLButtonElement>({
     nodeId,
     open: isOpen,
     onOpenChange: setIsOpen,
     placement: isNested ? 'right-start' : 'bottom-start',
     middleware: [
-      offset({mainAxis: isNested ? 0 : 4, alignmentAxis: isNested ? -4 : 0}),
+      offset({ mainAxis: isNested ? 0 : 4, alignmentAxis: isNested ? -4 : 0 }),
       flip(),
       shift(),
     ],
@@ -104,7 +104,7 @@ export const MenuComponent = React.forwardRef<
 
   const hover = useHover(context, {
     enabled: isNested && allowHover,
-    delay: {open: 75},
+    delay: { open: 75 },
     handleClose: safePolygon({
       restMs: 25,
       blockPointerEvents: true,
@@ -115,8 +115,8 @@ export const MenuComponent = React.forwardRef<
     toggle: !isNested || !allowHover,
     ignoreMouse: isNested,
   });
-  const role = useRole(context, {role: 'menu'});
-  const dismiss = useDismiss(context, {bubbles: true});
+  const role = useRole(context, { role: 'menu' });
+  const dismiss = useDismiss(context, { bubbles: true });
   const listNavigation = useListNavigation(context, {
     listRef: listItemsRef,
     activeIndex,
@@ -129,14 +129,9 @@ export const MenuComponent = React.forwardRef<
     activeIndex,
   });
 
-  const {getReferenceProps, getFloatingProps, getItemProps} = useInteractions([
-    hover,
-    click,
-    role,
-    dismiss,
-    listNavigation,
-    typeahead,
-  ]);
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [hover, click, role, dismiss, listNavigation, typeahead],
+  );
 
   // Event emitter allows you to communicate across tree components.
   // This effect closes all menus when an item gets clicked anywhere
@@ -148,7 +143,7 @@ export const MenuComponent = React.forwardRef<
       setIsOpen(false);
     }
 
-    function onSubMenuOpen(event: {nodeId: string; parentId: string}) {
+    function onSubMenuOpen(event: { nodeId: string; parentId: string }) {
       if (event.nodeId !== nodeId && event.parentId === parentId) {
         setIsOpen(false);
       }
@@ -165,7 +160,7 @@ export const MenuComponent = React.forwardRef<
 
   React.useEffect(() => {
     if (isOpen && tree) {
-      tree.events.emit('menuopen', {parentId, nodeId});
+      tree.events.emit('menuopen', { parentId, nodeId });
     }
   }, [tree, isOpen, nodeId, parentId]);
 
@@ -173,7 +168,7 @@ export const MenuComponent = React.forwardRef<
   // prevents unwanted focus synchronization as menus open and close with
   // keyboard navigation and the cursor is resting on the menu.
   React.useEffect(() => {
-    function onPointerMove({pointerType}: PointerEvent) {
+    function onPointerMove({ pointerType }: PointerEvent) {
       if (pointerType !== 'touch') {
         setAllowHover(true);
       }
@@ -196,7 +191,7 @@ export const MenuComponent = React.forwardRef<
     };
   }, [allowHover]);
 
-  const {isMounted, styles} = useTransitionStyles(context, {
+  const { isMounted, styles } = useTransitionStyles(context, {
     duration: 100,
   });
 
@@ -230,12 +225,12 @@ export const MenuComponent = React.forwardRef<
             'bg-slate-200 rounded py-1 px-2':
               isNested && isOpen && hasFocusInside,
             'bg-slate-200': !isNested && isOpen,
-          }
+          },
         )}
       >
         {label}{' '}
         {isNested && (
-          <span aria-hidden className="ml-4">
+          <span aria-hidden className='ml-4'>
             <ChevronRightIcon />
           </span>
         )}
@@ -253,7 +248,7 @@ export const MenuComponent = React.forwardRef<
           >
             <div
               ref={refs.setFloating}
-              className="flex flex-col rounded bg-white shadow-lg outline-none p-1 border border-slate-900/10 bg-clip-padding"
+              className='flex flex-col rounded bg-white shadow-lg outline-none p-1 border border-slate-900/10 bg-clip-padding'
               style={{
                 position: strategy,
                 top: y ?? 0,
@@ -289,8 +284,8 @@ export const MenuComponent = React.forwardRef<
                           setActiveIndex(index);
                         }
                       },
-                    })
-                  )
+                    }),
+                  ),
               )}
             </div>
           </FloatingFocusManager>
@@ -320,26 +315,26 @@ export const Menu = React.forwardRef<
 export const Main = () => {
   return (
     <>
-      <h1 className="text-5xl font-bold mb-8">Menu</h1>
-      <div className="grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
-        <Menu label="Edit">
-          <MenuItem label="Undo" onClick={() => console.log('Undo')} />
-          <MenuItem label="Redo" />
-          <MenuItem label="Cut" disabled />
-          <Menu label="Copy as">
-            <MenuItem label="Text" />
-            <MenuItem label="Video" />
-            <Menu label="Image">
-              <MenuItem label=".png" />
-              <MenuItem label=".jpg" />
-              <MenuItem label=".svg" />
-              <MenuItem label=".gif" />
+      <h1 className='text-5xl font-bold mb-8'>Menu</h1>
+      <div className='grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
+        <Menu label='Edit'>
+          <MenuItem label='Undo' onClick={() => console.log('Undo')} />
+          <MenuItem label='Redo' />
+          <MenuItem label='Cut' disabled />
+          <Menu label='Copy as'>
+            <MenuItem label='Text' />
+            <MenuItem label='Video' />
+            <Menu label='Image'>
+              <MenuItem label='.png' />
+              <MenuItem label='.jpg' />
+              <MenuItem label='.svg' />
+              <MenuItem label='.gif' />
             </Menu>
-            <MenuItem label="Audio" />
+            <MenuItem label='Audio' />
           </Menu>
-          <Menu label="Share">
-            <MenuItem label="Mail" />
-            <MenuItem label="Instagram" />
+          <Menu label='Share'>
+            <MenuItem label='Mail' />
+            <MenuItem label='Instagram' />
           </Menu>
         </Menu>
       </div>

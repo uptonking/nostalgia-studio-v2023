@@ -1,9 +1,9 @@
-import type {ClientRectObject, Middleware, Padding} from '../types';
-import {getMainAxisFromPlacement} from '../utils/getMainAxisFromPlacement';
-import {getSideObjectFromPadding} from '../utils/getPaddingObject';
-import {getSide} from '../utils/getSide';
-import {max, min} from '../utils/math';
-import {rectToClientRect} from '../utils/rectToClientRect';
+import type { ClientRectObject, Middleware, Padding } from '../types';
+import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
+import { getSideObjectFromPadding } from '../utils/getPaddingObject';
+import { getSide } from '../utils/getSide';
+import { max, min } from '../utils/math';
+import { rectToClientRect } from '../utils/rectToClientRect';
 
 function getBoundingRect(rects: Array<ClientRectObject>) {
   const minX = min(...rects.map((rect) => rect.left));
@@ -63,14 +63,14 @@ export const inline = (options: Partial<Options> = {}): Middleware => ({
   name: 'inline',
   options,
   async fn(state) {
-    const {placement, elements, rects, platform, strategy} = state;
+    const { placement, elements, rects, platform, strategy } = state;
     // A MouseEvent's client{X,Y} coords can be up to 2 pixels off a
     // ClientRect's bounds, despite the event listener being triggered. A
     // padding of 2 seems to handle this issue.
-    const {padding = 2, x, y} = options;
+    const { padding = 2, x, y } = options;
 
     const nativeClientRects = Array.from(
-      (await platform.getClientRects?.(elements.reference)) || []
+      (await platform.getClientRects?.(elements.reference)) || [],
     );
 
     const clientRects = getRectsByLine(nativeClientRects);
@@ -92,7 +92,7 @@ export const inline = (options: Partial<Options> = {}): Middleware => ({
               x > rect.left - paddingObject.left &&
               x < rect.right + paddingObject.right &&
               y > rect.top - paddingObject.top &&
-              y < rect.bottom + paddingObject.bottom
+              y < rect.bottom + paddingObject.bottom,
           ) || fallback
         );
       }
@@ -127,7 +127,7 @@ export const inline = (options: Partial<Options> = {}): Middleware => ({
         const maxRight = max(...clientRects.map((rect) => rect.right));
         const minLeft = min(...clientRects.map((rect) => rect.left));
         const measureRects = clientRects.filter((rect) =>
-          isLeftSide ? rect.left === minLeft : rect.right === maxRight
+          isLeftSide ? rect.left === minLeft : rect.right === maxRight,
         );
 
         const top = measureRects[0].top;
@@ -153,7 +153,7 @@ export const inline = (options: Partial<Options> = {}): Middleware => ({
     }
 
     const resetRects = await platform.getElementRects({
-      reference: {getBoundingClientRect},
+      reference: { getBoundingClientRect },
       floating: elements.floating,
       strategy,
     });

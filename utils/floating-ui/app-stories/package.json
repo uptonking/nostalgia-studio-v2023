@@ -30,7 +30,8 @@
   },
   "devDependencies": {
     "@linaria/babel-preset": "^4.4.3",
+    "@linaria/core": "^4.2.8",
     "@linaria/react": "^4.3.6",
-    "@linaria/webpack-loader": "^4.1.15"
+    "@linaria/webpack5-loader": "^4.1.15"
   }
 }

@@ -1,11 +1,11 @@
-import type {Rect, Side} from '@floating-ui/core';
+import type { Rect, Side } from '@floating-ui/core';
 
-import type {HandleCloseFn} from './hooks/useHover';
-import type {ReferenceType} from './types';
-import {contains} from './utils/contains';
-import {getChildren} from './utils/getChildren';
-import {getTarget} from './utils/getTarget';
-import {isElement} from './utils/is';
+import type { HandleCloseFn } from './hooks/useHover';
+import type { ReferenceType } from './types';
+import { contains } from './utils/contains';
+import { getChildren } from './utils/getChildren';
+import { getTarget } from './utils/getTarget';
+import { isElement } from './utils/is';
 
 type Point = [number, number];
 type Polygon = Point[];
@@ -75,7 +75,7 @@ export function safePolygon<RT extends ReferenceType = ReferenceType>({
         return;
       }
 
-      const {clientX, clientY} = event;
+      const { clientX, clientY } = event;
       const clientPoint: Point = [clientX, clientY];
       const target = getTarget(event) as Element | null;
       const isLeave = event.type === 'mouseleave';
@@ -119,7 +119,7 @@ export function safePolygon<RT extends ReferenceType = ReferenceType>({
       if (
         tree &&
         getChildren(tree.nodesRef.current, nodeId).some(
-          ({context}) => context?.open
+          ({ context }) => context?.open,
         )
       ) {
         return;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {useId} from './useId';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { useId } from './useId';
 
 export interface Props {
   enabled?: boolean;
@@ -22,15 +22,15 @@ export interface Props {
  */
 export const useRole = <RT extends ReferenceType = ReferenceType>(
   context: FloatingContext<RT>,
-  props: Partial<Props> = {}
+  props: Partial<Props> = {},
 ): ElementProps => {
-  const {open, floatingId} = context;
-  const {enabled = true, role = 'dialog'} = props;
+  const { open, floatingId } = context;
+  const { enabled = true, role = 'dialog' } = props;
 
   const referenceId = useId();
 
   return React.useMemo(() => {
-    const floatingProps = {id: floatingId, role};
+    const floatingProps = { id: floatingId, role };
 
     if (!enabled) {
       return {};

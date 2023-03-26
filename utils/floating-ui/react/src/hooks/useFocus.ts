@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {activeElement} from '../utils/activeElement';
-import {contains} from '../utils/contains';
-import {getDocument} from '../utils/getDocument';
-import {isElement, isHTMLElement} from '../utils/is';
-import {isEventTargetWithin} from '../utils/isEventTargetWithin';
-import {DismissPayload} from './useDismiss';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { activeElement } from '../utils/activeElement';
+import { contains } from '../utils/contains';
+import { getDocument } from '../utils/getDocument';
+import { isElement, isHTMLElement } from '../utils/is';
+import { isEventTargetWithin } from '../utils/isEventTargetWithin';
+import { DismissPayload } from './useDismiss';
 
 export interface Props {
   enabled?: boolean;
@@ -20,7 +20,7 @@ export interface Props {
  */
 export const useFocus = <RT extends ReferenceType = ReferenceType>(
   context: FloatingContext<RT>,
-  props: Props = {}
+  props: Props = {},
 ): ElementProps => {
   const {
     open,
@@ -28,9 +28,9 @@ export const useFocus = <RT extends ReferenceType = ReferenceType>(
     dataRef,
     events,
     refs,
-    elements: {floating, domReference},
+    elements: { floating, domReference },
   } = context;
-  const {enabled = true, keyboardOnly = true} = props;
+  const { enabled = true, keyboardOnly = true } = props;
 
   const pointerTypeRef = React.useRef('');
   const blockFocusRef = React.useRef(false);
@@ -93,7 +93,7 @@ export const useFocus = <RT extends ReferenceType = ReferenceType>(
 
     return {
       reference: {
-        onPointerDown({pointerType}) {
+        onPointerDown({ pointerType }) {
           pointerTypeRef.current = pointerType;
           blockFocusRef.current = !!(pointerType && keyboardOnly);
         },

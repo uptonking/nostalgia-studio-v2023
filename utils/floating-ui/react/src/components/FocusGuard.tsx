@@ -1,7 +1,7 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import {isSafari} from '../utils/is';
+import { isSafari } from '../utils/is';
 
 // See Diego Haz's Sandbox for making this logic work well on Safari/iOS:
 // https://codesandbox.io/s/tabbable-portal-f4tng?file=/src/FocusTrap.tsx
@@ -60,7 +60,7 @@ export const FocusGuard = React.forwardRef<
       // Role is only for VoiceOver
       role={role}
       aria-hidden={role ? undefined : true}
-      data-floating-ui-focus-guard=""
+      data-floating-ui-focus-guard=''
       style={HIDDEN_STYLES}
     />
   );

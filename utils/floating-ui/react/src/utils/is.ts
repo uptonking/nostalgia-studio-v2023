@@ -1,5 +1,5 @@
-import {getDocument} from './getDocument';
-import {getPlatform, getUserAgent} from './getPlatform';
+import { getDocument } from './getDocument';
+import { getPlatform, getUserAgent } from './getPlatform';
 
 export function getWindow(value: any) {
   return getDocument(value).defaultView || window;
@@ -69,7 +69,7 @@ export function isMac() {
 
 export function isMouseLikePointerType(
   pointerType: string | undefined,
-  strict?: boolean
+  strict?: boolean,
 ) {
   // On some Linux machines with Chromium, mouse inputs return a `pointerType`
   // of "pen": https://github.com/floating-ui/floating-ui/issues/2015

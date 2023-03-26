@@ -43,7 +43,7 @@ export const ContextMenu: FC<Props> = ({
   useEffect(() => {
     if (visible && menuRef.current) {
       const { offsetHeight, offsetWidth } = menuRef.current;
-      const {  innerHeight,  innerWidth } = window;
+      const { innerHeight, innerWidth } = window;
       const top =
         offsetHeight + position.top > innerHeight - CURSOR_DISTANCE
           ? position.pageY - offsetHeight

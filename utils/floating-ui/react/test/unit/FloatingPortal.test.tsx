@@ -1,11 +1,17 @@
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
-import {useState} from 'react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
+import { useState } from 'react';
 
-import {FloatingPortal, useFloating} from '../../src';
+import { FloatingPortal, useFloating } from '../../src';
 
-function App(props: {root?: HTMLElement | null; id?: string}) {
+function App(props: { root?: HTMLElement | null; id?: string }) {
   const [open, setOpen] = useState(false);
-  const {reference, floating} = useFloating({
+  const { reference, floating } = useFloating({
     open,
     onOpenChange: setOpen,
   });
@@ -13,19 +19,19 @@ function App(props: {root?: HTMLElement | null; id?: string}) {
   return (
     <>
       <button
-        data-testid="reference"
+        data-testid='reference'
         ref={reference}
         onClick={() => setOpen(!open)}
       />
       <FloatingPortal {...props}>
-        {open && <div ref={floating} data-testid="floating" />}
+        {open && <div ref={floating} data-testid='floating' />}
       </FloatingPortal>
     </>
   );
 }
 
 test('creates a custom id node', () => {
-  render(<App id="custom-id" />);
+  render(<App id='custom-id' />);
   expect(document.querySelector('#custom-id')).toBeInTheDocument();
   cleanup();
 });
@@ -34,21 +40,21 @@ test('uses a custom id node as the root', async () => {
   const customRoot = document.createElement('div');
   customRoot.id = 'custom-root';
   document.body.appendChild(customRoot);
-  render(<App id="custom-root" />);
+  render(<App id='custom-root' />);
   fireEvent.click(screen.getByTestId('reference'));
   await act(async () => {});
   expect(screen.getByTestId('floating').parentElement?.parentElement).toBe(
-    customRoot
+    customRoot,
   );
   customRoot.remove();
 });
 
 test('creates a custom id node as the root', async () => {
-  render(<App id="custom-id" />);
+  render(<App id='custom-id' />);
   fireEvent.click(screen.getByTestId('reference'));
   await act(async () => {});
   expect(screen.getByTestId('floating').parentElement?.parentElement?.id).toBe(
-    'custom-id'
+    'custom-id',
   );
 });
 

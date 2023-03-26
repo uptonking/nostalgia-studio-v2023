@@ -13,7 +13,7 @@ import {
   useRole,
 } from '@floating-ui/react';
 import c from 'clsx';
-import {forwardRef, useRef, useState} from 'react';
+import { forwardRef, useRef, useState } from 'react';
 
 export const data = [
   'Alfalfa Sprouts',
@@ -159,7 +159,7 @@ interface ItemProps {
 const Item = forwardRef<
   HTMLDivElement,
   ItemProps & React.HTMLProps<HTMLDivElement>
->(({children, active, ...rest}, ref) => {
+>(({ children, active, ...rest }, ref) => {
   const id = useId();
   return (
     <div
@@ -167,7 +167,7 @@ const Item = forwardRef<
       className={c('p-2 cursor-default', {
         'bg-blue-500 text-white': active,
       })}
-      role="option"
+      role='option'
       id={id}
       aria-selected={active}
       {...rest}
@@ -184,15 +184,15 @@ export function Main() {
 
   const listRef = useRef<Array<HTMLElement | null>>([]);
 
-  const {x, y, strategy, context, refs} = useFloating<HTMLInputElement>({
+  const { x, y, strategy, context, refs } = useFloating<HTMLInputElement>({
     whileElementsMounted: autoUpdate,
     open,
     onOpenChange: setOpen,
     middleware: [
       offset(5),
-      flip({padding: 10}),
+      flip({ padding: 10 }),
       size({
-        apply({rects, availableHeight, elements}) {
+        apply({ rects, availableHeight, elements }) {
           Object.assign(elements.floating.style, {
             width: `${rects.reference.width}px`,
             maxHeight: `${availableHeight}px`,
@@ -203,18 +203,20 @@ export function Main() {
     ],
   });
 
-  const {getReferenceProps, getFloatingProps, getItemProps} = useInteractions([
-    useRole(context, {role: 'listbox'}),
-    useDismiss(context),
-    useListNavigation(context, {
-      listRef,
-      activeIndex,
-      onNavigate: setActiveIndex,
-      virtual: true,
-      loop: true,
-      allowEscape: true,
-    }),
-  ]);
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [
+      useRole(context, { role: 'listbox' }),
+      useDismiss(context),
+      useListNavigation(context, {
+        listRef,
+        activeIndex,
+        onNavigate: setActiveIndex,
+        virtual: true,
+        loop: true,
+        allowEscape: true,
+      }),
+    ],
+  );
 
   function onChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value;
@@ -228,19 +230,19 @@ export function Main() {
   }
 
   const items = data.filter((item) =>
-    item.toLowerCase().startsWith(inputValue.toLowerCase())
+    item.toLowerCase().startsWith(inputValue.toLowerCase()),
   );
 
   return (
     <>
-      <h1 className="text-5xl font-bold mb-8">Autocomplete</h1>
-      <div className="grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <h1 className='text-5xl font-bold mb-8'>Autocomplete</h1>
+      <div className='grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         <input
           ref={refs.setReference}
           value={inputValue}
-          className="border-2 p-2 rounded border-slate-300 focus:border-blue-500 outline-none"
-          placeholder="Enter fruit"
-          aria-autocomplete="list"
+          className='border-2 p-2 rounded border-slate-300 focus:border-blue-500 outline-none'
+          placeholder='Enter fruit'
+          aria-autocomplete='list'
           {...getReferenceProps({
             onChange,
             onKeyDown(event) {
@@ -265,7 +267,7 @@ export function Main() {
             >
               <div
                 ref={refs.setFloating}
-                className="bg-slate-100 rounded overflow-y-auto"
+                className='bg-slate-100 rounded overflow-y-auto'
                 {...getFloatingProps({
                   style: {
                     position: strategy,

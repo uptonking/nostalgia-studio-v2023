@@ -1,7 +1,13 @@
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {cloneElement, useRef, useState} from 'react';
-import {Context as ResponsiveContext} from 'react-responsive';
+import { cloneElement, useRef, useState } from 'react';
+import { Context as ResponsiveContext } from 'react-responsive';
 
 import {
   FloatingFocusManager,
@@ -15,16 +21,18 @@ import {
   useFloatingParentNodeId,
   useInteractions,
 } from '../../src';
-import {Props} from '../../src/components/FloatingFocusManager';
-import {Main as Drawer} from '../visual/components/Drawer';
-import {Main as Navigation} from '../visual/components/Navigation';
+import { Props } from '../../src/components/FloatingFocusManager';
+import { Main as Drawer } from '../visual/components/Drawer';
+import { Main as Navigation } from '../visual/components/Navigation';
 
 function App(
-  props: Partial<Omit<Props, 'initialFocus'> & {initialFocus?: 'two' | number}>
+  props: Partial<
+    Omit<Props, 'initialFocus'> & { initialFocus?: 'two' | number }
+  >,
 ) {
   const ref = useRef<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState(false);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
@@ -32,7 +40,7 @@ function App(
   return (
     <>
       <button
-        data-testid="reference"
+        data-testid='reference'
         ref={reference}
         onClick={() => setOpen(!open)}
       />
@@ -42,18 +50,18 @@ function App(
           initialFocus={props.initialFocus === 'two' ? ref : props.initialFocus}
           context={context}
         >
-          <div role="dialog" ref={floating} data-testid="floating">
-            <button data-testid="one">close</button>
-            <button data-testid="two" ref={ref}>
+          <div role='dialog' ref={floating} data-testid='floating'>
+            <button data-testid='one'>close</button>
+            <button data-testid='two' ref={ref}>
               confirm
             </button>
-            <button data-testid="three" onClick={() => setOpen(false)}>
+            <button data-testid='three' onClick={() => setOpen(false)}>
               x
             </button>
           </div>
         </FloatingFocusManager>
       )}
-      <div tabIndex={0} data-testid="last">
+      <div tabIndex={0} data-testid='last'>
         x
       </div>
     </>
@@ -62,7 +70,7 @@ function App(
 
 describe('initialFocus', () => {
   test('number', () => {
-    const {rerender} = render(<App />);
+    const { rerender } = render(<App />);
 
     fireEvent.click(screen.getByTestId('reference'));
     expect(screen.getByTestId('one')).toHaveFocus();
@@ -77,7 +85,7 @@ describe('initialFocus', () => {
   });
 
   test('ref', () => {
-    render(<App initialFocus="two" />);
+    render(<App initialFocus='two' />);
     fireEvent.click(screen.getByTestId('reference'));
     expect(screen.getByTestId('two')).toHaveFocus();
 
@@ -87,7 +95,7 @@ describe('initialFocus', () => {
 
 describe('returnFocus', () => {
   test('true', () => {
-    const {rerender} = render(<App />);
+    const { rerender } = render(<App />);
 
     screen.getByTestId('reference').focus();
     fireEvent.click(screen.getByTestId('reference'));
@@ -122,35 +130,35 @@ describe('returnFocus', () => {
   test('always returns to the reference for nested elements', async () => {
     interface Props {
       open?: boolean;
-      render: (props: {close: () => void}) => React.ReactNode;
+      render: (props: { close: () => void }) => React.ReactNode;
       children: JSX.Element;
     }
 
-    const Dialog = ({render, open: passedOpen = false, children}: Props) => {
+    const Dialog = ({ render, open: passedOpen = false, children }: Props) => {
       const [open, setOpen] = useState(passedOpen);
       const nodeId = useFloatingNodeId();
 
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
         nodeId,
       });
 
-      const {getReferenceProps, getFloatingProps} = useInteractions([
+      const { getReferenceProps, getFloatingProps } = useInteractions([
         useClick(context),
-        useDismiss(context, {bubbles: false}),
+        useDismiss(context, { bubbles: false }),
       ]);
 
       return (
         <FloatingNode id={nodeId}>
           {cloneElement(
             children,
-            getReferenceProps({ref: reference, ...children.props})
+            getReferenceProps({ ref: reference, ...children.props }),
           )}
           <FloatingPortal>
             {open && (
               <FloatingFocusManager context={context}>
-                <div {...getFloatingProps({ref: floating})}>
+                <div {...getFloatingProps({ ref: floating })}>
                   {render({
                     close: () => setOpen(false),
                   })}
@@ -178,21 +186,21 @@ describe('returnFocus', () => {
 
     render(
       <NestedDialog
-        render={({close}) => (
+        render={({ close }) => (
           <>
             <NestedDialog
-              render={({close}) => (
-                <button onClick={close} data-testid="close-nested-dialog" />
+              render={({ close }) => (
+                <button onClick={close} data-testid='close-nested-dialog' />
               )}
             >
-              <button data-testid="open-nested-dialog" />
+              <button data-testid='open-nested-dialog' />
             </NestedDialog>
-            <button onClick={close} data-testid="close-dialog" />
+            <button onClick={close} data-testid='close-dialog' />
           </>
         )}
       >
-        <button data-testid="open-dialog" />
-      </NestedDialog>
+        <button data-testid='open-dialog' />
+      </NestedDialog>,
     );
 
     await userEvent.click(screen.getByTestId('open-dialog'));
@@ -251,16 +259,16 @@ describe('modal', () => {
     await userEvent.tab();
     expect(screen.getByTestId('one')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('three')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('two')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('one')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('three')).toHaveFocus();
 
     await userEvent.tab();
@@ -299,8 +307,8 @@ describe('modal', () => {
     fireEvent.click(screen.getByTestId('reference'));
 
     await userEvent.tab();
-    await userEvent.tab({shift: true});
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
+    await userEvent.tab({ shift: true });
 
     expect(screen.queryByRole('dialog')).toBeInTheDocument();
 
@@ -310,7 +318,7 @@ describe('modal', () => {
   test('true - comboboxes hide all other nodes', async () => {
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
@@ -318,20 +326,20 @@ describe('modal', () => {
       return (
         <>
           <input
-            role="combobox"
-            data-testid="reference"
+            role='combobox'
+            data-testid='reference'
             ref={reference}
             onFocus={() => setOpen(true)}
           />
-          <button data-testid="btn-1" />
-          <button data-testid="btn-2" />
+          <button data-testid='btn-1' />
+          <button data-testid='btn-2' />
           {open && (
             <FloatingFocusManager
               context={context}
               modal={true}
               order={['reference']}
             >
-              <div role="listbox" ref={floating} data-testid="floating" />
+              <div role='listbox' ref={floating} data-testid='floating' />
             </FloatingFocusManager>
           )}
         </>
@@ -352,7 +360,7 @@ describe('modal', () => {
   test('false - comboboxes do not hide all other nodes', async () => {
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
@@ -360,16 +368,16 @@ describe('modal', () => {
       return (
         <>
           <input
-            role="combobox"
-            data-testid="reference"
+            role='combobox'
+            data-testid='reference'
             ref={reference}
             onFocus={() => setOpen(true)}
           />
-          <button data-testid="btn-1" />
-          <button data-testid="btn-2" />
+          <button data-testid='btn-1' />
+          <button data-testid='btn-2' />
           {open && (
             <FloatingFocusManager context={context} modal={false}>
-              <div role="listbox" ref={floating} data-testid="floating" />
+              <div role='listbox' ref={floating} data-testid='floating' />
             </FloatingFocusManager>
           )}
         </>
@@ -389,12 +397,12 @@ describe('modal', () => {
 
   test('fallback to floating element when it has no tabbable content', async () => {
     function App() {
-      const {reference, floating, context} = useFloating({open: true});
+      const { reference, floating, context } = useFloating({ open: true });
       return (
         <>
-          <button data-testid="reference" ref={reference} />
+          <button data-testid='reference' ref={reference} />
           <FloatingFocusManager context={context} modal={true}>
-            <div ref={floating} data-testid="floating" tabIndex={-1} />
+            <div ref={floating} data-testid='floating' tabIndex={-1} />
           </FloatingFocusManager>
         </>
       );
@@ -405,7 +413,7 @@ describe('modal', () => {
     expect(screen.getByTestId('floating')).toHaveFocus();
     await userEvent.tab();
     expect(screen.getByTestId('floating')).toHaveFocus();
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('floating')).toHaveFocus();
 
     cleanup();
@@ -446,16 +454,16 @@ describe('order', () => {
     await userEvent.tab();
     expect(screen.getByTestId('floating')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('three')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('two')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('one')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('floating')).toHaveFocus();
 
     cleanup();
@@ -483,13 +491,13 @@ describe('order', () => {
     await userEvent.tab();
     expect(screen.getByTestId('reference')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
     expect(screen.getByTestId('three')).toHaveFocus();
 
-    await userEvent.tab({shift: true});
-    await userEvent.tab({shift: true});
-    await userEvent.tab({shift: true});
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
+    await userEvent.tab({ shift: true });
+    await userEvent.tab({ shift: true });
+    await userEvent.tab({ shift: true });
 
     expect(screen.getByTestId('reference')).toHaveFocus();
 
@@ -501,29 +509,29 @@ describe('non-modal + FloatingPortal', () => {
   test('focuses inside element, tabbing out focuses last document element', async () => {
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
 
       return (
         <>
-          <span tabIndex={0} data-testid="first" />
+          <span tabIndex={0} data-testid='first' />
           <button
-            data-testid="reference"
+            data-testid='reference'
             ref={reference}
             onClick={() => setOpen(true)}
           />
           <FloatingPortal>
             {open && (
               <FloatingFocusManager context={context} modal={false}>
-                <div data-testid="floating" ref={floating}>
-                  <span tabIndex={0} data-testid="inside" />
+                <div data-testid='floating' ref={floating}>
+                  <span tabIndex={0} data-testid='inside' />
                 </div>
               </FloatingFocusManager>
             )}
           </FloatingPortal>
-          <span tabIndex={0} data-testid="last" />
+          <span tabIndex={0} data-testid='last' />
         </>
       );
     }
@@ -545,16 +553,16 @@ describe('non-modal + FloatingPortal', () => {
   test('order: [reference, content] focuses reference, then inside, then, last document element', async () => {
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
 
       return (
         <>
-          <span tabIndex={0} data-testid="first" />
+          <span tabIndex={0} data-testid='first' />
           <button
-            data-testid="reference"
+            data-testid='reference'
             ref={reference}
             onClick={() => setOpen(true)}
           />
@@ -565,13 +573,13 @@ describe('non-modal + FloatingPortal', () => {
                 modal={false}
                 order={['reference', 'content']}
               >
-                <div data-testid="floating" ref={floating}>
-                  <span tabIndex={0} data-testid="inside" />
+                <div data-testid='floating' ref={floating}>
+                  <span tabIndex={0} data-testid='inside' />
                 </div>
               </FloatingFocusManager>
             )}
           </FloatingPortal>
-          <span tabIndex={0} data-testid="last" />
+          <span tabIndex={0} data-testid='last' />
         </>
       );
     }
@@ -595,16 +603,16 @@ describe('non-modal + FloatingPortal', () => {
   test('order: [reference, floating, content] focuses reference, then inside, then, last document element', async () => {
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
 
       return (
         <>
-          <span tabIndex={0} data-testid="first" />
+          <span tabIndex={0} data-testid='first' />
           <button
-            data-testid="reference"
+            data-testid='reference'
             ref={reference}
             onClick={() => setOpen(true)}
           />
@@ -615,13 +623,13 @@ describe('non-modal + FloatingPortal', () => {
                 modal={false}
                 order={['reference', 'floating', 'content']}
               >
-                <div data-testid="floating" ref={floating}>
-                  <span tabIndex={0} data-testid="inside" />
+                <div data-testid='floating' ref={floating}>
+                  <span tabIndex={0} data-testid='inside' />
                 </div>
               </FloatingFocusManager>
             )}
           </FloatingPortal>
-          <span tabIndex={0} data-testid="last" />
+          <span tabIndex={0} data-testid='last' />
         </>
       );
     }
@@ -649,29 +657,29 @@ describe('non-modal + FloatingPortal', () => {
   test('shift+tab', async () => {
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
 
       return (
         <>
-          <span tabIndex={0} data-testid="first" />
+          <span tabIndex={0} data-testid='first' />
           <button
-            data-testid="reference"
+            data-testid='reference'
             ref={reference}
             onClick={() => setOpen(true)}
           />
           <FloatingPortal>
             {open && (
               <FloatingFocusManager context={context} modal={false}>
-                <div data-testid="floating" ref={floating}>
-                  <span tabIndex={0} data-testid="inside" />
+                <div data-testid='floating' ref={floating}>
+                  <span tabIndex={0} data-testid='inside' />
                 </div>
               </FloatingFocusManager>
             )}
           </FloatingPortal>
-          <span tabIndex={0} data-testid="last" />
+          <span tabIndex={0} data-testid='last' />
         </>
       );
     }
@@ -679,11 +687,11 @@ describe('non-modal + FloatingPortal', () => {
     render(<App />);
 
     await userEvent.click(screen.getByTestId('reference'));
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
 
     expect(screen.queryByTestId('floating')).toBeInTheDocument();
 
-    await userEvent.tab({shift: true});
+    await userEvent.tab({ shift: true });
 
     expect(screen.queryByTestId('floating')).not.toBeInTheDocument();
 
@@ -738,9 +746,9 @@ describe('Navigation', () => {
 describe('Drawer', () => {
   test('does not close when clicking another button outside', async () => {
     render(
-      <ResponsiveContext.Provider value={{width: 1600}}>
+      <ResponsiveContext.Provider value={{ width: 1600 }}>
         <Drawer />
-      </ResponsiveContext.Provider>
+      </ResponsiveContext.Provider>,
     );
     await userEvent.click(screen.getByText('My button'));
     expect(screen.queryByText('Close')).toBeInTheDocument();
@@ -751,9 +759,9 @@ describe('Drawer', () => {
 
   test('closeOnFocusOut=false - does not close when tabbing out', async () => {
     render(
-      <ResponsiveContext.Provider value={{width: 1600}}>
+      <ResponsiveContext.Provider value={{ width: 1600 }}>
         <Drawer />
-      </ResponsiveContext.Provider>
+      </ResponsiveContext.Provider>,
     );
     await userEvent.click(screen.getByText('My button'));
     expect(screen.queryByText('Close')).toBeInTheDocument();
@@ -765,9 +773,9 @@ describe('Drawer', () => {
 
   test('returns focus when tabbing out then back to close button', async () => {
     render(
-      <ResponsiveContext.Provider value={{width: 1600}}>
+      <ResponsiveContext.Provider value={{ width: 1600 }}>
         <Drawer />
-      </ResponsiveContext.Provider>
+      </ResponsiveContext.Provider>,
     );
     await userEvent.click(screen.getByText('My button'));
     expect(screen.queryByText('Close')).toBeInTheDocument();

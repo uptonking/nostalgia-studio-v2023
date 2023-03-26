@@ -1,7 +1,7 @@
-import {useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useState} from 'react';
+import { useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useState } from 'react';
 
-import {Controls} from '../utils/Controls';
+import { Controls } from '../utils/Controls';
 
 type Node =
   | null
@@ -23,7 +23,7 @@ const NODES: Node[] = [
 
 export function Border() {
   const [node, setNode] = useState<Node>(null);
-  const {x, y, reference, floating, strategy, update} = useFloating();
+  const { x, y, reference, floating, strategy, update } = useFloating();
 
   useLayoutEffect(() => {
     let element: HTMLElement | null = null;
@@ -59,7 +59,7 @@ export function Border() {
         certain element has a border.
       </p>
       <div
-        className="container"
+        className='container'
         style={{
           border:
             node === 'offsetParent' || node === 'content-box'
@@ -76,14 +76,14 @@ export function Border() {
       >
         <div
           ref={reference}
-          className="reference"
-          style={{border: node === 'reference' ? '10px solid black' : ''}}
+          className='reference'
+          style={{ border: node === 'reference' ? '10px solid black' : '' }}
         >
           Reference
         </div>
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? '',

@@ -11,9 +11,7 @@ export type CursorData = {
   bgColor: string;
 };
 
-
 export type SyncableEditor = CustomEditor &
   YjsEditor &
   YHistoryEditor &
   CursorEditor<CursorData>;
-

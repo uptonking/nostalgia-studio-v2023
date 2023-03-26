@@ -1,9 +1,9 @@
 import * as React from 'react';
-import {createPortal} from 'react-dom';
+import { createPortal } from 'react-dom';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import {useId} from '../hooks/useId';
-import {FloatingContext} from '../types';
+import { useId } from '../hooks/useId';
+import { FloatingContext } from '../types';
 import {
   disableFocusInside,
   enableFocusInside,
@@ -11,10 +11,10 @@ import {
   getPreviousTabbable,
   isOutsideEvent,
 } from '../utils/tabbable';
-import {FocusGuard, HIDDEN_STYLES} from './FocusGuard';
+import { FocusGuard, HIDDEN_STYLES } from './FocusGuard';
 
 type FocusManagerState =
-  | (FloatingContext & {modal: boolean; closeOnFocusOut: boolean})
+  | (FloatingContext & { modal: boolean; closeOnFocusOut: boolean })
   | null;
 
 const PortalContext = React.createContext<null | {
@@ -97,7 +97,7 @@ export const FloatingPortal = ({
   root?: HTMLElement | null;
   preserveTabOrder?: boolean;
 }) => {
-  const portalNode = useFloatingPortalNode({id, root});
+  const portalNode = useFloatingPortalNode({ id, root });
   const [focusManagerState, setFocusManagerState] =
     React.useState<FocusManagerState>(null);
 
@@ -153,12 +153,12 @@ export const FloatingPortal = ({
           portalNode,
           setFocusManagerState,
         }),
-        [preserveTabOrder, portalNode]
+        [preserveTabOrder, portalNode],
       )}
     >
       {shouldRenderGuards && portalNode && (
         <FocusGuard
-          data-type="outside"
+          data-type='outside'
           ref={beforeOutsideRef}
           onFocus={(event) => {
             if (isOutsideEvent(event, portalNode)) {
@@ -178,7 +178,7 @@ export const FloatingPortal = ({
       {portalNode && createPortal(children, portalNode)}
       {shouldRenderGuards && portalNode && (
         <FocusGuard
-          data-type="outside"
+          data-type='outside'
           ref={afterOutsideRef}
           onFocus={(event) => {
             if (isOutsideEvent(event, portalNode)) {

@@ -6,9 +6,7 @@ import { useResizeDetector } from 'react-resize-detector';
 import { Editor } from 'slate';
 import { useSlateStatic } from 'slate-react';
 
-import {
-  DragOverlayEditor,
-} from '../../../../components/editor/drag-overlay-editor';
+import { DragOverlayEditor } from '../../../../components/editor/drag-overlay-editor';
 import { listIndentWidth } from '../../../../config/editor';
 import { ExtendedEditor } from '../../../../slate-extended/extended-editor';
 

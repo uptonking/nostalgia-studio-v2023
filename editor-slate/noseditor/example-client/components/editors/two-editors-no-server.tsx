@@ -61,22 +61,22 @@ export const TwoEditorsCollabNoServer = () => {
      */
     const handleYEvents =
       (editor: YjsEditor) =>
-        (
-          // @ts-expect-error fix-types
-          events: Y.YEvent<Y.XmlText>[],
-          transaction: Y.Transaction,
-        ) => {
-          // console.log(
-          //   ';; y-observeDeep ',
-          //   editor.isLocalOrigin(transaction.origin),
-          //   transaction.origin,
-          //   events,
-          // );
-          if (editor.isLocalOrigin(transaction.origin)) {
-            return;
-          }
-          YjsEditor.applyRemoteEvents(editor, events, transaction.origin);
-        };
+      (
+        // @ts-expect-error fix-types
+        events: Y.YEvent<Y.XmlText>[],
+        transaction: Y.Transaction,
+      ) => {
+        // console.log(
+        //   ';; y-observeDeep ',
+        //   editor.isLocalOrigin(transaction.origin),
+        //   transaction.origin,
+        //   events,
+        // );
+        if (editor.isLocalOrigin(transaction.origin)) {
+          return;
+        }
+        YjsEditor.applyRemoteEvents(editor, events, transaction.origin);
+      };
 
     if (client1?.editor?.sharedRoot && client2?.editor?.sharedRoot) {
       //   client1.editor.ydoc.on('update', (update) => {
@@ -121,7 +121,7 @@ export const TwoEditorsCollabNoServer = () => {
             <h2>{client1.siteId}</h2>
             <button
               className={`btn ${client1.isOnline ? 'online' : 'offline'}`}
-            // onClick={() => toggleOnline(siteA, setSiteA, siteB)}
+              // onClick={() => toggleOnline(siteA, setSiteA, siteB)}
             >
               {client1.isOnline ? 'Online' : 'Offline'}
             </button>
@@ -138,12 +138,12 @@ export const TwoEditorsCollabNoServer = () => {
                 },
                 [client1],
               )}
-            // updateContentListener={(payload: any) =>
-            //   updateEditorContent(payload, client1, client2)
-            // }
-            // updateSelection={(fromIndex: number, toIndex: number) =>
-            //   updateSelection(fromIndex, toIndex, siteA, siteB)
-            // }
+              // updateContentListener={(payload: any) =>
+              //   updateEditorContent(payload, client1, client2)
+              // }
+              // updateSelection={(fromIndex: number, toIndex: number) =>
+              //   updateSelection(fromIndex, toIndex, siteA, siteB)
+              // }
             />
           </div>
         </div>
@@ -153,7 +153,7 @@ export const TwoEditorsCollabNoServer = () => {
             <h2>{client2.siteId}</h2>
             <button
               className={`btn ${client2.isOnline ? 'online' : 'offline'}`}
-            // onClick={() => toggleOnline(siteA, setSiteA, siteB)}
+              // onClick={() => toggleOnline(siteA, setSiteA, siteB)}
             >
               {client2.isOnline ? 'Online' : 'Offline'}
             </button>
@@ -170,12 +170,12 @@ export const TwoEditorsCollabNoServer = () => {
                 },
                 [client2],
               )}
-            // updateContentListener={(payload: any) =>
-            //   updateEditorContent(payload, client2, client1)
-            // }
-            // updateSelection={(fromIndex: number, toIndex: number) =>
-            //   updateSelection(fromIndex, toIndex, siteA, siteB)
-            // }
+              // updateContentListener={(payload: any) =>
+              //   updateEditorContent(payload, client2, client1)
+              // }
+              // updateSelection={(fromIndex: number, toIndex: number) =>
+              //   updateSelection(fromIndex, toIndex, siteA, siteB)
+              // }
             />
           </div>
         </div>

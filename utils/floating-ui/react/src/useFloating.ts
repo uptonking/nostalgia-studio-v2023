@@ -1,10 +1,10 @@
-import {useFloating as usePosition} from '@floating-ui/react-dom';
+import { useFloating as usePosition } from '@floating-ui/react-dom';
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import {useFloatingTree} from './components/FloatingTree';
-import {useId} from './hooks/useId';
-import {useEvent} from './hooks/utils/useEvent';
+import { useFloatingTree } from './components/FloatingTree';
+import { useId } from './hooks/useId';
+import { useEvent } from './hooks/utils/useEvent';
 import type {
   ContextData,
   FloatingContext,
@@ -13,17 +13,17 @@ import type {
   UseFloatingProps,
   UseFloatingReturn,
 } from './types';
-import {createPubSub} from './utils/createPubSub';
-import {isElement} from './utils/is';
+import { createPubSub } from './utils/createPubSub';
+import { isElement } from './utils/is';
 
 /**
  * Provides data to position a floating element and context to add interactions.
  * @see https://floating-ui.com/docs/react
  */
 export function useFloating<RT extends ReferenceType = ReferenceType>(
-  options: Partial<UseFloatingProps> = {}
+  options: Partial<UseFloatingProps> = {},
 ): UseFloatingReturn<RT> {
-  const {open = false, onOpenChange: unstable_onOpenChange, nodeId} = options;
+  const { open = false, onOpenChange: unstable_onOpenChange, nodeId } = options;
 
   const position = usePosition<RT>(options);
   const tree = useFloatingTree<RT>();
@@ -46,7 +46,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
         : node;
       position.refs.setReference(positionReference as RT | null);
     },
-    [position.refs]
+    [position.refs],
   );
 
   const setReference = React.useCallback(
@@ -70,7 +70,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
         position.refs.setReference(node);
       }
     },
-    [position.refs]
+    [position.refs],
   );
 
   const refs = React.useMemo(
@@ -80,7 +80,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
       setPositionReference,
       domReference: domReferenceRef,
     }),
-    [position.refs, setReference, setPositionReference]
+    [position.refs, setReference, setPositionReference],
   );
 
   const elements = React.useMemo(
@@ -88,7 +88,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
       ...position.elements,
       domReference: domReference,
     }),
-    [position.elements, domReference]
+    [position.elements, domReference],
   );
 
   const onOpenChange = useEvent(unstable_onOpenChange);
@@ -105,7 +105,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
       open,
       onOpenChange,
     }),
-    [position, nodeId, floatingId, events, open, onOpenChange, refs, elements]
+    [position, nodeId, floatingId, events, open, onOpenChange, refs, elements],
   );
 
   useLayoutEffect(() => {
@@ -124,6 +124,6 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
       reference: setReference,
       positionReference: setPositionReference,
     }),
-    [position, refs, elements, context, setReference, setPositionReference]
+    [position, refs, elements, context, setReference, setPositionReference],
   ) as UseFloatingReturn<RT>;
 }

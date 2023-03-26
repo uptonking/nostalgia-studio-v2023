@@ -1,8 +1,8 @@
-import {detectOverflow, offset} from '@floating-ui/react-dom';
+import { detectOverflow, offset } from '@floating-ui/react-dom';
 import * as React from 'react';
-import {flushSync} from 'react-dom';
+import { flushSync } from 'react-dom';
 
-import {useEvent} from './hooks/utils/useEvent';
+import { useEvent } from './hooks/utils/useEvent';
 import type {
   DetectOverflowOptions,
   ElementProps,
@@ -11,11 +11,11 @@ import type {
   MiddlewareState,
   SideObject,
 } from './types';
-import {getUserAgent} from './utils/getPlatform';
+import { getUserAgent } from './utils/getPlatform';
 
 function getArgsWithCustomFloatingHeight(
   state: MiddlewareState,
-  height: number
+  height: number,
 ) {
   return {
     ...state,
@@ -46,7 +46,7 @@ export interface InnerProps {
  * @see https://floating-ui.com/docs/inner
  */
 export const inner = (
-  props: InnerProps & Partial<DetectOverflowOptions>
+  props: InnerProps & Partial<DetectOverflowOptions>,
 ): Middleware => ({
   name: 'inner',
   options: props,
@@ -65,7 +65,7 @@ export const inner = (
 
     const {
       rects,
-      elements: {floating},
+      elements: { floating },
     } = state;
 
     const item = listRef.current[index];
@@ -76,7 +76,7 @@ export const inner = (
           [
             'Floating UI: `placement` side must be "bottom" when using the',
             '`inner` middleware.',
-          ].join(' ')
+          ].join(' '),
         );
       }
     }
@@ -91,7 +91,7 @@ export const inner = (
         -item.offsetTop -
           rects.reference.height / 2 -
           item.offsetHeight / 2 -
-          innerOffset
+          innerOffset,
       ).fn(state)),
     };
 
@@ -99,7 +99,7 @@ export const inner = (
 
     const overflow = await detectOverflow(
       getArgsWithCustomFloatingHeight(nextArgs, el.scrollHeight),
-      detectOverflowOptions
+      detectOverflowOptions,
     );
     const refOverflow = await detectOverflow(nextArgs, {
       ...detectOverflowOptions,
@@ -111,7 +111,7 @@ export const inner = (
 
     const maxHeight = Math.max(
       0,
-      el.scrollHeight - diffY - Math.max(0, overflow.bottom)
+      el.scrollHeight - diffY - Math.max(0, overflow.bottom),
     );
 
     el.style.maxHeight = `${maxHeight}px`;
@@ -136,10 +136,10 @@ export const inner = (
     if (overflowRef) {
       overflowRef.current = await detectOverflow(
         getArgsWithCustomFloatingHeight(
-          {...nextArgs, y: nextY},
-          el.offsetHeight
+          { ...nextArgs, y: nextY },
+          el.offsetHeight,
         ),
-        detectOverflowOptions
+        detectOverflowOptions,
       );
     }
 
@@ -162,13 +162,13 @@ export interface UseInnerOffsetProps {
  * @see https://floating-ui.com/docs/inner
  */
 export const useInnerOffset = (
-  {open, elements}: FloatingContext,
+  { open, elements }: FloatingContext,
   {
     enabled = true,
     overflowRef,
     scrollRef,
     onChange: unstable_onChange,
-  }: UseInnerOffsetProps
+  }: UseInnerOffsetProps,
 ): ElementProps => {
   const onChange = useEvent(unstable_onChange);
   const controlledScrollingRef = React.useRef(false);
@@ -218,7 +218,7 @@ export const useInnerOffset = (
         prevScrollTopRef.current = el.scrollTop;
 
         if (overflowRef.current != null) {
-          initialOverflowRef.current = {...overflowRef.current};
+          initialOverflowRef.current = { ...overflowRef.current };
         }
       });
 

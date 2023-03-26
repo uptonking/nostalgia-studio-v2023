@@ -6,4 +6,3 @@ export const useSerializePlugin: UseNosPlugin = () => {
     withOverrides: withSerialize,
   };
 };
-

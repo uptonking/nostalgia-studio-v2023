@@ -6,9 +6,9 @@ import {
   Placement,
   useFloating,
 } from '@floating-ui/react';
-import {useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 
-import type {Props} from '../../../src/components/FloatingArrow';
+import type { Props } from '../../../src/components/FloatingArrow';
 
 const ROUND_D =
   'M0 20C0 20 2.06906 19.9829 5.91817 15.4092C7.49986 13.5236 8.97939 12.3809 10.0002 12.3809C11.0202 12.3809 12.481 13.6451 14.0814 15.5472C17.952 20.1437 20 20 20 20H0Z';
@@ -28,12 +28,12 @@ function Demo({
 
   const arrowRef = useRef<SVGSVGElement>(null);
 
-  const {x, y, strategy, refs, context} = useFloating({
+  const { x, y, strategy, refs, context } = useFloating({
     placement,
     open: isOpen,
     onOpenChange: setIsOpen,
     whileElementsMounted: autoUpdate,
-    middleware: [offset(8), arrow({element: arrowRef})],
+    middleware: [offset(8), arrow({ element: arrowRef })],
   });
 
   const edgeAlignment = placement.split('-')[1];
@@ -53,7 +53,7 @@ function Demo({
       {isOpen && (
         <div
           ref={refs.setFloating}
-          className="bg-black text-white p-2 bg-clip-padding"
+          className='bg-black text-white p-2 bg-clip-padding'
           {...floatingProps}
           style={{
             position: strategy,
@@ -78,7 +78,7 @@ function Demo({
 const allPlacements = ['top', 'bottom', 'right', 'left']
   .map(
     (placement) =>
-      [placement, `${placement}-start`, `${placement}-end`] as Array<Placement>
+      [placement, `${placement}-start`, `${placement}-end`] as Array<Placement>,
   )
   .flat();
 
@@ -87,9 +87,9 @@ export const Main = () => {
 
   return (
     <>
-      <h1 className="text-5xl font-bold">Arrow</h1>
-      <h2 className="text-xl font-bold mb-6 my-8">Slight transparency</h2>
-      <div className="grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <h1 className='text-5xl font-bold'>Arrow</h1>
+      <h2 className='text-xl font-bold mb-6 my-8'>Slight transparency</h2>
+      <div className='grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         {allPlacements.map((placement) => (
           <Demo
             key={placement}
@@ -103,30 +103,30 @@ export const Main = () => {
           />
         ))}
       </div>
-      <h2 className="text-xl font-bold mb-6 mt-10">{'tipRadius={2}'}</h2>
-      <div className="grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <h2 className='text-xl font-bold mb-6 mt-10'>{'tipRadius={2}'}</h2>
+      <div className='grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         {allPlacements.map((placement) => (
           <Demo
             key={placement}
             placement={placement}
-            arrowProps={{tipRadius: 2}}
+            arrowProps={{ tipRadius: 2 }}
           />
         ))}
       </div>
-      <h2 className="text-xl font-bold mb-6 mt-10">{'tipRadius={5}'}</h2>
-      <div className="grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <h2 className='text-xl font-bold mb-6 mt-10'>{'tipRadius={5}'}</h2>
+      <div className='grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         {allPlacements.map((placement) => (
           <Demo
             key={placement}
             placement={placement}
-            arrowProps={{tipRadius: 5}}
+            arrowProps={{ tipRadius: 5 }}
           />
         ))}
       </div>
-      <h2 className="text-xl font-bold mb-6 mt-10">
+      <h2 className='text-xl font-bold mb-6 mt-10'>
         Transparent stroke + tipRadius
       </h2>
-      <div className="grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <div className='grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         {allPlacements.map((placement) => (
           <Demo
             key={placement}
@@ -145,10 +145,10 @@ export const Main = () => {
           />
         ))}
       </div>
-      <h2 className="text-xl font-bold mb-6 mt-10">
+      <h2 className='text-xl font-bold mb-6 mt-10'>
         Custom path + transparent stroke
       </h2>
-      <div className="grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <div className='grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         {allPlacements.map((placement) => (
           <Demo
             key={placement}
@@ -169,10 +169,10 @@ export const Main = () => {
           />
         ))}
       </div>
-      <h2 className="text-xl font-bold mb-6 mt-10">
+      <h2 className='text-xl font-bold mb-6 mt-10'>
         Tailwind classNames for fill and stroke
       </h2>
-      <div className="grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <div className='grid grid-cols-3 place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         {allPlacements.map((placement) => (
           <Demo
             key={placement}

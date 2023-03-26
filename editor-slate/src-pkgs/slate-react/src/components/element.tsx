@@ -6,9 +6,7 @@ import { Editor, Element as SlateElement, Node, Range } from 'slate';
 import { ReactEditor, useReadOnly, useSlateStatic } from '..';
 import useChildren from '../hooks/use-children';
 import { useContentKey } from '../hooks/use-content-key';
-import {
-  useIsomorphicLayoutEffect,
-} from '../hooks/use-isomorphic-layout-effect';
+import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
 import { IS_ANDROID } from '../utils/environment';
 import { isDecoratorRangeListEqual } from '../utils/range-list';
 import {

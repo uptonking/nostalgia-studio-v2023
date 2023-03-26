@@ -1,13 +1,19 @@
-import type {Placement} from '@floating-ui/core';
-import {arrow, flip, offset, shift, useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useRef, useState} from 'react';
+import type { Placement } from '@floating-ui/core';
+import {
+  arrow,
+  flip,
+  offset,
+  shift,
+  useFloating,
+} from '@floating-ui/react-dom';
+import { useLayoutEffect, useRef, useState } from 'react';
 
-import {allPlacements} from '../utils/allPlacements';
-import {BoxSizeControl} from '../utils/BoxSizeControl';
-import {Container} from '../utils/Container';
-import {Controls} from '../utils/Controls';
-import {useBoxSize} from '../utils/useBoxSize';
-import {useSize} from '../utils/useSize';
+import { allPlacements } from '../utils/allPlacements';
+import { BoxSizeControl } from '../utils/BoxSizeControl';
+import { Container } from '../utils/Container';
+import { Controls } from '../utils/Controls';
+import { useBoxSize } from '../utils/useBoxSize';
+import { useSize } from '../utils/useSize';
 
 export function Complex() {
   const [floatingSizeValue, floatingSize, handleFloatingSizeChange] =
@@ -28,20 +34,20 @@ export function Complex() {
     strategy,
     update,
     placement: resultantPlacement,
-    middlewareData: {arrow: {x: arrowX, y: arrowY} = {}},
+    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
   } = useFloating({
     placement,
     middleware: [
       offset(offsetValue),
       flip(),
-      shift({padding: shiftValue}),
-      arrow({element: arrowRef, padding: paddingValue}),
+      shift({ padding: shiftValue }),
+      arrow({ element: arrowRef, padding: paddingValue }),
     ],
   });
 
   useLayoutEffect(update, [update, floatingSize, referenceSize, paddingValue]);
 
-  const oppositeSidesMap: {[key: string]: string} = {
+  const oppositeSidesMap: { [key: string]: string } = {
     top: 'bottom',
     left: 'right',
     right: 'left',
@@ -60,14 +66,14 @@ export function Complex() {
       <Container update={update}>
         <div
           ref={reference}
-          className="reference"
-          style={{width: referenceSizeValue, height: referenceSizeValue}}
+          className='reference'
+          style={{ width: referenceSizeValue, height: referenceSizeValue }}
         >
           Reference
         </div>
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? '',
@@ -79,7 +85,7 @@ export function Complex() {
           Floating
           <div
             ref={arrowRef}
-            className="arrow"
+            className='arrow'
             style={{
               position: 'absolute',
               top: arrowY ?? '',
@@ -93,46 +99,46 @@ export function Complex() {
       </Container>
 
       <BoxSizeControl
-        id="reference-size"
-        label="Reference size"
+        id='reference-size'
+        label='Reference size'
         onChange={handleReferenceSizeChange}
         size={referenceSize}
       />
       <BoxSizeControl
-        id="floating-size"
-        label="Floating size"
+        id='floating-size'
+        label='Floating size'
         onChange={handleFloatingSizeChange}
         size={floatingSize}
       />
       <Controls>
-        <label htmlFor="offset">Offset</label>
+        <label htmlFor='offset'>Offset</label>
         <input
-          id="offset"
-          type="range"
-          min="0"
-          max="50"
+          id='offset'
+          type='range'
+          min='0'
+          max='50'
           value={offsetValue}
           onChange={handleOffsetChange}
         />
       </Controls>
       <Controls>
-        <label htmlFor="shift">Shift</label>
+        <label htmlFor='shift'>Shift</label>
         <input
-          id="shift"
-          type="range"
-          min="0"
-          max="50"
+          id='shift'
+          type='range'
+          min='0'
+          max='50'
           value={shiftValue}
           onChange={handleShiftChange}
         />
       </Controls>
       <Controls>
-        <label htmlFor="padding">Arrow padding</label>
+        <label htmlFor='padding'>Arrow padding</label>
         <input
-          id="padding"
-          type="range"
-          min="0"
-          max="50"
+          id='padding'
+          type='range'
+          min='0'
+          max='50'
           value={paddingValue}
           onChange={handlePaddingChange}
         />

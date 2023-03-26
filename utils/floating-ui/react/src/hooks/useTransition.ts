@@ -1,20 +1,20 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import type {FloatingContext, Placement, ReferenceType, Side} from '../types';
-import {useLatestRef} from './utils/useLatestRef';
+import type { FloatingContext, Placement, ReferenceType, Side } from '../types';
+import { useLatestRef } from './utils/useLatestRef';
 
 // Converts a JS style key like `backgroundColor` to a CSS transition-property
 // like `background-color`.
 const camelCaseToKebabCase = (str: string): string =>
   str.replace(
     /[A-Z]+(?![a-z])|[A-Z]/g,
-    ($, ofs) => (ofs ? '-' : '') + $.toLowerCase()
+    ($, ofs) => (ofs ? '-' : '') + $.toLowerCase(),
   );
 
 function execWithArgsOrReturn<Value extends object | undefined, SidePlacement>(
   valueOrFn: Value | ((args: SidePlacement) => Value),
-  args: SidePlacement
+  args: SidePlacement,
 ): Value {
   return typeof valueOrFn === 'function' ? valueOrFn(args) : valueOrFn;
 }
@@ -37,7 +37,7 @@ function useDelayUnmount(open: boolean, durationMs: number): boolean {
 }
 
 export interface Props {
-  duration?: number | Partial<{open: number; close: number}>;
+  duration?: number | Partial<{ open: number; close: number }>;
 }
 
 type Status = 'unmounted' | 'initial' | 'open' | 'close';
@@ -49,16 +49,16 @@ type Status = 'unmounted' | 'initial' | 'open' | 'close';
  */
 export function useTransitionStatus<RT extends ReferenceType = ReferenceType>(
   context: FloatingContext<RT>,
-  props: Props = {}
+  props: Props = {},
 ): {
   isMounted: boolean;
   status: Status;
 } {
   const {
     open,
-    elements: {floating},
+    elements: { floating },
   } = context;
-  const {duration = 250} = props;
+  const { duration = 250 } = props;
 
   const isNumberDuration = typeof duration === 'number';
   const closeDuration = (isNumberDuration ? duration : duration.close) || 0;
@@ -104,7 +104,7 @@ export function useTransitionStatus<RT extends ReferenceType = ReferenceType>(
 
 type CSSStylesProperty =
   | React.CSSProperties
-  | ((params: {side: Side; placement: Placement}) => React.CSSProperties);
+  | ((params: { side: Side; placement: Placement }) => React.CSSProperties);
 
 export interface UseTransitionStylesProps extends Props {
   initial?: CSSStylesProperty;
@@ -120,13 +120,13 @@ export interface UseTransitionStylesProps extends Props {
  */
 export function useTransitionStyles<RT extends ReferenceType = ReferenceType>(
   context: FloatingContext<RT>,
-  props: UseTransitionStylesProps = {}
+  props: UseTransitionStylesProps = {},
 ): {
   isMounted: boolean;
   styles: React.CSSProperties;
 } {
   const {
-    initial: unstable_initial = {opacity: 0},
+    initial: unstable_initial = { opacity: 0 },
     open: unstable_open,
     close: unstable_close,
     common: unstable_common,
@@ -135,7 +135,7 @@ export function useTransitionStyles<RT extends ReferenceType = ReferenceType>(
 
   const placement = context.placement;
   const side = placement.split('-')[0] as Side;
-  const fnArgs = React.useMemo(() => ({side, placement}), [side, placement]);
+  const fnArgs = React.useMemo(() => ({ side, placement }), [side, placement]);
   const isNumberDuration = typeof duration === 'number';
   const openDuration = (isNumberDuration ? duration : duration.open) || 0;
   const closeDuration = (isNumberDuration ? duration : duration.close) || 0;
@@ -145,7 +145,7 @@ export function useTransitionStyles<RT extends ReferenceType = ReferenceType>(
     ...execWithArgsOrReturn(unstable_initial, fnArgs),
   }));
 
-  const {isMounted, status} = useTransitionStatus(context, {duration});
+  const { isMounted, status } = useTransitionStatus(context, { duration });
   const initialRef = useLatestRef(unstable_initial);
   const openRef = useLatestRef(unstable_open);
   const closeRef = useLatestRef(unstable_close);

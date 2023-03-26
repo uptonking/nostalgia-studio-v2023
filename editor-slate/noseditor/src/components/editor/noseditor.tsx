@@ -5,9 +5,7 @@ import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
 import { NosIconProvider } from '../../config/icon-provider';
 import { usePersistedState } from '../../hooks/use-persisted-state';
-import {
-  DragOverlayContent,
-} from '../../plugins/wrapper/components/drag-overlay-content';
+import { DragOverlayContent } from '../../plugins/wrapper/components/drag-overlay-content';
 import { DndPluginContext } from '../../slate-extended/dnd/dnd-plugin-context';
 import { ExtendedEditor } from '../../slate-extended/extended-editor';
 import { EditorToolbar } from '../editor-toolbar';
@@ -31,11 +29,7 @@ export type NosEditorProps = {
  * It can be used as an reference implementation to build your own block editor.
  */
 export const NosEditor = (props: NosEditorProps) => {
-  const {
-    initialValue,
-    id = 'main',
-    readOnly = false,
-  } = props;
+  const { initialValue, id = 'main', readOnly = false } = props;
 
   const forceRerender = useReducer(() => ({}), {})[1];
 
@@ -84,27 +78,27 @@ export const NosEditor = (props: NosEditorProps) => {
     <NosIconProvider>
       <Slate editor={editor} value={value} onChange={setValue}>
         {/* <SlateExtended> */}
-          <DndPluginContext
-            editor={editor}
-            onDragEnd={useCallback(() => {
-              // after dnd ends to provide the right DragOverlay drop animation
-              forceRerender();
-            }, [forceRerender])}
-            renderDragOverlay={useCallback(
-              (props) => (
-                <DragOverlayContent {...props} />
-              ),
-              [],
-            )}
-          >
-            <EditorToolbar />
-            <Editable
-              className='nos-editable'
-              renderElement={renderElement}
-              renderLeaf={renderLeaf}
-              {...handlers}
-            />
-          </DndPluginContext>
+        <DndPluginContext
+          editor={editor}
+          onDragEnd={useCallback(() => {
+            // after dnd ends to provide the right DragOverlay drop animation
+            forceRerender();
+          }, [forceRerender])}
+          renderDragOverlay={useCallback(
+            (props) => (
+              <DragOverlayContent {...props} />
+            ),
+            [],
+          )}
+        >
+          <EditorToolbar />
+          <Editable
+            className='nos-editable'
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            {...handlers}
+          />
+        </DndPluginContext>
         {/* </SlateExtended> */}
       </Slate>
     </NosIconProvider>

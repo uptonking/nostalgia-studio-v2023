@@ -1,8 +1,8 @@
-import type {Dimensions} from '@floating-ui/core';
-import {size as sizeM, useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useState} from 'react';
+import type { Dimensions } from '@floating-ui/core';
+import { size as sizeM, useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useState } from 'react';
 
-import {Controls} from '../utils/Controls';
+import { Controls } from '../utils/Controls';
 
 type Size = string;
 const SIZES: Size[] = ['.0', '.25', '.5', '.75'];
@@ -15,10 +15,10 @@ export function DecimalSize() {
     height: INTEGER,
   });
   const [truncate, setTruncate] = useState(false);
-  const {x, y, reference, floating, strategy, update} = useFloating({
+  const { x, y, reference, floating, strategy, update } = useFloating({
     middleware: [
       sizeM({
-        apply({elements, rects}) {
+        apply({ elements, rects }) {
           Object.assign(elements.floating.style, {
             width: `${rects.floating.width}px`,
           });
@@ -37,13 +37,13 @@ export function DecimalSize() {
         the reference and floating elements have a non-integer size
         (width/height).
       </p>
-      <div className="container">
-        <div ref={reference} className="reference" style={size}>
+      <div className='container'>
+        <div ref={reference} className='reference' style={size}>
           Reference
         </div>
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? '',

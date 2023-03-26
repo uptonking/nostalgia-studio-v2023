@@ -7,5 +7,4 @@ export type FormattedText = {
   code?: true;
 };
 
-
 export type TextFormats = keyof Omit<FormattedText, 'text'>;

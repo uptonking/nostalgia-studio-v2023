@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {isHTMLElement, isMouseLikePointerType} from '../utils/is';
-import {isTypeableElement} from '../utils/isTypeableElement';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { isHTMLElement, isMouseLikePointerType } from '../utils/is';
+import { isTypeableElement } from '../utils/isTypeableElement';
 
 function isButtonTarget(event: React.KeyboardEvent<Element>) {
   return isHTMLElement(event.target) && event.target.tagName === 'BUTTON';
@@ -26,13 +26,13 @@ export interface Props {
  */
 export const useClick = <RT extends ReferenceType = ReferenceType>(
   context: FloatingContext<RT>,
-  props: Props = {}
+  props: Props = {},
 ): ElementProps => {
   const {
     open,
     onOpenChange,
     dataRef,
-    elements: {domReference},
+    elements: { domReference },
   } = context;
   const {
     enabled = true,

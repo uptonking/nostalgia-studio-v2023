@@ -2,11 +2,11 @@ import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import type {Middleware, MiddlewareState} from '../types';
-import {getAlignment} from '../utils/getAlignment';
-import {getMainAxisFromPlacement} from '../utils/getMainAxisFromPlacement';
-import {getSide} from '../utils/getSide';
-import {max, min} from '../utils/math';
+import type { Middleware, MiddlewareState } from '../types';
+import { getAlignment } from '../utils/getAlignment';
+import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
+import { getSide } from '../utils/getSide';
+import { max, min } from '../utils/math';
 
 export interface Options {
   /**
@@ -18,7 +18,7 @@ export interface Options {
     args: MiddlewareState & {
       availableWidth: number;
       availableHeight: number;
-    }
+    },
   ): void | Promise<void>;
 }
 
@@ -29,20 +29,20 @@ export interface Options {
  * @see https://floating-ui.com/docs/size
  */
 export const size = (
-  options: Partial<Options & DetectOverflowOptions> = {}
+  options: Partial<Options & DetectOverflowOptions> = {},
 ): Middleware => ({
   name: 'size',
   options,
   async fn(state) {
-    const {placement, rects, platform, elements} = state;
-    const {apply = () => {}, ...detectOverflowOptions} = options;
+    const { placement, rects, platform, elements } = state;
+    const { apply = () => {}, ...detectOverflowOptions } = options;
 
     const overflow = await detectOverflow(state, detectOverflowOptions);
     const side = getSide(placement);
     const alignment = getAlignment(placement);
     const axis = getMainAxisFromPlacement(placement);
     const isXAxis = axis === 'x';
-    const {width, height} = rects.floating;
+    const { width, height } = rects.floating;
 
     let heightSide: 'top' | 'bottom';
     let widthSide: 'left' | 'right';
@@ -69,13 +69,13 @@ export const size = (
       availableWidth = min(
         // Maximum clipping viewport width
         width - overflow.right - overflow.left,
-        overflowAvailableWidth
+        overflowAvailableWidth,
       );
     } else {
       availableHeight = min(
         // Maximum clipping viewport height
         height - overflow.bottom - overflow.top,
-        overflowAvailableHeight
+        overflowAvailableHeight,
       );
     }
 
@@ -102,7 +102,7 @@ export const size = (
       }
     }
 
-    await apply({...state, availableWidth, availableHeight});
+    await apply({ ...state, availableWidth, availableHeight });
 
     const nextDimensions = await platform.getDimensions(elements.floating);
 

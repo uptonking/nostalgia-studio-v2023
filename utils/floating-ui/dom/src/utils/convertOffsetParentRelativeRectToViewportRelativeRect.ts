@@ -1,11 +1,11 @@
-import type {Rect, Strategy} from '@floating-ui/core';
+import type { Rect, Strategy } from '@floating-ui/core';
 
-import {getBoundingClientRect} from './getBoundingClientRect';
-import {getDocumentElement} from './getDocumentElement';
-import {getNodeScroll} from './getNodeScroll';
-import {getScale} from './getScale';
-import {isHTMLElement, isOverflowElement} from './is';
-import {getNodeName} from './node';
+import { getBoundingClientRect } from './getBoundingClientRect';
+import { getDocumentElement } from './getDocumentElement';
+import { getNodeScroll } from './getNodeScroll';
+import { getScale } from './getScale';
+import { isHTMLElement, isOverflowElement } from './is';
+import { getNodeName } from './node';
 
 export function convertOffsetParentRelativeRectToViewportRelativeRect({
   rect,
@@ -23,9 +23,9 @@ export function convertOffsetParentRelativeRectToViewportRelativeRect({
     return rect;
   }
 
-  let scroll = {scrollLeft: 0, scrollTop: 0};
-  let scale = {x: 1, y: 1};
-  const offsets = {x: 0, y: 0};
+  let scroll = { scrollLeft: 0, scrollTop: 0 };
+  let scale = { x: 1, y: 1 };
+  const offsets = { x: 0, y: 0 };
 
   if (
     isOffsetParentAnElement ||

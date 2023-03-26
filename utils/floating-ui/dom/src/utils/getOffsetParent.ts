@@ -1,19 +1,19 @@
-import {getComputedStyle} from './getComputedStyle';
-import {getParentNode} from './getParentNode';
-import {getWindow} from './getWindow';
+import { getComputedStyle } from './getComputedStyle';
+import { getParentNode } from './getParentNode';
+import { getWindow } from './getWindow';
 import {
   isContainingBlock,
   isHTMLElement,
   isLastTraversableNode,
   isTableElement,
 } from './is';
-import {getNodeName} from './node';
+import { getNodeName } from './node';
 
 type Polyfill = (element: HTMLElement) => Element | null;
 
 function getTrueOffsetParent(
   element: Element,
-  polyfill: Polyfill | undefined
+  polyfill: Polyfill | undefined,
 ): Element | null {
   if (
     !isHTMLElement(element) ||
@@ -47,7 +47,7 @@ function getContainingBlock(element: Element) {
 // such as table ancestors and cross browser bugs.
 export function getOffsetParent(
   element: Element,
-  polyfill?: Polyfill
+  polyfill?: Polyfill,
 ): Element | Window {
   const window = getWindow(element);
 

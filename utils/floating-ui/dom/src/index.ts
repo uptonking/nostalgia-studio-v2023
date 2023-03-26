@@ -1,6 +1,6 @@
-import {computePosition as computePositionCore} from '@floating-ui/core';
+import { computePosition as computePositionCore } from '@floating-ui/core';
 
-import {platform} from './platform';
+import { platform } from './platform';
 import type {
   ComputePositionConfig,
   FloatingElement,
@@ -15,23 +15,23 @@ import type {
 export const computePosition = (
   reference: ReferenceElement,
   floating: FloatingElement,
-  options?: Partial<ComputePositionConfig>
+  options?: Partial<ComputePositionConfig>,
 ) => {
   // This caches the expensive `getClippingElementAncestors` function so that
   // multiple lifecycle resets re-use the same result. It only lives for a
   // single call. If other functions become expensive, we can add them as well.
   const cache = new Map<ReferenceElement, Array<Element>>();
-  const mergedOptions = {platform, ...options};
-  const platformWithCache = {...mergedOptions.platform, _c: cache};
+  const mergedOptions = { platform, ...options };
+  const platformWithCache = { ...mergedOptions.platform, _c: cache };
   return computePositionCore(reference, floating, {
     ...mergedOptions,
     platform: platformWithCache,
   });
 };
 
-export {autoUpdate} from './autoUpdate';
-export {platform} from './platform';
-export {getOverflowAncestors} from './utils/getOverflowAncestors';
+export { autoUpdate } from './autoUpdate';
+export { platform } from './platform';
+export { getOverflowAncestors } from './utils/getOverflowAncestors';
 export {
   arrow,
   autoPlacement,

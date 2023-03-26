@@ -6,4 +6,3 @@ export const useResetTypePlugin: UseNosPlugin = () => {
     withOverrides: withResetType,
   };
 };
-

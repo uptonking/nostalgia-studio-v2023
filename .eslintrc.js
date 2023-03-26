@@ -129,6 +129,8 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 0,
     '@typescript-eslint/class-literal-property-style': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
+    '@typescript-eslint/no-unnecessary-type-constraint': 1,
+    '@typescript-eslint/triple-slash-reference': 1,
     'react/no-find-dom-node': 1,
     'react/no-deprecated': 1,
     'react/no-did-update-set-state': 1,

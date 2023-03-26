@@ -1,12 +1,12 @@
-import type {Coords} from '@floating-ui/core';
+import type { Coords } from '@floating-ui/core';
 
-import type {VirtualElement} from '../types';
-import {getCssDimensions} from './getCssDimensions';
-import {isHTMLElement} from './is';
-import {round} from './math';
-import {unwrapElement} from './unwrapElement';
+import type { VirtualElement } from '../types';
+import { getCssDimensions } from './getCssDimensions';
+import { isHTMLElement } from './is';
+import { round } from './math';
+import { unwrapElement } from './unwrapElement';
 
-export const FALLBACK_SCALE = {x: 1, y: 1};
+export const FALLBACK_SCALE = { x: 1, y: 1 };
 
 export function getScale(element: Element | VirtualElement): Coords {
   const domElement = unwrapElement(element);
@@ -16,7 +16,7 @@ export function getScale(element: Element | VirtualElement): Coords {
   }
 
   const rect = domElement.getBoundingClientRect();
-  const {width, height, fallback} = getCssDimensions(domElement);
+  const { width, height, fallback } = getCssDimensions(domElement);
   let x = (fallback ? round(rect.width) : rect.width) / width;
   let y = (fallback ? round(rect.height) : rect.height) / height;
 

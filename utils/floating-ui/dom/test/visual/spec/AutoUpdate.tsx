@@ -1,11 +1,11 @@
-import {autoUpdate} from '@floating-ui/react-dom';
-import {useFloating} from '@floating-ui/react-dom';
-import {useEffect, useState} from 'react';
+import { autoUpdate } from '@floating-ui/react-dom';
+import { useFloating } from '@floating-ui/react-dom';
+import { useEffect, useState } from 'react';
 
-import {Controls} from '../utils/Controls';
+import { Controls } from '../utils/Controls';
 
 export function AutoUpdate() {
-  const {x, y, reference, floating, strategy, refs, update} = useFloating({
+  const { x, y, reference, floating, strategy, refs, update } = useFloating({
     strategy: 'fixed',
   });
   const [options, setOptions] = useState({
@@ -27,7 +27,7 @@ export function AutoUpdate() {
       refs.reference.current,
       refs.floating.current,
       update,
-      options
+      options,
     );
   }, [refs.floating, refs.reference, options, update]);
 
@@ -45,10 +45,10 @@ export function AutoUpdate() {
     <>
       <h1>AutoUpdate</h1>
       <p>The floating element should update when required.</p>
-      <div className="container" data-flexible>
+      <div className='container' data-flexible>
         <div
           ref={reference}
-          className="reference"
+          className='reference'
           style={{
             width: referenceSize,
             height: referenceSize,
@@ -61,7 +61,7 @@ export function AutoUpdate() {
         </div>
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? '',
@@ -80,7 +80,7 @@ export function AutoUpdate() {
           <button
             key={String(bool)}
             onClick={() => {
-              setOptions((o) => ({...o, ancestorScroll: bool}));
+              setOptions((o) => ({ ...o, ancestorScroll: bool }));
             }}
             data-testid={`ancestorScroll-${bool}`}
             style={{
@@ -98,7 +98,7 @@ export function AutoUpdate() {
           <button
             key={String(bool)}
             onClick={() => {
-              setOptions((o) => ({...o, ancestorResize: bool}));
+              setOptions((o) => ({ ...o, ancestorResize: bool }));
             }}
             data-testid={`ancestorResize-${bool}`}
             style={{
@@ -116,7 +116,7 @@ export function AutoUpdate() {
           <button
             key={String(bool)}
             onClick={() => {
-              setOptions((o) => ({...o, elementResize: bool}));
+              setOptions((o) => ({ ...o, elementResize: bool }));
             }}
             data-testid={`elementResize-${bool}`}
             style={{
@@ -134,7 +134,7 @@ export function AutoUpdate() {
           <button
             key={String(bool)}
             onClick={() => {
-              setOptions((o) => ({...o, animationFrame: bool}));
+              setOptions((o) => ({ ...o, animationFrame: bool }));
             }}
             data-testid={`animationFrame-${bool}`}
             style={{

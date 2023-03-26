@@ -7,10 +7,10 @@ import type {
   FloatingContext,
   ReferenceType,
 } from '../types';
-import {contains} from '../utils/contains';
-import {getTarget} from '../utils/getTarget';
-import {getWindow, isMouseLikePointerType} from '../utils/is';
-import {useEvent} from './utils/useEvent';
+import { contains } from '../utils/contains';
+import { getTarget } from '../utils/getTarget';
+import { getWindow, isMouseLikePointerType } from '../utils/is';
+import { useEvent } from './utils/useEvent';
 
 function createVirtualElement(
   domRef: React.MutableRefObject<Element | null>,
@@ -20,7 +20,7 @@ function createVirtualElement(
     pointerType: string | undefined;
     x: number | null;
     y: number | null;
-  }
+  },
 ) {
   let offsetX: number | null = null;
   let offsetY: number | null = null;
@@ -40,7 +40,7 @@ function createVirtualElement(
       const isYAxis = data.axis === 'y' || data.axis === 'both';
       const canTrackCursorOnAutoUpdate =
         ['mouseenter', 'mousemove'].includes(
-          data.dataRef.current.openEvent?.type || ''
+          data.dataRef.current.openEvent?.type || '',
         ) && data.pointerType !== 'touch';
 
       let width = domRect.width;
@@ -104,8 +104,8 @@ export interface Props {
  * @see https://floating-ui.com/docs/useClientPoint
  */
 export const useClientPoint = <RT extends ReferenceType = ReferenceType>(
-  {open, refs, dataRef, elements: {floating}}: FloatingContext<RT>,
-  {enabled = true, axis = 'both', x = null, y = null}: Partial<Props> = {}
+  { open, refs, dataRef, elements: { floating } }: FloatingContext<RT>,
+  { enabled = true, axis = 'both', x = null, y = null }: Partial<Props> = {},
 ): ElementProps => {
   const initialRef = React.useRef(false);
   const cleanupListenerRef = React.useRef<null | (() => void)>(null);
@@ -133,7 +133,7 @@ export const useClientPoint = <RT extends ReferenceType = ReferenceType>(
         axis,
         dataRef,
         pointerType,
-      })
+      }),
     );
   });
 
@@ -149,7 +149,7 @@ export const useClientPoint = <RT extends ReferenceType = ReferenceType>(
         // then back on the reference (i.e. it's interactive).
         setReactive([]);
       }
-    }
+    },
   );
 
   // If the pointer is a mouse-like pointer, we want to continue following the
@@ -217,7 +217,7 @@ export const useClientPoint = <RT extends ReferenceType = ReferenceType>(
   return React.useMemo(() => {
     if (!enabled) return {};
 
-    function setPointerTypeRef({pointerType}: React.PointerEvent) {
+    function setPointerTypeRef({ pointerType }: React.PointerEvent) {
       setPointerType(pointerType);
     }
 

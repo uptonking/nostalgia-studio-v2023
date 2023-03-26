@@ -1,8 +1,8 @@
-import {tabbable} from 'tabbable';
+import { tabbable } from 'tabbable';
 
-import {activeElement} from './activeElement';
-import {contains} from './contains';
-import {getDocument} from './getDocument';
+import { activeElement } from './activeElement';
+import { contains } from './contains';
+import { getDocument } from './getDocument';
 
 export const getTabbableOptions = () =>
   ({
@@ -19,7 +19,7 @@ export const getTabbableOptions = () =>
 
 export function getTabbableIn(
   container: HTMLElement,
-  direction: 'next' | 'prev'
+  direction: 'next' | 'prev',
 ) {
   const allTabbable = tabbable(container, getTabbableOptions());
 
@@ -28,7 +28,7 @@ export function getTabbableIn(
   }
 
   const activeIndex = allTabbable.indexOf(
-    activeElement(getDocument(container)) as HTMLElement
+    activeElement(getDocument(container)) as HTMLElement,
   );
   const nextTabbableElements = allTabbable.slice(activeIndex + 1);
   return nextTabbableElements[0];
@@ -44,7 +44,7 @@ export function getPreviousTabbable() {
 
 export function isOutsideEvent(
   event: FocusEvent | React.FocusEvent,
-  container?: Element
+  container?: Element,
 ) {
   const containerElement = container || (event.currentTarget as Element);
   const relatedTarget = event.relatedTarget as HTMLElement | null;

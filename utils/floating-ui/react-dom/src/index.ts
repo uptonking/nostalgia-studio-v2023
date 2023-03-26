@@ -1,5 +1,5 @@
-export {arrow} from './arrow';
-export {useFloating} from './useFloating';
+export { arrow } from './arrow';
+export { useFloating } from './useFloating';
 export {
   autoPlacement,
   autoUpdate,

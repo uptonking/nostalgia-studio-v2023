@@ -1,8 +1,8 @@
-import {platform} from '@floating-ui/react-dom';
+import { platform } from '@floating-ui/react-dom';
 import * as React from 'react';
 
-import {useId} from '../hooks/useId';
-import type {Alignment, FloatingContext, Side} from '../types';
+import { useId } from '../hooks/useId';
+import type { Alignment, FloatingContext, Side } from '../types';
 
 export interface Props extends React.SVGAttributes<SVGSVGElement> {
   context: FloatingContext;
@@ -54,8 +54,8 @@ export const FloatingArrow = React.forwardRef(function FloatingArrow(
   {
     context: {
       placement,
-      elements: {floating},
-      middlewareData: {arrow},
+      elements: { floating },
+      middlewareData: { arrow },
     },
     width = 14,
     height = 7,
@@ -66,13 +66,13 @@ export const FloatingArrow = React.forwardRef(function FloatingArrow(
     d,
     ...rest
   }: Props,
-  ref: React.Ref<SVGSVGElement>
+  ref: React.Ref<SVGSVGElement>,
 ): JSX.Element {
   if (__DEV__) {
     if (!ref) {
       console.warn(
         'Floating UI: The `ref` prop is required for the `FloatingArrow`',
-        'component.'
+        'component.',
       );
     }
   }
@@ -145,7 +145,7 @@ export const FloatingArrow = React.forwardRef(function FloatingArrow(
       {strokeWidth > 0 && (
         <path
           clipPath={`url(#${clipPathId})`}
-          fill="none"
+          fill='none'
           stroke={stroke}
           // Account for the stroke on the fill path rendered below.
           strokeWidth={strokeWidth + (d ? 0 : 1)}

@@ -1,6 +1,12 @@
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {cloneElement, useState} from 'react';
+import { cloneElement, useState } from 'react';
 
 import {
   FloatingFocusManager,
@@ -11,26 +17,26 @@ import {
   useHover,
   useInteractions,
 } from '../../src';
-import type {Props} from '../../src/hooks/useFocus';
+import type { Props } from '../../src/hooks/useFocus';
 
 jest.useFakeTimers();
 
-function App(props: Props & {dismiss?: boolean; hover?: boolean}) {
+function App(props: Props & { dismiss?: boolean; hover?: boolean }) {
   const [open, setOpen] = useState(false);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useFocus(context, props),
-    useDismiss(context, {enabled: !!props.dismiss, referencePress: true}),
-    useHover(context, {enabled: !!props.hover}),
+    useDismiss(context, { enabled: !!props.dismiss, referencePress: true }),
+    useHover(context, { enabled: !!props.hover }),
   ]);
 
   return (
     <>
-      <button {...getReferenceProps({ref: reference})} />
-      {open && <div role="tooltip" {...getFloatingProps({ref: floating})} />}
+      <button {...getReferenceProps({ ref: reference })} />
+      {open && <div role='tooltip' {...getFloatingProps({ ref: floating })} />}
     </>
   );
 }
@@ -71,23 +77,23 @@ test('does not open when window blurs then receives focus', async () => {
 test('blurs when hitting an "inside" focus guard', async () => {
   jest.useRealTimers();
 
-  function Tooltip({children}: {children: JSX.Element}) {
+  function Tooltip({ children }: { children: JSX.Element }) {
     const [open, setOpen] = useState(false);
 
-    const {refs, context} = useFloating({
+    const { refs, context } = useFloating({
       open,
       onOpenChange: setOpen,
     });
 
-    const {getReferenceProps, getFloatingProps} = useInteractions([
+    const { getReferenceProps, getFloatingProps } = useInteractions([
       useFocus(context),
     ]);
 
     return (
       <>
-        {cloneElement(children, getReferenceProps({ref: refs.setReference}))}
+        {cloneElement(children, getReferenceProps({ ref: refs.setReference }))}
         {open && (
-          <div role="tooltip" ref={refs.setFloating} {...getFloatingProps()}>
+          <div role='tooltip' ref={refs.setFloating} {...getFloatingProps()}>
             Label
           </div>
         )}
@@ -98,12 +104,12 @@ test('blurs when hitting an "inside" focus guard', async () => {
   function App() {
     const [open, setOpen] = useState(false);
 
-    const {refs, context} = useFloating({
+    const { refs, context } = useFloating({
       open,
       onOpenChange: setOpen,
     });
 
-    const {getReferenceProps, getFloatingProps} = useInteractions([
+    const { getReferenceProps, getFloatingProps } = useInteractions([
       useClick(context),
     ]);
 

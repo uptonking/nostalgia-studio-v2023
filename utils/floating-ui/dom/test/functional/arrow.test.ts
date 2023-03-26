@@ -1,8 +1,8 @@
-import {expect, test} from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
-import {allPlacements} from '../visual/utils/allPlacements';
-import {click} from './utils/click';
-import {scroll} from './utils/scroll';
+import { allPlacements } from '../visual/utils/allPlacements';
+import { click } from './utils/click';
+import { scroll } from './utils/scroll';
 
 allPlacements.forEach((placement) => {
   [75, 150].forEach((floatingSize) => {
@@ -18,7 +18,7 @@ allPlacements.forEach((placement) => {
           await click(page, `[data-testid="arrow-padding-${arrowPadding}"]`);
 
           expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-            `centered-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`
+            `centered-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`,
           );
         });
       });
@@ -39,16 +39,16 @@ allPlacements.forEach((placement) => {
           await click(page, `[data-testid="reference-${referenceSize}"]`);
           await click(page, `[data-testid="arrow-padding-${arrowPadding}"]`);
 
-          await scroll(page, {x: 765});
+          await scroll(page, { x: 765 });
 
           expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-            `not-centered-left-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`
+            `not-centered-left-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`,
           );
 
-          await scroll(page, {x: 285});
+          await scroll(page, { x: 285 });
 
           expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-            `not-centered-right-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`
+            `not-centered-right-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`,
           );
         });
       });
@@ -69,16 +69,16 @@ allPlacements.forEach((placement) => {
           await click(page, `[data-testid="reference-${referenceSize}"]`);
           await click(page, `[data-testid="arrow-padding-${arrowPadding}"]`);
 
-          await scroll(page, {y: 880});
+          await scroll(page, { y: 880 });
 
           expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-            `not-centered-top-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`
+            `not-centered-top-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`,
           );
 
-          await scroll(page, {y: 300});
+          await scroll(page, { y: 300 });
 
           expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-            `not-centered-bottom-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`
+            `not-centered-bottom-${placement}-${floatingSize}-${referenceSize}-${arrowPadding}.png`,
           );
         });
       });
@@ -93,6 +93,6 @@ test('svg arrow should be positioned correctly within containing block', async (
   await click(page, `[data-testid="svg-true"]`);
 
   expect(await page.locator('.container').screenshot()).toMatchSnapshot(
-    `svg-arrow.png`
+    `svg-arrow.png`,
   );
 });

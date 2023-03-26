@@ -1,4 +1,4 @@
-import {computeCoordsFromPlacement} from './computeCoordsFromPlacement';
+import { computeCoordsFromPlacement } from './computeCoordsFromPlacement';
 import type {
   ComputePosition,
   ComputePositionReturn,
@@ -16,7 +16,7 @@ import type {
 export const computePosition: ComputePosition = async (
   reference,
   floating,
-  config
+  config,
 ): Promise<ComputePositionReturn> => {
   const {
     placement = 'bottom',
@@ -28,14 +28,14 @@ export const computePosition: ComputePosition = async (
   const validMiddleware = middleware.filter(Boolean) as Middleware[];
   const rtl = await platform.isRTL?.(floating);
 
-  let rects = await platform.getElementRects({reference, floating, strategy});
-  let {x, y} = computeCoordsFromPlacement(rects, placement, rtl);
+  let rects = await platform.getElementRects({ reference, floating, strategy });
+  let { x, y } = computeCoordsFromPlacement(rects, placement, rtl);
   let statefulPlacement = placement;
   let middlewareData: MiddlewareData = {};
   let resetCount = 0;
 
   for (let i = 0; i < validMiddleware.length; i++) {
-    const {name, fn} = validMiddleware[i];
+    const { name, fn } = validMiddleware[i];
 
     const {
       x: nextX,
@@ -51,7 +51,7 @@ export const computePosition: ComputePosition = async (
       middlewareData,
       rects,
       platform,
-      elements: {reference, floating},
+      elements: { reference, floating },
     });
 
     x = nextX ?? x;
@@ -76,11 +76,15 @@ export const computePosition: ComputePosition = async (
         if (reset.rects) {
           rects =
             reset.rects === true
-              ? await platform.getElementRects({reference, floating, strategy})
+              ? await platform.getElementRects({
+                  reference,
+                  floating,
+                  strategy,
+                })
               : reset.rects;
         }
 
-        ({x, y} = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
+        ({ x, y } = computeCoordsFromPlacement(rects, statefulPlacement, rtl));
       }
 
       i = -1;

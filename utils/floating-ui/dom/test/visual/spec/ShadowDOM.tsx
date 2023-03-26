@@ -1,9 +1,9 @@
-import type {Placement, Strategy} from '@floating-ui/core';
-import {useState} from 'react';
+import type { Placement, Strategy } from '@floating-ui/core';
+import { useState } from 'react';
 
-import {allPlacements} from '../utils/allPlacements';
-import {Controls} from '../utils/Controls';
-import {defineElements} from '../utils/shadowDOM';
+import { allPlacements } from '../utils/allPlacements';
+import { Controls } from '../utils/Controls';
+import { defineElements } from '../utils/shadowDOM';
 
 type UseCase =
   | 'direct-host-child'
@@ -48,10 +48,10 @@ export function ShadowDOM() {
         The floating element should be positioned correctly when contained
         within shadow DOM.
       </p>
-      <div className="container">
+      <div className='container'>
         {UseCaseTag === 'relative-host-with-shadowed-floating-child' ? (
           <relative-position-host>
-            <div id="reference" className="reference">
+            <div id='reference' className='reference'>
               Reference
             </div>
             <shadowed-floating-owner {...hostOptions} />

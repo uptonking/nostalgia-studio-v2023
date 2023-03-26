@@ -7,9 +7,7 @@ import * as Y from 'yjs';
 import { HocuspocusProvider } from '@hocuspocus/provider';
 import { withYHistory, withYjs, YjsEditor } from '@slate-yjs/core';
 
-import {
-  ConnectionToggle,
-} from '../components/ConnectionToggle/ConnectionToggle';
+import { ConnectionToggle } from '../components/ConnectionToggle/ConnectionToggle';
 import { CustomEditable } from '../components/CustomEditable/CustomEditable';
 import { FormatToolbar } from '../components/FormatToolbar/FormatToolbar';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../config';

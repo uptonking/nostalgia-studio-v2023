@@ -58,17 +58,18 @@ module.exports = {
                       allowDeclareFields: true,
                     },
                   ],
-                  "@babel/preset-react",
-                  ["@linaria", {
-                    evaluate: true,
-                    displayName: true,
-                  }]
-
-
+                  '@babel/preset-react',
+                  [
+                    '@linaria',
+                    {
+                      evaluate: true,
+                      displayName: true,
+                    },
+                  ],
                 ],
               },
             },
-          }
+          },
         ],
         resolve: {
           fullySpecified: false,

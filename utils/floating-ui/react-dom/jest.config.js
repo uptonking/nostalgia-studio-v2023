@@ -1,8 +1,11 @@
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+const baseConfig = require('../../../config/jest.base');
+const pkgConfig = {
+  displayName: 'sample-vanilla-ts',
+  rootDir: '../..',
+  // setupFilesAfterEnv: ['<rootDir>/config/setupTests.js'],
+};
+
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
-  globals: {
-    __DEV__: true,
-  },
+  ...baseConfig,
+  ...pkgConfig,
 };

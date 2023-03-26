@@ -1,9 +1,9 @@
-import {computePosition} from '../src';
+import { computePosition } from '../src';
 
 const reference = {};
 const floating = {};
-const referenceRect = {x: 0, y: 0, width: 100, height: 100};
-const floatingRect = {x: 0, y: 0, width: 50, height: 50};
+const referenceRect = { x: 0, y: 0, width: 100, height: 100 };
+const floatingRect = { x: 0, y: 0, width: 50, height: 50 };
 const platform = {
   getElementRects: () =>
     Promise.resolve({
@@ -13,15 +13,17 @@ const platform = {
 };
 
 test('returned data', async () => {
-  const {x, y, placement, strategy, middlewareData} = await computePosition(
+  const { x, y, placement, strategy, middlewareData } = await computePosition(
     reference,
     floating,
     {
       placement: 'top',
-      middleware: [{name: 'custom', fn: () => ({data: {property: true}})}],
+      middleware: [
+        { name: 'custom', fn: () => ({ data: { property: true } }) },
+      ],
       // @ts-ignore - computePosition() only uses this property
       platform,
-    }
+    },
   );
 
   expect(placement).toBe('top');
@@ -36,18 +38,18 @@ test('returned data', async () => {
 });
 
 test('middleware', async () => {
-  const {x, y} = await computePosition(reference, floating, {
+  const { x, y } = await computePosition(reference, floating, {
     // @ts-ignore - computePosition() only uses this property
     platform,
   });
 
-  const {x: x2, y: y2} = await computePosition(reference, floating, {
+  const { x: x2, y: y2 } = await computePosition(reference, floating, {
     // @ts-ignore - computePosition() only uses this property
     platform,
     middleware: [
       {
         name: 'test',
-        fn: ({x, y}) => ({x: x + 1, y: y + 1}),
+        fn: ({ x, y }) => ({ x: x + 1, y: y + 1 }),
       },
     ],
   });
@@ -56,7 +58,7 @@ test('middleware', async () => {
 });
 
 test('middlewareData', async () => {
-  const {middlewareData} = await computePosition(reference, floating, {
+  const { middlewareData } = await computePosition(reference, floating, {
     // @ts-ignore - computePosition() only uses this property
     platform,
     middleware: [
@@ -71,5 +73,5 @@ test('middlewareData', async () => {
     ],
   });
 
-  expect(middlewareData.test).toEqual({hello: true});
+  expect(middlewareData.test).toEqual({ hello: true });
 });

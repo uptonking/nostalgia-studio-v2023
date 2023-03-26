@@ -1,10 +1,10 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import {getDelay} from '../hooks/useHover';
-import type {FloatingContext} from '../types';
+import { getDelay } from '../hooks/useHover';
+import type { FloatingContext } from '../types';
 
-type Delay = number | Partial<{open: number; close: number}>;
+type Delay = number | Partial<{ open: number; close: number }>;
 
 interface GroupState {
   delay: Delay;
@@ -62,13 +62,13 @@ export const FloatingDelayGroup = ({
       initialDelay: delay,
       currentId: null,
       isInstantPhase: false,
-    }
+    },
   );
 
   const initialCurrentIdRef = React.useRef<any>(null);
 
   const setCurrentId = React.useCallback((currentId: any) => {
-    setState({currentId});
+    setState({ currentId });
   }, []);
 
   useLayoutEffect(() => {
@@ -76,10 +76,10 @@ export const FloatingDelayGroup = ({
       if (initialCurrentIdRef.current === null) {
         initialCurrentIdRef.current = state.currentId;
       } else {
-        setState({isInstantPhase: true});
+        setState({ isInstantPhase: true });
       }
     } else {
-      setState({isInstantPhase: false});
+      setState({ isInstantPhase: false });
       initialCurrentIdRef.current = null;
     }
   }, [state.currentId]);
@@ -87,8 +87,8 @@ export const FloatingDelayGroup = ({
   return (
     <FloatingDelayGroupContext.Provider
       value={React.useMemo(
-        () => ({...state, setState, setCurrentId}),
-        [state, setState, setCurrentId]
+        () => ({ ...state, setState, setCurrentId }),
+        [state, setState, setCurrentId],
       )}
     >
       {children}
@@ -101,10 +101,10 @@ interface UseGroupOptions {
 }
 
 export const useDelayGroup = (
-  {open, onOpenChange}: FloatingContext,
-  {id}: UseGroupOptions
+  { open, onOpenChange }: FloatingContext,
+  { id }: UseGroupOptions,
 ) => {
-  const {currentId, setCurrentId, initialDelay, setState, timeoutMs} =
+  const { currentId, setCurrentId, initialDelay, setState, timeoutMs } =
     useDelayGroupContext();
 
   React.useEffect(() => {
@@ -125,7 +125,7 @@ export const useDelayGroup = (
   React.useEffect(() => {
     function unset() {
       onOpenChange(false);
-      setState({delay: initialDelay, currentId: null});
+      setState({ delay: initialDelay, currentId: null });
     }
 
     if (!open && currentId === id) {

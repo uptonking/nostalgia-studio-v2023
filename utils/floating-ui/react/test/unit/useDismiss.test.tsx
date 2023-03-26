@@ -1,6 +1,12 @@
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {ReactNode, useState} from 'react';
+import { ReactNode, useState } from 'react';
 
 import {
   FloatingFocusManager,
@@ -14,22 +20,22 @@ import {
   useFocus,
   useInteractions,
 } from '../../src';
-import {normalizeBubblesProp, Props} from '../../src/hooks/useDismiss';
+import { normalizeBubblesProp, Props } from '../../src/hooks/useDismiss';
 
 function App(props: Props) {
   const [open, setOpen] = useState(true);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useDismiss(context, props),
   ]);
 
   return (
     <>
-      <button {...getReferenceProps({ref: reference})} />
-      {open && <div role="tooltip" {...getFloatingProps({ref: floating})} />}
+      <button {...getReferenceProps({ ref: reference })} />
+      {open && <div role='tooltip' {...getFloatingProps({ ref: floating })} />}
     </>
   );
 }
@@ -37,7 +43,7 @@ function App(props: Props) {
 describe('true', () => {
   test('dismisses with escape key', () => {
     render(<App />);
-    fireEvent.keyDown(document.body, {key: 'Escape'});
+    fireEvent.keyDown(document.body, { key: 'Escape' });
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
     cleanup();
   });
@@ -74,7 +80,7 @@ describe('true', () => {
 describe('false', () => {
   test('dismisses with escape key', () => {
     render(<App escapeKey={false} />);
-    fireEvent.keyDown(document.body, {key: 'Escape'});
+    fireEvent.keyDown(document.body, { key: 'Escape' });
     expect(screen.queryByRole('tooltip')).toBeInTheDocument();
     cleanup();
   });
@@ -103,12 +109,12 @@ describe('false', () => {
   test('does not dismiss when clicking portaled children', async () => {
     function App() {
       const [open, setOpen] = useState(true);
-      const {reference, floating, context} = useFloating({
+      const { reference, floating, context } = useFloating({
         open,
         onOpenChange: setOpen,
       });
 
-      const {getReferenceProps, getFloatingProps} = useInteractions([
+      const { getReferenceProps, getFloatingProps } = useInteractions([
         useDismiss(context),
       ]);
 
@@ -118,7 +124,7 @@ describe('false', () => {
           {open && (
             <div ref={floating} {...getFloatingProps()}>
               <FloatingPortal>
-                <button data-testid="portaled-button" />
+                <button data-testid='portaled-button' />
               </FloatingPortal>
             </div>
           )}
@@ -150,26 +156,26 @@ describe('bubbles', () => {
     testId,
     children,
     ...props
-  }: Props & {testId: string; children: ReactNode}) => {
+  }: Props & { testId: string; children: ReactNode }) => {
     const [open, setOpen] = useState(true);
     const nodeId = useFloatingNodeId();
 
-    const {reference, floating, context} = useFloating({
+    const { reference, floating, context } = useFloating({
       open,
       onOpenChange: setOpen,
       nodeId,
     });
 
-    const {getReferenceProps, getFloatingProps} = useInteractions([
+    const { getReferenceProps, getFloatingProps } = useInteractions([
       useDismiss(context, props),
     ]);
 
     return (
       <FloatingNode id={nodeId}>
-        <button {...getReferenceProps({ref: reference})} />
+        <button {...getReferenceProps({ ref: reference })} />
         {open && (
           <FloatingFocusManager context={context}>
-            <div {...getFloatingProps({ref: floating})} data-testid={testId}>
+            <div {...getFloatingProps({ ref: floating })} data-testid={testId}>
               {children}
             </div>
           </FloatingFocusManager>
@@ -179,7 +185,7 @@ describe('bubbles', () => {
   };
 
   const NestedDialog = (
-    props: Props & {testId: string; children: ReactNode}
+    props: Props & { testId: string; children: ReactNode },
   ) => {
     const parentId = useFloatingParentNodeId();
 
@@ -196,14 +202,14 @@ describe('bubbles', () => {
 
   describe('prop resolution', () => {
     test('undefined', () => {
-      const {escapeKeyBubbles, outsidePressBubbles} = normalizeBubblesProp();
+      const { escapeKeyBubbles, outsidePressBubbles } = normalizeBubblesProp();
 
       expect(escapeKeyBubbles).toBe(false);
       expect(outsidePressBubbles).toBe(true);
     });
 
     test('false', () => {
-      const {escapeKeyBubbles, outsidePressBubbles} =
+      const { escapeKeyBubbles, outsidePressBubbles } =
         normalizeBubblesProp(false);
 
       expect(escapeKeyBubbles).toBe(false);
@@ -211,14 +217,16 @@ describe('bubbles', () => {
     });
 
     test('{}', () => {
-      const {escapeKeyBubbles, outsidePressBubbles} = normalizeBubblesProp({});
+      const { escapeKeyBubbles, outsidePressBubbles } = normalizeBubblesProp(
+        {},
+      );
 
       expect(escapeKeyBubbles).toBe(false);
       expect(outsidePressBubbles).toBe(true);
     });
 
     test('{ escapeKey: false }', () => {
-      const {escapeKeyBubbles, outsidePressBubbles} = normalizeBubblesProp({
+      const { escapeKeyBubbles, outsidePressBubbles } = normalizeBubblesProp({
         escapeKey: false,
       });
 
@@ -227,7 +235,7 @@ describe('bubbles', () => {
     });
 
     test('{ outsidePress: false }', () => {
-      const {escapeKeyBubbles, outsidePressBubbles} = normalizeBubblesProp({
+      const { escapeKeyBubbles, outsidePressBubbles } = normalizeBubblesProp({
         outsidePress: false,
       });
 
@@ -239,11 +247,11 @@ describe('bubbles', () => {
   describe('outsidePress', () => {
     test('true', async () => {
       render(
-        <NestedDialog testId="outer">
-          <NestedDialog testId="inner">
+        <NestedDialog testId='outer'>
+          <NestedDialog testId='inner'>
             <button>test button</button>
           </NestedDialog>
-        </NestedDialog>
+        </NestedDialog>,
       );
 
       expect(screen.queryByTestId('outer')).toBeInTheDocument();
@@ -258,11 +266,11 @@ describe('bubbles', () => {
 
     test('false', async () => {
       render(
-        <NestedDialog testId="outer" bubbles={{outsidePress: false}}>
-          <NestedDialog testId="inner" bubbles={{outsidePress: false}}>
+        <NestedDialog testId='outer' bubbles={{ outsidePress: false }}>
+          <NestedDialog testId='inner' bubbles={{ outsidePress: false }}>
             <button>test button</button>
           </NestedDialog>
-        </NestedDialog>
+        </NestedDialog>,
       );
 
       expect(screen.queryByTestId('outer')).toBeInTheDocument();
@@ -282,11 +290,11 @@ describe('bubbles', () => {
 
     test('mixed', async () => {
       render(
-        <NestedDialog testId="outer" bubbles={{outsidePress: true}}>
-          <NestedDialog testId="inner" bubbles={{outsidePress: false}}>
+        <NestedDialog testId='outer' bubbles={{ outsidePress: true }}>
+          <NestedDialog testId='inner' bubbles={{ outsidePress: false }}>
             <button>test button</button>
           </NestedDialog>
-        </NestedDialog>
+        </NestedDialog>,
       );
 
       expect(screen.queryByTestId('outer')).toBeInTheDocument();
@@ -336,12 +344,12 @@ describe('bubbles', () => {
             />
             {popoverOpen && (
               <div
-                role="dialog"
+                role='dialog'
                 ref={popover.refs.setFloating}
                 {...popoverInteractions.getFloatingProps()}
               >
                 <button
-                  data-testid="focus-button"
+                  data-testid='focus-button'
                   ref={tooltip.refs.setReference}
                   {...tooltipInteractions.getReferenceProps()}
                 />
@@ -349,7 +357,7 @@ describe('bubbles', () => {
             )}
             {tooltipOpen && (
               <div
-                role="tooltip"
+                role='tooltip'
                 ref={tooltip.refs.setFloating}
                 {...tooltipInteractions.getFloatingProps()}
               />
@@ -374,11 +382,11 @@ describe('bubbles', () => {
 
     test('true', async () => {
       render(
-        <NestedDialog testId="outer" bubbles>
-          <NestedDialog testId="inner" bubbles>
+        <NestedDialog testId='outer' bubbles>
+          <NestedDialog testId='inner' bubbles>
             <button>test button</button>
           </NestedDialog>
-        </NestedDialog>
+        </NestedDialog>,
       );
 
       expect(screen.queryByTestId('outer')).toBeInTheDocument();
@@ -392,11 +400,11 @@ describe('bubbles', () => {
     });
     test('false', async () => {
       render(
-        <NestedDialog testId="outer" bubbles={{escapeKey: false}}>
-          <NestedDialog testId="inner" bubbles={{escapeKey: false}}>
+        <NestedDialog testId='outer' bubbles={{ escapeKey: false }}>
+          <NestedDialog testId='inner' bubbles={{ escapeKey: false }}>
             <button>test button</button>
           </NestedDialog>
-        </NestedDialog>
+        </NestedDialog>,
       );
 
       expect(screen.queryByTestId('outer')).toBeInTheDocument();
@@ -416,11 +424,11 @@ describe('bubbles', () => {
 
     test('mixed', async () => {
       render(
-        <NestedDialog testId="outer" bubbles={{escapeKey: true}}>
-          <NestedDialog testId="inner" bubbles={{escapeKey: false}}>
+        <NestedDialog testId='outer' bubbles={{ escapeKey: true }}>
+          <NestedDialog testId='inner' bubbles={{ escapeKey: false }}>
             <button>test button</button>
           </NestedDialog>
-        </NestedDialog>
+        </NestedDialog>,
       );
 
       expect(screen.queryByTestId('outer')).toBeInTheDocument();

@@ -6,7 +6,9 @@ import { ListTypes } from '../../src/plugins/list/utils';
 const listValue: Descendant[] = [
   {
     type: 'h1',
-    children: [{ text: 'noseditor is a collaborative block-style rich text editor ' }],
+    children: [
+      { text: 'noseditor is a collaborative block-style rich text editor ' },
+    ],
   },
   {
     id: '1',

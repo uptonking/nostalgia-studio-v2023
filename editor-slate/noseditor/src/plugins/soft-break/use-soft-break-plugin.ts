@@ -6,4 +6,3 @@ export const useSoftBreakPlugin: UseNosPlugin = () => {
     handlers,
   };
 };
-

@@ -9,7 +9,9 @@ type Options = {
   compareLevels?: (editor: Editor) => ExtendedEditor['compareLevels'];
 };
 
-export const useExtendedPlugin: UseNosPlugin<Options> = ({ compareLevels = compare } = {}) => {
+export const useExtendedPlugin: UseNosPlugin<Options> = ({
+  compareLevels = compare,
+} = {}) => {
   return {
     withOverrides: withExtended({ compareLevels }),
   };

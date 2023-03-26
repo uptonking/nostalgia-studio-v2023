@@ -2,11 +2,11 @@ import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import type {Coords, Middleware, MiddlewareState} from '../types';
-import {getCrossAxis} from '../utils/getCrossAxis';
-import {getMainAxisFromPlacement} from '../utils/getMainAxisFromPlacement';
-import {getSide} from '../utils/getSide';
-import {within} from '../utils/within';
+import type { Coords, Middleware, MiddlewareState } from '../types';
+import { getCrossAxis } from '../utils/getCrossAxis';
+import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
+import { getSide } from '../utils/getSide';
+import { within } from '../utils/within';
 
 export interface Options {
   /**
@@ -39,20 +39,20 @@ export interface Options {
  * @see https://floating-ui.com/docs/shift
  */
 export const shift = (
-  options: Partial<Options & DetectOverflowOptions> = {}
+  options: Partial<Options & DetectOverflowOptions> = {},
 ): Middleware => ({
   name: 'shift',
   options,
   async fn(state) {
-    const {x, y, placement} = state;
+    const { x, y, placement } = state;
     const {
       mainAxis: checkMainAxis = true,
       crossAxis: checkCrossAxis = false,
-      limiter = {fn: ({x, y}) => ({x, y})},
+      limiter = { fn: ({ x, y }) => ({ x, y }) },
       ...detectOverflowOptions
     } = options;
 
-    const coords = {x, y};
+    const coords = { x, y };
     const overflow = await detectOverflow(state, detectOverflowOptions);
     const mainAxis = getMainAxisFromPlacement(getSide(placement));
     const crossAxis = getCrossAxis(mainAxis);
@@ -146,21 +146,21 @@ export type LimitShiftOptions = {
  * Built-in `limiter` that will stop `shift()` at a certain point.
  */
 export const limitShift = (
-  options: Partial<LimitShiftOptions> = {}
+  options: Partial<LimitShiftOptions> = {},
 ): {
   options: Partial<LimitShiftOffset>;
   fn: (state: MiddlewareState) => Coords;
 } => ({
   options,
   fn(state) {
-    const {x, y, placement, rects, middlewareData} = state;
+    const { x, y, placement, rects, middlewareData } = state;
     const {
       offset = 0,
       mainAxis: checkMainAxis = true,
       crossAxis: checkCrossAxis = true,
     } = options;
 
-    const coords = {x, y};
+    const coords = { x, y };
     const mainAxis = getMainAxisFromPlacement(placement);
     const crossAxis = getCrossAxis(mainAxis);
 
@@ -170,8 +170,8 @@ export const limitShift = (
     const rawOffset = typeof offset === 'function' ? offset(state) : offset;
     const computedOffset =
       typeof rawOffset === 'number'
-        ? {mainAxis: rawOffset, crossAxis: 0}
-        : {mainAxis: 0, crossAxis: 0, ...rawOffset};
+        ? { mainAxis: rawOffset, crossAxis: 0 }
+        : { mainAxis: 0, crossAxis: 0, ...rawOffset };
 
     if (checkMainAxis) {
       const len = mainAxis === 'y' ? 'height' : 'width';

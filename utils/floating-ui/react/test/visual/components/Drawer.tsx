@@ -9,24 +9,24 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react';
-import React, {cloneElement, isValidElement, useState} from 'react';
-import {useMediaQuery} from 'react-responsive';
+import React, { cloneElement, isValidElement, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
-import {Button} from '../lib/Button';
+import { Button } from '../lib/Button';
 
 export const Main = () => {
   return (
     <>
-      <h1 className="text-5xl font-bold mb-8">Drawer</h1>
-      <div className="grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <h1 className='text-5xl font-bold mb-8'>Drawer</h1>
+      <div className='grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         <Drawer
-          render={({labelId, descriptionId, close}) => (
+          render={({ labelId, descriptionId, close }) => (
             <>
-              <h2 id={labelId} className="text-xl font-bold">
+              <h2 id={labelId} className='text-xl font-bold'>
                 Title
               </h2>
               <p id={descriptionId}>Description</p>
-              <Button className="bg-white mt-4" onClick={close}>
+              <Button className='bg-white mt-4' onClick={close}>
                 Close
               </Button>
             </>
@@ -35,7 +35,7 @@ export const Main = () => {
           <Button>My button</Button>
         </Drawer>
         <Button>Next button</Button>
-        <div id="drawer-root"></div>
+        <div id='drawer-root'></div>
       </div>
     </>
   );
@@ -49,11 +49,11 @@ interface Props {
   children?: React.ReactNode;
 }
 
-export function Drawer({children, render}: Props) {
+export function Drawer({ children, render }: Props) {
   const [open, setOpen] = useState(false);
 
-  const isLargeScreen = useMediaQuery({query: '(min-width: 1400px)'});
-  const {refs, context} = useFloating({open, onOpenChange: setOpen});
+  const isLargeScreen = useMediaQuery({ query: '(min-width: 1400px)' });
+  const { refs, context } = useFloating({ open, onOpenChange: setOpen });
 
   const id = useId();
   const labelId = `${id}-label`;
@@ -61,7 +61,7 @@ export function Drawer({children, render}: Props) {
 
   const modal = !isLargeScreen;
 
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useClick(context),
     useRole(context),
     useDismiss(context, {
@@ -80,7 +80,7 @@ export function Drawer({children, render}: Props) {
         ref={refs.setFloating}
         aria-labelledby={labelId}
         aria-describedby={descriptionId}
-        className="absolute top-0 right-0 h-full w-48 bg-slate-100 p-4"
+        className='absolute top-0 right-0 h-full w-48 bg-slate-100 p-4'
         {...getFloatingProps()}
       >
         {render({
@@ -95,13 +95,13 @@ export function Drawer({children, render}: Props) {
   return (
     <>
       {isValidElement(children) &&
-        cloneElement(children, getReferenceProps({ref: refs.setReference}))}
-      <FloatingPortal id="drawer-root">
+        cloneElement(children, getReferenceProps({ ref: refs.setReference }))}
+      <FloatingPortal id='drawer-root'>
         {open &&
           (modal ? (
             <FloatingOverlay
               lockScroll
-              style={{background: 'rgba(0, 0, 0, 0.8)', zIndex: 1}}
+              style={{ background: 'rgba(0, 0, 0, 0.8)', zIndex: 1 }}
             >
               {content}
             </FloatingOverlay>

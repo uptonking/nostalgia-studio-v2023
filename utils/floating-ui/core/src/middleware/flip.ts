@@ -2,12 +2,12 @@ import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import type {Middleware, Placement} from '../types';
-import {getAlignmentSides} from '../utils/getAlignmentSides';
-import {getExpandedPlacements} from '../utils/getExpandedPlacements';
-import {getOppositeAxisPlacements} from '../utils/getOppositeAxisPlacements';
-import {getOppositePlacement} from '../utils/getOppositePlacement';
-import {getSide} from '../utils/getSide';
+import type { Middleware, Placement } from '../types';
+import { getAlignmentSides } from '../utils/getAlignmentSides';
+import { getExpandedPlacements } from '../utils/getExpandedPlacements';
+import { getOppositeAxisPlacements } from '../utils/getOppositeAxisPlacements';
+import { getOppositePlacement } from '../utils/getOppositePlacement';
+import { getSide } from '../utils/getSide';
 
 export interface Options {
   /**
@@ -58,7 +58,7 @@ export interface Options {
  * @see https://floating-ui.com/docs/flip
  */
 export const flip = (
-  options: Partial<Options & DetectOverflowOptions> = {}
+  options: Partial<Options & DetectOverflowOptions> = {},
 ): Middleware => ({
   name: 'flip',
   options,
@@ -98,8 +98,8 @@ export const flip = (
           initialPlacement,
           flipAlignment,
           fallbackAxisSideDirection,
-          rtl
-        )
+          rtl,
+        ),
       );
     }
 
@@ -115,11 +115,11 @@ export const flip = (
     }
 
     if (checkCrossAxis) {
-      const {main, cross} = getAlignmentSides(placement, rects, rtl);
+      const { main, cross } = getAlignmentSides(placement, rects, rtl);
       overflows.push(overflow[main], overflow[cross]);
     }
 
-    overflowsData = [...overflowsData, {placement, overflows}];
+    overflowsData = [...overflowsData, { placement, overflows }];
 
     // One or more sides is overflowing.
     if (!overflows.every((side) => side <= 0)) {
@@ -157,7 +157,7 @@ export const flip = (
                     d.overflows
                       .filter((overflow) => overflow > 0)
                       .reduce((acc, overflow) => acc + overflow, 0),
-                  ] as const
+                  ] as const,
               )
               .sort((a, b) => a[1] - b[1])[0]?.[0];
             if (placement) {

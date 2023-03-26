@@ -9,6 +9,6 @@ export {
   RightOne as TriangleRightIcon,
   TextBold as BoldIcon,
   TextItalic as ItalicIcon,
-  UnorderedList as ListUnorderedIcon ,
-  Drag as DragIcon
+  UnorderedList as ListUnorderedIcon,
+  Drag as DragIcon,
 } from '@icon-park/react';

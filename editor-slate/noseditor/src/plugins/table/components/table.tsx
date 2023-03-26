@@ -71,7 +71,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         editorDom.setAttribute('contenteditable', 'false');
         Promise.resolve()
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
-          .catch(() => { });
+          .catch(() => {});
       }
 
       const isSelInTable = isSelectionInTable(editor);

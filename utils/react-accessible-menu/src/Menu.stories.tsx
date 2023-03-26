@@ -1,13 +1,16 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { ComponentMeta } from '@storybook/react';
-import { Menu, MenuImperativeHandle, MenuOrientation, MenuProps } from '.';
+
 import {
   AutoSizer,
   List as VirtualizedList,
   ListRowRenderer,
 } from 'react-virtualized';
-import { MenuItem } from './MenuItem';
+
 import { action } from '@storybook/addon-actions';
+import { ComponentMeta } from '@storybook/react';
+
+import { Menu, MenuImperativeHandle, MenuOrientation, MenuProps } from '.';
+import { MenuItem } from './MenuItem';
 import { useMenu } from './useMenu';
 import { useMenuItem } from './useMenuItem';
 
@@ -114,6 +117,7 @@ export const UsingHooks = () => {
     useMenu({});
 
   const Item = useCallback<React.FC<{ id?: string }>>(({ children, id }) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { renderProps } = useMenuItem<HTMLButtonElement>({ id });
     return (
       <button {...renderProps.props} ref={renderProps.ref} className='item'>

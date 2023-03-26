@@ -69,7 +69,7 @@ export const toggleList = (
       return;
     }
 
-    const isActive = isBlockActive(editor, ListItemSpec, listType)
+    const isActive = isBlockActive(editor, ListItemSpec, listType);
     // console.log(';; isActive', listType, isActive)
 
     if (isActive) {

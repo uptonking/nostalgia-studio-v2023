@@ -1,25 +1,25 @@
-import {act, cleanup, render, screen} from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 
-import {useFloating, useInteractions, useTypeahead} from '../../src';
-import type {Props} from '../../src/hooks/useTypeahead';
-import {Main} from '../visual/components/Menu';
+import { useFloating, useInteractions, useTypeahead } from '../../src';
+import type { Props } from '../../src/hooks/useTypeahead';
+import { Main } from '../visual/components/Menu';
 
 jest.useFakeTimers();
-const user = userEvent.setup({advanceTimers: jest.advanceTimersByTime});
+const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
 
 const useImpl = (
-  props: Pick<Props, 'onMatch' | 'onTypingChange'> & {list?: Array<string>}
+  props: Pick<Props, 'onMatch' | 'onTypingChange'> & { list?: Array<string> },
 ) => {
   const [open, setOpen] = useState(true);
   const [activeIndex, setActiveIndex] = useState<null | number>(null);
-  const {reference, floating, context} = useFloating({
+  const { reference, floating, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
   const listRef = useRef(props.list ?? ['one', 'two', 'three']);
-  const {getReferenceProps, getFloatingProps} = useInteractions([
+  const { getReferenceProps, getFloatingProps } = useInteractions([
     useTypeahead(context, {
       listRef,
       activeIndex,
@@ -48,9 +48,9 @@ const useImpl = (
 };
 
 function App(
-  props: Pick<Props, 'onMatch' | 'onTypingChange'> & {list?: Array<string>}
+  props: Pick<Props, 'onMatch' | 'onTypingChange'> & { list?: Array<string> },
 ) {
-  const {getReferenceProps, getFloatingProps} = useImpl(props);
+  const { getReferenceProps, getFloatingProps } = useImpl(props);
   return (
     <>
       <input {...getReferenceProps()} />
@@ -95,7 +95,7 @@ test('bails out of rapid focus of first letter if the list contains a string tha
 test('starts from the current activeIndex and correctly loops', async () => {
   const spy = jest.fn();
   render(
-    <App onMatch={spy} list={['Toy Story 2', 'Toy Story 3', 'Toy Story 4']} />
+    <App onMatch={spy} list={['Toy Story 2', 'Toy Story 3', 'Toy Story 4']} />,
   );
 
   await user.click(screen.getByRole('combobox'));
@@ -148,8 +148,8 @@ test('capslock characters continue to match', async () => {
   cleanup();
 });
 
-function App1(props: Pick<Props, 'onMatch'> & {list: Array<string>}) {
-  const {getReferenceProps, getFloatingProps, activeIndex, open} =
+function App1(props: Pick<Props, 'onMatch'> & { list: Array<string> }) {
+  const { getReferenceProps, getFloatingProps, activeIndex, open } =
     useImpl(props);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -167,7 +167,7 @@ function App1(props: Pick<Props, 'onMatch'> & {list: Array<string>}) {
           {props.list.map((value, i) => (
             <div
               key={value}
-              role="option"
+              role='option'
               tabIndex={i === activeIndex ? 0 : -1}
               aria-selected={i === activeIndex}
             >
@@ -199,14 +199,14 @@ test('matches when focus is withing floating', async () => {
   await user.click(screen.getByRole('combobox'));
 
   await user.keyboard('t');
-  const option = await screen.findByRole('option', {selected: true});
+  const option = await screen.findByRole('option', { selected: true });
   expect(option.textContent).toBe('two');
   option.focus();
   expect(option).toHaveFocus();
 
   await user.keyboard('h');
   expect(
-    (await screen.findByRole('option', {selected: true})).textContent
+    (await screen.findByRole('option', { selected: true })).textContent,
   ).toBe('three');
 
   cleanup();
@@ -246,13 +246,13 @@ test('Menu - skips disabled items and opens submenu on space if no match', async
   await userEvent.keyboard('opy as ');
 
   expect(screen.getByText('Copy as').getAttribute('aria-expanded')).toBe(
-    'false'
+    'false',
   );
 
   await userEvent.keyboard(' ');
 
   expect(screen.getByText('Copy as').getAttribute('aria-expanded')).toBe(
-    'true'
+    'true',
   );
 });
 

@@ -13,7 +13,6 @@ export const Heading1Spec: Heading1Type = 'h1';
 export const Heading2Spec: Heading2Type = 'h2';
 export const Heading3Spec: Heading3Type = 'h3';
 
-
 export const isHeading1Element = (value: any): value is Heading1Element => {
   return Element.isElementType<Heading1Element>(value, Heading1Spec);
 };

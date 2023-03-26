@@ -1,7 +1,7 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import {getPlatform} from '../utils/getPlatform';
+import { getPlatform } from '../utils/getPlatform';
 
 const identifier = 'data-floating-ui-scroll-lock';
 
@@ -13,8 +13,8 @@ const identifier = 'data-floating-ui-scroll-lock';
  */
 export const FloatingOverlay = React.forwardRef<
   HTMLDivElement,
-  React.HTMLProps<HTMLDivElement> & {lockScroll?: boolean}
->(function FloatingOverlay({lockScroll = false, ...rest}, ref) {
+  React.HTMLProps<HTMLDivElement> & { lockScroll?: boolean }
+>(function FloatingOverlay({ lockScroll = false, ...rest }, ref) {
   useLayoutEffect(() => {
     if (!lockScroll) {
       return;

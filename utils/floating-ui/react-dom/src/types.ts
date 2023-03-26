@@ -6,8 +6,8 @@ import type {
   VirtualElement,
 } from '@floating-ui/dom';
 
-export {arrow,  type Options as ArrowOptions} from './arrow';
-export {useFloating} from './useFloating';
+export { arrow, type Options as ArrowOptions } from './arrow';
+export { useFloating } from './useFloating';
 export type {
   AlignedPlacement,
   Alignment,
@@ -115,7 +115,7 @@ export type UseFloatingProps<RT extends ReferenceType = ReferenceType> =
       whileElementsMounted?: (
         reference: RT,
         floating: HTMLElement,
-        update: () => void
+        update: () => void,
       ) => void | (() => void);
       open?: boolean;
     }

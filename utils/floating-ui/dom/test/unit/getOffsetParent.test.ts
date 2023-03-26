@@ -1,4 +1,4 @@
-import {platform} from '../../src';
+import { platform } from '../../src';
 
 test('polyfill', () => {
   const element = document.createElement('div');
@@ -7,6 +7,6 @@ test('polyfill', () => {
     platform.getOffsetParent?.(element, (el) => {
       expect(el).toBe(element);
       return parent;
-    })
+    }),
   ).toBe(parent);
 });

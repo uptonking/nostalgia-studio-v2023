@@ -13,4 +13,3 @@ export const useAutoformatPlugin: UseNosPlugin<Options> = (
     withOverrides: withAutoformat(rules),
   };
 };
-

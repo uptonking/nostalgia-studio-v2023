@@ -2,7 +2,9 @@ import { ListTypes } from '../../list/utils';
 import { crawlDOM, getListItemProps, isDOMListItem } from '../utils';
 import { getPlainText, isDOMElement } from './utils';
 
-export const getHtmlTag = (listType: typeof ListTypes[keyof typeof ListTypes]) => {
+export const getHtmlTag = (
+  listType: typeof ListTypes[keyof typeof ListTypes],
+) => {
   const tag = listType === ListTypes.Numbered ? 'ol' : 'ul';
   return tag;
 };

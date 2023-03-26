@@ -17,7 +17,6 @@ import { NosEditorFullFeatures } from './pages/noseditor-full';
 import { EditorWithCursorOverlay } from './pages/remote-cursor-overlay';
 
 export const NosEditorFullApp = () => {
-
   return (
     <>
       <ErrorBoundary fallback={<h3>editor is not rendering properly.</h3>}>
@@ -25,8 +24,8 @@ export const NosEditorFullApp = () => {
       </ErrorBoundary>
       <StrictMode></StrictMode>
     </>
-  )
-}
+  );
+};
 
 export const NosEditorApp = () => (
   <>

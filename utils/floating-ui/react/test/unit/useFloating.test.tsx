@@ -1,5 +1,5 @@
-import {render, screen} from '@testing-library/react';
-import {useCallback, useLayoutEffect} from 'react';
+import { render, screen } from '@testing-library/react';
+import { useCallback, useLayoutEffect } from 'react';
 
 import {
   useClick,
@@ -9,29 +9,29 @@ import {
   useHover,
   useInteractions,
 } from '../../src';
-import {isElement} from '../../src/utils/is';
+import { isElement } from '../../src/utils/is';
 
 describe('positionReference', () => {
   test('sets separate refs', () => {
     function App() {
-      const {reference, positionReference, refs} =
+      const { reference, positionReference, refs } =
         useFloating<HTMLDivElement>();
 
       return (
         <>
-          <div ref={reference} data-testid="reference" />
-          <div ref={positionReference} data-testid="position-reference" />
-          <div data-testid="reference-text">
+          <div ref={reference} data-testid='reference' />
+          <div ref={positionReference} data-testid='position-reference' />
+          <div data-testid='reference-text'>
             {String(refs.domReference.current?.getAttribute('data-testid'))}
           </div>
-          <div data-testid="position-reference-text">
+          <div data-testid='position-reference-text'>
             {String(isElement(refs.reference.current))}
           </div>
         </>
       );
     }
 
-    const {getByTestId, rerender} = render(<App />);
+    const { getByTestId, rerender } = render(<App />);
 
     expect(getByTestId('reference-text').textContent).toBe('reference');
     expect(getByTestId('position-reference-text').textContent).toBe('false');
@@ -44,24 +44,24 @@ describe('positionReference', () => {
 
   test('handles unstable reference prop', () => {
     function App() {
-      const {reference, positionReference, refs} =
+      const { reference, positionReference, refs } =
         useFloating<HTMLDivElement>();
 
       return (
         <>
-          <div ref={(node) => reference(node)} data-testid="reference" />
-          <div ref={positionReference} data-testid="position-reference" />
-          <div data-testid="reference-text">
+          <div ref={(node) => reference(node)} data-testid='reference' />
+          <div ref={positionReference} data-testid='position-reference' />
+          <div data-testid='reference-text'>
             {String(refs.domReference.current?.getAttribute('data-testid'))}
           </div>
-          <div data-testid="position-reference-text">
+          <div data-testid='position-reference-text'>
             {String(isElement(refs.reference.current))}
           </div>
         </>
       );
     }
 
-    const {getByTestId, rerender} = render(<App />);
+    const { getByTestId, rerender } = render(<App />);
 
     expect(getByTestId('reference-text').textContent).toBe('reference');
     expect(getByTestId('position-reference-text').textContent).toBe('false');
@@ -74,7 +74,7 @@ describe('positionReference', () => {
 
   test('handles real virtual element', () => {
     function App() {
-      const {reference, positionReference, refs} = useFloating();
+      const { reference, positionReference, refs } = useFloating();
 
       useLayoutEffect(() => {
         positionReference({
@@ -93,18 +93,18 @@ describe('positionReference', () => {
 
       return (
         <>
-          <div ref={(node) => reference(node)} data-testid="reference" />
-          <div data-testid="reference-text">
+          <div ref={(node) => reference(node)} data-testid='reference' />
+          <div data-testid='reference-text'>
             {String(refs.domReference.current?.getAttribute('data-testid'))}
           </div>
-          <div data-testid="position-reference-text">
+          <div data-testid='position-reference-text'>
             {refs.reference.current?.getBoundingClientRect().x}
           </div>
         </>
       );
     }
 
-    const {getByTestId, rerender} = render(<App />);
+    const { getByTestId, rerender } = render(<App />);
 
     expect(getByTestId('reference-text').textContent).toBe('reference');
     expect(getByTestId('position-reference-text').textContent).toBe('218');
@@ -118,7 +118,7 @@ describe('positionReference', () => {
 
 describe('#2129: interactions.getFloatingProps as a dep does not cause setState loop', () => {
   function App() {
-    const {refs, context} = useFloating({
+    const { refs, context } = useFloating({
       open: true,
     });
 
@@ -132,7 +132,7 @@ describe('#2129: interactions.getFloatingProps as a dep does not cause setState 
     const Tooltip = useCallback(() => {
       return (
         <div
-          data-testid="floating"
+          data-testid='floating'
           ref={refs.setFloating}
           {...interactions.getFloatingProps()}
         />

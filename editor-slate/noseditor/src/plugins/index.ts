@@ -1,6 +1,4 @@
-export {
-  useTrailingLinePlugin,
-} from './trailing-line/use-trailing-line-plugin';
+export { useTrailingLinePlugin } from './trailing-line/use-trailing-line-plugin';
 export { useTablePlugin } from './table/use-table-plugin';
 export { useSoftBreakPlugin } from './soft-break/use-soft-break-plugin';
 export { useDeserializePlugin } from './serialization/use-deserialize-plugin';

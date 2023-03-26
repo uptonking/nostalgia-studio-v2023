@@ -2,8 +2,8 @@ import {
   detectOverflow,
   Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import {sides} from '../enums';
-import type {Middleware, Rect, SideObject} from '../types';
+import { sides } from '../enums';
+import type { Middleware, Rect, SideObject } from '../types';
 
 function getSideOffsets(overflow: SideObject, rect: Rect) {
   return {
@@ -31,13 +31,13 @@ export interface Options {
  * @see https://floating-ui.com/docs/hide
  */
 export const hide = (
-  options: Partial<Options & DetectOverflowOptions> = {}
+  options: Partial<Options & DetectOverflowOptions> = {},
 ): Middleware => ({
   name: 'hide',
   options,
   async fn(state) {
-    const {strategy = 'referenceHidden', ...detectOverflowOptions} = options;
-    const {rects} = state;
+    const { strategy = 'referenceHidden', ...detectOverflowOptions } = options;
+    const { rects } = state;
 
     switch (strategy) {
       case 'referenceHidden': {

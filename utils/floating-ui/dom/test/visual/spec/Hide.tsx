@@ -1,10 +1,10 @@
-import type {Placement} from '@floating-ui/core';
-import {hide, size, useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useState} from 'react';
+import type { Placement } from '@floating-ui/core';
+import { hide, size, useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useState } from 'react';
 
-import {allPlacements} from '../utils/allPlacements';
-import {Controls} from '../utils/Controls';
-import {useScroll} from '../utils/useScroll';
+import { allPlacements } from '../utils/allPlacements';
+import { Controls } from '../utils/Controls';
+import { useScroll } from '../utils/useScroll';
 
 export function Hide() {
   const [placement, setPlacement] = useState<Placement>('bottom');
@@ -19,21 +19,21 @@ export function Hide() {
     strategy,
     update,
     refs,
-    middlewareData: {hide: {referenceHidden, escaped} = {}},
+    middlewareData: { hide: { referenceHidden, escaped } = {} },
   } = useFloating({
     strategy: isSizeHierarchy ? 'fixed' : 'absolute',
     placement,
     middleware: [
-      hide({strategy: 'referenceHidden'}),
-      hide({strategy: 'escaped'}),
+      hide({ strategy: 'referenceHidden' }),
+      hide({ strategy: 'escaped' }),
       size({
         apply: isSizeHierarchy
-          ? ({elements, availableHeight}) => {
+          ? ({ elements, availableHeight }) => {
               Object.assign(elements.floating.style, {
                 maxHeight: `${availableHeight}px`,
               });
             }
-          : ({elements}) =>
+          : ({ elements }) =>
               Object.assign(elements.floating.style, {
                 maxHeight: '',
               }),
@@ -41,19 +41,19 @@ export function Hide() {
     ],
   });
 
-  const {scrollRef, indicator} = useScroll({refs, update});
+  const { scrollRef, indicator } = useScroll({ refs, update });
 
   useLayoutEffect(update, [update, hierarchy]);
 
   let referenceJsx = (
-    <div ref={reference} className="reference">
+    <div ref={reference} className='reference'>
       Reference
     </div>
   );
   let floatingJsx = (
     <div
       ref={floating}
-      className="floating"
+      className='floating'
       style={{
         position: strategy,
         top: y ?? '',
@@ -67,9 +67,9 @@ export function Hide() {
 
   if (hierarchy === 'b') {
     referenceJsx = (
-      <div style={{overflow: 'hidden', height: 0}}>
-        <div style={{position: 'absolute', top: 0, left: 0}}>
-          <div ref={reference} className="reference">
+      <div style={{ overflow: 'hidden', height: 0 }}>
+        <div style={{ position: 'absolute', top: 0, left: 0 }}>
+          <div ref={reference} className='reference'>
             Reference
           </div>
         </div>
@@ -77,10 +77,10 @@ export function Hide() {
     );
   } else if (hierarchy === 'c') {
     referenceJsx = (
-      <div style={{overflow: 'scroll', height: 0}}>
-        <div style={{overflow: 'hidden'}}>
-          <div style={{position: 'absolute', top: 0, left: 0}}>
-            <div ref={reference} className="reference">
+      <div style={{ overflow: 'scroll', height: 0 }}>
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0 }}>
+            <div ref={reference} className='reference'>
               Reference
             </div>
           </div>
@@ -89,11 +89,11 @@ export function Hide() {
     );
   } else if (hierarchy === 'd') {
     referenceJsx = (
-      <div style={{overflow: 'hidden', height: 0}}>
+      <div style={{ overflow: 'hidden', height: 0 }}>
         <div
           ref={reference}
-          className="reference"
-          style={{position: 'absolute', top: 0, left: 0}}
+          className='reference'
+          style={{ position: 'absolute', top: 0, left: 0 }}
         >
           Reference
         </div>
@@ -101,10 +101,10 @@ export function Hide() {
     );
   } else if (hierarchy === 'e') {
     referenceJsx = (
-      <div style={{overflow: 'scroll', height: 0, position: 'relative'}}>
-        <div style={{overflow: 'hidden'}}>
-          <div style={{position: 'absolute'}}>
-            <div ref={reference} className="reference">
+      <div style={{ overflow: 'scroll', height: 0, position: 'relative' }}>
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ position: 'absolute' }}>
+            <div ref={reference} className='reference'>
               Reference
             </div>
           </div>
@@ -121,9 +121,9 @@ export function Hide() {
           position: 'relative',
         }}
       >
-        <div style={{overflow: 'hidden'}}>
-          <div style={{position: 'absolute'}}>
-            <div ref={reference} className="reference">
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ position: 'absolute' }}>
+            <div ref={reference} className='reference'>
               Reference
             </div>
           </div>
@@ -132,11 +132,11 @@ export function Hide() {
     );
   } else if (hierarchy === 'g') {
     referenceJsx = (
-      <div style={{overflow: 'scroll', height: 0}}>
-        <div style={{overflow: 'hidden'}}>
-          <div style={{position: 'absolute', top: 0, left: 0}}>
-            <div style={{position: 'absolute'}}>
-              <div ref={reference} className="reference">
+      <div style={{ overflow: 'scroll', height: 0 }}>
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0 }}>
+            <div style={{ position: 'absolute' }}>
+              <div ref={reference} className='reference'>
                 Reference
               </div>
             </div>
@@ -146,13 +146,18 @@ export function Hide() {
     );
   } else if (hierarchy === 'h') {
     referenceJsx = (
-      <div style={{overflow: 'scroll', height: 0}}>
-        <div style={{overflow: 'hidden'}}>
+      <div style={{ overflow: 'scroll', height: 0 }}>
+        <div style={{ overflow: 'hidden' }}>
           <div
-            style={{position: 'absolute', top: 0, left: 0, overflow: 'hidden'}}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              overflow: 'hidden',
+            }}
           >
-            <div style={{position: 'absolute'}}>
-              <div ref={reference} className="reference">
+            <div style={{ position: 'absolute' }}>
+              <div ref={reference} className='reference'>
                 Reference
               </div>
             </div>
@@ -162,8 +167,8 @@ export function Hide() {
     );
   } else if (hierarchy === 'i') {
     referenceJsx = (
-      <div style={{position: 'relative'}}>
-        <div style={{overflow: 'hidden'}}>
+      <div style={{ position: 'relative' }}>
+        <div style={{ overflow: 'hidden' }}>
           <div
             style={{
               position: 'absolute',
@@ -173,8 +178,8 @@ export function Hide() {
               border: '1px solid blue',
             }}
           >
-            <div style={{position: 'absolute', left: 20, top: 20}}>
-              <div ref={reference} className="reference">
+            <div style={{ position: 'absolute', left: 20, top: 20 }}>
+              <div ref={reference} className='reference'>
                 Reference
               </div>
             </div>
@@ -194,8 +199,8 @@ export function Hide() {
       >
         <div
           ref={floating}
-          className="floating"
-          style={{position: strategy, top: y ?? 0, left: x ?? 0}}
+          className='floating'
+          style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}
         >
           Floating
         </div>
@@ -214,8 +219,8 @@ export function Hide() {
       >
         <div
           ref={floating}
-          className="floating"
-          style={{position: strategy, top: y ?? 0, left: x ?? 0}}
+          className='floating'
+          style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}
         >
           Floating
         </div>
@@ -231,12 +236,12 @@ export function Hide() {
           height: 40,
         }}
       >
-        <div style={{transform: 'translateZ(0)'}}>
+        <div style={{ transform: 'translateZ(0)' }}>
           <div>
             <div
               ref={floating}
-              className="floating"
-              style={{position: strategy, top: y ?? 0, left: x ?? 0}}
+              className='floating'
+              style={{ position: strategy, top: y ?? 0, left: x ?? 0 }}
             >
               Floating
             </div>
@@ -256,7 +261,7 @@ export function Hide() {
       >
         <div
           ref={floating}
-          className="floating"
+          className='floating'
           style={{
             position: strategy,
             top: y ?? 0,
@@ -274,8 +279,8 @@ export function Hide() {
     <>
       <h1>Hide</h1>
       <p></p>
-      <div className="container" style={{position: 'relative'}}>
-        <div className="scroll" ref={scrollRef} data-x>
+      <div className='container' style={{ position: 'relative' }}>
+        <div className='scroll' ref={scrollRef} data-x>
           {indicator}
           {referenceJsx}
           {floatingJsx}
@@ -311,7 +316,7 @@ export function Hide() {
             >
               {localHierarchy}
             </button>
-          )
+          ),
         )}
       </Controls>
     </>

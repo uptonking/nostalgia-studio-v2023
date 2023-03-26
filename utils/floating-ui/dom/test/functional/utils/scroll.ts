@@ -1,4 +1,4 @@
-import type {Coords} from '@floating-ui/core';
+import type { Coords } from '@floating-ui/core';
 
 /**
  * Scrolls a scroll element by an amount of pixels.
@@ -6,11 +6,11 @@ import type {Coords} from '@floating-ui/core';
 export async function scroll(
   page: any,
   scrollOffsets: Partial<Coords>,
-  selector = '.scroll'
+  selector = '.scroll',
 ) {
   await page.waitForSelector(selector);
   return await page.evaluate(
-    ({x, y, selector}: Partial<Coords> & {selector: string}) => {
+    ({ x, y, selector }: Partial<Coords> & { selector: string }) => {
       const scroll = document.querySelector(selector);
       if (scroll) {
         if (x != null) {
@@ -21,6 +21,6 @@ export async function scroll(
         }
       }
     },
-    {...scrollOffsets, selector}
+    { ...scrollOffsets, selector },
   );
 }

@@ -1,13 +1,13 @@
-import {autoUpdate, shift, useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useRef, useState} from 'react';
+import { autoUpdate, shift, useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useRef, useState } from 'react';
 
-import {Controls} from '../utils/Controls';
+import { Controls } from '../utils/Controls';
 
 // The element rect is black, while the clipping rect is blue.
 const debugRectsJsx = (
   <>
     <div
-      id="elementRect"
+      id='elementRect'
       style={{
         position: 'fixed',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -16,7 +16,7 @@ const debugRectsJsx = (
       }}
     />
     <div
-      id="clippingRect"
+      id='clippingRect'
       style={{
         position: 'fixed',
         backgroundColor: 'rgba(0, 200, 255, 0.25)',
@@ -55,8 +55,8 @@ const NODES: Node[] = [
 
 export function Transform() {
   const [node, setNode] = useState<Node>(null);
-  const {x, y, reference, floating, strategy, update} = useFloating({
-    middleware: [shift({crossAxis: true})],
+  const { x, y, reference, floating, strategy, update } = useFloating({
+    middleware: [shift({ crossAxis: true })],
     whileElementsMounted: autoUpdate,
   });
   const offsetParentRef = useRef(null);
@@ -98,7 +98,7 @@ export function Transform() {
     if (node === 'virtual' && element) {
       element.style.transform = 'scale(0.5)';
       const virtualContext = document.querySelector(
-        '#virtual-context'
+        '#virtual-context',
       ) as HTMLElement;
       reference({
         getBoundingClientRect: () => virtualContext.getBoundingClientRect(),
@@ -124,23 +124,23 @@ export function Transform() {
       </p>
       {debugRectsJsx}
       <div
-        className="container"
+        className='container'
         ref={offsetParentRef}
         style={{
           overflow: 'hidden',
           position: node === 'offsetParent' ? 'relative' : undefined,
         }}
       >
-        <span style={{position: node === 'inline' ? 'relative' : undefined}}>
+        <span style={{ position: node === 'inline' ? 'relative' : undefined }}>
           {node === 'virtual' && (
             <div
-              id="virtual-context"
-              style={{width: 50, height: 50, background: 'black'}}
+              id='virtual-context'
+              style={{ width: 50, height: 50, background: 'black' }}
             />
           )}
           <div
             ref={reference}
-            className="reference"
+            className='reference'
             style={{
               transform: node?.includes('reference')
                 ? 'scale(1.25) translate(2rem, -2rem)'
@@ -151,7 +151,7 @@ export function Transform() {
           </div>
           <div
             ref={floating}
-            className="floating"
+            className='floating'
             style={{
               position: strategy,
               top: y ?? '',

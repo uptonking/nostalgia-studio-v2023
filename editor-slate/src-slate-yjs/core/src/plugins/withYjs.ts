@@ -90,9 +90,7 @@ export const YjsEditor = {
     return CONNECTED.has(editor);
   },
 
-  connect(
-    editor: YjsEditor
-  ): void {
+  connect(editor: YjsEditor): void {
     editor.connect();
   },
 

@@ -1,12 +1,12 @@
-import type {Dimensions} from '@floating-ui/core';
+import type { Dimensions } from '@floating-ui/core';
 
-import {getComputedStyle} from './getComputedStyle';
-import {isHTMLElement} from './is';
-import {round} from './math';
+import { getComputedStyle } from './getComputedStyle';
+import { isHTMLElement } from './is';
+import { round } from './math';
 
 export function getCssDimensions(
-  element: Element
-): Dimensions & {fallback: boolean} {
+  element: Element,
+): Dimensions & { fallback: boolean } {
   const css = getComputedStyle(element);
   let width = parseFloat(css.width);
   let height = parseFloat(css.height);

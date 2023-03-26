@@ -1,5 +1,9 @@
-import {VirtualElement} from '@floating-ui/core';
-import {getOverflowAncestors, shift, useFloating} from '@floating-ui/react-dom';
+import { VirtualElement } from '@floating-ui/core';
+import {
+  getOverflowAncestors,
+  shift,
+  useFloating,
+} from '@floating-ui/react-dom';
 import {
   MutableRefObject,
   useEffect,
@@ -7,9 +11,9 @@ import {
   useRef,
   useState,
 } from 'react';
-import {flushSync} from 'react-dom';
+import { flushSync } from 'react-dom';
 
-import {isElement} from '../../../src/utils/is';
+import { isElement } from '../../../src/utils/is';
 
 export const useScroll = ({
   refs,
@@ -33,10 +37,10 @@ export const useScroll = ({
   } = useFloating({
     strategy: 'fixed',
     placement: 'top',
-    middleware: [shift({crossAxis: true, altBoundary: true, padding: 10})],
+    middleware: [shift({ crossAxis: true, altBoundary: true, padding: 10 })],
   });
   const scrollRef = useRef<HTMLDivElement | null>(null);
-  const [{scrollX, scrollY}, setScroll] = useState<{
+  const [{ scrollX, scrollY }, setScroll] = useState<{
     scrollX: null | number;
     scrollY: null | number;
   }>({
@@ -63,7 +67,7 @@ export const useScroll = ({
 
       if (scroll) {
         flushSync(() => {
-          setScroll({scrollX: scroll.scrollLeft, scrollY: scroll.scrollTop});
+          setScroll({ scrollX: scroll.scrollLeft, scrollY: scroll.scrollTop });
         });
       }
 
@@ -98,7 +102,7 @@ export const useScroll = ({
 
   const indicator = (
     <div
-      className="scroll-indicator"
+      className='scroll-indicator'
       ref={floating}
       style={{
         position: strategy,
@@ -110,5 +114,5 @@ export const useScroll = ({
     </div>
   );
 
-  return {scrollRef, indicator};
+  return { scrollRef, indicator };
 };

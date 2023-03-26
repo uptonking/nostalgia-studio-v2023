@@ -1,7 +1,7 @@
-import {useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useState} from 'react';
+import { useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useState } from 'react';
 
-import {Controls} from '../utils/Controls';
+import { Controls } from '../utils/Controls';
 
 type Node = 'table' | 'td' | 'th';
 const NODES: Node[] = ['table', 'td', 'th'];
@@ -10,14 +10,14 @@ const BOOLS = [true, false];
 export function Table() {
   const [sameParent, setSameParent] = useState(false);
   const [node, setNode] = useState<Node>('td');
-  const {x, y, reference, floating, strategy, update} = useFloating();
+  const { x, y, reference, floating, strategy, update } = useFloating();
 
   useLayoutEffect(update, [update, node, sameParent]);
 
   const floatingJsx = (
     <div
       ref={floating}
-      className="floating"
+      className='floating'
       style={{
         position: strategy,
         top: y ?? '',
@@ -35,7 +35,7 @@ export function Table() {
         The floating element should be correctly positioned when the reference
         or ancestor is a table element.
       </p>
-      <div className="container">
+      <div className='container'>
         <table ref={node === 'table' ? reference : undefined}>
           <thead>
             <tr ref={node === 'th' ? reference : undefined}>

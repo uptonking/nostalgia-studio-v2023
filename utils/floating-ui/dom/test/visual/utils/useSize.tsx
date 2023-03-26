@@ -1,9 +1,9 @@
-import {useState} from 'react';
-import {flushSync} from 'react-dom';
+import { useState } from 'react';
+import { flushSync } from 'react-dom';
 
 export const useSize = (
   initialSize = 80,
-  key = 'floating'
+  key = 'floating',
 ): [number, (event: React.ChangeEvent<HTMLInputElement>) => void] => {
   const [size, setSize] = useState(initialSize);
 

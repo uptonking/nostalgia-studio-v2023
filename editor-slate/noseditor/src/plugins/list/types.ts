@@ -8,13 +8,11 @@ import type { ListTypes } from './utils';
 
 export type ListItemType = 'list_item';
 
-
 type BaseListItemElement = {
   type: ListItemType;
   children: Descendant[];
 } & NestingElement &
   FoldingElement;
-
 
 type BulletedListItemElement = BaseListItemElement & {
   listType: typeof ListTypes['Bulleted'];

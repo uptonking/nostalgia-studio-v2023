@@ -79,11 +79,11 @@ export function RemoteCursorOverlay({
   });
 
   return (
-      <div className={clsx('relative', className)} ref={containerRef}>
-        {children}
-        {cursors.map((cursor) => (
-          <RemoteSelection key={cursor.clientId} {...cursor} />
-        ))}
-      </div>
+    <div className={clsx('relative', className)} ref={containerRef}>
+      {children}
+      {cursors.map((cursor) => (
+        <RemoteSelection key={cursor.clientId} {...cursor} />
+      ))}
+    </div>
   );
 }

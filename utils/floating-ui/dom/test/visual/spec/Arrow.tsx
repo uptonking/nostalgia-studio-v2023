@@ -1,10 +1,10 @@
-import type {Placement} from '@floating-ui/core';
-import {arrow, autoUpdate, shift, useFloating} from '@floating-ui/react-dom';
-import {useLayoutEffect, useRef, useState} from 'react';
+import type { Placement } from '@floating-ui/core';
+import { arrow, autoUpdate, shift, useFloating } from '@floating-ui/react-dom';
+import { useLayoutEffect, useRef, useState } from 'react';
 
-import {allPlacements} from '../utils/allPlacements';
-import {Controls} from '../utils/Controls';
-import {useScroll} from '../utils/useScroll';
+import { allPlacements } from '../utils/allPlacements';
+import { Controls } from '../utils/Controls';
+import { useScroll } from '../utils/useScroll';
 
 export function Arrow() {
   const [placement, setPlacement] = useState<Placement>('bottom');
@@ -22,17 +22,17 @@ export function Arrow() {
     strategy,
     update,
     placement: resultantPlacement,
-    middlewareData: {arrow: {x: arrowX, y: arrowY} = {}},
+    middlewareData: { arrow: { x: arrowX, y: arrowY } = {} },
     refs,
   } = useFloating({
     placement,
     whileElementsMounted: autoUpdate,
-    middleware: [shift({padding: 10}), arrow({element: arrowRef, padding})],
+    middleware: [shift({ padding: 10 }), arrow({ element: arrowRef, padding })],
   });
 
   useLayoutEffect(update, [update, padding, referenceSize, floatingSize]);
 
-  const oppositeSidesMap: {[key: string]: string} = {
+  const oppositeSidesMap: { [key: string]: string } = {
     top: 'bottom',
     left: 'right',
     right: 'left',
@@ -41,7 +41,7 @@ export function Arrow() {
 
   const staticSide = oppositeSidesMap[resultantPlacement.split('-')[0]];
 
-  const {scrollRef} = useScroll({refs, update});
+  const { scrollRef } = useScroll({ refs, update });
 
   const ArrowTag = svg ? 'svg' : 'div';
 
@@ -50,18 +50,18 @@ export function Arrow() {
       <h1>Arrow</h1>
       <p></p>
       <div
-        className="container"
-        style={{willChange: svg ? 'transform' : undefined}}
+        className='container'
+        style={{ willChange: svg ? 'transform' : undefined }}
       >
         <div
-          className="scroll"
+          className='scroll'
           ref={scrollRef}
           data-x
-          style={{position: 'relative'}}
+          style={{ position: 'relative' }}
         >
           <div
             ref={reference}
-            className="reference"
+            className='reference'
             style={{
               width: referenceSize,
               height: referenceSize,
@@ -71,7 +71,7 @@ export function Arrow() {
           </div>
           <div
             ref={floating}
-            className="floating"
+            className='floating'
             style={{
               position: strategy,
               top: y ?? 0,
@@ -83,7 +83,7 @@ export function Arrow() {
             Floating
             <ArrowTag
               ref={arrowRef}
-              className="arrow"
+              className='arrow'
               style={{
                 position: 'absolute',
                 top: arrowY != null ? arrowY : '',

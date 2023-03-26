@@ -1,16 +1,16 @@
-import {autoUpdate, useFloating} from '@floating-ui/react-dom';
-import {useEffect, useRef} from 'react';
+import { autoUpdate, useFloating } from '@floating-ui/react-dom';
+import { useEffect, useRef } from 'react';
 
-import {useScroll} from '../utils/useScroll';
+import { useScroll } from '../utils/useScroll';
 
 export function VirtualElement() {
   const referenceToDeriveRef = useRef<HTMLDivElement>(null);
-  const {x, y, reference, floating, strategy, update, refs} = useFloating({
+  const { x, y, reference, floating, strategy, update, refs } = useFloating({
     strategy: 'fixed',
     whileElementsMounted: autoUpdate,
   });
 
-  const {scrollRef} = useScroll({refs, update});
+  const { scrollRef } = useScroll({ refs, update });
 
   useEffect(() => {
     const contextElement = referenceToDeriveRef.current;
@@ -28,14 +28,14 @@ export function VirtualElement() {
     <>
       <h1>Virtual Element</h1>
       <p></p>
-      <div className="container">
+      <div className='container'>
         <div
-          className="scroll"
+          className='scroll'
           data-x
-          style={{position: 'relative'}}
+          style={{ position: 'relative' }}
           ref={scrollRef}
         >
-          <div ref={referenceToDeriveRef} className="reference">
+          <div ref={referenceToDeriveRef} className='reference'>
             Reference
           </div>
         </div>
@@ -43,7 +43,7 @@ export function VirtualElement() {
 
       <div
         ref={floating}
-        className="floating"
+        className='floating'
         style={{
           position: strategy,
           top: y ?? 0,

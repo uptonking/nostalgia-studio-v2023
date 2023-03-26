@@ -62,10 +62,11 @@
     "zustand": "^3.7.1"
   },
   "devDependencies": {
-    "@emotion/css": "^11.10.0",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
     "@faker-js/faker": "^7.6.0",
+    "@linaria/babel-preset": "^4.4.3",
+    "@linaria/core": "^4.2.8",
+    "@linaria/react": "^4.3.6",
+    "@linaria/webpack5-loader": "^4.1.15",
     "@types/ramda": "^0.28.0",
     "@types/react": "18.0.26",
     "@types/react-dom": "^18.0.10",

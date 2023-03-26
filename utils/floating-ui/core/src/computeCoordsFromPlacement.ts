@@ -1,13 +1,13 @@
-import type {Coords, ElementRects, Placement} from './types';
-import {getAlignment} from './utils/getAlignment';
-import {getLengthFromAxis} from './utils/getLengthFromAxis';
-import {getMainAxisFromPlacement} from './utils/getMainAxisFromPlacement';
-import {getSide} from './utils/getSide';
+import type { Coords, ElementRects, Placement } from './types';
+import { getAlignment } from './utils/getAlignment';
+import { getLengthFromAxis } from './utils/getLengthFromAxis';
+import { getMainAxisFromPlacement } from './utils/getMainAxisFromPlacement';
+import { getSide } from './utils/getSide';
 
 export function computeCoordsFromPlacement(
-  {reference, floating}: ElementRects,
+  { reference, floating }: ElementRects,
   placement: Placement,
-  rtl?: boolean
+  rtl?: boolean,
 ): Coords {
   const commonX = reference.x + reference.width / 2 - floating.width / 2;
   const commonY = reference.y + reference.height / 2 - floating.height / 2;
@@ -20,19 +20,19 @@ export function computeCoordsFromPlacement(
   let coords;
   switch (side) {
     case 'top':
-      coords = {x: commonX, y: reference.y - floating.height};
+      coords = { x: commonX, y: reference.y - floating.height };
       break;
     case 'bottom':
-      coords = {x: commonX, y: reference.y + reference.height};
+      coords = { x: commonX, y: reference.y + reference.height };
       break;
     case 'right':
-      coords = {x: reference.x + reference.width, y: commonY};
+      coords = { x: reference.x + reference.width, y: commonY };
       break;
     case 'left':
-      coords = {x: reference.x - floating.width, y: commonY};
+      coords = { x: reference.x - floating.width, y: commonY };
       break;
     default:
-      coords = {x: reference.x, y: reference.y};
+      coords = { x: reference.x, y: reference.y };
   }
 
   switch (getAlignment(placement)) {

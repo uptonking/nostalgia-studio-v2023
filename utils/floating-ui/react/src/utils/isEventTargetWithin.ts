@@ -7,7 +7,7 @@
  */
 export function isEventTargetWithin(
   event: FocusEvent | MouseEvent,
-  node: Node | null | undefined
+  node: Node | null | undefined,
 ) {
   if (node == null) {
     return false;

@@ -6,20 +6,20 @@ import {
   useInteractions,
   useListNavigation,
 } from '@floating-ui/react';
-import {useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 
 interface Props {
   orientation?: 'horizontal' | 'both';
   loop?: boolean;
 }
 
-export const Main = ({orientation = 'horizontal', loop = false}: Props) => {
+export const Main = ({ orientation = 'horizontal', loop = false }: Props) => {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const listRef = useRef<Array<HTMLElement | null>>([]);
 
-  const {x, y, strategy, refs, context} = useFloating({
+  const { x, y, strategy, refs, context } = useFloating({
     open,
     onOpenChange: setOpen,
     placement: 'bottom-start',
@@ -27,25 +27,27 @@ export const Main = ({orientation = 'horizontal', loop = false}: Props) => {
 
   const disabledIndices = [0, 1, 2, 3, 4, 5, 6, 7, 10, 15, 45, 48];
 
-  const {getReferenceProps, getFloatingProps, getItemProps} = useInteractions([
-    useClick(context),
-    useListNavigation(context, {
-      listRef,
-      activeIndex,
-      onNavigate: setActiveIndex,
-      cols: 5,
-      orientation,
-      loop,
-      openOnArrowKeyDown: false,
-      disabledIndices,
-    }),
-    useDismiss(context),
-  ]);
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [
+      useClick(context),
+      useListNavigation(context, {
+        listRef,
+        activeIndex,
+        onNavigate: setActiveIndex,
+        cols: 5,
+        orientation,
+        loop,
+        openOnArrowKeyDown: false,
+        disabledIndices,
+      }),
+      useDismiss(context),
+    ],
+  );
 
   return (
     <>
       <h1>Grid</h1>
-      <div className="container">
+      <div className='container'>
         <button ref={refs.setReference} {...getReferenceProps()}>
           Reference
         </button>
@@ -53,7 +55,7 @@ export const Main = ({orientation = 'horizontal', loop = false}: Props) => {
           <FloatingFocusManager context={context}>
             <div
               ref={refs.setFloating}
-              data-testid="floating"
+              data-testid='floating'
               style={{
                 display: 'grid',
                 gridTemplateColumns: '100px 100px 100px 100px 100px',
@@ -66,7 +68,7 @@ export const Main = ({orientation = 'horizontal', loop = false}: Props) => {
             >
               {[...Array(49)].map((_, index) => (
                 <button
-                  role="option"
+                  role='option'
                   key={index}
                   tabIndex={activeIndex === index ? 0 : -1}
                   disabled={disabledIndices.includes(index)}

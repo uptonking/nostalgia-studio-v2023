@@ -1,16 +1,16 @@
-import type {Rect, Strategy, VirtualElement} from '@floating-ui/core';
+import type { Rect, Strategy, VirtualElement } from '@floating-ui/core';
 
-import {getBoundingClientRect} from './getBoundingClientRect';
-import {getDocumentElement} from './getDocumentElement';
-import {getNodeScroll} from './getNodeScroll';
-import {getWindowScrollBarX} from './getWindowScrollBarX';
-import {isHTMLElement, isOverflowElement} from './is';
-import {getNodeName} from './node';
+import { getBoundingClientRect } from './getBoundingClientRect';
+import { getDocumentElement } from './getDocumentElement';
+import { getNodeScroll } from './getNodeScroll';
+import { getWindowScrollBarX } from './getWindowScrollBarX';
+import { isHTMLElement, isOverflowElement } from './is';
+import { getNodeName } from './node';
 
 export function getRectRelativeToOffsetParent(
   element: Element | VirtualElement,
   offsetParent: Element | Window,
-  strategy: Strategy
+  strategy: Strategy,
 ): Rect {
   const isOffsetParentAnElement = isHTMLElement(offsetParent);
   const documentElement = getDocumentElement(offsetParent);
@@ -18,11 +18,11 @@ export function getRectRelativeToOffsetParent(
     element,
     true,
     strategy === 'fixed',
-    offsetParent
+    offsetParent,
   );
 
-  let scroll = {scrollLeft: 0, scrollTop: 0};
-  const offsets = {x: 0, y: 0};
+  let scroll = { scrollLeft: 0, scrollTop: 0 };
+  const offsets = { x: 0, y: 0 };
 
   if (
     isOffsetParentAnElement ||

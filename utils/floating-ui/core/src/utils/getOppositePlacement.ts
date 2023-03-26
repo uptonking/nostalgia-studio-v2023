@@ -1,4 +1,4 @@
-import type {Side} from '../types';
+import type { Side } from '../types';
 
 const oppositeSideMap = {
   left: 'right',
@@ -10,6 +10,6 @@ const oppositeSideMap = {
 export function getOppositePlacement<T extends string>(placement: T): T {
   return placement.replace(
     /left|right|bottom|top/g,
-    (side) => oppositeSideMap[side as Side]
+    (side) => oppositeSideMap[side as Side],
   ) as T;
 }

@@ -1,4 +1,4 @@
-import {getOppositeAxisPlacements} from '../../src/utils/getOppositeAxisPlacements';
+import { getOppositeAxisPlacements } from '../../src/utils/getOppositeAxisPlacements';
 
 describe('side', () => {
   test('top', () => {

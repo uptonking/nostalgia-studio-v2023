@@ -17,13 +17,17 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react';
-import {CheckIcon, ChevronDownIcon, ChevronUpIcon} from '@radix-ui/react-icons';
+import {
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+} from '@radix-ui/react-icons';
 import c from 'clsx';
-import {useLayoutEffect, useRef, useState} from 'react';
-import {flushSync} from 'react-dom';
+import { useLayoutEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 
-import {FloatingPortal} from '../../../src';
-import {Button} from '../lib/Button';
+import { FloatingPortal } from '../../../src';
+import { Button } from '../lib/Button';
 
 const fruits = [
   '🍒 Cherry',
@@ -56,10 +60,10 @@ const SCROLL_ARROW_PADDING = 10;
 
 const shouldShowArrow = (
   scrollRef: React.MutableRefObject<HTMLDivElement | null>,
-  dir: 'down' | 'up'
+  dir: 'down' | 'up',
 ) => {
   if (scrollRef.current) {
-    const {scrollTop, scrollHeight, clientHeight} = scrollRef.current;
+    const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
     if (dir === 'up') {
       return scrollTop >= SCROLL_ARROW_PADDING;
     }
@@ -154,7 +158,7 @@ export function ScrollArrow({
         onScroll(
           dir === 'up'
             ? Math.min(pixelsToScroll, remainingPixels)
-            : Math.max(-pixelsToScroll, -remainingPixels)
+            : Math.max(-pixelsToScroll, -remainingPixels),
         );
 
         if (scrollRemaining) {
@@ -181,7 +185,7 @@ export function ScrollArrow({
         {
           'top-0': dir === 'up',
           'bottom-0': dir === 'down',
-        }
+        },
       )}
       data-dir={dir}
       ref={ref}
@@ -215,7 +219,7 @@ export function Main() {
   const [scrollTop, setScrollTop] = useState(0);
   const [blockSelection, setBlockSelection] = useState(false);
 
-  const {x, y, strategy, refs, context} = useFloating({
+  const { x, y, strategy, refs, context } = useFloating({
     placement: 'bottom-start',
     open,
     onOpenChange: (open) => {
@@ -225,9 +229,11 @@ export function Main() {
     middleware: fallback
       ? [
           offset(5),
-          touch ? shift({crossAxis: true, padding: 10}) : flip({padding: 10}),
+          touch
+            ? shift({ crossAxis: true, padding: 10 })
+            : flip({ padding: 10 }),
           size({
-            apply({availableHeight, rects}) {
+            apply({ availableHeight, rects }) {
               Object.assign(scrollRef.current?.style ?? {}, {
                 maxHeight: `${availableHeight}px`,
                 minWidth: `${rects.reference.width}px`,
@@ -238,7 +244,7 @@ export function Main() {
         ]
       : [
           size({
-            apply({elements, rects}) {
+            apply({ elements, rects }) {
               Object.assign(elements.floating.style, {
                 minWidth: `${rects.reference.width + 8}px`,
               });
@@ -255,32 +261,34 @@ export function Main() {
             minItemsVisible: touch ? 10 : 4,
             referenceOverflowThreshold: 20,
           }),
-          offset({crossAxis: -4}),
+          offset({ crossAxis: -4 }),
         ],
   });
 
-  const {getReferenceProps, getFloatingProps, getItemProps} = useInteractions([
-    useClick(context, {event: 'mousedown'}),
-    useDismiss(context),
-    useRole(context, {role: 'listbox'}),
-    useInnerOffset(context, {
-      enabled: !fallback,
-      onChange: setInnerOffset,
-      overflowRef,
-      scrollRef,
-    }),
-    useListNavigation(context, {
-      listRef,
-      activeIndex,
-      selectedIndex,
-      onNavigate: setActiveIndex,
-    }),
-    useTypeahead(context, {
-      listRef: listContentRef,
-      activeIndex,
-      onMatch: open ? setActiveIndex : setSelectedIndex,
-    }),
-  ]);
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [
+      useClick(context, { event: 'mousedown' }),
+      useDismiss(context),
+      useRole(context, { role: 'listbox' }),
+      useInnerOffset(context, {
+        enabled: !fallback,
+        onChange: setInnerOffset,
+        overflowRef,
+        scrollRef,
+      }),
+      useListNavigation(context, {
+        listRef,
+        activeIndex,
+        selectedIndex,
+        onNavigate: setActiveIndex,
+      }),
+      useTypeahead(context, {
+        listRef: listContentRef,
+        activeIndex,
+        onMatch: open ? setActiveIndex : setSelectedIndex,
+      }),
+    ],
+  );
 
   useLayoutEffect(() => {
     if (open) {
@@ -321,20 +329,20 @@ export function Main() {
     }
   };
 
-  const {emoji, text} = getParts(fruits[selectedIndex]);
+  const { emoji, text } = getParts(fruits[selectedIndex]);
 
   return (
     <>
-      <h1 className="text-5xl font-bold mb-8">macOS Select</h1>
-      <div className="grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <h1 className='text-5xl font-bold mb-8'>macOS Select</h1>
+      <div className='grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         <Button
           ref={refs.setReference}
-          className="flex gap-2 items-center"
+          className='flex gap-2 items-center'
           {...getReferenceProps({
             onTouchStart() {
               setTouch(true);
             },
-            onPointerMove({pointerType}) {
+            onPointerMove({ pointerType }) {
               if (pointerType === 'mouse') {
                 setTouch(false);
               }
@@ -347,7 +355,7 @@ export function Main() {
         </Button>
         <FloatingPortal>
           {open && (
-            <FloatingOverlay lockScroll={!touch} style={{zIndex: 1}}>
+            <FloatingOverlay lockScroll={!touch} style={{ zIndex: 1 }}>
               <FloatingFocusManager context={context} modal={false}>
                 <div
                   ref={refs.setFloating}
@@ -356,13 +364,13 @@ export function Main() {
                     top: y ?? 0,
                     left: x ?? 0,
                   }}
-                  className="bg-white shadow-lg border border-slate-900/15 bg-clip-padding rounded-lg outline-none"
+                  className='bg-white shadow-lg border border-slate-900/15 bg-clip-padding rounded-lg outline-none'
                 >
                   <div
-                    className="overflow-y-auto p-1 scrollbar-none"
+                    className='overflow-y-auto p-1 scrollbar-none'
                     ref={scrollRef}
                     {...getFloatingProps({
-                      onScroll({currentTarget}) {
+                      onScroll({ currentTarget }) {
                         setScrollTop(currentTarget.scrollTop);
                       },
                       onContextMenu(e) {
@@ -371,16 +379,16 @@ export function Main() {
                     })}
                   >
                     {fruits.map((fruit, i) => {
-                      const {emoji, text} = getParts(fruit);
+                      const { emoji, text } = getParts(fruit);
                       return (
                         <Button
                           key={fruit}
-                          className="flex justify-between items-center gap-2 w-full outline-none text-left scroll-my-6 transition-none"
+                          className='flex justify-between items-center gap-2 w-full outline-none text-left scroll-my-6 transition-none'
                           // Prevent immediate selection on touch devices when
                           // pressing the ScrollArrows
                           disabled={blockSelection}
                           aria-selected={selectedIndex === i}
-                          role="option"
+                          role='option'
                           tabIndex={activeIndex === i ? 0 : -1}
                           style={{
                             background:
@@ -428,7 +436,7 @@ export function Main() {
                             },
                           })}
                         >
-                          <div className="flex gap-2">
+                          <div className='flex gap-2'>
                             <span aria-hidden>{emoji}</span>
                             <span>{text}</span>
                           </div>

@@ -1,5 +1,5 @@
-import type {Middleware, SideObject} from '@floating-ui/core';
-import {arrow as arrowCore} from '@floating-ui/dom';
+import type { Middleware, SideObject } from '@floating-ui/core';
+import { arrow as arrowCore } from '@floating-ui/dom';
 import * as React from 'react';
 
 export interface Options {
@@ -14,7 +14,7 @@ export interface Options {
  * @see https://floating-ui.com/docs/arrow
  */
 export const arrow = (options: Options): Middleware => {
-  const {element, padding} = options;
+  const { element, padding } = options;
 
   function isRef(value: unknown): value is React.MutableRefObject<unknown> {
     return Object.prototype.hasOwnProperty.call(value, 'current');
@@ -26,12 +26,12 @@ export const arrow = (options: Options): Middleware => {
     fn(args) {
       if (isRef(element)) {
         if (element.current != null) {
-          return arrowCore({element: element.current, padding}).fn(args);
+          return arrowCore({ element: element.current, padding }).fn(args);
         }
 
         return {};
       } else if (element) {
-        return arrowCore({element, padding}).fn(args);
+        return arrowCore({ element, padding }).fn(args);
       }
 
       return {};

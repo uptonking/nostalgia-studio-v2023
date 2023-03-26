@@ -1,10 +1,10 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import type {ElementProps, FloatingContext, ReferenceType} from '../types';
-import {stopEvent} from '../utils/stopEvent';
-import {useEvent} from './utils/useEvent';
-import {useLatestRef} from './utils/useLatestRef';
+import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import { stopEvent } from '../utils/stopEvent';
+import { useEvent } from './utils/useEvent';
+import { useLatestRef } from './utils/useLatestRef';
 
 export interface Props {
   listRef: React.MutableRefObject<Array<string | null>>;
@@ -16,7 +16,7 @@ export interface Props {
     | null
     | ((
         list: Array<string | null>,
-        typedString: string
+        typedString: string,
       ) => string | null | undefined);
   resetMs?: number;
   ignoreKeys?: Array<string>;
@@ -30,9 +30,9 @@ export interface Props {
  */
 export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
   context: FloatingContext<RT>,
-  props: Props
+  props: Props,
 ): ElementProps => {
-  const {open, dataRef} = context;
+  const { open, dataRef } = context;
   const {
     listRef,
     activeIndex,
@@ -48,7 +48,7 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
   const timeoutIdRef = React.useRef<any>();
   const stringRef = React.useRef('');
   const prevIndexRef = React.useRef<number | null>(
-    selectedIndex ?? activeIndex ?? -1
+    selectedIndex ?? activeIndex ?? -1,
   );
   const matchIndexRef = React.useRef<number | null>(null);
 
@@ -95,14 +95,14 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
     function getMatchingIndex(
       list: Array<string | null>,
       orderedList: Array<string | null>,
-      string: string
+      string: string,
     ) {
       const str = findMatchRef.current
         ? findMatchRef.current(orderedList, string)
         : orderedList.find(
             (text) =>
               text?.toLocaleLowerCase().indexOf(string.toLocaleLowerCase()) ===
-              0
+              0,
           );
 
       return str ? list.indexOf(str) : -1;
@@ -144,7 +144,7 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
       const allowRapidSuccessionOfFirstLetter = listContent.every((text) =>
         text
           ? text[0]?.toLocaleLowerCase() !== text[1]?.toLocaleLowerCase()
-          : true
+          : true,
       );
 
       // Allows the user to cycle through items that start with the same letter
@@ -173,7 +173,7 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
           ...listContent.slice((prevIndex || 0) + 1),
           ...listContent.slice(0, (prevIndex || 0) + 1),
         ],
-        stringRef.current
+        stringRef.current,
       );
 
       if (index !== -1) {
@@ -186,8 +186,8 @@ export const useTypeahead = <RT extends ReferenceType = ReferenceType>(
     }
 
     return {
-      reference: {onKeyDown},
-      floating: {onKeyDown},
+      reference: { onKeyDown },
+      floating: { onKeyDown },
     };
   }, [
     enabled,

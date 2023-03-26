@@ -1,6 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react';
-import {act} from '@testing-library/react-hooks';
-import {cloneElement, useState} from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { act } from '@testing-library/react-hooks';
+import { cloneElement, useState } from 'react';
 
 import {
   FloatingDelayGroup,
@@ -18,18 +18,18 @@ interface Props {
   children: JSX.Element;
 }
 
-export const Tooltip = ({children, label}: Props) => {
-  const {delay} = useDelayGroupContext();
+export const Tooltip = ({ children, label }: Props) => {
+  const { delay } = useDelayGroupContext();
   const [open, setOpen] = useState(false);
 
-  const {x, y, reference, floating, strategy, context} = useFloating({
+  const { x, y, reference, floating, strategy, context } = useFloating({
     open,
     onOpenChange: setOpen,
   });
 
-  const {getReferenceProps} = useInteractions([
-    useHover(context, {delay}),
-    useDelayGroup(context, {id: label}),
+  const { getReferenceProps } = useInteractions([
+    useHover(context, { delay }),
+    useDelayGroup(context, { id: label }),
   ]);
 
   return (
@@ -39,7 +39,7 @@ export const Tooltip = ({children, label}: Props) => {
         getReferenceProps({
           ref: reference,
           ...children.props,
-        })
+        }),
       )}
       {open && (
         <div
@@ -60,15 +60,15 @@ export const Tooltip = ({children, label}: Props) => {
 
 function App() {
   return (
-    <FloatingDelayGroup delay={{open: 1000, close: 200}}>
-      <Tooltip label="one">
-        <button data-testid="reference-one" />
+    <FloatingDelayGroup delay={{ open: 1000, close: 200 }}>
+      <Tooltip label='one'>
+        <button data-testid='reference-one' />
       </Tooltip>
-      <Tooltip label="two">
-        <button data-testid="reference-two" />
+      <Tooltip label='two'>
+        <button data-testid='reference-two' />
       </Tooltip>
-      <Tooltip label="three">
-        <button data-testid="reference-three" />
+      <Tooltip label='three'>
+        <button data-testid='reference-three' />
       </Tooltip>
     </FloatingDelayGroup>
   );
@@ -127,15 +127,15 @@ test('groups delays correctly', async () => {
 test('timeoutMs', async () => {
   function App() {
     return (
-      <FloatingDelayGroup delay={{open: 1000, close: 100}} timeoutMs={500}>
-        <Tooltip label="one">
-          <button data-testid="reference-one" />
+      <FloatingDelayGroup delay={{ open: 1000, close: 100 }} timeoutMs={500}>
+        <Tooltip label='one'>
+          <button data-testid='reference-one' />
         </Tooltip>
-        <Tooltip label="two">
-          <button data-testid="reference-two" />
+        <Tooltip label='two'>
+          <button data-testid='reference-two' />
         </Tooltip>
-        <Tooltip label="three">
-          <button data-testid="reference-three" />
+        <Tooltip label='three'>
+          <button data-testid='reference-three' />
         </Tooltip>
       </FloatingDelayGroup>
     );

@@ -13,11 +13,11 @@ import {
   useRole,
   useTypeahead,
 } from '@floating-ui/react';
-import {CheckIcon} from '@radix-ui/react-icons';
+import { CheckIcon } from '@radix-ui/react-icons';
 import c from 'clsx';
 import * as React from 'react';
 
-import {Button} from '../lib/Button';
+import { Button } from '../lib/Button';
 
 const options = [
   'Red',
@@ -33,12 +33,12 @@ const options = [
   'White',
 ];
 
-function ColorSwatch({color}: {color?: string}) {
+function ColorSwatch({ color }: { color?: string }) {
   return (
     <div
       aria-hidden
-      className="rounded-full w-4 h-4 border border-slate-900/20 bg-clip-padding"
-      style={{background: color}}
+      className='rounded-full w-4 h-4 border border-slate-900/20 bg-clip-padding'
+      style={{ background: color }}
     />
   );
 }
@@ -48,16 +48,16 @@ export function Main() {
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 
-  const {x, y, strategy, refs, context} = useFloating({
+  const { x, y, strategy, refs, context } = useFloating({
     placement: 'bottom-start',
     open,
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
     middleware: [
       offset(5),
-      flip({padding: 10}),
+      flip({ padding: 10 }),
       size({
-        apply({rects, elements, availableHeight}) {
+        apply({ rects, elements, availableHeight }) {
           Object.assign(elements.floating.style, {
             maxHeight: `${availableHeight}px`,
             width: `${rects.reference.width}px`,
@@ -72,9 +72,9 @@ export function Main() {
   const listContentRef = React.useRef(options);
   const isTypingRef = React.useRef(false);
 
-  const click = useClick(context, {event: 'mousedown'});
+  const click = useClick(context, { event: 'mousedown' });
   const dismiss = useDismiss(context);
-  const role = useRole(context, {role: 'listbox'});
+  const role = useRole(context, { role: 'listbox' });
   const listNav = useListNavigation(context, {
     listRef,
     activeIndex,
@@ -93,13 +93,9 @@ export function Main() {
     },
   });
 
-  const {getReferenceProps, getFloatingProps, getItemProps} = useInteractions([
-    click,
-    dismiss,
-    role,
-    listNav,
-    typeahead,
-  ]);
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [click, dismiss, role, listNav, typeahead],
+  );
 
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
@@ -111,19 +107,19 @@ export function Main() {
 
   return (
     <>
-      <h1 className="text-5xl font-bold mb-8">Select</h1>
-      <div className="grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4">
+      <h1 className='text-5xl font-bold mb-8'>Select</h1>
+      <div className='grid place-items-center border border-slate-400 rounded lg:w-[40rem] h-[20rem] mb-4'>
         <div>
-          <label className="flex flex-col items-center" id="select-label">
+          <label className='flex flex-col items-center' id='select-label'>
             Select balloon color
           </label>
           <Button
             ref={refs.setReference}
             aria-labelledby={selectedItemLabel ? undefined : 'select-label'}
             aria-label={`${selectedItemLabel} - selected balloon color`}
-            aria-autocomplete="none"
+            aria-autocomplete='none'
             data-open={open ? '' : undefined}
-            className="flex items-center gap-2 bg-slate-200 rounded w-[10rem]"
+            className='flex items-center gap-2 bg-slate-200 rounded w-[10rem]'
             {...getReferenceProps()}
             // The default role for the reference using a "listbox"
             // is a "combobox", but Safari has a bug with VoiceOver
@@ -141,7 +137,7 @@ export function Main() {
             <FloatingFocusManager context={context} modal={false}>
               <div
                 ref={refs.setFloating}
-                className="bg-slate-200/50 max-h-[20rem] overflow-y-auto rounded outline-none p-1 backdrop-blur-sm"
+                className='bg-slate-200/50 max-h-[20rem] overflow-y-auto rounded outline-none p-1 backdrop-blur-sm'
                 style={{
                   position: strategy,
                   top: y ?? 0,
@@ -155,14 +151,14 @@ export function Main() {
                     ref={(node) => {
                       listRef.current[i] = node;
                     }}
-                    role="option"
+                    role='option'
                     tabIndex={i === activeIndex ? 0 : -1}
                     aria-selected={i === selectedIndex && i === activeIndex}
                     className={c(
                       'flex gap-2 items-center p-2 rounded outline-none cursor-default scroll-my-1',
                       {
                         'bg-cyan-200': i === activeIndex,
-                      }
+                      },
                     )}
                     {...getItemProps({
                       // Handle pointer select.
@@ -186,7 +182,7 @@ export function Main() {
                   >
                     <ColorSwatch color={options[i]?.toLowerCase()} />
                     {value}
-                    <span aria-hidden className="absolute right-4">
+                    <span aria-hidden className='absolute right-4'>
                       {i === selectedIndex ? (
                         <CheckIcon width={20} height={20} />
                       ) : (

@@ -6,4 +6,3 @@ export const useExitBreakPlugin: UseNosPlugin = () => {
     handlers,
   };
 };
-

@@ -25,9 +25,7 @@ import {
 import { ReactEditor } from '..';
 import { useChildren } from '../hooks/use-children';
 import { DecorateContext } from '../hooks/use-decorate';
-import {
-  useIsomorphicLayoutEffect,
-} from '../hooks/use-isomorphic-layout-effect';
+import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
 import { ReadOnlyContext } from '../hooks/use-read-only';
 import { useSlate } from '../hooks/use-slate';
 import { TRIPLE_CLICK } from '../utils/constants';
@@ -1206,7 +1204,7 @@ export const Editable = (props: EditableProps) => {
                 const { selection } = editor;
                 const element =
                   editor.children[
-                  selection !== null ? selection.focus.path[0] : 0
+                    selection !== null ? selection.focus.path[0] : 0
                   ];
                 const isRTL = getDirection(Node.string(element)) === 'rtl';
 

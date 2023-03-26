@@ -1,7 +1,7 @@
-import type {Alignment, Placement, Side} from '../types';
-import {getAlignment} from './getAlignment';
-import {getOppositeAlignmentPlacement} from './getOppositeAlignmentPlacement';
-import {getSide} from './getSide';
+import type { Alignment, Placement, Side } from '../types';
+import { getAlignment } from './getAlignment';
+import { getOppositeAlignmentPlacement } from './getOppositeAlignmentPlacement';
+import { getSide } from './getSide';
 
 function getSideList(side: Side, isStart: boolean, rtl?: boolean): Placement[] {
   const lr: Placement[] = ['left', 'right'];
@@ -26,7 +26,7 @@ export function getOppositeAxisPlacements(
   placement: Placement,
   flipAlignment: boolean,
   direction: 'none' | Alignment,
-  rtl?: boolean
+  rtl?: boolean,
 ): Placement[] {
   const alignment = getAlignment(placement);
   let list = getSideList(getSide(placement), direction === 'start', rtl);

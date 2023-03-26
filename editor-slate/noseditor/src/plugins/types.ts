@@ -17,7 +17,9 @@ export type EventHandler = (editor: Editor) => (event: any) => unknown;
 export type EventHandlers = Record<string, EventHandler>;
 
 export type EnhanceEditor = (editor: Editor, ...args: any[]) => Editor;
-export type EnhanceEditorFnOrWithArgs = EnhanceEditor | { withEnhance: EnhanceEditor, withArgs?: any[] }
+export type EnhanceEditorFnOrWithArgs =
+  | EnhanceEditor
+  | { withEnhance: EnhanceEditor; withArgs?: any[] };
 
 /**
  * A plugin provides config for slate editor.

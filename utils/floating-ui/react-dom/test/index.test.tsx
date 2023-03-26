@@ -1,8 +1,14 @@
 /**
  * @jest-environment jsdom
  */
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react';
-import {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import {
   arrow,
@@ -18,33 +24,33 @@ import {
 test('middleware is always fresh and does not cause an infinite loop', async () => {
   function InlineMiddleware() {
     const arrowRef = useRef(null);
-    const {reference, floating} = useFloating({
+    const { reference, floating } = useFloating({
       placement: 'right',
       middleware: [
         offset(),
         offset(10),
         offset(() => 5),
-        offset(() => ({crossAxis: 10})),
-        offset({crossAxis: 10, mainAxis: 10}),
+        offset(() => ({ crossAxis: 10 })),
+        offset({ crossAxis: 10, mainAxis: 10 }),
 
-        flip({fallbackPlacements: ['top', 'bottom']}),
+        flip({ fallbackPlacements: ['top', 'bottom'] }),
 
         shift(),
-        shift({crossAxis: true}),
-        shift({boundary: document.createElement('div')}),
-        shift({boundary: [document.createElement('div')]}),
-        shift({limiter: limitShift()}),
-        shift({limiter: limitShift({offset: 10})}),
-        shift({limiter: limitShift({offset: {crossAxis: 10}})}),
-        shift({limiter: limitShift({offset: () => 5})}),
-        shift({limiter: limitShift({offset: () => ({crossAxis: 10})})}),
+        shift({ crossAxis: true }),
+        shift({ boundary: document.createElement('div') }),
+        shift({ boundary: [document.createElement('div')] }),
+        shift({ limiter: limitShift() }),
+        shift({ limiter: limitShift({ offset: 10 }) }),
+        shift({ limiter: limitShift({ offset: { crossAxis: 10 } }) }),
+        shift({ limiter: limitShift({ offset: () => 5 }) }),
+        shift({ limiter: limitShift({ offset: () => ({ crossAxis: 10 }) }) }),
 
-        arrow({element: arrowRef}),
+        arrow({ element: arrowRef }),
 
         hide(),
 
         size({
-          apply({availableHeight, elements}) {
+          apply({ availableHeight, elements }) {
             Object.assign(elements.floating.style, {
               maxHeight: `${availableHeight}px`,
             });
@@ -67,37 +73,37 @@ test('middleware is always fresh and does not cause an infinite loop', async () 
       offset(),
       offset(10),
       offset(() => 5),
-      offset(() => ({crossAxis: 10})),
-      offset({crossAxis: 10, mainAxis: 10}),
+      offset(() => ({ crossAxis: 10 })),
+      offset({ crossAxis: 10, mainAxis: 10 }),
 
       // should also test `autoPlacement.allowedPlacements`
       // can't have both `flip` and `autoPlacement` in the same middleware
       // array, or multiple `flip`s
-      flip({fallbackPlacements: ['top', 'bottom']}),
+      flip({ fallbackPlacements: ['top', 'bottom'] }),
 
       shift(),
-      shift({crossAxis: true}),
-      shift({boundary: document.createElement('div')}),
-      shift({boundary: [document.createElement('div')]}),
-      shift({limiter: limitShift()}),
-      shift({limiter: limitShift({offset: 10})}),
-      shift({limiter: limitShift({offset: {crossAxis: 10}})}),
-      shift({limiter: limitShift({offset: () => 5})}),
-      shift({limiter: limitShift({offset: () => ({crossAxis: 10})})}),
+      shift({ crossAxis: true }),
+      shift({ boundary: document.createElement('div') }),
+      shift({ boundary: [document.createElement('div')] }),
+      shift({ limiter: limitShift() }),
+      shift({ limiter: limitShift({ offset: 10 }) }),
+      shift({ limiter: limitShift({ offset: { crossAxis: 10 } }) }),
+      shift({ limiter: limitShift({ offset: () => 5 }) }),
+      shift({ limiter: limitShift({ offset: () => ({ crossAxis: 10 }) }) }),
 
-      arrow({element: arrowRef}),
+      arrow({ element: arrowRef }),
 
       hide(),
 
       size({
-        apply({availableHeight, elements}) {
+        apply({ availableHeight, elements }) {
           Object.assign(elements.floating.style, {
             maxHeight: `${availableHeight}px`,
           });
         },
       }),
     ]);
-    const {x, y, reference, floating} = useFloating({
+    const { x, y, reference, floating } = useFloating({
       placement: 'right',
       middleware,
     });
@@ -107,24 +113,24 @@ test('middleware is always fresh and does not cause an infinite loop', async () 
         <div ref={reference} />
         <div ref={floating} />
         <button
-          data-testid="step1"
+          data-testid='step1'
           onClick={() => setMiddleware([offset(10)])}
         />
         <button
-          data-testid="step2"
+          data-testid='step2'
           onClick={() => setMiddleware([offset(() => 5)])}
         />
-        <button data-testid="step3" onClick={() => setMiddleware([])} />
-        <button data-testid="step4" onClick={() => setMiddleware([flip()])} />
-        <div data-testid="x">{x}</div>
-        <div data-testid="y">{y}</div>
+        <button data-testid='step3' onClick={() => setMiddleware([])} />
+        <button data-testid='step4' onClick={() => setMiddleware([flip()])} />
+        <div data-testid='x'>{x}</div>
+        <div data-testid='y'>{y}</div>
       </>
     );
   }
 
   render(<InlineMiddleware />);
 
-  const {getByTestId} = render(<StateMiddleware />);
+  const { getByTestId } = render(<StateMiddleware />);
   fireEvent.click(getByTestId('step1'));
 
   await act(async () => {});
@@ -149,7 +155,9 @@ describe('whileElementsMounted', () => {
     const spy = jest.fn();
 
     function App() {
-      const {reference, floating} = useFloating({whileElementsMounted: spy});
+      const { reference, floating } = useFloating({
+        whileElementsMounted: spy,
+      });
       return (
         <>
           <button ref={reference} />
@@ -168,7 +176,9 @@ describe('whileElementsMounted', () => {
 
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating} = useFloating({whileElementsMounted: spy});
+      const { reference, floating } = useFloating({
+        whileElementsMounted: spy,
+      });
       return (
         <>
           <button ref={reference} onClick={() => setOpen(true)} />
@@ -190,11 +200,13 @@ describe('whileElementsMounted', () => {
 
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating} = useFloating({whileElementsMounted: spy});
+      const { reference, floating } = useFloating({
+        whileElementsMounted: spy,
+      });
       return (
         <>
           {open && <button ref={reference} />}
-          <div role="tooltip" ref={floating} onClick={() => setOpen(true)} />
+          <div role='tooltip' ref={floating} onClick={() => setOpen(true)} />
         </>
       );
     }
@@ -212,7 +224,9 @@ describe('whileElementsMounted', () => {
 
     function App() {
       const [open, setOpen] = useState(false);
-      const {reference, floating} = useFloating({whileElementsMounted: spy});
+      const { reference, floating } = useFloating({
+        whileElementsMounted: spy,
+      });
 
       useEffect(() => {
         setOpen(true);
@@ -221,7 +235,7 @@ describe('whileElementsMounted', () => {
       return (
         <>
           {open && <button ref={reference} />}
-          {open && <div role="tooltip" ref={floating} />}
+          {open && <div role='tooltip' ref={floating} />}
         </>
       );
     }
@@ -238,7 +252,9 @@ describe('whileElementsMounted', () => {
 
     function App() {
       const [open, setOpen] = useState(true);
-      const {reference, floating} = useFloating({whileElementsMounted: spy});
+      const { reference, floating } = useFloating({
+        whileElementsMounted: spy,
+      });
 
       useEffect(() => {
         setOpen(false);
@@ -247,7 +263,7 @@ describe('whileElementsMounted', () => {
       return (
         <>
           {open && <button ref={reference} />}
-          {open && <div role="tooltip" ref={floating} />}
+          {open && <div role='tooltip' ref={floating} />}
         </>
       );
     }
@@ -264,7 +280,7 @@ describe('whileElementsMounted', () => {
 
 test('unstable callback refs', async () => {
   function App() {
-    const {reference, floating} = useFloating();
+    const { reference, floating } = useFloating();
 
     return (
       <>
@@ -286,7 +302,7 @@ test('callback refs invoked during render', async () => {
     const [r, setR] = useState<HTMLDivElement | null>(null);
     const [f, setF] = useState<HTMLDivElement | null>(null);
 
-    const {reference, floating} = useFloating();
+    const { reference, floating } = useFloating();
 
     reference(r);
     floating(f);
@@ -311,7 +327,7 @@ test('isPositioned', async () => {
 
   function App() {
     const [open, setOpen] = useState(false);
-    const {reference, floating, isPositioned} = useFloating({
+    const { reference, floating, isPositioned } = useFloating({
       open,
     });
 
@@ -327,7 +343,7 @@ test('isPositioned', async () => {
     );
   }
 
-  const {getByRole} = render(<App />);
+  const { getByRole } = render(<App />);
 
   fireEvent.click(getByRole('button'));
 
@@ -354,7 +370,7 @@ test('external elements sync', async () => {
   function App() {
     const [referenceEl, setReferenceEl] = useState<HTMLElement | null>(null);
     const [floatingEl, setFloatingEl] = useState<HTMLElement | null>(null);
-    const {x, y, refs} = useFloating();
+    const { x, y, refs } = useFloating();
 
     useLayoutEffect(() => {
       refs.setReference(referenceEl);
@@ -368,12 +384,12 @@ test('external elements sync', async () => {
       <>
         <div ref={setReferenceEl} />
         <div ref={setFloatingEl} />
-        <div data-testid="value">{`${x},${y}`}</div>
+        <div data-testid='value'>{`${x},${y}`}</div>
       </>
     );
   }
 
-  const {getByTestId} = render(<App />);
+  const { getByTestId } = render(<App />);
 
   await act(async () => {});
 

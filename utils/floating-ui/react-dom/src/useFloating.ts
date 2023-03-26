@@ -1,4 +1,4 @@
-import {computePosition} from '@floating-ui/dom';
+import { computePosition } from '@floating-ui/dom';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
@@ -10,15 +10,15 @@ import type {
   UseFloatingProps,
   UseFloatingReturn,
 } from './types';
-import {deepEqual} from './utils/deepEqual';
-import {useLatestRef} from './utils/useLatestRef';
+import { deepEqual } from './utils/deepEqual';
+import { useLatestRef } from './utils/useLatestRef';
 
 /**
  * Provides data to position a floating element.
  * @see https://floating-ui.com/docs/react
  */
 export function useFloating<RT extends ReferenceType = ReferenceType>(
-  options: UseFloatingProps = {}
+  options: UseFloatingProps = {},
 ): UseFloatingReturn<RT> {
   const {
     placement = 'bottom',
@@ -85,21 +85,21 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
 
     computePosition(referenceRef.current, floatingRef.current, config).then(
       (data) => {
-        const fullData = {...data, isPositioned: true};
+        const fullData = { ...data, isPositioned: true };
         if (isMountedRef.current && !deepEqual(dataRef.current, fullData)) {
           dataRef.current = fullData;
           ReactDOM.flushSync(() => {
             setData(fullData);
           });
         }
-      }
+      },
     );
   }, [latestMiddleware, placement, strategy, platformRef]);
 
   useLayoutEffect(() => {
     if (open === false && dataRef.current.isPositioned) {
       dataRef.current.isPositioned = false;
-      setData((data) => ({...data, isPositioned: false}));
+      setData((data) => ({ ...data, isPositioned: false }));
     }
   }, [open]);
 
@@ -128,12 +128,12 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
       setReference,
       setFloating,
     }),
-    [setReference, setFloating]
+    [setReference, setFloating],
   );
 
   const elements = React.useMemo(
-    () => ({reference, floating}),
-    [reference, floating]
+    () => ({ reference, floating }),
+    [reference, floating],
   );
 
   return React.useMemo(
@@ -145,6 +145,6 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
       reference: setReference,
       floating: setFloating,
     }),
-    [data, update, refs, elements, setReference, setFloating]
+    [data, update, refs, elements, setReference, setFloating],
   );
 }

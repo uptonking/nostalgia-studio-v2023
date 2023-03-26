@@ -1,4 +1,4 @@
-import type {Alignment} from '../types';
+import type { Alignment } from '../types';
 
 const oppositeAlignmentMap = {
   start: 'end',
@@ -6,10 +6,10 @@ const oppositeAlignmentMap = {
 };
 
 export function getOppositeAlignmentPlacement<T extends string>(
-  placement: T
+  placement: T,
 ): T {
   return placement.replace(
     /start|end/g,
-    (alignment) => oppositeAlignmentMap[alignment as Alignment]
+    (alignment) => oppositeAlignmentMap[alignment as Alignment],
   ) as T;
 }

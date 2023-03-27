@@ -6,7 +6,6 @@ import { useSlateStatic } from 'slate-react';
 import {
   Code as CodeIcon,
   DownOne as TriangleDownIcon,
-  Drag as DragIcon,
   Link as LinkIcon,
   ListCheckbox as ListCheckboxIcon,
   OrderedList as ListOrderedIcon,
@@ -37,6 +36,7 @@ type ToolbarConfigType = {
   icon: Icon;
   format?: TextFormats;
   list?: typeof ListTypes[keyof typeof ListTypes];
+  link?: 'link';
   title: string;
 };
 
@@ -104,6 +104,12 @@ const toolbarActionsData: ToolbarConfigType[] = [
     list: ListTypes.TodoList,
     title: 'toggle checkbox list',
   },
+  {
+    type: 'button',
+    icon: LinkIcon,
+    link: 'link',
+    title: 'toggle link',
+  },
 ];
 
 export const NosToolbar = () => {
@@ -111,32 +117,51 @@ export const NosToolbar = () => {
 
   return (
     <div className='nosedit-toolbar'>
-      {toolbarActionsData.map(({ type, icon: Icon, format, list, title }) => {
-        if (type === 'button') {
-          if (format) {
-            return (
-              <IconButton
-                onMouseDown={editorFormatHandler(editor, format)}
-                key={title}
-              >
-                <Icon title={title} />
-              </IconButton>
-            );
-          }
-          if (list) {
-            return (
-              <IconButton
-                onMouseDown={listToggleHandler(editor, list)}
-                key={title}
-              >
-                <Icon title={title} />
-              </IconButton>
-            );
-          }
-        }
+      {toolbarActionsData.map(
+        ({ type, icon: Icon, format, list, link, title }) => {
+          if (type === 'button') {
+            if (format) {
+              return (
+                <IconButton
+                  onMouseDown={editorFormatHandler(editor, format)}
+                  key={title}
+                >
+                  <Icon title={title} />
+                </IconButton>
+              );
+            }
+            if (list) {
+              return (
+                <IconButton
+                  onMouseDown={listToggleHandler(editor, list)}
+                  key={title}
+                >
+                  <Icon title={title} />
+                </IconButton>
+              );
+            }
+            if (link) {
+              return (
+                <IconButton
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    const url = prompt('Link URL: ');
 
-        return null;
-      })}
+                    if (url) {
+                      insertLink(editor, url);
+                    }
+                  }}
+                  key={title}
+                >
+                  <Icon title={title} />
+                </IconButton>
+              );
+            }
+          }
+
+          return null;
+        },
+      )}
 
       {/* <div>
 

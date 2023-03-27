@@ -1,6 +1,10 @@
 import '@icon-park/react/styles/index.css';
 import './styles/normalize.css';
 import './styles/editor.scss';
+import './styles/theme-default.css';
+
+// export styles
+export * from './styles';
 
 // ready-to-use block editor
 export { NosEditor } from './components/editor/noseditor';

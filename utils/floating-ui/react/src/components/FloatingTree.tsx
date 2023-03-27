@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
 import { useId } from '../hooks/useId';
@@ -14,6 +15,8 @@ const FloatingTreeContext = React.createContext<FloatingTreeType | null>(null);
 
 export const useFloatingParentNodeId = (): string | null =>
   React.useContext(FloatingNodeContext)?.id || null;
+
+/** get FloatingTreeContext value */
 export const useFloatingTree = <
   RT extends ReferenceType = ReferenceType,
 >(): FloatingTreeType<RT> | null =>

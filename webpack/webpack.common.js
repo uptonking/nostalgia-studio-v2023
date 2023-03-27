@@ -59,13 +59,6 @@ module.exports = {
                     },
                   ],
                   '@babel/preset-react',
-                  [
-                    '@linaria',
-                    {
-                      evaluate: true,
-                      displayName: true,
-                    },
-                  ],
                 ],
               },
             },

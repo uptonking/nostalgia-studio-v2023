@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { UseNosPlugin } from '../types';
-import Link from './components/link';
+import type { UseNosPlugin } from '../types';
+import { Link } from './components/link';
 import { isLinkElement } from './utils';
 import { withLink } from './with-link';
 

@@ -1,14 +1,18 @@
 import { nanoid } from 'nanoid';
 
 import { createPluginFactory } from '@udecode/plate-core';
-import type { DeserializeHtml } from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
-import type { PlatePlugin } from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
+import type {
+  DeserializeHtml,
+} from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
+import type {
+  PlatePlugin,
+} from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
 
 import { BlockquoteType } from '../../blockquote/types';
 import { DividerType } from '../../divider/types';
 import { Heading1Spec, Heading2Spec, Heading3Spec } from '../../heading/utils';
 import { ImageType } from '../../image/types';
-import { LinkType } from '../../link/types';
+import { LinkSpec } from '../../link/types';
 import { ListItemSpec } from '../../list/utils';
 import { ParagraphSpec } from '../../paragraph/utils';
 import { getListItemProps } from '../utils';

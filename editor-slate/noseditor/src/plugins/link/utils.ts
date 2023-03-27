@@ -1,23 +1,27 @@
 import { Descendant, Element } from 'slate';
 
-import { LinkType, LinkElement } from './types';
+import type { LinkElement, LinkType } from './types';
+
+export const LinkSpec: LinkType = 'a';
+
+type CreateLinkArgs = {
+  url: string;
+  text?: string;
+  children?: Descendant[];
+};
 
 export const createLinkElement = ({
   url,
   text,
   children = [],
-}: {
-  url: string;
-  text?: string;
-  children?: Descendant[];
-}): LinkElement => {
+}: CreateLinkArgs): LinkElement => {
   if (text) {
     children = [{ text }];
   }
 
-  return { type: LinkType, url, children };
+  return { type: LinkSpec, url, children };
 };
 
 export const isLinkElement = (value: any): value is LinkElement => {
-  return Element.isElementType<LinkElement>(value, LinkType);
+  return Element.isElementType<LinkElement>(value, LinkSpec);
 };

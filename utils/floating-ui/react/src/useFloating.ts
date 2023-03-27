@@ -1,6 +1,8 @@
-import { useFloating as usePosition } from '@floating-ui/react-dom';
 import * as React from 'react';
+
 import useLayoutEffect from 'use-isomorphic-layout-effect';
+
+import { useFloating as usePosition } from '@floating-ui/react-dom';
 
 import { useFloatingTree } from './components/FloatingTree';
 import { useId } from './hooks/useId';
@@ -40,9 +42,9 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
     (node: ReferenceType | null) => {
       const positionReference = isElement(node)
         ? {
-            getBoundingClientRect: () => node.getBoundingClientRect(),
-            contextElement: node,
-          }
+          getBoundingClientRect: () => node.getBoundingClientRect(),
+          contextElement: node,
+        }
         : node;
       position.refs.setReference(positionReference as RT | null);
     },
@@ -52,6 +54,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
   const setReference = React.useCallback(
     (node: RT | null) => {
       if (isElement(node) || node === null) {
+        // @ts-expect-error fix-types
         (domReferenceRef as React.MutableRefObject<Element | null>).current =
           node;
         setDomReference(node as NarrowedElement<RT> | null);

@@ -1,7 +1,9 @@
-import { computePosition } from '@floating-ui/dom';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+
 import useLayoutEffect from 'use-isomorphic-layout-effect';
+
+import { computePosition } from '@floating-ui/dom';
 
 import type {
   ComputePositionConfig,
@@ -83,6 +85,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
       config.platform = platformRef.current;
     }
 
+    // @ts-expect-error fix-types
     computePosition(referenceRef.current, floatingRef.current, config).then(
       (data) => {
         const fullData = { ...data, isPositioned: true };

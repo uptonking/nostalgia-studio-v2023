@@ -44,6 +44,8 @@ export function A1b1Hover() {
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
 
+  console.log(';; isHoverOpen ', isOpen, x, y, refs, context);
+
   return (
     <div className='App'>
       <div

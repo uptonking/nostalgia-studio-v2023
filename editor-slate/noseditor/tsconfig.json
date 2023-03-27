@@ -5,5 +5,5 @@
     "module": "esnext",
     "lib": ["DOM.Iterable"]
   },
-  "include": ["./src/", "./example-client/", "./example-server/"]
+  "include": ["./src/", "./example-client/", "./example-server/", "./scripts/"]
 }

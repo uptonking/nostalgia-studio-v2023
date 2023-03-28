@@ -5,7 +5,7 @@
  */
 
 export const tokens = {
-  'palette.black': '#1b1f24',
+  'palette.black': '#1d2129',
   'palette.white': '#ffffff',
   'palette.gray0': '#f2f4f8',
   'palette.gray1': '#eceff4',
@@ -58,6 +58,8 @@ export const tokens = {
   'palette.red8': '#660018',
   'palette.red9': '#4c0014',
   'color.background': '#f2f4f8',
+  'color.text.body': '#1d2129',
+  'color.text.muted': '#6e7781',
   'color.text.error': '#82071e',
   'color.text.link': '#0969da',
   'spacing.spacer0': '0',
@@ -113,15 +115,11 @@ export const tokens = {
 export const meta = {
   'palette.black': {
     _original: {
-      $value: '#1b1f24',
+      $value: '#1d2129',
       $extensions: {
         mode: {
-          light: '#1b1f24',
-          'light-high-contrast': '#010409',
+          light: '#1d2129',
           dark: '#010409',
-          white: '#f0f6fc',
-          'dark-dimmed': '#1c2128',
-          'dark-high-contrast': '#010409',
         },
       },
     },
@@ -129,13 +127,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -143,15 +135,11 @@ export const meta = {
     },
     id: 'palette.black',
     $type: 'color',
-    $value: '#1b1f24',
+    $value: '#1d2129',
     $extensions: {
       mode: {
-        light: '#1b1f24',
-        'light-high-contrast': '#010409',
+        light: '#1d2129',
         dark: '#010409',
-        white: '#f0f6fc',
-        'dark-dimmed': '#1c2128',
-        'dark-high-contrast': '#010409',
       },
     },
   },
@@ -161,10 +149,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#ffffff',
-          'light-high-contrast': '#ffffff',
           dark: '#f0f6fc',
-          'dark-dimmed': '#cdd9e5',
-          'dark-high-contrast': '#ffffff',
         },
       },
     },
@@ -172,13 +157,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -190,10 +169,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ffffff',
-        'light-high-contrast': '#ffffff',
         dark: '#f0f6fc',
-        'dark-dimmed': '#cdd9e5',
-        'dark-high-contrast': '#ffffff',
       },
     },
   },
@@ -203,10 +179,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#f2f4f8',
-          'light-high-contrast': '#FFFFFF',
           dark: '#f0f6fc',
-          'dark-dimmed': '#cdd9e5',
-          'dark-high-contrast': '#ffffff',
         },
       },
     },
@@ -214,13 +187,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -232,10 +199,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#f2f4f8',
-        'light-high-contrast': '#ffffff',
         dark: '#f0f6fc',
-        'dark-dimmed': '#cdd9e5',
-        'dark-high-contrast': '#ffffff',
       },
     },
   },
@@ -245,10 +209,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#ECEFF4',
-          'light-high-contrast': '#E7ECF0',
           dark: '#c9d1d9',
-          'dark-dimmed': '#adbac7',
-          'dark-high-contrast': '#f0f3f6',
         },
       },
     },
@@ -256,13 +217,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -274,10 +229,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#eceff4',
-        'light-high-contrast': '#e7ecf0',
         dark: '#c9d1d9',
-        'dark-dimmed': '#adbac7',
-        'dark-high-contrast': '#f0f3f6',
       },
     },
   },
@@ -287,10 +239,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#E5E9F0',
-          'light-high-contrast': '#CED5DC',
           dark: '#b1bac4',
-          'dark-dimmed': '#909dab',
-          'dark-high-contrast': '#d9dee3',
         },
       },
     },
@@ -298,13 +247,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -316,10 +259,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#e5e9f0',
-        'light-high-contrast': '#ced5dc',
         dark: '#b1bac4',
-        'dark-dimmed': '#909dab',
-        'dark-high-contrast': '#d9dee3',
       },
     },
   },
@@ -329,10 +269,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#E5E9F0',
-          'light-high-contrast': '#ACB6C0',
           dark: '#8b949e',
-          'dark-dimmed': '#768390',
-          'dark-high-contrast': '#bdc4cc',
         },
       },
     },
@@ -340,13 +277,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -358,10 +289,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#e5e9f0',
-        'light-high-contrast': '#acb6c0',
         dark: '#8b949e',
-        'dark-dimmed': '#768390',
-        'dark-high-contrast': '#bdc4cc',
       },
     },
   },
@@ -371,10 +299,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#afb8c1',
-          'light-high-contrast': '#88929D',
           dark: '#6e7681',
-          'dark-dimmed': '#636e7b',
-          'dark-high-contrast': '#9ea7b3',
         },
       },
     },
@@ -382,13 +307,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -400,10 +319,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#afb8c1',
-        'light-high-contrast': '#88929d',
         dark: '#6e7681',
-        'dark-dimmed': '#636e7b',
-        'dark-high-contrast': '#9ea7b3',
       },
     },
   },
@@ -413,10 +329,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#6e7781',
-          'light-high-contrast': '#66707B',
           dark: '#484f58',
-          'dark-dimmed': '#545d68',
-          'dark-high-contrast': '#7a828e',
         },
       },
     },
@@ -424,13 +337,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -442,10 +349,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#6e7781',
-        'light-high-contrast': '#66707b',
         dark: '#484f58',
-        'dark-dimmed': '#545d68',
-        'dark-high-contrast': '#7a828e',
       },
     },
   },
@@ -455,10 +359,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#4C566A',
-          'light-high-contrast': '#4B535D',
           dark: '#30363d',
-          'dark-dimmed': '#444c56',
-          'dark-high-contrast': '#525964',
         },
       },
     },
@@ -466,13 +367,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -484,10 +379,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#4c566a',
-        'light-high-contrast': '#4b535d',
         dark: '#30363d',
-        'dark-dimmed': '#444c56',
-        'dark-high-contrast': '#525964',
       },
     },
   },
@@ -497,10 +389,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#434C5E',
-          'light-high-contrast': '#343B43',
           dark: '#21262d',
-          'dark-dimmed': '#373e47',
-          'dark-high-contrast': '#272b33',
         },
       },
     },
@@ -508,13 +397,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -526,10 +409,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#434c5e',
-        'light-high-contrast': '#343b43',
         dark: '#21262d',
-        'dark-dimmed': '#373e47',
-        'dark-high-contrast': '#272b33',
       },
     },
   },
@@ -539,10 +419,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#434C5E',
-          'light-high-contrast': '#20252C',
           dark: '#161b22',
-          'dark-dimmed': '#2d333b',
-          'dark-high-contrast': '#272b33',
         },
       },
     },
@@ -550,13 +427,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -568,10 +439,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#434c5e',
-        'light-high-contrast': '#20252c',
         dark: '#161b22',
-        'dark-dimmed': '#2d333b',
-        'dark-high-contrast': '#272b33',
       },
     },
   },
@@ -581,10 +449,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#2E3440',
-          'light-high-contrast': '#0E1116',
           dark: '#0d1117',
-          'dark-dimmed': '#22272e',
-          'dark-high-contrast': '#0a0c10',
         },
       },
     },
@@ -592,13 +457,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -610,10 +469,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#2e3440',
-        'light-high-contrast': '#0e1116',
         dark: '#0d1117',
-        'dark-dimmed': '#22272e',
-        'dark-high-contrast': '#0a0c10',
       },
     },
   },
@@ -623,10 +479,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#dafbe1',
-          'light-high-contrast': '#d2fedb',
           dark: '#aff5b4',
-          'dark-dimmed': '#b4f1b4',
-          'dark-high-contrast': '#acf7b6',
         },
       },
     },
@@ -634,13 +487,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -652,10 +499,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#dafbe1',
-        'light-high-contrast': '#d2fedb',
         dark: '#aff5b4',
-        'dark-dimmed': '#b4f1b4',
-        'dark-high-contrast': '#acf7b6',
       },
     },
   },
@@ -665,10 +509,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#aceebb',
-          'light-high-contrast': '#82e596',
           dark: '#7ee787',
-          'dark-dimmed': '#8ddb8c',
-          'dark-high-contrast': '#72f088',
         },
       },
     },
@@ -676,13 +517,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -694,10 +529,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#aceebb',
-        'light-high-contrast': '#82e596',
         dark: '#7ee787',
-        'dark-dimmed': '#8ddb8c',
-        'dark-high-contrast': '#72f088',
       },
     },
   },
@@ -707,10 +539,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#6fdd8b',
-          'light-high-contrast': '#43c663',
           dark: '#56d364',
-          'dark-dimmed': '#6bc46d',
-          'dark-high-contrast': '#4ae168',
         },
       },
     },
@@ -718,13 +547,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -736,10 +559,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#6fdd8b',
-        'light-high-contrast': '#43c663',
         dark: '#56d364',
-        'dark-dimmed': '#6bc46d',
-        'dark-high-contrast': '#4ae168',
       },
     },
   },
@@ -749,10 +569,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#4ac26b',
-          'light-high-contrast': '#26a148',
           dark: '#3fb950',
-          'dark-dimmed': '#57ab5a',
-          'dark-high-contrast': '#26cd4d',
         },
       },
     },
@@ -760,13 +577,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -778,10 +589,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#4ac26b',
-        'light-high-contrast': '#26a148',
         dark: '#3fb950',
-        'dark-dimmed': '#57ab5a',
-        'dark-high-contrast': '#26cd4d',
       },
     },
   },
@@ -791,10 +599,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#2da44e',
-          'light-high-contrast': '#117f32',
           dark: '#2ea043',
-          'dark-dimmed': '#46954a',
-          'dark-high-contrast': '#09b43a',
         },
       },
     },
@@ -802,13 +607,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -820,10 +619,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#2da44e',
-        'light-high-contrast': '#117f32',
         dark: '#2ea043',
-        'dark-dimmed': '#46954a',
-        'dark-high-contrast': '#09b43a',
       },
     },
   },
@@ -833,10 +629,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#1a7f37',
-          'light-high-contrast': '#055d20',
           dark: '#238636',
-          'dark-dimmed': '#347d39',
-          'dark-high-contrast': '#09b43a',
         },
       },
     },
@@ -844,13 +637,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -862,10 +649,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#1a7f37',
-        'light-high-contrast': '#055d20',
         dark: '#238636',
-        'dark-dimmed': '#347d39',
-        'dark-high-contrast': '#09b43a',
       },
     },
   },
@@ -875,10 +659,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#116329',
-          'light-high-contrast': '#024c1a',
           dark: '#196c2e',
-          'dark-dimmed': '#2b6a30',
-          'dark-high-contrast': '#02a232',
         },
       },
     },
@@ -886,13 +667,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -904,10 +679,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#116329',
-        'light-high-contrast': '#024c1a',
         dark: '#196c2e',
-        'dark-dimmed': '#2b6a30',
-        'dark-high-contrast': '#02a232',
       },
     },
   },
@@ -917,10 +689,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#044f1e',
-          'light-high-contrast': '#013d14',
           dark: '#0f5323',
-          'dark-dimmed': '#245829',
-          'dark-high-contrast': '#008c2c',
         },
       },
     },
@@ -928,13 +697,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -946,10 +709,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#044f1e',
-        'light-high-contrast': '#013d14',
         dark: '#0f5323',
-        'dark-dimmed': '#245829',
-        'dark-high-contrast': '#008c2c',
       },
     },
   },
@@ -959,10 +719,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#003d16',
-          'light-high-contrast': '#003110',
           dark: '#033a16',
-          'dark-dimmed': '#1b4721',
-          'dark-high-contrast': '#007728',
         },
       },
     },
@@ -970,13 +727,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -988,10 +739,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#003d16',
-        'light-high-contrast': '#003110',
         dark: '#033a16',
-        'dark-dimmed': '#1b4721',
-        'dark-high-contrast': '#007728',
       },
     },
   },
@@ -1001,10 +749,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#002d11',
-          'light-high-contrast': '#00230b',
           dark: '#04260f',
-          'dark-dimmed': '#113417',
-          'dark-high-contrast': '#006222',
         },
       },
     },
@@ -1012,13 +757,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1030,10 +769,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#002d11',
-        'light-high-contrast': '#00230b',
         dark: '#04260f',
-        'dark-dimmed': '#113417',
-        'dark-high-contrast': '#006222',
       },
     },
   },
@@ -1043,10 +779,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#ddf4ff',
-          'light-high-contrast': '#dff7ff',
           dark: '#cae8ff',
-          'dark-dimmed': '#c6e6ff',
-          'dark-high-contrast': '#caeaff',
         },
       },
     },
@@ -1054,13 +787,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1072,10 +799,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ddf4ff',
-        'light-high-contrast': '#dff7ff',
         dark: '#cae8ff',
-        'dark-dimmed': '#c6e6ff',
-        'dark-high-contrast': '#caeaff',
       },
     },
   },
@@ -1085,10 +809,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#b6e3ff',
-          'light-high-contrast': '#9cd7ff',
           dark: '#a5d6ff',
-          'dark-dimmed': '#96d0ff',
-          'dark-high-contrast': '#addcff',
         },
       },
     },
@@ -1096,13 +817,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1114,10 +829,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#b6e3ff',
-        'light-high-contrast': '#9cd7ff',
         dark: '#a5d6ff',
-        'dark-dimmed': '#96d0ff',
-        'dark-high-contrast': '#addcff',
       },
     },
   },
@@ -1127,10 +839,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#80ccff',
-          'light-high-contrast': '#67b3fd',
           dark: '#79c0ff',
-          'dark-dimmed': '#6cb6ff',
-          'dark-high-contrast': '#91cbff',
         },
       },
     },
@@ -1138,13 +847,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1156,10 +859,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#80ccff',
-        'light-high-contrast': '#67b3fd',
         dark: '#79c0ff',
-        'dark-dimmed': '#6cb6ff',
-        'dark-high-contrast': '#91cbff',
       },
     },
   },
@@ -1169,10 +869,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#54aeff',
-          'light-high-contrast': '#368cf9',
           dark: '#58a6ff',
-          'dark-dimmed': '#539bf5',
-          'dark-high-contrast': '#71b7ff',
         },
       },
     },
@@ -1180,13 +877,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1198,10 +889,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#54aeff',
-        'light-high-contrast': '#368cf9',
         dark: '#58a6ff',
-        'dark-dimmed': '#539bf5',
-        'dark-high-contrast': '#71b7ff',
       },
     },
   },
@@ -1211,10 +899,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#218bff',
-          'light-high-contrast': '#1168e3',
           dark: '#388bfd',
-          'dark-dimmed': '#4184e4',
-          'dark-high-contrast': '#409eff',
         },
       },
     },
@@ -1222,13 +907,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1240,10 +919,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#218bff',
-        'light-high-contrast': '#1168e3',
         dark: '#388bfd',
-        'dark-dimmed': '#4184e4',
-        'dark-high-contrast': '#409eff',
       },
     },
   },
@@ -1253,10 +929,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#0969da',
-          'light-high-contrast': '#0349b4',
           dark: '#1f6feb',
-          'dark-dimmed': '#316dca',
-          'dark-high-contrast': '#409eff',
         },
       },
     },
@@ -1264,13 +937,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1282,10 +949,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#0969da',
-        'light-high-contrast': '#0349b4',
         dark: '#1f6feb',
-        'dark-dimmed': '#316dca',
-        'dark-high-contrast': '#409eff',
       },
     },
   },
@@ -1295,10 +959,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#0550ae',
-          'light-high-contrast': '#023b95',
           dark: '#1158c7',
-          'dark-dimmed': '#255ab2',
-          'dark-high-contrast': '#318bf8',
         },
       },
     },
@@ -1306,13 +967,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1324,10 +979,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#0550ae',
-        'light-high-contrast': '#023b95',
         dark: '#1158c7',
-        'dark-dimmed': '#255ab2',
-        'dark-high-contrast': '#318bf8',
       },
     },
   },
@@ -1337,10 +989,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#033d8b',
-          'light-high-contrast': '#022f7a',
           dark: '#0d419d',
-          'dark-dimmed': '#1b4b91',
-          'dark-high-contrast': '#2672f3',
         },
       },
     },
@@ -1348,13 +997,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1366,10 +1009,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#033d8b',
-        'light-high-contrast': '#022f7a',
         dark: '#0d419d',
-        'dark-dimmed': '#1b4b91',
-        'dark-high-contrast': '#2672f3',
       },
     },
   },
@@ -1379,10 +1019,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#0a3069',
-          'light-high-contrast': '#032563',
           dark: '#0c2d6b',
-          'dark-dimmed': '#143d79',
-          'dark-high-contrast': '#1e60d5',
         },
       },
     },
@@ -1390,13 +1027,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1408,10 +1039,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#0a3069',
-        'light-high-contrast': '#032563',
         dark: '#0c2d6b',
-        'dark-dimmed': '#143d79',
-        'dark-high-contrast': '#1e60d5',
       },
     },
   },
@@ -1421,10 +1049,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#002155',
-          'light-high-contrast': '#021a4a',
           dark: '#051d4d',
-          'dark-dimmed': '#0f2d5c',
-          'dark-high-contrast': '#194fb1',
         },
       },
     },
@@ -1432,13 +1057,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1450,10 +1069,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#002155',
-        'light-high-contrast': '#021a4a',
         dark: '#051d4d',
-        'dark-dimmed': '#0f2d5c',
-        'dark-high-contrast': '#194fb1',
       },
     },
   },
@@ -1463,10 +1079,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#FFF0EB',
-          'light-high-contrast': '#fff0ed',
           dark: '#FFDDD2',
-          'dark-dimmed': '#FFDACF',
-          'dark-high-contrast': '#FFDED4',
         },
       },
     },
@@ -1474,13 +1087,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1492,10 +1099,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#fff0eb',
-        'light-high-contrast': '#fff0ed',
         dark: '#ffddd2',
-        'dark-dimmed': '#ffdacf',
-        'dark-high-contrast': '#ffded4',
       },
     },
   },
@@ -1505,10 +1109,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#FFD6CC',
-          'light-high-contrast': '#ffc2b6',
           dark: '#FFC2B2',
-          'dark-dimmed': '#FFB9A5',
-          'dark-high-contrast': '#FFCBB9',
         },
       },
     },
@@ -1516,13 +1117,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1534,10 +1129,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ffd6cc',
-        'light-high-contrast': '#ffc2b6',
         dark: '#ffc2b2',
-        'dark-dimmed': '#ffb9a5',
-        'dark-high-contrast': '#ffcbb9',
       },
     },
   },
@@ -1547,10 +1139,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#FFB4A1',
-          'light-high-contrast': '#ff8f7e',
           dark: '#FFA28B',
-          'dark-dimmed': '#F79981',
-          'dark-high-contrast': '#FFB39B',
         },
       },
     },
@@ -1558,13 +1147,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1576,10 +1159,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ffb4a1',
-        'light-high-contrast': '#ff8f7e',
         dark: '#ffa28b',
-        'dark-dimmed': '#f79981',
-        'dark-high-contrast': '#ffb39b',
       },
     },
   },
@@ -1589,10 +1169,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#FD8C73',
-          'light-high-contrast': '#ef5b48',
           dark: '#F78166',
-          'dark-dimmed': '#EC775C',
-          'dark-high-contrast': '#FF967D',
         },
       },
     },
@@ -1600,13 +1177,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1618,10 +1189,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#fd8c73',
-        'light-high-contrast': '#ef5b48',
         dark: '#f78166',
-        'dark-dimmed': '#ec775c',
-        'dark-high-contrast': '#ff967d',
       },
     },
   },
@@ -1631,10 +1199,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#EC6547',
-          'light-high-contrast': '#cd3425',
           dark: '#EA6045',
-          'dark-dimmed': '#DE5B41',
-          'dark-high-contrast': '#FC704F',
         },
       },
     },
@@ -1642,13 +1207,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1660,10 +1219,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ec6547',
-        'light-high-contrast': '#cd3425',
         dark: '#ea6045',
-        'dark-dimmed': '#de5b41',
-        'dark-high-contrast': '#fc704f',
       },
     },
   },
@@ -1673,10 +1229,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#C4432B',
-          'light-high-contrast': '#9f1710',
           dark: '#CF462D',
-          'dark-dimmed': '#C2442D',
-          'dark-high-contrast': '#FC704F',
         },
       },
     },
@@ -1684,13 +1237,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1702,10 +1249,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#c4432b',
-        'light-high-contrast': '#9f1710',
         dark: '#cf462d',
-        'dark-dimmed': '#c2442d',
-        'dark-high-contrast': '#fc704f',
       },
     },
   },
@@ -1715,10 +1259,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#9E2F1C',
-          'light-high-contrast': '#870706',
           dark: '#AC3220',
-          'dark-dimmed': '#A93524',
-          'dark-high-contrast': '#F75133',
         },
       },
     },
@@ -1726,13 +1267,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1744,10 +1279,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#9e2f1c',
-        'light-high-contrast': '#870706',
         dark: '#ac3220',
-        'dark-dimmed': '#a93524',
-        'dark-high-contrast': '#f75133',
       },
     },
   },
@@ -1757,10 +1289,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#801F0F',
-          'light-high-contrast': '#6f0107',
           dark: '#872012',
-          'dark-dimmed': '#8D291B',
-          'dark-high-contrast': '#E03B21',
         },
       },
     },
@@ -1768,13 +1297,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1786,10 +1309,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#801f0f',
-        'light-high-contrast': '#6f0107',
         dark: '#872012',
-        'dark-dimmed': '#8d291b',
-        'dark-high-contrast': '#e03b21',
       },
     },
   },
@@ -1799,10 +1319,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#691105',
-          'light-high-contrast': '#5b0002',
           dark: '#640D04',
-          'dark-dimmed': '#771D13',
-          'dark-high-contrast': '#C62612',
         },
       },
     },
@@ -1810,13 +1327,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1828,10 +1339,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#691105',
-        'light-high-contrast': '#5b0002',
         dark: '#640d04',
-        'dark-dimmed': '#771d13',
-        'dark-high-contrast': '#c62612',
       },
     },
   },
@@ -1841,10 +1349,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#510901',
-          'light-high-contrast': '#430200',
           dark: '#460701',
-          'dark-dimmed': '#5D1008',
-          'dark-high-contrast': '#A91500',
         },
       },
     },
@@ -1852,13 +1357,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1870,10 +1369,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#510901',
-        'light-high-contrast': '#430200',
         dark: '#460701',
-        'dark-dimmed': '#5d1008',
-        'dark-high-contrast': '#a91500',
       },
     },
   },
@@ -1883,10 +1379,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#FFEBE9',
-          'light-high-contrast': '#fff0ee',
           dark: '#ffdcd7',
-          'dark-dimmed': '#ffd8d3',
-          'dark-high-contrast': '#ffdedb',
         },
       },
     },
@@ -1894,13 +1387,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1912,10 +1399,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ffebe9',
-        'light-high-contrast': '#fff0ee',
         dark: '#ffdcd7',
-        'dark-dimmed': '#ffd8d3',
-        'dark-high-contrast': '#ffdedb',
       },
     },
   },
@@ -1925,10 +1409,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#ffcecb',
-          'light-high-contrast': '#ffc1bc',
           dark: '#ffc1ba',
-          'dark-dimmed': '#ffb8b0',
-          'dark-high-contrast': '#ffc9c7',
         },
       },
     },
@@ -1936,13 +1417,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1954,10 +1429,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ffcecb',
-        'light-high-contrast': '#ffc1bc',
         dark: '#ffc1ba',
-        'dark-dimmed': '#ffb8b0',
-        'dark-high-contrast': '#ffc9c7',
       },
     },
   },
@@ -1967,10 +1439,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#ffaba8',
-          'light-high-contrast': '#ff8e8a',
           dark: '#ffa198',
-          'dark-dimmed': '#ff938a',
-          'dark-high-contrast': '#ffb1af',
         },
       },
     },
@@ -1978,13 +1447,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -1996,10 +1459,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ffaba8',
-        'light-high-contrast': '#ff8e8a',
         dark: '#ffa198',
-        'dark-dimmed': '#ff938a',
-        'dark-high-contrast': '#ffb1af',
       },
     },
   },
@@ -2009,10 +1469,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#ff8182',
-          'light-high-contrast': '#ee5a5d',
           dark: '#ff7b72',
-          'dark-dimmed': '#f47067',
-          'dark-high-contrast': '#ff9492',
         },
       },
     },
@@ -2020,13 +1477,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -2038,10 +1489,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#ff8182',
-        'light-high-contrast': '#ee5a5d',
         dark: '#ff7b72',
-        'dark-dimmed': '#f47067',
-        'dark-high-contrast': '#ff9492',
       },
     },
   },
@@ -2051,10 +1499,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#fa4549',
-          'light-high-contrast': '#d5232c',
           dark: '#f85149',
-          'dark-dimmed': '#e5534b',
-          'dark-high-contrast': '#ff6a69',
         },
       },
     },
@@ -2062,13 +1507,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -2080,10 +1519,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#fa4549',
-        'light-high-contrast': '#d5232c',
         dark: '#f85149',
-        'dark-dimmed': '#e5534b',
-        'dark-high-contrast': '#ff6a69',
       },
     },
   },
@@ -2093,10 +1529,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#cf222e',
-          'light-high-contrast': '#a0111f',
           dark: '#da3633',
-          'dark-dimmed': '#c93c37',
-          'dark-high-contrast': '#ff6a69',
         },
       },
     },
@@ -2104,13 +1537,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -2122,10 +1549,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#cf222e',
-        'light-high-contrast': '#a0111f',
         dark: '#da3633',
-        'dark-dimmed': '#c93c37',
-        'dark-high-contrast': '#ff6a69',
       },
     },
   },
@@ -2135,10 +1559,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#a40e26',
-          'light-high-contrast': '#86061d',
           dark: '#b62324',
-          'dark-dimmed': '#ad2e2c',
-          'dark-high-contrast': '#ff4445',
         },
       },
     },
@@ -2146,13 +1567,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -2164,10 +1579,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#a40e26',
-        'light-high-contrast': '#86061d',
         dark: '#b62324',
-        'dark-dimmed': '#ad2e2c',
-        'dark-high-contrast': '#ff4445',
       },
     },
   },
@@ -2177,10 +1589,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#82071e',
-          'light-high-contrast': '#6e011a',
           dark: '#8e1519',
-          'dark-dimmed': '#922323',
-          'dark-high-contrast': '#e82a2f',
         },
       },
     },
@@ -2188,13 +1597,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -2206,10 +1609,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#82071e',
-        'light-high-contrast': '#6e011a',
         dark: '#8e1519',
-        'dark-dimmed': '#922323',
-        'dark-high-contrast': '#e82a2f',
       },
     },
   },
@@ -2219,10 +1619,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#660018',
-          'light-high-contrast': '#5a0016',
           dark: '#67060c',
-          'dark-dimmed': '#78191b',
-          'dark-high-contrast': '#cc1421',
         },
       },
     },
@@ -2230,13 +1627,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -2248,10 +1639,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#660018',
-        'light-high-contrast': '#5a0016',
         dark: '#67060c',
-        'dark-dimmed': '#78191b',
-        'dark-high-contrast': '#cc1421',
       },
     },
   },
@@ -2261,10 +1649,7 @@ export const meta = {
       $extensions: {
         mode: {
           light: '#4c0014',
-          'light-high-contrast': '#430011',
           dark: '#490202',
-          'dark-dimmed': '#5D0F12',
-          'dark-high-contrast': '#ad0116',
         },
       },
     },
@@ -2272,13 +1657,7 @@ export const meta = {
       id: 'palette',
       $extensions: {
         requiredModes: [],
-        modes: [
-          'light',
-          'light-high-contrast',
-          'dark',
-          'dark-dimmed',
-          'dark-high-contrast',
-        ],
+        modes: ['light', 'dark'],
       },
       $name: 'NosEditor themes',
       $description: 'design tokens for noseditor',
@@ -2290,10 +1669,7 @@ export const meta = {
     $extensions: {
       mode: {
         light: '#4c0014',
-        'light-high-contrast': '#430011',
         dark: '#490202',
-        'dark-dimmed': '#5d0f12',
-        'dark-high-contrast': '#ad0116',
       },
     },
   },
@@ -2313,6 +1689,40 @@ export const meta = {
     id: 'color.background',
     $type: 'color',
     $value: '#f2f4f8',
+  },
+  'color.text.body': {
+    _original: {
+      $value: '{palette.black}',
+    },
+    _group: {
+      id: 'color.text',
+      $extensions: {
+        requiredModes: [],
+      },
+      $name: 'NosEditor themes',
+      $description: 'design tokens for noseditor',
+      $type: 'color',
+    },
+    id: 'color.text.body',
+    $type: 'color',
+    $value: '#1d2129',
+  },
+  'color.text.muted': {
+    _original: {
+      $value: '{palette.gray5}',
+    },
+    _group: {
+      id: 'color.text',
+      $extensions: {
+        requiredModes: [],
+      },
+      $name: 'NosEditor themes',
+      $description: 'design tokens for noseditor',
+      $type: 'color',
+    },
+    id: 'color.text.muted',
+    $type: 'color',
+    $value: '#6e7781',
   },
   'color.text.error': {
     _original: {
@@ -2867,369 +2277,212 @@ export const meta = {
 
 export const modes = {
   'palette.black': {
-    light: '#1b1f24',
-    'light-high-contrast': '#010409',
+    light: '#1d2129',
     dark: '#010409',
-    white: '#f0f6fc',
-    'dark-dimmed': '#1c2128',
-    'dark-high-contrast': '#010409',
   },
   'palette.white': {
     light: '#ffffff',
-    'light-high-contrast': '#ffffff',
     dark: '#f0f6fc',
-    'dark-dimmed': '#cdd9e5',
-    'dark-high-contrast': '#ffffff',
   },
   'palette.gray0': {
     light: '#f2f4f8',
-    'light-high-contrast': '#ffffff',
     dark: '#f0f6fc',
-    'dark-dimmed': '#cdd9e5',
-    'dark-high-contrast': '#ffffff',
   },
   'palette.gray1': {
     light: '#eceff4',
-    'light-high-contrast': '#e7ecf0',
     dark: '#c9d1d9',
-    'dark-dimmed': '#adbac7',
-    'dark-high-contrast': '#f0f3f6',
   },
   'palette.gray2': {
     light: '#e5e9f0',
-    'light-high-contrast': '#ced5dc',
     dark: '#b1bac4',
-    'dark-dimmed': '#909dab',
-    'dark-high-contrast': '#d9dee3',
   },
   'palette.gray3': {
     light: '#e5e9f0',
-    'light-high-contrast': '#acb6c0',
     dark: '#8b949e',
-    'dark-dimmed': '#768390',
-    'dark-high-contrast': '#bdc4cc',
   },
   'palette.gray4': {
     light: '#afb8c1',
-    'light-high-contrast': '#88929d',
     dark: '#6e7681',
-    'dark-dimmed': '#636e7b',
-    'dark-high-contrast': '#9ea7b3',
   },
   'palette.gray5': {
     light: '#6e7781',
-    'light-high-contrast': '#66707b',
     dark: '#484f58',
-    'dark-dimmed': '#545d68',
-    'dark-high-contrast': '#7a828e',
   },
   'palette.gray6': {
     light: '#4c566a',
-    'light-high-contrast': '#4b535d',
     dark: '#30363d',
-    'dark-dimmed': '#444c56',
-    'dark-high-contrast': '#525964',
   },
   'palette.gray7': {
     light: '#434c5e',
-    'light-high-contrast': '#343b43',
     dark: '#21262d',
-    'dark-dimmed': '#373e47',
-    'dark-high-contrast': '#272b33',
   },
   'palette.gray8': {
     light: '#434c5e',
-    'light-high-contrast': '#20252c',
     dark: '#161b22',
-    'dark-dimmed': '#2d333b',
-    'dark-high-contrast': '#272b33',
   },
   'palette.gray9': {
     light: '#2e3440',
-    'light-high-contrast': '#0e1116',
     dark: '#0d1117',
-    'dark-dimmed': '#22272e',
-    'dark-high-contrast': '#0a0c10',
   },
   'palette.green0': {
     light: '#dafbe1',
-    'light-high-contrast': '#d2fedb',
     dark: '#aff5b4',
-    'dark-dimmed': '#b4f1b4',
-    'dark-high-contrast': '#acf7b6',
   },
   'palette.green1': {
     light: '#aceebb',
-    'light-high-contrast': '#82e596',
     dark: '#7ee787',
-    'dark-dimmed': '#8ddb8c',
-    'dark-high-contrast': '#72f088',
   },
   'palette.green2': {
     light: '#6fdd8b',
-    'light-high-contrast': '#43c663',
     dark: '#56d364',
-    'dark-dimmed': '#6bc46d',
-    'dark-high-contrast': '#4ae168',
   },
   'palette.green3': {
     light: '#4ac26b',
-    'light-high-contrast': '#26a148',
     dark: '#3fb950',
-    'dark-dimmed': '#57ab5a',
-    'dark-high-contrast': '#26cd4d',
   },
   'palette.green4': {
     light: '#2da44e',
-    'light-high-contrast': '#117f32',
     dark: '#2ea043',
-    'dark-dimmed': '#46954a',
-    'dark-high-contrast': '#09b43a',
   },
   'palette.green5': {
     light: '#1a7f37',
-    'light-high-contrast': '#055d20',
     dark: '#238636',
-    'dark-dimmed': '#347d39',
-    'dark-high-contrast': '#09b43a',
   },
   'palette.green6': {
     light: '#116329',
-    'light-high-contrast': '#024c1a',
     dark: '#196c2e',
-    'dark-dimmed': '#2b6a30',
-    'dark-high-contrast': '#02a232',
   },
   'palette.green7': {
     light: '#044f1e',
-    'light-high-contrast': '#013d14',
     dark: '#0f5323',
-    'dark-dimmed': '#245829',
-    'dark-high-contrast': '#008c2c',
   },
   'palette.green8': {
     light: '#003d16',
-    'light-high-contrast': '#003110',
     dark: '#033a16',
-    'dark-dimmed': '#1b4721',
-    'dark-high-contrast': '#007728',
   },
   'palette.green9': {
     light: '#002d11',
-    'light-high-contrast': '#00230b',
     dark: '#04260f',
-    'dark-dimmed': '#113417',
-    'dark-high-contrast': '#006222',
   },
   'palette.blue0': {
     light: '#ddf4ff',
-    'light-high-contrast': '#dff7ff',
     dark: '#cae8ff',
-    'dark-dimmed': '#c6e6ff',
-    'dark-high-contrast': '#caeaff',
   },
   'palette.blue1': {
     light: '#b6e3ff',
-    'light-high-contrast': '#9cd7ff',
     dark: '#a5d6ff',
-    'dark-dimmed': '#96d0ff',
-    'dark-high-contrast': '#addcff',
   },
   'palette.blue2': {
     light: '#80ccff',
-    'light-high-contrast': '#67b3fd',
     dark: '#79c0ff',
-    'dark-dimmed': '#6cb6ff',
-    'dark-high-contrast': '#91cbff',
   },
   'palette.blue3': {
     light: '#54aeff',
-    'light-high-contrast': '#368cf9',
     dark: '#58a6ff',
-    'dark-dimmed': '#539bf5',
-    'dark-high-contrast': '#71b7ff',
   },
   'palette.blue4': {
     light: '#218bff',
-    'light-high-contrast': '#1168e3',
     dark: '#388bfd',
-    'dark-dimmed': '#4184e4',
-    'dark-high-contrast': '#409eff',
   },
   'palette.blue5': {
     light: '#0969da',
-    'light-high-contrast': '#0349b4',
     dark: '#1f6feb',
-    'dark-dimmed': '#316dca',
-    'dark-high-contrast': '#409eff',
   },
   'palette.blue6': {
     light: '#0550ae',
-    'light-high-contrast': '#023b95',
     dark: '#1158c7',
-    'dark-dimmed': '#255ab2',
-    'dark-high-contrast': '#318bf8',
   },
   'palette.blue7': {
     light: '#033d8b',
-    'light-high-contrast': '#022f7a',
     dark: '#0d419d',
-    'dark-dimmed': '#1b4b91',
-    'dark-high-contrast': '#2672f3',
   },
   'palette.blue8': {
     light: '#0a3069',
-    'light-high-contrast': '#032563',
     dark: '#0c2d6b',
-    'dark-dimmed': '#143d79',
-    'dark-high-contrast': '#1e60d5',
   },
   'palette.blue9': {
     light: '#002155',
-    'light-high-contrast': '#021a4a',
     dark: '#051d4d',
-    'dark-dimmed': '#0f2d5c',
-    'dark-high-contrast': '#194fb1',
   },
   'palette.coral0': {
     light: '#fff0eb',
-    'light-high-contrast': '#fff0ed',
     dark: '#ffddd2',
-    'dark-dimmed': '#ffdacf',
-    'dark-high-contrast': '#ffded4',
   },
   'palette.coral1': {
     light: '#ffd6cc',
-    'light-high-contrast': '#ffc2b6',
     dark: '#ffc2b2',
-    'dark-dimmed': '#ffb9a5',
-    'dark-high-contrast': '#ffcbb9',
   },
   'palette.coral2': {
     light: '#ffb4a1',
-    'light-high-contrast': '#ff8f7e',
     dark: '#ffa28b',
-    'dark-dimmed': '#f79981',
-    'dark-high-contrast': '#ffb39b',
   },
   'palette.coral3': {
     light: '#fd8c73',
-    'light-high-contrast': '#ef5b48',
     dark: '#f78166',
-    'dark-dimmed': '#ec775c',
-    'dark-high-contrast': '#ff967d',
   },
   'palette.coral4': {
     light: '#ec6547',
-    'light-high-contrast': '#cd3425',
     dark: '#ea6045',
-    'dark-dimmed': '#de5b41',
-    'dark-high-contrast': '#fc704f',
   },
   'palette.coral5': {
     light: '#c4432b',
-    'light-high-contrast': '#9f1710',
     dark: '#cf462d',
-    'dark-dimmed': '#c2442d',
-    'dark-high-contrast': '#fc704f',
   },
   'palette.coral6': {
     light: '#9e2f1c',
-    'light-high-contrast': '#870706',
     dark: '#ac3220',
-    'dark-dimmed': '#a93524',
-    'dark-high-contrast': '#f75133',
   },
   'palette.coral7': {
     light: '#801f0f',
-    'light-high-contrast': '#6f0107',
     dark: '#872012',
-    'dark-dimmed': '#8d291b',
-    'dark-high-contrast': '#e03b21',
   },
   'palette.coral8': {
     light: '#691105',
-    'light-high-contrast': '#5b0002',
     dark: '#640d04',
-    'dark-dimmed': '#771d13',
-    'dark-high-contrast': '#c62612',
   },
   'palette.coral9': {
     light: '#510901',
-    'light-high-contrast': '#430200',
     dark: '#460701',
-    'dark-dimmed': '#5d1008',
-    'dark-high-contrast': '#a91500',
   },
   'palette.red0': {
     light: '#ffebe9',
-    'light-high-contrast': '#fff0ee',
     dark: '#ffdcd7',
-    'dark-dimmed': '#ffd8d3',
-    'dark-high-contrast': '#ffdedb',
   },
   'palette.red1': {
     light: '#ffcecb',
-    'light-high-contrast': '#ffc1bc',
     dark: '#ffc1ba',
-    'dark-dimmed': '#ffb8b0',
-    'dark-high-contrast': '#ffc9c7',
   },
   'palette.red2': {
     light: '#ffaba8',
-    'light-high-contrast': '#ff8e8a',
     dark: '#ffa198',
-    'dark-dimmed': '#ff938a',
-    'dark-high-contrast': '#ffb1af',
   },
   'palette.red3': {
     light: '#ff8182',
-    'light-high-contrast': '#ee5a5d',
     dark: '#ff7b72',
-    'dark-dimmed': '#f47067',
-    'dark-high-contrast': '#ff9492',
   },
   'palette.red4': {
     light: '#fa4549',
-    'light-high-contrast': '#d5232c',
     dark: '#f85149',
-    'dark-dimmed': '#e5534b',
-    'dark-high-contrast': '#ff6a69',
   },
   'palette.red5': {
     light: '#cf222e',
-    'light-high-contrast': '#a0111f',
     dark: '#da3633',
-    'dark-dimmed': '#c93c37',
-    'dark-high-contrast': '#ff6a69',
   },
   'palette.red6': {
     light: '#a40e26',
-    'light-high-contrast': '#86061d',
     dark: '#b62324',
-    'dark-dimmed': '#ad2e2c',
-    'dark-high-contrast': '#ff4445',
   },
   'palette.red7': {
     light: '#82071e',
-    'light-high-contrast': '#6e011a',
     dark: '#8e1519',
-    'dark-dimmed': '#922323',
-    'dark-high-contrast': '#e82a2f',
   },
   'palette.red8': {
     light: '#660018',
-    'light-high-contrast': '#5a0016',
     dark: '#67060c',
-    'dark-dimmed': '#78191b',
-    'dark-high-contrast': '#cc1421',
   },
   'palette.red9': {
     light: '#4c0014',
-    'light-high-contrast': '#430011',
     dark: '#490202',
-    'dark-dimmed': '#5d0f12',
-    'dark-high-contrast': '#ad0116',
   },
   'font.family.size.f00': {
     mobile: '32px',

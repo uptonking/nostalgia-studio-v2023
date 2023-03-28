@@ -13,7 +13,7 @@ import DOMRange = globalThis.Range;
 import DOMSelection = globalThis.Selection;
 import DOMStaticRange = globalThis.StaticRange;
 
-export {
+export type {
   DOMComment,
   DOMElement,
   DOMNode,

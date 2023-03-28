@@ -1,18 +1,14 @@
 import { nanoid } from 'nanoid';
 
 import { createPluginFactory } from '@udecode/plate-core';
-import type {
-  DeserializeHtml,
-} from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
-import type {
-  PlatePlugin,
-} from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
+import type { DeserializeHtml } from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
+import type { PlatePlugin } from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
 
 import { BlockquoteType } from '../../blockquote/types';
 import { DividerType } from '../../divider/types';
 import { Heading1Spec, Heading2Spec, Heading3Spec } from '../../heading/utils';
 import { ImageType } from '../../image/types';
-import { LinkSpec } from '../../link/types';
+import { LinkSpec } from '../../link/utils';
 import { ListItemSpec } from '../../list/utils';
 import { ParagraphSpec } from '../../paragraph/utils';
 import { getListItemProps } from '../utils';
@@ -64,7 +60,7 @@ const rules: DeserializeHtml[] = [
     ],
   },
   {
-    getNode: (el) => ({ type: LinkType, url: el.getAttribute('href') }),
+    getNode: (el) => ({ type: LinkSpec, url: el.getAttribute('href') }),
     isElement: true,
     rules: [
       {

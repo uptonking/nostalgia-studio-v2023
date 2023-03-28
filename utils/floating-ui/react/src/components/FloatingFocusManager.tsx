@@ -1,6 +1,6 @@
-import { hideOthers } from 'aria-hidden';
 import * as React from 'react';
-import { FocusableElement, tabbable } from 'tabbable';
+
+import { hideOthers } from 'aria-hidden';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
 import { DismissPayload } from '../hooks/useDismiss';
@@ -22,6 +22,7 @@ import {
   getTabbableOptions,
   isOutsideEvent,
 } from '../utils/tabbable';
+import { FocusableElement, tabbable } from '../utils/tabbable-src';
 import { usePortalContext } from './FloatingPortal';
 import { useFloatingTree } from './FloatingTree';
 import { FocusGuard, HIDDEN_STYLES } from './FocusGuard';

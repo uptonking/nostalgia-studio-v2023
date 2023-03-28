@@ -62,6 +62,8 @@ export const themed = {
   color: {
     background: 'var(--nos-color-background)',
     text: {
+      body: 'var(--nos-color-text-body)',
+      muted: 'var(--nos-color-text-muted)',
       error: 'var(--nos-color-text-error)',
       link: 'var(--nos-color-text-link)',
     },

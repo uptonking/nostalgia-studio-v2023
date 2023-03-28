@@ -80,13 +80,13 @@ export const NosEditorFullFeatures = (props) => {
   // console.log(';; editorKey ', editorKey, value, editor.children);
 
   return (
-    <div className='nosedit-full'>
+    <div className='nosedit-app'>
       <Slate key={editorKey} editor={editor} value={value} onChange={setValue}>
         <div className='nosedit-header'>
           <NosNavbar {...{ isReadOnly, setIsReadOnly, resetEditorContents }} />
           <NosToolbar />
         </div>
-        <div className='nos-body'>
+        <div className='nosedit-body'>
           <div className='nos-editor-container'>
             <DndPluginContext
               editor={editor}

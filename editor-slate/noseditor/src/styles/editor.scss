@@ -161,14 +161,14 @@ body.dragging .handle,
 
 .item-container:hover .handle,
 .item-container.selected .handle {
-  opacity: 1;
+  opacity: 0.9;
 }
 
 .folding:hover,
 .folding.folded,
 .item-container:hover .folding,
 .item-container.selected .folding {
-  opacity: 1;
+  opacity: 0.9;
 }
 
 .folding {
@@ -228,7 +228,7 @@ body.dragging .handle,
 }
 
 .item.dragging.indicator {
-  opacity: 1;
+  opacity: 0.9;
   position: relative;
   z-index: 1;
   /*margin-bottom: -1px;*/

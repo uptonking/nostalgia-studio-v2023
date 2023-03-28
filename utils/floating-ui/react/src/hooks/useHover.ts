@@ -94,7 +94,7 @@ export const useHover = <RT extends ReferenceType = ReferenceType>(
   const restTimeoutRef = React.useRef<any>();
   const blockMouseMoveRef = React.useRef(true);
   const performedPointerEventsMutationRef = React.useRef(false);
-  const unbindMouseMoveRef = React.useRef(() => { });
+  const unbindMouseMoveRef = React.useRef(() => {});
 
   const isHoverOpen = React.useCallback(() => {
     const type = dataRef.current.openEvent?.type;
@@ -196,7 +196,7 @@ export const useHover = <RT extends ReferenceType = ReferenceType>(
     function onMouseEnter(event: MouseEvent) {
       clearTimeout(timeoutRef.current);
       blockMouseMoveRef.current = false;
-      console.log(';; onMouseEnter/move ')
+      console.log(';; onMouseEnter/move ');
 
       if (
         (mouseOnly && !isMouseLikePointerType(pointerTypeRef.current)) ||

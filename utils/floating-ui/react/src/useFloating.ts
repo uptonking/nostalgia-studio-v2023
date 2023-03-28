@@ -42,9 +42,9 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
     (node: ReferenceType | null) => {
       const positionReference = isElement(node)
         ? {
-          getBoundingClientRect: () => node.getBoundingClientRect(),
-          contextElement: node,
-        }
+            getBoundingClientRect: () => node.getBoundingClientRect(),
+            contextElement: node,
+          }
         : node;
       position.refs.setReference(positionReference as RT | null);
     },

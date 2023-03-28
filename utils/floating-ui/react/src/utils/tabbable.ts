@@ -1,8 +1,7 @@
-import { tabbable } from 'tabbable';
-
 import { activeElement } from './activeElement';
 import { contains } from './contains';
 import { getDocument } from './getDocument';
+import { tabbable } from './tabbable-src';
 
 export const getTabbableOptions = () =>
   ({

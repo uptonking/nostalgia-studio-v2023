@@ -1,13 +1,11 @@
-.nosedit-full {
+.nosedit-app {
   color: #434c5e;
   .nosedit-header {
-    position: fixed;
-    left: 0px;
-    right: 0px;
+    position: sticky;
     top: 0px;
+    z-index: 100;
     width: 100%;
     background-color: #fff;
-    z-index: 1;
   }
 
   .nosedit-navbar {
@@ -33,10 +31,11 @@
     border-bottom: 1px solid #e5e9f0;
   }
 
-  .nos-body {
+  .nosedit-body {
+    position: relative;
+    // z-index: 1;
     display: flex;
     justify-content: center;
-    margin-top: 96px;
     background-color: #f2f4f8;
   }
 

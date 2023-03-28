@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
+
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
 import { useId } from '../hooks/useId';
@@ -27,6 +28,7 @@ const PortalContext = React.createContext<null | {
   afterOutsideRef: React.RefObject<HTMLSpanElement>;
 }>(null);
 
+/** get the container for floating component */
 export const useFloatingPortalNode = ({
   id,
   root,
@@ -107,8 +109,7 @@ export const FloatingPortal = ({
   const afterInsideRef = React.useRef<HTMLSpanElement>(null);
 
   const shouldRenderGuards =
-    // The FocusManager and therefore floating element are currently open/
-    // rendered.
+    // The FocusManager and therefore floating element are currently open/rendered.
     !!focusManagerState &&
     // Guards are only for non-modal focus management.
     !focusManagerState.modal &&

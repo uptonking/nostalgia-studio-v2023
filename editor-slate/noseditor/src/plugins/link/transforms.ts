@@ -50,5 +50,3 @@ export const insertLink = (editor: Editor, url: string) => {
     Transforms.insertNodes(editor, { type: 'p', children: [linkElem] });
   }
 };
-
-

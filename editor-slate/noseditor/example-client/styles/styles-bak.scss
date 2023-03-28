@@ -19,7 +19,7 @@
   }
 }
 
-.nosedit-full {
+.nosedit-app {
   color: #434c5e;
   .nosedit-header {
     position: fixed;
@@ -54,7 +54,7 @@
     border-bottom: 1px solid #e5e9f0;
   }
 
-  .nos-body {
+  .nosedit-body {
     display: flex;
     justify-content: center;
     margin-top: 96px;
@@ -92,20 +92,6 @@
     }
   }
 
-  .nos-icon-btn {
-    width: 28px;
-    height: 28px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border: 0;
-    border-radius: 6px;
-    background-color: transparent;
-    color: #4c566a;
-    cursor: pointer;
-    &:hover {
-      background-color: #f3f4f5;
-    }
-  }
 }
 
 /* todo delete legacy css */

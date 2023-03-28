@@ -6,7 +6,7 @@ import {
   Refresh as ResetIcon,
 } from '@icon-park/react';
 
-import { IconButton } from '../common/icon-button';
+import { IconButton } from '../../../src';
 
 type NosNavbarProps = {
   isReadOnly: boolean;

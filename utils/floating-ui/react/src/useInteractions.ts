@@ -46,6 +46,9 @@ function mergeProps(
   };
 }
 
+/**
+ * merges all of input props into prop getters which can be used for rendering
+ */
 export const useInteractions = (propsList: Array<ElementProps | void> = []) => {
   // The dependencies are a dynamic array, so we can't use the linter's
   // suggestion to add it to the deps array.
@@ -73,7 +76,7 @@ export const useInteractions = (propsList: Array<ElementProps | void> = []) => {
     // a prop to many components. All `item` key values must therefore be
     // memoized.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    propsList.map((key) => key?.item),
+    propsList.map((key) => key?.['item']),
   );
 
   return React.useMemo(

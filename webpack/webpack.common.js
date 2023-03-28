@@ -22,6 +22,7 @@ module.exports = {
     rules: [
       {
         test: /\.(ts|js)x?$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader',
@@ -32,14 +33,13 @@ module.exports = {
           {
             loader: '@linaria/webpack5-loader',
             options: {
-              sourceMap: process.env.NODE_ENV !== 'production',
+              sourceMap: !isProd,
               babelOptions: {
                 rootMode: 'upward',
                 plugins: [
                   '@babel/plugin-syntax-jsx',
                   '@babel/plugin-proposal-class-properties',
                   [
-                    // required for legacy desktop to parse the syntax
                     '@babel/plugin-proposal-decorators',
                     {
                       decoratorsBeforeExport: true,
@@ -67,7 +67,6 @@ module.exports = {
         resolve: {
           fullySpecified: false,
         },
-        exclude: /node_modules/,
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -77,7 +76,7 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: process.env.NODE_ENV !== 'production',
+              sourceMap: !isProd,
             },
           },
           {

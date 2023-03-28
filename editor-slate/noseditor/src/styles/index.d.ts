@@ -67,6 +67,8 @@ export declare const tokens: {
   'palette.red8': ColorToken['$value'];
   'palette.red9': ColorToken['$value'];
   'color.background': ColorToken['$value'];
+  'color.text.body': ColorToken['$value'];
+  'color.text.muted': ColorToken['$value'];
   'color.text.error': ColorToken['$value'];
   'color.text.link': ColorToken['$value'];
   'spacing.spacer0': DimensionToken['$value'];
@@ -250,6 +252,8 @@ export declare const meta: {
     $extensions: { mode: typeof modes['palette.red9'] };
   };
   'color.background': ParsedColorToken;
+  'color.text.body': ParsedColorToken;
+  'color.text.muted': ParsedColorToken;
   'color.text.error': ParsedColorToken;
   'color.text.link': ParsedColorToken;
   'spacing.spacer0': ParsedDimensionToken;
@@ -294,368 +298,211 @@ export declare const meta: {
 export declare const modes: {
   'palette.black': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    white: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.white': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray0': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray1': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray2': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray3': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray4': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray5': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray6': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray7': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray8': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.gray9': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green0': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green1': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green2': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green3': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green4': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green5': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green6': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green7': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green8': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.green9': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue0': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue1': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue2': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue3': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue4': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue5': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue6': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue7': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue8': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.blue9': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral0': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral1': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral2': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral3': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral4': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral5': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral6': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral7': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral8': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.coral9': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red0': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red1': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red2': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red3': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red4': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red5': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red6': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red7': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red8': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'palette.red9': {
     light: ColorToken['$value'];
-    'light-high-contrast': ColorToken['$value'];
     dark: ColorToken['$value'];
-    'dark-dimmed': ColorToken['$value'];
-    'dark-high-contrast': ColorToken['$value'];
   };
   'font.family.size.f00': {
     mobile: DimensionToken['$value'];

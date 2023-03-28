@@ -6,8 +6,22 @@ import './styles/theme-default.css';
 // export styles
 export * from './styles';
 
-// ready-to-use block editor
-export { NosEditor } from './components/editor/noseditor';
+// export components
+export { NosIconProvider } from './config/icon-provider';
+
+export { DragOverlayContent } from './plugins/wrapper';
+export * from './components';
+
+// export all plugins
+export * from './plugins';
+export {
+  DndPluginContext,
+  SlateExtended,
+  useExtendedPlugin,
+} from './slate-extended';
+
+// export utils
+export { composePlugins } from './utils/plugins-config-compose';
 
 // hooks to build your own editor
 export {
@@ -19,22 +33,8 @@ export {
 } from './components/use-editor';
 export { usePersistedState } from './hooks/use-persisted-state';
 
-// export all plugins
-export * from './plugins';
-export {
-  DndPluginContext,
-  SlateExtended,
-  useExtendedPlugin,
-} from './slate-extended';
-
-// export components
-export { NosIconProvider } from './config/icon-provider';
-
-export { DragOverlayContent } from './plugins/wrapper';
-export { EditorToolbar } from './components/editor-toolbar';
-
-// export utils
-export { composePlugins } from './utils/plugins-config-compose';
+// 💡 ready-to-use block editor
+export { NosEditor } from './components';
 
 // export types
 export type { CustomEditor, CustomElement, CustomText } from './types/slate.d';

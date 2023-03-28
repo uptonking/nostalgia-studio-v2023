@@ -18,6 +18,7 @@ import {
 } from '@icon-park/react';
 import type { Icon } from '@icon-park/react/lib/runtime';
 
+import { IconButton } from '../../../src';
 import {
   Heading1Spec,
   Heading2Spec,
@@ -29,7 +30,6 @@ import { ListTypes } from '../../../src/plugins/list/utils';
 import { TextFormats } from '../../../src/plugins/marks/types';
 import { ParagraphSpec } from '../../../src/plugins/paragraph/utils';
 import { toggleElement, toggleMark } from '../../../src/transforms';
-import { IconButton } from '../common/icon-button';
 
 type ToolbarConfigType = {
   type: 'button' | 'dropdown' | 'listbox';

@@ -1,6 +1,6 @@
 import type { UseNosPlugin } from '../types';
 import * as handlers from './handlers';
-import { renderLeaf } from './renderLeaf';
+import { renderLeaf } from './render-leaf';
 
 export const useMarksPlugin: UseNosPlugin = () => {
   return {

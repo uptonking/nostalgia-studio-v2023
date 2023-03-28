@@ -22,6 +22,7 @@ type PopoverOptions = {
   placement?: Placement;
   modal?: boolean;
   open?: boolean;
+  offsetValue?: number;
   onOpenChange?: (open: boolean) => void;
 };
 
@@ -34,6 +35,7 @@ export function usePopover({
   modal,
   open: controlledOpen,
   onOpenChange: setControlledOpen,
+  offsetValue=5
 }: PopoverOptions = {}) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
   const [labelId, setLabelId] = React.useState<string | undefined>();
@@ -86,11 +88,11 @@ export function usePopover({
 
 type PopoverContextType =
   | (ReturnType<typeof usePopover> & {
-      setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
-      setDescriptionId: React.Dispatch<
-        React.SetStateAction<string | undefined>
-      >;
-    })
+    setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
+    setDescriptionId: React.Dispatch<
+      React.SetStateAction<string | undefined>
+    >;
+  })
   | null;
 
 const PopoverContext = React.createContext<PopoverContextType>(null);

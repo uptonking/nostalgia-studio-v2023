@@ -7,8 +7,8 @@ import {
   Heading2Spec,
   Heading3Spec,
 } from '../plugins/heading/utils';
-import { insertLink, unwrapLinks } from '../plugins/link/transforms';
-import { toggleList } from '../plugins/list/transforms';
+import { insertLink, removeLink } from '../plugins/link/commands';
+import { toggleList } from '../plugins/list/commands';
 import { ListTypes } from '../plugins/list/utils';
 import { ParagraphSpec } from '../plugins/paragraph/utils';
 import { toggleElement, toggleMark } from '../transforms';
@@ -123,7 +123,7 @@ export const EditorToolbar = () => {
           style={{ position: 'relative' }}
           onMouseDown={(e) => {
             e.preventDefault();
-            unwrapLinks(editor);
+            removeLink(editor);
           }}
           className='toolbar-button'
         >

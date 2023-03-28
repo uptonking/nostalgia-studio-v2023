@@ -1,41 +1,97 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
+
+import { useSlateStatic } from 'slate-react';
 
 import { css } from '@linaria/core';
 import { styled } from '@linaria/react';
 
 import {
+  CheckIcon,
   CopyIcon,
+  DeleteIcon,
   EditIcon,
   IconButton,
-  LinkInterruptIcon as UnlinkIcon,
 } from '../../../components';
 import { themed } from '../../../styles/theme-vars';
+import { removeLink, updateLink } from '../commands';
+import type { LinkElementType } from '../types';
 
 type LinkInputProps = {
-  text?: string;
-  link?: string;
+  linkElement: LinkElementType;
+  /** the link url */
+  linkHref?: string;
 } & React.HTMLProps<HTMLDivElement>;
 
 export const LinkInput = forwardRef<HTMLDivElement, LinkInputProps>(
   (props_, ref) => {
-    const { className, link, ...props } = props_;
-    const [isEditing, SetIsEditing] = useState(false);
-    ' level, extremely configurable and flexible: At the cost of more code to setup, you get high control and flexibility, so you can create “bespoke” and complex floating elements you won’t find in most component libraries.';
+    const { className, linkHref, linkElement, ...props } = props_;
+    const editor = useSlateStatic();
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [linkInput, setLinkInput] = useState(linkHref);
+    const [linkTextWidth, setLinkTextWidth] = useState(0);
+
+    const updateLinkDataAndStopEditing = useCallback(() => {
+      if (isEditing && linkHref !== linkInput) {
+        updateLink(editor, linkElement, linkInput);
+      }
+      setIsEditing((v) => !v);
+    }, [editor, isEditing, linkElement, linkHref, linkInput]);
 
     return (
       <div ref={ref} className={linkContainerCss + ' ' + className} {...props}>
         <div className={mainCss}>
-          {isEditing ? <input type='text' defaultValue={link} /> : <div className={linkUrlCss}>{link}</div>}
+          {isEditing ? (
+            <input
+              value={linkInput}
+              onChange={(e) => setLinkInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.keyCode === 13) {
+                  updateLinkDataAndStopEditing();
+                }
+              }}
+              className={linkInputCss}
+              name='linkUrlInput'
+              type='text'
+              style={{ width: linkTextWidth }}
+            />
+          ) : (
+            <div
+              ref={(node) => {
+                if (node) {
+                  const minWidth = 210; // avoid ui jump when width change
+                  setLinkTextWidth(
+                    node.clientWidth > minWidth ? node.clientWidth : minWidth,
+                  );
+                }
+              }}
+              className={linkUrlCss}
+              key={linkTextWidth}
+            >
+              {linkHref}
+            </div>
+          )}
           <div className=''>
-            <StyledIconButton onClick={() => SetIsEditing(v => !v)}>
-              <EditIcon title='edit link' />
+            <StyledIconButton
+              title={isEditing ? 'Remove Link' : 'Copy Link'}
+              onClick={() => {
+                if (isEditing) {
+                  removeLink(editor, linkElement);
+                } else {
+                  // copy link url
+                  (async () => {
+                    await navigator.clipboard.writeText(linkElement.url);
+                  })();
+                }
+              }}
+            >
+              {isEditing ? <DeleteIcon /> : <CopyIcon />}
             </StyledIconButton>
-            <StyledIconButton>
-              {isEditing ? (
-                <UnlinkIcon title='remove link' />
-              ) : (
-                <CopyIcon title='copy link' />
-              )}
+            <StyledIconButton
+              title={isEditing ? 'Save' : 'Edit Link'}
+              onClick={updateLinkDataAndStopEditing}
+            >
+              {isEditing ? <CheckIcon /> : <EditIcon />}
             </StyledIconButton>
           </div>
         </div>
@@ -54,16 +110,13 @@ const StyledIconButton = styled(IconButton)`
 const linkContainerCss = css`
   display: flex;
   align-items: center;
-  min-width: 320px;
+  min-width: 300px;
   max-width: 720px;
   min-height: 48px;
   background-color: ${themed.palette.white};
-
-  /* backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%); */
-  /* background-color: rgba(255, 255, 255, 0.75); */
   border-radius: 8px;
-  border: 1px solid rgba(209, 213, 219, 0.3);
+  /* border: 1px solid rgba(209, 213, 219, 0.3); */
+  box-shadow: ${themed.shadow.sm};
 `;
 
 const mainCss = css`
@@ -80,5 +133,13 @@ const linkUrlCss = css`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  color: ${themed.color.text.body};
+  color: ${themed.color.text.muted};
+`;
+
+const linkInputCss = css`
+  color: ${themed.color.text.muted};
+  border: 1px solid ${themed.color.background};
+  &:focus-visible {
+    outline-color: ${themed.color.border.muted};
+  }
 `;

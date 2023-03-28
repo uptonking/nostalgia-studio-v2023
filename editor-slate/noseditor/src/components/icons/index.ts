@@ -23,4 +23,6 @@ export {
   Refresh as RefreshIcon,
   CopyLink as CopyLinkIcon,
   Copy as CopyIcon,
+  Check as CheckIcon,
+  Delete as DeleteIcon
 } from '@icon-park/react';

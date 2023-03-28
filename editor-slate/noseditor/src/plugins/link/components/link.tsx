@@ -9,10 +9,10 @@ import {
 } from '../../../components/common/popover';
 import { themed } from '../../../styles/theme-vars';
 import type { ElementProps } from '../../types';
-import type { LinkElement } from '../types';
+import type { LinkElementType } from '../types';
 import { LinkInput } from './link-input';
 
-export const Link = (props: ElementProps & { element: LinkElement }) => {
+export const Link = (props: ElementProps & { element: LinkElementType }) => {
   const { attributes, children, element } = props;
   const { url } = element;
 
@@ -23,10 +23,19 @@ export const Link = (props: ElementProps & { element: LinkElement }) => {
       open={isOpen}
       onOpenChange={setIsOpen}
       placement='bottom-start'
+      offsetValue={3}
     >
       <PopoverTrigger
         asChild={true}
-        onClick={() => setIsOpen((v) => !v)}
+        onClick={(e) => {
+          setIsOpen((v) => !v);
+          const linkElement = e.currentTarget;
+          if (linkElement) {
+            e.preventDefault();
+            const href = element.url; // const href = linkElement['href'];
+            window.open(href, '_blank');
+          }
+        }}
         onMouseEnter={() => {
           if (!isOpen) setIsOpen(true);
         }}
@@ -34,29 +43,14 @@ export const Link = (props: ElementProps & { element: LinkElement }) => {
       //   if (isOpen) setIsOpen(false);
       // }}
       >
-        <a
-          className={anchorElemCss}
-          {
-          // note: attributes.ref.current=null, it must be put before ref prop
-          ...attributes
-          }
-          // onClick: (e) => {
-          //   const linkElement = e.currentTarget;
-          //   if (linkElement) {
-          //     e.preventDefault();
-          //     const href = linkElement['href'];
-          //     window.open(href, '_blank');
-          //   }
-          // }
-          href={url}
-        >
+        <a className={anchorElemCss} {...attributes} href={url}>
           <InlineChromiumBugfix />
           {children}
           <InlineChromiumBugfix />
         </a>
       </PopoverTrigger>
       <PopoverContent closeOnMouseLeave={true}>
-        <LinkInput link={url} />
+        <LinkInput linkHref={url} linkElement={element} />
       </PopoverContent>
     </PopoverProvider>
   );
@@ -77,7 +71,7 @@ const chromiumFixCss = css`
 `;
 
 const anchorElemCss = css`
-  margin: 0 1px;
+  /* margin: 0 1px; */
   color: ${themed.color.text.link};
   text-decoration: none;
   cursor: pointer;

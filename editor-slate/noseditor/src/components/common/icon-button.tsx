@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import type { IIconProps } from '@icon-park/react/lib/runtime';
 import { styled } from '@linaria/react';
 
+import { themed } from '../../styles';
+
 type IconButtonProps = {
   className?: string;
   style?: React.CSSProperties;
@@ -33,5 +35,8 @@ const StyledButton = styled.button<IconButtonProps>`
   cursor: pointer;
   &:hover {
     background-color: #f3f4f5;
+  }
+  &:focus-visible {
+    outline-color: ${themed.color.border.muted};
   }
 `;

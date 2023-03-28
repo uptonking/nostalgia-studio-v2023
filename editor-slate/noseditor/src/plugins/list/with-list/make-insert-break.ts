@@ -2,7 +2,7 @@ import { BaseEditor, Editor, Transforms } from 'slate';
 
 import { isEmptyNode } from '../../../queries';
 import { ParagraphSpec } from '../../paragraph/utils';
-import { moveItemsBack } from '../transforms';
+import { moveItemsBack } from '../commands';
 import { isListItemElement } from '../utils';
 
 const makeInsertBreak = (editor: Editor): BaseEditor['insertBreak'] => {

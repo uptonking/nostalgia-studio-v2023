@@ -62,6 +62,7 @@ export const tokens = {
   'color.text.muted': '#6e7781',
   'color.text.error': '#82071e',
   'color.text.link': '#0969da',
+  'color.border.muted': '#eceff4',
   'spacing.spacer0': '0',
   'spacing.spacerXs': '4px',
   'spacing.spacerS': '8px',
@@ -69,36 +70,30 @@ export const tokens = {
   'spacing.spacerX': '24px',
   'spacing.spacerXl': '32px',
   'spacing.spacerXxl': '40px',
-  'font.family.system': [
-    '-apple-system,',
-    'BlinkMacSystemFont',
-    'Segoe UI',
-    'Helvetica',
-    'Arial',
-    'sans-serif',
-    'Apple Color Emoji',
-    'Segoe UI Emoji',
-  ],
-  'font.family.monospace': [
-    'SFMono-Regular',
-    'Consolas',
-    'Liberation Mono',
-    'Menlo',
-    'Courier',
-    'monospace',
-  ],
-  'font.family.display': [
-    'InterUI',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    'Helvetica Neue',
-    'Segoe UI',
-    'Oxygen',
-    'Ubuntu',
-    'Cantarell',
-    'Open Sans',
-    'sans-serif',
-  ],
+  'shadow.sm': {
+    offsetX: '0',
+    offsetY: '8px',
+    blur: '16px',
+    spread: '0',
+    color: '#64646f33',
+  },
+  'shadow.md': {
+    offsetX: '0',
+    offsetY: '12px',
+    blur: '24px',
+    spread: '0',
+    color: '#64646f33',
+  },
+  'shadow.lg': {
+    offsetX: '0',
+    offsetY: '16px',
+    blur: '30px',
+    spread: '0',
+    color: '#64646f33',
+  },
+  'font.family.system': ['-apple-system,', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji'],
+  'font.family.monospace': ['SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', 'Courier', 'monospace'],
+  'font.family.display': ['InterUI', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Open Sans', 'sans-serif'],
   'font.family.size.f00': '32px',
   'font.family.size.f0': '32px',
   'font.family.size.f1': '26px',
@@ -114,29 +109,29 @@ export const tokens = {
 
 export const meta = {
   'palette.black': {
-    _original: {
-      $value: '#1d2129',
-      $extensions: {
+    '_original': {
+      '$value': '#1d2129',
+      '$extensions': {
         mode: {
           light: '#1d2129',
           dark: '#010409',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.black',
-    $type: 'color',
-    $value: '#1d2129',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#1d2129',
+    '$extensions': {
       mode: {
         light: '#1d2129',
         dark: '#010409',
@@ -144,29 +139,29 @@ export const meta = {
     },
   },
   'palette.white': {
-    _original: {
-      $value: '#ffffff',
-      $extensions: {
+    '_original': {
+      '$value': '#ffffff',
+      '$extensions': {
         mode: {
           light: '#ffffff',
           dark: '#f0f6fc',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.white',
-    $type: 'color',
-    $value: '#ffffff',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ffffff',
+    '$extensions': {
       mode: {
         light: '#ffffff',
         dark: '#f0f6fc',
@@ -174,29 +169,29 @@ export const meta = {
     },
   },
   'palette.gray0': {
-    _original: {
-      $value: '#f2f4f8',
-      $extensions: {
+    '_original': {
+      '$value': '#f2f4f8',
+      '$extensions': {
         mode: {
           light: '#f2f4f8',
           dark: '#f0f6fc',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray0',
-    $type: 'color',
-    $value: '#f2f4f8',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#f2f4f8',
+    '$extensions': {
       mode: {
         light: '#f2f4f8',
         dark: '#f0f6fc',
@@ -204,29 +199,29 @@ export const meta = {
     },
   },
   'palette.gray1': {
-    _original: {
-      $value: '#ECEFF4',
-      $extensions: {
+    '_original': {
+      '$value': '#ECEFF4',
+      '$extensions': {
         mode: {
           light: '#ECEFF4',
           dark: '#c9d1d9',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray1',
-    $type: 'color',
-    $value: '#eceff4',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#eceff4',
+    '$extensions': {
       mode: {
         light: '#eceff4',
         dark: '#c9d1d9',
@@ -234,29 +229,29 @@ export const meta = {
     },
   },
   'palette.gray2': {
-    _original: {
-      $value: '#E5E9F0',
-      $extensions: {
+    '_original': {
+      '$value': '#E5E9F0',
+      '$extensions': {
         mode: {
           light: '#E5E9F0',
           dark: '#b1bac4',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray2',
-    $type: 'color',
-    $value: '#e5e9f0',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#e5e9f0',
+    '$extensions': {
       mode: {
         light: '#e5e9f0',
         dark: '#b1bac4',
@@ -264,29 +259,29 @@ export const meta = {
     },
   },
   'palette.gray3': {
-    _original: {
-      $value: '#E5E9F0',
-      $extensions: {
+    '_original': {
+      '$value': '#E5E9F0',
+      '$extensions': {
         mode: {
           light: '#E5E9F0',
           dark: '#8b949e',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray3',
-    $type: 'color',
-    $value: '#e5e9f0',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#e5e9f0',
+    '$extensions': {
       mode: {
         light: '#e5e9f0',
         dark: '#8b949e',
@@ -294,29 +289,29 @@ export const meta = {
     },
   },
   'palette.gray4': {
-    _original: {
-      $value: '#afb8c1',
-      $extensions: {
+    '_original': {
+      '$value': '#afb8c1',
+      '$extensions': {
         mode: {
           light: '#afb8c1',
           dark: '#6e7681',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray4',
-    $type: 'color',
-    $value: '#afb8c1',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#afb8c1',
+    '$extensions': {
       mode: {
         light: '#afb8c1',
         dark: '#6e7681',
@@ -324,29 +319,29 @@ export const meta = {
     },
   },
   'palette.gray5': {
-    _original: {
-      $value: '#6e7781',
-      $extensions: {
+    '_original': {
+      '$value': '#6e7781',
+      '$extensions': {
         mode: {
           light: '#6e7781',
           dark: '#484f58',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray5',
-    $type: 'color',
-    $value: '#6e7781',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#6e7781',
+    '$extensions': {
       mode: {
         light: '#6e7781',
         dark: '#484f58',
@@ -354,29 +349,29 @@ export const meta = {
     },
   },
   'palette.gray6': {
-    _original: {
-      $value: '#4C566A',
-      $extensions: {
+    '_original': {
+      '$value': '#4C566A',
+      '$extensions': {
         mode: {
           light: '#4C566A',
           dark: '#30363d',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray6',
-    $type: 'color',
-    $value: '#4c566a',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#4c566a',
+    '$extensions': {
       mode: {
         light: '#4c566a',
         dark: '#30363d',
@@ -384,29 +379,29 @@ export const meta = {
     },
   },
   'palette.gray7': {
-    _original: {
-      $value: '#434C5E',
-      $extensions: {
+    '_original': {
+      '$value': '#434C5E',
+      '$extensions': {
         mode: {
           light: '#434C5E',
           dark: '#21262d',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray7',
-    $type: 'color',
-    $value: '#434c5e',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#434c5e',
+    '$extensions': {
       mode: {
         light: '#434c5e',
         dark: '#21262d',
@@ -414,29 +409,29 @@ export const meta = {
     },
   },
   'palette.gray8': {
-    _original: {
-      $value: '#434C5E',
-      $extensions: {
+    '_original': {
+      '$value': '#434C5E',
+      '$extensions': {
         mode: {
           light: '#434C5E',
           dark: '#161b22',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray8',
-    $type: 'color',
-    $value: '#434c5e',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#434c5e',
+    '$extensions': {
       mode: {
         light: '#434c5e',
         dark: '#161b22',
@@ -444,29 +439,29 @@ export const meta = {
     },
   },
   'palette.gray9': {
-    _original: {
-      $value: '#2E3440',
-      $extensions: {
+    '_original': {
+      '$value': '#2E3440',
+      '$extensions': {
         mode: {
           light: '#2E3440',
           dark: '#0d1117',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.gray9',
-    $type: 'color',
-    $value: '#2e3440',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#2e3440',
+    '$extensions': {
       mode: {
         light: '#2e3440',
         dark: '#0d1117',
@@ -474,29 +469,29 @@ export const meta = {
     },
   },
   'palette.green0': {
-    _original: {
-      $value: '#dafbe1',
-      $extensions: {
+    '_original': {
+      '$value': '#dafbe1',
+      '$extensions': {
         mode: {
           light: '#dafbe1',
           dark: '#aff5b4',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green0',
-    $type: 'color',
-    $value: '#dafbe1',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#dafbe1',
+    '$extensions': {
       mode: {
         light: '#dafbe1',
         dark: '#aff5b4',
@@ -504,29 +499,29 @@ export const meta = {
     },
   },
   'palette.green1': {
-    _original: {
-      $value: '#aceebb',
-      $extensions: {
+    '_original': {
+      '$value': '#aceebb',
+      '$extensions': {
         mode: {
           light: '#aceebb',
           dark: '#7ee787',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green1',
-    $type: 'color',
-    $value: '#aceebb',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#aceebb',
+    '$extensions': {
       mode: {
         light: '#aceebb',
         dark: '#7ee787',
@@ -534,29 +529,29 @@ export const meta = {
     },
   },
   'palette.green2': {
-    _original: {
-      $value: '#6fdd8b',
-      $extensions: {
+    '_original': {
+      '$value': '#6fdd8b',
+      '$extensions': {
         mode: {
           light: '#6fdd8b',
           dark: '#56d364',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green2',
-    $type: 'color',
-    $value: '#6fdd8b',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#6fdd8b',
+    '$extensions': {
       mode: {
         light: '#6fdd8b',
         dark: '#56d364',
@@ -564,29 +559,29 @@ export const meta = {
     },
   },
   'palette.green3': {
-    _original: {
-      $value: '#4ac26b',
-      $extensions: {
+    '_original': {
+      '$value': '#4ac26b',
+      '$extensions': {
         mode: {
           light: '#4ac26b',
           dark: '#3fb950',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green3',
-    $type: 'color',
-    $value: '#4ac26b',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#4ac26b',
+    '$extensions': {
       mode: {
         light: '#4ac26b',
         dark: '#3fb950',
@@ -594,29 +589,29 @@ export const meta = {
     },
   },
   'palette.green4': {
-    _original: {
-      $value: '#2da44e',
-      $extensions: {
+    '_original': {
+      '$value': '#2da44e',
+      '$extensions': {
         mode: {
           light: '#2da44e',
           dark: '#2ea043',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green4',
-    $type: 'color',
-    $value: '#2da44e',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#2da44e',
+    '$extensions': {
       mode: {
         light: '#2da44e',
         dark: '#2ea043',
@@ -624,29 +619,29 @@ export const meta = {
     },
   },
   'palette.green5': {
-    _original: {
-      $value: '#1a7f37',
-      $extensions: {
+    '_original': {
+      '$value': '#1a7f37',
+      '$extensions': {
         mode: {
           light: '#1a7f37',
           dark: '#238636',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green5',
-    $type: 'color',
-    $value: '#1a7f37',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#1a7f37',
+    '$extensions': {
       mode: {
         light: '#1a7f37',
         dark: '#238636',
@@ -654,29 +649,29 @@ export const meta = {
     },
   },
   'palette.green6': {
-    _original: {
-      $value: '#116329',
-      $extensions: {
+    '_original': {
+      '$value': '#116329',
+      '$extensions': {
         mode: {
           light: '#116329',
           dark: '#196c2e',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green6',
-    $type: 'color',
-    $value: '#116329',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#116329',
+    '$extensions': {
       mode: {
         light: '#116329',
         dark: '#196c2e',
@@ -684,29 +679,29 @@ export const meta = {
     },
   },
   'palette.green7': {
-    _original: {
-      $value: '#044f1e',
-      $extensions: {
+    '_original': {
+      '$value': '#044f1e',
+      '$extensions': {
         mode: {
           light: '#044f1e',
           dark: '#0f5323',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green7',
-    $type: 'color',
-    $value: '#044f1e',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#044f1e',
+    '$extensions': {
       mode: {
         light: '#044f1e',
         dark: '#0f5323',
@@ -714,29 +709,29 @@ export const meta = {
     },
   },
   'palette.green8': {
-    _original: {
-      $value: '#003d16',
-      $extensions: {
+    '_original': {
+      '$value': '#003d16',
+      '$extensions': {
         mode: {
           light: '#003d16',
           dark: '#033a16',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green8',
-    $type: 'color',
-    $value: '#003d16',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#003d16',
+    '$extensions': {
       mode: {
         light: '#003d16',
         dark: '#033a16',
@@ -744,29 +739,29 @@ export const meta = {
     },
   },
   'palette.green9': {
-    _original: {
-      $value: '#002d11',
-      $extensions: {
+    '_original': {
+      '$value': '#002d11',
+      '$extensions': {
         mode: {
           light: '#002d11',
           dark: '#04260f',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.green9',
-    $type: 'color',
-    $value: '#002d11',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#002d11',
+    '$extensions': {
       mode: {
         light: '#002d11',
         dark: '#04260f',
@@ -774,29 +769,29 @@ export const meta = {
     },
   },
   'palette.blue0': {
-    _original: {
-      $value: '#ddf4ff',
-      $extensions: {
+    '_original': {
+      '$value': '#ddf4ff',
+      '$extensions': {
         mode: {
           light: '#ddf4ff',
           dark: '#cae8ff',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue0',
-    $type: 'color',
-    $value: '#ddf4ff',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ddf4ff',
+    '$extensions': {
       mode: {
         light: '#ddf4ff',
         dark: '#cae8ff',
@@ -804,29 +799,29 @@ export const meta = {
     },
   },
   'palette.blue1': {
-    _original: {
-      $value: '#b6e3ff',
-      $extensions: {
+    '_original': {
+      '$value': '#b6e3ff',
+      '$extensions': {
         mode: {
           light: '#b6e3ff',
           dark: '#a5d6ff',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue1',
-    $type: 'color',
-    $value: '#b6e3ff',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#b6e3ff',
+    '$extensions': {
       mode: {
         light: '#b6e3ff',
         dark: '#a5d6ff',
@@ -834,29 +829,29 @@ export const meta = {
     },
   },
   'palette.blue2': {
-    _original: {
-      $value: '#80ccff',
-      $extensions: {
+    '_original': {
+      '$value': '#80ccff',
+      '$extensions': {
         mode: {
           light: '#80ccff',
           dark: '#79c0ff',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue2',
-    $type: 'color',
-    $value: '#80ccff',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#80ccff',
+    '$extensions': {
       mode: {
         light: '#80ccff',
         dark: '#79c0ff',
@@ -864,29 +859,29 @@ export const meta = {
     },
   },
   'palette.blue3': {
-    _original: {
-      $value: '#54aeff',
-      $extensions: {
+    '_original': {
+      '$value': '#54aeff',
+      '$extensions': {
         mode: {
           light: '#54aeff',
           dark: '#58a6ff',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue3',
-    $type: 'color',
-    $value: '#54aeff',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#54aeff',
+    '$extensions': {
       mode: {
         light: '#54aeff',
         dark: '#58a6ff',
@@ -894,29 +889,29 @@ export const meta = {
     },
   },
   'palette.blue4': {
-    _original: {
-      $value: '#218bff',
-      $extensions: {
+    '_original': {
+      '$value': '#218bff',
+      '$extensions': {
         mode: {
           light: '#218bff',
           dark: '#388bfd',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue4',
-    $type: 'color',
-    $value: '#218bff',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#218bff',
+    '$extensions': {
       mode: {
         light: '#218bff',
         dark: '#388bfd',
@@ -924,29 +919,29 @@ export const meta = {
     },
   },
   'palette.blue5': {
-    _original: {
-      $value: '#0969da',
-      $extensions: {
+    '_original': {
+      '$value': '#0969da',
+      '$extensions': {
         mode: {
           light: '#0969da',
           dark: '#1f6feb',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue5',
-    $type: 'color',
-    $value: '#0969da',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#0969da',
+    '$extensions': {
       mode: {
         light: '#0969da',
         dark: '#1f6feb',
@@ -954,29 +949,29 @@ export const meta = {
     },
   },
   'palette.blue6': {
-    _original: {
-      $value: '#0550ae',
-      $extensions: {
+    '_original': {
+      '$value': '#0550ae',
+      '$extensions': {
         mode: {
           light: '#0550ae',
           dark: '#1158c7',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue6',
-    $type: 'color',
-    $value: '#0550ae',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#0550ae',
+    '$extensions': {
       mode: {
         light: '#0550ae',
         dark: '#1158c7',
@@ -984,29 +979,29 @@ export const meta = {
     },
   },
   'palette.blue7': {
-    _original: {
-      $value: '#033d8b',
-      $extensions: {
+    '_original': {
+      '$value': '#033d8b',
+      '$extensions': {
         mode: {
           light: '#033d8b',
           dark: '#0d419d',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue7',
-    $type: 'color',
-    $value: '#033d8b',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#033d8b',
+    '$extensions': {
       mode: {
         light: '#033d8b',
         dark: '#0d419d',
@@ -1014,29 +1009,29 @@ export const meta = {
     },
   },
   'palette.blue8': {
-    _original: {
-      $value: '#0a3069',
-      $extensions: {
+    '_original': {
+      '$value': '#0a3069',
+      '$extensions': {
         mode: {
           light: '#0a3069',
           dark: '#0c2d6b',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue8',
-    $type: 'color',
-    $value: '#0a3069',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#0a3069',
+    '$extensions': {
       mode: {
         light: '#0a3069',
         dark: '#0c2d6b',
@@ -1044,29 +1039,29 @@ export const meta = {
     },
   },
   'palette.blue9': {
-    _original: {
-      $value: '#002155',
-      $extensions: {
+    '_original': {
+      '$value': '#002155',
+      '$extensions': {
         mode: {
           light: '#002155',
           dark: '#051d4d',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.blue9',
-    $type: 'color',
-    $value: '#002155',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#002155',
+    '$extensions': {
       mode: {
         light: '#002155',
         dark: '#051d4d',
@@ -1074,29 +1069,29 @@ export const meta = {
     },
   },
   'palette.coral0': {
-    _original: {
-      $value: '#FFF0EB',
-      $extensions: {
+    '_original': {
+      '$value': '#FFF0EB',
+      '$extensions': {
         mode: {
           light: '#FFF0EB',
           dark: '#FFDDD2',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral0',
-    $type: 'color',
-    $value: '#fff0eb',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#fff0eb',
+    '$extensions': {
       mode: {
         light: '#fff0eb',
         dark: '#ffddd2',
@@ -1104,29 +1099,29 @@ export const meta = {
     },
   },
   'palette.coral1': {
-    _original: {
-      $value: '#FFD6CC',
-      $extensions: {
+    '_original': {
+      '$value': '#FFD6CC',
+      '$extensions': {
         mode: {
           light: '#FFD6CC',
           dark: '#FFC2B2',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral1',
-    $type: 'color',
-    $value: '#ffd6cc',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ffd6cc',
+    '$extensions': {
       mode: {
         light: '#ffd6cc',
         dark: '#ffc2b2',
@@ -1134,29 +1129,29 @@ export const meta = {
     },
   },
   'palette.coral2': {
-    _original: {
-      $value: '#FFB4A1',
-      $extensions: {
+    '_original': {
+      '$value': '#FFB4A1',
+      '$extensions': {
         mode: {
           light: '#FFB4A1',
           dark: '#FFA28B',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral2',
-    $type: 'color',
-    $value: '#ffb4a1',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ffb4a1',
+    '$extensions': {
       mode: {
         light: '#ffb4a1',
         dark: '#ffa28b',
@@ -1164,29 +1159,29 @@ export const meta = {
     },
   },
   'palette.coral3': {
-    _original: {
-      $value: '#FD8C73',
-      $extensions: {
+    '_original': {
+      '$value': '#FD8C73',
+      '$extensions': {
         mode: {
           light: '#FD8C73',
           dark: '#F78166',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral3',
-    $type: 'color',
-    $value: '#fd8c73',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#fd8c73',
+    '$extensions': {
       mode: {
         light: '#fd8c73',
         dark: '#f78166',
@@ -1194,29 +1189,29 @@ export const meta = {
     },
   },
   'palette.coral4': {
-    _original: {
-      $value: '#EC6547',
-      $extensions: {
+    '_original': {
+      '$value': '#EC6547',
+      '$extensions': {
         mode: {
           light: '#EC6547',
           dark: '#EA6045',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral4',
-    $type: 'color',
-    $value: '#ec6547',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ec6547',
+    '$extensions': {
       mode: {
         light: '#ec6547',
         dark: '#ea6045',
@@ -1224,29 +1219,29 @@ export const meta = {
     },
   },
   'palette.coral5': {
-    _original: {
-      $value: '#C4432B',
-      $extensions: {
+    '_original': {
+      '$value': '#C4432B',
+      '$extensions': {
         mode: {
           light: '#C4432B',
           dark: '#CF462D',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral5',
-    $type: 'color',
-    $value: '#c4432b',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#c4432b',
+    '$extensions': {
       mode: {
         light: '#c4432b',
         dark: '#cf462d',
@@ -1254,29 +1249,29 @@ export const meta = {
     },
   },
   'palette.coral6': {
-    _original: {
-      $value: '#9E2F1C',
-      $extensions: {
+    '_original': {
+      '$value': '#9E2F1C',
+      '$extensions': {
         mode: {
           light: '#9E2F1C',
           dark: '#AC3220',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral6',
-    $type: 'color',
-    $value: '#9e2f1c',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#9e2f1c',
+    '$extensions': {
       mode: {
         light: '#9e2f1c',
         dark: '#ac3220',
@@ -1284,29 +1279,29 @@ export const meta = {
     },
   },
   'palette.coral7': {
-    _original: {
-      $value: '#801F0F',
-      $extensions: {
+    '_original': {
+      '$value': '#801F0F',
+      '$extensions': {
         mode: {
           light: '#801F0F',
           dark: '#872012',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral7',
-    $type: 'color',
-    $value: '#801f0f',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#801f0f',
+    '$extensions': {
       mode: {
         light: '#801f0f',
         dark: '#872012',
@@ -1314,29 +1309,29 @@ export const meta = {
     },
   },
   'palette.coral8': {
-    _original: {
-      $value: '#691105',
-      $extensions: {
+    '_original': {
+      '$value': '#691105',
+      '$extensions': {
         mode: {
           light: '#691105',
           dark: '#640D04',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral8',
-    $type: 'color',
-    $value: '#691105',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#691105',
+    '$extensions': {
       mode: {
         light: '#691105',
         dark: '#640d04',
@@ -1344,29 +1339,29 @@ export const meta = {
     },
   },
   'palette.coral9': {
-    _original: {
-      $value: '#510901',
-      $extensions: {
+    '_original': {
+      '$value': '#510901',
+      '$extensions': {
         mode: {
           light: '#510901',
           dark: '#460701',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.coral9',
-    $type: 'color',
-    $value: '#510901',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#510901',
+    '$extensions': {
       mode: {
         light: '#510901',
         dark: '#460701',
@@ -1374,29 +1369,29 @@ export const meta = {
     },
   },
   'palette.red0': {
-    _original: {
-      $value: '#FFEBE9',
-      $extensions: {
+    '_original': {
+      '$value': '#FFEBE9',
+      '$extensions': {
         mode: {
           light: '#FFEBE9',
           dark: '#ffdcd7',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red0',
-    $type: 'color',
-    $value: '#ffebe9',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ffebe9',
+    '$extensions': {
       mode: {
         light: '#ffebe9',
         dark: '#ffdcd7',
@@ -1404,29 +1399,29 @@ export const meta = {
     },
   },
   'palette.red1': {
-    _original: {
-      $value: '#ffcecb',
-      $extensions: {
+    '_original': {
+      '$value': '#ffcecb',
+      '$extensions': {
         mode: {
           light: '#ffcecb',
           dark: '#ffc1ba',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red1',
-    $type: 'color',
-    $value: '#ffcecb',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ffcecb',
+    '$extensions': {
       mode: {
         light: '#ffcecb',
         dark: '#ffc1ba',
@@ -1434,29 +1429,29 @@ export const meta = {
     },
   },
   'palette.red2': {
-    _original: {
-      $value: '#ffaba8',
-      $extensions: {
+    '_original': {
+      '$value': '#ffaba8',
+      '$extensions': {
         mode: {
           light: '#ffaba8',
           dark: '#ffa198',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red2',
-    $type: 'color',
-    $value: '#ffaba8',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ffaba8',
+    '$extensions': {
       mode: {
         light: '#ffaba8',
         dark: '#ffa198',
@@ -1464,29 +1459,29 @@ export const meta = {
     },
   },
   'palette.red3': {
-    _original: {
-      $value: '#ff8182',
-      $extensions: {
+    '_original': {
+      '$value': '#ff8182',
+      '$extensions': {
         mode: {
           light: '#ff8182',
           dark: '#ff7b72',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red3',
-    $type: 'color',
-    $value: '#ff8182',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#ff8182',
+    '$extensions': {
       mode: {
         light: '#ff8182',
         dark: '#ff7b72',
@@ -1494,29 +1489,29 @@ export const meta = {
     },
   },
   'palette.red4': {
-    _original: {
-      $value: '#fa4549',
-      $extensions: {
+    '_original': {
+      '$value': '#fa4549',
+      '$extensions': {
         mode: {
           light: '#fa4549',
           dark: '#f85149',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red4',
-    $type: 'color',
-    $value: '#fa4549',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#fa4549',
+    '$extensions': {
       mode: {
         light: '#fa4549',
         dark: '#f85149',
@@ -1524,29 +1519,29 @@ export const meta = {
     },
   },
   'palette.red5': {
-    _original: {
-      $value: '#cf222e',
-      $extensions: {
+    '_original': {
+      '$value': '#cf222e',
+      '$extensions': {
         mode: {
           light: '#cf222e',
           dark: '#da3633',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red5',
-    $type: 'color',
-    $value: '#cf222e',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#cf222e',
+    '$extensions': {
       mode: {
         light: '#cf222e',
         dark: '#da3633',
@@ -1554,29 +1549,29 @@ export const meta = {
     },
   },
   'palette.red6': {
-    _original: {
-      $value: '#a40e26',
-      $extensions: {
+    '_original': {
+      '$value': '#a40e26',
+      '$extensions': {
         mode: {
           light: '#a40e26',
           dark: '#b62324',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red6',
-    $type: 'color',
-    $value: '#a40e26',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#a40e26',
+    '$extensions': {
       mode: {
         light: '#a40e26',
         dark: '#b62324',
@@ -1584,29 +1579,29 @@ export const meta = {
     },
   },
   'palette.red7': {
-    _original: {
-      $value: '#82071e',
-      $extensions: {
+    '_original': {
+      '$value': '#82071e',
+      '$extensions': {
         mode: {
           light: '#82071e',
           dark: '#8e1519',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red7',
-    $type: 'color',
-    $value: '#82071e',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#82071e',
+    '$extensions': {
       mode: {
         light: '#82071e',
         dark: '#8e1519',
@@ -1614,29 +1609,29 @@ export const meta = {
     },
   },
   'palette.red8': {
-    _original: {
-      $value: '#660018',
-      $extensions: {
+    '_original': {
+      '$value': '#660018',
+      '$extensions': {
         mode: {
           light: '#660018',
           dark: '#67060c',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red8',
-    $type: 'color',
-    $value: '#660018',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#660018',
+    '$extensions': {
       mode: {
         light: '#660018',
         dark: '#67060c',
@@ -1644,29 +1639,29 @@ export const meta = {
     },
   },
   'palette.red9': {
-    _original: {
-      $value: '#4c0014',
-      $extensions: {
+    '_original': {
+      '$value': '#4c0014',
+      '$extensions': {
         mode: {
           light: '#4c0014',
           dark: '#490202',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'palette',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['light', 'dark'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'palette.red9',
-    $type: 'color',
-    $value: '#4c0014',
-    $extensions: {
+    '$type': 'color',
+    '$value': '#4c0014',
+    '$extensions': {
       mode: {
         light: '#4c0014',
         dark: '#490202',
@@ -1674,338 +1669,388 @@ export const meta = {
     },
   },
   'color.background': {
-    _original: {
-      $value: '{palette.gray0}',
+    '_original': {
+      '$value': '{palette.gray0}',
     },
-    _group: {
+    '_group': {
       id: 'color',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'color.background',
-    $type: 'color',
-    $value: '#f2f4f8',
+    '$type': 'color',
+    '$value': '#f2f4f8',
   },
   'color.text.body': {
-    _original: {
-      $value: '{palette.black}',
+    '_original': {
+      '$value': '{palette.black}',
     },
-    _group: {
+    '_group': {
       id: 'color.text',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'color.text.body',
-    $type: 'color',
-    $value: '#1d2129',
+    '$type': 'color',
+    '$value': '#1d2129',
   },
   'color.text.muted': {
-    _original: {
-      $value: '{palette.gray5}',
+    '_original': {
+      '$value': '{palette.gray5}',
     },
-    _group: {
+    '_group': {
       id: 'color.text',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'color.text.muted',
-    $type: 'color',
-    $value: '#6e7781',
+    '$type': 'color',
+    '$value': '#6e7781',
   },
   'color.text.error': {
-    _original: {
-      $value: '{palette.red7}',
+    '_original': {
+      '$value': '{palette.red7}',
     },
-    _group: {
+    '_group': {
       id: 'color.text',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'color.text.error',
-    $type: 'color',
-    $value: '#82071e',
+    '$type': 'color',
+    '$value': '#82071e',
   },
   'color.text.link': {
-    _original: {
-      $value: '{palette.blue5}',
+    '_original': {
+      '$value': '{palette.blue5}',
     },
-    _group: {
+    '_group': {
       id: 'color.text',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'color',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
     },
     id: 'color.text.link',
-    $type: 'color',
-    $value: '#0969da',
+    '$type': 'color',
+    '$value': '#0969da',
+  },
+  'color.border.muted': {
+    '_original': {
+      '$value': '{palette.gray1}',
+    },
+    '_group': {
+      id: 'color.border',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.border.muted',
+    '$type': 'color',
+    '$value': '#eceff4',
   },
   'spacing.spacer0': {
-    _original: {
-      $value: '0px',
+    '_original': {
+      '$value': '0px',
     },
-    _group: {
+    '_group': {
       id: 'spacing',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'spacing.spacer0',
-    $type: 'dimension',
-    $value: '0',
+    '$type': 'dimension',
+    '$value': '0',
   },
   'spacing.spacerXs': {
-    _original: {
-      $value: '4px',
+    '_original': {
+      '$value': '4px',
     },
-    _group: {
+    '_group': {
       id: 'spacing',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'spacing.spacerXs',
-    $type: 'dimension',
-    $value: '4px',
+    '$type': 'dimension',
+    '$value': '4px',
   },
   'spacing.spacerS': {
-    _original: {
-      $value: '8px',
+    '_original': {
+      '$value': '8px',
     },
-    _group: {
+    '_group': {
       id: 'spacing',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'spacing.spacerS',
-    $type: 'dimension',
-    $value: '8px',
+    '$type': 'dimension',
+    '$value': '8px',
   },
   'spacing.spacerM': {
-    _original: {
-      $value: '16px',
+    '_original': {
+      '$value': '16px',
     },
-    _group: {
+    '_group': {
       id: 'spacing',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'spacing.spacerM',
-    $type: 'dimension',
-    $value: '16px',
+    '$type': 'dimension',
+    '$value': '16px',
   },
   'spacing.spacerX': {
-    _original: {
-      $value: '24px',
+    '_original': {
+      '$value': '24px',
     },
-    _group: {
+    '_group': {
       id: 'spacing',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'spacing.spacerX',
-    $type: 'dimension',
-    $value: '24px',
+    '$type': 'dimension',
+    '$value': '24px',
   },
   'spacing.spacerXl': {
-    _original: {
-      $value: '32px',
+    '_original': {
+      '$value': '32px',
     },
-    _group: {
+    '_group': {
       id: 'spacing',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'spacing.spacerXl',
-    $type: 'dimension',
-    $value: '32px',
+    '$type': 'dimension',
+    '$value': '32px',
   },
   'spacing.spacerXxl': {
-    _original: {
-      $value: '40px',
+    '_original': {
+      '$value': '40px',
     },
-    _group: {
+    '_group': {
       id: 'spacing',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'spacing.spacerXxl',
-    $type: 'dimension',
-    $value: '40px',
+    '$type': 'dimension',
+    '$value': '40px',
+  },
+  'shadow.sm': {
+    '_original': {
+      '$value': {
+        offsetX: '0px',
+        offsetY: '8px',
+        blur: '16px',
+        spread: '0px',
+        color: 'rgba(100, 100, 111, 0.2)',
+      },
+    },
+    '_group': {
+      id: 'shadow',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'shadow',
+    },
+    id: 'shadow.sm',
+    '$type': 'shadow',
+    '$value': {
+      offsetX: '0',
+      offsetY: '8px',
+      blur: '16px',
+      spread: '0',
+      color: '#64646f33',
+    },
+  },
+  'shadow.md': {
+    '_original': {
+      '$value': {
+        offsetX: '0px',
+        offsetY: '12px',
+        blur: '24px',
+        spread: '0px',
+        color: 'rgba(100, 100, 111, 0.2)',
+      },
+    },
+    '_group': {
+      id: 'shadow',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'shadow',
+    },
+    id: 'shadow.md',
+    '$type': 'shadow',
+    '$value': {
+      offsetX: '0',
+      offsetY: '12px',
+      blur: '24px',
+      spread: '0',
+      color: '#64646f33',
+    },
+  },
+  'shadow.lg': {
+    '_original': {
+      '$value': {
+        offsetX: '0px',
+        offsetY: '16px',
+        blur: '30px',
+        spread: '0px',
+        color: 'rgba(100, 100, 111, 0.2)',
+      },
+    },
+    '_group': {
+      id: 'shadow',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'shadow',
+    },
+    id: 'shadow.lg',
+    '$type': 'shadow',
+    '$value': {
+      offsetX: '0',
+      offsetY: '16px',
+      blur: '30px',
+      spread: '0',
+      color: '#64646f33',
+    },
   },
   'font.family.system': {
-    _original: {
-      $value: [
-        '-apple-system,',
-        'BlinkMacSystemFont',
-        'Segoe UI',
-        'Helvetica',
-        'Arial',
-        'sans-serif',
-        'Apple Color Emoji',
-        'Segoe UI Emoji',
-      ],
+    '_original': {
+      '$value': ['-apple-system,', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji'],
     },
-    _group: {
+    '_group': {
       id: 'font.family',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'font',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'font',
     },
     id: 'font.family.system',
-    $type: 'font',
-    $value: [
-      '-apple-system,',
-      'BlinkMacSystemFont',
-      'Segoe UI',
-      'Helvetica',
-      'Arial',
-      'sans-serif',
-      'Apple Color Emoji',
-      'Segoe UI Emoji',
-    ],
+    '$type': 'font',
+    '$value': ['-apple-system,', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica', 'Arial', 'sans-serif', 'Apple Color Emoji', 'Segoe UI Emoji'],
   },
   'font.family.monospace': {
-    _original: {
-      $value: [
-        'SFMono-Regular',
-        'Consolas',
-        'Liberation Mono',
-        'Menlo',
-        'Courier',
-        'monospace',
-      ],
+    '_original': {
+      '$value': ['SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', 'Courier', 'monospace'],
     },
-    _group: {
+    '_group': {
       id: 'font.family',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'font',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'font',
     },
     id: 'font.family.monospace',
-    $type: 'font',
-    $value: [
-      'SFMono-Regular',
-      'Consolas',
-      'Liberation Mono',
-      'Menlo',
-      'Courier',
-      'monospace',
-    ],
+    '$type': 'font',
+    '$value': ['SFMono-Regular', 'Consolas', 'Liberation Mono', 'Menlo', 'Courier', 'monospace'],
   },
   'font.family.display': {
-    _original: {
-      $value: [
-        'InterUI',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        'Helvetica Neue',
-        'Segoe UI',
-        'Oxygen',
-        'Ubuntu',
-        'Cantarell',
-        'Open Sans',
-        'sans-serif',
-      ],
+    '_original': {
+      '$value': ['InterUI', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Open Sans', 'sans-serif'],
     },
-    _group: {
+    '_group': {
       id: 'font.family',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'font',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'font',
     },
     id: 'font.family.display',
-    $type: 'font',
-    $value: [
-      'InterUI',
-      '-apple-system',
-      'BlinkMacSystemFont',
-      'Helvetica Neue',
-      'Segoe UI',
-      'Oxygen',
-      'Ubuntu',
-      'Cantarell',
-      'Open Sans',
-      'sans-serif',
-    ],
+    '$type': 'font',
+    '$value': ['InterUI', '-apple-system', 'BlinkMacSystemFont', 'Helvetica Neue', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Open Sans', 'sans-serif'],
   },
   'font.family.size.f00': {
-    _original: {
-      $value: '32px',
-      $extensions: {
+    '_original': {
+      '$value': '32px',
+      '$extensions': {
         mode: {
           mobile: '32px',
           desktop: '48px',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'font.family.size',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['mobile', 'desktop'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.size.f00',
-    $type: 'dimension',
-    $value: '32px',
-    $extensions: {
+    '$type': 'dimension',
+    '$value': '32px',
+    '$extensions': {
       mode: {
         mobile: '32px',
         desktop: '48px',
@@ -2013,29 +2058,29 @@ export const meta = {
     },
   },
   'font.family.size.f0': {
-    _original: {
-      $value: '32px',
-      $extensions: {
+    '_original': {
+      '$value': '32px',
+      '$extensions': {
         mode: {
           mobile: '32px',
           desktop: '40px',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'font.family.size',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['mobile', 'desktop'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.size.f0',
-    $type: 'dimension',
-    $value: '32px',
-    $extensions: {
+    '$type': 'dimension',
+    '$value': '32px',
+    '$extensions': {
       mode: {
         mobile: '32px',
         desktop: '40px',
@@ -2043,29 +2088,29 @@ export const meta = {
     },
   },
   'font.family.size.f1': {
-    _original: {
-      $value: '26px',
-      $extensions: {
+    '_original': {
+      '$value': '26px',
+      '$extensions': {
         mode: {
           mobile: '26px',
           desktop: '32px',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'font.family.size',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['mobile', 'desktop'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.size.f1',
-    $type: 'dimension',
-    $value: '26px',
-    $extensions: {
+    '$type': 'dimension',
+    '$value': '26px',
+    '$extensions': {
       mode: {
         mobile: '26px',
         desktop: '32px',
@@ -2073,29 +2118,29 @@ export const meta = {
     },
   },
   'font.family.size.f2': {
-    _original: {
-      $value: '22px',
-      $extensions: {
+    '_original': {
+      '$value': '22px',
+      '$extensions': {
         mode: {
           mobile: '22px',
           desktop: '24px',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'font.family.size',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['mobile', 'desktop'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.size.f2',
-    $type: 'dimension',
-    $value: '22px',
-    $extensions: {
+    '$type': 'dimension',
+    '$value': '22px',
+    '$extensions': {
       mode: {
         mobile: '22px',
         desktop: '24px',
@@ -2103,29 +2148,29 @@ export const meta = {
     },
   },
   'font.family.size.f3': {
-    _original: {
-      $value: '16px',
-      $extensions: {
+    '_original': {
+      '$value': '16px',
+      '$extensions': {
         mode: {
           mobile: '16px',
           desktop: '20px',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'font.family.size',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['mobile', 'desktop'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.size.f3',
-    $type: 'dimension',
-    $value: '16px',
-    $extensions: {
+    '$type': 'dimension',
+    '$value': '16px',
+    '$extensions': {
       mode: {
         mobile: '16px',
         desktop: '20px',
@@ -2133,29 +2178,29 @@ export const meta = {
     },
   },
   'font.family.size.f4': {
-    _original: {
-      $value: '16px',
-      $extensions: {
+    '_original': {
+      '$value': '16px',
+      '$extensions': {
         mode: {
           mobile: '16px',
           desktop: '16px',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'font.family.size',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['mobile', 'desktop'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.size.f4',
-    $type: 'dimension',
-    $value: '16px',
-    $extensions: {
+    '$type': 'dimension',
+    '$value': '16px',
+    '$extensions': {
       mode: {
         mobile: '16px',
         desktop: '16px',
@@ -2163,29 +2208,29 @@ export const meta = {
     },
   },
   'font.family.size.f5': {
-    _original: {
-      $value: '14px',
-      $extensions: {
+    '_original': {
+      '$value': '14px',
+      '$extensions': {
         mode: {
           mobile: '14px',
           desktop: '14px',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'font.family.size',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['mobile', 'desktop'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.size.f5',
-    $type: 'dimension',
-    $value: '14px',
-    $extensions: {
+    '$type': 'dimension',
+    '$value': '14px',
+    '$extensions': {
       mode: {
         mobile: '14px',
         desktop: '14px',
@@ -2193,29 +2238,29 @@ export const meta = {
     },
   },
   'font.family.size.f6': {
-    _original: {
-      $value: '12px',
-      $extensions: {
+    '_original': {
+      '$value': '12px',
+      '$extensions': {
         mode: {
           mobile: '12px',
           desktop: '12px',
         },
       },
     },
-    _group: {
+    '_group': {
       id: 'font.family.size',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
         modes: ['mobile', 'desktop'],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.size.f6',
-    $type: 'dimension',
-    $value: '12px',
-    $extensions: {
+    '$type': 'dimension',
+    '$value': '12px',
+    '$extensions': {
       mode: {
         mobile: '12px',
         desktop: '12px',
@@ -2223,55 +2268,55 @@ export const meta = {
     },
   },
   'font.family.lineHeight.default': {
-    _original: {
-      $value: '1.5',
+    '_original': {
+      '$value': '1.5',
     },
-    _group: {
+    '_group': {
       id: 'font.family.lineHeight',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.lineHeight.default',
-    $type: 'dimension',
-    $value: '1.5',
+    '$type': 'dimension',
+    '$value': '1.5',
   },
   'font.family.lineHeight.condensed': {
-    _original: {
-      $value: '1.25',
+    '_original': {
+      '$value': '1.25',
     },
-    _group: {
+    '_group': {
       id: 'font.family.lineHeight',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.lineHeight.condensed',
-    $type: 'dimension',
-    $value: '1.25',
+    '$type': 'dimension',
+    '$value': '1.25',
   },
   'font.family.lineHeight.condensedUltra': {
-    _original: {
-      $value: '1',
+    '_original': {
+      '$value': '1',
     },
-    _group: {
+    '_group': {
       id: 'font.family.lineHeight',
-      $extensions: {
+      '$extensions': {
         requiredModes: [],
       },
-      $name: 'NosEditor themes',
-      $description: 'design tokens for noseditor',
-      $type: 'dimension',
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
     },
     id: 'font.family.lineHeight.condensedUltra',
-    $type: 'dimension',
-    $value: '1',
+    '$type': 'dimension',
+    '$value': '1',
   },
 };
 
@@ -2520,7 +2565,6 @@ export const modes = {
 
 /** Get individual token */
 export function token(tokenID, modeName) {
-  if (modeName && modes[tokenID] && modeName in modes[tokenID])
-    return modes[tokenID][modeName];
+  if (modeName && modes[tokenID] && modeName in modes[tokenID]) return modes[tokenID][modeName];
   return tokens[tokenID];
 }

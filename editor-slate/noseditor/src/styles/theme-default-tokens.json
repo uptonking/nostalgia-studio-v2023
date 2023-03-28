@@ -493,6 +493,11 @@
       "link": {
         "$value": "{palette.blue5}"
       }
+    },
+    "border": {
+      "muted": {
+        "$value": "{palette.gray1}"
+      }
     }
   },
   "spacing": {
@@ -517,6 +522,36 @@
     },
     "spacerXxl": {
       "$value": "40px"
+    }
+  },
+  "shadow": {
+    "$type": "shadow",
+    "sm":{
+      "$value": {
+        "offsetX": "0px",
+        "offsetY": "8px",
+        "blur": "16px",
+        "spread": "0px",
+        "color": "rgba(100, 100, 111, 0.2)"
+      }
+    },
+    "md":{
+      "$value": {
+        "offsetX": "0px",
+        "offsetY": "12px",
+        "blur": "24px",
+        "spread": "0px",
+        "color": "rgba(100, 100, 111, 0.2)"
+      }
+    },
+    "lg": {
+      "$value": {
+        "offsetX": "0px",
+        "offsetY": "16px",
+        "blur": "30px",
+        "spread": "0px",
+        "color": "rgba(100, 100, 111, 0.2)"
+      }
     }
   },
   "font": {

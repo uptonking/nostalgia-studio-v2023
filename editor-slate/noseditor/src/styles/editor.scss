@@ -120,9 +120,6 @@ body.dragging .handle,
   opacity: 0;
 }
 
-.handle:hover {
-  /* background-color: whitesmoke; */
-}
 
 .handle .drag-trigger {
   margin-top: 2px;
@@ -146,6 +143,10 @@ body.dragging .handle,
 .handle.is-foldable {
   left: -40px;
   margin-top: -2px;
+}
+
+li.item-container-list[data-slate-list-item-type="todoList"] .handle{
+  margin-top: -6px;
 }
 
 @media only screen and (max-width: 768px) {

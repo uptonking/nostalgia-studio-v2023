@@ -4,7 +4,7 @@ import { AutoformatRule } from '@udecode/plate-autoformat';
 
 import { BlockquoteType } from '../blockquote/types';
 import { Heading1Spec, Heading2Spec, Heading3Spec } from '../heading/utils';
-import { toggleList } from '../list/transforms';
+import { toggleList } from '../list/commands';
 import { ListItemSpec, ListTypes } from '../list/utils';
 
 export const autoformatRules: AutoformatRule[] = [

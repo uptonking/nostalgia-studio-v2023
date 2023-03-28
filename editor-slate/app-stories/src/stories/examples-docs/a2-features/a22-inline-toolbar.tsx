@@ -1,13 +1,14 @@
 import './styles.css';
 
 import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+
 import {
+  createEditor,
   Descendant,
   Editor,
   Range,
   Text,
   Transforms,
-  createEditor,
 } from 'slate';
 import { withHistory } from 'slate-history';
 import {
@@ -24,7 +25,7 @@ import { Button, Icon, Menu, Portal } from '../components';
  * ✨️ 选中文本时出现的悬浮工具条示例，一般包含文本格式化按钮，也可包含其他操作按钮。
  * - 弹框容器一直渲染，通过left大偏移使得默认不可见
  * - 弹框可见条件是 window.getSelection().getRangeAt(0) 位置，并以此决定弹框位置
- * - 🐛️ 原示例存在默认回车无法换行的问题，在handleBeforeInput已解决
+ * - 🐛️ ~~原示例存在默认回车无法换行的问题，在handleBeforeInput已解决~~
  * - 🐛️ 原示例当光标在浏览器窗口顶端时，弹出的悬浮工具条会被挡住而不可见
  */
 export const InlineToolbarApp = () => {
@@ -129,7 +130,7 @@ const HoveringToolbar = () => {
       Range.isCollapsed(selection) ||
       Editor.string(editor, selection) === ''
     ) {
-      // 弹框默认样式是class设置的，style设置的是位置样式，去掉style属性会恢复默认位置，变为页面不可见
+      // 弹框默认样式由class设置，位置由style设置，若去掉style属性会恢复默认位置，变为不可见
       el.removeAttribute('style');
       return;
     }
@@ -198,4 +199,3 @@ const initialValue = [
   },
 ];
 
-export default InlineToolbarApp;

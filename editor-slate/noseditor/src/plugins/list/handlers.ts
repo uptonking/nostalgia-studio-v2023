@@ -4,7 +4,7 @@ import isHotkey from 'is-hotkey';
 import { Editor, Path } from 'slate';
 
 import { ExtendedEditor } from '../../slate-extended/extended-editor';
-import { moveItemsBack, moveItemsForward } from './transforms';
+import { moveItemsBack, moveItemsForward } from './commands';
 import { isListItemElement } from './utils';
 
 /**

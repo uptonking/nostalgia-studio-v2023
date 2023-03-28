@@ -8,11 +8,11 @@ import { useSlate, useSlateStatic } from 'slate-react';
 import { ExtendedEditor } from '../../../slate-extended/extended-editor';
 import { foldElement } from '../../../slate-extended/transforms/fold-element';
 import { ElementProps } from '../../types';
+import { checkTodoItem } from '../commands';
 import {
   getBulletedPointerContent,
   getNumberedPointerContent,
 } from '../get-pointer-content';
-import { checkTodoItem } from '../transforms';
 import type { ListItemElement } from '../types';
 import { isTodoListItemElement, ListTypes } from '../utils';
 

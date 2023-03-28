@@ -7,18 +7,17 @@ import './styles/theme-default.css';
 export * from './styles';
 
 // export components
-export { NosIconProvider } from './config/icon-provider';
-
-export { DragOverlayContent } from './plugins/wrapper';
 export * from './components';
+export { NosIconProvider } from './config/icon-provider';
+export { DragOverlayContent } from './plugins/wrapper';
 
 // export all plugins
-export * from './plugins';
 export {
   DndPluginContext,
   SlateExtended,
   useExtendedPlugin,
 } from './slate-extended';
+export * from './plugins';
 
 // export utils
 export { composePlugins } from './utils/plugins-config-compose';
@@ -34,7 +33,7 @@ export {
 export { usePersistedState } from './hooks/use-persisted-state';
 
 // 💡 ready-to-use block editor
-export { NosEditor } from './components';
+export { NosEditor } from './components/editor/noseditor';
 
 // export types
 export type { CustomEditor, CustomElement, CustomText } from './types/slate.d';

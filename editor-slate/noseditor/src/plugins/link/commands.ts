@@ -1,18 +1,37 @@
-import { Editor, Element, Path, Range, Transforms } from 'slate';
+import { Editor, Element, Location, Path, Range, Transforms } from 'slate';
+import { ReactEditor } from 'slate-react';
 
-import { createLinkElement, isLinkElement, LinkSpec } from '../link/utils';
+import type { LinkElementType } from './types';
+import { createLinkElement, isLinkElement, LinkSpec } from './utils';
 
-export const removeLink = (editor) => {
+export const removeLink = (editor: Editor, linkElement?: LinkElementType) => {
+  let path;
+  if (linkElement) {
+    path = ReactEditor.findPath(editor, linkElement);
+  }
   Transforms.unwrapNodes(editor, {
+    at: path,
     match: (n) =>
       !Editor.isEditor(n) && Element.isElement(n) && n.type === LinkSpec,
   });
 };
 
-export const unwrapLinks = (editor: Editor) => {
-  Transforms.unwrapNodes(editor, {
-    match: isLinkElement,
-  });
+export const updateLink = (
+  editor: Editor,
+  linkElement: LinkElementType,
+  url: string,
+) => {
+  if (!url) return;
+
+  const path = ReactEditor.findPath(editor, linkElement);
+
+  Transforms.setNodes(
+    editor,
+    {
+      url,
+    },
+    { at: path },
+  );
 };
 
 export const insertLink = (editor: Editor, url: string) => {
@@ -20,10 +39,6 @@ export const insertLink = (editor: Editor, url: string) => {
 
   const { selection } = editor;
   const linkElem = createLinkElement({ url, text: url });
-
-  // Transforms.insertNodes(editor, linkElem);
-  // // move selection offset to continue editing text instead a link
-  // Transforms.move(editor, { unit: 'offset' });
 
   if (selection) {
     const [parent, parentPath] = Editor.parent(editor, selection.focus.path);
@@ -47,6 +62,7 @@ export const insertLink = (editor: Editor, url: string) => {
       Transforms.wrapNodes(editor, linkElem, { split: true });
     }
   } else {
+    // /if no selection, insert a paragraph to the end of editor
     Transforms.insertNodes(editor, { type: 'p', children: [linkElem] });
   }
 };

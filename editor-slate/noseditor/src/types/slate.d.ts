@@ -10,7 +10,7 @@ import {
   Heading3Element,
 } from '../plugins/heading/types';
 import { ImageElement } from '../plugins/image/types';
-import { LinkElement } from '../plugins/link/types';
+import { LinkElementType } from '../plugins/link/types';
 import { ListItemElement } from '../plugins/list/types';
 import { FormattedText } from '../plugins/marks/types';
 import { ParagraphElement } from '../plugins/paragraph/types';
@@ -36,7 +36,7 @@ export type EditorUIElement =
   | Heading2Element
   | Heading3Element
   | ImageElement
-  | LinkElement
+  | LinkElementType
   | BlockquoteElement
   | DividerElement
   | ListItemElement

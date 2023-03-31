@@ -23,7 +23,7 @@
     "watch": "rollup -cw"
   },
   "devDependencies": {
-    "rimraf": "^3.0.2"
+    "rimraf": "^4.4.1"
   },
   "dependencies": {
     "prosemirror-state": "1.4.1111",

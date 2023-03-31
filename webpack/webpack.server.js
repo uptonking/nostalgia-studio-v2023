@@ -17,7 +17,9 @@ module.exports = merge(devConfig, {
     compress: true,
     historyApiFallback: true,
     // inline: true,
-    // clientLogLevel: 'silent',
-    // clientLogLevel: 'debug',
+    client: {
+      progress: true,
+      // logging: 'verbose',
+    },
   },
 });

@@ -24,6 +24,6 @@ module.exports = merge(commonConfig, {
   target: 'web',
   plugins: [
     // new webpack.HotModuleReplacementPlugin(),
-    // isEnvReactHotReload && new ReactRefreshWebpackPlugin(),
+    isEnvReactHotReload && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),
 });

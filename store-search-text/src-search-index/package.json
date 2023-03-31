@@ -42,7 +42,7 @@
     "fuzzyset": "1.0.5",
     "jieba-wasm": "^0.0.2",
     "node-polyfill-webpack-plugin": "^2.0.1",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.22",
     "npm-run-all": "^4.1.5",
     "stemmer": "^2.0.1",
     "stopword": "^2.0.5",

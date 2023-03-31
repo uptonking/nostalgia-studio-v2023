@@ -19,35 +19,37 @@ import { toolbarConfig } from './toolbar-config';
 
 const textFormatHandler =
   (editor: Editor, format: TextFormats) =>
-  (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleMark(editor, format);
-  };
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      toggleMark(editor, format);
+    };
 
 const listToggleHandler =
   (editor: Editor, list: typeof ListTypes[keyof typeof ListTypes]) =>
-  (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
 
-    toggleList(editor, { listType: list });
-  };
+      toggleList(editor, { listType: list });
+    };
 
 const useShowAddLink = ({ initialShow = false } = {}) => {
   const [showAddLink, setShowAddLink] = useState(initialShow);
+  return { showAddLink, setShowAddLink };
+};
 
-  return {
-    showAddLink,
-    setShowAddLink,
-  };
+const useToolbarGroups = (initialConfig = toolbarConfig) => {
+  const [toolbarGroups, setToolbarGroups] = useState(initialConfig);
+  return { toolbarGroups, setToolbarGroups };
 };
 
 export const NosToolbar = () => {
   const editor = useSlateStatic();
   const { showAddLink, setShowAddLink } = useShowAddLink();
+  const { toolbarGroups, setToolbarGroups } = useToolbarGroups();
 
   return (
     <div className='nosedit-toolbar'>
-      {toolbarConfig.map(({ type, icon: Icon, format, list, link, title }) => {
+      {toolbarGroups.map(({ type, icon: Icon, format, list, link, title }) => {
         if (type === 'button') {
           if (format) {
             return (

@@ -31,7 +31,7 @@
     "test-c": "jest --coverage"
   },
   "peerDependencies": {
-    "@uppy/core": "^2.0.3",
+    "@uppy/core": "^2.1.1",
     "@uppy/xhr-upload": "^2.0.3",
     "@wangeditor/basic-modules": "1.1.7111",
     "@wangeditor/core": "1.1.1911",

@@ -40,9 +40,9 @@ module.exports = function (api) {
   // Plugins run before Presets. Plugin ordering is first to last.
   const plugins = [
     ['@babel/plugin-proposal-decorators', { legacy: true }],
-    ['@babel/plugin-proposal-class-properties', { loose: false }],
+    // ['@babel/plugin-proposal-class-properties', { loose: false }],
     // ['@babel/plugin-syntax-import-assertions'],
-    // isEnvReactHotReload && 'react-refresh/babel',
+    isEnvReactHotReload && 'react-refresh/babel',
   ].filter(Boolean);
 
   function configModule() {
@@ -60,9 +60,10 @@ module.exports = function (api) {
       {
         modules: false,
         // modules: configModule(),
-        // targets: 'defaults', // '> 0.25%, not dead',
+        // targets: 'defaults', // '> 0.5%, last 2 versions, not dead',
+        targets: 'last 2 Chrome versions',
         useBuiltIns: 'usage',
-        corejs: { version: '3', proposals: true },
+        corejs: { version: '3.29', proposals: true },
         shippedProposals: true,
         debug: false,
       },
@@ -89,21 +90,21 @@ module.exports = function (api) {
       '@linaria',
       {
         evaluate: true,
-        displayName: isProd ? false : true,
+        displayName: !isProd ,
         babelOptions: {
-          rootMode: 'upward',
-          plugins: [
-            '@babel/plugin-syntax-jsx',
-            '@babel/plugin-proposal-class-properties',
+          // rootMode: 'upward',
+          configFile:false,
+          presets: [
             [
-              '@babel/plugin-proposal-decorators',
+              '@babel/preset-env',
               {
-                decoratorsBeforeExport: true,
+                modules: false,
+                useBuiltIns: 'usage',
+                corejs: { version: '3.29', proposals: true },
+                shippedProposals: true,
+                debug: false,
               },
             ],
-          ],
-          presets: [
-            '@babel/preset-env',
             [
               '@babel/preset-typescript',
               {

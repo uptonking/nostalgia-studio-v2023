@@ -18,7 +18,7 @@ export const NosNavbar = (props: NosNavbarProps) => {
   const { isReadOnly, setIsReadOnly, resetEditorContents } = props;
 
   const handleResetEditorContent = useCallback(() => {
-    if (window.confirm('Are you sure you want to reset Content ？')) {
+    if (window.confirm('Are you sure you want to RESET ALL Contents ？')) {
       resetEditorContents();
     }
   }, [resetEditorContents]);

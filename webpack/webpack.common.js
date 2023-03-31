@@ -23,6 +23,9 @@ module.exports = {
       {
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
+        resolve: {
+          fullySpecified: false, // .ts suffix can be omitted
+        },
         use: [
           {
             loader: 'babel-loader',
@@ -34,20 +37,21 @@ module.exports = {
             loader: '@linaria/webpack5-loader',
             options: {
               sourceMap: !isProd,
+              displayName: !isProd,
               babelOptions: {
-                rootMode: 'upward',
-                plugins: [
-                  '@babel/plugin-syntax-jsx',
-                  '@babel/plugin-proposal-class-properties',
+                // rootMode: 'upward', // cannot use hmr
+                configFile: false,
+                presets: [
                   [
-                    '@babel/plugin-proposal-decorators',
+                    '@babel/preset-env',
                     {
-                      decoratorsBeforeExport: true,
+                      modules: false,
+                      useBuiltIns: 'usage',
+                      corejs: { version: '3.29', proposals: true },
+                      shippedProposals: true,
+                      debug: false,
                     },
                   ],
-                ],
-                presets: [
-                  '@babel/preset-env',
                   [
                     '@babel/preset-typescript',
                     {
@@ -64,9 +68,12 @@ module.exports = {
             },
           },
         ],
-        resolve: {
-          fullySpecified: false,
-        },
+
+      },
+      {
+        test: /\.js$/,
+        use: 'source-map-loader',
+        enforce: 'pre',
       },
       {
         test: /\.(sa|sc|c)ss$/,
@@ -104,7 +111,8 @@ module.exports = {
             loader: 'less-loader',
             options: {
               lessOptions: {
-                strictMath: true,
+                // strictMath: true,
+                javascriptEnabled: true,
               },
             },
           },
@@ -128,11 +136,7 @@ module.exports = {
         //   filename: 'static/[hash].[ext]',
         // },
       },
-      {
-        test: /\.js$/,
-        use: 'source-map-loader',
-        enforce: 'pre',
-      },
+
     ],
   },
   plugins: [

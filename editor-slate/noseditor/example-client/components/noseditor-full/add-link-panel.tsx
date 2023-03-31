@@ -18,6 +18,9 @@ export const Portal = ({ children }) => {
     : null;
 };
 
+/**
+ * todo migrate to floating-ui
+ */
 export const AddLinkPanel = (props) => {
   const { showAddLink, setShowAddLink } = props;
   const editor = useSlateStatic();

@@ -35,8 +35,8 @@
     "@storybook/addon-links": "^6.3.5",
     "@storybook/addons": "^6.3.5",
     "@storybook/react": "^6.3.5",
-    "@types/react": "18.0.26",
-    "@types/react-dom": "^18.0.10",
+    "@types/react": "^18.0.31",
+    "@types/react-dom": "^18.0.11",
     "classnames": "^2.3.2",
     "css-loader": "^6.7.3",
     "framer-motion": "^6.2.8",
@@ -47,7 +47,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-tiny-virtual-list": "^2.2.0",
-    "style-loader": "^3.3.1",
+    "style-loader": "^3.3.2",
     "tsdx": "^0.14.1"
   }
 }

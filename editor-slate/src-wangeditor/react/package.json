@@ -35,7 +35,6 @@
     "test": "jest",
     "test-c": "jest --coverage"
   },
-  "dependencies": {},
   "devDependencies": {
     "@wangeditor/core": "1.1.1911",
     "@wangeditor/editor": "5.1.2311"
@@ -43,7 +42,7 @@
   "peerDependencies": {
     "@wangeditor/core": "1.1.1911",
     "@wangeditor/editor": "5.1.2311",
-    "react": ">=17.0.2",
-    "react-dom": ">=17.0.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }

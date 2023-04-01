@@ -10,7 +10,7 @@
   --nos-palette-gray0: #f2f4f8;
   --nos-palette-gray1: #eceff4;
   --nos-palette-gray2: #e5e9f0;
-  --nos-palette-gray3: #e5e9f0;
+  --nos-palette-gray3: #d8dee9;
   --nos-palette-gray4: #afb8c1;
   --nos-palette-gray5: #6e7781;
   --nos-palette-gray6: #4c566a;
@@ -62,6 +62,7 @@
   --nos-color-text-muted: var(--nos-palette-gray5);
   --nos-color-text-error: var(--nos-palette-red7);
   --nos-color-text-link: var(--nos-palette-blue5);
+  --nos-color-border-light: var(--nos-palette-gray3);
   --nos-color-border-muted: var(--nos-palette-gray1);
   --nos-spacing-spacer0: 0;
   --nos-spacing-spacerXs: 4px;
@@ -159,7 +160,7 @@
     --nos-palette-gray0: color(display-p3 0.94902 0.956863 0.972549);
     --nos-palette-gray1: color(display-p3 0.92549 0.937255 0.956863);
     --nos-palette-gray2: color(display-p3 0.898039 0.913725 0.941176);
-    --nos-palette-gray3: color(display-p3 0.898039 0.913725 0.941176);
+    --nos-palette-gray3: color(display-p3 0.847059 0.870588 0.913725);
     --nos-palette-gray4: color(display-p3 0.686275 0.721569 0.756863);
     --nos-palette-gray5: color(display-p3 0.431373 0.466667 0.505882);
     --nos-palette-gray6: color(display-p3 0.298039 0.337255 0.415686);

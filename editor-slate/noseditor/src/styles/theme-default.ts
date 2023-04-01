@@ -10,7 +10,7 @@ export const tokens = {
   'palette.gray0': '#f2f4f8',
   'palette.gray1': '#eceff4',
   'palette.gray2': '#e5e9f0',
-  'palette.gray3': '#e5e9f0',
+  'palette.gray3': '#d8dee9',
   'palette.gray4': '#afb8c1',
   'palette.gray5': '#6e7781',
   'palette.gray6': '#4c566a',
@@ -62,6 +62,7 @@ export const tokens = {
   'color.text.muted': '#6e7781',
   'color.text.error': '#82071e',
   'color.text.link': '#0969da',
+  'color.border.light': '#d8dee9',
   'color.border.muted': '#eceff4',
   'spacing.spacer0': '0',
   'spacing.spacerXs': '4px',
@@ -268,10 +269,10 @@ export const meta = {
   },
   'palette.gray3': {
     '_original': {
-      '$value': '#E5E9F0',
+      '$value': '#D8DEE9',
       '$extensions': {
         mode: {
-          light: '#E5E9F0',
+          light: '#D8DEE9',
           dark: '#8b949e',
         },
       },
@@ -288,10 +289,10 @@ export const meta = {
     },
     id: 'palette.gray3',
     '$type': 'color',
-    '$value': '#e5e9f0',
+    '$value': '#d8dee9',
     '$extensions': {
       mode: {
-        light: '#e5e9f0',
+        light: '#d8dee9',
         dark: '#8b949e',
       },
     },
@@ -1761,6 +1762,23 @@ export const meta = {
     '$type': 'color',
     '$value': '#0969da',
   },
+  'color.border.light': {
+    '_original': {
+      '$value': '{palette.gray3}',
+    },
+    '_group': {
+      id: 'color.border',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.border.light',
+    '$type': 'color',
+    '$value': '#d8dee9',
+  },
   'color.border.muted': {
     '_original': {
       '$value': '{palette.gray1}',
@@ -2486,7 +2504,7 @@ export const modes = {
     dark: '#b1bac4',
   },
   'palette.gray3': {
-    light: '#e5e9f0',
+    light: '#d8dee9',
     dark: '#8b949e',
   },
   'palette.gray4': {

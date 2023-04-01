@@ -35,8 +35,11 @@ type OptionItemType = {
   title?: string;
 };
 
-export type TextAlignValueType = 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify'
-
+export type TextAlignValueType =
+  | 'alignLeft'
+  | 'alignCenter'
+  | 'alignRight'
+  | 'alignJustify';
 
 type ActionDropdownType = {
   type: 'dropdown';
@@ -48,92 +51,106 @@ type ActionDropdownType = {
 
 type ActionItemType = ActionButtonType | ActionDropdownType;
 
-export type ToolbarConfigType = ActionItemType[];
+export type ToolbarConfigType = ActionItemType[][];
 
-export const toolbarConfig: ToolbarConfigType = [
-  {
-    type: 'button',
-    icon: BoldIcon,
-    format: 'bold',
-    title: 'toggle bold',
-  },
-  {
-    type: 'button',
-    icon: ItalicIcon,
-    format: 'italic',
-    title: 'toggle italic',
-  },
-  {
-    type: 'button',
-    icon: UnderlineIcon,
-    format: 'underline',
-    title: 'toggle underline',
-  },
-  {
-    type: 'button',
-    icon: StrikethroughIcon,
-    format: 'strikethrough',
-    title: 'toggle strikethrough',
-  },
-  {
-    type: 'button',
-    icon: CodeIcon,
-    format: 'code',
-    title: 'toggle text as code',
-  },
-  {
-    type: 'button',
-    icon: ListUnorderedIcon,
-    action: ListTypes.Bulleted,
-    title: 'toggle bullet list',
-  },
-  {
-    type: 'button',
-    icon: ListOrderedIcon,
-    action: ListTypes.Numbered,
-    title: 'toggle ordered list',
-  },
-  {
-    type: 'button',
-    icon: ListCheckboxIcon,
-    action: ListTypes.TodoList,
-    title: 'toggle checkbox list',
-  },
-  {
-    type: 'button',
-    icon: LinkIcon,
-    action: 'link',
-    title: 'add link',
-  },
-  {
-    type: 'dropdown',
-    action: 'align',
-    icon: LinkIcon,
-    options: [
-      {
-        icon: AlignTextLeftIcon,
-        value: 'alignLeft',
-        text: 'Align Left',
-        title: 'Align Left',
-      },
-      {
-        icon: AlignTextCenterIcon,
-        value: 'alignCenter',
-        text: 'Align Center',
-        title: 'Align Center',
-      },
-      {
-        icon: AlignTextRightIcon,
-        value: 'alignRight',
-        text: 'Align Right',
-        title: 'Align Right',
-      },
-      {
-        icon: AlignTextBothIcon,
-        value: 'alignJustify',
-        text: 'Justify',
-        title: 'Justify',
-      },
-    ],
-  },
+export const defaultToolbarConfig: ToolbarConfigType = [
+  [
+    // todo undo/redo
+    // todo paint-format
+    // todo block-type
+    // todo font-size
+    {
+      type: 'button',
+      icon: BoldIcon,
+      format: 'bold',
+      title: 'toggle bold',
+    },
+    {
+      type: 'button',
+      icon: ItalicIcon,
+      format: 'italic',
+      title: 'toggle italic',
+    },
+    {
+      type: 'button',
+      icon: UnderlineIcon,
+      format: 'underline',
+      title: 'toggle underline',
+    },
+    {
+      type: 'button',
+      icon: StrikethroughIcon,
+      format: 'strikethrough',
+      title: 'toggle strikethrough',
+    },
+    // todo font-color
+  ],
+  [
+    {
+      type: 'button',
+      icon: ListUnorderedIcon,
+      action: ListTypes.Bulleted,
+      title: 'toggle bullet list',
+    },
+    {
+      type: 'button',
+      icon: ListOrderedIcon,
+      action: ListTypes.Numbered,
+      title: 'toggle ordered list',
+    },
+    {
+      type: 'button',
+      icon: ListCheckboxIcon,
+      action: ListTypes.TodoList,
+      title: 'toggle checkbox list',
+    },
+    {
+      type: 'dropdown',
+      action: 'align',
+      icon: LinkIcon,
+      options: [
+        {
+          icon: AlignTextLeftIcon,
+          value: 'alignLeft',
+          text: 'Align Left',
+          title: 'Align Left',
+        },
+        {
+          icon: AlignTextCenterIcon,
+          value: 'alignCenter',
+          text: 'Align Center',
+          title: 'Align Center',
+        },
+        {
+          icon: AlignTextRightIcon,
+          value: 'alignRight',
+          text: 'Align Right',
+          title: 'Align Right',
+        },
+        {
+          icon: AlignTextBothIcon,
+          value: 'alignJustify',
+          text: 'Justify',
+          title: 'Justify',
+        },
+      ],
+    },
+  ],
+  [
+    // todo image
+    // todo table
+    {
+      type: 'button',
+      icon: LinkIcon,
+      action: 'link',
+      title: 'add link',
+    },
+    // todo blockquote
+    {
+      type: 'button',
+      icon: CodeIcon,
+      format: 'code',
+      title: 'toggle text as code',
+    },
+  ],
 ];

@@ -73,6 +73,7 @@ export declare const tokens: {
   'color.text.muted': ColorToken['$value'];
   'color.text.error': ColorToken['$value'];
   'color.text.link': ColorToken['$value'];
+  'color.border.light': ColorToken['$value'];
   'color.border.muted': ColorToken['$value'];
   'spacing.spacer0': DimensionToken['$value'];
   'spacing.spacerXs': DimensionToken['$value'];
@@ -166,6 +167,7 @@ export declare const meta: {
   'color.text.muted': ParsedColorToken;
   'color.text.error': ParsedColorToken;
   'color.text.link': ParsedColorToken;
+  'color.border.light': ParsedColorToken;
   'color.border.muted': ParsedColorToken;
   'spacing.spacer0': ParsedDimensionToken;
   'spacing.spacerXs': ParsedDimensionToken;

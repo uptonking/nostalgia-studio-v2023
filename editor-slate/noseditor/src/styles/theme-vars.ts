@@ -69,6 +69,7 @@ export const themed = {
       link: 'var(--nos-color-text-link)'
     },
     border: {
+      light: 'var(--nos-color-border-light)',
       muted: 'var(--nos-color-border-muted)'
     }
   },

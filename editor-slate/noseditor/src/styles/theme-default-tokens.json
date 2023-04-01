@@ -55,10 +55,10 @@
       }
     },
     "gray3": {
-      "$value": "#E5E9F0",
+      "$value": "#D8DEE9",
       "$extensions": {
         "mode": {
-          "light": "#E5E9F0",
+          "light": "#D8DEE9",
           "dark": "#8b949e"
         }
       }
@@ -498,6 +498,9 @@
       }
     },
     "border": {
+      "light": {
+        "$value": "{palette.gray3}"
+      },
       "muted": {
         "$value": "{palette.gray1}"
       }

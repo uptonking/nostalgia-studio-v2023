@@ -85,6 +85,7 @@ export const toggleList = (
         },
       );
 
+      // todo find all ranges
       const currElem = findSelectionAnchorElement(editor) as ListItemElement;
 
       // change paragraph or non-list to list

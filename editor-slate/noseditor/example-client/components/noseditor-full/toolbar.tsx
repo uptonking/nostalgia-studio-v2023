@@ -22,106 +22,115 @@ import {
   toggleTextAlign,
 } from '../../../src/transforms';
 import { AddLinkPanel } from './add-link-panel';
-import { TextAlignValueType, toolbarConfig } from './toolbar-config';
+import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
 
-const textFormatHandler =
+const toggleTextFormatsHandler =
   (editor: Editor, format: TextFormats) =>
-    (event: MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      toggleMark(editor, format);
-    };
+  (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    toggleMark(editor, format);
+  };
 
-const textAlignHandler =
+const toggleTextAlignHandler =
   (editor: Editor, align?: TextAlignValueType) =>
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      toggleTextAlign(editor, event.target.value as TextAlignValueType);
-      // console.log(';; txt-align ', event.target.value)
-    };
+  (event: ChangeEvent<HTMLSelectElement>) => {
+    toggleTextAlign(editor, event.target.value as TextAlignValueType);
+    // console.log(';; txt-align ', event.target.value)
+  };
 
 const checkIsMenuItemListType = (
   action: string,
 ): action is (typeof ListTypes)[keyof typeof ListTypes] =>
   Object.values(ListTypes).find((item) => item === action) !== undefined;
 
-const listToggleHandler =
+const toggleListTypesHandler =
   (editor: Editor, list: (typeof ListTypes)[keyof typeof ListTypes]) =>
-    (event: MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
+  (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    toggleList(editor, { listType: list });
+  };
 
-      toggleList(editor, { listType: list });
-    };
-
-const useShowAddLink = ({ initialShow = false } = {}) => {
+const useShowAddLinkPanel = ({ initialShow = false } = {}) => {
   const [showAddLink, setShowAddLink] = useState(initialShow);
   return { showAddLink, setShowAddLink };
 };
 
-const useToolbarGroups = (initialConfig = toolbarConfig) => {
+const useToolbarGroups = (initialConfig = defaultToolbarConfig) => {
   const [toolbarGroups, setToolbarGroups] = useState(initialConfig);
   return { toolbarGroups, setToolbarGroups };
 };
 
 export const NosToolbar = () => {
   const editor = useSlateStatic();
-  const { showAddLink, setShowAddLink } = useShowAddLink();
+  const { showAddLink, setShowAddLink } = useShowAddLinkPanel();
   const { toolbarGroups, setToolbarGroups } = useToolbarGroups();
 
   return (
     <div className='nosedit-toolbar'>
-      {toolbarGroups.map((item, index) => {
-        const { type, icon: Icon, title } = item;
-        if (type === 'button') {
-          const { format, action } = item;
-          if (format) {
+      {toolbarGroups.map((group, index) => {
+        const groupItemsElem = group.map((item, index) => {
+          const { type, icon: Icon, title } = item;
+          if (type === 'button') {
+            const { format, action } = item;
+            if (format) {
+              return (
+                <IconButton
+                  onMouseDown={toggleTextFormatsHandler(editor, format)}
+                  key={title}
+                  title={title}
+                >
+                  <Icon />
+                </IconButton>
+              );
+            }
+            if (checkIsMenuItemListType(action)) {
+              return (
+                <IconButton
+                  onMouseDown={toggleListTypesHandler(editor, action)}
+                  key={title}
+                  title={title}
+                >
+                  <Icon />
+                </IconButton>
+              );
+            }
+            if (action === 'link') {
+              return (
+                <IconButton
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setShowAddLink(true);
+                  }}
+                  key={title}
+                  title={title}
+                >
+                  <Icon />
+                </IconButton>
+              );
+            }
+          }
+          if (type === 'dropdown') {
+            const { options, action } = item;
             return (
-              <IconButton
-                onMouseDown={textFormatHandler(editor, format)}
-                key={title}
-                title={title}
-              >
-                <Icon />
-              </IconButton>
+              <ToolbarDropdown
+                editor={editor}
+                action={action}
+                options={options}
+                key={index}
+              />
             );
           }
-          if (checkIsMenuItemListType(action)) {
-            return (
-              <IconButton
-                onMouseDown={listToggleHandler(editor, action)}
-                key={title}
-                title={title}
-              >
-                <Icon />
-              </IconButton>
-            );
-          }
-          if (action === 'link') {
-            return (
-              <IconButton
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setShowAddLink(true);
-                }}
-                key={title}
-                title={title}
-              >
-                <Icon />
-              </IconButton>
-            );
-          }
-        }
-        if (type === 'dropdown') {
-          const { options, action } = item;
-          return (
-            <ToolbarDropdown
-              editor={editor}
-              action={action}
-              options={options}
-              key={index}
-            />
-          );
-        }
-        return null;
+          return null;
+        });
+        return index === toolbarGroups.length - 1 ? (
+          groupItemsElem
+        ) : (
+          <>
+            {groupItemsElem}
+            <div className={toolbarSeparatorCss}> </div>
+          </>
+        );
       })}
       {showAddLink ? (
         <AddLinkPanel
@@ -138,7 +147,7 @@ const ToolbarDropdown = ({ editor, action, options }) => {
     <select
       // value={activeMark(editor, format)}
       value={'bb'}
-      onChange={textAlignHandler(editor)}
+      onChange={toggleTextAlignHandler(editor)}
       className={dropdownCss}
     >
       {options.map(({ value, icon: Icon, title }) => (
@@ -170,4 +179,12 @@ const dropdownCss = css`
   & option {
     border: none;
   }
+`;
+
+const toolbarSeparatorCss = css`
+  min-height: 20px;
+  margin-left: ${themed.spacing.spacerS};
+  margin-right: ${themed.spacing.spacerS};
+  border-left: 1px solid ${themed.color.border.light};
+  user-select: none;
 `;

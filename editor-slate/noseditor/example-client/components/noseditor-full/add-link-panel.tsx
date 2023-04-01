@@ -103,7 +103,7 @@ const addLinkContainerCss = css`
   box-shadow: ${themed.shadow.sm};
   background-color: ${themed.palette.white};
   opacity: 0;
-  transition: opacity 0.75s;
+  transition: opacity 0.5s;
 `;
 
 const linkInputCss = css`

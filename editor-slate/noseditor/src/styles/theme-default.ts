@@ -70,6 +70,11 @@ export const tokens = {
   'spacing.spacerX': '24px',
   'spacing.spacerXl': '32px',
   'spacing.spacerXxl': '40px',
+  'size.borderRadius.xs': '2px',
+  'size.borderRadius.sm': '4px',
+  'size.borderRadius.md': '6px',
+  'size.borderRadius.lg': '8px',
+  'size.borderRadius.xl': '10px',
   'shadow.sm': {
     offsetX: '0',
     offsetY: '8px',
@@ -102,9 +107,12 @@ export const tokens = {
   'font.family.size.f4': '16px',
   'font.family.size.f5': '14px',
   'font.family.size.f6': '12px',
+  'font.family.lineHeight.xs': '1',
+  'font.family.lineHeight.sm': '1.25',
+  'font.family.lineHeight.md': '1.5',
   'font.family.lineHeight.default': '1.5',
-  'font.family.lineHeight.condensed': '1.25',
-  'font.family.lineHeight.condensedUltra': '1',
+  'font.family.lineHeight.lg': '1.8',
+  'font.family.lineHeight.xl': '2',
 };
 
 export const meta = {
@@ -1889,6 +1897,91 @@ export const meta = {
     '$type': 'dimension',
     '$value': '40px',
   },
+  'size.borderRadius.xs': {
+    '_original': {
+      '$value': '2px',
+    },
+    '_group': {
+      id: 'size.borderRadius',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
+    },
+    id: 'size.borderRadius.xs',
+    '$type': 'dimension',
+    '$value': '2px',
+  },
+  'size.borderRadius.sm': {
+    '_original': {
+      '$value': '4px',
+    },
+    '_group': {
+      id: 'size.borderRadius',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
+    },
+    id: 'size.borderRadius.sm',
+    '$type': 'dimension',
+    '$value': '4px',
+  },
+  'size.borderRadius.md': {
+    '_original': {
+      '$value': '6px',
+    },
+    '_group': {
+      id: 'size.borderRadius',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
+    },
+    id: 'size.borderRadius.md',
+    '$type': 'dimension',
+    '$value': '6px',
+  },
+  'size.borderRadius.lg': {
+    '_original': {
+      '$value': '8px',
+    },
+    '_group': {
+      id: 'size.borderRadius',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
+    },
+    id: 'size.borderRadius.lg',
+    '$type': 'dimension',
+    '$value': '8px',
+  },
+  'size.borderRadius.xl': {
+    '_original': {
+      '$value': '10px',
+    },
+    '_group': {
+      id: 'size.borderRadius',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
+    },
+    id: 'size.borderRadius.xl',
+    '$type': 'dimension',
+    '$value': '10px',
+  },
   'shadow.sm': {
     '_original': {
       '$value': {
@@ -2267,9 +2360,60 @@ export const meta = {
       },
     },
   },
-  'font.family.lineHeight.default': {
+  'font.family.lineHeight.xs': {
+    '_original': {
+      '$value': '1',
+    },
+    '_group': {
+      id: 'font.family.lineHeight',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
+    },
+    id: 'font.family.lineHeight.xs',
+    '$type': 'dimension',
+    '$value': '1',
+  },
+  'font.family.lineHeight.sm': {
+    '_original': {
+      '$value': '1.25',
+    },
+    '_group': {
+      id: 'font.family.lineHeight',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
+    },
+    id: 'font.family.lineHeight.sm',
+    '$type': 'dimension',
+    '$value': '1.25',
+  },
+  'font.family.lineHeight.md': {
     '_original': {
       '$value': '1.5',
+    },
+    '_group': {
+      id: 'font.family.lineHeight',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'dimension',
+    },
+    id: 'font.family.lineHeight.md',
+    '$type': 'dimension',
+    '$value': '1.5',
+  },
+  'font.family.lineHeight.default': {
+    '_original': {
+      '$value': '{font.family.lineHeight.md}',
     },
     '_group': {
       id: 'font.family.lineHeight',
@@ -2284,9 +2428,9 @@ export const meta = {
     '$type': 'dimension',
     '$value': '1.5',
   },
-  'font.family.lineHeight.condensed': {
+  'font.family.lineHeight.lg': {
     '_original': {
-      '$value': '1.25',
+      '$value': '1.8',
     },
     '_group': {
       id: 'font.family.lineHeight',
@@ -2297,13 +2441,13 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'font.family.lineHeight.condensed',
+    id: 'font.family.lineHeight.lg',
     '$type': 'dimension',
-    '$value': '1.25',
+    '$value': '1.8',
   },
-  'font.family.lineHeight.condensedUltra': {
+  'font.family.lineHeight.xl': {
     '_original': {
-      '$value': '1',
+      '$value': '2',
     },
     '_group': {
       id: 'font.family.lineHeight',
@@ -2314,9 +2458,9 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'font.family.lineHeight.condensedUltra',
+    id: 'font.family.lineHeight.xl',
     '$type': 'dimension',
-    '$value': '1',
+    '$value': '2',
   },
 };
 

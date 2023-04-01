@@ -81,6 +81,11 @@ export declare const tokens: {
   'spacing.spacerX': DimensionToken['$value'];
   'spacing.spacerXl': DimensionToken['$value'];
   'spacing.spacerXxl': DimensionToken['$value'];
+  'size.borderRadius.xs': DimensionToken['$value'];
+  'size.borderRadius.sm': DimensionToken['$value'];
+  'size.borderRadius.md': DimensionToken['$value'];
+  'size.borderRadius.lg': DimensionToken['$value'];
+  'size.borderRadius.xl': DimensionToken['$value'];
   'shadow.sm': ShadowToken['$value'];
   'shadow.md': ShadowToken['$value'];
   'shadow.lg': ShadowToken['$value'];
@@ -95,9 +100,12 @@ export declare const tokens: {
   'font.family.size.f4': DimensionToken['$value'];
   'font.family.size.f5': DimensionToken['$value'];
   'font.family.size.f6': DimensionToken['$value'];
+  'font.family.lineHeight.xs': DimensionToken['$value'];
+  'font.family.lineHeight.sm': DimensionToken['$value'];
+  'font.family.lineHeight.md': DimensionToken['$value'];
   'font.family.lineHeight.default': DimensionToken['$value'];
-  'font.family.lineHeight.condensed': DimensionToken['$value'];
-  'font.family.lineHeight.condensedUltra': DimensionToken['$value'];
+  'font.family.lineHeight.lg': DimensionToken['$value'];
+  'font.family.lineHeight.xl': DimensionToken['$value'];
 };
 
 export declare const meta: {
@@ -166,6 +174,11 @@ export declare const meta: {
   'spacing.spacerX': ParsedDimensionToken;
   'spacing.spacerXl': ParsedDimensionToken;
   'spacing.spacerXxl': ParsedDimensionToken;
+  'size.borderRadius.xs': ParsedDimensionToken;
+  'size.borderRadius.sm': ParsedDimensionToken;
+  'size.borderRadius.md': ParsedDimensionToken;
+  'size.borderRadius.lg': ParsedDimensionToken;
+  'size.borderRadius.xl': ParsedDimensionToken;
   'shadow.sm': ParsedShadowToken;
   'shadow.md': ParsedShadowToken;
   'shadow.lg': ParsedShadowToken;
@@ -180,9 +193,12 @@ export declare const meta: {
   'font.family.size.f4': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f4'] } };
   'font.family.size.f5': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f5'] } };
   'font.family.size.f6': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f6'] } };
+  'font.family.lineHeight.xs': ParsedDimensionToken;
+  'font.family.lineHeight.sm': ParsedDimensionToken;
+  'font.family.lineHeight.md': ParsedDimensionToken;
   'font.family.lineHeight.default': ParsedDimensionToken;
-  'font.family.lineHeight.condensed': ParsedDimensionToken;
-  'font.family.lineHeight.condensedUltra': ParsedDimensionToken;
+  'font.family.lineHeight.lg': ParsedDimensionToken;
+  'font.family.lineHeight.xl': ParsedDimensionToken;
 };
 
 export declare const modes: {

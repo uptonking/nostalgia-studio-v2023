@@ -81,6 +81,15 @@ export const themed = {
     spacerXl: 'var(--nos-spacing-spacerXl)',
     spacerXxl: 'var(--nos-spacing-spacerXxl)'
   },
+  size: {
+    borderRadius: {
+      xs: 'var(--nos-size-borderRadius-xs)',
+      sm: 'var(--nos-size-borderRadius-sm)',
+      md: 'var(--nos-size-borderRadius-md)',
+      lg: 'var(--nos-size-borderRadius-lg)',
+      xl: 'var(--nos-size-borderRadius-xl)'
+    }
+  },
   shadow: {
     sm: 'var(--nos-shadow-sm)',
     md: 'var(--nos-shadow-md)',
@@ -102,9 +111,12 @@ export const themed = {
         f6: 'var(--nos-font-family-size-f6)'
       },
       lineHeight: {
+        xs: 'var(--nos-font-family-lineHeight-xs)',
+        sm: 'var(--nos-font-family-lineHeight-sm)',
+        md: 'var(--nos-font-family-lineHeight-md)',
         default: 'var(--nos-font-family-lineHeight-default)',
-        condensed: 'var(--nos-font-family-lineHeight-condensed)',
-        condensedUltra: 'var(--nos-font-family-lineHeight-condensedUltra)'
+        lg: 'var(--nos-font-family-lineHeight-lg)',
+        xl: 'var(--nos-font-family-lineHeight-xl)'
       }
     }
   }

@@ -70,6 +70,11 @@
   --nos-spacing-spacerX: 24px;
   --nos-spacing-spacerXl: 32px;
   --nos-spacing-spacerXxl: 40px;
+  --nos-size-borderRadius-xs: 2px;
+  --nos-size-borderRadius-sm: 4px;
+  --nos-size-borderRadius-md: 6px;
+  --nos-size-borderRadius-lg: 8px;
+  --nos-size-borderRadius-xl: 10px;
   --nos-shadow-sm: 0 8px 16px 0 #64646f33;
   --nos-shadow-md: 0 12px 24px 0 #64646f33;
   --nos-shadow-lg: 0 16px 30px 0 #64646f33;
@@ -84,9 +89,12 @@
   --nos-font-family-size-f4: 16px;
   --nos-font-family-size-f5: 14px;
   --nos-font-family-size-f6: 12px;
-  --nos-font-family-lineHeight-default: 1.5;
-  --nos-font-family-lineHeight-condensed: 1.25;
-  --nos-font-family-lineHeight-condensedUltra: 1;
+  --nos-font-family-lineHeight-xs: 1;
+  --nos-font-family-lineHeight-sm: 1.25;
+  --nos-font-family-lineHeight-md: 1.5;
+  --nos-font-family-lineHeight-default: var(--nos-font-family-lineHeight-md);
+  --nos-font-family-lineHeight-lg: 1.8;
+  --nos-font-family-lineHeight-xl: 2;
 }
 
 [data-nos-theme="nos-t-dark"] {

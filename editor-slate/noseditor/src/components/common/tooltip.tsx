@@ -87,7 +87,7 @@ export const useTooltipContext = () => {
   return context;
 };
 
-export function Tooltip({
+export function TooltipProvider({
   children,
   ...options
 }: { children: React.ReactNode } & TooltipOptions) {

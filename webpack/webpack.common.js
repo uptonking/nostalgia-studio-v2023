@@ -6,6 +6,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -144,6 +145,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'styles.css',
     }),
+    // new NodePolyfillPlugin({
+    //   excludeAliases: ['console'],
+    // }),
     // new CircularDependencyPlugin({
     //   // exclude detection of files based on a RegExp
     //   exclude: /a\.js|node_modules/,

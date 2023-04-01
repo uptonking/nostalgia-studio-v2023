@@ -4,7 +4,10 @@
   "palette": {
     "$type": "color",
     "$extensions": {
-      "modes": ["light", "dark"]
+      "modes": [
+        "light",
+        "dark"
+      ]
     },
     "black": {
       "$value": "#1d2129",
@@ -524,9 +527,29 @@
       "$value": "40px"
     }
   },
+  "size":{
+    "$type": "dimension",
+    "borderRadius":{
+      "xs":{
+        "$value": "2px"
+      },
+      "sm":{
+        "$value": "4px"
+      },
+      "md":{
+        "$value": "6px"
+      },
+      "lg":{
+        "$value": "8px"
+      },
+      "xl":{
+        "$value": "10px"
+      }
+    }
+  },
   "shadow": {
     "$type": "shadow",
-    "sm":{
+    "sm": {
       "$value": {
         "offsetX": "0px",
         "offsetY": "8px",
@@ -535,7 +558,7 @@
         "color": "rgba(100, 100, 111, 0.2)"
       }
     },
-    "md":{
+    "md": {
       "$value": {
         "offsetX": "0px",
         "offsetY": "12px",
@@ -596,7 +619,10 @@
       "size": {
         "$type": "dimension",
         "$extensions": {
-          "modes": ["mobile", "desktop"]
+          "modes": [
+            "mobile",
+            "desktop"
+          ]
         },
         "f00": {
           "$value": "32px",
@@ -673,14 +699,23 @@
       },
       "lineHeight": {
         "$type": "dimension",
-        "default": {
-          "$value": "1.5"
+        "xs": {
+          "$value": "1"
         },
-        "condensed": {
+        "sm": {
           "$value": "1.25"
         },
-        "condensedUltra": {
-          "$value": "1"
+        "md": {
+          "$value": "1.5"
+        },
+        "default": {
+          "$value": "{font.family.lineHeight.md}"
+        },
+        "lg": {
+          "$value": "1.8"
+        },
+        "xl": {
+          "$value": "2"
         }
       }
     }

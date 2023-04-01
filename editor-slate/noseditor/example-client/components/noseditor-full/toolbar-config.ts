@@ -1,4 +1,8 @@
 import {
+  AlignTextBoth as AlignTextBothIcon,
+  AlignTextCenter as AlignTextCenterIcon,
+  AlignTextLeft as AlignTextLeftIcon,
+  AlignTextRight as AlignTextRightIcon,
   Code as CodeIcon,
   DownOne as TriangleDownIcon,
   Link as LinkIcon,
@@ -16,16 +20,37 @@ import type { Icon } from '@icon-park/react/lib/runtime';
 import { ListTypes } from '../../../src/plugins/list/utils';
 import type { TextFormats } from '../../../src/plugins/marks/types';
 
-type ToolbarConfigType = {
-  type: 'button' | 'dropdown' | 'listbox';
+type ActionButtonType = {
+  type: 'button';
   icon: Icon;
   format?: TextFormats;
-  list?: typeof ListTypes[keyof typeof ListTypes];
-  link?: 'link';
-  title: string;
+  action?: 'align' | 'link' | (typeof ListTypes)[keyof typeof ListTypes];
+  title?: string;
 };
 
-export const toolbarConfig: ToolbarConfigType[] = [
+type OptionItemType = {
+  value: string;
+  icon: Icon;
+  text?: string;
+  title?: string;
+};
+
+export type TextAlignValueType = 'alignLeft' | 'alignCenter' | 'alignRight' | 'alignJustify'
+
+
+type ActionDropdownType = {
+  type: 'dropdown';
+  action: 'align' | 'fontSize' | 'fontColor';
+  icon?: Icon;
+  title?: string;
+  options: Array<{ value: TextAlignValueType } & Omit<OptionItemType, 'value'>>;
+};
+
+type ActionItemType = ActionButtonType | ActionDropdownType;
+
+export type ToolbarConfigType = ActionItemType[];
+
+export const toolbarConfig: ToolbarConfigType = [
   {
     type: 'button',
     icon: BoldIcon,
@@ -59,25 +84,56 @@ export const toolbarConfig: ToolbarConfigType[] = [
   {
     type: 'button',
     icon: ListUnorderedIcon,
-    list: ListTypes.Bulleted,
+    action: ListTypes.Bulleted,
     title: 'toggle bullet list',
   },
   {
     type: 'button',
     icon: ListOrderedIcon,
-    list: ListTypes.Numbered,
+    action: ListTypes.Numbered,
     title: 'toggle ordered list',
   },
   {
     type: 'button',
     icon: ListCheckboxIcon,
-    list: ListTypes.TodoList,
+    action: ListTypes.TodoList,
     title: 'toggle checkbox list',
   },
   {
     type: 'button',
     icon: LinkIcon,
-    link: 'link',
+    action: 'link',
     title: 'add link',
+  },
+  {
+    type: 'dropdown',
+    action: 'align',
+    icon: LinkIcon,
+    options: [
+      {
+        icon: AlignTextLeftIcon,
+        value: 'alignLeft',
+        text: 'Align Left',
+        title: 'Align Left',
+      },
+      {
+        icon: AlignTextCenterIcon,
+        value: 'alignCenter',
+        text: 'Align Center',
+        title: 'Align Center',
+      },
+      {
+        icon: AlignTextRightIcon,
+        value: 'alignRight',
+        text: 'Align Right',
+        title: 'Align Right',
+      },
+      {
+        icon: AlignTextBothIcon,
+        value: 'alignJustify',
+        text: 'Justify',
+        title: 'Justify',
+      },
+    ],
   },
 ];

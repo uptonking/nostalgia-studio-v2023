@@ -38,3 +38,4 @@ export { NosEditor } from './components/editor/noseditor';
 // export types
 export type { CustomEditor, CustomElement, CustomText } from './types/slate.d';
 export type { NosPlugin } from './plugins/types';
+export type { FormattedText } from './plugins/marks/types'

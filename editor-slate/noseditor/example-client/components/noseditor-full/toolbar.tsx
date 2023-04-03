@@ -1,4 +1,10 @@
-import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
+import React, {
+  ChangeEvent,
+  Fragment,
+  MouseEvent,
+  useEffect,
+  useState,
+} from 'react';
 
 import { type Editor } from 'slate';
 import { useSlateStatic } from 'slate-react';
@@ -17,6 +23,7 @@ import type { TextFormats } from '../../../src/plugins/marks/types';
 import { ParagraphSpec } from '../../../src/plugins/paragraph/utils';
 import { themed } from '../../../src/styles';
 import {
+  addMarkData,
   toggleElement,
   toggleMark,
   toggleTextAlign,
@@ -24,7 +31,7 @@ import {
 import { AddLinkPanel } from './add-link-panel';
 import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
 
-const toggleTextFormatsHandler =
+const toggleTextFormatHandler =
   (editor: Editor, format: TextFormats) =>
   (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -36,6 +43,13 @@ const toggleTextAlignHandler =
   (event: ChangeEvent<HTMLSelectElement>) => {
     toggleTextAlign(editor, event.target.value as TextAlignValueType);
     // console.log(';; txt-align ', event.target.value)
+  };
+
+const addTextFormatHandler =
+  (editor: Editor, format: TextFormats, value = true) =>
+  (event: ChangeEvent<HTMLSelectElement>) => {
+    // event.preventDefault();
+    addMarkData(editor, { format, value: event.target.value });
   };
 
 const checkIsMenuItemListType = (
@@ -67,15 +81,15 @@ export const NosToolbar = () => {
 
   return (
     <div className='nosedit-toolbar'>
-      {toolbarGroups.map((group, index) => {
-        const groupItemsElem = group.map((item, index) => {
+      {toolbarGroups.map((group, groupIndex) => {
+        const groupItemsElem = group.map((item, index2) => {
           const { type, icon: Icon, title } = item;
           if (type === 'button') {
             const { format, action } = item;
             if (format) {
               return (
                 <IconButton
-                  onMouseDown={toggleTextFormatsHandler(editor, format)}
+                  onMouseDown={toggleTextFormatHandler(editor, format)}
                   key={title}
                   title={title}
                 >
@@ -109,27 +123,57 @@ export const NosToolbar = () => {
                 </IconButton>
               );
             }
+
+            // more buttons actions
+            return (
+              <IconButton
+                // onClick={(e) => {
+                //   e.preventDefault();
+                //   e.stopPropagation();
+                //   setShowAddLink(true);
+                // }}
+                key={title}
+                title={title}
+              >
+                <Icon />
+              </IconButton>
+            );
           }
           if (type === 'dropdown') {
             const { options, action } = item;
-            return (
-              <ToolbarDropdown
-                editor={editor}
-                action={action}
-                options={options}
-                key={index}
-              />
-            );
+            if (action === 'align') {
+              return (
+                <ToolbarDropdown
+                  editor={editor}
+                  action={action}
+                  options={options}
+                  onChange={toggleTextAlignHandler(editor)}
+                  key={index2}
+                />
+              );
+            }
+
+            if (action === 'fontSize') {
+              return (
+                <ToolbarDropdown
+                  editor={editor}
+                  action={action}
+                  options={options}
+                  onChange={addTextFormatHandler(editor, action)}
+                  key={index2}
+                />
+              );
+            }
           }
           return null;
         });
-        return index === toolbarGroups.length - 1 ? (
-          groupItemsElem
+        return groupIndex === toolbarGroups.length - 1 ? (
+          <Fragment key={groupIndex}>{groupItemsElem}</Fragment>
         ) : (
-          <>
+          <Fragment key={groupIndex}>
             {groupItemsElem}
             <div className={toolbarSeparatorCss}> </div>
-          </>
+          </Fragment>
         );
       })}
       {showAddLink ? (
@@ -142,17 +186,17 @@ export const NosToolbar = () => {
   );
 };
 
-const ToolbarDropdown = ({ editor, action, options }) => {
+const ToolbarDropdown = ({ editor, action, options, onChange }) => {
   return (
     <select
       // value={activeMark(editor, format)}
       value={'bb'}
-      onChange={toggleTextAlignHandler(editor)}
+      onChange={onChange}
       className={dropdownCss}
     >
-      {options.map(({ value, icon: Icon, title }) => (
+      {options.map(({ value, icon: Icon, title, text }) => (
         <option key={value} value={value} title={title}>
-          {value}
+          {text}
           {/* <IconButton title={title}>
             <Icon title={title} />
           </IconButton> */}

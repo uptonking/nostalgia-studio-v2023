@@ -2,7 +2,7 @@ import './styles.scss';
 
 import * as React from 'react';
 
-import { RenderLeafProps } from 'slate-react';
+import type { RenderLeafProps } from 'slate-react';
 
 export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   if (leaf.bold) {
@@ -25,5 +25,25 @@ export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
     children = <s>{children}</s>;
   }
 
-  return <span {...attributes}>{children}</span>;
+  if (leaf.superscript) {
+    children = <sup>{children}</sup>
+  }
+  if (leaf.subscript) {
+    children = <sub>{children}</sub>
+  }
+
+  let styles = {} as React.CSSProperties;
+  if (leaf.fontSize) {
+    styles = { ...styles, fontSize: leaf.fontSize }
+  }
+  if (leaf.color) {
+    styles = { ...styles, color: leaf.color }
+  }
+  if (leaf.bgColor) {
+    styles = { ...styles, backgroundColor: leaf.color }
+  }
+
+  // console.log(';; leaf.fontSize ', leaf.fontSize, styles)
+
+  return <span style={styles} {...attributes}>{children}</span>;
 };

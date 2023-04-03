@@ -1,10 +1,15 @@
 export type FormattedText = {
   text: string;
-  bold?: true;
-  italic?: true;
-  underline?: true;
-  strikethrough?: true;
-  code?: true;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  code?: boolean;
+  superscript?: boolean;
+  subscript?: boolean;
+  fontSize?: string;
+  color?: string;
+  bgColor?: string;
 };
 
 export type TextFormats = keyof Omit<FormattedText, 'text'>;

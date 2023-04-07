@@ -29,6 +29,7 @@ import {
   toggleTextAlign,
 } from '../../../src/transforms';
 import { AddLinkPanel } from './add-link-panel';
+import { ColorPicker } from './color-picker';
 import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
 
 const toggleTextFormatHandler =
@@ -86,17 +87,7 @@ export const NosToolbar = () => {
           const { type, icon: Icon, title } = item;
           if (type === 'button') {
             const { format, action } = item;
-            if (format) {
-              return (
-                <IconButton
-                  onMouseDown={toggleTextFormatHandler(editor, format)}
-                  key={title}
-                  title={title}
-                >
-                  <Icon />
-                </IconButton>
-              );
-            }
+
             if (checkIsMenuItemListType(action)) {
               return (
                 <IconButton
@@ -124,7 +115,32 @@ export const NosToolbar = () => {
               );
             }
 
-            // more buttons actions
+            if (action === 'colorPicker') {
+              const format = item.format as 'color' | 'bgColor';
+              return (
+                <ColorPicker
+                  editor={editor}
+                  format={format}
+                  icon={Icon}
+                  key={title}
+                  title={title}
+                />
+              );
+            }
+
+            if (format) {
+              return (
+                <IconButton
+                  onMouseDown={toggleTextFormatHandler(editor, format)}
+                  key={title}
+                  title={title}
+                >
+                  <Icon />
+                </IconButton>
+              );
+            }
+
+            // /more buttons actions
             return (
               <IconButton
                 // onClick={(e) => {
@@ -165,6 +181,7 @@ export const NosToolbar = () => {
               );
             }
           }
+
           return null;
         });
         return groupIndex === toolbarGroups.length - 1 ? (

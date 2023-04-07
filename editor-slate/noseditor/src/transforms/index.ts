@@ -26,7 +26,7 @@ export const toggleMark = (
 
 export const addMarkData = (
   editor: Editor,
-  data: { format: keyof Omit<Text, 'text'>, value?: string|boolean },
+  data: { format: keyof Omit<Text, 'text'>; value?: string | boolean },
 ) => {
   // const isActive = isMarkActive(editor, format);
   const isActive = false;
@@ -36,8 +36,6 @@ export const addMarkData = (
     Editor.addMark(editor, data.format, data.value);
   }
 };
-
-
 
 export const isTextAlignActive = (editor, align) => {
   const { selection } = editor;

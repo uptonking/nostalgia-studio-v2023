@@ -4,6 +4,7 @@ import {
   AlignTextLeft as AlignTextLeftIcon,
   AlignTextRight as AlignTextRightIcon,
   Code as CodeIcon,
+  CosmeticBrush as HighlightColorIcon,
   DownOne as TriangleDownIcon,
   Find as FindIcon,
   FontSizeTwo as FontSizeIcon,
@@ -32,14 +33,15 @@ type ActionButtonType = {
   icon: Icon;
   format?: TextFormats;
   action?:
-    | 'align'
-    | 'link'
-    | (typeof ListTypes)[keyof typeof ListTypes]
-    | 'image'
-    | 'table'
-    | 'undo'
-    | 'redo'
-    | 'find';
+  | 'align'
+  | 'link'
+  | (typeof ListTypes)[keyof typeof ListTypes]
+  | 'image'
+  | 'table'
+  | 'colorPicker'
+  | 'undo'
+  | 'redo'
+  | 'find';
   title?: string;
 };
 
@@ -168,7 +170,20 @@ export const defaultToolbarConfig: ToolbarConfigType = [
       format: 'strikethrough',
       title: 'toggle strikethrough',
     },
-    // todo font-color
+    {
+      type: 'button',
+      icon: FontSizeIcon,
+      action: 'colorPicker',
+      format: 'color',
+      title: 'Font Color',
+    },
+    {
+      type: 'button',
+      icon: HighlightColorIcon,
+      action: 'colorPicker',
+      format: 'bgColor',
+      title: 'Highlight Color',
+    },
   ],
   [
     {

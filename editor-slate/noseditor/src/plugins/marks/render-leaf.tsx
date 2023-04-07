@@ -1,8 +1,8 @@
-import './styles.scss';
-
 import * as React from 'react';
 
 import type { RenderLeafProps } from 'slate-react';
+
+import { css } from '@linaria/core';
 
 export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   if (leaf.bold) {
@@ -10,7 +10,7 @@ export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   }
 
   if (leaf.code) {
-    children = <code>{children}</code>;
+    children = <code className={codeCss}>{children}</code>;
   }
 
   if (leaf.italic) {
@@ -26,24 +26,36 @@ export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   }
 
   if (leaf.superscript) {
-    children = <sup>{children}</sup>
+    children = <sup>{children}</sup>;
   }
   if (leaf.subscript) {
-    children = <sub>{children}</sub>
+    children = <sub>{children}</sub>;
   }
 
   let styles = {} as React.CSSProperties;
   if (leaf.fontSize) {
-    styles = { ...styles, fontSize: leaf.fontSize }
+    styles = { ...styles, fontSize: leaf.fontSize };
   }
   if (leaf.color) {
-    styles = { ...styles, color: leaf.color }
+    styles = { ...styles, color: leaf.color };
   }
   if (leaf.bgColor) {
-    styles = { ...styles, backgroundColor: leaf.color }
+    styles = { ...styles, backgroundColor: leaf.bgColor };
   }
 
-  // console.log(';; leaf.fontSize ', leaf.fontSize, styles)
-
-  return <span style={styles} {...attributes}>{children}</span>;
+  return (
+    <span style={styles} {...attributes}>
+      {children}
+    </span>
+  );
 };
+
+const codeCss = css`
+  margin-left: 2px;
+  margin-right: 2px;
+  padding: 2px 3px;
+  border-radius: 3px;
+  font-size: 85%;
+  white-space: break-spaces;
+  background-color: #eceff4;
+`;

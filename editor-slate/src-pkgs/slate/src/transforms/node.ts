@@ -99,18 +99,6 @@ export interface NodeTransforms {
       merge?: PropsMerge;
     },
   ) => void;
-  /** Split nodes at the specified location. If no location is specified, split the selection. */
-  splitNodes: <T extends Node>(
-    editor: Editor,
-    options?: {
-      at?: Location;
-      match?: NodeMatch<T>;
-      mode?: RangeMode;
-      always?: boolean;
-      height?: number;
-      voids?: boolean;
-    },
-  ) => void;
   /**
    * Unset properties of nodes at the specified location.
    * If no location is specified, use the selection.
@@ -123,6 +111,18 @@ export interface NodeTransforms {
       match?: NodeMatch<T>;
       mode?: MaximizeMode;
       split?: boolean;
+      voids?: boolean;
+    },
+  ) => void;
+  /** Split nodes at the specified location. If no location is specified, split the selection. */
+  splitNodes: <T extends Node>(
+    editor: Editor,
+    options?: {
+      at?: Location;
+      match?: NodeMatch<T>;
+      mode?: RangeMode;
+      always?: boolean;
+      height?: number;
       voids?: boolean;
     },
   ) => void;
@@ -723,9 +723,35 @@ export const NodeTransforms: NodeTransforms = {
   },
 
   /**
+   * Unset properties on the nodes at a location.
+   */
+  unsetNodes<T extends Node>(
+    editor: Editor,
+    props: string | string[],
+    options: {
+      at?: Location;
+      match?: NodeMatch<T>;
+      mode?: MaximizeMode;
+      split?: boolean;
+      voids?: boolean;
+    } = {},
+  ): void {
+    if (!Array.isArray(props)) {
+      props = [props];
+    }
+
+    const obj = {};
+
+    for (const key of props) {
+      obj[key] = null;
+    }
+
+    Transforms.setNodes(editor, obj, options);
+  },
+
+  /**
    * Split the nodes at a specific location.
    */
-
   splitNodes<T extends Node>(
     editor: Editor,
     options: {
@@ -853,34 +879,6 @@ export const NodeTransforms: NodeTransforms = {
         afterRef?.unref();
       }
     });
-  },
-
-  /**
-   * Unset properties on the nodes at a location.
-   */
-
-  unsetNodes<T extends Node>(
-    editor: Editor,
-    props: string | string[],
-    options: {
-      at?: Location;
-      match?: NodeMatch<T>;
-      mode?: MaximizeMode;
-      split?: boolean;
-      voids?: boolean;
-    } = {},
-  ): void {
-    if (!Array.isArray(props)) {
-      props = [props];
-    }
-
-    const obj = {};
-
-    for (const key of props) {
-      obj[key] = null;
-    }
-
-    Transforms.setNodes(editor, obj, options);
   },
 
   /**

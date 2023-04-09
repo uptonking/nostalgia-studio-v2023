@@ -1,5 +1,5 @@
 .nosedit-app {
-  color: #434c5e;
+  color: var(--nos-palette-gray900, #434c5e);
   .nosedit-header {
     position: sticky;
     top: 0px;
@@ -17,10 +17,6 @@
     margin-right: 24px;
   }
 
-  .nosedit-logo {
-    font-size: 20px;
-  }
-
   .nosedit-toolbar {
     display: flex;
     justify-content: center;
@@ -36,7 +32,7 @@
     // z-index: 1;
     display: flex;
     justify-content: center;
-    background-color: #f2f4f8;
+    background-color: var(--nos-palette-gray50, #f1f3f5);
   }
 
   .nos-editor-container {

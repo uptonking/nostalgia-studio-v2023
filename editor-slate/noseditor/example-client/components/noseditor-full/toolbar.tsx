@@ -24,34 +24,36 @@ import { ParagraphSpec } from '../../../src/plugins/paragraph/utils';
 import { themed } from '../../../src/styles';
 import {
   addMarkData,
+  isMarkActive,
   toggleElement,
   toggleMark,
   toggleTextAlign,
 } from '../../../src/transforms';
 import { AddLinkPanel } from './add-link-panel';
 import { ColorPicker } from './color-picker';
+import { ToolbarButton } from './toolbar-button';
 import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
 
 const toggleTextFormatHandler =
   (editor: Editor, format: TextFormats) =>
-  (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleMark(editor, format);
-  };
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      toggleMark(editor, format);
+    };
 
 const toggleTextAlignHandler =
   (editor: Editor, align?: TextAlignValueType) =>
-  (event: ChangeEvent<HTMLSelectElement>) => {
-    toggleTextAlign(editor, event.target.value as TextAlignValueType);
-    // console.log(';; txt-align ', event.target.value)
-  };
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      toggleTextAlign(editor, event.target.value as TextAlignValueType);
+      // console.log(';; txt-align ', event.target.value)
+    };
 
 const addTextFormatHandler =
   (editor: Editor, format: TextFormats, value = true) =>
-  (event: ChangeEvent<HTMLSelectElement>) => {
-    // event.preventDefault();
-    addMarkData(editor, { format, value: event.target.value });
-  };
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      // event.preventDefault();
+      addMarkData(editor, { format, value: event.target.value });
+    };
 
 const checkIsMenuItemListType = (
   action: string,
@@ -60,10 +62,10 @@ const checkIsMenuItemListType = (
 
 const toggleListTypesHandler =
   (editor: Editor, list: (typeof ListTypes)[keyof typeof ListTypes]) =>
-  (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleList(editor, { listType: list });
-  };
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      toggleList(editor, { listType: list });
+    };
 
 const useShowAddLinkPanel = ({ initialShow = false } = {}) => {
   const [showAddLink, setShowAddLink] = useState(initialShow);
@@ -74,6 +76,11 @@ const useToolbarGroups = (initialConfig = defaultToolbarConfig) => {
   const [toolbarGroups, setToolbarGroups] = useState(initialConfig);
   return { toolbarGroups, setToolbarGroups };
 };
+
+
+const ToolbarBtnActiveClassName = "isToolbarBtnActive";
+
+
 
 export const NosToolbar = () => {
   const editor = useSlateStatic();
@@ -129,14 +136,16 @@ export const NosToolbar = () => {
             }
 
             if (format) {
+              // /for bold/italic/underline
               return (
-                <IconButton
+                <ToolbarButton
                   onMouseDown={toggleTextFormatHandler(editor, format)}
+                  className={isMarkActive(editor, format) ? ToolbarBtnActiveClassName : ''}
                   key={title}
                   title={title}
                 >
                   <Icon />
-                </IconButton>
+                </ToolbarButton>
               );
             }
 
@@ -231,7 +240,7 @@ const dropdownCss = css`
   color: ${themed.color.text.muted};
   cursor: pointer;
   &:hover {
-    background-color: ${themed.color.background};
+    background-color: ${themed.color.background.hover};
   }
   &:focus-visible {
     outline-width: 0px;

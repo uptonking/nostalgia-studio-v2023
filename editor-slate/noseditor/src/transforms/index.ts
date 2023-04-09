@@ -1,12 +1,12 @@
 import { Editor, Element, Text, Transforms } from 'slate';
 
-import { TextAlignValues, TextAlignValueType } from '../utils';
+import { TextAlignValues, type TextAlignValueType } from '../utils';
 
 export const toggleElement = (editor: Editor, type: Element['type']) => {
   Transforms.setNodes(editor, { type });
 };
 
-const isMarkActive = (editor: Editor, format: keyof Omit<Text, 'text'>) => {
+export const isMarkActive = (editor: Editor, format: keyof Omit<Text, 'text'>) => {
   const marks = Editor.marks(editor);
   return marks ? marks[format] === true : false;
 };
@@ -61,5 +61,6 @@ export const toggleTextAlign = (editor: Editor, align: TextAlignValueType) => {
       textAlign: isActive ? undefined : align,
     };
   }
+
   Transforms.setNodes<Element>(editor, newProperties);
 };

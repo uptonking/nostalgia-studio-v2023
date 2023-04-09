@@ -10,9 +10,11 @@ import {
   FontSizeTwo as FontSizeIcon,
   InsertTable as InsertTableIcon,
   Link as LinkIcon,
-  ListCheckbox as ListCheckboxIcon,
+  List as ListCheckboxIcon,
+  ListOne as ListUnorderedIcon,
   OrderedList as ListOrderedIcon,
   Pic as ImageIcon,
+  Quote as BlockQuoteIcon,
   Redo as RedoIcon,
   RightOne as TriangleRightIcon,
   Strikethrough as StrikethroughIcon,
@@ -21,7 +23,6 @@ import {
   TextUnderline as UnderlineIcon,
   Undo as UndoIcon,
   Unlink as UnlinkIcon,
-  UnorderedList as ListUnorderedIcon,
 } from '@icon-park/react';
 import type { Icon } from '@icon-park/react/lib/runtime';
 
@@ -33,15 +34,16 @@ type ActionButtonType = {
   icon: Icon;
   format?: TextFormats;
   action?:
-  | 'align'
-  | 'link'
-  | (typeof ListTypes)[keyof typeof ListTypes]
-  | 'image'
-  | 'table'
-  | 'colorPicker'
-  | 'undo'
-  | 'redo'
-  | 'find';
+    | 'align'
+    | 'link'
+    | (typeof ListTypes)[keyof typeof ListTypes]
+    | 'image'
+    | 'table'
+    | 'blockquote'
+    | 'colorPicker'
+    | 'undo'
+    | 'redo'
+    | 'find';
   title?: string;
 };
 
@@ -150,25 +152,25 @@ export const defaultToolbarConfig: ToolbarConfigType = [
       type: 'button',
       icon: BoldIcon,
       format: 'bold',
-      title: 'toggle bold',
+      title: 'Toggle Bold',
     },
     {
       type: 'button',
       icon: ItalicIcon,
       format: 'italic',
-      title: 'toggle italic',
+      title: 'Toggle Italic',
     },
     {
       type: 'button',
       icon: UnderlineIcon,
       format: 'underline',
-      title: 'toggle underline',
+      title: 'Toggle Underline',
     },
     {
       type: 'button',
       icon: StrikethroughIcon,
       format: 'strikethrough',
-      title: 'toggle strikethrough',
+      title: 'Toggle Strikethrough',
     },
     {
       type: 'button',
@@ -190,19 +192,19 @@ export const defaultToolbarConfig: ToolbarConfigType = [
       type: 'button',
       icon: ListUnorderedIcon,
       action: ListTypes.Bulleted,
-      title: 'toggle bullet list',
+      title: 'Toggle Bullet List',
     },
     {
       type: 'button',
       icon: ListOrderedIcon,
       action: ListTypes.Numbered,
-      title: 'toggle ordered list',
+      title: 'Toggle Ordered List',
     },
     {
       type: 'button',
       icon: ListCheckboxIcon,
       action: ListTypes.TodoList,
-      title: 'toggle checkbox list',
+      title: 'Toggle Checkbox List',
     },
     {
       type: 'dropdown',
@@ -244,13 +246,13 @@ export const defaultToolbarConfig: ToolbarConfigType = [
       title: 'Add Link',
     },
     // todo image
-    // todo table
     {
       type: 'button',
       icon: ImageIcon,
       action: 'image',
       title: 'Insert Image',
     },
+    // todo table
     {
       type: 'button',
       icon: InsertTableIcon,
@@ -260,9 +262,15 @@ export const defaultToolbarConfig: ToolbarConfigType = [
     // todo blockquote
     {
       type: 'button',
+      icon: BlockQuoteIcon,
+      action: 'blockquote',
+      title: 'Toggle Blockquote',
+    },
+    {
+      type: 'button',
       icon: CodeIcon,
       format: 'code',
-      title: 'toggle text as code',
+      title: 'Toggle text as code',
     },
     // {
     //   type: 'button',

@@ -121,11 +121,32 @@ export const createEditor = (): Editor => {
             { match: Text.isText, split: true },
           );
         } else {
+          // 对于光标，直接设置全局 marks. 渲染层根据 mark 切为多个 decoration 做渲染
           const marks = {
             ...(Editor.marks(editor) || {}),
             [key]: value,
           };
+          editor.marks = marks;
 
+          if (!FLUSHING.get(editor)) {
+            editor.onChange();
+          }
+        }
+      }
+    },
+    /** 原理是在文本节点上执行 Transforms.unsetNodes  */
+    removeMark: (key: string) => {
+      const { selection } = editor;
+
+      if (selection) {
+        if (Range.isExpanded(selection)) {
+          Transforms.unsetNodes(editor, key, {
+            match: Text.isText,
+            split: true,
+          });
+        } else {
+          const marks = { ...(Editor.marks(editor) || {}) };
+          delete marks[key];
           editor.marks = marks;
           if (!FLUSHING.get(editor)) {
             editor.onChange();
@@ -291,27 +312,6 @@ export const createEditor = (): Editor => {
         }
       }
     },
-
-    /** 原理是在文本节点上执行 Transforms.unsetNodes  */
-    removeMark: (key: string) => {
-      const { selection } = editor;
-
-      if (selection) {
-        if (Range.isExpanded(selection)) {
-          Transforms.unsetNodes(editor, key, {
-            match: Text.isText,
-            split: true,
-          });
-        } else {
-          const marks = { ...(Editor.marks(editor) || {}) };
-          delete marks[key];
-          editor.marks = marks;
-          if (!FLUSHING.get(editor)) {
-            editor.onChange();
-          }
-        }
-      }
-    },
   };
 
   return editor;
@@ -320,7 +320,6 @@ export const createEditor = (): Editor => {
 /**
  * Get the "dirty" paths generated from an operation.
  */
-
 const getDirtyPaths = (op: Operation): Path[] => {
   switch (op.type) {
     case 'insert_text':

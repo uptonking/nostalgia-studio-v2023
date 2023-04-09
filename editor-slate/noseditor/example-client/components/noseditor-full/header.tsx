@@ -5,8 +5,10 @@ import {
   PreviewOpen as ViewOnlyIcon,
   Refresh as ResetIcon,
 } from '@icon-park/react';
+import { css } from '@linaria/core';
 
 import { IconButton } from '../../../src';
+import { themed } from '../../../src/styles';
 
 type NosNavbarProps = {
   isReadOnly: boolean;
@@ -25,7 +27,7 @@ export const NosNavbar = (props: NosNavbarProps) => {
 
   return (
     <div className='nosedit-navbar'>
-      <div className='nosedit-logo'>NosEditor</div>
+      <div className={logoCss}>NosEditor</div>
 
       <div className='flex gap-3'>
         <IconButton onClick={() => setIsReadOnly((v) => !v)}>
@@ -42,3 +44,8 @@ export const NosNavbar = (props: NosNavbarProps) => {
     </div>
   );
 };
+
+const logoCss = css`
+  font-size: 20px;
+  color: ${themed.color.brand.primary};
+`;

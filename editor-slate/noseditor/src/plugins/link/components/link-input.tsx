@@ -18,7 +18,7 @@ import type { LinkElementType } from '../types';
 
 type LinkInputProps = {
   linkElement: LinkElementType;
-  /** the link url */
+  /** the link url; also support plain text */
   linkHref?: string;
 } & React.HTMLProps<HTMLDivElement>;
 
@@ -102,9 +102,6 @@ export const LinkInput = forwardRef<HTMLDivElement, LinkInputProps>(
 
 const StyledIconButton = styled(IconButton)`
   margin-left: 6px;
-  &:hover {
-    background-color: ${themed.color.background};
-  }
 `;
 
 const linkContainerCss = css`
@@ -130,6 +127,7 @@ const mainCss = css`
 
 const linkUrlCss = css`
   max-width: 500px;
+  line-height: 1.8;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -137,9 +135,11 @@ const linkUrlCss = css`
 `;
 
 const linkInputCss = css`
+  min-width: 360px;
+  line-height: 1.8;
   color: ${themed.color.text.muted};
-  border: 1px solid ${themed.color.background};
+  border: 1px solid ${themed.color.border.muted};
   &:focus-visible {
-    outline-color: ${themed.color.border.muted};
+    outline-color: ${themed.color.border.light};
   }
 `;

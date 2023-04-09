@@ -1,101 +1,101 @@
 {
-  "markdownFormatter.enable": true,
-  "markdownFormatter.fullWidthTurnHalfWidth": "auto",
-  "markdownFormatter.codeAreaToBlock": "",
-  "markdownFormatter.formatCodes": true,
-  "markdownFormatter.formatULSymbol": false,
-  "markdownFormatter.formatOpt": {
-    "indent_size": 2,
-    "e4x": true,
-    "brace_style": "collapse,preserve-inline",
-    "indent_with_tabs": false,
-    "space_after_anon_function": false,
-    "space_after_named_function": false
-  },
   "[markdown]": {
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.defaultFormatter": "mervin.markdown-formatter",
     "editor.formatOnSave": false,
-    "editor.renderWhitespace": "all",
     "editor.quickSuggestions": {
-      "other": true,
       "comments": true,
+      "other": true,
       "strings": true
     },
+    "editor.renderWhitespace": "all",
     "editor.snippetSuggestions": "top",
-    "editor.tabCompletion": "on",
-    "editor.acceptSuggestionOnEnter": "on",
-    "editor.defaultFormatter": "mervin.markdown-formatter"
+    "editor.tabCompletion": "on"
   },
   "bookmarks.saveBookmarksInProject": true,
-  "maptz.regionfolder": {
-    "[markdown]": {
-      "defaultFoldStartRegex": "\\<!--[\\s]*#region[\\s]+/folded[\\s]*(.*)",
-      "foldStart": "<!-- #region [NAME]",
-      "foldStartRegex": "\\<!--[\\s]*#region[\\s]*(.*)",
-      "foldEnd": "<!-- #endregion",
-      "foldEndRegex": "\\<!--[\\s]*#endregion"
-    },
-    "[html]": {
-      "defaultFoldStartRegex": "\\<!--[\\s]*#region[\\s]+/folded[\\s]*(.*)",
-      "foldStart": "<!-- #region [NAME]",
-      "foldStartRegex": "\\<!--[\\s]*#region[\\s]*(.*)",
-      "foldEnd": "<!-- #endregion",
-      "foldEndRegex": "\\<!--[\\s]*#endregion"
-    },
-    "[css]": {
-      "defaultFoldStartRegex": "/\\*[\\s]*#region[\\s]+/folded(.*)",
-      "foldStart": "/* #region [NAME]",
-      "foldStartRegex": "/\\*[\\s]*#region[\\s]+(.*)",
-      "foldEnd": "/* #endregion",
-      "foldEndRegex": "/\\*[\\s]*#endregion(.*)"
-    },
-    "[scss]": {
-      "defaultFoldStartRegex": "/\\*[\\s]*#region[\\s]+/folded(.*)",
-      "foldStart": "/* #region [NAME]",
-      "foldStartRegex": "/\\*[\\s]*#region[\\s]+(.*)",
-      "foldEnd": "/* #endregion",
-      "foldEndRegex": "/\\*[\\s]*#endregion(.*)"
-    },
-    "[javascript]": {
-      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
-      "foldStart": "// #region [NAME]",
-      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)",
-      "foldEnd": "// #endregion",
-      "foldEndRegex": "//[\\s]*#endregion(.*)"
-    },
-    "[typescript]": {
-      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
-      "foldStart": "// #region [NAME]",
-      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)",
-      "foldEnd": "// #endregion",
-      "foldEndRegex": "//[\\s]*#endregion(.*)"
-    },
-    "[javascriptreact]": {
-      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
-      "foldStart": "// #region [NAME]",
-      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)",
-      "foldEnd": "// #endregion",
-      "foldEndRegex": "//[\\s]*#endregion(.*)"
-    },
-    "[typescriptreact]": {
-      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
-      "foldStart": "// #region [NAME]",
-      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)",
-      "foldEnd": "// #endregion",
-      "foldEndRegex": "//[\\s]*#endregion(.*)"
-    }
-  },
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.formatOnSaveMode": "modificationsIfAvailable",
-  "files.autoSave": "onFocusChange",
-  "explorer.fileNesting.enabled": true,
-  "explorer.fileNesting.patterns": {
-    "*.ts": "${capture}.test.ts,${capture}.spec.ts",
-    "*.js": "${capture}.test.js,${capture}.spec.js"
-  },
-  "tsImportSorter.configuration.autoFormat": "onSave",
   "editor.codeActionsOnSave": {
     "source.fixAll": false,
     "source.organizeImports": false,
     "source.sortMembers": false
-  }
+  },
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.js": "${capture}.test.js,${capture}.spec.js",
+    "*.ts": "${capture}.test.ts,${capture}.spec.ts"
+  },
+  "files.autoSave": "onFocusChange",
+  "maptz.regionfolder": {
+    "[css]": {
+      "defaultFoldStartRegex": "/\\*[\\s]*#region[\\s]+/folded(.*)",
+      "foldEnd": "/* #endregion",
+      "foldEndRegex": "/\\*[\\s]*#endregion(.*)",
+      "foldStart": "/* #region [NAME]",
+      "foldStartRegex": "/\\*[\\s]*#region[\\s]+(.*)"
+    },
+    "[html]": {
+      "defaultFoldStartRegex": "\\<!--[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldEnd": "<!-- #endregion",
+      "foldEndRegex": "\\<!--[\\s]*#endregion",
+      "foldStart": "<!-- #region [NAME]",
+      "foldStartRegex": "\\<!--[\\s]*#region[\\s]*(.*)"
+    },
+    "[javascript]": {
+      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldEnd": "// #endregion",
+      "foldEndRegex": "//[\\s]*#endregion(.*)",
+      "foldStart": "// #region [NAME]",
+      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)"
+    },
+    "[javascriptreact]": {
+      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldEnd": "// #endregion",
+      "foldEndRegex": "//[\\s]*#endregion(.*)",
+      "foldStart": "// #region [NAME]",
+      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)"
+    },
+    "[markdown]": {
+      "defaultFoldStartRegex": "\\<!--[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldEnd": "<!-- #endregion",
+      "foldEndRegex": "\\<!--[\\s]*#endregion",
+      "foldStart": "<!-- #region [NAME]",
+      "foldStartRegex": "\\<!--[\\s]*#region[\\s]*(.*)"
+    },
+    "[scss]": {
+      "defaultFoldStartRegex": "/\\*[\\s]*#region[\\s]+/folded(.*)",
+      "foldEnd": "/* #endregion",
+      "foldEndRegex": "/\\*[\\s]*#endregion(.*)",
+      "foldStart": "/* #region [NAME]",
+      "foldStartRegex": "/\\*[\\s]*#region[\\s]+(.*)"
+    },
+    "[typescript]": {
+      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldEnd": "// #endregion",
+      "foldEndRegex": "//[\\s]*#endregion(.*)",
+      "foldStart": "// #region [NAME]",
+      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)"
+    },
+    "[typescriptreact]": {
+      "defaultFoldStartRegex": "//[\\s]*#region[\\s]+/folded[\\s]*(.*)",
+      "foldEnd": "// #endregion",
+      "foldEndRegex": "//[\\s]*#endregion(.*)",
+      "foldStart": "// #region [NAME]",
+      "foldStartRegex": "//[\\s]*#region[\\s]+(.*)"
+    }
+  },
+  "markdownFormatter.codeAreaToBlock": "",
+  "markdownFormatter.enable": true,
+  "markdownFormatter.formatCodes": true,
+  "markdownFormatter.formatOpt": {
+    "brace_style": "collapse,preserve-inline",
+    "e4x": true,
+    "indent_size": 2,
+    "indent_with_tabs": false,
+    "space_after_anon_function": false,
+    "space_after_named_function": false
+  },
+  "markdownFormatter.formatULSymbol": false,
+  "markdownFormatter.fullWidthTurnHalfWidth": "auto",
+  "tsImportSorter.configuration.autoFormat": "onSave",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -31,10 +31,10 @@ const StyledButton = styled.button<IconButtonProps>`
   border: 0;
   border-radius: 6px;
   background-color: transparent;
-  color: #4c566a;
+  color: ${themed.color.text.muted};
   cursor: pointer;
   &:hover {
-    background-color: #f3f4f5;
+    background-color: ${themed.color.background.hover}
   }
   &:focus-visible {
     outline-color: ${themed.color.border.muted};

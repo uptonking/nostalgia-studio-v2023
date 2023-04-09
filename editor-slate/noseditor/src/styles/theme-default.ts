@@ -5,64 +5,91 @@
  */
 
 export const tokens = {
-  'palette.black': '#1d2129',
+  'palette.black': '#212529',
   'palette.white': '#ffffff',
-  'palette.gray0': '#f2f4f8',
-  'palette.gray1': '#eceff4',
-  'palette.gray2': '#e5e9f0',
-  'palette.gray3': '#d8dee9',
-  'palette.gray4': '#afb8c1',
-  'palette.gray5': '#6e7781',
-  'palette.gray6': '#4c566a',
-  'palette.gray7': '#434c5e',
-  'palette.gray8': '#434c5e',
-  'palette.gray9': '#2e3440',
-  'palette.green0': '#dafbe1',
-  'palette.green1': '#aceebb',
-  'palette.green2': '#6fdd8b',
-  'palette.green3': '#4ac26b',
-  'palette.green4': '#2da44e',
-  'palette.green5': '#1a7f37',
-  'palette.green6': '#116329',
-  'palette.green7': '#044f1e',
-  'palette.green8': '#003d16',
-  'palette.green9': '#002d11',
-  'palette.blue0': '#ddf4ff',
-  'palette.blue1': '#b6e3ff',
-  'palette.blue2': '#80ccff',
-  'palette.blue3': '#54aeff',
-  'palette.blue4': '#218bff',
-  'palette.blue5': '#0969da',
-  'palette.blue6': '#0550ae',
-  'palette.blue7': '#033d8b',
-  'palette.blue8': '#0a3069',
-  'palette.blue9': '#002155',
-  'palette.coral0': '#fff0eb',
-  'palette.coral1': '#ffd6cc',
-  'palette.coral2': '#ffb4a1',
-  'palette.coral3': '#fd8c73',
-  'palette.coral4': '#ec6547',
-  'palette.coral5': '#c4432b',
-  'palette.coral6': '#9e2f1c',
-  'palette.coral7': '#801f0f',
-  'palette.coral8': '#691105',
-  'palette.coral9': '#510901',
-  'palette.red0': '#ffebe9',
-  'palette.red1': '#ffcecb',
-  'palette.red2': '#ffaba8',
-  'palette.red3': '#ff8182',
-  'palette.red4': '#fa4549',
-  'palette.red5': '#cf222e',
-  'palette.red6': '#a40e26',
-  'palette.red7': '#82071e',
-  'palette.red8': '#660018',
-  'palette.red9': '#4c0014',
-  'color.background': '#f2f4f8',
-  'color.text.body': '#1d2129',
+  'palette.gray25': '#f8f9fa',
+  'palette.gray50': '#f1f3f5',
+  'palette.gray100': '#e5e8ec',
+  'palette.gray200': '#d0d6dd',
+  'palette.gray300': '#bbc2ca',
+  'palette.gray400': '#a7aeb6',
+  'palette.gray500': '#9299a1',
+  'palette.gray600': '#828990',
+  'palette.gray700': '#6f757c',
+  'palette.gray800': '#5c6167',
+  'palette.gray900': '#474b4f',
+  'palette.grey50': '#f2f4f8',
+  'palette.grey100': '#eceff4',
+  'palette.grey200': '#e5e9f0',
+  'palette.grey300': '#d8dee9',
+  'palette.grey400': '#afb8c1',
+  'palette.grey500': '#6e7781',
+  'palette.grey600': '#4c566a',
+  'palette.grey700': '#434c5e',
+  'palette.grey800': '#434c5e',
+  'palette.grey900': '#2e3440',
+  'palette.teal50': '#e6fcf5',
+  'palette.teal100': '#c7f1e5',
+  'palette.teal200': '#93e5cc',
+  'palette.teal300': '#58d7b1',
+  'palette.teal400': '#1fc393',
+  'palette.teal500': '#1bac81',
+  'palette.teal600': '#189973',
+  'palette.teal700': '#158363',
+  'palette.teal800': '#116c52',
+  'palette.teal900': '#0d5540',
+  'palette.green50': '#dafbe1',
+  'palette.green100': '#aceebb',
+  'palette.green200': '#6fdd8b',
+  'palette.green300': '#4ac26b',
+  'palette.green400': '#2da44e',
+  'palette.green500': '#1a7f37',
+  'palette.green600': '#116329',
+  'palette.green700': '#044f1e',
+  'palette.green800': '#003d16',
+  'palette.green900': '#002d11',
+  'palette.blue50': '#edf2ff',
+  'palette.blue100': '#e2e7fe',
+  'palette.blue200': '#cad4fd',
+  'palette.blue300': '#b0bffd',
+  'palette.blue400': '#95a9fc',
+  'palette.blue500': '#7791fb',
+  'palette.blue600': '#5f7efa',
+  'palette.blue700': '#506cdb',
+  'palette.blue800': '#4259b4',
+  'palette.blue900': '#34458c',
+  'palette.orange50': '#fff9db',
+  'palette.orange100': '#ffe4ca',
+  'palette.orange200': '#ffcb9b',
+  'palette.orange300': '#ffb066',
+  'palette.orange400': '#fe912b',
+  'palette.orange500': '#df7f26',
+  'palette.orange600': '#c77222',
+  'palette.orange700': '#ab621d',
+  'palette.orange800': '#8e5118',
+  'palette.orange900': '#6d3e12',
+  'palette.red50': '#fff5f5',
+  'palette.red100': '#ffe1e1',
+  'palette.red200': '#ffc7c7',
+  'palette.red300': '#ffabab',
+  'palette.red400': '#ff8b8b',
+  'palette.red500': '#f76868',
+  'palette.red600': '#dd5d5d',
+  'palette.red700': '#be5050',
+  'palette.red800': '#9d4242',
+  'palette.red900': '#793333',
+  'color.brand.primary': '#1bac81',
+  'color.brand.light': '#93e5cc',
+  'color.brand.lighter': '#e6fcf5',
+  'color.brand.dark': '#189973',
+  'color.brand.darker': '#116c52',
+  'color.background.default': '#f8f9fa',
+  'color.background.hover': '#f1f3f5',
+  'color.text.body': '#212529',
   'color.text.muted': '#6e7781',
-  'color.text.error': '#82071e',
-  'color.text.link': '#0969da',
-  'color.border.light': '#d8dee9',
+  'color.text.error': '#be5050',
+  'color.text.link': '#506cdb',
+  'color.border.light': '#bbc2ca',
   'color.border.muted': '#eceff4',
   'spacing.spacer0': '0',
   'spacing.spacerXs': '4px',
@@ -119,10 +146,10 @@ export const tokens = {
 export const meta = {
   'palette.black': {
     '_original': {
-      '$value': '#1d2129',
+      '$value': '#212529',
       '$extensions': {
         mode: {
-          light: '#1d2129',
+          light: '#212529',
           dark: '#010409',
         },
       },
@@ -139,10 +166,10 @@ export const meta = {
     },
     id: 'palette.black',
     '$type': 'color',
-    '$value': '#1d2129',
+    '$value': '#212529',
     '$extensions': {
       mode: {
-        light: '#1d2129',
+        light: '#212529',
         dark: '#010409',
       },
     },
@@ -177,7 +204,337 @@ export const meta = {
       },
     },
   },
-  'palette.gray0': {
+  'palette.gray25': {
+    '_original': {
+      '$value': '#f8f9fa',
+      '$extensions': {
+        mode: {
+          light: '#f8f9fa',
+          dark: '#f0f6fc',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray25',
+    '$type': 'color',
+    '$value': '#f8f9fa',
+    '$extensions': {
+      mode: {
+        light: '#f8f9fa',
+        dark: '#f0f6fc',
+      },
+    },
+  },
+  'palette.gray50': {
+    '_original': {
+      '$value': '#f1f3f5',
+      '$extensions': {
+        mode: {
+          light: '#f1f3f5',
+          dark: '#f0f6fc',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray50',
+    '$type': 'color',
+    '$value': '#f1f3f5',
+    '$extensions': {
+      mode: {
+        light: '#f1f3f5',
+        dark: '#f0f6fc',
+      },
+    },
+  },
+  'palette.gray100': {
+    '_original': {
+      '$value': '#e5e8ec',
+      '$extensions': {
+        mode: {
+          light: '#e5e8ec',
+          dark: '#c9d1d9',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray100',
+    '$type': 'color',
+    '$value': '#e5e8ec',
+    '$extensions': {
+      mode: {
+        light: '#e5e8ec',
+        dark: '#c9d1d9',
+      },
+    },
+  },
+  'palette.gray200': {
+    '_original': {
+      '$value': '#d0d6dd',
+      '$extensions': {
+        mode: {
+          light: '#d0d6dd',
+          dark: '#b1bac4',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray200',
+    '$type': 'color',
+    '$value': '#d0d6dd',
+    '$extensions': {
+      mode: {
+        light: '#d0d6dd',
+        dark: '#b1bac4',
+      },
+    },
+  },
+  'palette.gray300': {
+    '_original': {
+      '$value': '#bbc2ca',
+      '$extensions': {
+        mode: {
+          light: '#bbc2ca',
+          dark: '#8b949e',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray300',
+    '$type': 'color',
+    '$value': '#bbc2ca',
+    '$extensions': {
+      mode: {
+        light: '#bbc2ca',
+        dark: '#8b949e',
+      },
+    },
+  },
+  'palette.gray400': {
+    '_original': {
+      '$value': '#a7aeb6',
+      '$extensions': {
+        mode: {
+          light: '#a7aeb6',
+          dark: '#6e7681',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray400',
+    '$type': 'color',
+    '$value': '#a7aeb6',
+    '$extensions': {
+      mode: {
+        light: '#a7aeb6',
+        dark: '#6e7681',
+      },
+    },
+  },
+  'palette.gray500': {
+    '_original': {
+      '$value': '#9299a1',
+      '$extensions': {
+        mode: {
+          light: '#9299a1',
+          dark: '#484f58',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray500',
+    '$type': 'color',
+    '$value': '#9299a1',
+    '$extensions': {
+      mode: {
+        light: '#9299a1',
+        dark: '#484f58',
+      },
+    },
+  },
+  'palette.gray600': {
+    '_original': {
+      '$value': '#828990',
+      '$extensions': {
+        mode: {
+          light: '#828990',
+          dark: '#30363d',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray600',
+    '$type': 'color',
+    '$value': '#828990',
+    '$extensions': {
+      mode: {
+        light: '#828990',
+        dark: '#30363d',
+      },
+    },
+  },
+  'palette.gray700': {
+    '_original': {
+      '$value': '#6f757c',
+      '$extensions': {
+        mode: {
+          light: '#6f757c',
+          dark: '#21262d',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray700',
+    '$type': 'color',
+    '$value': '#6f757c',
+    '$extensions': {
+      mode: {
+        light: '#6f757c',
+        dark: '#21262d',
+      },
+    },
+  },
+  'palette.gray800': {
+    '_original': {
+      '$value': '#5c6167',
+      '$extensions': {
+        mode: {
+          light: '#5c6167',
+          dark: '#161b22',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray800',
+    '$type': 'color',
+    '$value': '#5c6167',
+    '$extensions': {
+      mode: {
+        light: '#5c6167',
+        dark: '#161b22',
+      },
+    },
+  },
+  'palette.gray900': {
+    '_original': {
+      '$value': '#474b4f',
+      '$extensions': {
+        mode: {
+          light: '#474b4f',
+          dark: '#0d1117',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.gray900',
+    '$type': 'color',
+    '$value': '#474b4f',
+    '$extensions': {
+      mode: {
+        light: '#474b4f',
+        dark: '#0d1117',
+      },
+    },
+  },
+  'palette.grey50': {
     '_original': {
       '$value': '#f2f4f8',
       '$extensions': {
@@ -197,7 +554,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray0',
+    id: 'palette.grey50',
     '$type': 'color',
     '$value': '#f2f4f8',
     '$extensions': {
@@ -207,7 +564,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray1': {
+  'palette.grey100': {
     '_original': {
       '$value': '#ECEFF4',
       '$extensions': {
@@ -227,7 +584,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray1',
+    id: 'palette.grey100',
     '$type': 'color',
     '$value': '#eceff4',
     '$extensions': {
@@ -237,7 +594,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray2': {
+  'palette.grey200': {
     '_original': {
       '$value': '#E5E9F0',
       '$extensions': {
@@ -257,7 +614,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray2',
+    id: 'palette.grey200',
     '$type': 'color',
     '$value': '#e5e9f0',
     '$extensions': {
@@ -267,7 +624,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray3': {
+  'palette.grey300': {
     '_original': {
       '$value': '#D8DEE9',
       '$extensions': {
@@ -287,7 +644,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray3',
+    id: 'palette.grey300',
     '$type': 'color',
     '$value': '#d8dee9',
     '$extensions': {
@@ -297,7 +654,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray4': {
+  'palette.grey400': {
     '_original': {
       '$value': '#afb8c1',
       '$extensions': {
@@ -317,7 +674,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray4',
+    id: 'palette.grey400',
     '$type': 'color',
     '$value': '#afb8c1',
     '$extensions': {
@@ -327,7 +684,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray5': {
+  'palette.grey500': {
     '_original': {
       '$value': '#6e7781',
       '$extensions': {
@@ -347,7 +704,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray5',
+    id: 'palette.grey500',
     '$type': 'color',
     '$value': '#6e7781',
     '$extensions': {
@@ -357,7 +714,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray6': {
+  'palette.grey600': {
     '_original': {
       '$value': '#4C566A',
       '$extensions': {
@@ -377,7 +734,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray6',
+    id: 'palette.grey600',
     '$type': 'color',
     '$value': '#4c566a',
     '$extensions': {
@@ -387,7 +744,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray7': {
+  'palette.grey700': {
     '_original': {
       '$value': '#434C5E',
       '$extensions': {
@@ -407,7 +764,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray7',
+    id: 'palette.grey700',
     '$type': 'color',
     '$value': '#434c5e',
     '$extensions': {
@@ -417,7 +774,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray8': {
+  'palette.grey800': {
     '_original': {
       '$value': '#434C5E',
       '$extensions': {
@@ -437,7 +794,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray8',
+    id: 'palette.grey800',
     '$type': 'color',
     '$value': '#434c5e',
     '$extensions': {
@@ -447,7 +804,7 @@ export const meta = {
       },
     },
   },
-  'palette.gray9': {
+  'palette.grey900': {
     '_original': {
       '$value': '#2E3440',
       '$extensions': {
@@ -467,7 +824,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.gray9',
+    id: 'palette.grey900',
     '$type': 'color',
     '$value': '#2e3440',
     '$extensions': {
@@ -477,7 +834,307 @@ export const meta = {
       },
     },
   },
-  'palette.green0': {
+  'palette.teal50': {
+    '_original': {
+      '$value': '#e6fcf5',
+      '$extensions': {
+        mode: {
+          light: '#e6fcf5',
+          dark: '#aff5b4',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal50',
+    '$type': 'color',
+    '$value': '#e6fcf5',
+    '$extensions': {
+      mode: {
+        light: '#e6fcf5',
+        dark: '#aff5b4',
+      },
+    },
+  },
+  'palette.teal100': {
+    '_original': {
+      '$value': '#c7f1e5',
+      '$extensions': {
+        mode: {
+          light: '#c7f1e5',
+          dark: '#7ee787',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal100',
+    '$type': 'color',
+    '$value': '#c7f1e5',
+    '$extensions': {
+      mode: {
+        light: '#c7f1e5',
+        dark: '#7ee787',
+      },
+    },
+  },
+  'palette.teal200': {
+    '_original': {
+      '$value': '#93e5cc',
+      '$extensions': {
+        mode: {
+          light: '#93e5cc',
+          dark: '#56d364',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal200',
+    '$type': 'color',
+    '$value': '#93e5cc',
+    '$extensions': {
+      mode: {
+        light: '#93e5cc',
+        dark: '#56d364',
+      },
+    },
+  },
+  'palette.teal300': {
+    '_original': {
+      '$value': '#58d7b1',
+      '$extensions': {
+        mode: {
+          light: '#58d7b1',
+          dark: '#3fb950',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal300',
+    '$type': 'color',
+    '$value': '#58d7b1',
+    '$extensions': {
+      mode: {
+        light: '#58d7b1',
+        dark: '#3fb950',
+      },
+    },
+  },
+  'palette.teal400': {
+    '_original': {
+      '$value': '#1fc393',
+      '$extensions': {
+        mode: {
+          light: '#1fc393',
+          dark: '#2ea043',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal400',
+    '$type': 'color',
+    '$value': '#1fc393',
+    '$extensions': {
+      mode: {
+        light: '#1fc393',
+        dark: '#2ea043',
+      },
+    },
+  },
+  'palette.teal500': {
+    '_original': {
+      '$value': '#1bac81',
+      '$extensions': {
+        mode: {
+          light: '#1bac81',
+          dark: '#238636',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal500',
+    '$type': 'color',
+    '$value': '#1bac81',
+    '$extensions': {
+      mode: {
+        light: '#1bac81',
+        dark: '#238636',
+      },
+    },
+  },
+  'palette.teal600': {
+    '_original': {
+      '$value': '#189973',
+      '$extensions': {
+        mode: {
+          light: '#189973',
+          dark: '#196c2e',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal600',
+    '$type': 'color',
+    '$value': '#189973',
+    '$extensions': {
+      mode: {
+        light: '#189973',
+        dark: '#196c2e',
+      },
+    },
+  },
+  'palette.teal700': {
+    '_original': {
+      '$value': '#158363',
+      '$extensions': {
+        mode: {
+          light: '#158363',
+          dark: '#0f5323',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal700',
+    '$type': 'color',
+    '$value': '#158363',
+    '$extensions': {
+      mode: {
+        light: '#158363',
+        dark: '#0f5323',
+      },
+    },
+  },
+  'palette.teal800': {
+    '_original': {
+      '$value': '#116c52',
+      '$extensions': {
+        mode: {
+          light: '#116c52',
+          dark: '#033a16',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal800',
+    '$type': 'color',
+    '$value': '#116c52',
+    '$extensions': {
+      mode: {
+        light: '#116c52',
+        dark: '#033a16',
+      },
+    },
+  },
+  'palette.teal900': {
+    '_original': {
+      '$value': '#0d5540',
+      '$extensions': {
+        mode: {
+          light: '#0d5540',
+          dark: '#04260f',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.teal900',
+    '$type': 'color',
+    '$value': '#0d5540',
+    '$extensions': {
+      mode: {
+        light: '#0d5540',
+        dark: '#04260f',
+      },
+    },
+  },
+  'palette.green50': {
     '_original': {
       '$value': '#dafbe1',
       '$extensions': {
@@ -497,7 +1154,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green0',
+    id: 'palette.green50',
     '$type': 'color',
     '$value': '#dafbe1',
     '$extensions': {
@@ -507,7 +1164,7 @@ export const meta = {
       },
     },
   },
-  'palette.green1': {
+  'palette.green100': {
     '_original': {
       '$value': '#aceebb',
       '$extensions': {
@@ -527,7 +1184,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green1',
+    id: 'palette.green100',
     '$type': 'color',
     '$value': '#aceebb',
     '$extensions': {
@@ -537,7 +1194,7 @@ export const meta = {
       },
     },
   },
-  'palette.green2': {
+  'palette.green200': {
     '_original': {
       '$value': '#6fdd8b',
       '$extensions': {
@@ -557,7 +1214,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green2',
+    id: 'palette.green200',
     '$type': 'color',
     '$value': '#6fdd8b',
     '$extensions': {
@@ -567,7 +1224,7 @@ export const meta = {
       },
     },
   },
-  'palette.green3': {
+  'palette.green300': {
     '_original': {
       '$value': '#4ac26b',
       '$extensions': {
@@ -587,7 +1244,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green3',
+    id: 'palette.green300',
     '$type': 'color',
     '$value': '#4ac26b',
     '$extensions': {
@@ -597,7 +1254,7 @@ export const meta = {
       },
     },
   },
-  'palette.green4': {
+  'palette.green400': {
     '_original': {
       '$value': '#2da44e',
       '$extensions': {
@@ -617,7 +1274,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green4',
+    id: 'palette.green400',
     '$type': 'color',
     '$value': '#2da44e',
     '$extensions': {
@@ -627,7 +1284,7 @@ export const meta = {
       },
     },
   },
-  'palette.green5': {
+  'palette.green500': {
     '_original': {
       '$value': '#1a7f37',
       '$extensions': {
@@ -647,7 +1304,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green5',
+    id: 'palette.green500',
     '$type': 'color',
     '$value': '#1a7f37',
     '$extensions': {
@@ -657,7 +1314,7 @@ export const meta = {
       },
     },
   },
-  'palette.green6': {
+  'palette.green600': {
     '_original': {
       '$value': '#116329',
       '$extensions': {
@@ -677,7 +1334,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green6',
+    id: 'palette.green600',
     '$type': 'color',
     '$value': '#116329',
     '$extensions': {
@@ -687,7 +1344,7 @@ export const meta = {
       },
     },
   },
-  'palette.green7': {
+  'palette.green700': {
     '_original': {
       '$value': '#044f1e',
       '$extensions': {
@@ -707,7 +1364,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green7',
+    id: 'palette.green700',
     '$type': 'color',
     '$value': '#044f1e',
     '$extensions': {
@@ -717,7 +1374,7 @@ export const meta = {
       },
     },
   },
-  'palette.green8': {
+  'palette.green800': {
     '_original': {
       '$value': '#003d16',
       '$extensions': {
@@ -737,7 +1394,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green8',
+    id: 'palette.green800',
     '$type': 'color',
     '$value': '#003d16',
     '$extensions': {
@@ -747,7 +1404,7 @@ export const meta = {
       },
     },
   },
-  'palette.green9': {
+  'palette.green900': {
     '_original': {
       '$value': '#002d11',
       '$extensions': {
@@ -767,7 +1424,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.green9',
+    id: 'palette.green900',
     '$type': 'color',
     '$value': '#002d11',
     '$extensions': {
@@ -777,12 +1434,12 @@ export const meta = {
       },
     },
   },
-  'palette.blue0': {
+  'palette.blue50': {
     '_original': {
-      '$value': '#ddf4ff',
+      '$value': '#edf2ff',
       '$extensions': {
         mode: {
-          light: '#ddf4ff',
+          light: '#edf2ff',
           dark: '#cae8ff',
         },
       },
@@ -797,22 +1454,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue0',
+    id: 'palette.blue50',
     '$type': 'color',
-    '$value': '#ddf4ff',
+    '$value': '#edf2ff',
     '$extensions': {
       mode: {
-        light: '#ddf4ff',
+        light: '#edf2ff',
         dark: '#cae8ff',
       },
     },
   },
-  'palette.blue1': {
+  'palette.blue100': {
     '_original': {
-      '$value': '#b6e3ff',
+      '$value': '#e2e7fe',
       '$extensions': {
         mode: {
-          light: '#b6e3ff',
+          light: '#e2e7fe',
           dark: '#a5d6ff',
         },
       },
@@ -827,22 +1484,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue1',
+    id: 'palette.blue100',
     '$type': 'color',
-    '$value': '#b6e3ff',
+    '$value': '#e2e7fe',
     '$extensions': {
       mode: {
-        light: '#b6e3ff',
+        light: '#e2e7fe',
         dark: '#a5d6ff',
       },
     },
   },
-  'palette.blue2': {
+  'palette.blue200': {
     '_original': {
-      '$value': '#80ccff',
+      '$value': '#cad4fd',
       '$extensions': {
         mode: {
-          light: '#80ccff',
+          light: '#cad4fd',
           dark: '#79c0ff',
         },
       },
@@ -857,22 +1514,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue2',
+    id: 'palette.blue200',
     '$type': 'color',
-    '$value': '#80ccff',
+    '$value': '#cad4fd',
     '$extensions': {
       mode: {
-        light: '#80ccff',
+        light: '#cad4fd',
         dark: '#79c0ff',
       },
     },
   },
-  'palette.blue3': {
+  'palette.blue300': {
     '_original': {
-      '$value': '#54aeff',
+      '$value': '#b0bffd',
       '$extensions': {
         mode: {
-          light: '#54aeff',
+          light: '#b0bffd',
           dark: '#58a6ff',
         },
       },
@@ -887,22 +1544,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue3',
+    id: 'palette.blue300',
     '$type': 'color',
-    '$value': '#54aeff',
+    '$value': '#b0bffd',
     '$extensions': {
       mode: {
-        light: '#54aeff',
+        light: '#b0bffd',
         dark: '#58a6ff',
       },
     },
   },
-  'palette.blue4': {
+  'palette.blue400': {
     '_original': {
-      '$value': '#218bff',
+      '$value': '#95a9fc',
       '$extensions': {
         mode: {
-          light: '#218bff',
+          light: '#95a9fc',
           dark: '#388bfd',
         },
       },
@@ -917,22 +1574,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue4',
+    id: 'palette.blue400',
     '$type': 'color',
-    '$value': '#218bff',
+    '$value': '#95a9fc',
     '$extensions': {
       mode: {
-        light: '#218bff',
+        light: '#95a9fc',
         dark: '#388bfd',
       },
     },
   },
-  'palette.blue5': {
+  'palette.blue500': {
     '_original': {
-      '$value': '#0969da',
+      '$value': '#7791fb',
       '$extensions': {
         mode: {
-          light: '#0969da',
+          light: '#7791fb',
           dark: '#1f6feb',
         },
       },
@@ -947,22 +1604,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue5',
+    id: 'palette.blue500',
     '$type': 'color',
-    '$value': '#0969da',
+    '$value': '#7791fb',
     '$extensions': {
       mode: {
-        light: '#0969da',
+        light: '#7791fb',
         dark: '#1f6feb',
       },
     },
   },
-  'palette.blue6': {
+  'palette.blue600': {
     '_original': {
-      '$value': '#0550ae',
+      '$value': '#5f7efa',
       '$extensions': {
         mode: {
-          light: '#0550ae',
+          light: '#5f7efa',
           dark: '#1158c7',
         },
       },
@@ -977,22 +1634,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue6',
+    id: 'palette.blue600',
     '$type': 'color',
-    '$value': '#0550ae',
+    '$value': '#5f7efa',
     '$extensions': {
       mode: {
-        light: '#0550ae',
+        light: '#5f7efa',
         dark: '#1158c7',
       },
     },
   },
-  'palette.blue7': {
+  'palette.blue700': {
     '_original': {
-      '$value': '#033d8b',
+      '$value': '#506cdb',
       '$extensions': {
         mode: {
-          light: '#033d8b',
+          light: '#506cdb',
           dark: '#0d419d',
         },
       },
@@ -1007,22 +1664,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue7',
+    id: 'palette.blue700',
     '$type': 'color',
-    '$value': '#033d8b',
+    '$value': '#506cdb',
     '$extensions': {
       mode: {
-        light: '#033d8b',
+        light: '#506cdb',
         dark: '#0d419d',
       },
     },
   },
-  'palette.blue8': {
+  'palette.blue800': {
     '_original': {
-      '$value': '#0a3069',
+      '$value': '#4259b4',
       '$extensions': {
         mode: {
-          light: '#0a3069',
+          light: '#4259b4',
           dark: '#0c2d6b',
         },
       },
@@ -1037,22 +1694,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue8',
+    id: 'palette.blue800',
     '$type': 'color',
-    '$value': '#0a3069',
+    '$value': '#4259b4',
     '$extensions': {
       mode: {
-        light: '#0a3069',
+        light: '#4259b4',
         dark: '#0c2d6b',
       },
     },
   },
-  'palette.blue9': {
+  'palette.blue900': {
     '_original': {
-      '$value': '#002155',
+      '$value': '#34458c',
       '$extensions': {
         mode: {
-          light: '#002155',
+          light: '#34458c',
           dark: '#051d4d',
         },
       },
@@ -1067,22 +1724,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.blue9',
+    id: 'palette.blue900',
     '$type': 'color',
-    '$value': '#002155',
+    '$value': '#34458c',
     '$extensions': {
       mode: {
-        light: '#002155',
+        light: '#34458c',
         dark: '#051d4d',
       },
     },
   },
-  'palette.coral0': {
+  'palette.orange50': {
     '_original': {
-      '$value': '#FFF0EB',
+      '$value': '#fff9db',
       '$extensions': {
         mode: {
-          light: '#FFF0EB',
+          light: '#fff9db',
           dark: '#FFDDD2',
         },
       },
@@ -1097,22 +1754,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral0',
+    id: 'palette.orange50',
     '$type': 'color',
-    '$value': '#fff0eb',
+    '$value': '#fff9db',
     '$extensions': {
       mode: {
-        light: '#fff0eb',
+        light: '#fff9db',
         dark: '#ffddd2',
       },
     },
   },
-  'palette.coral1': {
+  'palette.orange100': {
     '_original': {
-      '$value': '#FFD6CC',
+      '$value': '#ffe4ca',
       '$extensions': {
         mode: {
-          light: '#FFD6CC',
+          light: '#ffe4ca',
           dark: '#FFC2B2',
         },
       },
@@ -1127,22 +1784,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral1',
+    id: 'palette.orange100',
     '$type': 'color',
-    '$value': '#ffd6cc',
+    '$value': '#ffe4ca',
     '$extensions': {
       mode: {
-        light: '#ffd6cc',
+        light: '#ffe4ca',
         dark: '#ffc2b2',
       },
     },
   },
-  'palette.coral2': {
+  'palette.orange200': {
     '_original': {
-      '$value': '#FFB4A1',
+      '$value': '#ffcb9b',
       '$extensions': {
         mode: {
-          light: '#FFB4A1',
+          light: '#ffcb9b',
           dark: '#FFA28B',
         },
       },
@@ -1157,22 +1814,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral2',
+    id: 'palette.orange200',
     '$type': 'color',
-    '$value': '#ffb4a1',
+    '$value': '#ffcb9b',
     '$extensions': {
       mode: {
-        light: '#ffb4a1',
+        light: '#ffcb9b',
         dark: '#ffa28b',
       },
     },
   },
-  'palette.coral3': {
+  'palette.orange300': {
     '_original': {
-      '$value': '#FD8C73',
+      '$value': '#ffb066',
       '$extensions': {
         mode: {
-          light: '#FD8C73',
+          light: '#ffb066',
           dark: '#F78166',
         },
       },
@@ -1187,22 +1844,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral3',
+    id: 'palette.orange300',
     '$type': 'color',
-    '$value': '#fd8c73',
+    '$value': '#ffb066',
     '$extensions': {
       mode: {
-        light: '#fd8c73',
+        light: '#ffb066',
         dark: '#f78166',
       },
     },
   },
-  'palette.coral4': {
+  'palette.orange400': {
     '_original': {
-      '$value': '#EC6547',
+      '$value': '#fe912b',
       '$extensions': {
         mode: {
-          light: '#EC6547',
+          light: '#fe912b',
           dark: '#EA6045',
         },
       },
@@ -1217,22 +1874,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral4',
+    id: 'palette.orange400',
     '$type': 'color',
-    '$value': '#ec6547',
+    '$value': '#fe912b',
     '$extensions': {
       mode: {
-        light: '#ec6547',
+        light: '#fe912b',
         dark: '#ea6045',
       },
     },
   },
-  'palette.coral5': {
+  'palette.orange500': {
     '_original': {
-      '$value': '#C4432B',
+      '$value': '#df7f26',
       '$extensions': {
         mode: {
-          light: '#C4432B',
+          light: '#df7f26',
           dark: '#CF462D',
         },
       },
@@ -1247,22 +1904,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral5',
+    id: 'palette.orange500',
     '$type': 'color',
-    '$value': '#c4432b',
+    '$value': '#df7f26',
     '$extensions': {
       mode: {
-        light: '#c4432b',
+        light: '#df7f26',
         dark: '#cf462d',
       },
     },
   },
-  'palette.coral6': {
+  'palette.orange600': {
     '_original': {
-      '$value': '#9E2F1C',
+      '$value': '#c77222',
       '$extensions': {
         mode: {
-          light: '#9E2F1C',
+          light: '#c77222',
           dark: '#AC3220',
         },
       },
@@ -1277,22 +1934,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral6',
+    id: 'palette.orange600',
     '$type': 'color',
-    '$value': '#9e2f1c',
+    '$value': '#c77222',
     '$extensions': {
       mode: {
-        light: '#9e2f1c',
+        light: '#c77222',
         dark: '#ac3220',
       },
     },
   },
-  'palette.coral7': {
+  'palette.orange700': {
     '_original': {
-      '$value': '#801F0F',
+      '$value': '#ab621d',
       '$extensions': {
         mode: {
-          light: '#801F0F',
+          light: '#ab621d',
           dark: '#872012',
         },
       },
@@ -1307,22 +1964,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral7',
+    id: 'palette.orange700',
     '$type': 'color',
-    '$value': '#801f0f',
+    '$value': '#ab621d',
     '$extensions': {
       mode: {
-        light: '#801f0f',
+        light: '#ab621d',
         dark: '#872012',
       },
     },
   },
-  'palette.coral8': {
+  'palette.orange800': {
     '_original': {
-      '$value': '#691105',
+      '$value': '#8e5118',
       '$extensions': {
         mode: {
-          light: '#691105',
+          light: '#8e5118',
           dark: '#640D04',
         },
       },
@@ -1337,22 +1994,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral8',
+    id: 'palette.orange800',
     '$type': 'color',
-    '$value': '#691105',
+    '$value': '#8e5118',
     '$extensions': {
       mode: {
-        light: '#691105',
+        light: '#8e5118',
         dark: '#640d04',
       },
     },
   },
-  'palette.coral9': {
+  'palette.orange900': {
     '_original': {
-      '$value': '#510901',
+      '$value': '#6d3e12',
       '$extensions': {
         mode: {
-          light: '#510901',
+          light: '#6d3e12',
           dark: '#460701',
         },
       },
@@ -1367,52 +2024,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.coral9',
+    id: 'palette.orange900',
     '$type': 'color',
-    '$value': '#510901',
+    '$value': '#6d3e12',
     '$extensions': {
       mode: {
-        light: '#510901',
+        light: '#6d3e12',
         dark: '#460701',
       },
     },
   },
-  'palette.red0': {
+  'palette.red50': {
     '_original': {
-      '$value': '#FFEBE9',
+      '$value': '#fff5f5',
       '$extensions': {
         mode: {
-          light: '#FFEBE9',
-          dark: '#ffdcd7',
-        },
-      },
-    },
-    '_group': {
-      id: 'palette',
-      '$extensions': {
-        requiredModes: [],
-        modes: ['light', 'dark'],
-      },
-      '$name': 'NosEditor themes',
-      '$description': 'design tokens for noseditor',
-      '$type': 'color',
-    },
-    id: 'palette.red0',
-    '$type': 'color',
-    '$value': '#ffebe9',
-    '$extensions': {
-      mode: {
-        light: '#ffebe9',
-        dark: '#ffdcd7',
-      },
-    },
-  },
-  'palette.red1': {
-    '_original': {
-      '$value': '#ffcecb',
-      '$extensions': {
-        mode: {
-          light: '#ffcecb',
+          light: '#fff5f5',
           dark: '#ffc1ba',
         },
       },
@@ -1427,22 +2054,52 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red1',
+    id: 'palette.red50',
     '$type': 'color',
-    '$value': '#ffcecb',
+    '$value': '#fff5f5',
     '$extensions': {
       mode: {
-        light: '#ffcecb',
+        light: '#fff5f5',
         dark: '#ffc1ba',
       },
     },
   },
-  'palette.red2': {
+  'palette.red100': {
     '_original': {
-      '$value': '#ffaba8',
+      '$value': '#ffe1e1',
       '$extensions': {
         mode: {
-          light: '#ffaba8',
+          light: '#ffe1e1',
+          dark: '#ffc1ba',
+        },
+      },
+    },
+    '_group': {
+      id: 'palette',
+      '$extensions': {
+        requiredModes: [],
+        modes: ['light', 'dark'],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'palette.red100',
+    '$type': 'color',
+    '$value': '#ffe1e1',
+    '$extensions': {
+      mode: {
+        light: '#ffe1e1',
+        dark: '#ffc1ba',
+      },
+    },
+  },
+  'palette.red200': {
+    '_original': {
+      '$value': '#ffc7c7',
+      '$extensions': {
+        mode: {
+          light: '#ffc7c7',
           dark: '#ffa198',
         },
       },
@@ -1457,22 +2114,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red2',
+    id: 'palette.red200',
     '$type': 'color',
-    '$value': '#ffaba8',
+    '$value': '#ffc7c7',
     '$extensions': {
       mode: {
-        light: '#ffaba8',
+        light: '#ffc7c7',
         dark: '#ffa198',
       },
     },
   },
-  'palette.red3': {
+  'palette.red300': {
     '_original': {
-      '$value': '#ff8182',
+      '$value': '#ffabab',
       '$extensions': {
         mode: {
-          light: '#ff8182',
+          light: '#ffabab',
           dark: '#ff7b72',
         },
       },
@@ -1487,22 +2144,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red3',
+    id: 'palette.red300',
     '$type': 'color',
-    '$value': '#ff8182',
+    '$value': '#ffabab',
     '$extensions': {
       mode: {
-        light: '#ff8182',
+        light: '#ffabab',
         dark: '#ff7b72',
       },
     },
   },
-  'palette.red4': {
+  'palette.red400': {
     '_original': {
-      '$value': '#fa4549',
+      '$value': '#ff8b8b',
       '$extensions': {
         mode: {
-          light: '#fa4549',
+          light: '#ff8b8b',
           dark: '#f85149',
         },
       },
@@ -1517,22 +2174,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red4',
+    id: 'palette.red400',
     '$type': 'color',
-    '$value': '#fa4549',
+    '$value': '#ff8b8b',
     '$extensions': {
       mode: {
-        light: '#fa4549',
+        light: '#ff8b8b',
         dark: '#f85149',
       },
     },
   },
-  'palette.red5': {
+  'palette.red500': {
     '_original': {
-      '$value': '#cf222e',
+      '$value': '#f76868',
       '$extensions': {
         mode: {
-          light: '#cf222e',
+          light: '#f76868',
           dark: '#da3633',
         },
       },
@@ -1547,22 +2204,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red5',
+    id: 'palette.red500',
     '$type': 'color',
-    '$value': '#cf222e',
+    '$value': '#f76868',
     '$extensions': {
       mode: {
-        light: '#cf222e',
+        light: '#f76868',
         dark: '#da3633',
       },
     },
   },
-  'palette.red6': {
+  'palette.red600': {
     '_original': {
-      '$value': '#a40e26',
+      '$value': '#dd5d5d',
       '$extensions': {
         mode: {
-          light: '#a40e26',
+          light: '#dd5d5d',
           dark: '#b62324',
         },
       },
@@ -1577,22 +2234,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red6',
+    id: 'palette.red600',
     '$type': 'color',
-    '$value': '#a40e26',
+    '$value': '#dd5d5d',
     '$extensions': {
       mode: {
-        light: '#a40e26',
+        light: '#dd5d5d',
         dark: '#b62324',
       },
     },
   },
-  'palette.red7': {
+  'palette.red700': {
     '_original': {
-      '$value': '#82071e',
+      '$value': '#be5050',
       '$extensions': {
         mode: {
-          light: '#82071e',
+          light: '#be5050',
           dark: '#8e1519',
         },
       },
@@ -1607,22 +2264,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red7',
+    id: 'palette.red700',
     '$type': 'color',
-    '$value': '#82071e',
+    '$value': '#be5050',
     '$extensions': {
       mode: {
-        light: '#82071e',
+        light: '#be5050',
         dark: '#8e1519',
       },
     },
   },
-  'palette.red8': {
+  'palette.red800': {
     '_original': {
-      '$value': '#660018',
+      '$value': '#9d4242',
       '$extensions': {
         mode: {
-          light: '#660018',
+          light: '#9d4242',
           dark: '#67060c',
         },
       },
@@ -1637,22 +2294,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red8',
+    id: 'palette.red800',
     '$type': 'color',
-    '$value': '#660018',
+    '$value': '#9d4242',
     '$extensions': {
       mode: {
-        light: '#660018',
+        light: '#9d4242',
         dark: '#67060c',
       },
     },
   },
-  'palette.red9': {
+  'palette.red900': {
     '_original': {
-      '$value': '#4c0014',
+      '$value': '#793333',
       '$extensions': {
         mode: {
-          light: '#4c0014',
+          light: '#793333',
           dark: '#490202',
         },
       },
@@ -1667,22 +2324,22 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'palette.red9',
+    id: 'palette.red900',
     '$type': 'color',
-    '$value': '#4c0014',
+    '$value': '#793333',
     '$extensions': {
       mode: {
-        light: '#4c0014',
+        light: '#793333',
         dark: '#490202',
       },
     },
   },
-  'color.background': {
+  'color.brand.primary': {
     '_original': {
-      '$value': '{palette.gray0}',
+      '$value': '{palette.teal500}',
     },
     '_group': {
-      id: 'color',
+      id: 'color.brand',
       '$extensions': {
         requiredModes: [],
       },
@@ -1690,9 +2347,111 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'color',
     },
-    id: 'color.background',
+    id: 'color.brand.primary',
     '$type': 'color',
-    '$value': '#f2f4f8',
+    '$value': '#1bac81',
+  },
+  'color.brand.light': {
+    '_original': {
+      '$value': '{palette.teal200}',
+    },
+    '_group': {
+      id: 'color.brand',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.brand.light',
+    '$type': 'color',
+    '$value': '#93e5cc',
+  },
+  'color.brand.lighter': {
+    '_original': {
+      '$value': '{palette.teal50}',
+    },
+    '_group': {
+      id: 'color.brand',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.brand.lighter',
+    '$type': 'color',
+    '$value': '#e6fcf5',
+  },
+  'color.brand.dark': {
+    '_original': {
+      '$value': '{palette.teal600}',
+    },
+    '_group': {
+      id: 'color.brand',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.brand.dark',
+    '$type': 'color',
+    '$value': '#189973',
+  },
+  'color.brand.darker': {
+    '_original': {
+      '$value': '{palette.teal800}',
+    },
+    '_group': {
+      id: 'color.brand',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.brand.darker',
+    '$type': 'color',
+    '$value': '#116c52',
+  },
+  'color.background.default': {
+    '_original': {
+      '$value': '{palette.gray25}',
+    },
+    '_group': {
+      id: 'color.background',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.background.default',
+    '$type': 'color',
+    '$value': '#f8f9fa',
+  },
+  'color.background.hover': {
+    '_original': {
+      '$value': '{palette.gray50}',
+    },
+    '_group': {
+      id: 'color.background',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.background.hover',
+    '$type': 'color',
+    '$value': '#f1f3f5',
   },
   'color.text.body': {
     '_original': {
@@ -1709,11 +2468,11 @@ export const meta = {
     },
     id: 'color.text.body',
     '$type': 'color',
-    '$value': '#1d2129',
+    '$value': '#212529',
   },
   'color.text.muted': {
     '_original': {
-      '$value': '{palette.gray5}',
+      '$value': '{palette.grey500}',
     },
     '_group': {
       id: 'color.text',
@@ -1730,7 +2489,7 @@ export const meta = {
   },
   'color.text.error': {
     '_original': {
-      '$value': '{palette.red7}',
+      '$value': '{palette.red700}',
     },
     '_group': {
       id: 'color.text',
@@ -1743,11 +2502,11 @@ export const meta = {
     },
     id: 'color.text.error',
     '$type': 'color',
-    '$value': '#82071e',
+    '$value': '#be5050',
   },
   'color.text.link': {
     '_original': {
-      '$value': '{palette.blue5}',
+      '$value': '{palette.blue700}',
     },
     '_group': {
       id: 'color.text',
@@ -1760,11 +2519,11 @@ export const meta = {
     },
     id: 'color.text.link',
     '$type': 'color',
-    '$value': '#0969da',
+    '$value': '#506cdb',
   },
   'color.border.light': {
     '_original': {
-      '$value': '{palette.gray3}',
+      '$value': '{palette.gray300}',
     },
     '_group': {
       id: 'color.border',
@@ -1777,11 +2536,11 @@ export const meta = {
     },
     id: 'color.border.light',
     '$type': 'color',
-    '$value': '#d8dee9',
+    '$value': '#bbc2ca',
   },
   'color.border.muted': {
     '_original': {
-      '$value': '{palette.gray1}',
+      '$value': '{palette.grey100}',
     },
     '_group': {
       id: 'color.border',
@@ -2484,211 +3243,295 @@ export const meta = {
 
 export const modes = {
   'palette.black': {
-    light: '#1d2129',
+    light: '#212529',
     dark: '#010409',
   },
   'palette.white': {
     light: '#ffffff',
     dark: '#f0f6fc',
   },
-  'palette.gray0': {
+  'palette.gray25': {
+    light: '#f8f9fa',
+    dark: '#f0f6fc',
+  },
+  'palette.gray50': {
+    light: '#f1f3f5',
+    dark: '#f0f6fc',
+  },
+  'palette.gray100': {
+    light: '#e5e8ec',
+    dark: '#c9d1d9',
+  },
+  'palette.gray200': {
+    light: '#d0d6dd',
+    dark: '#b1bac4',
+  },
+  'palette.gray300': {
+    light: '#bbc2ca',
+    dark: '#8b949e',
+  },
+  'palette.gray400': {
+    light: '#a7aeb6',
+    dark: '#6e7681',
+  },
+  'palette.gray500': {
+    light: '#9299a1',
+    dark: '#484f58',
+  },
+  'palette.gray600': {
+    light: '#828990',
+    dark: '#30363d',
+  },
+  'palette.gray700': {
+    light: '#6f757c',
+    dark: '#21262d',
+  },
+  'palette.gray800': {
+    light: '#5c6167',
+    dark: '#161b22',
+  },
+  'palette.gray900': {
+    light: '#474b4f',
+    dark: '#0d1117',
+  },
+  'palette.grey50': {
     light: '#f2f4f8',
     dark: '#f0f6fc',
   },
-  'palette.gray1': {
+  'palette.grey100': {
     light: '#eceff4',
     dark: '#c9d1d9',
   },
-  'palette.gray2': {
+  'palette.grey200': {
     light: '#e5e9f0',
     dark: '#b1bac4',
   },
-  'palette.gray3': {
+  'palette.grey300': {
     light: '#d8dee9',
     dark: '#8b949e',
   },
-  'palette.gray4': {
+  'palette.grey400': {
     light: '#afb8c1',
     dark: '#6e7681',
   },
-  'palette.gray5': {
+  'palette.grey500': {
     light: '#6e7781',
     dark: '#484f58',
   },
-  'palette.gray6': {
+  'palette.grey600': {
     light: '#4c566a',
     dark: '#30363d',
   },
-  'palette.gray7': {
+  'palette.grey700': {
     light: '#434c5e',
     dark: '#21262d',
   },
-  'palette.gray8': {
+  'palette.grey800': {
     light: '#434c5e',
     dark: '#161b22',
   },
-  'palette.gray9': {
+  'palette.grey900': {
     light: '#2e3440',
     dark: '#0d1117',
   },
-  'palette.green0': {
+  'palette.teal50': {
+    light: '#e6fcf5',
+    dark: '#aff5b4',
+  },
+  'palette.teal100': {
+    light: '#c7f1e5',
+    dark: '#7ee787',
+  },
+  'palette.teal200': {
+    light: '#93e5cc',
+    dark: '#56d364',
+  },
+  'palette.teal300': {
+    light: '#58d7b1',
+    dark: '#3fb950',
+  },
+  'palette.teal400': {
+    light: '#1fc393',
+    dark: '#2ea043',
+  },
+  'palette.teal500': {
+    light: '#1bac81',
+    dark: '#238636',
+  },
+  'palette.teal600': {
+    light: '#189973',
+    dark: '#196c2e',
+  },
+  'palette.teal700': {
+    light: '#158363',
+    dark: '#0f5323',
+  },
+  'palette.teal800': {
+    light: '#116c52',
+    dark: '#033a16',
+  },
+  'palette.teal900': {
+    light: '#0d5540',
+    dark: '#04260f',
+  },
+  'palette.green50': {
     light: '#dafbe1',
     dark: '#aff5b4',
   },
-  'palette.green1': {
+  'palette.green100': {
     light: '#aceebb',
     dark: '#7ee787',
   },
-  'palette.green2': {
+  'palette.green200': {
     light: '#6fdd8b',
     dark: '#56d364',
   },
-  'palette.green3': {
+  'palette.green300': {
     light: '#4ac26b',
     dark: '#3fb950',
   },
-  'palette.green4': {
+  'palette.green400': {
     light: '#2da44e',
     dark: '#2ea043',
   },
-  'palette.green5': {
+  'palette.green500': {
     light: '#1a7f37',
     dark: '#238636',
   },
-  'palette.green6': {
+  'palette.green600': {
     light: '#116329',
     dark: '#196c2e',
   },
-  'palette.green7': {
+  'palette.green700': {
     light: '#044f1e',
     dark: '#0f5323',
   },
-  'palette.green8': {
+  'palette.green800': {
     light: '#003d16',
     dark: '#033a16',
   },
-  'palette.green9': {
+  'palette.green900': {
     light: '#002d11',
     dark: '#04260f',
   },
-  'palette.blue0': {
-    light: '#ddf4ff',
+  'palette.blue50': {
+    light: '#edf2ff',
     dark: '#cae8ff',
   },
-  'palette.blue1': {
-    light: '#b6e3ff',
+  'palette.blue100': {
+    light: '#e2e7fe',
     dark: '#a5d6ff',
   },
-  'palette.blue2': {
-    light: '#80ccff',
+  'palette.blue200': {
+    light: '#cad4fd',
     dark: '#79c0ff',
   },
-  'palette.blue3': {
-    light: '#54aeff',
+  'palette.blue300': {
+    light: '#b0bffd',
     dark: '#58a6ff',
   },
-  'palette.blue4': {
-    light: '#218bff',
+  'palette.blue400': {
+    light: '#95a9fc',
     dark: '#388bfd',
   },
-  'palette.blue5': {
-    light: '#0969da',
+  'palette.blue500': {
+    light: '#7791fb',
     dark: '#1f6feb',
   },
-  'palette.blue6': {
-    light: '#0550ae',
+  'palette.blue600': {
+    light: '#5f7efa',
     dark: '#1158c7',
   },
-  'palette.blue7': {
-    light: '#033d8b',
+  'palette.blue700': {
+    light: '#506cdb',
     dark: '#0d419d',
   },
-  'palette.blue8': {
-    light: '#0a3069',
+  'palette.blue800': {
+    light: '#4259b4',
     dark: '#0c2d6b',
   },
-  'palette.blue9': {
-    light: '#002155',
+  'palette.blue900': {
+    light: '#34458c',
     dark: '#051d4d',
   },
-  'palette.coral0': {
-    light: '#fff0eb',
+  'palette.orange50': {
+    light: '#fff9db',
     dark: '#ffddd2',
   },
-  'palette.coral1': {
-    light: '#ffd6cc',
+  'palette.orange100': {
+    light: '#ffe4ca',
     dark: '#ffc2b2',
   },
-  'palette.coral2': {
-    light: '#ffb4a1',
+  'palette.orange200': {
+    light: '#ffcb9b',
     dark: '#ffa28b',
   },
-  'palette.coral3': {
-    light: '#fd8c73',
+  'palette.orange300': {
+    light: '#ffb066',
     dark: '#f78166',
   },
-  'palette.coral4': {
-    light: '#ec6547',
+  'palette.orange400': {
+    light: '#fe912b',
     dark: '#ea6045',
   },
-  'palette.coral5': {
-    light: '#c4432b',
+  'palette.orange500': {
+    light: '#df7f26',
     dark: '#cf462d',
   },
-  'palette.coral6': {
-    light: '#9e2f1c',
+  'palette.orange600': {
+    light: '#c77222',
     dark: '#ac3220',
   },
-  'palette.coral7': {
-    light: '#801f0f',
+  'palette.orange700': {
+    light: '#ab621d',
     dark: '#872012',
   },
-  'palette.coral8': {
-    light: '#691105',
+  'palette.orange800': {
+    light: '#8e5118',
     dark: '#640d04',
   },
-  'palette.coral9': {
-    light: '#510901',
+  'palette.orange900': {
+    light: '#6d3e12',
     dark: '#460701',
   },
-  'palette.red0': {
-    light: '#ffebe9',
-    dark: '#ffdcd7',
-  },
-  'palette.red1': {
-    light: '#ffcecb',
+  'palette.red50': {
+    light: '#fff5f5',
     dark: '#ffc1ba',
   },
-  'palette.red2': {
-    light: '#ffaba8',
+  'palette.red100': {
+    light: '#ffe1e1',
+    dark: '#ffc1ba',
+  },
+  'palette.red200': {
+    light: '#ffc7c7',
     dark: '#ffa198',
   },
-  'palette.red3': {
-    light: '#ff8182',
+  'palette.red300': {
+    light: '#ffabab',
     dark: '#ff7b72',
   },
-  'palette.red4': {
-    light: '#fa4549',
+  'palette.red400': {
+    light: '#ff8b8b',
     dark: '#f85149',
   },
-  'palette.red5': {
-    light: '#cf222e',
+  'palette.red500': {
+    light: '#f76868',
     dark: '#da3633',
   },
-  'palette.red6': {
-    light: '#a40e26',
+  'palette.red600': {
+    light: '#dd5d5d',
     dark: '#b62324',
   },
-  'palette.red7': {
-    light: '#82071e',
+  'palette.red700': {
+    light: '#be5050',
     dark: '#8e1519',
   },
-  'palette.red8': {
-    light: '#660018',
+  'palette.red800': {
+    light: '#9d4242',
     dark: '#67060c',
   },
-  'palette.red9': {
-    light: '#4c0014',
+  'palette.red900': {
+    light: '#793333',
     dark: '#490202',
   },
   'font.family.size.f00': {

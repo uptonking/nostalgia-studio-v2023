@@ -152,7 +152,6 @@ export const Range: RangeInterface = {
    * Check if a range is collapsed, meaning that both its anchor and focus
    * points refer to the exact same position in the document.
    */
-
   isCollapsed(range: Range): boolean {
     const { anchor, focus } = range;
     return Point.equals(anchor, focus);
@@ -160,10 +159,8 @@ export const Range: RangeInterface = {
 
   /**
    * Check if a range is expanded.
-   *
-   * This is the opposite of [[Range.isCollapsed]] and is provided for legibility.
+   * - This is the opposite of [[Range.isCollapsed]] and is provided for legibility.
    */
-
   isExpanded(range: Range): boolean {
     return !Range.isCollapsed(range);
   },

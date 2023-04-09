@@ -264,9 +264,15 @@ export interface EditorInterface {
    * - Add a custom property to the leaf text nodes in the current selection.
    * - If the selection is currently collapsed, the marks will be added to the
    * `editor.marks` property instead, and applied when text is inserted next.
-   * - 具体逻辑在create-editor中实现，本质是执行 Transfroms.setNodes
+   * - 具体逻辑在create-editor中实现，会执行 Transfroms.setNodes
    */
   addMark: (editor: Editor, key: string, value: any) => void;
+  /**
+   * Remove a custom property from all of the leaf text nodes in the current
+   * selection.
+   * - If the selection is currently collapsed, the removal will be stored on
+   * `editor.marks` and applied to the text inserted next.
+   */
   removeMark: (editor: Editor, key: string) => void;
   deleteBackward: (
     editor: Editor,
@@ -476,11 +482,13 @@ export const Editor: EditorInterface = {
   addMark(editor: Editor, key: string, value: any): void {
     editor.addMark(key, value);
   },
+  removeMark(editor: Editor, key: string): void {
+    editor.removeMark(key);
+  },
 
   /**
    * Get the point after a location.
    */
-
   after(
     editor: Editor,
     at: Location,
@@ -1657,18 +1665,6 @@ export const Editor: EditorInterface = {
     }
 
     return refs;
-  },
-
-  /**
-   * Remove a custom property from all of the leaf text nodes in the current
-   * selection.
-   *
-   * If the selection is currently collapsed, the removal will be stored on
-   * `editor.marks` and applied to the text inserted next.
-   */
-
-  removeMark(editor: Editor, key: string): void {
-    editor.removeMark(key);
   },
 
   /**

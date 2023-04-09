@@ -107,12 +107,12 @@ const addLinkContainerCss = css`
 `;
 
 const linkInputCss = css`
-  width: 360px;
-  height: 32px;
+  min-width: 360px;
+  line-height: 1.8;
   margin-right: 24px;
   color: ${themed.color.text.muted};
-  border: 1px solid ${themed.color.background};
+  border: 1px solid ${themed.color.border.muted};
   &:focus-visible {
-    outline-color: ${themed.color.border.muted};
+    outline-color: ${themed.color.border.light};
   }
 `;

@@ -29,7 +29,7 @@ export const ColorPicker = ({
   const colorPickerRef = useRef(null);
   const [showPicker, setShowPicker] = usePopup(colorPickerRef);
 
-  console.log(';; showPicker ', format, showPicker)
+  // console.log(';; showPicker ', format, showPicker)
 
   const changeColor = useCallback(
     (e) => {

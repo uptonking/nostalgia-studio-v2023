@@ -2,10 +2,6 @@ import { Editor, Element, Text, Transforms } from 'slate';
 
 import { TextAlignValues, type TextAlignValueType } from '../utils';
 
-export const toggleElement = (editor: Editor, type: Element['type']) => {
-  Transforms.setNodes(editor, { type });
-};
-
 export const isMarkActive = (
   editor: Editor,
   format: keyof Omit<Text, 'text'>,
@@ -87,4 +83,35 @@ export const isBlockActive = (
   );
 
   return Boolean(match);
+};
+
+export const toggleBlock = (editor: Editor, type: Element['type']) => {
+  Transforms.setNodes(editor, { type });
+};
+
+export const getActiveBlockType = (
+  editor: Editor,
+  blockType = 'type',
+): Element['type'] => {
+  const { selection } = editor;
+  if (!selection) return 'p';
+
+  const pathClone = [...editor.selection.anchor.path];
+  pathClone.pop(); // get rid of trailing text node postion in path.
+  const anchorNode = pathClone.reduce((node: Element, pathPosition) => {
+    if (!node) return editor.children[pathPosition];
+    return node.children[pathPosition];
+  }, null);
+
+  // console.log(
+  //   ';; ed-sel-start ',
+  //   anchorNode['type'],
+  //   // editor.selection?.anchor,
+  // );
+
+  if (['p', 'h1', 'h2', 'h3'].includes(anchorNode['type'])) {
+    return anchorNode['type'];
+  }
+
+  return 'p';
 };

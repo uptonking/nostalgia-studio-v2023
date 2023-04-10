@@ -1,5 +1,5 @@
 import {
-  AlignTextBoth as AlignTextBothIcon,
+  AlignTextBoth as AlignTextJustifyIcon,
   AlignTextCenter as AlignTextCenterIcon,
   AlignTextLeft as AlignTextLeftIcon,
   AlignTextRight as AlignTextRightIcon,
@@ -8,7 +8,11 @@ import {
   DownOne as TriangleDownIcon,
   Find as FindIcon,
   FontSizeTwo as FontSizeIcon,
+  H1 as H1Icon,
+  H2 as H2Icon,
+  H3 as H3Icon,
   InsertTable as InsertTableIcon,
+  LevelFourTitle as H4Icon,
   Link as LinkIcon,
   List as ListCheckboxIcon,
   ListOne as ListUnorderedIcon,
@@ -18,6 +22,7 @@ import {
   Redo as RedoIcon,
   RightOne as TriangleRightIcon,
   Strikethrough as StrikethroughIcon,
+  Text as TextIcon,
   TextBold as BoldIcon,
   TextItalic as ItalicIcon,
   TextUnderline as UnderlineIcon,
@@ -62,7 +67,7 @@ export type TextAlignValueType =
 
 type ActionDropdownType = {
   type: 'dropdown';
-  action: 'align' | 'fontSize' | 'fontColor';
+  action: 'align' | 'fontSize' | 'blockTypes';
   icon?: Icon;
   title?: string;
   options: Array<
@@ -91,6 +96,37 @@ export const defaultToolbarConfig: ToolbarConfigType = [
     },
     // todo paint-format
     // todo block-type
+    {
+      type: 'dropdown',
+      action: 'blockTypes',
+      icon: TextIcon,
+      options: [
+        {
+          icon: TextIcon,
+          value: 'p',
+          text: 'Normal Text',
+          title: 'Normal Text',
+        },
+        {
+          icon: H1Icon,
+          value: 'h1',
+          text: 'Heading 1',
+          title: 'Heading 1',
+        },
+        {
+          icon: H2Icon,
+          value: 'h2',
+          text: 'Heading 2',
+          title: 'Heading 2',
+        },
+        {
+          icon: H3Icon,
+          value: 'h3',
+          text: 'Heading 3',
+          title: 'Heading 3',
+        },
+      ],
+    },
   ],
   [
     {
@@ -99,49 +135,41 @@ export const defaultToolbarConfig: ToolbarConfigType = [
       icon: FontSizeIcon,
       options: [
         {
-          icon: FontSizeIcon,
           value: '10px',
           text: '10',
           title: '10 px',
         },
         {
-          icon: FontSizeIcon,
           value: '12px',
           text: '12',
           title: '12 px',
         },
         {
-          icon: FontSizeIcon,
           value: '14px',
           text: '14',
           title: '14 px',
         },
         {
-          icon: FontSizeIcon,
           value: '16px',
           text: '16',
           title: '16 px',
         },
         {
-          icon: FontSizeIcon,
           value: '18px',
           text: '18',
           title: '18 px',
         },
         {
-          icon: FontSizeIcon,
           value: '24px',
           text: '24',
           title: '24 px',
         },
         {
-          icon: FontSizeIcon,
           value: '30px',
           text: '30',
           title: '30 px',
         },
         {
-          icon: FontSizeIcon,
           value: '36px',
           text: '36',
           title: '36 px',
@@ -230,7 +258,7 @@ export const defaultToolbarConfig: ToolbarConfigType = [
           title: 'Align Right',
         },
         {
-          icon: AlignTextBothIcon,
+          icon: AlignTextJustifyIcon,
           value: 'alignJustify',
           text: 'Justify',
           title: 'Justify',

@@ -17,8 +17,6 @@ import {
 import { NosNavbar, NosToolbar } from '../components/noseditor-full';
 import { initialData, initialDataLong } from '../config';
 
-const createEditorResettingMap = () => new WeakMap<Editor, boolean>();
-
 export const NosEditorFullFeatures = (props) => {
   const { id = 'main', initialValue = initialData } = props;
 

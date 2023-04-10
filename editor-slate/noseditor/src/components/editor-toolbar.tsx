@@ -11,7 +11,7 @@ import { insertLink, removeLink } from '../plugins/link/commands';
 import { toggleList } from '../plugins/list/commands';
 import { ListTypes } from '../plugins/list/utils';
 import { ParagraphSpec } from '../plugins/paragraph/utils';
-import { toggleElement, toggleMark } from '../transforms';
+import { toggleBlock, toggleMark } from '../transforms';
 import {
   BoldIcon,
   CodeIcon,
@@ -38,7 +38,7 @@ export const EditorToolbar = () => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleElement(editor, ParagraphSpec);
+            toggleBlock(editor, ParagraphSpec);
           }}
           className='toolbar-button'
         >
@@ -48,7 +48,7 @@ export const EditorToolbar = () => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleElement(editor, Heading1Spec);
+            toggleBlock(editor, Heading1Spec);
           }}
           className='toolbar-button'
         >
@@ -58,7 +58,7 @@ export const EditorToolbar = () => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleElement(editor, Heading2Spec);
+            toggleBlock(editor, Heading2Spec);
           }}
           className='toolbar-button'
         >
@@ -68,7 +68,7 @@ export const EditorToolbar = () => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleElement(editor, Heading3Spec);
+            toggleBlock(editor, Heading3Spec);
           }}
           className='toolbar-button'
         >

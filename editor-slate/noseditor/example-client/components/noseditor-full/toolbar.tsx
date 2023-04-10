@@ -27,9 +27,10 @@ import { ParagraphSpec } from '../../../src/plugins/paragraph/utils';
 import { themed } from '../../../src/styles';
 import {
   addMarkData,
+  getActiveBlockType,
   isBlockActive,
   isMarkActive,
-  toggleElement,
+  toggleBlock,
   toggleMark,
   toggleTextAlign,
 } from '../../../src/transforms';
@@ -53,6 +54,7 @@ const toggleTextAlignHandler =
       // console.log(';; txt-align ', event.target.value)
     };
 
+/** used to add fontSize, also support other formats */
 const addTextFormatHandler =
   (editor: Editor, format: TextFormats, value = true) =>
     (event: ChangeEvent<HTMLSelectElement>) => {
@@ -71,6 +73,14 @@ const toggleListTypesHandler =
       event.preventDefault();
       toggleList(editor, { listType: list });
     };
+
+const toggleBlockTypesHandler =
+  (editor: Editor) =>
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      event.preventDefault();
+      toggleBlock(editor, event.target.value as any);
+    };
+
 
 const useShowAddLinkPanel = ({ initialShow = false } = {}) => {
   const [showAddLink, setShowAddLink] = useState(initialShow);
@@ -186,6 +196,7 @@ export const NosToolbar = () => {
                   editor={editor}
                   action={action}
                   options={options}
+                  value='alignLeft'
                   onChange={toggleTextAlignHandler(editor)}
                   key={index2}
                 />
@@ -198,15 +209,43 @@ export const NosToolbar = () => {
                   editor={editor}
                   action={action}
                   options={options}
+                  value={'16px'}
                   onChange={addTextFormatHandler(editor, action)}
                   key={index2}
                 />
               );
             }
+
+            if (action === 'blockTypes') {
+              return (
+                <ToolbarDropdown
+                  editor={editor}
+                  action={action}
+                  options={options}
+                  value={getActiveBlockType(editor)}
+                  onChange={toggleBlockTypesHandler(editor)}
+                  key={index2}
+                />
+              );
+            }
+
+            // /more dropdown actions
+            return (
+              <ToolbarDropdown
+                editor={editor}
+                action={action}
+                options={options}
+                value=''
+                // onChange={addTextFormatHandler(editor, action)}
+                onChange={() => { }}
+                key={index2}
+              />
+            );
           }
 
           return null;
         });
+
         return groupIndex === toolbarGroups.length - 1 ? (
           <Fragment key={groupIndex}>{groupItemsElem}</Fragment>
         ) : (
@@ -226,11 +265,11 @@ export const NosToolbar = () => {
   );
 };
 
-const ToolbarDropdown = ({ editor, action, options, onChange }) => {
+const ToolbarDropdown = ({ editor, action, options, value, onChange }) => {
   return (
     <select
       // value={activeMark(editor, format)}
-      value={'bb'}
+      value={value ?? 'bb'}
       onChange={onChange}
       className={dropdownCss}
     >

@@ -2,7 +2,7 @@ import { Descendant, Element } from 'slate';
 
 import type { LinkElementType, LinkType } from './types';
 
-export const LinkSpec: LinkType = 'a';
+export const LinkSpec: LinkType = 'link';
 
 type CreateLinkArgs = {
   url: string;

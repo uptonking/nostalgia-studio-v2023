@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 import { type Editor } from 'slate';
-import { useSlateStatic } from 'slate-react';
+import { useSlate } from 'slate-react';
 
 import { css } from '@linaria/core';
 
@@ -17,13 +17,17 @@ import {
   Heading2Spec,
   Heading3Spec,
 } from '../../../src/plugins/heading/utils';
-import { toggleList } from '../../../src/plugins/list/commands';
+import {
+  isListBlockActive,
+  toggleList,
+} from '../../../src/plugins/list/commands';
 import { ListTypes } from '../../../src/plugins/list/utils';
 import type { TextFormats } from '../../../src/plugins/marks/types';
 import { ParagraphSpec } from '../../../src/plugins/paragraph/utils';
 import { themed } from '../../../src/styles';
 import {
   addMarkData,
+  isBlockActive,
   isMarkActive,
   toggleElement,
   toggleMark,
@@ -31,7 +35,7 @@ import {
 } from '../../../src/transforms';
 import { AddLinkPanel } from './add-link-panel';
 import { ColorPicker } from './color-picker';
-import { ToolbarButton } from './toolbar-button';
+import { ToolbarBtnActiveClassName, ToolbarButton } from './toolbar-button';
 import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
 
 const toggleTextFormatHandler =
@@ -44,6 +48,7 @@ const toggleTextFormatHandler =
 const toggleTextAlignHandler =
   (editor: Editor, align?: TextAlignValueType) =>
     (event: ChangeEvent<HTMLSelectElement>) => {
+      event.preventDefault();
       toggleTextAlign(editor, event.target.value as TextAlignValueType);
       // console.log(';; txt-align ', event.target.value)
     };
@@ -51,7 +56,7 @@ const toggleTextAlignHandler =
 const addTextFormatHandler =
   (editor: Editor, format: TextFormats, value = true) =>
     (event: ChangeEvent<HTMLSelectElement>) => {
-      // event.preventDefault();
+      event.preventDefault();
       addMarkData(editor, { format, value: event.target.value });
     };
 
@@ -72,20 +77,15 @@ const useShowAddLinkPanel = ({ initialShow = false } = {}) => {
   return { showAddLink, setShowAddLink };
 };
 
-const useToolbarGroups = (initialConfig = defaultToolbarConfig) => {
+const useToolbarGroupsConfig = (initialConfig = defaultToolbarConfig) => {
   const [toolbarGroups, setToolbarGroups] = useState(initialConfig);
   return { toolbarGroups, setToolbarGroups };
 };
 
-
-const ToolbarBtnActiveClassName = "isToolbarBtnActive";
-
-
-
 export const NosToolbar = () => {
-  const editor = useSlateStatic();
+  const editor = useSlate();
   const { showAddLink, setShowAddLink } = useShowAddLinkPanel();
-  const { toolbarGroups, setToolbarGroups } = useToolbarGroups();
+  const { toolbarGroups, setToolbarGroups } = useToolbarGroupsConfig();
 
   return (
     <div className='nosedit-toolbar'>
@@ -97,28 +97,38 @@ export const NosToolbar = () => {
 
             if (checkIsMenuItemListType(action)) {
               return (
-                <IconButton
+                <ToolbarButton
                   onMouseDown={toggleListTypesHandler(editor, action)}
+                  className={
+                    isListBlockActive(editor, action)
+                      ? ToolbarBtnActiveClassName
+                      : ''
+                  }
                   key={title}
                   title={title}
                 >
                   <Icon />
-                </IconButton>
+                </ToolbarButton>
               );
             }
             if (action === 'link') {
               return (
-                <IconButton
+                <ToolbarButton
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     setShowAddLink(true);
                   }}
+                  className={
+                    isBlockActive(editor, action)
+                      ? ToolbarBtnActiveClassName
+                      : ''
+                  }
                   key={title}
                   title={title}
                 >
                   <Icon />
-                </IconButton>
+                </ToolbarButton>
               );
             }
 
@@ -140,7 +150,11 @@ export const NosToolbar = () => {
               return (
                 <ToolbarButton
                   onMouseDown={toggleTextFormatHandler(editor, format)}
-                  className={isMarkActive(editor, format) ? ToolbarBtnActiveClassName : ''}
+                  className={
+                    isMarkActive(editor, format)
+                      ? ToolbarBtnActiveClassName
+                      : ''
+                  }
                   key={title}
                   title={title}
                 >

@@ -6,7 +6,10 @@ export const toggleElement = (editor: Editor, type: Element['type']) => {
   Transforms.setNodes(editor, { type });
 };
 
-export const isMarkActive = (editor: Editor, format: keyof Omit<Text, 'text'>) => {
+export const isMarkActive = (
+  editor: Editor,
+  format: keyof Omit<Text, 'text'>,
+) => {
   const marks = Editor.marks(editor);
   return marks ? marks[format] === true : false;
 };
@@ -63,4 +66,25 @@ export const toggleTextAlign = (editor: Editor, align: TextAlignValueType) => {
   }
 
   Transforms.setNodes<Element>(editor, newProperties);
+};
+
+export const isBlockActive = (
+  editor: Editor,
+  expectedType: string,
+  blockType = 'type',
+) => {
+  const { selection } = editor;
+  if (!selection) return false;
+
+  const [match] = Array.from(
+    Editor.nodes(editor, {
+      at: Editor.unhangRange(editor, selection),
+      match: (n) =>
+        !Editor.isEditor(n) &&
+        Element.isElement(n) &&
+        n[blockType] === expectedType,
+    }),
+  );
+
+  return Boolean(match);
 };

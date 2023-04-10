@@ -46,16 +46,16 @@ export const checkTodoItem = (
   );
 };
 
-export const isBlockActive = (editor, type, listType) => {
+export const isListBlockActive = (editor: Editor, listType: string) => {
   const [match] = Editor.nodes(editor, {
     match: (n) =>
       !Editor.isEditor(n) &&
       Element.isElement(n) &&
-      n.type === type &&
+      n.type === ListItemSpec &&
       n['listType'] === listType,
   });
 
-  return !!match;
+  return Boolean(match);
 };
 
 export const toggleList = (
@@ -69,7 +69,7 @@ export const toggleList = (
       return;
     }
 
-    const isActive = isBlockActive(editor, ListItemSpec, listType);
+    const isActive = isListBlockActive(editor, listType);
     // console.log(';; isActive', listType, isActive)
 
     if (isActive) {

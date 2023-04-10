@@ -112,7 +112,6 @@ const linkContainerCss = css`
   min-height: 48px;
   background-color: ${themed.palette.white};
   border-radius: 8px;
-  /* border: 1px solid rgba(209, 213, 219, 0.3); */
   box-shadow: ${themed.shadow.sm};
 `;
 
@@ -135,7 +134,7 @@ const linkUrlCss = css`
 `;
 
 const linkInputCss = css`
-  min-width: 360px;
+  /* min-width: 360px; */
   line-height: 1.8;
   color: ${themed.color.text.muted};
   border: 1px solid ${themed.color.border.muted};

@@ -13,7 +13,7 @@ import {
   H3 as H3Icon,
   InsertTable as InsertTableIcon,
   LevelFourTitle as H4Icon,
-  Link as LinkIcon,
+  LinkTwo as LinkIcon,
   List as ListCheckboxIcon,
   ListOne as ListUnorderedIcon,
   OrderedList as ListOrderedIcon,
@@ -50,6 +50,11 @@ type ActionButtonType = {
     | 'redo'
     | 'find';
   title?: string;
+  actions?: {
+    type: string;
+    text: string;
+    callback?: (...args: any[]) => any;
+  }[];
 };
 
 type OptionItemType = {
@@ -237,7 +242,7 @@ export const defaultToolbarConfig: ToolbarConfigType = [
     {
       type: 'dropdown',
       action: 'align',
-      icon: LinkIcon,
+      icon: AlignTextLeftIcon,
       options: [
         {
           icon: AlignTextLeftIcon,
@@ -269,7 +274,7 @@ export const defaultToolbarConfig: ToolbarConfigType = [
   [
     {
       type: 'button',
-      icon: UnlinkIcon,
+      icon: LinkIcon,
       action: 'link',
       title: 'Add Link',
     },
@@ -279,6 +284,10 @@ export const defaultToolbarConfig: ToolbarConfigType = [
       icon: ImageIcon,
       action: 'image',
       title: 'Insert Image',
+      actions: [
+        { type: 'uploadImage', text: 'Upload Image' },
+        { type: 'insertImageUrl', text: 'Insert Image By URL' },
+      ],
     },
     // todo table
     {

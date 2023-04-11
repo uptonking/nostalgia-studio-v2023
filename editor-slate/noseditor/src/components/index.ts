@@ -1,19 +1,19 @@
 export * from './icons';
 
-export { ParagraphBase } from './common/basic';
-export { IconButton } from './common/icon-button';
 export {
+  ParagraphBase,
+  IconButton,
+  Menu,
+  MenuItem,
   PopoverContent,
   PopoverProvider,
   PopoverTrigger,
-  usePopover
-} from './common/popover';
-export {
+  usePopover,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-  useTooltip
-} from './common/tooltip';
+  useTooltip,
+} from './common';
 
-export { EditorToolbar } from './editor-toolbar';
+export { EditorToolbar } from './editor/editor-toolbar';
 export { NosEditor } from './editor/noseditor';

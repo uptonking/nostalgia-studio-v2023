@@ -1,15 +1,16 @@
+import React, {
+  type ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+} from 'react';
+
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
 import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import { Command, EditorState, Plugin } from 'prosemirror-state';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  type ChangeEventHandler,
-} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -112,10 +113,11 @@ function uploadFile(file: File) {
  * - 上传图片时会先显示占位符，此时可编辑其他内容，待上传完成会用图片替换占位符
  *
  * - 👉🏻 本示例要点
+ * - 上传图片时使用readAsDataURL将图片内容读取为dataUrl base64
  * - ❓ 图片上传完成后，点击图片会很卡，但点击编辑器其他位置文字时光标正常
  *   - 通过菜单工具条输入url添加的图片却能够正常点击选中
  *   - 初步分析，是上传的图片太大(90kb)编码成base64放在url里面造成的；但官网线上却无此问题
- * - 💡 通过浏览器perf面板分析调用栈定位到问题，来自prosemirror-dev-toolkit
+ *   - 💡 通过浏览器perf面板分析调用栈定位到问题，来自prosemirror-dev-toolkit
  */
 export const ImageUpload = () => {
   const editorContainer = useRef<HTMLDivElement>();

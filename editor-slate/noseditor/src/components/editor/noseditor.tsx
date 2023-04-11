@@ -5,10 +5,11 @@ import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
 import { NosIconProvider } from '../../config/icon-provider';
 import { usePersistedState } from '../../hooks/use-persisted-state';
-import { DragOverlayContent } from '../../plugins/wrapper/components/drag-overlay-content';
+import {
+  DragOverlayContent,
+} from '../../plugins/wrapper/components/drag-overlay-content';
 import { DndPluginContext } from '../../slate-extended/dnd/dnd-plugin-context';
 import { ExtendedEditor } from '../../slate-extended/extended-editor';
-import { EditorToolbar } from '../editor-toolbar';
 import {
   useEditor,
   usePlugins,
@@ -16,6 +17,7 @@ import {
   useRenderElement,
   useRenderLeaf,
 } from '../use-editor';
+import { EditorToolbar } from './editor-toolbar';
 
 export type NosEditorProps = {
   initialValue?: Descendant[];

@@ -7,10 +7,10 @@ import { useSlateStatic } from 'slate-react';
 import { Check as CheckIcon } from '@icon-park/react';
 import { css } from '@linaria/core';
 
-import { IconButton } from '../../../src/components';
-import { useClickOutside } from '../../../src/hooks';
-import { insertLink } from '../../../src/plugins/link/commands';
-import { themed } from '../../../src/styles/theme-vars';
+import { IconButton } from '../../../../src/components';
+import { useClickOutside } from '../../../../src/hooks';
+import { insertLink } from '../../../../src/plugins/link/commands';
+import { themed } from '../../../../src/styles/theme-vars';
 
 export const Portal = ({ children }) => {
   return typeof document === 'object'
@@ -19,13 +19,16 @@ export const Portal = ({ children }) => {
 };
 
 /**
- * todo migrate to floating-ui
+ * todo
+ * - migrate to floating-ui, like context-menu example
+ * - focus input on mount
  */
 export const AddLinkPanel = (props) => {
   const { showAddLink, setShowAddLink } = props;
   const editor = useSlateStatic();
 
   const containerRef = useRef<HTMLDivElement | null>();
+  const linkInputRef = useRef<HTMLInputElement | null>();
 
   const [linkInput, setLinkInput] = useState('');
 
@@ -35,8 +38,9 @@ export const AddLinkPanel = (props) => {
   }, [editor, linkInput, setShowAddLink]);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+    const elem = containerRef.current;
+    const inputElem = linkInputRef.current;
+    if (!elem || !inputElem) return;
 
     const { selection } = editor;
 
@@ -46,17 +50,19 @@ export const AddLinkPanel = (props) => {
       Editor.string(editor, selection) === ''
     ) {
       // 弹框默认样式由class设置，位置由style设置，若去掉style属性会恢复默认位置，变为不可见
-      el.removeAttribute('style');
+      elem.removeAttribute('style');
       return;
     }
 
     const domSelection = window.getSelection();
     const domRange = domSelection.getRangeAt(0);
     const rect = domRange.getBoundingClientRect();
-    el.style.opacity = '1';
-    el.style.top = rect.top + window.scrollY + rect.height + 'px';
-    el.style.left =
-      rect.left + window.scrollX - el.offsetWidth / 2 + rect.width / 2 + 'px';
+    elem.style.opacity = '1';
+    elem.style.top = rect.top + window.scrollY + rect.height + 'px';
+    elem.style.left =
+      rect.left + window.scrollX - elem.offsetWidth / 2 + rect.width / 2 + 'px';
+
+    inputElem.focus();
   }, [editor]);
 
   useClickOutside(containerRef, () => {
@@ -67,9 +73,10 @@ export const AddLinkPanel = (props) => {
 
   return (
     <Portal>
-      <div ref={containerRef} className={addLinkContainerCss}>
+      <div ref={containerRef} className={rootContainerCss}>
         <div>
           <input
+            ref={linkInputRef}
             value={linkInput}
             onChange={(e) => setLinkInput(e.target.value)}
             onKeyDown={(e) => {
@@ -80,6 +87,7 @@ export const AddLinkPanel = (props) => {
             // defaultValue="add link to text"
             className={linkInputCss}
             type='text'
+            placeholder='Add link URL to selected text'
           />
           <IconButton onClick={insertLinkAndClosePanel} title='Add Link'>
             <CheckIcon />
@@ -90,7 +98,7 @@ export const AddLinkPanel = (props) => {
   );
 };
 
-const addLinkContainerCss = css`
+const rootContainerCss = css`
   position: absolute;
   top: -8000px;
   left: -8000px;

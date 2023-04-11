@@ -10,7 +10,7 @@ type IconButtonProps = {
   style?: React.CSSProperties;
   children: React.ReactElement<IIconProps>;
   as?: React.ElementType;
-  /** default tooltip */
+  /** default tooltip text */
   title?: string;
 } & Omit<React.HTMLProps<HTMLButtonElement>, 'type'>;
 

@@ -13,17 +13,11 @@ import { css } from '@linaria/core';
 
 import { IconButton } from '../../../src';
 import {
-  Heading1Spec,
-  Heading2Spec,
-  Heading3Spec,
-} from '../../../src/plugins/heading/utils';
-import {
   isListBlockActive,
   toggleList,
 } from '../../../src/plugins/list/commands';
 import { ListTypes } from '../../../src/plugins/list/utils';
 import type { TextFormats } from '../../../src/plugins/marks/types';
-import { ParagraphSpec } from '../../../src/plugins/paragraph/utils';
 import { themed } from '../../../src/styles';
 import {
   addMarkData,
@@ -34,9 +28,13 @@ import {
   toggleMark,
   toggleTextAlign,
 } from '../../../src/transforms';
-import { AddLinkPanel } from './add-link-panel';
-import { ColorPicker } from './color-picker';
-import { ToolbarBtnActiveClassName, ToolbarButton } from './toolbar-button';
+import {
+  AddLinkPanel,
+  ColorPicker,
+  InsertImageApproaches,
+  ToolbarBtnActiveClassName,
+  ToolbarButton,
+} from './toolbar-buttons';
 import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
 
 const toggleTextFormatHandler =
@@ -92,7 +90,7 @@ const useToolbarGroupsConfig = (initialConfig = defaultToolbarConfig) => {
   return { toolbarGroups, setToolbarGroups };
 };
 
-export const NosToolbar = () => {
+export const NosToolbar = (props_) => {
   const editor = useSlate();
   const { showAddLink, setShowAddLink } = useShowAddLinkPanel();
   const { toolbarGroups, setToolbarGroups } = useToolbarGroupsConfig();
@@ -140,6 +138,9 @@ export const NosToolbar = () => {
                   <Icon />
                 </ToolbarButton>
               );
+            }
+            if (action === 'image') {
+              return <InsertImageApproaches actions={item.actions} key={title} />
             }
 
             if (action === 'colorPicker') {
@@ -269,7 +270,7 @@ const ToolbarDropdown = ({ editor, action, options, value, onChange }) => {
   return (
     <select
       // value={activeMark(editor, format)}
-      value={value ?? 'bb'}
+      value={value ?? 'defaultValue'}
       onChange={onChange}
       className={dropdownCss}
     >

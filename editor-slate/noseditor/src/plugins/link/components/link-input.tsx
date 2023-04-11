@@ -39,7 +39,7 @@ export const LinkInput = forwardRef<HTMLDivElement, LinkInputProps>(
     }, [editor, isEditing, linkElement, linkHref, linkInput]);
 
     return (
-      <div ref={ref} className={linkContainerCss + ' ' + className} {...props}>
+      <div ref={ref} className={rootContainerCss + ' ' + className} {...props}>
         <div className={mainCss}>
           {isEditing ? (
             <input
@@ -104,7 +104,7 @@ const StyledIconButton = styled(IconButton)`
   margin-left: 6px;
 `;
 
-const linkContainerCss = css`
+const rootContainerCss = css`
   display: flex;
   align-items: center;
   min-width: 300px;

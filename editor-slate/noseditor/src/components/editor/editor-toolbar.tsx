@@ -6,12 +6,12 @@ import {
   Heading1Spec,
   Heading2Spec,
   Heading3Spec,
-} from '../plugins/heading/utils';
-import { insertLink, removeLink } from '../plugins/link/commands';
-import { toggleList } from '../plugins/list/commands';
-import { ListTypes } from '../plugins/list/utils';
-import { ParagraphSpec } from '../plugins/paragraph/utils';
-import { toggleBlock, toggleMark } from '../transforms';
+} from '../../plugins/heading/utils';
+import { insertLink, removeLink } from '../../plugins/link/commands';
+import { toggleList } from '../../plugins/list/commands';
+import { ListTypes } from '../../plugins/list/utils';
+import { ParagraphSpec } from '../../plugins/paragraph/utils';
+import { toggleBlock, toggleMark } from '../../transforms';
 import {
   BoldIcon,
   CodeIcon,
@@ -20,7 +20,7 @@ import {
   ListCheckboxIcon,
   ListOrderedIcon,
   ListUnorderedIcon,
-} from './icons';
+} from '../icons';
 
 export const EditorToolbar = () => {
   const editor = useSlateStatic();

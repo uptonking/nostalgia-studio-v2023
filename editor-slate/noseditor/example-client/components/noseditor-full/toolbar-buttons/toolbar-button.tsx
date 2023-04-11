@@ -1,7 +1,7 @@
 import { styled } from '@linaria/react';
 
-import { IconButton } from '../../../src/components';
-import { themed } from '../../../src/styles';
+import { IconButton } from '../../../../src/components';
+import { themed } from '../../../../src/styles';
 
 export const ToolbarBtnActiveClassName = 'isToolbarBtnActive';
 

@@ -1,4 +1,4 @@
-export { InsertImageApproaches } from './image/insert-image-approaches';
+export { InsertImageApproaches } from './insert-image-approaches';
 export { ColorPicker } from './color-picker/color-picker';
-export { AddLinkPanel } from './insert-link-panel';
+export { FloatingActionPanel } from './floating-action-panel';
 export { ToolbarButton, ToolbarBtnActiveClassName } from './toolbar-button';

@@ -22,6 +22,7 @@ import {
   ListUnorderedIcon,
 } from '../icons';
 
+// todo remove this toolbar
 export const EditorToolbar = () => {
   const editor = useSlateStatic();
 

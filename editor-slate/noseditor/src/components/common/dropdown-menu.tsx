@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import cx from 'clsx';
+
 import {
   autoUpdate,
   flip,
@@ -27,7 +29,8 @@ import {
 import { menuCss, menuItemCss, rootMenuCss } from './dropdown-menu.styles';
 
 interface MenuItemProps {
-  label: string;
+  /** menu item content, text or custom element like icon */
+  label: string | React.ReactElement;
   disabled?: boolean;
 }
 
@@ -37,10 +40,10 @@ export const MenuItem = React.forwardRef<
 >(({ label, disabled, ...props }, ref) => {
   return (
     <button
-      type="button"
+      type='button'
       {...props}
       ref={ref}
-      role="menuitem"
+      role='menuitem'
       disabled={disabled}
     >
       {label}
@@ -49,7 +52,9 @@ export const MenuItem = React.forwardRef<
 });
 
 interface MenuProps {
-  label: string;
+  /** menu trigger , text or custom element like icon */
+  label: string | React.ReactElement;
+  hideBorder?: boolean;
   nested?: boolean;
   children?: React.ReactNode;
 }
@@ -57,7 +62,7 @@ interface MenuProps {
 export const MenuComponent = React.forwardRef<
   HTMLButtonElement,
   MenuProps & React.HTMLProps<HTMLButtonElement>
->(({ children, label, ...props }, forwardedRef) => {
+>(({ children, label, hideBorder = false, ...props }, forwardedRef) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
   const [allowHover, setAllowHover] = React.useState(false);
@@ -65,8 +70,8 @@ export const MenuComponent = React.forwardRef<
   const listItemsRef = React.useRef<Array<HTMLButtonElement | null>>([]);
   const listContentRef = React.useRef(
     React.Children.map(children, (child) =>
-      React.isValidElement(child) ? child.props.label : null
-    ) as Array<string | null>
+      React.isValidElement(child) ? child.props.label : null,
+    ) as Array<string | null>,
   );
 
   const tree = useFloatingTree();
@@ -78,34 +83,34 @@ export const MenuComponent = React.forwardRef<
     nodeId,
     open: isOpen,
     onOpenChange: setIsOpen,
-    placement: isNested ? "right-start" : "bottom-start",
+    placement: isNested ? 'right-start' : 'bottom-start',
     middleware: [
       offset({ mainAxis: isNested ? 0 : 4, alignmentAxis: isNested ? -4 : 0 }),
       flip(),
-      shift()
+      shift(),
     ],
-    whileElementsMounted: autoUpdate
+    whileElementsMounted: autoUpdate,
   });
 
   const hover = useHover(context, {
     enabled: isNested && allowHover,
     delay: { open: 75 },
     handleClose: safePolygon({
-      blockPointerEvents: true
-    })
+      blockPointerEvents: true,
+    }),
   });
   const click = useClick(context, {
-    event: "mousedown",
+    event: 'mousedown',
     toggle: !isNested || !allowHover,
-    ignoreMouse: isNested
+    ignoreMouse: isNested,
   });
-  const role = useRole(context, { role: "menu" });
+  const role = useRole(context, { role: 'menu' });
   const dismiss = useDismiss(context);
   const listNavigation = useListNavigation(context, {
     listRef: listItemsRef,
     activeIndex,
     nested: isNested,
-    onNavigate: setActiveIndex
+    onNavigate: setActiveIndex,
   });
 
   // support focus to menuItem when type charater
@@ -113,18 +118,15 @@ export const MenuComponent = React.forwardRef<
     enabled: isOpen,
     listRef: listContentRef,
     onMatch: isOpen ? setActiveIndex : undefined,
-    activeIndex
+    activeIndex,
   });
 
-  const {
-    getReferenceProps,
-    getFloatingProps,
-    getItemProps
-  } = useInteractions([hover, click, role, dismiss, listNavigation, typeahead]);
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions(
+    [hover, click, role, dismiss, listNavigation, typeahead],
+  );
 
   // Event emitter allows you to communicate across tree components.
-  // This effect closes all menus when an item gets clicked anywhere
-  // in the tree.
+  // This effect closes all menus when an item gets clicked anywhere in the tree.
   React.useEffect(() => {
     if (!tree) return;
 
@@ -138,18 +140,18 @@ export const MenuComponent = React.forwardRef<
       }
     }
 
-    tree.events.on("click", handleTreeClick);
-    tree.events.on("menuopen", onSubMenuOpen);
+    tree.events.on('click', handleTreeClick);
+    tree.events.on('menuopen', onSubMenuOpen);
 
     return () => {
-      tree.events.off("click", handleTreeClick);
-      tree.events.off("menuopen", onSubMenuOpen);
+      tree.events.off('click', handleTreeClick);
+      tree.events.off('menuopen', onSubMenuOpen);
     };
   }, [tree, nodeId, parentId]);
 
   React.useEffect(() => {
     if (isOpen && tree) {
-      tree.events.emit("menuopen", { parentId, nodeId });
+      tree.events.emit('menuopen', { parentId, nodeId });
     }
   }, [tree, isOpen, nodeId, parentId]);
 
@@ -158,7 +160,7 @@ export const MenuComponent = React.forwardRef<
   // keyboard navigation and the cursor is resting on the menu.
   React.useEffect(() => {
     function onPointerMove({ pointerType }: PointerEvent) {
-      if (pointerType !== "touch") {
+      if (pointerType !== 'touch') {
         setAllowHover(true);
       }
     }
@@ -167,16 +169,16 @@ export const MenuComponent = React.forwardRef<
       setAllowHover(false);
     }
 
-    window.addEventListener("pointermove", onPointerMove, {
+    window.addEventListener('pointermove', onPointerMove, {
       once: true,
-      capture: true
+      capture: true,
     });
-    window.addEventListener("keydown", onKeyDown, true);
+    window.addEventListener('keydown', onKeyDown, true);
     return () => {
-      window.removeEventListener("pointermove", onPointerMove, {
-        capture: true
+      window.removeEventListener('pointermove', onPointerMove, {
+        capture: true,
       });
-      window.removeEventListener("keydown", onKeyDown, true);
+      window.removeEventListener('keydown', onKeyDown, true);
     };
   }, [allowHover]);
 
@@ -186,20 +188,25 @@ export const MenuComponent = React.forwardRef<
     <FloatingNode id={nodeId}>
       <button
         ref={referenceRef}
-        data-open={isOpen ? "" : undefined}
+        data-open={isOpen ? '' : undefined}
         {...getReferenceProps({
           ...props,
-          className: `${isNested ? menuItemCss : rootMenuCss}`,
+          // className: `${isNested ? menuItemCss : rootMenuCss}`,
+          className: cx({
+            [rootMenuCss]: !isNested,
+            [menuItemCss]: isNested,
+            hideMenuBorder: hideBorder,
+          }),
           onClick(event) {
             event.stopPropagation();
           },
           ...(isNested && {
             // Indicates this is a nested <Menu /> acting as a <MenuItem />.
-            role: "menuitem"
-          })
+            role: 'menuitem',
+          }),
         })}
       >
-        {label}{" "}
+        {label}{' '}
         {isNested && (
           <span aria-hidden style={{ marginLeft: 10 }}>
             ➔
@@ -224,7 +231,7 @@ export const MenuComponent = React.forwardRef<
                 position: strategy,
                 top: y ?? 0,
                 left: x ?? 0,
-                width: "max-content"
+                width: 'max-content',
               }}
               {...getFloatingProps()}
             >
@@ -242,16 +249,16 @@ export const MenuComponent = React.forwardRef<
                       },
                       onClick(event) {
                         child.props.onClick?.(event);
-                        tree?.events.emit("click");
+                        tree?.events.emit('click');
                       },
                       // Allow focus synchronization if the cursor did not move.
                       onMouseEnter() {
                         if (allowHover && isOpen) {
                           setActiveIndex(index);
                         }
-                      }
-                    })
-                  )
+                      },
+                    }),
+                  ),
               )}
             </div>
           </FloatingFocusManager>
@@ -261,6 +268,7 @@ export const MenuComponent = React.forwardRef<
   );
 });
 
+/** nestable menu */
 export const Menu = React.forwardRef<
   HTMLButtonElement,
   MenuProps & React.HTMLProps<HTMLButtonElement>

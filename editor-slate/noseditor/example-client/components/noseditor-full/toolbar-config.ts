@@ -28,6 +28,7 @@ import {
   TextUnderline as UnderlineIcon,
   Undo as UndoIcon,
   Unlink as UnlinkIcon,
+  Upload as UploadIcon,
 } from '@icon-park/react';
 import type { Icon } from '@icon-park/react/lib/runtime';
 
@@ -39,20 +40,21 @@ type ActionButtonType = {
   icon: Icon;
   format?: TextFormats;
   action?:
-    | 'align'
-    | 'link'
-    | (typeof ListTypes)[keyof typeof ListTypes]
-    | 'image'
-    | 'table'
-    | 'blockquote'
-    | 'colorPicker'
-    | 'undo'
-    | 'redo'
-    | 'find';
+  | 'align'
+  | 'link'
+  | (typeof ListTypes)[keyof typeof ListTypes]
+  | 'image'
+  | 'table'
+  | 'blockquote'
+  | 'colorPicker'
+  | 'undo'
+  | 'redo'
+  | 'find';
   title?: string;
   actions?: {
     type: string;
-    text: string;
+    text?: string;
+    icon?: Icon;
     callback?: (...args: any[]) => any;
   }[];
 };
@@ -285,8 +287,8 @@ export const defaultToolbarConfig: ToolbarConfigType = [
       action: 'image',
       title: 'Insert Image',
       actions: [
-        { type: 'uploadImage', text: 'Upload Image' },
-        { type: 'insertImageUrl', text: 'Insert Image By URL' },
+        { type: 'uploadImage', text: 'Upload Image', icon: UploadIcon },
+        { type: 'insertImageUrl', text: 'Insert Image By URL', icon: LinkIcon },
       ],
     },
     // todo table

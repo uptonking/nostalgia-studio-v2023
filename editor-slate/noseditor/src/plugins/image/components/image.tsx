@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { ElementProps } from '../../types';
-import { ImageElement } from '../types';
+import type { ElementProps } from '../../types';
+import type { ImageElement } from '../types';
 
-const Image = (props: ElementProps & { element: ImageElement }) => {
+export const Image = (props: ElementProps & { element: ImageElement }) => {
   const { children, attributes, element } = props;
 
   return (
@@ -21,4 +21,3 @@ const Image = (props: ElementProps & { element: ImageElement }) => {
   );
 };
 
-export default Image;

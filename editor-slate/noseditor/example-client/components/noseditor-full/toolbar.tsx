@@ -29,8 +29,8 @@ import {
   toggleTextAlign,
 } from '../../../src/transforms';
 import {
-  AddLinkPanel,
   ColorPicker,
+  FloatingActionPanel,
   InsertImageApproaches,
   ToolbarBtnActiveClassName,
   ToolbarButton,
@@ -73,16 +73,18 @@ const toggleListTypesHandler =
     };
 
 const toggleBlockTypesHandler =
-  (editor: Editor) =>
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      event.preventDefault();
-      toggleBlock(editor, event.target.value as any);
-    };
+  (editor: Editor) => (event: ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault();
+    toggleBlock(editor, event.target.value as any);
+  };
 
-
-const useShowAddLinkPanel = ({ initialShow = false } = {}) => {
-  const [showAddLink, setShowAddLink] = useState(initialShow);
-  return { showAddLink, setShowAddLink };
+const useShowFloatingPanel = ({ initialShow = false } = {}) => {
+  const [showFloatingPanel, setShowFloatingPanel] = useState(initialShow);
+  return { showFloatingPanel, setShowFloatingPanel };
+};
+const useFloatingPanelType = () => {
+  const [panelType, setPanelType] = useState<'image' | 'link'>('image');
+  return { panelType, setPanelType };
 };
 
 const useToolbarGroupsConfig = (initialConfig = defaultToolbarConfig) => {
@@ -92,7 +94,8 @@ const useToolbarGroupsConfig = (initialConfig = defaultToolbarConfig) => {
 
 export const NosToolbar = (props_) => {
   const editor = useSlate();
-  const { showAddLink, setShowAddLink } = useShowAddLinkPanel();
+  const { showFloatingPanel, setShowFloatingPanel } = useShowFloatingPanel();
+  const { panelType, setPanelType } = useFloatingPanelType();
   const { toolbarGroups, setToolbarGroups } = useToolbarGroupsConfig();
 
   return (
@@ -125,7 +128,8 @@ export const NosToolbar = (props_) => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    setShowAddLink(true);
+                    setPanelType('link');
+                    setShowFloatingPanel(true);
                   }}
                   className={
                     isBlockActive(editor, action)
@@ -140,7 +144,14 @@ export const NosToolbar = (props_) => {
               );
             }
             if (action === 'image') {
-              return <InsertImageApproaches actions={item.actions} key={title} />
+              return (
+                <InsertImageApproaches
+                  {...item}
+                  setShowFloatingPanel={setShowFloatingPanel}
+                  setPanelType={setPanelType}
+                  key={title}
+                />
+              );
             }
 
             if (action === 'colorPicker') {
@@ -176,15 +187,7 @@ export const NosToolbar = (props_) => {
 
             // /more buttons actions
             return (
-              <IconButton
-                // onClick={(e) => {
-                //   e.preventDefault();
-                //   e.stopPropagation();
-                //   setShowAddLink(true);
-                // }}
-                key={title}
-                title={title}
-              >
+              <IconButton key={title} title={title}>
                 <Icon />
               </IconButton>
             );
@@ -256,10 +259,11 @@ export const NosToolbar = (props_) => {
           </Fragment>
         );
       })}
-      {showAddLink ? (
-        <AddLinkPanel
-          showAddLink={showAddLink}
-          setShowAddLink={setShowAddLink}
+      {setShowFloatingPanel ? (
+        <FloatingActionPanel
+          type={panelType}
+          showFloatingPanel={showFloatingPanel}
+          setShowFloatingPanel={setShowFloatingPanel}
         />
       ) : null}
     </div>

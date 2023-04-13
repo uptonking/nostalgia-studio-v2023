@@ -46,7 +46,7 @@ export const insertLink = (editor: Editor, url: string) => {
       removeLink(editor);
     }
 
-    //for image nodes, will be implemented later
+    // todo if inert image link
     if (editor.isVoid(parent as Element)) {
       Transforms.insertNodes(
         editor,
@@ -60,6 +60,7 @@ export const insertLink = (editor: Editor, url: string) => {
       Transforms.insertNodes(editor, linkElem, { select: true });
     } else {
       Transforms.wrapNodes(editor, linkElem, { split: true });
+      Transforms.collapse(editor, { edge: 'end' })
     }
   } else {
     // /if no selection, insert a paragraph to the end of editor

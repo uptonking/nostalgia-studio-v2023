@@ -1,10 +1,12 @@
-import { Descendant } from 'slate';
+import type { Descendant } from 'slate';
 
-export type ImageType = 'img';
-export const ImageType: ImageType = 'img';
+export type ImageType = 'image';
 
 export type ImageElement = {
   type: ImageType;
   url: string;
+  alt?: string;
+  width?: string;
+  height?: string;
   children: Descendant[];
 };

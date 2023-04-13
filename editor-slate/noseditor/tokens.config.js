@@ -14,6 +14,7 @@ export default {
         'palette#dark': ['[data-nos-theme="nos-t-dark"]'],
         'font.size#desktop': ['@media (min-width: 600px)'],
       },
+      p3: process.env.NODE_ENV === 'production'
     }),
     // pluginSass(),
     pluginJS(),

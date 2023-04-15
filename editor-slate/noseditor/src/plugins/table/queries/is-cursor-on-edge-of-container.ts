@@ -1,5 +1,4 @@
-import type { Point, Range } from 'slate';
-import { Editor } from 'slate';
+import { Editor, type Point, type Range } from 'slate';
 import { ReactEditor } from 'slate-react';
 
 export type ContainerEdge = 'top' | 'bottom';

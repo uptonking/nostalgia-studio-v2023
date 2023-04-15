@@ -15,10 +15,10 @@ import {
   useRenderLeaf,
 } from '../../src';
 import { NosNavbar, NosToolbar } from '../components/noseditor-full';
-import { initialData, initialDataLong } from '../config';
+import { initialData, initialDataLong, simpleTableData } from '../config';
 
 export const NosEditorFullFeatures = (props) => {
-  const { id = 'main', initialValue = initialData } = props;
+  const { id = 'main', initialValue = simpleTableData } = props;
 
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [editorKey, setEditorKey] = useState<string>('');
@@ -68,12 +68,11 @@ export const NosEditorFullFeatures = (props) => {
 
   const resetEditorContents = useCallback(() => {
     editor.selection = null;
-    // @ts-expect-error fix-types
-    editor.children = initialData;
-    setValue(initialData);
+    editor.children = initialValue;
+    setValue(initialValue);
     setIsReadOnly(false);
     setEditorKey(String(Math.random()) + Math.random());
-  }, [editor, setValue]);
+  }, [editor, initialValue, setValue]);
 
   // console.log(';; editorKey ', editorKey, value, editor.children);
 

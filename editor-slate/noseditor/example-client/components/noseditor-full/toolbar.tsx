@@ -18,6 +18,7 @@ import {
 } from '../../../src/plugins/list/commands';
 import { ListTypes } from '../../../src/plugins/list/utils';
 import type { TextFormats } from '../../../src/plugins/marks/types';
+import { insertTableByRowColNumber } from '../../../src/plugins/table/commands';
 import { themed } from '../../../src/styles';
 import {
   addMarkData,
@@ -32,6 +33,7 @@ import {
   ColorPicker,
   FloatingActionPanel,
   InsertImageApproaches,
+  InsertTablePanel,
   ToolbarBtnActiveClassName,
   ToolbarButton,
 } from './toolbar-buttons';
@@ -39,26 +41,26 @@ import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
 
 const toggleTextFormatHandler =
   (editor: Editor, format: TextFormats) =>
-    (event: MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      toggleMark(editor, format);
-    };
+  (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    toggleMark(editor, format);
+  };
 
 const toggleTextAlignHandler =
   (editor: Editor, align?: TextAlignValueType) =>
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      event.preventDefault();
-      toggleTextAlign(editor, event.target.value as TextAlignValueType);
-      // console.log(';; txt-align ', event.target.value)
-    };
+  (event: ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault();
+    toggleTextAlign(editor, event.target.value as TextAlignValueType);
+    // console.log(';; txt-align ', event.target.value)
+  };
 
 /** used to add fontSize, also support other formats */
 const addTextFormatHandler =
   (editor: Editor, format: TextFormats, value = true) =>
-    (event: ChangeEvent<HTMLSelectElement>) => {
-      event.preventDefault();
-      addMarkData(editor, { format, value: event.target.value });
-    };
+  (event: ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault();
+    addMarkData(editor, { format, value: event.target.value });
+  };
 
 const checkIsMenuItemListType = (
   action: string,
@@ -67,10 +69,10 @@ const checkIsMenuItemListType = (
 
 const toggleListTypesHandler =
   (editor: Editor, list: (typeof ListTypes)[keyof typeof ListTypes]) =>
-    (event: MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
-      toggleList(editor, { listType: list });
-    };
+  (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    toggleList(editor, { listType: list });
+  };
 
 const toggleBlockTypesHandler =
   (editor: Editor) => (event: ChangeEvent<HTMLSelectElement>) => {
@@ -92,6 +94,9 @@ const useToolbarGroupsConfig = (initialConfig = defaultToolbarConfig) => {
   return { toolbarGroups, setToolbarGroups };
 };
 
+/**
+ * todo make toolbar customizable
+ */
 export const NosToolbar = (props_) => {
   const editor = useSlate();
   const { showFloatingPanel, setShowFloatingPanel } = useShowFloatingPanel();
@@ -153,7 +158,9 @@ export const NosToolbar = (props_) => {
                 />
               );
             }
-
+            if (action === 'table') {
+              return <InsertTablePanel {...item} key={title} />;
+            }
             if (action === 'colorPicker') {
               const format = item.format as 'color' | 'bgColor';
               return (
@@ -241,7 +248,7 @@ export const NosToolbar = (props_) => {
                 options={options}
                 value=''
                 // onChange={addTextFormatHandler(editor, action)}
-                onChange={() => { }}
+                onChange={() => {}}
                 key={index2}
               />
             );

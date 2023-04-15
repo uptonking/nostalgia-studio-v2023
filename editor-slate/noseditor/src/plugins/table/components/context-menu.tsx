@@ -3,12 +3,16 @@ import ReactDOM from 'react-dom';
 
 import { Editor, Path } from 'slate';
 
-import { deleteCol } from '../commands/delete-col';
-import { deleteRow } from '../commands/delete-row';
-import { insertColLeft, insertColRight } from '../commands/insert-col';
-import { insertRowAbove, insertRowBelow } from '../commands/insert-row';
-import { mergeCells } from '../commands/merge-cells';
-import { splitCells } from '../commands/split-cells';
+import {
+  deleteCol,
+  deleteRow,
+  insertColLeft,
+  insertColRight,
+  insertRowAbove,
+  insertRowBelow,
+  mergeCells,
+  splitCells,
+} from '../commands';
 import type { TableCellElement } from '../types';
 import { getCellBySelectOrFocus, setTableNodeOrigin } from '../utils/common';
 
@@ -106,7 +110,7 @@ export const ContextMenu: FC<Props> = ({
           run(insertRowAbove);
         }}
       >
-        向上插入 1 行
+        Insert Row Above
       </div>
       <div
         onMouseDown={(e) => {
@@ -114,7 +118,7 @@ export const ContextMenu: FC<Props> = ({
           run(insertRowBelow);
         }}
       >
-        向下插入 1 行
+        Insert Row Below
       </div>
       <div
         onMouseDown={(e) => {
@@ -122,7 +126,7 @@ export const ContextMenu: FC<Props> = ({
           run(insertColLeft);
         }}
       >
-        向左插入 1 列
+        Insert Column Left
       </div>
       <div
         onMouseDown={(e) => {
@@ -130,7 +134,7 @@ export const ContextMenu: FC<Props> = ({
           run(insertColRight);
         }}
       >
-        向右插入 1 列
+        Insert Column Right
       </div>
       <span className='nos-split-line' />
       <div
@@ -139,7 +143,7 @@ export const ContextMenu: FC<Props> = ({
           run(deleteRow);
         }}
       >
-        删除行
+        Delete Row
       </div>
       <div
         onMouseDown={(e) => {
@@ -147,7 +151,7 @@ export const ContextMenu: FC<Props> = ({
           run(deleteCol);
         }}
       >
-        删除列
+        Delete Column
       </div>
       <span className='nos-split-line' />
       <div
@@ -158,7 +162,7 @@ export const ContextMenu: FC<Props> = ({
           run(mergeCells);
         }}
       >
-        合并单元格
+        Merge Cells
       </div>
       <div
         className={isMergeCell() ? '' : 'nos-disabled'}
@@ -168,7 +172,7 @@ export const ContextMenu: FC<Props> = ({
           run(splitCells);
         }}
       >
-        取消合并
+        Unmerged Cells
       </div>
     </div>,
     document.body,

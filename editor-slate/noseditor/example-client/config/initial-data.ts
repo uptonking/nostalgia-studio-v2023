@@ -36,7 +36,7 @@ const initialData: Descendant[] = [
     children: [{ text: "Etymology" }],
   },
   {
-    type: "img",
+    type: "image",
     url: "images/ckeditor.png",
     children: [{ text: "" }],
   },

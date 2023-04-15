@@ -1,5 +1,6 @@
 import { Editor, Path, type Point, Transforms } from 'slate';
 
+import { isCursorOnFirstLine, isCursorOnLastLine } from '../queries';
 import type {
   TableCellElement,
   TableElement,
@@ -16,10 +17,6 @@ import {
   getRowNumber,
   getTableByCellPath,
 } from './common';
-import {
-  isCursorOnFirstLine,
-  isCursorOnLastLine,
-} from './queries/is-cursor-on-edge-of-container';
 
 export function getTargetTableCellInfoForUpOrDown({
   editor,

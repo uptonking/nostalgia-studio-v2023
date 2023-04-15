@@ -5,8 +5,6 @@ import { Editor, Path, Transforms } from 'slate';
 
 import type { Direction, TableCellElement, TableElement } from '../types';
 import {
-  createEmptyCellNode,
-  createRowNode,
   getCellBySelectOrFocus,
   getColNumber,
   getRangeByOrigin,
@@ -15,6 +13,7 @@ import {
   getTableByCellPath,
 } from '../utils/common';
 import { getTargetTableCellInfoForUpOrDown } from '../utils/keyboard';
+import { createEmptyCellNode, createRowNode } from '../utils/utils';
 
 /**
  * insert row above/below cellPaths

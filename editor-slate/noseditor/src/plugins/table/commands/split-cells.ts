@@ -2,12 +2,11 @@ import { Editor, Node, NodeEntry, Path, Transforms } from 'slate';
 
 import type { TableCellElement, TableElement } from '../types';
 import {
-  createEmptyCellNode,
-  createRowNode,
   getCellBySelectOrFocus,
   getNextInsertRowPosition,
   getOriginTable,
 } from '../utils/common';
+import { createEmptyCellNode, createRowNode } from '../utils/utils';
 
 /**
  * 获取需要插入的行数以及插入位置信息

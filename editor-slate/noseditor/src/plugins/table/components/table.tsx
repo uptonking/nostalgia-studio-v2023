@@ -14,11 +14,11 @@ import { type Location, Path, Transforms } from 'slate';
 import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 
 import type { ElementProps } from '../../types';
+import { isSelectionInTable } from '../queries';
 import type { TableCellElement, TableElement, TableRowElement } from '../types';
 import {
   getTableCellNode,
   isEditableInTable,
-  isSelectionInTable,
   setTableNodeOrigin,
 } from '../utils/common';
 import {
@@ -71,7 +71,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         editorDom.setAttribute('contenteditable', 'false');
         Promise.resolve()
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
-          .catch(() => {});
+          .catch(() => { });
       }
 
       const isSelInTable = isSelectionInTable(editor);

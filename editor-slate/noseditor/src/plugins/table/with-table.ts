@@ -10,8 +10,9 @@ import {
   Transforms,
 } from 'slate';
 
-import { WithTableEditor } from './types';
-import { isEditableInTable, isSelectionInTable } from './utils/common';
+import { isSelectionInTable } from './queries';
+import type { WithTableEditor } from './types';
+import { isEditableInTable } from './utils/common';
 
 const HEADER_LIST = new Set(['h1', 'h2', 'h3', 'h4']);
 

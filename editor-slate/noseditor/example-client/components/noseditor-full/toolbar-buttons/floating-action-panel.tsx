@@ -62,7 +62,8 @@ type FloatingActionPanelProps = {
   initialShowPanel?: boolean;
 };
 
-/**
+/** floating panel for adding link/image
+ *
  * todo migrate to floating-ui, like context-menu example
  */
 export const FloatingActionPanel = (props: FloatingActionPanelProps) => {
@@ -78,7 +79,7 @@ export const FloatingActionPanel = (props: FloatingActionPanelProps) => {
 
   const editor = useSlateStatic();
 
-  const rootRef = useRef<HTMLDivElement | null>();
+  const rootContainerRef = useRef<HTMLDivElement>();
   const inputRef = useRef<HTMLInputElement | null>();
   const [input, setInput] = useState('');
 
@@ -92,7 +93,7 @@ export const FloatingActionPanel = (props: FloatingActionPanelProps) => {
   }, [actions, editor, input, setShowPanel]);
 
   useEffect(() => {
-    const rootElem = rootRef.current;
+    const rootElem = rootContainerRef.current;
     const inputElem = inputRef.current;
     if (!rootElem || !inputElem) return;
 
@@ -125,7 +126,7 @@ export const FloatingActionPanel = (props: FloatingActionPanelProps) => {
     inputElem.focus();
   }, [editor, showPanel]);
 
-  useClickOutside(rootRef, () => {
+  useClickOutside(rootContainerRef, () => {
     if (showPanel) {
       setInput('');
       setShowPanel(false);
@@ -134,7 +135,7 @@ export const FloatingActionPanel = (props: FloatingActionPanelProps) => {
 
   return (
     <Portal>
-      <div ref={rootRef} className={rootContainerCss}>
+      <div ref={rootContainerRef} className={rootContainerCss}>
         <div>
           <input
             ref={inputRef}

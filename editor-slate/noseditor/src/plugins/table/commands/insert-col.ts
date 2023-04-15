@@ -2,8 +2,6 @@ import { Editor, Path, Transforms } from 'slate';
 
 import type { TableCellElement, TableElement } from '../types';
 import {
-  createEmptyCellNode,
-  createRowNode,
   getCellBySelectOrFocus,
   getNextInsertRowPosition,
   getNextRowSpan,
@@ -11,6 +9,7 @@ import {
   getRealPathByPath,
   getTableByCellPath,
 } from '../utils/common';
+import { createEmptyCellNode, createRowNode } from '../utils/utils';
 
 type Direction = 'left' | 'right';
 

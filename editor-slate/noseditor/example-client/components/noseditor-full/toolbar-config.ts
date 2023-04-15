@@ -35,7 +35,7 @@ import type { Icon } from '@icon-park/react/lib/runtime';
 import { ListTypes } from '../../../src/plugins/list/utils';
 import type { TextFormats } from '../../../src/plugins/marks/types';
 
-type ActionButtonType = {
+export type ActionButtonType = {
   type: 'button';
   icon: Icon;
   format?: TextFormats;

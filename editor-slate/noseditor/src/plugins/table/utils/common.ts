@@ -1,7 +1,8 @@
 import { Editor, Element, Path, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import { TableCellElement, TableElement, TableRowElement } from '../types';
+import type { TableCellElement, TableElement, TableRowElement } from '../types';
+import { TableCellSpec, TableRowSpec } from './utils';
 
 export type rangeType = [xStart: number, xEnd: number];
 
@@ -9,20 +10,6 @@ export interface tableRange {
   xRange: rangeType;
   yRange: rangeType;
 }
-
-/**
- * 是否在表格中
- * @returns
- */
-export const isSelectionInTable = (editor: Editor) => {
-  if (!editor.selection || editor.children.length === 0) return false;
-  const [tableNode] = Editor.nodes(editor, {
-    match: (n) =>
-      !Editor.isEditor(n) && Element.isElement(n) && n.type === 'table',
-    mode: 'highest',
-  });
-  return Boolean(tableNode);
-};
 
 /**
  * 获取range的范围数据
@@ -275,30 +262,7 @@ export function isEmptyCell(editor: Editor, cellNode: TableCellElement) {
   return Editor.isEmpty(editor, content);
 }
 
-/**
- * 创建slate model中的 cell node
- */
-export function createEmptyCellNode(): TableCellElement {
-  return {
-    type: 'tableCell',
-    children: [
-      {
-        type: 'p',
-        children: [{ text: '' }],
-      },
-    ],
-  };
-}
 
-/**
- * 创建slate model中的 row node
- */
-export function createRowNode(children: TableCellElement[]): TableRowElement {
-  return {
-    type: 'tableRow',
-    children,
-  };
-}
 
 export function getNextRowSpan(editor: Editor, rowPath: Path) {
   const tablePath = Path.parent(rowPath);

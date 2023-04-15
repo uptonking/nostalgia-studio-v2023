@@ -4,7 +4,7 @@ import type { LinkElementType, LinkType } from './types';
 
 export const LinkSpec: LinkType = 'link';
 
-type CreateLinkArgs = {
+type CreateLinkProps = {
   url: string;
   text?: string;
   children?: Descendant[];
@@ -14,7 +14,7 @@ export const createLinkElement = ({
   url,
   text,
   children = [],
-}: CreateLinkArgs): LinkElementType => {
+}: CreateLinkProps): LinkElementType => {
   if (text) {
     children = [{ text }];
   }

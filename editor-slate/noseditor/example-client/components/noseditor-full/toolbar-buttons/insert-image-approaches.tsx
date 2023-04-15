@@ -8,14 +8,21 @@ import { css } from '@linaria/core';
 
 import { Menu, MenuItem } from '../../../../src/components';
 import { insertImage } from '../../../../src/plugins/image/commands';
+import type { ActionButtonType } from '../toolbar-config';
 
-export const InsertImageApproaches = (props_) => {
+type InsertImageApproachesProps = ActionButtonType & {
+  setShowFloatingPanel?: React.Dispatch<React.SetStateAction<boolean>>;
+  setPanelType?: React.Dispatch<React.SetStateAction<'image' | 'link'>>;
+};
+
+export const InsertImageApproaches = (props_: InsertImageApproachesProps) => {
   const {
     actions: imageMenuData,
     icon: ImageIcon,
     setShowFloatingPanel,
     setPanelType,
   } = props_;
+
   const editor = useSlateStatic();
 
   const imageUploadInputRef = useRef<HTMLInputElement>();

@@ -17,3 +17,38 @@ export const isTableRowElement = (value: any): value is TableRowElement => {
 export const isTableCellElement = (value: any): value is TableCellElement => {
   return Element.isElementType<TableCellElement>(value, TableCellSpec);
 };
+
+/**
+ * create cell node for model
+ */
+export function createEmptyCellNode(): TableCellElement {
+  return {
+    type: TableCellSpec,
+    children: [
+      {
+        type: 'p',
+        children: [{ text: '' }],
+      },
+    ],
+  };
+}
+
+/**
+ * create row node for model
+ */
+export function createRowNode(children: TableCellElement[]): TableRowElement {
+  return {
+    type: TableRowSpec,
+    children,
+  };
+}
+
+/**
+ * create row node for model
+ */
+export function createTableNode(children: TableRowElement[]): TableElement {
+  return {
+    type: TableSpec,
+    children,
+  };
+}

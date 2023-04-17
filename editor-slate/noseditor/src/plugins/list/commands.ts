@@ -5,7 +5,7 @@ import { findSelectionAnchorElement } from '../../queries';
 import type { NestingElement } from '../../slate-extended/types';
 import { isParagraphElement } from '../paragraph/utils';
 import type { ListItemElement } from './types';
-import { isListItemElement, ListItemSpec, ListTypes } from './utils';
+import { isListItemElement, ListItemSpec, ListVariants } from './utils';
 
 export const moveItemsForward = (
   editor: Editor,
@@ -60,7 +60,7 @@ export const isListBlockActive = (editor: Editor, listType: string) => {
 
 export const toggleList = (
   editor: Editor,
-  { listType }: { listType: typeof ListTypes[keyof typeof ListTypes] },
+  { listType }: { listType: typeof ListVariants[keyof typeof ListVariants] },
 ) => {
   Editor.withoutNormalizing(editor, () => {
     const { selection } = editor;

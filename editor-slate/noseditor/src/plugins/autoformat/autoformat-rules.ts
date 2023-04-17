@@ -2,10 +2,10 @@ import { Editor } from 'slate';
 
 import { AutoformatRule } from '@udecode/plate-autoformat';
 
-import { BlockquoteType } from '../blockquote/types';
+import { BlockquoteSpec } from '../blockquote/utils';
 import { Heading1Spec, Heading2Spec, Heading3Spec } from '../heading/utils';
 import { toggleList } from '../list/commands';
-import { ListItemSpec, ListTypes } from '../list/utils';
+import { ListItemSpec, ListVariants } from '../list/utils';
 
 export const autoformatRules: AutoformatRule[] = [
   {
@@ -25,7 +25,7 @@ export const autoformatRules: AutoformatRule[] = [
   },
   {
     mode: 'block',
-    type: BlockquoteType,
+    type: BlockquoteSpec,
     match: '> ',
   },
   {
@@ -33,7 +33,7 @@ export const autoformatRules: AutoformatRule[] = [
     type: ListItemSpec,
     match: ['* ', '- '],
     format: (editor: Editor) => {
-      toggleList(editor, { listType: ListTypes.Bulleted });
+      toggleList(editor, { listType: ListVariants.Bulleted });
     },
   },
   {
@@ -41,7 +41,7 @@ export const autoformatRules: AutoformatRule[] = [
     type: ListItemSpec,
     match: ['1. ', '1) '],
     format: (editor: Editor) => {
-      toggleList(editor, { listType: ListTypes.Numbered });
+      toggleList(editor, { listType: ListVariants.Numbered });
     },
   },
   {
@@ -49,7 +49,7 @@ export const autoformatRules: AutoformatRule[] = [
     type: ListItemSpec,
     match: ['[] ', 'x ', 'X '],
     format: (editor: Editor) => {
-      toggleList(editor, { listType: ListTypes.TodoList });
+      toggleList(editor, { listType: ListVariants.TodoList });
     },
   },
 ];

@@ -91,7 +91,8 @@ export const themed = {
     },
     background: {
       default: 'var(--nos-color-background-default)',
-      hover: 'var(--nos-color-background-hover)'
+      hover: 'var(--nos-color-background-hover)',
+      dark: 'var(--nos-color-background-dark)'
     },
     text: {
       body: 'var(--nos-color-text-body)',
@@ -105,13 +106,15 @@ export const themed = {
     }
   },
   spacing: {
-    spacer0: 'var(--nos-spacing-spacer0)',
-    spacerXs: 'var(--nos-spacing-spacerXs)',
-    spacerS: 'var(--nos-spacing-spacerS)',
-    spacerM: 'var(--nos-spacing-spacerM)',
-    spacerX: 'var(--nos-spacing-spacerX)',
-    spacerXl: 'var(--nos-spacing-spacerXl)',
-    spacerXxl: 'var(--nos-spacing-spacerXxl)'
+    spacer: {
+      zero: 'var(--nos-spacing-spacer-zero)',
+      xs: 'var(--nos-spacing-spacer-xs)',
+      sm: 'var(--nos-spacing-spacer-sm)',
+      md: 'var(--nos-spacing-spacer-md)',
+      lg: 'var(--nos-spacing-spacer-lg)',
+      xl: 'var(--nos-spacing-spacer-xl)',
+      xxl: 'var(--nos-spacing-spacer-xxl)'
+    }
   },
   size: {
     borderRadius: {

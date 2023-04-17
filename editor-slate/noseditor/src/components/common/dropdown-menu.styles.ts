@@ -58,6 +58,6 @@ export const menuItemCss = css`
   }
 
   & .i-icon {
-    margin-right: ${themed.spacing.spacerS};
+    margin-right: ${themed.spacing.spacer.sm};
   }
 `;

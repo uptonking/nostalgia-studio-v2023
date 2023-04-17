@@ -16,7 +16,7 @@ import {
   isListBlockActive,
   toggleList,
 } from '../../../src/plugins/list/commands';
-import { ListTypes } from '../../../src/plugins/list/utils';
+import { ListVariants } from '../../../src/plugins/list/utils';
 import type { TextFormats } from '../../../src/plugins/marks/types';
 import { insertTableByRowColNumber } from '../../../src/plugins/table/commands';
 import { themed } from '../../../src/styles';
@@ -41,38 +41,38 @@ import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
 
 const toggleTextFormatHandler =
   (editor: Editor, format: TextFormats) =>
-  (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleMark(editor, format);
-  };
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      toggleMark(editor, format);
+    };
 
 const toggleTextAlignHandler =
   (editor: Editor, align?: TextAlignValueType) =>
-  (event: ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    toggleTextAlign(editor, event.target.value as TextAlignValueType);
-    // console.log(';; txt-align ', event.target.value)
-  };
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      event.preventDefault();
+      toggleTextAlign(editor, event.target.value as TextAlignValueType);
+      // console.log(';; txt-align ', event.target.value)
+    };
 
 /** used to add fontSize, also support other formats */
 const addTextFormatHandler =
   (editor: Editor, format: TextFormats, value = true) =>
-  (event: ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    addMarkData(editor, { format, value: event.target.value });
-  };
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      event.preventDefault();
+      addMarkData(editor, { format, value: event.target.value });
+    };
 
 const checkIsMenuItemListType = (
   action: string,
-): action is (typeof ListTypes)[keyof typeof ListTypes] =>
-  Object.values(ListTypes).find((item) => item === action) !== undefined;
+): action is (typeof ListVariants)[keyof typeof ListVariants] =>
+  Object.values(ListVariants).find((item) => item === action) !== undefined;
 
 const toggleListTypesHandler =
-  (editor: Editor, list: (typeof ListTypes)[keyof typeof ListTypes]) =>
-  (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleList(editor, { listType: list });
-  };
+  (editor: Editor, list: (typeof ListVariants)[keyof typeof ListVariants]) =>
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      toggleList(editor, { listType: list });
+    };
 
 const toggleBlockTypesHandler =
   (editor: Editor) => (event: ChangeEvent<HTMLSelectElement>) => {
@@ -248,7 +248,7 @@ export const NosToolbar = (props_) => {
                 options={options}
                 value=''
                 // onChange={addTextFormatHandler(editor, action)}
-                onChange={() => {}}
+                onChange={() => { }}
                 key={index2}
               />
             );
@@ -318,8 +318,8 @@ const dropdownCss = css`
 
 const toolbarSeparatorCss = css`
   min-height: 20px;
-  margin-left: ${themed.spacing.spacerS};
-  margin-right: ${themed.spacing.spacerS};
+  margin-left: ${themed.spacing.spacer.sm};
+  margin-right: ${themed.spacing.spacer.sm};
   border-left: 1px solid ${themed.color.border.light};
   user-select: none;
 `;

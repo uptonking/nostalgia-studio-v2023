@@ -3,6 +3,9 @@ import React from 'react';
 import cx from 'clsx';
 import { RenderElementProps } from 'slate-react';
 
+import { css } from '@linaria/core';
+
+import { themed } from '../../../styles';
 import type { ElementProps } from '../../types';
 import type { TableCellElement, TableElement, TableRowElement } from '../types';
 
@@ -18,11 +21,24 @@ export function CustomTableCell(
       {...attributes}
       colSpan={colSpan}
       rowSpan={rowSpan}
-      className={cx('nos-table-cell', {
-        headerCell: element.header === 'visible',
+      className={cx(cellCss, {
+        [headerCellCss]: element.header === 'visible',
       })}
     >
       {children}
     </td>
   );
 }
+
+const cellCss = css`
+  min-width: 20px;
+  min-height: 20px;
+  padding: 8px;
+  overflow: hidden;
+  word-break: break-all;
+  overflow-wrap: break-word;
+`;
+
+const headerCellCss = css`
+  background-color: ${themed.color.background.hover};
+`;

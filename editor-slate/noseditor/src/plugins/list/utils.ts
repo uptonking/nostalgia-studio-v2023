@@ -8,7 +8,7 @@ import type {
 
 export const ListItemSpec: ListItemType = 'list_item';
 
-export const ListTypes = {
+export const ListVariants = {
   Bulleted: 'bulleted',
   Numbered: 'numbered',
   TodoList: 'todoList',
@@ -23,6 +23,6 @@ export const isTodoListItemElement = (
 ): value is TodoListItemElement => {
   return (
     Element.isElementType<TodoListItemElement>(value, ListItemSpec) &&
-    value.listType === ListTypes.TodoList
+    value.listType === ListVariants.TodoList
   );
 };

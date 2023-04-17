@@ -1,9 +1,9 @@
-import { ListTypes } from '../../list/utils';
+import { ListVariants } from '../../list/utils';
 import { crawlDOM, isDOMList, makeListItemAttributes } from '../utils';
 import { isDOMElement } from '../with-serialize/utils';
 
 const getListType = (node: Node) =>
-  node.nodeName === 'OL' ? ListTypes.Numbered : ListTypes.Bulleted;
+  node.nodeName === 'OL' ? ListVariants.Numbered : ListVariants.Bulleted;
 
 // make flatten list instead of tree
 export const patchPastedClipboardHtml = (domNode: Element) => {

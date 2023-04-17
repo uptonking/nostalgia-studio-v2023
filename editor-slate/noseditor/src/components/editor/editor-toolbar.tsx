@@ -9,7 +9,7 @@ import {
 } from '../../plugins/heading/utils';
 import { insertLink, removeLink } from '../../plugins/link/commands';
 import { toggleList } from '../../plugins/list/commands';
-import { ListTypes } from '../../plugins/list/utils';
+import { ListVariants } from '../../plugins/list/utils';
 import { ParagraphSpec } from '../../plugins/paragraph/utils';
 import { toggleBlock, toggleMark } from '../../transforms';
 import {
@@ -79,7 +79,7 @@ export const EditorToolbar = () => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleList(editor, { listType: ListTypes.Bulleted });
+            toggleList(editor, { listType: ListVariants.Bulleted });
           }}
           className='toolbar-button'
         >
@@ -89,7 +89,7 @@ export const EditorToolbar = () => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleList(editor, { listType: ListTypes.Numbered });
+            toggleList(editor, { listType: ListVariants.Numbered });
           }}
           className='toolbar-button'
         >
@@ -99,7 +99,7 @@ export const EditorToolbar = () => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleList(editor, { listType: ListTypes.TodoList });
+            toggleList(editor, { listType: ListVariants.TodoList });
           }}
           className='toolbar-button'
         >

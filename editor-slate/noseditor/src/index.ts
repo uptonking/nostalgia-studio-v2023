@@ -1,7 +1,7 @@
-import '@icon-park/react/styles/index.css';
 import './styles/normalize.css';
-import './styles/editor.scss';
+import '@icon-park/react/styles/index.css';
 import './styles/theme-default.css';
+import './styles/editor.scss';
 
 // export styles
 export * from './styles';

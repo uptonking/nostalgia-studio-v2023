@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import { Editor, Element, Path, Range, Transforms } from 'slate';
 
 import { type ListItemElement } from '../plugins/list/types';
-import { ListItemSpec, ListTypes } from '../plugins/list/utils';
+import { ListItemSpec, ListVariants } from '../plugins/list/utils';
 import { type ParagraphElement } from '../plugins/paragraph/types';
 import { ParagraphSpec } from '../plugins/paragraph/utils';
 import { ExtendedEditor } from './extended-editor';
@@ -127,7 +127,7 @@ const getEmptyListItem = (
         text: '',
       },
     ],
-    listType: listItem.listType ?? ListTypes.Bulleted,
+    listType: listItem.listType ?? ListVariants.Bulleted,
     checked: false,
     depth: listItem.depth ?? 0,
   };

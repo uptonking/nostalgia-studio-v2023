@@ -32,7 +32,7 @@ import {
 } from '@icon-park/react';
 import type { Icon } from '@icon-park/react/lib/runtime';
 
-import { ListTypes } from '../../../src/plugins/list/utils';
+import { ListVariants } from '../../../src/plugins/list/utils';
 import type { TextFormats } from '../../../src/plugins/marks/types';
 
 export type ActionButtonType = {
@@ -42,7 +42,7 @@ export type ActionButtonType = {
   action?:
   | 'align'
   | 'link'
-  | (typeof ListTypes)[keyof typeof ListTypes]
+  | (typeof ListVariants)[keyof typeof ListVariants]
   | 'image'
   | 'table'
   | 'blockquote'
@@ -226,19 +226,19 @@ export const defaultToolbarConfig: ToolbarConfigType = [
     {
       type: 'button',
       icon: ListUnorderedIcon,
-      action: ListTypes.Bulleted,
+      action: ListVariants.Bulleted,
       title: 'Toggle Bullet List',
     },
     {
       type: 'button',
       icon: ListOrderedIcon,
-      action: ListTypes.Numbered,
+      action: ListVariants.Numbered,
       title: 'Toggle Ordered List',
     },
     {
       type: 'button',
       icon: ListCheckboxIcon,
-      action: ListTypes.TodoList,
+      action: ListVariants.TodoList,
       title: 'Toggle Checkbox List',
     },
     {

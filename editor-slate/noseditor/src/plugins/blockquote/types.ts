@@ -1,7 +1,6 @@
-import { Descendant } from 'slate';
+import type { Descendant } from 'slate';
 
 export type BlockquoteType = 'blockquote';
-export const BlockquoteType: BlockquoteType = 'blockquote';
 
 export type BlockquoteElement = {
   id: string;

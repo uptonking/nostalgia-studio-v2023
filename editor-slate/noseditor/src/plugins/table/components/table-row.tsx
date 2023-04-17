@@ -2,6 +2,9 @@ import React from 'react';
 
 import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 
+import { css } from '@linaria/core';
+
+import { themed } from '../../../styles';
 import type { ElementProps } from '../../types';
 import type { TableCellElement, TableElement, TableRowElement } from '../types';
 import { getNextRowSpan } from '../utils/common';
@@ -18,7 +21,7 @@ export function CustomTableRow(
 
   return (
     <>
-      <tr {...attributes} className='nos-table-row'>
+      <tr {...attributes} className={tableRowCss}>
         {children}
       </tr>
       {minRow > 1 &&
@@ -28,3 +31,7 @@ export function CustomTableRow(
     </>
   );
 }
+
+const tableRowCss = css`
+  height: 45px;
+`;

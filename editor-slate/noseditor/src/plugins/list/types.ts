@@ -4,7 +4,7 @@ import type {
   FoldingElement,
   NestingElement,
 } from '../../slate-extended/types';
-import type { ListTypes } from './utils';
+import type { ListVariants } from './utils';
 
 export type ListItemType = 'list_item';
 
@@ -15,15 +15,15 @@ type BaseListItemElement = {
   FoldingElement;
 
 type BulletedListItemElement = BaseListItemElement & {
-  listType: typeof ListTypes['Bulleted'];
+  listType: typeof ListVariants['Bulleted'];
 };
 
 type NumberedListItemElement = BaseListItemElement & {
-  listType: typeof ListTypes['Numbered'];
+  listType: typeof ListVariants['Numbered'];
 };
 
 export type TodoListItemElement = BaseListItemElement & {
-  listType: typeof ListTypes['TodoList'];
+  listType: typeof ListVariants['TodoList'];
   checked: boolean;
 };
 

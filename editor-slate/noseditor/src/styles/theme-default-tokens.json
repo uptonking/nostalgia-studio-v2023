@@ -4,10 +4,7 @@
   "palette": {
     "$type": "color",
     "$extensions": {
-      "modes": [
-        "light",
-        "dark"
-      ]
+      "modes": ["light", "dark"]
     },
     "black": {
       "$value": "#212529",
@@ -692,6 +689,9 @@
       },
       "hover": {
         "$value": "{palette.gray50}"
+      },
+      "dark": {
+        "$value": "{palette.gray100}"
       }
     },
     "text": {
@@ -719,26 +719,28 @@
   },
   "spacing": {
     "$type": "dimension",
-    "spacer0": {
-      "$value": "0px"
-    },
-    "spacerXs": {
-      "$value": "4px"
-    },
-    "spacerS": {
-      "$value": "8px"
-    },
-    "spacerM": {
-      "$value": "16px"
-    },
-    "spacerX": {
-      "$value": "24px"
-    },
-    "spacerXl": {
-      "$value": "32px"
-    },
-    "spacerXxl": {
-      "$value": "40px"
+    "spacer": {
+      "zero": {
+        "$value": "0px"
+      },
+      "xs": {
+        "$value": "4px"
+      },
+      "sm": {
+        "$value": "8px"
+      },
+      "md": {
+        "$value": "16px"
+      },
+      "lg": {
+        "$value": "24px"
+      },
+      "xl": {
+        "$value": "32px"
+      },
+      "xxl": {
+        "$value": "40px"
+      }
     }
   },
   "size": {
@@ -833,10 +835,7 @@
       "size": {
         "$type": "dimension",
         "$extensions": {
-          "modes": [
-            "mobile",
-            "desktop"
-          ]
+          "modes": ["mobile", "desktop"]
         },
         "f00": {
           "$value": "32px",

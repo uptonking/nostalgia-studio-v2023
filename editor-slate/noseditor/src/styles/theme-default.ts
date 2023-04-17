@@ -85,19 +85,20 @@ export const tokens = {
   'color.brand.darker': '#116c52',
   'color.background.default': '#f8f9fa',
   'color.background.hover': '#f1f3f5',
+  'color.background.dark': '#e5e8ec',
   'color.text.body': '#212529',
   'color.text.muted': '#6e7781',
   'color.text.error': '#be5050',
   'color.text.link': '#506cdb',
   'color.border.light': '#bbc2ca',
   'color.border.muted': '#eceff4',
-  'spacing.spacer0': '0',
-  'spacing.spacerXs': '4px',
-  'spacing.spacerS': '8px',
-  'spacing.spacerM': '16px',
-  'spacing.spacerX': '24px',
-  'spacing.spacerXl': '32px',
-  'spacing.spacerXxl': '40px',
+  'spacing.spacer.zero': '0',
+  'spacing.spacer.xs': '4px',
+  'spacing.spacer.sm': '8px',
+  'spacing.spacer.md': '16px',
+  'spacing.spacer.lg': '24px',
+  'spacing.spacer.xl': '32px',
+  'spacing.spacer.xxl': '40px',
   'size.borderRadius.xs': '2px',
   'size.borderRadius.sm': '4px',
   'size.borderRadius.md': '6px',
@@ -2453,6 +2454,23 @@ export const meta = {
     '$type': 'color',
     '$value': '#f1f3f5',
   },
+  'color.background.dark': {
+    '_original': {
+      '$value': '{palette.gray100}',
+    },
+    '_group': {
+      id: 'color.background',
+      '$extensions': {
+        requiredModes: [],
+      },
+      '$name': 'NosEditor themes',
+      '$description': 'design tokens for noseditor',
+      '$type': 'color',
+    },
+    id: 'color.background.dark',
+    '$type': 'color',
+    '$value': '#e5e8ec',
+  },
   'color.text.body': {
     '_original': {
       '$value': '{palette.black}',
@@ -2555,12 +2573,12 @@ export const meta = {
     '$type': 'color',
     '$value': '#eceff4',
   },
-  'spacing.spacer0': {
+  'spacing.spacer.zero': {
     '_original': {
       '$value': '0px',
     },
     '_group': {
-      id: 'spacing',
+      id: 'spacing.spacer',
       '$extensions': {
         requiredModes: [],
       },
@@ -2568,16 +2586,16 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'spacing.spacer0',
+    id: 'spacing.spacer.zero',
     '$type': 'dimension',
     '$value': '0',
   },
-  'spacing.spacerXs': {
+  'spacing.spacer.xs': {
     '_original': {
       '$value': '4px',
     },
     '_group': {
-      id: 'spacing',
+      id: 'spacing.spacer',
       '$extensions': {
         requiredModes: [],
       },
@@ -2585,16 +2603,16 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'spacing.spacerXs',
+    id: 'spacing.spacer.xs',
     '$type': 'dimension',
     '$value': '4px',
   },
-  'spacing.spacerS': {
+  'spacing.spacer.sm': {
     '_original': {
       '$value': '8px',
     },
     '_group': {
-      id: 'spacing',
+      id: 'spacing.spacer',
       '$extensions': {
         requiredModes: [],
       },
@@ -2602,16 +2620,16 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'spacing.spacerS',
+    id: 'spacing.spacer.sm',
     '$type': 'dimension',
     '$value': '8px',
   },
-  'spacing.spacerM': {
+  'spacing.spacer.md': {
     '_original': {
       '$value': '16px',
     },
     '_group': {
-      id: 'spacing',
+      id: 'spacing.spacer',
       '$extensions': {
         requiredModes: [],
       },
@@ -2619,16 +2637,16 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'spacing.spacerM',
+    id: 'spacing.spacer.md',
     '$type': 'dimension',
     '$value': '16px',
   },
-  'spacing.spacerX': {
+  'spacing.spacer.lg': {
     '_original': {
       '$value': '24px',
     },
     '_group': {
-      id: 'spacing',
+      id: 'spacing.spacer',
       '$extensions': {
         requiredModes: [],
       },
@@ -2636,16 +2654,16 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'spacing.spacerX',
+    id: 'spacing.spacer.lg',
     '$type': 'dimension',
     '$value': '24px',
   },
-  'spacing.spacerXl': {
+  'spacing.spacer.xl': {
     '_original': {
       '$value': '32px',
     },
     '_group': {
-      id: 'spacing',
+      id: 'spacing.spacer',
       '$extensions': {
         requiredModes: [],
       },
@@ -2653,16 +2671,16 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'spacing.spacerXl',
+    id: 'spacing.spacer.xl',
     '$type': 'dimension',
     '$value': '32px',
   },
-  'spacing.spacerXxl': {
+  'spacing.spacer.xxl': {
     '_original': {
       '$value': '40px',
     },
     '_group': {
-      id: 'spacing',
+      id: 'spacing.spacer',
       '$extensions': {
         requiredModes: [],
       },
@@ -2670,7 +2688,7 @@ export const meta = {
       '$description': 'design tokens for noseditor',
       '$type': 'dimension',
     },
-    id: 'spacing.spacerXxl',
+    id: 'spacing.spacer.xxl',
     '$type': 'dimension',
     '$value': '40px',
   },

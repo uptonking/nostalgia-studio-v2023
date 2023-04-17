@@ -18,9 +18,6 @@ const HEADER_LIST = new Set(['h1', 'h2', 'h3', 'h4']);
 
 /**
  * 处理表格选区存在时，操作功能
- * @param editor
- * @param operation
- * @param apply
  */
 const dealSelectionInTable = (
   editor: Editor,

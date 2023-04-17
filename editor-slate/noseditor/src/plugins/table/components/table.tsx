@@ -1,5 +1,3 @@
-import './styles.scss';
-
 import React, {
   KeyboardEvent,
   useCallback,
@@ -9,10 +7,14 @@ import React, {
   useState,
 } from 'react';
 
+import cx from 'clsx';
 import { isHotkey } from 'is-hotkey';
 import { type Location, Path, Transforms } from 'slate';
 import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 
+import { css } from '@linaria/core';
+
+import { themed } from '../../../styles/theme-vars';
 import type { ElementProps } from '../../types';
 import { isSelectionInTable } from '../queries';
 import type { TableCellElement, TableElement, TableRowElement } from '../types';
@@ -71,7 +73,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         editorDom.setAttribute('contenteditable', 'false');
         Promise.resolve()
           .then(() => editorDom.setAttribute('contenteditable', 'true'))
-          .catch(() => { });
+          .catch(() => {});
       }
 
       const isSelInTable = isSelectionInTable(editor);
@@ -183,10 +185,10 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
   );
 
   return (
-    <div className='nos-elem block-table' {...attributes}>
+    <div className={cx('nos-elem', rootTableCss)} {...attributes}>
       <table
         ref={tblRef}
-        className={`nos-table${showTblSel ? ' ye-e-table-selected' : ''}`}
+        className={cx({ [tableActiveSelectionCss]: showTblSel })}
         onDragStart={(e) => e.preventDefault()}
         onMouseDown={(e) => {
           // console.log(';; mouse-down table ', e.target);
@@ -218,7 +220,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
         <tbody>{children}</tbody>
       </table>
       <div
-        className='nos-table-selection'
+        className={cellSelectionCss}
         style={{
           display: `${showTblSel ? 'block' : 'none'}`,
           top: `${selBound.y}px`,
@@ -237,3 +239,39 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
     </div>
   );
 }
+
+const rootTableCss = css`
+  position: relative;
+  font-size: 85%;
+
+  & table,
+  & th,
+  & td {
+    border: 1px solid ${themed.color.text.body};
+  }
+
+  & table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+`;
+
+const tableActiveSelectionCss = css`
+  & tr ::selection {
+    color: inherit;
+    background: none;
+  }
+`;
+
+const cellSelectionCss = css`
+  position: absolute;
+  z-index: 1;
+  box-sizing: border-box;
+  outline-offset: -2px;
+  background: rgb(0 106 254 / 5%);
+  pointer-events: none;
+`;
+
+

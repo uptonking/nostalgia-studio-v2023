@@ -8,7 +8,7 @@ import type {
   PlatePlugin,
 } from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
 
-import { BlockquoteType } from '../../blockquote/types';
+import { BlockquoteSpec } from '../../blockquote/utils';
 import { DividerType } from '../../divider/types';
 import { Heading1Spec, Heading2Spec, Heading3Spec } from '../../heading/utils';
 import { ImageSpec } from '../../image/utils';
@@ -72,7 +72,7 @@ const rules: DeserializeHtml[] = [
       },
     ],
     query: (el) => {
-      return !!el.textContent && el.textContent.trim() !== ''; // skip if link includes non text info (e.g. image)
+      return Boolean(el.textContent) && el.textContent.trim() !== ''; // skip if link includes non text info (e.g. image)
     },
   },
   {
@@ -85,7 +85,7 @@ const rules: DeserializeHtml[] = [
     ],
   },
   {
-    getNode: () => ({ type: BlockquoteType }),
+    getNode: () => ({ type: BlockquoteSpec }),
     isElement: true,
     rules: [
       {

@@ -1,8 +1,12 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
+import cx from 'clsx';
 import { Editor, Path } from 'slate';
 
+import { css } from '@linaria/core';
+
+import { themed } from '../../../styles';
 import {
   deleteCol,
   deleteRow,
@@ -16,7 +20,7 @@ import {
 import type { TableCellElement } from '../types';
 import { getCellBySelectOrFocus, setTableNodeOrigin } from '../utils/common';
 
-interface Props {
+interface ContextMenuProps {
   editor: Editor;
   selectCells: Path[];
   visible: boolean;
@@ -30,14 +34,14 @@ interface Props {
 const CURSOR_DISTANCE = 8;
 
 /**
- * 通过createPortal渲染在 document.body
+ *  createPortal to document.body
  */
-export const ContextMenu: FC<Props> = ({
+export const ContextMenu = ({
   editor,
   selectCells,
   visible,
   position,
-}) => {
+}: ContextMenuProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
   const [point, setPoint] = useState({
     left: -9999,
@@ -94,7 +98,7 @@ export const ContextMenu: FC<Props> = ({
   return ReactDOM.createPortal(
     <div
       ref={menuRef}
-      className='nos-table-context-menu'
+      className={tableContextMenuCss}
       style={{
         display: visible ? 'flex' : 'none',
         left: `${point.left + 10}px`,
@@ -136,7 +140,7 @@ export const ContextMenu: FC<Props> = ({
       >
         Insert Column Right
       </div>
-      <span className='nos-split-line' />
+      <span className={contextMenuSeparatorCss} />
       <div
         onMouseDown={(e) => {
           e.preventDefault();
@@ -153,9 +157,9 @@ export const ContextMenu: FC<Props> = ({
       >
         Delete Column
       </div>
-      <span className='nos-split-line' />
+      <span className={contextMenuSeparatorCss} />
       <div
-        className={selectCells.length > 1 ? '' : 'nos-disabled'}
+        className={cx({ [contextMenuItemDisabled]: selectCells.length <= 1 })}
         onMouseDown={(e) => {
           e.preventDefault();
           if (selectCells.length < 2) return;
@@ -165,7 +169,7 @@ export const ContextMenu: FC<Props> = ({
         Merge Cells
       </div>
       <div
-        className={isMergeCell() ? '' : 'nos-disabled'}
+        className={cx({ [contextMenuItemDisabled]: !isMergeCell() })}
         onMouseDown={(e) => {
           e.preventDefault();
           if (!isMergeCell()) return;
@@ -178,3 +182,45 @@ export const ContextMenu: FC<Props> = ({
     document.body,
   );
 };
+
+
+const tableContextMenuCss = css`
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  width: 200px;
+  padding: 10px 4px;
+  line-height: 20px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 9px 28px rgb(0 0 0 / 5%), 0 6px 16px rgb(0 0 0 / 8%),
+    0 3px 6px rgb(0 0 0 / 12%);
+  font-size: 14px;
+
+  & > div {
+    box-sizing: border-box;
+    width: 100%;
+    height: 32px;
+    padding: 6px 8px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgb(0 0 0 / 3%);
+      border-radius: 4px;
+    }
+  }
+`;
+
+const contextMenuSeparatorCss = css`
+  width: 100%;
+  margin: 1px 0;
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
+`;
+
+const contextMenuItemDisabled = css`
+  color: rgb(0 0 0 / 25%);
+  cursor: not-allowed;
+`;

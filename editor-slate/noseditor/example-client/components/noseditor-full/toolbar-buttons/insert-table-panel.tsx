@@ -96,11 +96,10 @@ export const InsertTablePanel = (props_) => {
                   }
                   className={tableUnitCss}
                   style={{
-                    border: `1px solid ${
-                      isSelected
+                    border: `1px solid ${isSelected
                         ? themed.color.brand.dark
                         : themed.color.border.light
-                    }`,
+                      }`,
                   }}
                   key={colIndex}
                 />

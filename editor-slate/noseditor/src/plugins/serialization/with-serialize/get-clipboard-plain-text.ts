@@ -1,4 +1,4 @@
-import { ListTypes } from '../../list/utils';
+import { ListVariants } from '../../list/utils';
 import { getListItemProps, isDOMListItem } from '../utils';
 import { getPlainText, isDOMElement, isDOMText } from './utils';
 
@@ -19,9 +19,9 @@ export const getClipboardPlainText = (domNode: any) => {
 
     const pointer =
       {
-        [ListTypes.Bulleted]: '- ',
-        [ListTypes.Numbered]: `${index + 1}. `,
-        [ListTypes.TodoList]: checked ? '[x] ' : '[ ] ',
+        [ListVariants.Bulleted]: '- ',
+        [ListVariants.Numbered]: `${index + 1}. `,
+        [ListVariants.TodoList]: checked ? '[x] ' : '[ ] ',
       }[listType] || '';
     const indents = ' '.repeat(depth * 2);
     const result = `${indents}${pointer}${listItemText}`;

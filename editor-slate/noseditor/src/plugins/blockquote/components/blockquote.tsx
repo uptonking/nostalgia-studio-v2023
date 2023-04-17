@@ -1,7 +1,10 @@
-import './styles.scss';
-
 import React from 'react';
 
+import cx from 'clsx';
+
+import { css } from '@linaria/core';
+
+import { themed } from '../../../../src/styles';
 import type { ElementProps } from '../../types';
 import type { BlockquoteElement } from '../types';
 
@@ -11,10 +14,13 @@ export const Blockquote = (
   const { children, attributes } = props;
 
   return (
-    <blockquote className='nos-elem blockquote' {...attributes}>
+    <blockquote className={cx('nos-elem', rootContainerCss)} {...attributes}>
       {children}
     </blockquote>
   );
 };
 
-export default Blockquote;
+const rootContainerCss = css`
+  color: ${themed.color.text.muted};
+  margin-left: ${themed.spacing.spacer.lg};
+`;

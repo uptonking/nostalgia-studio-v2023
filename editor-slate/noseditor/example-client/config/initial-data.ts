@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { Descendant, Element, Node } from 'slate';
 
-import { ListTypes } from '../../src/plugins/list/utils';
+import { ListVariants } from '../../src/plugins/list/utils';
 
 export function addIdToEditorData(validData: Descendant[]) {
   const makeId = () => nanoid(16);
@@ -131,53 +131,53 @@ const listData: Descendant[] = [
   {
     id: '1',
     type: 'list_item',
-    listType: ListTypes.Bulleted,
+    listType: ListVariants.Bulleted,
     depth: 0,
     children: [{ text: 'Morning' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.Bulleted,
+    listType: ListVariants.Bulleted,
     depth: 1,
     children: [{ text: 'Feed cat' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Rinse bowl' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Open cat food' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Mix dry and wet food in bowl' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Deliver on a silver platter to Pixel' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.Bulleted,
+    listType: ListVariants.Bulleted,
     depth: 0,
     children: [{ text: 'Afternoon' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.Bulleted,
+    listType: ListVariants.Bulleted,
     depth: 1,
     folded: true,
     foldedCount: 3,
@@ -185,55 +185,55 @@ const listData: Descendant[] = [
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Vacuum interior' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Wash exterior' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Wax exterior' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.Bulleted,
+    listType: ListVariants.Bulleted,
     depth: 1,
     children: [{ text: 'Grocery shopping' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Plan meals' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Clean out fridge' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Make list' }],
   },
   {
     type: 'list_item',
-    listType: ListTypes.TodoList,
+    listType: ListVariants.TodoList,
     depth: 2,
     checked: false,
     children: [{ text: 'Go to store' }],

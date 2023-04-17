@@ -79,7 +79,6 @@ export const NosEditor = (props: NosEditorProps) => {
   return (
     <NosIconProvider>
       <Slate editor={editor} value={value} onChange={setValue}>
-        {/* <SlateExtended> */}
         <DndPluginContext
           editor={editor}
           onDragEnd={useCallback(() => {
@@ -101,7 +100,6 @@ export const NosEditor = (props: NosEditorProps) => {
             {...handlers}
           />
         </DndPluginContext>
-        {/* </SlateExtended> */}
       </Slate>
     </NosIconProvider>
   );

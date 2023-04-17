@@ -5,8 +5,11 @@ import React from 'react';
 import cx from 'clsx';
 import { useSlate, useSlateStatic } from 'slate-react';
 
+import { css } from '@linaria/core';
+
 import { ExtendedEditor } from '../../../slate-extended/extended-editor';
 import { foldElement } from '../../../slate-extended/transforms/fold-element';
+import { themed } from '../../../styles/theme-vars';
 import { ElementProps } from '../../types';
 import { checkTodoItem } from '../commands';
 import {
@@ -14,7 +17,7 @@ import {
   getNumberedPointerContent,
 } from '../get-pointer-content';
 import type { ListItemElement } from '../types';
-import { isTodoListItemElement, ListTypes } from '../utils';
+import { isTodoListItemElement, ListVariants } from '../utils';
 
 export const ListItem = (
   props: ElementProps & { element: ListItemElement },
@@ -29,15 +32,10 @@ export const ListItem = (
       {...attributes}
       className={cx('nos-elem', 'list-item', `list-item-${listType}`)}
     >
-      {listType === ListTypes.Bulleted && (
+      {listType === ListVariants.Bulleted && (
         <button
           contentEditable={false}
           className='pointer clipboardSkip'
-          // style={
-          //   {
-          //     '--pointer-content': `"${getBulletedPointerContent(depth)}"`,
-          //   } as React.CSSProperties
-          // }
           // onMouseDown={() => {
           //   foldElement(editor, element);
           // }}
@@ -48,7 +46,7 @@ export const ListItem = (
           }
         </button>
       )}
-      {listType === ListTypes.Numbered ? (
+      {listType === ListVariants.Numbered ? (
         <NumberedPointer element={element} />
       ) : null}
       {isTodoListItemElement(element) ? (
@@ -103,4 +101,25 @@ const NumberedPointer = (props: { element: ListItemElement }) => {
   );
 };
 
-export default ListItem;
+
+// const listItemCss=css`
+
+// `;
+// const listItemCss=css`
+
+// `;
+// const listItemCss=css`
+
+// `;
+// const listItemCss=css`
+
+// `;
+// const listItemCss=css`
+
+// `;
+// const listItemCss=css`
+
+// `;
+// const listItemCss=css`
+
+// `;

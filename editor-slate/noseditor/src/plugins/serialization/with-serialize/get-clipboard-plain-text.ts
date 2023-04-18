@@ -21,7 +21,7 @@ export const getClipboardPlainText = (domNode: any) => {
       {
         [ListVariants.Bulleted]: '- ',
         [ListVariants.Numbered]: `${index + 1}. `,
-        [ListVariants.TodoList]: checked ? '[x] ' : '[ ] ',
+        [ListVariants.Checkbox]: checked ? '[x] ' : '[ ] ',
       }[listType] || '';
     const indents = ' '.repeat(depth * 2);
     const result = `${indents}${pointer}${listItemText}`;

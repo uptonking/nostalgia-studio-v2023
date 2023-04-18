@@ -147,10 +147,10 @@ describe('Document', function () {
       // Normal cases
       (function () {
         b = document.serialize(a1);
-      }.should.throw());
+      }).should.throw();
       (function () {
         b = document.serialize(a2);
-      }.should.throw());
+      }).should.throw();
 
       // Edge cases
       b = document.serialize(e1);
@@ -196,14 +196,14 @@ describe('Document', function () {
 
       (function () {
         document.checkObject({ $bad: true });
-      }.should.throw());
+      }).should.throw();
 
       (function () {
         document.checkObject({
           some: 42,
           nested: { again: 'no', $worse: true },
         });
-      }.should.throw());
+      }).should.throw();
 
       // This shouldn't throw since "$actuallyok" is not a field name
       document.checkObject({
@@ -216,7 +216,7 @@ describe('Document', function () {
           some: 42,
           nested: [5, 'no', '$actuallyok', true, { $hidden: 'useless' }],
         });
-      }.should.throw());
+      }).should.throw();
     });
 
     it('Field names cannot contain a .', function () {
@@ -224,7 +224,7 @@ describe('Document', function () {
 
       (function () {
         document.checkObject({ 'so.bad': true });
-      }.should.throw());
+      }).should.throw();
 
       // Recursive behaviour testing done in the above test on $ signs
     });
@@ -338,7 +338,7 @@ describe('Document', function () {
       const updateQuery = { replace: 'done', bloup: [1, 8], _id: 'donttryit' };
       (function () {
         document.modify(obj, updateQuery);
-      }.should.throw());
+      }).should.throw();
 
       updateQuery._id = 'keepit';
       document.modify(obj, updateQuery); // No error thrown
@@ -350,7 +350,7 @@ describe('Document', function () {
 
       (function () {
         document.modify(obj, updateQuery);
-      }.should.throw());
+      }).should.throw();
     });
 
     it('Throw an error if trying to use an inexistent modifier', function () {
@@ -359,7 +359,7 @@ describe('Document', function () {
 
       (function () {
         document.modify(obj, updateQuery);
-      }.should.throw());
+      }).should.throw();
     });
 
     it('Throw an error if a modifier is used with a non-object argument', function () {
@@ -368,7 +368,7 @@ describe('Document', function () {
 
       (function () {
         document.modify(obj, updateQuery);
-      }.should.throw());
+      }).should.throw();
     });
 
     describe('$set modifier', function () {
@@ -467,13 +467,13 @@ describe('Document', function () {
           const obj = { some: 'thing', yup: 'yes', nay: 2 };
           const updateQuery = { $inc: { nay: 'notanumber' } };
           const modified = document.modify(obj, updateQuery);
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           const obj = { some: 'thing', yup: 'yes', nay: 'nope' };
           const updateQuery = { $inc: { nay: 1 } };
           const modified = document.modify(obj, updateQuery);
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can increment number fields or create and initialize them if needed', function () {
@@ -542,12 +542,12 @@ describe('Document', function () {
 
         (function () {
           modified = document.modify(obj, { $push: { arr: 'world' } });
-        }.should.throw());
+        }).should.throw();
 
         obj = { arr: { nested: 45 } };
         (function () {
           modified = document.modify(obj, { $push: { 'arr.nested': 'world' } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can use the $each modifier to add multiple values to an array at once', function () {
@@ -563,13 +563,13 @@ describe('Document', function () {
 
         (function () {
           modified = document.modify(obj, { $push: { arr: { $each: 45 } } });
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           modified = document.modify(obj, {
             $push: { arr: { $each: ['world'], unauthorized: true } },
           });
-        }.should.throw());
+        }).should.throw();
       });
     }); // End of '$push modifier'
 
@@ -600,7 +600,7 @@ describe('Document', function () {
 
         (function () {
           modified = document.modify(obj, { $addToSet: { arr: 'world' } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Use deep-equality to check whether we can add a value to a set', function () {
@@ -628,13 +628,13 @@ describe('Document', function () {
           modified = document.modify(obj, {
             $addToSet: { arr: { $each: 45 } },
           });
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           modified = document.modify(obj, {
             $addToSet: { arr: { $each: ['world'], unauthorized: true } },
           });
-        }.should.throw());
+        }).should.throw();
       });
     }); // End of '$addToSet modifier'
 
@@ -645,17 +645,17 @@ describe('Document', function () {
 
         (function () {
           modified = document.modify(obj, { $pop: { arr: 1 } });
-        }.should.throw());
+        }).should.throw();
 
         obj = { bloup: 'nope' };
         (function () {
           modified = document.modify(obj, { $pop: { arr: 1 } });
-        }.should.throw());
+        }).should.throw();
 
         obj = { arr: [1, 4, 8] };
         (function () {
           modified = document.modify(obj, { $pop: { arr: true } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can remove the first and last element of an array', function () {
@@ -706,7 +706,7 @@ describe('Document', function () {
 
         (function () {
           modified = document.modify(obj, { $pull: { arr: 'world' } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Use deep-equality to check whether we can remove a value from a set', function () {
@@ -1210,7 +1210,7 @@ describe('Document', function () {
             { a: { b: 5 } },
             { a: { $or: [{ b: 10 }, { b: 5 }] } },
           );
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can match for field equality inside an array with the dot notation', function () {
@@ -1277,11 +1277,11 @@ describe('Document', function () {
       it('Will throw if $regex operator is used with a non regex value', function () {
         (function () {
           document.match({ test: 'true' }, { test: { $regex: 42 } });
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           document.match({ test: 'true' }, { test: { $regex: 'true' } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can use the $regex operator in cunjunction with other operators', function () {
@@ -1411,7 +1411,7 @@ describe('Document', function () {
 
         (function () {
           document.match({ a: 5 }, { a: { $in: 5 } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('$nin', function () {
@@ -1432,7 +1432,7 @@ describe('Document', function () {
 
         (function () {
           document.match({ a: 5 }, { a: { $in: 5 } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('$exists', function () {
@@ -1574,7 +1574,7 @@ describe('Document', function () {
       it('Logical operators are all top-level, only other logical operators can be above', function () {
         (function () {
           document.match({ a: { b: 7 } }, { a: { $or: [{ b: 5 }, { b: 7 }] } });
-        }.should.throw());
+        }).should.throw();
         document
           .match({ a: { b: 7 } }, { $or: [{ 'a.b': 5 }, { 'a.b': 7 }] })
           .should.equal(true);
@@ -1608,13 +1608,13 @@ describe('Document', function () {
       it('Should throw an error if a logical operator is used without an array or if an unknown logical operator is used', function () {
         (function () {
           document.match({ a: 5 }, { $or: { a: 5, a: 6 } });
-        }.should.throw());
+        }).should.throw();
         (function () {
           document.match({ a: 5 }, { $and: { a: 5, a: 6 } });
-        }.should.throw());
+        }).should.throw();
         (function () {
           document.match({ a: 5 }, { $unknown: [{ a: 5 }] });
-        }.should.throw());
+        }).should.throw();
       });
     });
 

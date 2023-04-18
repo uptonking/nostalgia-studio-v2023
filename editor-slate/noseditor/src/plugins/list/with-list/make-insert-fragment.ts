@@ -1,27 +1,29 @@
 import { Editor, Node } from 'slate';
 
-import { ExtendedEditor } from '../../../slate-extended/extended-editor';
-import { NestingElement } from '../../../slate-extended/types';
+import {
+  DraggableCollapsibleEditor,
+  type NestableElement,
+} from '../../draggable-collapsible-feature';
 
 const getMin = (array: number[]) =>
   array.reduce((acc, x) => Math.min(acc, x), Infinity);
 
-const makeInsertFragment = (editor: Editor) => {
+export const makeInsertFragment = (editor: DraggableCollapsibleEditor) => {
   const { insertFragment } = editor;
 
   return (fragment: Node[]) => {
     let baseDepth = 0;
     const [entry] = Editor.nodes(editor, {
-      match: ExtendedEditor.isNestingElementCurried(editor),
+      match: DraggableCollapsibleEditor.isNestingElementCurried(editor),
     });
     if (entry) {
       const [node] = entry;
       baseDepth = node.depth;
     }
 
-    const listItems: NestingElement[] = [];
+    const listItems: NestableElement[] = [];
     for (const item of fragment) {
-      if (!ExtendedEditor.isNestingElement(editor, item)) {
+      if (!DraggableCollapsibleEditor.isNestableElement(editor, item)) {
         break;
       }
 
@@ -41,4 +43,3 @@ const makeInsertFragment = (editor: Editor) => {
   };
 };
 
-export default makeInsertFragment;

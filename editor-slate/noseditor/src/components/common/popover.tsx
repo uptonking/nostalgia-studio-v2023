@@ -35,7 +35,7 @@ export function usePopover({
   onOpenChange: setControlledOpen,
   placement = 'bottom',
   modal,
-  offsetValue=5
+  offsetValue = 5,
 }: PopoverOptions = {}) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
   const [labelId, setLabelId] = React.useState<string | undefined>();
@@ -88,11 +88,11 @@ export function usePopover({
 
 type PopoverContextType =
   | (ReturnType<typeof usePopover> & {
-    setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
-    setDescriptionId: React.Dispatch<
-      React.SetStateAction<string | undefined>
-    >;
-  })
+      setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
+      setDescriptionId: React.Dispatch<
+        React.SetStateAction<string | undefined>
+      >;
+    })
   | null;
 
 const PopoverContext = React.createContext<PopoverContextType>(null);
@@ -131,7 +131,10 @@ interface PopoverTriggerProps {
 export const PopoverTrigger = React.forwardRef<
   HTMLElement,
   React.HTMLProps<HTMLElement> & PopoverTriggerProps
->(function PopoverTriggerInner({ children, asChild = false, ...props }, propRef) {
+>(function PopoverTriggerInner(
+  { children, asChild = false, ...props },
+  propRef,
+) {
   const context = usePopoverContext();
   const childrenRef = (children as any).ref;
   const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);

@@ -8,13 +8,13 @@ import { withCursors, withYHistory, withYjs } from '@slate-yjs/core';
 
 import {
   composePlugins,
-  NosPlugin,
+  type NosPlugin,
   useAutoformatPlugin,
   useBlockquotePlugin,
   useDeserializePlugin,
   useDividerPlugin,
+  useDraggableCollapsiblePlugin,
   useExitBreakPlugin,
-  useExtendedPlugin,
   useHeadingPlugin,
   useImagePlugin,
   useLinkPlugin,
@@ -77,7 +77,7 @@ export const useSyncablePlugins = ({
     useSerializePlugin(),
     useDeserializePlugin(),
     useMarksPlugin(),
-    useExtendedPlugin(),
+    useDraggableCollapsiblePlugin(),
     useNodeIdPlugin(),
     {
       withOverrides: withEnsureOneChildren,

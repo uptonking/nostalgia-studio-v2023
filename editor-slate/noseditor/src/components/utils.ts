@@ -1,12 +1,14 @@
 import { Editor, Element, Node } from 'slate';
 
 import {
+  DraggableCollapsibleEditor,
+} from '../plugins/draggable-collapsible-feature/collapsible-editor';
+import {
   isHeading1Element,
   isHeading2Element,
   isHeading3Element,
 } from '../plugins/heading/utils';
 import { isParagraphElement } from '../plugins/paragraph/utils';
-import { ExtendedEditor } from '../slate-extended/extended-editor';
 
 const getSemanticLevel = (editor: Editor, element: Element) => {
   if (
@@ -35,8 +37,8 @@ const getSemanticLevel = (editor: Editor, element: Element) => {
 
 export const compareLevels = (editor: Editor) => (a: Element, b: Element) => {
   if (
-    ExtendedEditor.isNestingElement(editor, a) &&
-    ExtendedEditor.isNestingElement(editor, b)
+    DraggableCollapsibleEditor.isNestableElement(editor, a) &&
+    DraggableCollapsibleEditor.isNestableElement(editor, b)
   ) {
     return Math.sign(a.depth - b.depth);
   }

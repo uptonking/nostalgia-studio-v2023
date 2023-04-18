@@ -11,7 +11,7 @@ import { insertLink, removeLink } from '../../plugins/link/commands';
 import { toggleList } from '../../plugins/list/commands';
 import { ListVariants } from '../../plugins/list/utils';
 import { ParagraphSpec } from '../../plugins/paragraph/utils';
-import { toggleBlock, toggleMark } from '../../transforms';
+import { toggleBlock, toggleMark } from '../../utils/commands';
 import {
   BoldIcon,
   CodeIcon,
@@ -99,7 +99,7 @@ export const EditorToolbar = () => {
         <button
           onMouseDown={(e) => {
             e.preventDefault();
-            toggleList(editor, { listType: ListVariants.TodoList });
+            toggleList(editor, { listType: ListVariants.Checkbox });
           }}
           className='toolbar-button'
         >

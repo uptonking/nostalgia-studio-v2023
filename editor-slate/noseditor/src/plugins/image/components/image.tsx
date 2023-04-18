@@ -20,4 +20,3 @@ export const Image = (props: ElementProps & { element: ImageElement }) => {
     </div>
   );
 };
-

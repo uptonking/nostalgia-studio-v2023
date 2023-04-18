@@ -262,8 +262,6 @@ export function isEmptyCell(editor: Editor, cellNode: TableCellElement) {
   return Editor.isEmpty(editor, content);
 }
 
-
-
 export function getNextRowSpan(editor: Editor, rowPath: Path) {
   const tablePath = Path.parent(rowPath);
   const [tableNode] = Editor.node(editor, tablePath);

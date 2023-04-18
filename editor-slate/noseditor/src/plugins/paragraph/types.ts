@@ -7,6 +7,6 @@ export type ParagraphType = 'p';
 export type ParagraphElement = {
   // id: string;
   type: ParagraphType;
-  textAlign?:TextAlignValueType;
+  textAlign?: TextAlignValueType;
   children: Descendant[];
 };

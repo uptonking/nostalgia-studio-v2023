@@ -40,16 +40,16 @@ export type ActionButtonType = {
   icon: Icon;
   format?: TextFormats;
   action?:
-  | 'align'
-  | 'link'
-  | (typeof ListVariants)[keyof typeof ListVariants]
-  | 'image'
-  | 'table'
-  | 'blockquote'
-  | 'colorPicker'
-  | 'undo'
-  | 'redo'
-  | 'find';
+    | 'align'
+    | 'link'
+    | (typeof ListVariants)[keyof typeof ListVariants]
+    | 'image'
+    | 'table'
+    | 'blockquote'
+    | 'colorPicker'
+    | 'undo'
+    | 'redo'
+    | 'find';
   title?: string;
   actions?: {
     type: string;
@@ -238,7 +238,7 @@ export const defaultToolbarConfig: ToolbarConfigType = [
     {
       type: 'button',
       icon: ListCheckboxIcon,
-      action: ListVariants.TodoList,
+      action: ListVariants.Checkbox,
       title: 'Toggle Checkbox List',
     },
     {

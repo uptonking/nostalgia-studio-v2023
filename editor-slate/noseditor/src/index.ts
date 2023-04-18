@@ -1,26 +1,19 @@
-import './styles/normalize.css';
 import '@icon-park/react/styles/index.css';
 import './styles/theme-default.css';
-import './styles/editor.scss';
+import './styles/css-normalize.styles';
+import './styles/editor-default.styles';
 
-// export styles
+// styles
 export * from './styles';
 
-// export components
+// basic ui components
 export * from './components';
-export { NosIconProvider } from './config/icon-provider';
-export { DragOverlayContent } from './plugins/wrapper';
 
-// export all plugins
-export {
-  DndPluginContext,
-  SlateExtended,
-  useExtendedPlugin,
-} from './slate-extended';
+// 💡 ready-to-use block editor
+export { NosEditor } from './components/editor/noseditor';
+
+// editor plugins
 export * from './plugins';
-
-// export utils
-export { composePlugins } from './utils/plugins-config-compose';
 
 // hooks to build your own editor
 export {
@@ -29,13 +22,13 @@ export {
   usePluginsHandlers,
   useRenderElement,
   useRenderLeaf,
-} from './components/use-editor';
-export { usePersistedState } from './hooks/use-persisted-state';
+} from './hooks';
+export * from './hooks/utils';
 
-// 💡 ready-to-use block editor
-export { NosEditor } from './components/editor/noseditor';
+// utils
+export { composePlugins } from './utils';
 
-// export types
+// types
 export type { CustomEditor, CustomElement, CustomText } from './types/slate.d';
 export type { NosPlugin } from './plugins/types';
-export type { FormattedText } from './plugins/marks/types'
+export type { FormattedText } from './plugins/marks/types';

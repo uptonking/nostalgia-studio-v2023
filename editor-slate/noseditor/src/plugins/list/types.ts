@@ -1,9 +1,9 @@
 import { Descendant } from 'slate';
 
 import type {
-  FoldingElement,
-  NestingElement,
-} from '../../slate-extended/types';
+  CollapsibleElement,
+  NestableElement,
+} from '../draggable-collapsible-feature/types';
 import type { ListVariants } from './utils';
 
 export type ListItemType = 'list_item';
@@ -11,23 +11,23 @@ export type ListItemType = 'list_item';
 type BaseListItemElement = {
   type: ListItemType;
   children: Descendant[];
-} & NestingElement &
-  FoldingElement;
+} & NestableElement &
+  CollapsibleElement;
 
-type BulletedListItemElement = BaseListItemElement & {
-  listType: typeof ListVariants['Bulleted'];
+export type BulletedListItemElement = BaseListItemElement & {
+  listType: (typeof ListVariants)['Bulleted'];
 };
 
-type NumberedListItemElement = BaseListItemElement & {
-  listType: typeof ListVariants['Numbered'];
+export type NumberedListItemElement = BaseListItemElement & {
+  listType: (typeof ListVariants)['Numbered'];
 };
 
-export type TodoListItemElement = BaseListItemElement & {
-  listType: typeof ListVariants['TodoList'];
+export type CheckboxListItemElement = BaseListItemElement & {
+  listType: (typeof ListVariants)['Checkbox'];
   checked: boolean;
 };
 
 export type ListItemElement =
   | BulletedListItemElement
   | NumberedListItemElement
-  | TodoListItemElement;
+  | CheckboxListItemElement;

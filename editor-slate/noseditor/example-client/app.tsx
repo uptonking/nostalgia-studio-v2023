@@ -1,23 +1,14 @@
-import './styles/styles.scss';
+import '../src/styles/css-normalize.styles';
+import './styles/app.styles';
 
 import React, { StrictMode } from 'react';
 
-// import {
-//   ErrorBoundary,
-//   errorFallbackCss,
-// } from './components/common/error-boundary';
 import { NosEditorFullFeatures } from './pages/noseditor-full';
 
 export const NosEditorFullApp = () => {
   return (
     <>
-      {/* <ErrorBoundary
-        fallback={
-          <h3 className={errorFallbackCss}>Editor is not rendering properly.</h3>
-        }
-      > */}
       <NosEditorFullFeatures />
-      {/* </ErrorBoundary> */}
       <StrictMode></StrictMode>
     </>
   );

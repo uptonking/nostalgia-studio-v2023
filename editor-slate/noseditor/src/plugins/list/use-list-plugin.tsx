@@ -4,7 +4,7 @@ import { UseNosPlugin } from '../types';
 import { ListItem } from './components/list-item';
 import * as handlers from './handlers';
 import { isListItemElement } from './utils';
-import withList from './with-list';
+import { withList } from './with-list';
 
 export const useListPlugin: UseNosPlugin = () => {
   return {

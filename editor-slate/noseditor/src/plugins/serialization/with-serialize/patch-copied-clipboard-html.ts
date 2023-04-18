@@ -3,7 +3,7 @@ import { crawlDOM, getListItemProps, isDOMListItem } from '../utils';
 import { getPlainText, isDOMElement } from './utils';
 
 export const getHtmlTag = (
-  listType: typeof ListVariants[keyof typeof ListVariants],
+  listType: (typeof ListVariants)[keyof typeof ListVariants],
 ) => {
   const tag = listType === ListVariants.Numbered ? 'ol' : 'ul';
   return tag;

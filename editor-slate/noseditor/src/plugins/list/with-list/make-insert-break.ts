@@ -1,11 +1,11 @@
 import { BaseEditor, Editor, Transforms } from 'slate';
 
-import { isEmptyNode } from '../../../queries';
+import { isEmptyNode } from '../../../utils/queries';
 import { ParagraphSpec } from '../../paragraph/utils';
 import { moveItemsBack } from '../commands';
 import { isListItemElement } from '../utils';
 
-const makeInsertBreak = (editor: Editor): BaseEditor['insertBreak'] => {
+export const makeInsertBreak = (editor: Editor): BaseEditor['insertBreak'] => {
   const { insertBreak } = editor;
 
   return () => {
@@ -34,4 +34,3 @@ const makeInsertBreak = (editor: Editor): BaseEditor['insertBreak'] => {
   };
 };
 
-export default makeInsertBreak;

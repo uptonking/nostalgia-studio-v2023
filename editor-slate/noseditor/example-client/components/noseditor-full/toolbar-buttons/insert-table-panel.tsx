@@ -5,12 +5,10 @@ import { useSlateStatic } from 'slate-react';
 import { css } from '@linaria/core';
 
 import { IconButton } from '../../../../src/components/common';
-import {
-  insertTableByRowColNumber,
-} from '../../../../src/plugins/table/commands';
+import { insertTableByRowColNumber } from '../../../../src/plugins/table/commands';
 import { themed } from '../../../../src/styles';
 import { usePopup } from '../../../hooks/use-popup';
-import { popupCss, popupWrapperCss } from '../../../styles/common-styles';
+import { popupCss, popupWrapperCss } from '../../../styles/common.styles';
 
 /** current table size by index starting from 0 */
 type TableSizeByIndex = { row: number; col: number };
@@ -26,8 +24,7 @@ export const InsertTablePanel = (props_) => {
   const [showPanel, setShowPanel] = usePopup(rootContainerRef);
 
   const [selection, setSelection] = useState();
-  const [currRowCol, setCurrRowCol] =
-    useState<TableSizeByIndex>(EmptyRowCol);
+  const [currRowCol, setCurrRowCol] = useState<TableSizeByIndex>(EmptyRowCol);
 
   const [tableGrid, setTableGrid] = useState(() =>
     Array(6)
@@ -96,10 +93,11 @@ export const InsertTablePanel = (props_) => {
                   }
                   className={tableUnitCss}
                   style={{
-                    border: `1px solid ${isSelected
+                    border: `1px solid ${
+                      isSelected
                         ? themed.color.brand.dark
                         : themed.color.border.light
-                      }`,
+                    }`,
                   }}
                   key={colIndex}
                 />

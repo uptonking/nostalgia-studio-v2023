@@ -1,15 +1,15 @@
 import { Editor, Element, Path, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import { findSelectionAnchorElement } from '../../queries';
-import type { NestingElement } from '../../slate-extended/types';
+import { findSelectionAnchorElement } from '../../utils/queries';
+import type { NestableElement } from '../draggable-collapsible-feature/types';
 import { isParagraphElement } from '../paragraph/utils';
 import type { ListItemElement } from './types';
 import { isListItemElement, ListItemSpec, ListVariants } from './utils';
 
 export const moveItemsForward = (
   editor: Editor,
-  node: NestingElement,
+  node: NestableElement,
   path: Path,
   maxDepth: number,
 ) => {
@@ -22,7 +22,7 @@ export const moveItemsForward = (
 
 export const moveItemsBack = (
   editor: Editor,
-  node: NestingElement,
+  node: NestableElement,
   path: Path,
 ) => {
   Transforms.setNodes(
@@ -32,8 +32,8 @@ export const moveItemsBack = (
   );
 };
 
-export const checkTodoItem = (
-  editor: Editor,
+export const checkItem = (
+  editor: ReactEditor,
   element: Element,
   checked: boolean,
 ) => {
@@ -60,7 +60,7 @@ export const isListBlockActive = (editor: Editor, listType: string) => {
 
 export const toggleList = (
   editor: Editor,
-  { listType }: { listType: typeof ListVariants[keyof typeof ListVariants] },
+  { listType }: { listType: (typeof ListVariants)[keyof typeof ListVariants] },
 ) => {
   Editor.withoutNormalizing(editor, () => {
     const { selection } = editor;

@@ -44,7 +44,9 @@ const notionLikeNodeSpec: NodeSpec = {
       getAttrs: (dom) => {
         if (dom instanceof HTMLElement) {
           const type = dom.getAttribute('notion-like-type');
-          return notionLikeApps.includes(type as typeof notionLikeApps[number])
+          return notionLikeApps.includes(
+            type as (typeof notionLikeApps)[number],
+          )
             ? { type }
             : false;
         }
@@ -59,7 +61,7 @@ const notionLikeSchema = new Schema({
   marks: schema.spec.marks,
 });
 
-function insertNotionLikeAppIconCmd(type: typeof notionLikeApps[number]) {
+function insertNotionLikeAppIconCmd(type: (typeof notionLikeApps)[number]) {
   const resultCmd: Command = (state, dispatch) => {
     const { $from } = state.selection;
     const index = $from.index();

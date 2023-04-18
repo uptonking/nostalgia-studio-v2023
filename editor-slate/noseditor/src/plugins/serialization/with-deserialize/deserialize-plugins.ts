@@ -1,12 +1,8 @@
 import { nanoid } from 'nanoid';
 
 import { createPluginFactory } from '@udecode/plate-core';
-import type {
-  DeserializeHtml,
-} from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
-import type {
-  PlatePlugin,
-} from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
+import type { DeserializeHtml } from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
+import type { PlatePlugin } from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
 
 import { BlockquoteSpec } from '../../blockquote/utils';
 import { DividerType } from '../../divider/types';

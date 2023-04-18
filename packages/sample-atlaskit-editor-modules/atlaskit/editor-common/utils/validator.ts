@@ -15,7 +15,7 @@ export const ADFStages = {
   STAGE_0: 'stage0',
 } as const;
 
-export type ADFStage = typeof ADFStages[keyof typeof ADFStages];
+export type ADFStage = (typeof ADFStages)[keyof typeof ADFStages];
 
 export interface ADDoc {
   version: 1;

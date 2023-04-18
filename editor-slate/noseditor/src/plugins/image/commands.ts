@@ -5,6 +5,6 @@ import type { ImageElement } from './types';
 import { createImageNode } from './utils';
 
 export const insertImage = (editor: Editor, url: string) => {
-  const image: ImageElement = createImageNode({ url })
-  Transforms.insertNodes(editor, image)
-}
+  const image: ImageElement = createImageNode({ url });
+  Transforms.insertNodes(editor, image);
+};

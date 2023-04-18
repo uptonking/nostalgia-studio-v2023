@@ -14,7 +14,8 @@ import {
 } from './components/editors';
 import { initialData, initialDataLong, simpleTableData } from './config';
 import { NosEditorFullFeatures } from './pages/noseditor-full';
-import { EditorWithCursorOverlay } from './pages/remote-cursor-overlay';
+
+// import { EditorWithCursorOverlay } from './pages/remote-cursor-overlay';
 
 export const NosEditorApp = () => (
   <>

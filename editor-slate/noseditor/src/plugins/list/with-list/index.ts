@@ -1,26 +1,28 @@
 import { Editor } from 'slate';
 
+import {
+  type DraggableCollapsibleEditor,
+} from '../../draggable-collapsible-feature';
 import { isListItemElement } from '../utils';
-import makeDeleteBackward from './make-delete-backward';
-import makeInsertBreak from './make-insert-break';
-import makeInsertFragment from './make-insert-fragment';
+import { makeDeleteBackward } from './make-delete-backward';
+import { makeInsertBreak } from './make-insert-break';
+import { makeInsertFragment } from './make-insert-fragment';
 
-const withList = (editor: Editor) => {
+export const withList = (editor: DraggableCollapsibleEditor) => {
   editor.insertBreak = makeInsertBreak(editor);
   editor.deleteBackward = makeDeleteBackward(editor);
   editor.insertFragment = makeInsertFragment(editor);
 
-  const { isNestingElement, isFoldingElement } = editor;
+  const { isNestableElement, isCollapsibleElement } = editor;
 
-  editor.isNestingElement = (element) => {
-    return isListItemElement(element) || isNestingElement(element);
+  editor.isNestableElement = (element) => {
+    return isListItemElement(element) || isNestableElement(element);
   };
 
-  editor.isFoldingElement = (element) => {
-    return isListItemElement(element) || isFoldingElement(element);
+  editor.isCollapsibleElement = (element) => {
+    return isListItemElement(element) || isCollapsibleElement(element);
   };
 
   return editor;
 };
 
-export default withList;

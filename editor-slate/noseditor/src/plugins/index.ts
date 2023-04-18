@@ -15,4 +15,10 @@ export { useExitBreakPlugin } from './exit-break/use-exit-break-plugin';
 export { useDividerPlugin } from './divider/use-divider-plugin';
 export { useBlockquotePlugin } from './blockquote/use-blockquote-plugin';
 export { useAutoformatPlugin } from './autoformat/use-autoformat-plugin';
-export { Wrapper } from './wrapper';
+export {
+  useDraggableCollapsiblePlugin,
+  DraggableFeatureInitializer,
+  DndPluginContext,
+  DraggableCollapsibleEditor,
+  useDndState,
+} from './draggable-collapsible-feature';

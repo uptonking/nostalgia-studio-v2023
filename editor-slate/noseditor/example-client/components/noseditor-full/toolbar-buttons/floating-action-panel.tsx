@@ -14,7 +14,7 @@ import { Check as CheckIcon } from '@icon-park/react';
 import { css } from '@linaria/core';
 
 import { IconButton } from '../../../../src/components';
-import { useClickOutside } from '../../../../src/hooks';
+import { useClickOutside } from '../../../../src/hooks/utils';
 import { insertImage } from '../../../../src/plugins/image/commands';
 import { insertLink } from '../../../../src/plugins/link/commands';
 import { themed } from '../../../../src/styles/theme-vars';

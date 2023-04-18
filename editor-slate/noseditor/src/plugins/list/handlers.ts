@@ -3,7 +3,9 @@ import React from 'react';
 import isHotkey from 'is-hotkey';
 import { Editor, Path } from 'slate';
 
-import { ExtendedEditor } from '../../slate-extended/extended-editor';
+import {
+  DraggableCollapsibleEditor,
+} from '../draggable-collapsible-feature/collapsible-editor';
 import { moveItemsBack, moveItemsForward } from './commands';
 import { isListItemElement } from './utils';
 
@@ -11,13 +13,13 @@ import { isListItemElement } from './utils';
  * tab           ->  indent
  * shift + tab   ->  unindent
  */
-export const onKeyDown = (editor: Editor) => (e: React.KeyboardEvent) => {
+export const onKeyDown = (editor: DraggableCollapsibleEditor) => (e: React.KeyboardEvent) => {
   if (isHotkey(['tab'], e)) {
     e.preventDefault();
 
     const entries = Array.from(
       Editor.nodes(editor, {
-        match: ExtendedEditor.isNestingElementCurried(editor),
+        match: DraggableCollapsibleEditor.isNestingElementCurried(editor),
       }),
     );
 
@@ -41,7 +43,7 @@ export const onKeyDown = (editor: Editor) => (e: React.KeyboardEvent) => {
   if (isHotkey(['shift+tab'], e)) {
     e.preventDefault();
     const entries = Editor.nodes(editor, {
-      match: ExtendedEditor.isNestingElementCurried(editor),
+      match: DraggableCollapsibleEditor.isNestingElementCurried(editor),
     });
     for (const entry of entries) {
       moveItemsBack(editor, entry[0], entry[1]);

@@ -1,9 +1,11 @@
 import { Element } from 'slate';
 
 import type {
+  BulletedListItemElement,
+  CheckboxListItemElement,
   ListItemElement,
   ListItemType,
-  TodoListItemElement,
+  NumberedListItemElement,
 } from './types';
 
 export const ListItemSpec: ListItemType = 'list_item';
@@ -11,18 +13,27 @@ export const ListItemSpec: ListItemType = 'list_item';
 export const ListVariants = {
   Bulleted: 'bulleted',
   Numbered: 'numbered',
-  TodoList: 'todoList',
+  Checkbox: 'checkbox',
 } as const;
 
 export const isListItemElement = (value: any): value is ListItemElement => {
   return Element.isElementType<ListItemElement>(value, ListItemSpec);
 };
 
-export const isTodoListItemElement = (
+export const isBulletedListItemElement = (
   value: any,
-): value is TodoListItemElement => {
-  return (
-    Element.isElementType<TodoListItemElement>(value, ListItemSpec) &&
-    value.listType === ListVariants.TodoList
-  );
+): value is BulletedListItemElement => {
+  return isListItemElement(value) && value.listType === ListVariants.Bulleted;
+};
+
+export const isNumberedListItemElement = (
+  value: any,
+): value is NumberedListItemElement => {
+  return isListItemElement(value) && value.listType === ListVariants.Numbered;
+};
+
+export const isCheckboxListItemElement = (
+  value: any,
+): value is CheckboxListItemElement => {
+  return isListItemElement(value) && value.listType === ListVariants.Checkbox;
 };

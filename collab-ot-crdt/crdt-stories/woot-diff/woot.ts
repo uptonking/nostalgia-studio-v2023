@@ -162,11 +162,11 @@ class WChar {
  */
 export class WStringOperation {
   constructor(
-    private _opType: typeof WOperationType[keyof typeof WOperationType],
+    private _opType: (typeof WOperationType)[keyof typeof WOperationType],
     private _char: WChar,
   ) {}
 
-  opType(): typeof WOperationType[keyof typeof WOperationType] {
+  opType(): (typeof WOperationType)[keyof typeof WOperationType] {
     return this._opType;
   }
 

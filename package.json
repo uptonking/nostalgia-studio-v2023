@@ -4,7 +4,8 @@
   "private": true,
   "description": "content-centric web app for data and ideas.",
   "keywords": [
-    "markdown"
+    "knowledge-base",
+    "cms"
   ],
   "author": "jinyaoo <jinyaoo@qq.com>",
   "workspaces": [

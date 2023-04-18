@@ -5,6 +5,13 @@ import { ReactEditor } from 'slate-react';
 import { BlockquoteElement } from '../plugins/blockquote/types';
 import { DividerElement } from '../plugins/divider/types';
 import {
+  DraggableCollapsibleEditor,
+} from '../plugins/draggable-collapsible-feature/collapsible-editor';
+import {
+  HashedElement,
+  IdentityElement,
+} from '../plugins/draggable-collapsible-feature/types';
+import {
   Heading1Element,
   Heading2Element,
   Heading3Element,
@@ -20,8 +27,6 @@ import type {
   TableRowElement,
   WithTableEditor,
 } from '../plugins/table/types';
-import { ExtendedEditor } from '../slate-extended/extended-editor';
-import { HashedElement, IdentityElement } from '../slate-extended/types';
 
 export type CustomEditor = Omit<
   BaseEditor & ReactEditor & HistoryEditor,
@@ -48,10 +53,10 @@ export type CustomElement = EditorUIElement & IdentityElement & HashedElement;
 
 export type CustomText = FormattedText;
 
-// declare module 'slate' {
-//   interface CustomTypes {
-//     Editor: CustomEditor;
-//     Element: CustomElement;
-//     Text: CustomText;
-//   }
-// }
+declare module 'slate' {
+  interface CustomTypes {
+    Editor: CustomEditor;
+    Element: CustomElement;
+    Text: CustomText;
+  }
+}

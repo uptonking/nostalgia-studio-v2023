@@ -114,10 +114,10 @@ describe('Model', function () {
       // Normal cases
       (function () {
         model.serialize(a1);
-      }.should.throw());
+      }).should.throw();
       (function () {
         model.serialize(a2);
-      }.should.throw());
+      }).should.throw();
 
       // Edge cases
       model.serialize(e1);
@@ -169,11 +169,11 @@ describe('Model', function () {
 
       (function () {
         model.checkObject({ $bad: true });
-      }.should.throw());
+      }).should.throw();
 
       (function () {
         model.checkObject({ some: 42, nested: { again: 'no', $worse: true } });
-      }.should.throw());
+      }).should.throw();
 
       // This shouldn't throw since "$actuallyok" is not a field name
       model.checkObject({ some: 42, nested: [5, 'no', '$actuallyok', true] });
@@ -183,7 +183,7 @@ describe('Model', function () {
           some: 42,
           nested: [5, 'no', '$actuallyok', true, { $hidden: 'useless' }],
         });
-      }.should.throw());
+      }).should.throw();
     });
 
     it('Field names cannot contain a .', function () {
@@ -191,7 +191,7 @@ describe('Model', function () {
 
       (function () {
         model.checkObject({ 'so.bad': true });
-      }.should.throw());
+      }).should.throw();
 
       // Recursive behaviour testing done in the above test on $ signs
     });
@@ -469,13 +469,13 @@ describe('Model', function () {
           const obj = { some: 'thing', yup: 'yes', nay: 2 };
           const updateQuery = { $inc: { nay: 'notanumber' } };
           model.modify(obj, updateQuery);
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           const obj = { some: 'thing', yup: 'yes', nay: 'nope' };
           const updateQuery = { $inc: { nay: 1 } };
           model.modify(obj, updateQuery);
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can increment number fields or create and initialize them if needed', function () {
@@ -543,13 +543,13 @@ describe('Model', function () {
 
         (function () {
           model.modify(obj, { $push: { arr: 'world' } });
-        }.should.throw());
+        }).should.throw();
 
         // @ts-expect-error fixme
         obj = { arr: { nested: 45 } };
         (function () {
           model.modify(obj, { $push: { 'arr.nested': 'world' } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can use the $each modifier to add multiple values to an array at once', function () {
@@ -564,13 +564,13 @@ describe('Model', function () {
 
         (function () {
           model.modify(obj, { $push: { arr: { $each: 45 } } });
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           model.modify(obj, {
             $push: { arr: { $each: ['world'], unauthorized: true } },
           });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can use the $slice modifier to limit the number of array elements', function () {
@@ -643,13 +643,13 @@ describe('Model', function () {
           modified = model.modify(obj, {
             $push: { arr: { $slice: 1, unauthorized: true } },
           });
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           modified = model.modify(obj, {
             $push: { arr: { $each: [], unauthorized: true } },
           });
-        }.should.throw());
+        }).should.throw();
       });
     }); // End of '$push modifier'
 
@@ -678,7 +678,7 @@ describe('Model', function () {
 
         (function () {
           model.modify(obj, { $addToSet: { arr: 'world' } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Use deep-equality to check whether we can add a value to a set', function () {
@@ -704,13 +704,13 @@ describe('Model', function () {
 
         (function () {
           modified = model.modify(obj, { $addToSet: { arr: { $each: 45 } } });
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           modified = model.modify(obj, {
             $addToSet: { arr: { $each: ['world'], unauthorized: true } },
           });
-        }.should.throw());
+        }).should.throw();
       });
     }); // End of '$addToSet modifier'
 
@@ -720,19 +720,19 @@ describe('Model', function () {
 
         (function () {
           model.modify(obj, { $pop: { arr: 1 } });
-        }.should.throw());
+        }).should.throw();
 
         // @ts-expect-error fixme
         obj = { bloup: 'nope' };
         (function () {
           model.modify(obj, { $pop: { arr: 1 } });
-        }.should.throw());
+        }).should.throw();
 
         // @ts-expect-error fixme
         obj = { arr: [1, 4, 8] };
         (function () {
           model.modify(obj, { $pop: { arr: true } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can remove the first and last element of an array', function () {
@@ -781,7 +781,7 @@ describe('Model', function () {
 
         (function () {
           model.modify(obj, { $pull: { arr: 'world' } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Use deep-equality to check whether we can remove a value from a set', function () {
@@ -1374,7 +1374,7 @@ describe('Model', function () {
           .should.equal(false);
         (function () {
           model.match({ a: { b: 5 } }, { a: { $or: [{ b: 10 }, { b: 5 }] } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can match for field equality inside an array with the dot notation', function () {
@@ -1438,11 +1438,11 @@ describe('Model', function () {
       it('Will throw if $regex operator is used with a non regex value', function () {
         (function () {
           model.match({ test: 'true' }, { test: { $regex: 42 } });
-        }.should.throw());
+        }).should.throw();
 
         (function () {
           model.match({ test: 'true' }, { test: { $regex: 'true' } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can use the $regex operator in cunjunction with other operators', function () {
@@ -1564,7 +1564,7 @@ describe('Model', function () {
 
         (function () {
           model.match({ a: 5 }, { a: { $in: 5 } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('$nin', function () {
@@ -1579,7 +1579,7 @@ describe('Model', function () {
 
         (function () {
           model.match({ a: 5 }, { a: { $in: 5 } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('$exists', function () {
@@ -1815,13 +1815,13 @@ describe('Model', function () {
       it('Should throw an error if a query operator is used without comparing to an integer', function () {
         (function () {
           model.match({ a: [1, 5] }, { a: { $size: 1.4 } });
-        }.should.throw());
+        }).should.throw();
         (function () {
           model.match({ a: [1, 5] }, { a: { $size: 'fdf' } });
-        }.should.throw());
+        }).should.throw();
         (function () {
           model.match({ a: [1, 5] }, { a: { $size: { $lt: 5 } } });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Using $size operator on a non-array field should prevent match but not throw', function () {
@@ -2130,7 +2130,7 @@ describe('Model', function () {
       it('Logical operators are all top-level, only other logical operators can be above', function () {
         (function () {
           model.match({ a: { b: 7 } }, { a: { $or: [{ b: 5 }, { b: 7 }] } });
-        }.should.throw());
+        }).should.throw();
         model
           .match({ a: { b: 7 } }, { $or: [{ 'a.b': 5 }, { 'a.b': 7 }] })
           .should.equal(true);
@@ -2174,14 +2174,14 @@ describe('Model', function () {
         (function () {
           // model.match({ a: 5 }, { $or: { a: 5, a: 6 } });
           model.match({ a: 5 }, { $or: { a: 6 } });
-        }.should.throw());
+        }).should.throw();
         (function () {
           // model.match({ a: 5 }, { $and: { a: 5, a: 6 } });
           model.match({ a: 5 }, { $and: { a: 6 } });
-        }.should.throw());
+        }).should.throw();
         (function () {
           model.match({ a: 5 }, { $unknown: [{ a: 5 }] });
-        }.should.throw());
+        }).should.throw();
       });
     });
 
@@ -2212,7 +2212,7 @@ describe('Model', function () {
       it('Should throw an error if the $where function is not, in fact, a function', function () {
         (function () {
           model.match({ a: 4 }, { $where: 'not a function' });
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Should throw an error if the $where function returns a non-boolean', function () {
@@ -2225,7 +2225,7 @@ describe('Model', function () {
               },
             },
           );
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Should be able to do the complex matching it must be used for', function () {
@@ -2584,7 +2584,7 @@ describe('Model', function () {
               },
             },
           );
-        }.should.throw());
+        }).should.throw();
       });
 
       it('Can mix queries on array fields and non array filds with array specific operators', function () {

@@ -255,7 +255,6 @@ const rootTableCss = css`
     table-layout: fixed;
     border-collapse: collapse;
   }
-
 `;
 
 const tableActiveSelectionCss = css`
@@ -273,5 +272,3 @@ const cellSelectionCss = css`
   background: rgb(0 106 254 / 5%);
   pointer-events: none;
 `;
-
-

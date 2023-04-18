@@ -45,6 +45,7 @@ const intToRoman = (num: number) => {
   };
   let result = '';
 
+  // eslint-disable-next-line guard-for-in
   for (const key in map) {
     const repeatCounter = Math.floor(num / map[key]);
 

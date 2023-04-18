@@ -69,7 +69,6 @@ module.exports = {
             },
           },
         ],
-
       },
       {
         test: /\.js$/,
@@ -137,7 +136,6 @@ module.exports = {
         //   filename: 'static/[hash].[ext]',
         // },
       },
-
     ],
   },
   plugins: [

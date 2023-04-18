@@ -34,7 +34,7 @@ const StyledButton = styled.button<IconButtonProps>`
   color: ${themed.color.text.muted};
   cursor: pointer;
   &:hover {
-    background-color: ${themed.color.background.hover}
+    background-color: ${themed.color.background.hover};
   }
   &:focus-visible {
     outline-color: ${themed.color.border.muted};

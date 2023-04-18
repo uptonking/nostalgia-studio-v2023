@@ -4,6 +4,7 @@ import cx from 'clsx';
 import { createEditor, Descendant, Editor } from 'slate';
 import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
+import type { CustomEditor, CustomElement, CustomText } from '../../src';
 import {
   DndPluginContext,
   DragOverlayContent,
@@ -18,7 +19,7 @@ import { NosNavbar, NosToolbar } from '../components/noseditor-full';
 import { initialData, initialDataLong, simpleTableData } from '../config';
 
 export const NosEditorFullFeatures = (props) => {
-  const { id = 'main', initialValue = simpleTableData } = props;
+  const { id = 'main', initialValue = initialData } = props;
 
   const [isReadOnly, setIsReadOnly] = useState(false);
   const [editorKey, setEditorKey] = useState<string>('');
@@ -26,7 +27,7 @@ export const NosEditorFullFeatures = (props) => {
   const forceRerender = useReducer(() => ({}), {})[1];
 
   const plugins = usePlugins();
-  const editor = useEditor(createEditor, plugins);
+  const editor = useEditor(createEditor, plugins) as CustomEditor;
   window['ed'] = editor;
 
   const handlers = usePluginsHandlers(editor, [

@@ -49,7 +49,7 @@ export const autoformatRules: AutoformatRule[] = [
     type: ListItemSpec,
     match: ['[] ', 'x ', 'X '],
     format: (editor: Editor) => {
-      toggleList(editor, { listType: ListVariants.TodoList });
+      toggleList(editor, { listType: ListVariants.Checkbox });
     },
   },
 ];

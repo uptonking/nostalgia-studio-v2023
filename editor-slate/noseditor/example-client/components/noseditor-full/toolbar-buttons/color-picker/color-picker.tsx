@@ -7,9 +7,9 @@ import type { Icon } from '@icon-park/react/lib/runtime';
 import { css } from '@linaria/core';
 
 import { IconButton } from '../../../../../src/components';
-import { addMarkData } from '../../../../../src/transforms';
+import { addMarkData } from '../../../../../src/utils/commands';
 import { usePopup } from '../../../../hooks/use-popup';
-import { popupCss, popupWrapperCss } from '../../../../styles/common-styles';
+import { popupCss, popupWrapperCss } from '../../../../styles/common.styles';
 import { colors } from './default-colors';
 
 type ColorPickerProps = {

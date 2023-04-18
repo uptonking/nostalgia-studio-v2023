@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import { createEditor, Descendant } from 'slate';
 import { DefaultEditable as Editable, Slate } from 'slate-react';
 
-import { DndPluginContext } from '../../slate-extended/dnd/dnd-plugin-context';
-import { SlateExtended } from '../../slate-extended/slate-extended';
-import { useDragOverlayRenderElement } from '../use-editor/use-drag-overlay-render-element';
-import { useEditor } from '../use-editor/use-editor';
-import { usePlugins } from '../use-editor/use-plugins';
-import { useRenderLeaf } from '../use-editor/use-render-leaf';
+import { useDragOverlayRenderElement } from '../../hooks/use-drag-overlay-render-element';
+import { useEditor } from '../../hooks/use-editor';
+import { usePlugins } from '../../hooks/use-plugins';
+import { useRenderLeaf } from '../../hooks/use-render-leaf';
+import { DndPluginContext, DraggableFeatureInitializer } from '../../plugins';
+import type { CustomEditor } from '../../types/slate';
 
 type DragOverlayEditorProps = {
   initialValue: Descendant[];
@@ -22,14 +22,14 @@ export const DragOverlayEditor = (props: DragOverlayEditorProps) => {
   const [value, setValue] = useState(props.initialValue);
 
   const plugins = usePlugins();
-  const editor = useEditor(createEditor, plugins);
+  const editor = useEditor(createEditor, plugins) as CustomEditor;
 
   const renderElement = useDragOverlayRenderElement(editor, plugins);
   const renderLeaf = useRenderLeaf(editor, plugins);
 
   return (
     <Slate editor={editor} value={value} onChange={setValue}>
-      <SlateExtended>
+      <DraggableFeatureInitializer>
         <DndPluginContext
           editor={editor}
           renderDragOverlay={(props) => <div />}
@@ -41,7 +41,7 @@ export const DragOverlayEditor = (props: DragOverlayEditorProps) => {
             readOnly={true}
           />
         </DndPluginContext>
-      </SlateExtended>
+      </DraggableFeatureInitializer>
     </Slate>
   );
 };

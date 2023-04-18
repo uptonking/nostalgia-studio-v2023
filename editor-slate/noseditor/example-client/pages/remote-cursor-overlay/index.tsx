@@ -17,7 +17,6 @@ import {
   DragOverlayContent,
   EditorToolbar,
   NosIconProvider,
-  SlateExtended,
   usePluginsHandlers,
   useRenderElement,
   useRenderLeaf,
@@ -89,30 +88,28 @@ export function EditorWithCursorOverlay() {
   return (
     <NosIconProvider>
       <Slate editor={editor} value={value} onChange={setValue}>
-        <SlateExtended>
-          <DndPluginContext
-            editor={editor}
-            onDragEnd={() => {
-              // after dnd ends to provide the right DragOverlay drop animation
-              forceRerender();
-            }}
-            renderDragOverlay={(props) => <DragOverlayContent {...props} />}
-          >
-            <EditorToolbar />
-            <ErrorBoundary
-              fallback={<h3>cursor is not rendering properly.</h3>}
-            >
-              <RemoteCursorOverlay className='flex'>
-                <Editable
-                  className='nos-editable'
-                  {...handlers}
-                  renderElement={renderElement}
-                  renderLeaf={renderLeaf}
-                />
-              </RemoteCursorOverlay>
-            </ErrorBoundary>
-          </DndPluginContext>
-        </SlateExtended>
+        {/* <SlateExtended> */}
+        <DndPluginContext
+          editor={editor}
+          onDragEnd={() => {
+            // after dnd ends to provide the right DragOverlay drop animation
+            forceRerender();
+          }}
+          renderDragOverlay={(props) => <DragOverlayContent {...props} />}
+        >
+          <EditorToolbar />
+          <ErrorBoundary fallback={<h3>cursor is not rendering properly.</h3>}>
+            <RemoteCursorOverlay className='flex'>
+              <Editable
+                className='nos-editable'
+                {...handlers}
+                renderElement={renderElement}
+                renderLeaf={renderLeaf}
+              />
+            </RemoteCursorOverlay>
+          </ErrorBoundary>
+        </DndPluginContext>
+        {/* </SlateExtended> */}
         <ConnectionToggle connected={connected} onClick={toggleConnection} />
       </Slate>
     </NosIconProvider>

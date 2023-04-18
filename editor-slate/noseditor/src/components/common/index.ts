@@ -11,5 +11,6 @@ export {
   usePopover,
 } from './popover';
 export { IconButton } from './icon-button';
+export { NosIconProvider } from './icon-provider';
 export { Menu, MenuItem } from './dropdown-menu';
 export { ParagraphBase } from './basic';

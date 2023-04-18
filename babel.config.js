@@ -90,10 +90,10 @@ module.exports = function (api) {
       '@linaria',
       {
         evaluate: true,
-        displayName: !isProd ,
+        displayName: !isProd,
         babelOptions: {
           // rootMode: 'upward',
-          configFile:false,
+          configFile: false,
           presets: [
             [
               '@babel/preset-env',

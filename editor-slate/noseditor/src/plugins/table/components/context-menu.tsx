@@ -183,7 +183,6 @@ export const ContextMenu = ({
   );
 };
 
-
 const tableContextMenuCss = css`
   position: absolute;
   z-index: 1;

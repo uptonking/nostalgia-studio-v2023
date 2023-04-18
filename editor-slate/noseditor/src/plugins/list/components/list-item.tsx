@@ -1,28 +1,35 @@
-import './styles.scss';
-
 import React from 'react';
 
 import cx from 'clsx';
-import { useSlate, useSlateStatic } from 'slate-react';
+import { useSlate } from 'slate-react';
 
 import { css } from '@linaria/core';
 
-import { ExtendedEditor } from '../../../slate-extended/extended-editor';
-import { foldElement } from '../../../slate-extended/transforms/fold-element';
-import { themed } from '../../../styles/theme-vars';
+import { themed } from '../../../styles';
+import {
+  DraggableCollapsibleEditor,
+} from '../../draggable-collapsible-feature/collapsible-editor';
+import {
+  collapseElement,
+} from '../../draggable-collapsible-feature/commands/collapse-element';
 import { ElementProps } from '../../types';
-import { checkTodoItem } from '../commands';
+import { checkItem } from '../commands';
 import {
   getBulletedPointerContent,
   getNumberedPointerContent,
 } from '../get-pointer-content';
 import type { ListItemElement } from '../types';
-import { isTodoListItemElement, ListVariants } from '../utils';
+import {
+  isBulletedListItemElement,
+  isCheckboxListItemElement,
+  isNumberedListItemElement,
+} from '../utils';
+import { listItemDefaultCss } from './list-item.styles';
 
 export const ListItem = (
   props: ElementProps & { element: ListItemElement },
 ) => {
-  const editor = useSlateStatic();
+  const editor = useSlate();
 
   const { children, attributes, element } = props;
   const { depth, listType } = element;
@@ -32,76 +39,53 @@ export const ListItem = (
       {...attributes}
       className={cx('nos-elem', 'list-item', `list-item-${listType}`)}
     >
-      {listType === ListVariants.Bulleted && (
+      {isBulletedListItemElement(element) ? (
         <button
           contentEditable={false}
-          className='pointer clipboardSkip'
-          // onMouseDown={() => {
-          //   foldElement(editor, element);
-          // }}
+          className={cx('pointer', 'clipboardSkip')}
         >
-          {
-            // 👀 `+''` is a trick to show cursor when clicking in zero-width string
-            getBulletedPointerContent(depth) + ''
-          }
+          {getBulletedPointerContent(depth)}
         </button>
-      )}
-      {listType === ListVariants.Numbered ? (
+      ) : null}
+      {isNumberedListItemElement(element) ? (
         <NumberedPointer element={element} />
       ) : null}
-      {isTodoListItemElement(element) ? (
+      {isCheckboxListItemElement(element) ? (
         <div contentEditable={false} className='pointer clipboardSkip'>
           <input
             type='checkbox'
             checked={Boolean(element.checked)}
-            onChange={(e) => checkTodoItem(editor, element, e.target.checked)}
+            onChange={(e) => checkItem(editor, element, e.target.checked)}
             className='checkbox-pointer'
           />
         </div>
       ) : null}
-      <div
-        className={cx({
-          'list-checkbox-item-content': isTodoListItemElement(element),
-        })}
-      >
-        {children}
-      </div>
+      <div className={listItemContentCss}>{children}</div>
     </div>
   );
 };
 
 /** preceding number of ordered list  */
 const NumberedPointer = (props: { element: ListItemElement }) => {
-  const editor = useSlate(); // useSlate to rerender pointer content (index) when this element isn't changed directly
+  // useSlate to rerender pointer content (index) when this element isn't changed directly
+  const editor = useSlate();
 
   const { element } = props;
   const { depth } = element;
 
-  const semanticNode = ExtendedEditor.semanticNode(element);
+  const semanticNode = DraggableCollapsibleEditor.semanticNode(element);
   const { listIndex } = semanticNode;
 
   return (
     <button
       contentEditable={false}
       className='pointer clipboardSkip'
-      // style={
-      //   {
-      //     '--pointer-content': `"${getNumberedPointerContent(
-      //       depth,
-      //       listIndex,
-      //     )}"`,
-      //   } as React.CSSProperties
-      // }
-      // onMouseDown={() => {
-      //   foldElement(editor, element);
-      // }}
     >
       {getNumberedPointerContent(depth, listIndex) + '.'}
     </button>
   );
 };
 
-
 // const listItemCss=css`
 
 // `;
@@ -120,6 +104,8 @@ const NumberedPointer = (props: { element: ListItemElement }) => {
 // const listItemCss=css`
 
 // `;
-// const listItemCss=css`
 
-// `;
+/** 👀 a trick to show cursor when clicking in zero-width string */
+const listItemContentCss = css`
+  min-width: 1px;
+`;

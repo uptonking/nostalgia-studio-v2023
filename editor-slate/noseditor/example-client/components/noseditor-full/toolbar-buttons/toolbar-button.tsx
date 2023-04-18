@@ -6,7 +6,7 @@ import { themed } from '../../../../src/styles';
 export const ToolbarBtnActiveClassName = 'isToolbarBtnActive';
 
 export const ToolbarButton = styled(IconButton)`
-  ${"&." + ToolbarBtnActiveClassName} {
+  ${'&.' + ToolbarBtnActiveClassName} {
     background-color: ${themed.color.brand.lighter};
   }
 `;

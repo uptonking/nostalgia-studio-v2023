@@ -39,9 +39,9 @@ export const Link = (props: ElementProps & { element: LinkElementType }) => {
         onMouseEnter={() => {
           if (!isOpen) setIsOpen(true);
         }}
-      // onMouseLeave={() => {
-      //   if (isOpen) setIsOpen(false);
-      // }}
+        // onMouseLeave={() => {
+        //   if (isOpen) setIsOpen(false);
+        // }}
       >
         <a className={anchorElemCss} {...attributes} href={url}>
           <InlineChromiumBugfix />

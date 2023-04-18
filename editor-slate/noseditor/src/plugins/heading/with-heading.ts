@@ -3,13 +3,14 @@ import { Editor } from 'slate';
 import { isHeadingElement } from './utils';
 
 export const withHeading = (editor: Editor) => {
-  const { isFoldingElement } = editor;
+  // @ts-expect-error fix-types
+  const { isCollapsibleElement } = editor;
 
-  editor.isFoldingElement = (element) => {
-    return isHeadingElement(element) || isFoldingElement(element);
+  // @ts-expect-error fix-types
+  editor.isCollapsibleElement = (element) => {
+    return isHeadingElement(element) || isCollapsibleElement(element);
   };
 
   return editor;
 };
 
-export default withHeading;

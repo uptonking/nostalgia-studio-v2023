@@ -3,20 +3,18 @@ import React, { useCallback, useReducer, useState } from 'react';
 import { createEditor, Descendant, Editor } from 'slate';
 import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
-import { NosIconProvider } from '../../config/icon-provider';
-import { usePersistedState } from '../../hooks/use-persisted-state';
-import {
-  DragOverlayContent,
-} from '../../plugins/wrapper/components/drag-overlay-content';
-import { DndPluginContext } from '../../slate-extended/dnd/dnd-plugin-context';
-import { ExtendedEditor } from '../../slate-extended/extended-editor';
+import { NosIconProvider } from '../../components';
 import {
   useEditor,
   usePlugins,
   usePluginsHandlers,
   useRenderElement,
   useRenderLeaf,
-} from '../use-editor';
+} from '../../hooks';
+import { usePersistedState } from '../../hooks/utils';
+import { DndPluginContext } from '../../plugins';
+import type { CustomEditor } from '../../types/slate';
+import { DragOverlayContent } from './drag-wrapper';
 import { EditorToolbar } from './editor-toolbar';
 
 export type NosEditorProps = {
@@ -36,7 +34,7 @@ export const NosEditor = (props: NosEditorProps) => {
   const forceRerender = useReducer(() => ({}), {})[1];
 
   const plugins = usePlugins();
-  const editor = useEditor(createEditor, plugins);
+  const editor = useEditor(createEditor, plugins) as CustomEditor;
   window['ed'] = editor;
 
   const handlers = usePluginsHandlers(editor, [
@@ -53,7 +51,6 @@ export const NosEditor = (props: NosEditorProps) => {
             pathClone.pop(); // get rid of trailing text node postion in path.
             const anchorNode = pathClone.reduce((node, pathPosition) => {
               if (!node) return editor.children[pathPosition];
-              // @ts-expect-error fix-types
               return node.children[pathPosition];
             }, null);
             console.log(

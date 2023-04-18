@@ -24,5 +24,5 @@ export {
   CopyLink as CopyLinkIcon,
   Copy as CopyIcon,
   Check as CheckIcon,
-  Delete as DeleteIcon
+  Delete as DeleteIcon,
 } from '@icon-park/react';

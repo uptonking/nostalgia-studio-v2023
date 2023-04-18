@@ -33,7 +33,7 @@ describe('Indexes', function () {
       idx.tree.getNumberOfKeys().should.equal(1);
       (function () {
         idx.insert(doc1);
-      }.should.throw());
+      }).should.throw();
     });
 
     it('Inserting twice for a fieldName the docs dont have with a unique index results in an error thrown', function () {
@@ -44,7 +44,7 @@ describe('Indexes', function () {
       idx.tree.getNumberOfKeys().should.equal(1);
       (function () {
         idx.insert(doc2);
-      }.should.throw());
+      }).should.throw();
     });
 
     it('Inserting twice for a fieldName the docs dont have with a unique and sparse index will not throw, since the docs will be non indexed', function () {
@@ -151,7 +151,7 @@ describe('Indexes', function () {
 
         (function () {
           idx.insert(obj2);
-        }.should.throw());
+        }).should.throw();
       });
 
       it('When removing a document, remove it from the index at all unique array elements', function () {
@@ -186,7 +186,7 @@ describe('Indexes', function () {
 
         (function () {
           idx.insert(obj2);
-        }.should.throw());
+        }).should.throw();
         idx.getAll().length.should.equal(2);
         idx.getMatching('aa').length.should.equal(1);
         idx.getMatching('bb').length.should.equal(1);

@@ -1,47 +1,86 @@
-import { Editor, Range } from 'slate';
+import { Editor, Node, Range, Transforms } from 'slate';
 
-import {
-  autoformatBlock,
-  autoformatMark,
-  AutoformatRule,
-  autoformatText,
-} from '@udecode/plate-autoformat';
+import type { AutoformatRule } from './types';
+import { getMatchRange, getRangeFromBlockStart, getText } from './utils';
 
 /**
  * Enables support for autoformatting actions.
  * - Once a match rule is validated, it does not check the following rules.
  */
-export const withAutoformat = (rules: AutoformatRule[]) => (editor: Editor) => {
-  const { insertText } = editor;
+export const withAutoformat =
+  (rules: AutoformatRule[] = []) =>
+    (editor: Editor) => {
+      const { insertText } = editor;
 
-  editor.insertText = (text) => {
-    if (editor.selection && !Range.isCollapsed(editor.selection)) {
-      return insertText(text);
-    }
+      editor.insertText = (text) => {
+        if (editor.selection && !Range.isCollapsed(editor.selection)) {
+          return insertText(text);
+        }
 
-    for (const rule of rules!) {
-      const { mode = 'text', insertTrigger, query } = rule;
+        for (const rule of rules) {
+          const { mode = 'text', insertTrigger, query } = rule;
 
-      if (query && !query(editor, { ...rule, text })) continue;
+          // if (query && !query(editor, { ...rule, text })) continue;
 
-      const autoformatter: Record<typeof mode, Function> = {
-        block: autoformatBlock,
-        mark: autoformatMark,
-        text: autoformatText,
+          const formatter = {
+            block: autoformatBlock,
+          };
+
+          formatter[mode]?.(editor, {
+            ...(rule as any),
+            text,
+          });
+        }
+
+        insertText(text);
       };
 
-      if (
-        autoformatter[mode]?.(editor, {
-          ...(rule as any),
-          text,
-        })
-      ) {
-        return insertTrigger && insertText(text);
-      }
+      return editor;
+    };
+
+const autoformatBlock = (
+  editor: Editor,
+  {
+    text,
+    type,
+    match,
+    format,
+  }: any = {}
+) => {
+  const matches = Array.isArray(match) ? match : [match];
+
+  for (const match of matches) {
+    const { end, triggers } = getMatchRange({
+      match: { start: '', end: match },
+    });
+
+    if (!triggers.includes(text)) continue;
+
+    let matchRange: Range | undefined;
+    matchRange = getRangeFromBlockStart(editor);
+
+    // todo Don't autoformat if there is void nodes.
+
+    const textFromBlockStart = getText(editor, matchRange);
+
+    if (end !== textFromBlockStart) continue;
+
+    Transforms.delete(editor, { at: matchRange });
+
+    if (!format) {
+      Transforms.setNodes<Node & { type: string }>(
+        editor,
+        { type },
+        {
+          match: (n) => Editor.isBlock(editor, n),
+        },
+      );
+    } else {
+      format(editor);
     }
 
-    insertText(text);
-  };
+    return true;
+  }
 
-  return editor;
+  return false;
 };

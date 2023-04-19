@@ -3,7 +3,7 @@ export { useTablePlugin } from './table/use-table-plugin';
 export { useSoftBreakPlugin } from './soft-break/use-soft-break-plugin';
 export { useDeserializePlugin } from './serialization/use-deserialize-plugin';
 export { useSerializePlugin } from './serialization/use-serialize-plugin';
-export { useResetTypePlugin } from './reset-type/use-reset-type-plugin';
+export { useResetInsertTypePlugin } from './reset-insert-type/use-reset-insert-type-plugin';
 export { useParagraphPlugin } from './paragraph/use-paragraph-plugin';
 export { useNodeIdPlugin } from './node-id/use-node-id-plugin';
 export { useMarksPlugin } from './marks/use-marks-plugin';
@@ -18,7 +18,10 @@ export { useAutoformatPlugin } from './autoformat/use-autoformat-plugin';
 export {
   useDraggableCollapsiblePlugin,
   DraggableFeatureInitializer,
-  DndPluginContext,
+  DndPluginProvider,
   DraggableCollapsibleEditor,
   useDndState,
+  DndStateProvider,
+  type CollapsibleElement,
+  type NestableElement,
 } from './draggable-collapsible-feature';

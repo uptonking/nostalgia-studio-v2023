@@ -35,7 +35,7 @@ const getSemanticLevel = (editor: Editor, element: Element) => {
   return Infinity;
 };
 
-export const compareLevels = (editor: Editor) => (a: Element, b: Element) => {
+export const compareLevels = (editor: DraggableCollapsibleEditor) => (a: Element, b: Element) => {
   if (
     DraggableCollapsibleEditor.isNestableElement(editor, a) &&
     DraggableCollapsibleEditor.isNestableElement(editor, b)

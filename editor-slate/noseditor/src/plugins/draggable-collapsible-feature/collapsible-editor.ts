@@ -1,5 +1,6 @@
 import { BaseEditor, Descendant, Editor, Element } from 'slate';
 
+import { isDefined } from '../../utils';
 import type {
   CollapsibleElement,
   NestableElement,
@@ -7,6 +8,8 @@ import type {
 } from './types';
 import { crawlChildren } from './utils';
 import { ELEMENT_TO_SEMANTIC_PATH } from './weakmaps';
+
+// type CollapsibleElement = CollapsibleElement &
 
 export interface DraggableCollapsibleEditor extends BaseEditor {
   children: Element[];
@@ -205,7 +208,7 @@ export const DraggableCollapsibleEditor = {
   isHiddenById(element: Element, id: string | null): boolean {
     const path = DraggableCollapsibleEditor.semanticPath(element);
 
-    const hidden = id != null && path.some((x) => x.element.id === id);
+    const hidden = isDefined(id) && path.some((x) => x.element['id'] === id);
 
     return hidden;
   },

@@ -29,6 +29,9 @@ export interface RangeInterface {
   edges: (range: Range, options?: RangeEdgesOptions) => [Point, Point];
   end: (range: Range) => Point;
   equals: (range: Range, another: Range) => boolean;
+  /**
+   * Check if a range includes a path, a point or part of another range.
+   */
   includes: (range: Range, target: Path | Point | Range) => boolean;
   intersection: (range: Range, another: Range) => Range | null;
   isBackward: (range: Range) => boolean;
@@ -90,7 +93,6 @@ export const Range: RangeInterface = {
   /**
    * Check if a range includes a path, a point or part of another range.
    */
-
   includes(range: Range, target: Path | Point | Range): boolean {
     if (Range.isRange(target)) {
       if (
@@ -112,7 +114,7 @@ export const Range: RangeInterface = {
     if (Point.isPoint(target)) {
       isAfterStart = Point.compare(target, start) >= 0;
       isBeforeEnd = Point.compare(target, end) <= 0;
-    } else {
+    } else { // target is path
       isAfterStart = Path.compare(target, start.path) >= 0;
       isBeforeEnd = Path.compare(target, end.path) <= 0;
     }

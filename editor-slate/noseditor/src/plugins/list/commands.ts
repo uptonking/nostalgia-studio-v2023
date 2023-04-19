@@ -1,19 +1,24 @@
-import { Editor, Element, Path, Range, Transforms } from 'slate';
+import { Editor, Element, Node, Path, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
 import { findSelectionAnchorElement } from '../../utils/queries';
-import type { NestableElement } from '../draggable-collapsible-feature/types';
-import { isParagraphElement } from '../paragraph/utils';
+import type {
+  CollapsibleElement,
+  DraggableCollapsibleEditor,
+  NestableElement,
+} from '../draggable-collapsible-feature';
+import { ParagraphElement } from '../paragraph/types';
+import { isParagraphElement, ParagraphSpec } from '../paragraph/utils';
 import type { ListItemElement } from './types';
 import { isListItemElement, ListItemSpec, ListVariants } from './utils';
 
 export const moveItemsForward = (
-  editor: Editor,
+  editor: DraggableCollapsibleEditor,
   node: NestableElement,
   path: Path,
   maxDepth: number,
 ) => {
-  Transforms.setNodes(
+  Transforms.setNodes<(NestableElement & Node)>(
     editor,
     { depth: Math.min(maxDepth, node.depth + 1) },
     { at: path },
@@ -25,7 +30,7 @@ export const moveItemsBack = (
   node: NestableElement,
   path: Path,
 ) => {
-  Transforms.setNodes(
+  Transforms.setNodes<(NestableElement & Node)>(
     editor,
     { depth: Math.max(0, node.depth - 1) },
     { at: path },
@@ -39,7 +44,7 @@ export const checkItem = (
 ) => {
   const path = ReactEditor.findPath(editor, element);
 
-  Transforms.setNodes(
+  Transforms.setNodes<ListItemElement>(
     editor,
     { checked },
     { match: (node) => node === element, at: path },
@@ -49,8 +54,7 @@ export const checkItem = (
 export const isListBlockActive = (editor: Editor, listType: string) => {
   const [match] = Editor.nodes(editor, {
     match: (n) =>
-      !Editor.isEditor(n) &&
-      Element.isElement(n) &&
+      isListItemElement(n) &&
       n.type === ListItemSpec &&
       n['listType'] === listType,
   });
@@ -74,7 +78,7 @@ export const toggleList = (
 
     if (isActive) {
       Transforms.unsetNodes(editor, 'listType');
-      Transforms.setNodes(editor, { type: 'p' });
+      Transforms.setNodes<ParagraphElement>(editor, { type: ParagraphSpec });
     } else {
       // change list type to args' listType
       Transforms.setNodes(
@@ -89,7 +93,7 @@ export const toggleList = (
       const currElem = findSelectionAnchorElement(editor) as ListItemElement;
 
       // change paragraph or non-list to list
-      Transforms.setNodes(
+      Transforms.setNodes<ListItemElement>(
         editor,
         { type: ListItemSpec, depth: currElem?.depth ?? 0, listType },
         {

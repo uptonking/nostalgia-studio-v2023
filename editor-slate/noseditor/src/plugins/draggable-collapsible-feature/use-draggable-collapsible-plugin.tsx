@@ -5,13 +5,13 @@ import { UseNosPlugin } from '../types';
 import { DraggableCollapsibleEditor } from './collapsible-editor';
 import { withDraggableCollapsible } from './with-draggable-collapsible';
 
-type Options = {
+type CollapsibleOptions = {
   compareLevels?: (
     editor: Editor,
   ) => DraggableCollapsibleEditor['compareLevels'];
 };
 
-export const useDraggableCollapsiblePlugin: UseNosPlugin<Options> = ({
+export const useDraggableCollapsiblePlugin: UseNosPlugin<CollapsibleOptions> = ({
   compareLevels = compare,
 } = {}) => {
   return {

@@ -37,7 +37,7 @@ const measuring = {
   },
 };
 
-type DndPluginContextProps = {
+type DndPluginProviderProps = {
   editor: DraggableCollapsibleEditor & ReactEditor;
   onDragStart?(event: DragStartEvent): void;
   onDragEnd?(event: DragEndEvent): void;
@@ -48,13 +48,13 @@ type DndPluginContextProps = {
   }) => React.ReactElement;
 };
 
-export const DndPluginContext = ({
+export const DndPluginProvider = ({
   editor,
   onDragStart,
   onDragEnd,
   renderDragOverlay,
   children,
-}: React.PropsWithChildren<DndPluginContextProps>) => {
+}: React.PropsWithChildren<DndPluginProviderProps>) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const activeElement = editor.children.find((x) => x.id === activeId) || null;
   const semanticNode = activeElement
@@ -71,9 +71,9 @@ export const DndPluginContext = ({
     : 0;
   const dragOverlayHeight =
     _dragOverlayHeight &&
-    DraggableCollapsibleEditor.isCollapsibleElement(editor, activeElement) &&
-    DraggableCollapsibleEditor.isNestableElement(editor, activeElement) &&
-    !activeElement.folded
+      DraggableCollapsibleEditor.isCollapsibleElement(editor, activeElement) &&
+      DraggableCollapsibleEditor.isNestableElement(editor, activeElement) &&
+      !activeElement.folded
       ? Math.max(minOverlayHeight, _dragOverlayHeight)
       : null;
 
@@ -113,7 +113,7 @@ export const DndPluginContext = ({
 
   const handleDragStart = useCallback((event: DragStartEvent) => {
     clearSelection();
-    onDragStart && onDragStart(event);
+    if (onDragStart) onDragStart(event);
 
     const { active } = event;
 
@@ -137,7 +137,7 @@ export const DndPluginContext = ({
 
   const handleDragEnd = useCallback(
     (event: DragEndEvent) => {
-      onDragEnd && onDragEnd(event);
+      if (onDragEnd) onDragEnd(event);
       const { active, over } = event;
 
       if (over) {

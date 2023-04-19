@@ -22,7 +22,7 @@ import {
   useMarksPlugin,
   useNodeIdPlugin,
   useParagraphPlugin,
-  useResetTypePlugin,
+  useResetInsertTypePlugin,
   useSerializePlugin,
   useSoftBreakPlugin,
   useTablePlugin,
@@ -62,7 +62,7 @@ export const useSyncablePlugins = ({
 }): NosPlugin[] => {
   const plugins = [
     useTrailingLinePlugin(),
-    useResetTypePlugin(),
+    useResetInsertTypePlugin(),
     useSoftBreakPlugin(),
     useExitBreakPlugin(),
     useAutoformatPlugin(),

@@ -6,7 +6,7 @@ export const withLink = (editor: Editor) => {
   const { isInline } = editor;
 
   editor.isInline = (element) => {
-    return isInline(element) || isLinkElement(element);
+    return isLinkElement(element) || isInline(element);
   };
 
   return editor;

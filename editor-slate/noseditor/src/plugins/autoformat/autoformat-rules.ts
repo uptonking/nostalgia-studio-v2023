@@ -1,13 +1,12 @@
 import { Editor } from 'slate';
 
-import { AutoformatRule } from '@udecode/plate-autoformat';
-
 import { BlockquoteSpec } from '../blockquote/utils';
 import { Heading1Spec, Heading2Spec, Heading3Spec } from '../heading/utils';
 import { toggleList } from '../list/commands';
 import { ListItemSpec, ListVariants } from '../list/utils';
+import type { AutoformatRule } from './types';
 
-export const autoformatRules: AutoformatRule[] = [
+export const defaultAutoformatRules: AutoformatRule[] = [
   {
     mode: 'block',
     type: Heading1Spec,
@@ -26,7 +25,7 @@ export const autoformatRules: AutoformatRule[] = [
   {
     mode: 'block',
     type: BlockquoteSpec,
-    match: '> ',
+    match: ['> ','》 '],
   },
   {
     mode: 'block',
@@ -47,7 +46,7 @@ export const autoformatRules: AutoformatRule[] = [
   {
     mode: 'block',
     type: ListItemSpec,
-    match: ['[] ', 'x ', 'X '],
+    match: ['[] ', '【】 '],
     format: (editor: Editor) => {
       toggleList(editor, { listType: ListVariants.Checkbox });
     },

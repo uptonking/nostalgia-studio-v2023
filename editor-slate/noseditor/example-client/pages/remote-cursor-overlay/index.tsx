@@ -13,7 +13,7 @@ import { HocuspocusProvider } from '@hocuspocus/provider';
 import { YjsEditor } from '@slate-yjs/core';
 
 import {
-  DndPluginContext,
+  DndPluginProvider,
   DragOverlayContent,
   EditorToolbar,
   NosIconProvider,
@@ -22,7 +22,9 @@ import {
   useRenderLeaf,
 } from '../../../src';
 import { ErrorBoundary } from '../../components/common/error-boundary';
-import { ConnectionToggle } from '../../components/ConnectionToggle/ConnectionToggle';
+import {
+  ConnectionToggle,
+} from '../../components/ConnectionToggle/ConnectionToggle';
 import { Spinner } from '../../components/Spinner/Spinner';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../../config';
 import { useSyncableEditor } from '../../hooks/use-syncable-Editor';
@@ -89,7 +91,7 @@ export function EditorWithCursorOverlay() {
     <NosIconProvider>
       <Slate editor={editor} value={value} onChange={setValue}>
         {/* <SlateExtended> */}
-        <DndPluginContext
+        <DndPluginProvider
           editor={editor}
           onDragEnd={() => {
             // after dnd ends to provide the right DragOverlay drop animation
@@ -108,7 +110,7 @@ export function EditorWithCursorOverlay() {
               />
             </RemoteCursorOverlay>
           </ErrorBoundary>
-        </DndPluginContext>
+        </DndPluginProvider>
         {/* </SlateExtended> */}
         <ConnectionToggle connected={connected} onClick={toggleConnection} />
       </Slate>

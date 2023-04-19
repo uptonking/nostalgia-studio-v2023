@@ -115,6 +115,10 @@ export interface BaseEditor {
   deleteForward: (unit: TextUnit) => void;
   deleteFragment: (direction?: TextDirection) => void;
   getFragment: () => Descendant[];
+  /**
+   * Insert a block break at the current selection.
+   * - If the selection is currently expanded, it will be deleted first.
+   */
   insertBreak: () => void;
   insertSoftBreak: () => void;
   insertFragment: (fragment: Node[]) => void;
@@ -659,7 +663,6 @@ export const Editor: EditorInterface = {
    *
    * If the selection is currently expanded, it will be deleted first.
    */
-
   insertBreak(editor: Editor): void {
     editor.insertBreak();
   },

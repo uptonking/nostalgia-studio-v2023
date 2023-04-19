@@ -9,7 +9,7 @@ import { ElementProps, NosPlugin } from '../plugins/types';
 /**
  * may wrap element in dragSort container
  */
-export const useRenderElement = (editor: Editor, plugins: NosPlugin[]) => {
+export const useRenderElement = (editor: ReactEditor, plugins: NosPlugin[]) => {
   const renderers = plugins
     .filter((x) => x.renderElement)
     .map((x) => x.renderElement!);

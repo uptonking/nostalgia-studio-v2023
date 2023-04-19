@@ -18,7 +18,6 @@ import {
 } from '../../../src/plugins/list/commands';
 import { ListVariants } from '../../../src/plugins/list/utils';
 import type { TextFormats } from '../../../src/plugins/marks/types';
-import { insertTableByRowColNumber } from '../../../src/plugins/table/commands';
 import { themed } from '../../../src/styles';
 import {
   addMarkData,
@@ -37,30 +36,33 @@ import {
   ToolbarBtnActiveClassName,
   ToolbarButton,
 } from './toolbar-buttons';
-import { defaultToolbarConfig, TextAlignValueType } from './toolbar-config';
+import {
+  defaultToolbarConfig,
+  type TextAlignValueType,
+} from './toolbar-config';
 
 const toggleTextFormatHandler =
   (editor: Editor, format: TextFormats) =>
-  (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleMark(editor, format);
-  };
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      toggleMark(editor, format);
+    };
 
 const toggleTextAlignHandler =
   (editor: Editor, align?: TextAlignValueType) =>
-  (event: ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    toggleTextAlign(editor, event.target.value as TextAlignValueType);
-    // console.log(';; txt-align ', event.target.value)
-  };
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      event.preventDefault();
+      toggleTextAlign(editor, event.target.value as TextAlignValueType);
+      // console.log(';; txt-align ', event.target.value)
+    };
 
 /** used to add fontSize, also support other formats */
 const addTextFormatHandler =
   (editor: Editor, format: TextFormats, value = true) =>
-  (event: ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    addMarkData(editor, { format, value: event.target.value });
-  };
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      event.preventDefault();
+      addMarkData(editor, { format, value: event.target.value });
+    };
 
 const checkIsMenuItemListType = (
   action: string,
@@ -69,10 +71,10 @@ const checkIsMenuItemListType = (
 
 const toggleListTypesHandler =
   (editor: Editor, list: (typeof ListVariants)[keyof typeof ListVariants]) =>
-  (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    toggleList(editor, { listType: list });
-  };
+    (event: MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+      toggleList(editor, { listType: list });
+    };
 
 const toggleBlockTypesHandler =
   (editor: Editor) => (event: ChangeEvent<HTMLSelectElement>) => {
@@ -248,7 +250,7 @@ export const NosToolbar = (props_) => {
                 options={options}
                 value=''
                 // onChange={addTextFormatHandler(editor, action)}
-                onChange={() => {}}
+                onChange={() => { }}
                 key={index2}
               />
             );

@@ -49,6 +49,9 @@ export interface PathInterface {
   next: (path: Path) => Path;
   operationCanTransformPath: (operation: Operation) => boolean;
   parent: (path: Path) => Path;
+  /**
+  * Given a path, get the path to the previous sibling node.
+  */
   previous: (path: Path) => Path;
   relative: (path: Path, ancestor: Path) => Path;
   transform: (
@@ -334,7 +337,6 @@ export const Path: PathInterface = {
   /**
    * Given a path, get the path to the previous sibling node.
    */
-
   previous(path: Path): Path {
     if (path.length === 0) {
       throw new Error(

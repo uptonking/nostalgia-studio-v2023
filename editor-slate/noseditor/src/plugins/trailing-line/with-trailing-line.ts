@@ -8,6 +8,7 @@ import {
   Transforms,
 } from 'slate';
 
+import { isNullOrUndefined } from '../../utils';
 import { isParagraphElement, ParagraphSpec } from '../paragraph/utils';
 
 const isTrailingLine = (node: Node) => {
@@ -32,14 +33,17 @@ export const withTrailingLine = (editor: Editor) => {
   const { insertBreak, normalizeNode } = editor;
 
   editor.insertBreak = () => {
-    if (editor.selection == null) {
+    if (isNullOrUndefined(editor.selection)) {
       return;
     }
 
+    // better use insert if not trailing line, instead of insert then remove
     insertBreak();
 
-    // if there is only one child there is no sense to remove it
     if (editor.children.length > 1) {
+      // try to find whether there is more than one trailing line
+      // if there is only one child, there is no sense to remove it; otherwise remove
+
       // get last node and last path
       const lastPath = [editor.children.length - 1];
       const [lastNode] = Editor.node(editor, lastPath);

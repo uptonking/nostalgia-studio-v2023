@@ -1,4 +1,4 @@
-import { Element } from 'slate';
+import { Editor, Element } from 'slate';
 
 import type {
   BulletedListItemElement,
@@ -17,7 +17,7 @@ export const ListVariants = {
 } as const;
 
 export const isListItemElement = (value: any): value is ListItemElement => {
-  return Element.isElementType<ListItemElement>(value, ListItemSpec);
+  return !Editor.isEditor(value) && Element.isElementType<ListItemElement>(value, ListItemSpec);
 };
 
 export const isBulletedListItemElement = (

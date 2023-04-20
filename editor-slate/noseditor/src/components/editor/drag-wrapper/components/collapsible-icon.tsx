@@ -70,4 +70,3 @@ const CollapsibleIconMemoized = memo(
     );
   },
 );
-

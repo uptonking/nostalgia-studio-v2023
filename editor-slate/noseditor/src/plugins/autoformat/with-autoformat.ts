@@ -9,43 +9,38 @@ import { getMatchRange, getRangeFromBlockStart, getText } from './utils';
  */
 export const withAutoformat =
   (rules: AutoformatRule[] = []) =>
-    (editor: Editor) => {
-      const { insertText } = editor;
+  (editor: Editor) => {
+    const { insertText } = editor;
 
-      editor.insertText = (text) => {
-        if (editor.selection && !Range.isCollapsed(editor.selection)) {
-          return insertText(text);
-        }
+    editor.insertText = (text) => {
+      if (editor.selection && !Range.isCollapsed(editor.selection)) {
+        return insertText(text);
+      }
 
-        for (const rule of rules) {
-          const { mode = 'text', insertTrigger, query } = rule;
+      for (const rule of rules) {
+        const { mode = 'text', insertTrigger, query } = rule;
 
-          // if (query && !query(editor, { ...rule, text })) continue;
+        // if (query && !query(editor, { ...rule, text })) continue;
 
-          const formatter = {
-            block: autoformatBlock,
-          };
+        const formatter = {
+          block: autoformatBlock,
+        };
 
-          formatter[mode]?.(editor, {
-            ...(rule as any),
-            text,
-          });
-        }
+        formatter[mode]?.(editor, {
+          ...(rule as any),
+          text,
+        });
+      }
 
-        insertText(text);
-      };
-
-      return editor;
+      insertText(text);
     };
+
+    return editor;
+  };
 
 const autoformatBlock = (
   editor: Editor,
-  {
-    text,
-    type,
-    match,
-    format,
-  }: any = {}
+  { text, type, match, format }: any = {},
 ) => {
   const matches = Array.isArray(match) ? match : [match];
 
@@ -62,6 +57,7 @@ const autoformatBlock = (
     // todo Don't autoformat if there is void nodes.
 
     const textFromBlockStart = getText(editor, matchRange);
+    // console.log(';; end,matchRange', end, matchRange, textFromBlockStart)
 
     if (end !== textFromBlockStart) continue;
 

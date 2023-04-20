@@ -121,6 +121,10 @@ export interface BaseEditor {
    */
   insertBreak: () => void;
   insertSoftBreak: () => void;
+  /**
+   * Insert a fragment at the current selection.
+   * - If the selection is currently expanded, it will be deleted first.
+   */
   insertFragment: (fragment: Node[]) => void;
   /** Inserts a node at the current selection.
    * - If the selection is currently expanded, it will be deleted first.
@@ -682,7 +686,6 @@ export const Editor: EditorInterface = {
    *
    * If the selection is currently expanded, it will be deleted first.
    */
-
   insertFragment(editor: Editor, fragment: Node[]): void {
     editor.insertFragment(fragment);
   },

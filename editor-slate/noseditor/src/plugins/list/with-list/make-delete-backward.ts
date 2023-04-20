@@ -4,7 +4,9 @@ import { ParagraphSpec } from '../../paragraph/utils';
 import { moveItemsBack } from '../commands';
 import { isListItemElement } from '../utils';
 
-export const makeDeleteBackward = (editor: Editor): BaseEditor['deleteBackward'] => {
+export const makeDeleteBackward = (
+  editor: Editor,
+): BaseEditor['deleteBackward'] => {
   const { deleteBackward } = editor;
 
   return (unit) => {
@@ -44,4 +46,3 @@ export const makeDeleteBackward = (editor: Editor): BaseEditor['deleteBackward']
     deleteBackward(unit);
   };
 };
-

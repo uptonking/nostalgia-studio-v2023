@@ -99,7 +99,6 @@ export const getPointFromLocation = (
   return point;
 };
 
-
 /**
  * See {@link Editor.string}.
  * If `at` is not defined, return an empty string.

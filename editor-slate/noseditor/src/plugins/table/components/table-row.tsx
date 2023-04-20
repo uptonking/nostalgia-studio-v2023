@@ -9,12 +9,11 @@ import type { ElementProps } from '../../types';
 import type { TableCellElement, TableElement, TableRowElement } from '../types';
 import { getNextRowSpan } from '../utils/common';
 
-export function CustomTableRow(
-  props: ElementProps & { element: TableRowElement },
-) {
-  const { attributes, children, element } = props;
+export function CustomTableRow(props: ElementProps) {
+  const { attributes, children } = props;
+  const element = props.element as TableRowElement;
 
-  const editor = useSlate();
+  const editor = useSlate() as ReactEditor;
 
   const rowPath = ReactEditor.findPath(editor, element);
   const minRow = getNextRowSpan(editor, rowPath);

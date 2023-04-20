@@ -92,8 +92,10 @@ export const DraggableCollapsibleEditor = {
         .reverse()
         .find(
           (node) =>
-            DraggableCollapsibleEditor.isCollapsibleElement(editor, node.element) &&
-            node.element.folded,
+            DraggableCollapsibleEditor.isCollapsibleElement(
+              editor,
+              node.element,
+            ) && node.element.folded,
         );
       if (folded) {
         const foldedCount = DraggableCollapsibleEditor.isCollapsibleElement(

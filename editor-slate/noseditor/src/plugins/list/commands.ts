@@ -10,7 +10,7 @@ import type {
 import { ParagraphElement } from '../paragraph/types';
 import { isParagraphElement, ParagraphSpec } from '../paragraph/utils';
 import type { ListItemElement } from './types';
-import { isListItemElement, ListItemSpec, ListVariants } from './utils';
+import { isListItemElement, ListItemSpec, ListVariantsType } from './utils';
 
 export const moveItemsForward = (
   editor: DraggableCollapsibleEditor,
@@ -18,7 +18,7 @@ export const moveItemsForward = (
   path: Path,
   maxDepth: number,
 ) => {
-  Transforms.setNodes<(NestableElement & Node)>(
+  Transforms.setNodes<NestableElement & Node>(
     editor,
     { depth: Math.min(maxDepth, node.depth + 1) },
     { at: path },
@@ -30,7 +30,7 @@ export const moveItemsBack = (
   node: NestableElement,
   path: Path,
 ) => {
-  Transforms.setNodes<(NestableElement & Node)>(
+  Transforms.setNodes<NestableElement & Node>(
     editor,
     { depth: Math.max(0, node.depth - 1) },
     { at: path },
@@ -64,7 +64,7 @@ export const isListBlockActive = (editor: Editor, listType: string) => {
 
 export const toggleList = (
   editor: Editor,
-  { listType }: { listType: (typeof ListVariants)[keyof typeof ListVariants] },
+  { listType }: { listType: ListVariantsType },
 ) => {
   Editor.withoutNormalizing(editor, () => {
     const { selection } = editor;

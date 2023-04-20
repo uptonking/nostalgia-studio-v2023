@@ -138,79 +138,225 @@ export declare const tokens: {
 };
 
 export declare const meta: {
-  'palette.black': ParsedColorToken & { $extensions: { mode: typeof modes['palette.black'] } };
-  'palette.white': ParsedColorToken & { $extensions: { mode: typeof modes['palette.white'] } };
-  'palette.gray25': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray25'] } };
-  'palette.gray50': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray50'] } };
-  'palette.gray100': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray100'] } };
-  'palette.gray200': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray200'] } };
-  'palette.gray300': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray300'] } };
-  'palette.gray400': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray400'] } };
-  'palette.gray500': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray500'] } };
-  'palette.gray600': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray600'] } };
-  'palette.gray700': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray700'] } };
-  'palette.gray800': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray800'] } };
-  'palette.gray900': ParsedColorToken & { $extensions: { mode: typeof modes['palette.gray900'] } };
-  'palette.grey50': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey50'] } };
-  'palette.grey100': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey100'] } };
-  'palette.grey200': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey200'] } };
-  'palette.grey300': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey300'] } };
-  'palette.grey400': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey400'] } };
-  'palette.grey500': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey500'] } };
-  'palette.grey600': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey600'] } };
-  'palette.grey700': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey700'] } };
-  'palette.grey800': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey800'] } };
-  'palette.grey900': ParsedColorToken & { $extensions: { mode: typeof modes['palette.grey900'] } };
-  'palette.teal50': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal50'] } };
-  'palette.teal100': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal100'] } };
-  'palette.teal200': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal200'] } };
-  'palette.teal300': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal300'] } };
-  'palette.teal400': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal400'] } };
-  'palette.teal500': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal500'] } };
-  'palette.teal600': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal600'] } };
-  'palette.teal700': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal700'] } };
-  'palette.teal800': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal800'] } };
-  'palette.teal900': ParsedColorToken & { $extensions: { mode: typeof modes['palette.teal900'] } };
-  'palette.green50': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green50'] } };
-  'palette.green100': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green100'] } };
-  'palette.green200': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green200'] } };
-  'palette.green300': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green300'] } };
-  'palette.green400': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green400'] } };
-  'palette.green500': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green500'] } };
-  'palette.green600': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green600'] } };
-  'palette.green700': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green700'] } };
-  'palette.green800': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green800'] } };
-  'palette.green900': ParsedColorToken & { $extensions: { mode: typeof modes['palette.green900'] } };
-  'palette.blue50': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue50'] } };
-  'palette.blue100': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue100'] } };
-  'palette.blue200': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue200'] } };
-  'palette.blue300': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue300'] } };
-  'palette.blue400': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue400'] } };
-  'palette.blue500': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue500'] } };
-  'palette.blue600': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue600'] } };
-  'palette.blue700': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue700'] } };
-  'palette.blue800': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue800'] } };
-  'palette.blue900': ParsedColorToken & { $extensions: { mode: typeof modes['palette.blue900'] } };
-  'palette.orange50': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange50'] } };
-  'palette.orange100': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange100'] } };
-  'palette.orange200': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange200'] } };
-  'palette.orange300': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange300'] } };
-  'palette.orange400': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange400'] } };
-  'palette.orange500': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange500'] } };
-  'palette.orange600': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange600'] } };
-  'palette.orange700': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange700'] } };
-  'palette.orange800': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange800'] } };
-  'palette.orange900': ParsedColorToken & { $extensions: { mode: typeof modes['palette.orange900'] } };
-  'palette.red50': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red50'] } };
-  'palette.red100': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red100'] } };
-  'palette.red200': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red200'] } };
-  'palette.red300': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red300'] } };
-  'palette.red400': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red400'] } };
-  'palette.red500': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red500'] } };
-  'palette.red600': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red600'] } };
-  'palette.red700': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red700'] } };
-  'palette.red800': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red800'] } };
-  'palette.red900': ParsedColorToken & { $extensions: { mode: typeof modes['palette.red900'] } };
+  'palette.black': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.black'] };
+  };
+  'palette.white': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.white'] };
+  };
+  'palette.gray25': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray25'] };
+  };
+  'palette.gray50': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray50'] };
+  };
+  'palette.gray100': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray100'] };
+  };
+  'palette.gray200': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray200'] };
+  };
+  'palette.gray300': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray300'] };
+  };
+  'palette.gray400': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray400'] };
+  };
+  'palette.gray500': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray500'] };
+  };
+  'palette.gray600': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray600'] };
+  };
+  'palette.gray700': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray700'] };
+  };
+  'palette.gray800': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray800'] };
+  };
+  'palette.gray900': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.gray900'] };
+  };
+  'palette.grey50': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey50'] };
+  };
+  'palette.grey100': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey100'] };
+  };
+  'palette.grey200': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey200'] };
+  };
+  'palette.grey300': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey300'] };
+  };
+  'palette.grey400': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey400'] };
+  };
+  'palette.grey500': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey500'] };
+  };
+  'palette.grey600': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey600'] };
+  };
+  'palette.grey700': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey700'] };
+  };
+  'palette.grey800': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey800'] };
+  };
+  'palette.grey900': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.grey900'] };
+  };
+  'palette.teal50': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal50'] };
+  };
+  'palette.teal100': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal100'] };
+  };
+  'palette.teal200': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal200'] };
+  };
+  'palette.teal300': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal300'] };
+  };
+  'palette.teal400': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal400'] };
+  };
+  'palette.teal500': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal500'] };
+  };
+  'palette.teal600': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal600'] };
+  };
+  'palette.teal700': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal700'] };
+  };
+  'palette.teal800': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal800'] };
+  };
+  'palette.teal900': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.teal900'] };
+  };
+  'palette.green50': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green50'] };
+  };
+  'palette.green100': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green100'] };
+  };
+  'palette.green200': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green200'] };
+  };
+  'palette.green300': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green300'] };
+  };
+  'palette.green400': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green400'] };
+  };
+  'palette.green500': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green500'] };
+  };
+  'palette.green600': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green600'] };
+  };
+  'palette.green700': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green700'] };
+  };
+  'palette.green800': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green800'] };
+  };
+  'palette.green900': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.green900'] };
+  };
+  'palette.blue50': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue50'] };
+  };
+  'palette.blue100': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue100'] };
+  };
+  'palette.blue200': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue200'] };
+  };
+  'palette.blue300': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue300'] };
+  };
+  'palette.blue400': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue400'] };
+  };
+  'palette.blue500': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue500'] };
+  };
+  'palette.blue600': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue600'] };
+  };
+  'palette.blue700': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue700'] };
+  };
+  'palette.blue800': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue800'] };
+  };
+  'palette.blue900': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.blue900'] };
+  };
+  'palette.orange50': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange50'] };
+  };
+  'palette.orange100': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange100'] };
+  };
+  'palette.orange200': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange200'] };
+  };
+  'palette.orange300': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange300'] };
+  };
+  'palette.orange400': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange400'] };
+  };
+  'palette.orange500': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange500'] };
+  };
+  'palette.orange600': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange600'] };
+  };
+  'palette.orange700': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange700'] };
+  };
+  'palette.orange800': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange800'] };
+  };
+  'palette.orange900': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.orange900'] };
+  };
+  'palette.red50': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red50'] };
+  };
+  'palette.red100': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red100'] };
+  };
+  'palette.red200': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red200'] };
+  };
+  'palette.red300': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red300'] };
+  };
+  'palette.red400': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red400'] };
+  };
+  'palette.red500': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red500'] };
+  };
+  'palette.red600': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red600'] };
+  };
+  'palette.red700': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red700'] };
+  };
+  'palette.red800': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red800'] };
+  };
+  'palette.red900': ParsedColorToken & {
+    $extensions: { mode: (typeof modes)['palette.red900'] };
+  };
   'color.brand.primary': ParsedColorToken;
   'color.brand.light': ParsedColorToken;
   'color.brand.lighter': ParsedColorToken;
@@ -243,14 +389,30 @@ export declare const meta: {
   'font.family.system': ParsedFontToken;
   'font.family.monospace': ParsedFontToken;
   'font.family.display': ParsedFontToken;
-  'font.family.size.f00': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f00'] } };
-  'font.family.size.f0': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f0'] } };
-  'font.family.size.f1': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f1'] } };
-  'font.family.size.f2': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f2'] } };
-  'font.family.size.f3': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f3'] } };
-  'font.family.size.f4': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f4'] } };
-  'font.family.size.f5': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f5'] } };
-  'font.family.size.f6': ParsedDimensionToken & { $extensions: { mode: typeof modes['font.family.size.f6'] } };
+  'font.family.size.f00': ParsedDimensionToken & {
+    $extensions: { mode: (typeof modes)['font.family.size.f00'] };
+  };
+  'font.family.size.f0': ParsedDimensionToken & {
+    $extensions: { mode: (typeof modes)['font.family.size.f0'] };
+  };
+  'font.family.size.f1': ParsedDimensionToken & {
+    $extensions: { mode: (typeof modes)['font.family.size.f1'] };
+  };
+  'font.family.size.f2': ParsedDimensionToken & {
+    $extensions: { mode: (typeof modes)['font.family.size.f2'] };
+  };
+  'font.family.size.f3': ParsedDimensionToken & {
+    $extensions: { mode: (typeof modes)['font.family.size.f3'] };
+  };
+  'font.family.size.f4': ParsedDimensionToken & {
+    $extensions: { mode: (typeof modes)['font.family.size.f4'] };
+  };
+  'font.family.size.f5': ParsedDimensionToken & {
+    $extensions: { mode: (typeof modes)['font.family.size.f5'] };
+  };
+  'font.family.size.f6': ParsedDimensionToken & {
+    $extensions: { mode: (typeof modes)['font.family.size.f6'] };
+  };
   'font.family.lineHeight.xs': ParsedDimensionToken;
   'font.family.lineHeight.sm': ParsedDimensionToken;
   'font.family.lineHeight.md': ParsedDimensionToken;
@@ -586,5 +748,11 @@ export declare const modes: {
   };
 };
 
-export declare function token(tokenID: keyof typeof tokens, modeName?: never): typeof tokens[typeof tokenID];
-export declare function token(tokenID: keyof typeof modes, modeName?: keyof typeof modes[typeof tokenID]): typeof modes[typeof tokenID];
+export declare function token(
+  tokenID: keyof typeof tokens,
+  modeName?: never,
+): (typeof tokens)[typeof tokenID];
+export declare function token(
+  tokenID: keyof typeof modes,
+  modeName?: keyof (typeof modes)[typeof tokenID],
+): (typeof modes)[typeof tokenID];

@@ -17,7 +17,12 @@ import { css } from '@linaria/core';
 import { themed } from '../../../styles/theme-vars';
 import type { ElementProps } from '../../types';
 import { isSelectionInTable } from '../queries';
-import type { TableCellElement, TableElement, TableRowElement } from '../types';
+import type {
+  TableCellElement,
+  TableElement,
+  TableRowElement,
+  WithTableEditor,
+} from '../types';
 import {
   getTableCellNode,
   isEditableInTable,
@@ -40,8 +45,12 @@ const ABSOLUTE_HIDDEN_MENU_POS = { left: -9999, top: -9999, pageY: -9999 };
  * todo
  * - 统一editor.selection和单元格选区selectCells
  */
-export function CustomTable(props: ElementProps & { element: TableElement }) {
-  const { attributes, children, element } = props;
+export function CustomTable(props: ElementProps) {
+  const { attributes, children } = props;
+  const element = props.element as TableElement;
+
+  const editor = useSlate() as ReactEditor & WithTableEditor;
+
   const tblRef = useRef<HTMLTableElement>(null);
   // todo edge-cases: cleanup when sel change
   const [tblSelStart, setTblSelStart] = useState<Path | null>(null);
@@ -58,7 +67,6 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
   const [showCtxMenu, setShowCtxMenu] = useState(false);
   const [menuPosition, setMenuPosition] = useState(ABSOLUTE_HIDDEN_MENU_POS);
 
-  const editor = useSlate();
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent<HTMLTableElement>) => {
       const editorDom = ReactEditor.toDOMNode(editor, editor);
@@ -200,7 +208,7 @@ export function CustomTable(props: ElementProps & { element: TableElement }) {
           if (tblSelStart) setShowTblSel(false);
         }}
         onMouseMove={(e) => {
-          // to-enhance 在跨单元格时新单元格不应该显示文字选区，应该直接显示单元格选区
+          // to-better/ 在跨单元格时新单元格不应该显示文字选区，应该直接显示单元格选区
           if (tblSelStart) {
             const endNode = getTableCellNode(editor, e.target as HTMLElement);
             if (endNode[1]) updateSelection(endNode[1]);

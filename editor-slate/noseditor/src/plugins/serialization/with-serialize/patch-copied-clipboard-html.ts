@@ -1,33 +1,43 @@
-import { ListVariants } from '../../list/utils';
-import { crawlDOM, getListItemProps, isDOMListItem } from '../utils';
-import { getPlainText, isDOMElement } from './utils';
+import { ListVariants, type ListVariantsType } from '../../list/utils';
+import {
+  crawlDom,
+  getListItemPropertiesFromDom,
+  getPlainText,
+  isHtmlElement,
+  isHtmlListItem,
+} from '../utils';
 
-export const getHtmlTag = (
-  listType: (typeof ListVariants)[keyof typeof ListVariants],
-) => {
+export const getHtmlTag = (listType: ListVariantsType) => {
   const tag = listType === ListVariants.Numbered ? 'ol' : 'ul';
   return tag;
 };
 
+/**
+ * patch dom list item elements
+ */
 export const patchCopiedClipboardHtml = (root: Element) => {
-  let acc: Node[][] = [[]];
+  let listItemNodes: Node[][] = [[]];
 
-  crawlDOM(root.childNodes, (node, context) => {
+  crawlDom(root.childNodes, (node, context) => {
     const depth = (context as any).cursor.depth;
 
     if (depth !== 1) return;
 
-    if (isDOMListItem(node)) return acc[acc.length - 1].push(node);
+    if (isHtmlListItem(node)) {
+      return listItemNodes[listItemNodes.length - 1].push(node);
+    }
 
-    acc[acc.length - 1].length > 0 && acc.push([]);
+    if (listItemNodes[listItemNodes.length - 1].length > 0)
+      listItemNodes.push([]);
   });
 
-  acc.forEach((nodes) => {
+  listItemNodes.forEach((nodes) => {
     if (nodes.length > 0) {
-      const props = getListItemProps(nodes[0] as HTMLElement);
+      const props = getListItemPropertiesFromDom(nodes[0] as HTMLElement);
       const ul = document.createElement(getHtmlTag(props.listType));
+      //
       root.insertBefore(ul, nodes[0]);
-
+      //
       nodes.forEach((li) => ul.appendChild(li));
     }
   });
@@ -37,16 +47,18 @@ export const patchCopiedClipboardHtml = (root: Element) => {
   for (const listNode of listNodes) {
     const items = [];
     for (const listItemNode of listNode.childNodes) {
-      if (isDOMElement(listItemNode)) {
-        const item = getListItemProps(listItemNode);
+      if (isHtmlElement(listItemNode)) {
+        const item = getListItemPropertiesFromDom(listItemNode);
         items.push({ ...item, text: getPlainText(listItemNode) });
       }
     }
 
-    const tree = listItemsToTree(items); // flatten items to tree
+    // flatten items to tree
+    const tree = listItemsToTree(items);
 
     listNode.innerHTML = '';
-    createDOMTree(listNode, tree); // tree to DOM tree
+    // tree to DOM tree
+    createDOMTree(listNode, tree);
   }
 };
 
@@ -55,7 +67,7 @@ const getMin = (array: number[]) =>
 const getMax = (array: number[]) =>
   array.reduce((acc, x) => Math.max(acc, x), 0);
 
-const createDOMTree = (container: any, data: any) => {
+const createDOMTree = (container: Element, data: any) => {
   for (const { text, children } of data.children) {
     const li = document.createElement('li');
 

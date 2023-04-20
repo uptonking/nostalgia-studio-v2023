@@ -1,4 +1,4 @@
-import { UseNosPlugin } from '../types';
+import type { UseNosPlugin } from '../types';
 import { withSerialize } from './with-serialize';
 
 export const useSerializePlugin: UseNosPlugin = () => {

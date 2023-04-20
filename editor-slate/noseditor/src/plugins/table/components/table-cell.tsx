@@ -9,13 +9,12 @@ import { themed } from '../../../styles';
 import type { ElementProps } from '../../types';
 import type { TableCellElement, TableElement, TableRowElement } from '../types';
 
-export function CustomTableCell(
-  props: ElementProps & { element: TableCellElement },
-) {
-  const { attributes, children, element } = props;
-  // console.log(';; cell ', props);
+export function CustomTableCell(props: ElementProps) {
+  const { attributes, children } = props;
+  const element = props.element as TableCellElement;
 
   const { colSpan = 1, rowSpan = 1 } = element;
+
   return (
     <td
       {...attributes}

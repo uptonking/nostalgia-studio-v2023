@@ -1,3 +1,6 @@
+/**
+ * remove elements by className
+ */
 export const removeSkippedElements = (clipboardNode: Element) => {
   const elements = Array.from(
     clipboardNode.getElementsByClassName('clipboardSkip'),

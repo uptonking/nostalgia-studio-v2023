@@ -13,7 +13,9 @@ type CollapsibleLineProps = {
   transform?: Transform | null;
 };
 
-export const CollapsibleLine = (props: CollapsibleLineProps & { element: Element }) => {
+export const CollapsibleLine = (
+  props: CollapsibleLineProps & { element: Element },
+) => {
   const editor = useSlate() as DraggableCollapsibleEditor & ReactEditor;
   const { activeId } = useDndState();
   const { element, onCollapse, transform } = props;
@@ -67,7 +69,15 @@ export const CollapsibleLine = (props: CollapsibleLineProps & { element: Element
     } catch (error) {
       console.error(error);
     }
-  }, [hasCollapsedLine, transform, editor.children, height, element, editor, activeId]);
+  }, [
+    hasCollapsedLine,
+    transform,
+    editor.children,
+    height,
+    element,
+    editor,
+    activeId,
+  ]);
 
   if (hasCollapsedLine && activeId == null) {
     return (
@@ -83,7 +93,11 @@ export const CollapsibleLine = (props: CollapsibleLineProps & { element: Element
 };
 
 const CollapsibleLineMemoized = memo(
-  ({ depth, height, onCollapse }: CollapsibleLineProps & { depth: number; height: number }) => {
+  ({
+    depth,
+    height,
+    onCollapse,
+  }: CollapsibleLineProps & { depth: number; height: number }) => {
     return (
       <div
         contentEditable={false}
@@ -98,4 +112,3 @@ const CollapsibleLineMemoized = memo(
     );
   },
 );
-

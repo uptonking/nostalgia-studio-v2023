@@ -20,9 +20,7 @@ export type NestableElement = {
 /**
  * slateElement with dragSortInfo
  */
-export type SemanticNode<
-  T extends Element = Element,
-> = {
+export type SemanticNode<T extends Element = Element> = {
   element: T;
   children: SemanticNode[];
   index: number;

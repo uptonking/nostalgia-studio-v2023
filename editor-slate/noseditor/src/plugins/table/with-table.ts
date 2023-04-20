@@ -10,17 +10,18 @@ import {
   Transforms,
 } from 'slate';
 
+import { createParagraphElement } from '../paragraph/utils';
 import { isSelectionInTable } from './queries';
 import type { WithTableEditor } from './types';
 import { isEditableInTable } from './utils/common';
 
-const HEADER_LIST = new Set(['h1', 'h2', 'h3', 'h4']);
+const HeaderList = new Set(['h1', 'h2', 'h3', 'h4']);
 
 /**
  * 处理表格选区存在时，操作功能
  */
 const dealSelectionInTable = (
-  editor: Editor,
+  editor: WithTableEditor,
   operation: SetNodeOperation,
   apply: (operation: BaseOperation) => void,
 ) => {
@@ -31,7 +32,9 @@ const dealSelectionInTable = (
       at: cellPath,
       mode: 'lowest',
       match: (n) =>
-        !Editor.isEditor(n) && Element.isElement(n) && n.type !== 'tableCell',
+        !Editor.isEditor(n) &&
+        Element.isElement(n) &&
+        n['type'] !== 'tableCell',
     });
     nodes.forEach((node) => {
       apply({
@@ -45,7 +48,7 @@ const dealSelectionInTable = (
 const getCellChildren = (fragment: Element[], pasteData: Element[]) => {
   let data: Element[] = [...pasteData];
   for (const el of fragment) {
-    if (el.type === 'tableCell') {
+    if (el['type'] === 'tableCell') {
       data = [...data, ...(el.children as unknown as Element[])];
       break;
     } else {
@@ -59,13 +62,9 @@ const getCellChildren = (fragment: Element[], pasteData: Element[]) => {
 };
 
 const isDealBlock = (operation: SetNodeOperation) => {
-  const property = operation.newProperties;
-  if (Reflect.has(property, 'textAlign')) return true;
-  if (
-    Reflect.has(property, 'type') &&
-    HEADER_LIST.has((property as Partial<Element>).type as string)
-  )
-    return true;
+  const props = operation.newProperties;
+  if ('textAlign' in props) return true;
+  if ('type' in props && HeaderList.has(props.type as string)) return true;
   return false;
 };
 
@@ -79,7 +78,7 @@ const getIsAllCellsByTable = (editor: Editor, cells: Path[]) => {
   const [...cellNodes] = Editor.nodes(editor, {
     at: Path.parent(Path.parent(cells[0])),
     match: (n) =>
-      !Editor.isEditor(n) && Element.isElement(n) && n.type === 'tableCell',
+      !Editor.isEditor(n) && Element.isElement(n) && n['type'] === 'tableCell',
   });
   return cellNodes.every(([_, cell]) =>
     cells.some((value) => Path.equals(value, cell)),
@@ -87,7 +86,7 @@ const getIsAllCellsByTable = (editor: Editor, cells: Path[]) => {
 };
 
 function getEmptyParagraph(): Element {
-  return { type: 'p', children: [{ text: '' }] };
+  return createParagraphElement();
 }
 
 const resetCellContent = (editor: Editor, cellPath: Path) => {
@@ -106,7 +105,7 @@ const resetCellContent = (editor: Editor, cellPath: Path) => {
 /**
  * table utils as editor plugin
  */
-export const withTable = <T extends Editor>(editor: T) => {
+export const withTable = <T extends Editor = Editor>(editor: T) => {
   const e = editor as T & WithTableEditor;
 
   const {
@@ -152,7 +151,7 @@ export const withTable = <T extends Editor>(editor: T) => {
       case 'set_node':
         if (showSelection && isDealBlock(operation)) {
           // 处理选区存在时，对齐方式操作
-          dealSelectionInTable(editor, operation, apply);
+          dealSelectionInTable(e, operation, apply);
         } else {
           apply(operation);
         }
@@ -201,7 +200,9 @@ export const withTable = <T extends Editor>(editor: T) => {
       at: selection,
       mode: 'lowest',
       match: (n) =>
-        !Editor.isEditor(n) && Element.isElement(n) && n.type === 'tableCell',
+        !Editor.isEditor(n) &&
+        Element.isElement(n) &&
+        n['type'] === 'tableCell',
     });
     const selectNode = Editor.node(editor, selection);
     const relativePath = Path.relative(selectNode[1], cellNode[1]);
@@ -209,7 +210,7 @@ export const withTable = <T extends Editor>(editor: T) => {
     const node = Editor.node(editor, nodePath);
 
     if (
-      Element.matches(fragment[0] as Element, { type: 'table' }) &&
+      Element.matches(fragment[0] as Element, { type: 'table' } as unknown) &&
       Editor.isEmpty(editor, node[0] as Element)
     ) {
       // 处理在单元格，新行粘贴单元格内容是整个表格问题
@@ -231,7 +232,7 @@ export const withTable = <T extends Editor>(editor: T) => {
       const isAllCells = getIsAllCellsByTable(editor, tableSelection);
       if (isAllCells) {
         // 选区为整个表格时，删除表格
-        editor.emit('resetTableSelection');
+        e.emit('resetTableSelection');
         Transforms.removeNodes(editor, {
           at: Path.parent(Path.parent(tableSelection[0])),
         });
@@ -254,7 +255,9 @@ export const withTable = <T extends Editor>(editor: T) => {
     if (selection && Range.isCollapsed(selection)) {
       const [cell] = Editor.nodes(editor, {
         match: (n) =>
-          !Editor.isEditor(n) && Element.isElement(n) && n.type === 'tableCell',
+          !Editor.isEditor(n) &&
+          Element.isElement(n) &&
+          n['type'] === 'tableCell',
       });
 
       if (cell) {
@@ -272,7 +275,9 @@ export const withTable = <T extends Editor>(editor: T) => {
     if (selection && Range.isCollapsed(selection)) {
       const [cell] = Editor.nodes(editor, {
         match: (n) =>
-          !Editor.isEditor(n) && Element.isElement(n) && n.type === 'tableCell',
+          !Editor.isEditor(n) &&
+          Element.isElement(n) &&
+          n['type'] === 'tableCell',
       });
 
       if (cell) {
@@ -287,7 +292,7 @@ export const withTable = <T extends Editor>(editor: T) => {
 
   e.normalizeNode = (entry) => {
     const [node, path] = entry;
-    if (!Element.isElement(node) || node.type !== 'table') {
+    if (!Element.isElement(node) || node['type'] !== 'table') {
       normalizeNode(entry);
       return;
     }
@@ -308,7 +313,7 @@ export const withTable = <T extends Editor>(editor: T) => {
     }
 
     const nextNode = rootNode[nextPath[0]];
-    if (Element.isElement(nextNode) && nextNode.type === 'table') {
+    if (Element.isElement(nextNode) && nextNode['type'] === 'table') {
       Transforms.insertNodes(e, getEmptyParagraph(), { at: nextPath });
     }
   };

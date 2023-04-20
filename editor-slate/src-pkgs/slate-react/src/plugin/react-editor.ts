@@ -278,7 +278,6 @@ export const ReactEditor = {
   /**
    * Sets data from the currently selected fragment on a `DataTransfer`.
    */
-
   setFragmentData(
     editor: ReactEditor,
     data: DataTransfer,

@@ -21,8 +21,8 @@ export type TableRowElement = {
 
 export type TableElement = {
   type: typeof TableSpec;
-  originTable?: (number | number[])[][][];
   children: TableRowElement[];
+  originTable?: (number | number[])[][][];
 };
 
 /**
@@ -30,7 +30,7 @@ export type TableElement = {
  *
  * todo remove event-emitter
  */
-export type WithTableEditor = {
+export interface WithTableEditor extends BaseEditor {
   tableState: {
     showSelection: boolean;
     selection: Path[];
@@ -40,4 +40,4 @@ export type WithTableEditor = {
   off: (type: string, listener: ee.EventListener) => void;
   once: (type: string, listener: ee.EventListener) => void;
   emit: (type: string, ...args: any[]) => void;
-};
+}

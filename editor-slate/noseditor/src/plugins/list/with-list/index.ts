@@ -1,8 +1,6 @@
 import { Editor } from 'slate';
 
-import {
-  type DraggableCollapsibleEditor,
-} from '../../draggable-collapsible-feature';
+import { type DraggableCollapsibleEditor } from '../../draggable-collapsible-feature';
 import { isListItemElement } from '../utils';
 import { makeDeleteBackward } from './make-delete-backward';
 import { makeInsertBreak } from './make-insert-break';
@@ -25,4 +23,3 @@ export const withList = (editor: DraggableCollapsibleEditor) => {
 
   return editor;
 };
-

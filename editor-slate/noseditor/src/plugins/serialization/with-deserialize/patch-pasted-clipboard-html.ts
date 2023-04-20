@@ -1,23 +1,29 @@
 import { ListVariants } from '../../list/utils';
-import { crawlDOM, isDOMList, makeListItemAttributes } from '../utils';
-import { isDOMElement } from '../with-serialize/utils';
+import {
+  crawlDom,
+  createListItemAttributes,
+  isHtmlElement,
+  isHtmlListElement,
+} from '../utils';
 
 const getListType = (node: Node) =>
   node.nodeName === 'OL' ? ListVariants.Numbered : ListVariants.Bulleted;
 
-// make flatten list instead of tree
+/**
+ * make flatten list instead of tree
+ */
 export const patchPastedClipboardHtml = (domNode: Element) => {
-  crawlDOM([domNode], (node, context) => {
-    if (isDOMElement(node) && isDOMList(node)) {
+  crawlDom([domNode], (node, context) => {
+    if (isHtmlElement(node) && isHtmlListElement(node)) {
       const listType = getListType(node);
 
       context.skip();
 
       const items: Element[] = [];
       // get flatten list items
-      crawlDOM([node], (node, context: any) => {
-        if (isDOMElement(node) && node.nodeName === 'LI') {
-          const attributes = makeListItemAttributes({
+      crawlDom([node], (node, context: any) => {
+        if (isHtmlElement(node) && node.nodeName === 'LI') {
+          const attributes = createListItemAttributes({
             depth: Math.round(context.cursor.depth / 2 - 1),
             listType,
           });
@@ -29,8 +35,8 @@ export const patchPastedClipboardHtml = (domNode: Element) => {
       });
 
       // remove all lists as list items children, all list items is already moved out
-      crawlDOM(items, (node, context) => {
-        if (isDOMElement(node) && isDOMList(node)) {
+      crawlDom(items, (node, context) => {
+        if (isHtmlElement(node) && isHtmlListElement(node)) {
           node.remove();
           context.remove();
         }

@@ -59,7 +59,6 @@ export const Text: TextInterface = {
   /**
    * Check if a value implements the `Text` interface.
    */
-
   isText(value: any): value is Text {
     return isPlainObject(value) && typeof value.text === 'string';
   },

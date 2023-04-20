@@ -22,9 +22,7 @@ import {
   useRenderLeaf,
 } from '../../../src';
 import { ErrorBoundary } from '../../components/common/error-boundary';
-import {
-  ConnectionToggle,
-} from '../../components/ConnectionToggle/ConnectionToggle';
+import { ConnectionToggle } from '../../components/ConnectionToggle/ConnectionToggle';
 import { Spinner } from '../../components/Spinner/Spinner';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../../config';
 import { useSyncableEditor } from '../../hooks/use-syncable-Editor';

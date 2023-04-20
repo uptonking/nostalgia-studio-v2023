@@ -5,8 +5,9 @@ import { isDividerElement } from './utils';
 export const withDivider = (editor: Editor) => {
   const { isVoid } = editor;
 
-  editor.isVoid = (element: Element) =>
-    isDividerElement(element) ? true : isVoid(element);
+  editor.isVoid = (element: Element) => {
+    return isDividerElement(element) || isVoid(element);
+  };
 
   return editor;
 };

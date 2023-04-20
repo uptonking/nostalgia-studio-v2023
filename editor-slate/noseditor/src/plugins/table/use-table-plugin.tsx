@@ -16,17 +16,14 @@ export const useTablePlugin: UseNosPlugin = () => {
     handlers,
     renderElement: (props) => {
       if (isTableElement(props.element)) {
-        // @ts-expect-error fix-types
         return <CustomTable {...props} />;
       }
 
       if (isTableRowElement(props.element)) {
-        // @ts-expect-error fix-types
         return <CustomTableRow {...props} />;
       }
 
       if (isTableCellElement(props.element)) {
-        // @ts-expect-error fix-types
         return <CustomTableCell {...props} />;
       }
 

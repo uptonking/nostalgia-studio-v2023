@@ -1,12 +1,15 @@
 import { indexBy } from 'ramda';
 import { Editor } from 'slate';
-
-import { deserializeHtml } from '@udecode/plate-core';
+import { ReactEditor } from 'slate-react';
 
 import { deserializePlugins } from './deserialize-plugins';
+import { deserializeHtml } from './html-to-editor-model';
 import { patchPastedClipboardHtml } from './patch-pasted-clipboard-html';
 
-export const withDeserialize = (editor: Editor) => {
+/**
+ * deserialize html to editor-model
+ */
+export const withDeserialize = (editor: ReactEditor) => {
   const { insertFragmentData } = editor;
 
   editor.insertFragmentData = (data) => {
@@ -17,12 +20,12 @@ export const withDeserialize = (editor: Editor) => {
     }
 
     let html = data.getData('text/html');
-
     if (!html) {
       return false;
     }
 
-    html = html.replace(new RegExp(String.fromCharCode(160), 'g'), ' '); // replace whitespaces 160 to 32, they could be at links edges
+    // replace whitespaces 160 to 32, they could be at links edges
+    html = html.replace(new RegExp(String.fromCharCode(160), 'g'), ' ');
 
     const document = new DOMParser().parseFromString(html, 'text/html');
 
@@ -33,7 +36,7 @@ export const withDeserialize = (editor: Editor) => {
         ...editor,
         plugins: deserializePlugins,
         pluginsByKey: indexBy((x) => x.key, deserializePlugins),
-      },
+      } as Editor,
       { element: document.body },
     );
 

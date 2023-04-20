@@ -1,27 +1,27 @@
 import { nanoid } from 'nanoid';
 import { clone } from 'ramda';
-import { Editor, Element, Node } from 'slate';
+import { BaseEditor, Editor, Element, Node } from 'slate';
+
+import { isDefined } from '../../utils';
 
 const makeId = () => nanoid(16);
 
-/** only add id to slate element, not text */
+/** only add `id` to slate element, not text */
 export const assignIdRecursively = (node: Node) => {
   if (Element.isElement(node)) {
-    node.id = makeId();
+    node['id'] = makeId();
     node.children.forEach(assignIdRecursively);
   }
 };
 
-export const withNodeId = (editor: Editor) => {
+export const withNodeId = <T extends Editor>(editor: T) => {
   const { apply } = editor;
 
   editor.apply = (operation) => {
     if (operation.type === 'insert_node') {
       // clone to be able to write (read-only)
       const node = clone(operation.node);
-
       assignIdRecursively(node);
-
       return apply({
         ...operation,
         node,
@@ -32,15 +32,15 @@ export const withNodeId = (editor: Editor) => {
       const properties = operation.properties;
 
       // only for elements (node with a type)
-      if ('type' in properties && properties.type != null) {
-        let id = makeId();
+      if ('type' in properties && isDefined(properties.type)) {
+        const id = makeId();
 
         return apply({
           ...operation,
           properties: {
             ...operation.properties,
             id,
-          },
+          } as unknown,
         });
       }
     }

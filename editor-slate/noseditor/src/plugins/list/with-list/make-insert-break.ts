@@ -33,4 +33,3 @@ export const makeInsertBreak = (editor: Editor): BaseEditor['insertBreak'] => {
     insertBreak();
   };
 };
-

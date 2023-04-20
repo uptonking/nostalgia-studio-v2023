@@ -128,7 +128,13 @@ export interface NodeInterface {
     options?: NodeNodesOptions,
   ) => Generator<NodeEntry, void, undefined>;
   parent: (root: Node, path: Path) => Ancestor;
-  /** Get the string content of a node */
+  /**
+   * Get the concatenated text string of a node's content.
+   *
+   * Note that this will not include spaces or line breaks between block nodes.
+   * It is not a user-facing string, but a string for performing offset-related
+   * computations for a node.
+   */
   string: (node: Node) => string;
   texts: (
     root: Node,
@@ -601,7 +607,6 @@ export const Node: NodeInterface = {
    * It is not a user-facing string, but a string for performing offset-related
    * computations for a node.
    */
-
   string(node: Node): string {
     if (Text.isText(node)) {
       return node.text;

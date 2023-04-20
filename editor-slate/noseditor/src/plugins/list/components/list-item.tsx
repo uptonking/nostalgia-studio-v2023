@@ -6,12 +6,8 @@ import { useSlate } from 'slate-react';
 import { css } from '@linaria/core';
 
 import { themed } from '../../../styles';
-import {
-  DraggableCollapsibleEditor,
-} from '../../draggable-collapsible-feature/collapsible-editor';
-import {
-  collapseElement,
-} from '../../draggable-collapsible-feature/commands/collapse-element';
+import { DraggableCollapsibleEditor } from '../../draggable-collapsible-feature/collapsible-editor';
+import { collapseElement } from '../../draggable-collapsible-feature/commands/collapse-element';
 import { ElementProps } from '../../types';
 import { checkItem } from '../commands';
 import {
@@ -77,10 +73,7 @@ const NumberedPointer = (props: { element: ListItemElement }) => {
   const { listIndex } = semanticNode;
 
   return (
-    <button
-      contentEditable={false}
-      className='pointer clipboardSkip'
-    >
+    <button contentEditable={false} className='pointer clipboardSkip'>
       {getNumberedPointerContent(depth, listIndex) + '.'}
     </button>
   );

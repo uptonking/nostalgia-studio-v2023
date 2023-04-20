@@ -9,7 +9,7 @@ import {
 } from 'slate';
 
 import { isNullOrUndefined } from '../../utils';
-import { isParagraphElement, ParagraphSpec } from '../paragraph/utils';
+import { createParagraphElement, isParagraphElement } from '../paragraph/utils';
 
 const isTrailingLine = (node: Node) => {
   return isParagraphElement(node) && Node.string(node) === '';
@@ -19,14 +19,7 @@ const isTrailingLine = (node: Node) => {
  * insert a empty paragraph as trailing line
  */
 const insertTrailingLine = (editor: Editor, at: Location) => {
-  Transforms.insertNodes(
-    editor,
-    {
-      type: ParagraphSpec,
-      children: [{ text: '' }],
-    },
-    { at },
-  );
+  Transforms.insertNodes(editor, createParagraphElement(), { at });
 };
 
 export const withTrailingLine = (editor: Editor) => {
@@ -37,7 +30,7 @@ export const withTrailingLine = (editor: Editor) => {
       return;
     }
 
-    // better use insert if not trailing line, instead of insert then remove
+    // to-better/ to use insert if not trailing line, instead of insert then remove
     insertBreak();
 
     if (editor.children.length > 1) {

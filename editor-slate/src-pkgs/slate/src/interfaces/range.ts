@@ -114,7 +114,8 @@ export const Range: RangeInterface = {
     if (Point.isPoint(target)) {
       isAfterStart = Point.compare(target, start) >= 0;
       isBeforeEnd = Point.compare(target, end) <= 0;
-    } else { // target is path
+    } else {
+      // target is path
       isAfterStart = Path.compare(target, start.path) >= 0;
       isBeforeEnd = Path.compare(target, end.path) <= 0;
     }

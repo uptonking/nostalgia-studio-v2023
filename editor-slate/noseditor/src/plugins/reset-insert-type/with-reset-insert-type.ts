@@ -1,13 +1,12 @@
 import { Editor, Range, Transforms } from 'slate';
 
 import { isHeadingElement } from '../heading/utils';
-import { ParagraphSpec } from '../paragraph/utils';
+import { createParagraphElement } from '../paragraph/utils';
 
 export const withResetInsertType = (editor: Editor) => {
   const { insertBreak } = editor;
 
   editor.insertBreak = () => {
-
     // /Reset type to paragraph if inserting break from heading element
     const [headerEntry] = Editor.nodes(editor, {
       match: (node, path) =>
@@ -16,15 +15,7 @@ export const withResetInsertType = (editor: Editor) => {
         Range.includes(editor.selection, Editor.end(editor, path)),
     });
     if (headerEntry) {
-      Transforms.insertNodes(editor, {
-        type: ParagraphSpec,
-        children: [
-          {
-            text: '',
-          },
-        ],
-      });
-
+      Transforms.insertNodes(editor, createParagraphElement());
       return;
     }
 

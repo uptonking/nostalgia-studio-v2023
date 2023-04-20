@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { UseNosPlugin } from '../types';
+import type { UseNosPlugin } from '../types';
 import { Paragraph } from './components/paragraph';
 import { isParagraphElement } from './utils';
 

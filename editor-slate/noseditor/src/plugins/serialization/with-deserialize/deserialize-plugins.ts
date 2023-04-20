@@ -1,17 +1,15 @@
 import { nanoid } from 'nanoid';
 
-import { createPluginFactory } from '@udecode/plate-core';
-import type { DeserializeHtml } from '@udecode/plate-core/dist/types/plugins/DeserializeHtml';
-import type { PlatePlugin } from '@udecode/plate-core/dist/types/plugins/PlatePlugin';
-
 import { BlockquoteSpec } from '../../blockquote/utils';
-import { DividerType } from '../../divider/types';
+import { DividerSpec } from '../../divider/utils';
 import { Heading1Spec, Heading2Spec, Heading3Spec } from '../../heading/utils';
 import { ImageSpec } from '../../image/utils';
 import { LinkSpec } from '../../link/utils';
 import { ListItemSpec } from '../../list/utils';
 import { ParagraphSpec } from '../../paragraph/utils';
-import { getListItemProps } from '../utils';
+import { getListItemPropertiesFromDom } from '../utils';
+import type { DeserializeHtml } from './types';
+import { createPluginFactory } from './utils';
 
 const rules: DeserializeHtml[] = [
   {
@@ -72,7 +70,7 @@ const rules: DeserializeHtml[] = [
     },
   },
   {
-    getNode: () => ({ type: DividerType }),
+    getNode: () => ({ type: DividerSpec }),
     isElement: true,
     rules: [
       {
@@ -91,7 +89,7 @@ const rules: DeserializeHtml[] = [
   },
   {
     getNode: (el) => {
-      const { listType, depth } = getListItemProps(el);
+      const { listType, depth } = getListItemPropertiesFromDom(el);
 
       return {
         type: ListItemSpec,
@@ -160,11 +158,11 @@ const rules: DeserializeHtml[] = [
   },
 ];
 
-export const deserializePlugins: PlatePlugin<any, any>[] = rules.map((rule) =>
-  createPluginFactory<any>({
+export const deserializePlugins = rules.map((rule) =>
+  createPluginFactory({
     key: nanoid(4),
     deserializeHtml: rule,
-  })(),
+  }),
 );
 
 deserializePlugins.forEach((p) => {

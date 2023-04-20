@@ -1,21 +1,30 @@
 import { ListVariants } from '../../list/utils';
-import { getListItemProps, isDOMListItem } from '../utils';
-import { getPlainText, isDOMElement, isDOMText } from './utils';
+import {
+  getListItemPropertiesFromDom,
+  getPlainText,
+  isHtmlElement,
+  isHtmlListItem,
+  isHtmlText,
+} from '../utils';
 
-export const getClipboardPlainText = (domNode: any) => {
+/**
+ * convert dom to text
+ */
+export const getClipboardPlainText = (domNode: Node) => {
   let text = '';
 
-  if (isDOMText(domNode) && domNode.nodeValue) {
+  if (isHtmlText(domNode) && domNode.nodeValue) {
     return domNode.nodeValue;
   }
 
-  if (isDOMElement(domNode) && isDOMListItem(domNode)) {
+  if (isHtmlElement(domNode) && isHtmlListItem(domNode)) {
     let listItemText = '';
     for (const childNode of Array.from(domNode.childNodes)) {
       listItemText += getPlainText(childNode);
     }
 
-    const { depth, listType, index, checked } = getListItemProps(domNode);
+    const { depth, listType, index, checked } =
+      getListItemPropertiesFromDom(domNode);
 
     const pointer =
       {
@@ -29,7 +38,7 @@ export const getClipboardPlainText = (domNode: any) => {
     return result;
   }
 
-  if (isDOMElement(domNode)) {
+  if (isHtmlElement(domNode)) {
     for (const childNode of Array.from(domNode.childNodes)) {
       text += getClipboardPlainText(childNode);
     }
@@ -52,5 +61,6 @@ export const getClipboardPlainText = (domNode: any) => {
     }
   }
 
+  // 160, nbsp, Non‑breaking space
   return text.replace(new RegExp(String.fromCharCode(160), 'g'), ' ');
 };

@@ -13,7 +13,7 @@ import {
   getTableByCellPath,
 } from '../utils/common';
 import { getTargetTableCellInfoForUpOrDown } from '../utils/keyboard';
-import { createEmptyCellNode, createRowNode } from '../utils/utils';
+import { createCellElement, createRowElement } from '../utils/utils';
 
 /**
  * insert row above/below cellPaths
@@ -39,8 +39,8 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
 
   if (direction === 'above' && insertOriginRowIndex === -1) {
     // /在首行上方插入一行
-    const insertRows = createRowNode(
-      Array.from({ length: colNum }).map(() => createEmptyCellNode()),
+    const insertRows = createRowElement(
+      Array.from({ length: colNum }).map(() => createCellElement()),
     );
     Transforms.insertNodes(editor, insertRows, {
       at: [...tablePath, 0],
@@ -48,8 +48,8 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
     toInsertRowIndex = 0;
   } else if (direction === 'below' && insertOriginRowIndex === rowNum) {
     // /在尾行下方插入一行
-    const insertRows = createRowNode(
-      Array.from({ length: colNum }).map(() => createEmptyCellNode()),
+    const insertRows = createRowElement(
+      Array.from({ length: colNum }).map(() => createCellElement()),
     );
     Transforms.insertNodes(editor, insertRows, {
       at: [...tablePath, tableNode.children.length],
@@ -76,7 +76,7 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
         edgeRowIndex === insertOriginRowIndex
       ) {
         // 当前单元格非合并单元格 或者 当前单元格为合并单元格底部(上方插入)/顶部(下方插入)
-        toInsertCells.push(createEmptyCellNode());
+        toInsertCells.push(createCellElement());
       } else if (
         !toUpdateCellPaths.some((cellPath) => Path.equals(currCell, cellPath))
       ) {
@@ -107,7 +107,7 @@ function insertRow(editor: Editor, cellPaths: Path[], direction: Direction) {
     ];
 
     // 👇🏻 更新model
-    Transforms.insertNodes(editor, createRowNode(toInsertCells), {
+    Transforms.insertNodes(editor, createRowElement(toInsertCells), {
       at: insertPath,
     });
 

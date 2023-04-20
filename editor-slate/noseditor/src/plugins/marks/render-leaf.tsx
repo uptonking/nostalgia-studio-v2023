@@ -1,10 +1,17 @@
+/* eslint-disable no-param-reassign */
 import * as React from 'react';
 
 import type { RenderLeafProps } from 'slate-react';
 
 import { css } from '@linaria/core';
 
-export const renderLeaf = ({ attributes, children, leaf }: RenderLeafProps) => {
+import type { FormattedText } from './types';
+
+export const renderLeaf = ({
+  attributes,
+  children,
+  leaf,
+}: RenderLeafProps & { leaf: FormattedText }) => {
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }

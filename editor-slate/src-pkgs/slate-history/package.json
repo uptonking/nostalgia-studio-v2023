@@ -18,8 +18,5 @@
     "lodash": "^4.17.21",
     "slate": "0.78.1111",
     "slate-hyperscript": "0.77.1111"
-  },
-  "umdGlobals": {
-    "slate": "Slate"
   }
 }

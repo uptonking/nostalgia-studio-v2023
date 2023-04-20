@@ -1,4 +1,4 @@
-import { UseNosPlugin } from '../types';
+import type { UseNosPlugin } from '../types';
 import { withNodeId } from './with-node-id';
 
 export const useNodeIdPlugin: UseNosPlugin = () => {

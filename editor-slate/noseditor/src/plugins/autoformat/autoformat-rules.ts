@@ -25,7 +25,7 @@ export const defaultAutoformatRules: AutoformatRule[] = [
   {
     mode: 'block',
     type: BlockquoteSpec,
-    match: ['> ','》 '],
+    match: ['> ', '》 '],
   },
   {
     mode: 'block',

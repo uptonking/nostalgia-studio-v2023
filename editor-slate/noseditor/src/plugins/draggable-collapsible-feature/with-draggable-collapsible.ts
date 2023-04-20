@@ -1,12 +1,12 @@
 import { nanoid } from 'nanoid';
-import { Editor, Element, Path, Range, Transforms } from 'slate';
+import { Editor, Element, Node, Path, Range, Transforms } from 'slate';
 
 import { type ListItemElement } from '../list/types';
 import { ListItemSpec, ListVariants } from '../list/utils';
 import { type ParagraphElement } from '../paragraph/types';
-import { ParagraphSpec } from '../paragraph/utils';
+import { createParagraphElement, ParagraphSpec } from '../paragraph/utils';
 import { DraggableCollapsibleEditor } from './collapsible-editor';
-import type { CollapsibleElement } from './types';
+import type { CollapsibleElement, HashedElement } from './types';
 
 export const withDraggableCollapsible =
   ({
@@ -41,18 +41,24 @@ export const withDraggableCollapsible =
             const end = prevEntry[1];
             const at = Editor.range(editor, start, end);
 
-            Transforms.setNodes(
+            Transforms.setNodes<CollapsibleElement & Node>(
               editor,
               { folded: false, foldedCount: 0 },
               {
                 at,
                 match: (node) =>
-                  DraggableCollapsibleEditor.isCollapsibleElement(editor, node) &&
-                  !!node.folded,
+                  DraggableCollapsibleEditor.isCollapsibleElement(
+                    editor,
+                    node,
+                  ) && Boolean(node.folded),
               },
             );
 
-            Transforms.setNodes(editor, { hash: nanoid(4) }, { at });
+            Transforms.setNodes<HashedElement & Node>(
+              editor,
+              { hash: nanoid(4) },
+              { at },
+            );
 
             deleteBackward(unit);
             return;
@@ -68,8 +74,8 @@ export const withDraggableCollapsible =
         match: (node, path): node is Element & CollapsibleElement =>
           path.length === 1 &&
           DraggableCollapsibleEditor.isCollapsibleElement(editor, node) &&
-          !!node.folded &&
-          !!editor.selection &&
+          Boolean(node.folded) &&
+          Boolean(editor.selection) &&
           Range.includes(editor.selection, Editor.end(editor, path)),
       });
 
@@ -85,7 +91,7 @@ export const withDraggableCollapsible =
           node,
         )
           ? getEmptyListItem({ depth: node.depth })
-          : getEmptyParagraph();
+          : createParagraphElement();
 
         Transforms.insertNodes(editor, newNode, {
           at,
@@ -112,17 +118,6 @@ export const withDraggableCollapsible =
 
     return e;
   };
-
-const getEmptyParagraph = (): ParagraphElement => {
-  return {
-    type: ParagraphSpec,
-    children: [
-      {
-        text: '',
-      },
-    ],
-  };
-};
 
 const getEmptyListItem = (
   listItem: Partial<ListItemElement>,

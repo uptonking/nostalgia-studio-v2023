@@ -1,5 +1,6 @@
 import { isPlainObject } from 'is-plain-object';
-import { Element, createEditor as makeEditor } from 'slate';
+import { createEditor as makeEditor, Element } from 'slate';
+
 import {
   createAnchor,
   createCursor,
@@ -102,7 +103,6 @@ const createFactory = <T extends HyperscriptCreators>(creators: T) => {
 /**
  * Normalize a dictionary of element shorthands into creator functions.
  */
-
 const normalizeElements = (elements: HyperscriptShorthands) => {
   const creators: HyperscriptCreators<Element> = {};
 

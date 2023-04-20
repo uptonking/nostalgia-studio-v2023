@@ -1,8 +1,6 @@
 import { Editor, Element, Node } from 'slate';
 
-import {
-  DraggableCollapsibleEditor,
-} from '../plugins/draggable-collapsible-feature/collapsible-editor';
+import { DraggableCollapsibleEditor } from '../plugins/draggable-collapsible-feature/collapsible-editor';
 import {
   isHeading1Element,
   isHeading2Element,
@@ -35,13 +33,14 @@ const getSemanticLevel = (editor: Editor, element: Element) => {
   return Infinity;
 };
 
-export const compareLevels = (editor: DraggableCollapsibleEditor) => (a: Element, b: Element) => {
-  if (
-    DraggableCollapsibleEditor.isNestableElement(editor, a) &&
-    DraggableCollapsibleEditor.isNestableElement(editor, b)
-  ) {
-    return Math.sign(a.depth - b.depth);
-  }
+export const compareLevels =
+  (editor: DraggableCollapsibleEditor) => (a: Element, b: Element) => {
+    if (
+      DraggableCollapsibleEditor.isNestableElement(editor, a) &&
+      DraggableCollapsibleEditor.isNestableElement(editor, b)
+    ) {
+      return Math.sign(a.depth - b.depth);
+    }
 
-  return Math.sign(getSemanticLevel(editor, a) - getSemanticLevel(editor, b));
-};
+    return Math.sign(getSemanticLevel(editor, a) - getSemanticLevel(editor, b));
+  };

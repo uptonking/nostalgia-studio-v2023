@@ -9,14 +9,10 @@ import {
 } from 'slate-react';
 
 import { DraggableCollapsibleEditor, useDndState } from '../../../plugins';
-import {
-  collapseElement,
-} from '../../../plugins/draggable-collapsible-feature/commands/collapse-element';
-import {
-  ELEMENT_TO_SEMANTIC_PATH,
-} from '../../../plugins/draggable-collapsible-feature/weakmaps';
+import { collapseElement } from '../../../plugins/draggable-collapsible-feature/commands/collapse-element';
+import { ELEMENT_TO_SEMANTIC_PATH } from '../../../plugins/draggable-collapsible-feature/weakmaps';
 import { isCheckboxListItemElement } from '../../../plugins/list/utils';
-import { makeListItemAttributes } from '../../../plugins/serialization/utils';
+import { createListItemAttributes } from '../../../plugins/serialization/utils';
 import { ListItemDefaultIndentWidth } from '../../../utils/constants';
 import { SortableUnit } from './components/sortable-unit';
 import { UnitItem, type UnitItemProps } from './components/unit-element';
@@ -102,7 +98,7 @@ export const DragWrapper = (
       spellCheck={spellCheck}
       {...attributes}
       {...(DraggableCollapsibleEditor.isNestableElement(editor, element)
-        ? makeListItemAttributes({
+        ? createListItemAttributes({
             depth: element.depth,
             // @ts-expect-error fix-types
             listType: element.listType,

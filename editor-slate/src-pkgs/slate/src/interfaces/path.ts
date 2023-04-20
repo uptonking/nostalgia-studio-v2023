@@ -50,8 +50,8 @@ export interface PathInterface {
   operationCanTransformPath: (operation: Operation) => boolean;
   parent: (path: Path) => Path;
   /**
-  * Given a path, get the path to the previous sibling node.
-  */
+   * Given a path, get the path to the previous sibling node.
+   */
   previous: (path: Path) => Path;
   relative: (path: Path, ancestor: Path) => Path;
   transform: (

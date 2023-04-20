@@ -1,5 +1,6 @@
 import { Element } from 'slate';
 
+import { createParagraphElement } from '../../paragraph/utils';
 import type { TableCellElement, TableElement, TableRowElement } from '../types';
 
 export const TableSpec = 'table';
@@ -21,22 +22,19 @@ export const isTableCellElement = (value: any): value is TableCellElement => {
 /**
  * create cell node for model
  */
-export function createEmptyCellNode(): TableCellElement {
+export function createCellElement(value?: string): TableCellElement {
   return {
     type: TableCellSpec,
-    children: [
-      {
-        type: 'p',
-        children: [{ text: '' }],
-      },
-    ],
+    children: [createParagraphElement()],
   };
 }
 
 /**
  * create row node for model
  */
-export function createRowNode(children: TableCellElement[]): TableRowElement {
+export function createRowElement(
+  children: TableCellElement[],
+): TableRowElement {
   return {
     type: TableRowSpec,
     children,
@@ -44,9 +42,9 @@ export function createRowNode(children: TableCellElement[]): TableRowElement {
 }
 
 /**
- * create row node for model
+ * create table node for model
  */
-export function createTableNode(children: TableRowElement[]): TableElement {
+export function createTableElement(children: TableRowElement[]): TableElement {
   return {
     type: TableSpec,
     children,

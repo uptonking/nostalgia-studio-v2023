@@ -39,7 +39,10 @@ export function getDepth(
   )
     ? previousItem.depth + 1
     : 0;
-  const minDepth = DraggableCollapsibleEditor.isNestableElement(editor, nextItem)
+  const minDepth = DraggableCollapsibleEditor.isNestableElement(
+    editor,
+    nextItem,
+  )
     ? nextItem.depth
     : 0;
 

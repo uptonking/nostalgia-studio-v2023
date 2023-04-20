@@ -3,9 +3,9 @@ import { ReactEditor } from 'slate-react';
 
 import type { TableElement } from '../types';
 import {
-  createEmptyCellNode,
-  createRowNode,
-  createTableNode,
+  createCellElement,
+  createRowElement,
+  createTableElement,
 } from '../utils/utils';
 
 // import { createImageNode } from './utils';
@@ -19,14 +19,14 @@ export const insertTableByRowColNumber = (
   const rows = Array(row)
     .fill(1)
     .map((_) =>
-      createRowNode(
+      createRowElement(
         Array(col)
           .fill(1)
-          .map((_) => createEmptyCellNode()),
+          .map((_) => createCellElement()),
       ),
     );
 
-  const tableNode = createTableNode(rows);
+  const tableNode = createTableElement(rows);
 
   // const tableNode: any = {
   //   type: 'table',

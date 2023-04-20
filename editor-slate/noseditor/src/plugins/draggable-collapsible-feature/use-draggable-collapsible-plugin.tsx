@@ -11,9 +11,9 @@ type CollapsibleOptions = {
   ) => DraggableCollapsibleEditor['compareLevels'];
 };
 
-export const useDraggableCollapsiblePlugin: UseNosPlugin<CollapsibleOptions> = ({
-  compareLevels = compare,
-} = {}) => {
+export const useDraggableCollapsiblePlugin: UseNosPlugin<
+  CollapsibleOptions
+> = ({ compareLevels = compare } = {}) => {
   return {
     withOverrides: withDraggableCollapsible({ compareLevels }),
   };

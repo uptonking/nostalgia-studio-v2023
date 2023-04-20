@@ -16,8 +16,13 @@ export const ListVariants = {
   Checkbox: 'checkbox',
 } as const;
 
+export type ListVariantsType = (typeof ListVariants)[keyof typeof ListVariants];
+
 export const isListItemElement = (value: any): value is ListItemElement => {
-  return !Editor.isEditor(value) && Element.isElementType<ListItemElement>(value, ListItemSpec);
+  return (
+    !Editor.isEditor(value) &&
+    Element.isElementType<ListItemElement>(value, ListItemSpec)
+  );
 };
 
 export const isBulletedListItemElement = (

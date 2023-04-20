@@ -1,9 +1,9 @@
+import { createEditor, createText } from './creators';
 import {
   createHyperscript,
-  HyperscriptCreators,
-  HyperscriptShorthands,
+  type HyperscriptCreators,
+  type HyperscriptShorthands,
 } from './hyperscript';
-import { createEditor, createText } from './creators';
 
 /**
  * The default hyperscript factory that ships with Slate, without custom tags.
@@ -16,6 +16,6 @@ export {
   createHyperscript,
   createEditor,
   createText,
-  HyperscriptCreators,
-  HyperscriptShorthands,
+  type HyperscriptCreators,
+  type HyperscriptShorthands,
 };

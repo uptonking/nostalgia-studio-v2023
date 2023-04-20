@@ -71,9 +71,9 @@ export const DndPluginProvider = ({
     : 0;
   const dragOverlayHeight =
     _dragOverlayHeight &&
-      DraggableCollapsibleEditor.isCollapsibleElement(editor, activeElement) &&
-      DraggableCollapsibleEditor.isNestableElement(editor, activeElement) &&
-      !activeElement.folded
+    DraggableCollapsibleEditor.isCollapsibleElement(editor, activeElement) &&
+    DraggableCollapsibleEditor.isNestableElement(editor, activeElement) &&
+    !activeElement.folded
       ? Math.max(minOverlayHeight, _dragOverlayHeight)
       : null;
 

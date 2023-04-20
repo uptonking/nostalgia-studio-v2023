@@ -42,4 +42,3 @@ export const makeInsertFragment = (editor: DraggableCollapsibleEditor) => {
     insertFragment(fragment);
   };
 };
-

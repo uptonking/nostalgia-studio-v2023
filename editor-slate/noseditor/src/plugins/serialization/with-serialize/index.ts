@@ -1,4 +1,5 @@
 import { Editor } from 'slate';
+import { ReactEditor } from 'slate-react';
 
 import { getClipboardPlainText } from './get-clipboard-plain-text';
 import { patchCopiedClipboardHtml } from './patch-copied-clipboard-html';
@@ -7,7 +8,9 @@ import { removeSkippedElements } from './remove-skipped-elements';
 /**
  * create temporary hidden div for clipboardNode
  */
-const getClipboardDataHtmlNode = (data: any) => {
+const getClipboardDataHtmlNode = (data: {
+  getData: (arg0: string) => string;
+}) => {
   const clipboardNode = document.createElement('div');
   clipboardNode.innerHTML = data.getData('text/html');
   clipboardNode.setAttribute('hidden', 'true');
@@ -15,7 +18,10 @@ const getClipboardDataHtmlNode = (data: any) => {
   return clipboardNode;
 };
 
-export const withSerialize = (editor: Editor) => {
+/**
+ * serialize editor-model to html
+ */
+export const withSerialize = (editor: ReactEditor) => {
   const { setFragmentData } = editor;
 
   editor.setFragmentData = (data) => {

@@ -11,7 +11,6 @@ import { HistoryEditor } from './history-editor';
  *
  * See https://docs.slatejs.org/concepts/11-typescript to learn how.
  */
-
 export const withHistory = <T extends Editor>(editor: T) => {
   const e = editor as T & HistoryEditor;
   const { apply } = e;

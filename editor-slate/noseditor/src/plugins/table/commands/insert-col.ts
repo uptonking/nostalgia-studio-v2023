@@ -9,7 +9,7 @@ import {
   getRealPathByPath,
   getTableByCellPath,
 } from '../utils/common';
-import { createEmptyCellNode, createRowNode } from '../utils/utils';
+import { createCellElement, createRowElement } from '../utils/utils';
 
 type Direction = 'left' | 'right';
 
@@ -46,13 +46,13 @@ function insertColByCell(
   // 在 insertNodes 前获取跨行数，避免获取不准确
   const rowSpan = getNextRowSpan(editor, [...tablePath, index]);
 
-  Transforms.insertNodes(editor, createEmptyCellNode(), {
+  Transforms.insertNodes(editor, createCellElement(), {
     at: [...tablePath, index, cellIndex],
   });
 
   if (rowSpan > 1) {
     Array.from({ length: rowSpan - 1 }).forEach((_, i) => {
-      Transforms.insertNodes(editor, createRowNode([createEmptyCellNode()]), {
+      Transforms.insertNodes(editor, createRowElement([createCellElement()]), {
         at: [...tablePath, index + i + 1],
       });
     });

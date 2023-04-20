@@ -36,6 +36,12 @@ export interface ElementInterface {
     elementVal: string,
     elementKey?: string,
   ) => value is T;
+  /**
+   * Check if an element matches set of properties.
+   *
+   * Note: this checks custom properties, and it does not ensure that any
+   * children are equivalent.
+   */
   matches: (element: Element, props: Partial<Element>) => boolean;
 }
 
@@ -102,7 +108,6 @@ export const Element: ElementInterface = {
    * Note: this checks custom properties, and it does not ensure that any
    * children are equivalent.
    */
-
   matches(element: Element, props: Partial<Element>): boolean {
     for (const key in props) {
       if (key === 'children') {

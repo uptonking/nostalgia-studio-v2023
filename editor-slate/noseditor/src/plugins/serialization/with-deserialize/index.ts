@@ -1,4 +1,3 @@
-import { indexBy } from 'ramda';
 import { Editor } from 'slate';
 import { ReactEditor } from 'slate-react';
 
@@ -35,7 +34,10 @@ export const withDeserialize = (editor: ReactEditor) => {
       {
         ...editor,
         plugins: deserializePlugins,
-        pluginsByKey: indexBy((x) => x.key, deserializePlugins),
+        // pluginsByKey: indexBy((x) => x.key, deserializePlugins),
+        pluginsByKey: deserializePlugins.map((plugin) => ({
+          [plugin['key']]: plugin,
+        })),
       } as Editor,
       { element: document.body },
     );

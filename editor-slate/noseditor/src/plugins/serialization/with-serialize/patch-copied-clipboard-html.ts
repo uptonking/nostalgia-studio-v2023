@@ -1,8 +1,8 @@
 import { ListVariants, type ListVariantsType } from '../../list/utils';
 import {
+  convertHtmlToPlainText,
   crawlDom,
   getListItemPropertiesFromDom,
-  getPlainText,
   isHtmlElement,
   isHtmlListItem,
 } from '../utils';
@@ -16,7 +16,7 @@ export const getHtmlTag = (listType: ListVariantsType) => {
  * patch dom list item elements
  */
 export const patchCopiedClipboardHtml = (root: Element) => {
-  let listItemNodes: Node[][] = [[]];
+  const listItemDomNodes: Node[][] = [[]];
 
   crawlDom(root.childNodes, (node, context) => {
     const depth = (context as any).cursor.depth;
@@ -24,14 +24,14 @@ export const patchCopiedClipboardHtml = (root: Element) => {
     if (depth !== 1) return;
 
     if (isHtmlListItem(node)) {
-      return listItemNodes[listItemNodes.length - 1].push(node);
+      return listItemDomNodes[listItemDomNodes.length - 1].push(node);
     }
 
-    if (listItemNodes[listItemNodes.length - 1].length > 0)
-      listItemNodes.push([]);
+    if (listItemDomNodes[listItemDomNodes.length - 1].length > 0)
+      listItemDomNodes.push([]);
   });
 
-  listItemNodes.forEach((nodes) => {
+  listItemDomNodes.forEach((nodes) => {
     if (nodes.length > 0) {
       const props = getListItemPropertiesFromDom(nodes[0] as HTMLElement);
       const ul = document.createElement(getHtmlTag(props.listType));
@@ -49,7 +49,7 @@ export const patchCopiedClipboardHtml = (root: Element) => {
     for (const listItemNode of listNode.childNodes) {
       if (isHtmlElement(listItemNode)) {
         const item = getListItemPropertiesFromDom(listItemNode);
-        items.push({ ...item, text: getPlainText(listItemNode) });
+        items.push({ ...item, text: convertHtmlToPlainText(listItemNode) });
       }
     }
 

@@ -1,8 +1,7 @@
 export { useTrailingLinePlugin } from './trailing-line/use-trailing-line-plugin';
 export { useTablePlugin } from './table/use-table-plugin';
 export { useSoftBreakPlugin } from './soft-break/use-soft-break-plugin';
-export { useDeserializePlugin } from './serialization/use-deserialize-plugin';
-export { useSerializePlugin } from './serialization/use-serialize-plugin';
+export { useDeserializePlugin, useSerializePlugin } from './serialization';
 export { useResetInsertTypePlugin } from './reset-insert-type/use-reset-insert-type-plugin';
 export { useParagraphPlugin } from './paragraph/use-paragraph-plugin';
 export { useNodeIdPlugin } from './node-id/use-node-id-plugin';

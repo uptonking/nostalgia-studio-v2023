@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 
 import cx from 'clsx';
-import { clone } from 'ramda';
 import { useResizeDetector } from 'react-resize-detector';
 import { Editor } from 'slate';
 import { type RenderElementProps, useSlateStatic } from 'slate-react';
@@ -22,9 +21,9 @@ export const DragOverlayContent = (props: DragOverlayContentProps) => {
 
   useEffect(() => {
     onHeightChange(height);
-  }, [height]);
+  }, [height, onHeightChange]);
 
-  const activeIndex = editor.children.findIndex((x) => x.id === activeId);
+  const activeIndex = editor.children.findIndex((x) => x['id'] === activeId);
   const element = editor.children[activeIndex];
 
   const initialValue = useMemo(() => {
@@ -34,15 +33,14 @@ export const DragOverlayContent = (props: DragOverlayContentProps) => {
       const { descendants } = semanticNode;
       const baseDepth = element.depth;
 
-      content = clone(
-        // @ts-expect-error fix-types
-        element.folded
-          ? [element]
-          : [
-              element,
-              ...descendants.filter((x) => !x.hidden).map((x) => x.element),
-            ],
-      );
+      const elementContent = element['folded']
+        ? [element]
+        : [
+            element,
+            ...descendants.filter((x) => !x.hidden).map((x) => x.element),
+          ];
+      // content = clone(elementContent);
+      content = JSON.parse(JSON.stringify(elementContent));
 
       content.forEach((element) => {
         if (DraggableCollapsibleEditor.isNestableElement(editor, element)) {
@@ -50,7 +48,8 @@ export const DragOverlayContent = (props: DragOverlayContentProps) => {
         }
       });
     } else {
-      content = clone([element]);
+      // content = clone([element]);
+      content = JSON.parse(JSON.stringify([element]));
     }
 
     return content;

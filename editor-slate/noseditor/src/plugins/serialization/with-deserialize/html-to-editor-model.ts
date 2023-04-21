@@ -11,7 +11,7 @@ type DeserializeHtmlOptions = {
 };
 
 /**
- * Deserialize HTML element to a valid document fragment.
+ * Deserialize HTML element to a valid editor document fragment.
  */
 export const deserializeHtml = (
   editor: Editor,
@@ -38,11 +38,9 @@ export const htmlStringToDOMNode = (
 ) => {
   const node = document.createElement('body');
   node.innerHTML = rawHtml;
-
   if (stripWhitespace) {
     node.innerHTML = node.innerHTML.replace(/(\r\n|\n|\r|\t)/gm, '');
   }
-
   return node;
 };
 

@@ -440,6 +440,7 @@ Note: If you are looking for the previous Point, and not the previous Node, you 
     editor: Editor,
     options?: EditorVoidOptions,
   ) => NodeEntry<Element> | undefined;
+
   /** Call a function, deferring normalization until after it completes. */
   withoutNormalizing: (editor: Editor, fn: () => void) => void;
 }

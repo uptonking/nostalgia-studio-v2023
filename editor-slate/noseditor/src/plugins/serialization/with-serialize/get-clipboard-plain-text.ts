@@ -1,7 +1,7 @@
 import { ListVariants } from '../../list/utils';
 import {
+  convertHtmlToPlainText,
   getListItemPropertiesFromDom,
-  getPlainText,
   isHtmlElement,
   isHtmlListItem,
   isHtmlText,
@@ -9,6 +9,7 @@ import {
 
 /**
  * convert dom to text
+ * - list item to -/1/[]
  */
 export const getClipboardPlainText = (domNode: Node) => {
   let text = '';
@@ -20,7 +21,7 @@ export const getClipboardPlainText = (domNode: Node) => {
   if (isHtmlElement(domNode) && isHtmlListItem(domNode)) {
     let listItemText = '';
     for (const childNode of Array.from(domNode.childNodes)) {
-      listItemText += getPlainText(childNode);
+      listItemText += convertHtmlToPlainText(childNode);
     }
 
     const { depth, listType, index, checked } =

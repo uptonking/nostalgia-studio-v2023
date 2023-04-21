@@ -19,7 +19,7 @@ const getClipboardDataHtmlNode = (data: {
 };
 
 /**
- * serialize editor-model to html
+ * serialize editor-model to text/plain and text/html
  */
 export const withSerialize = (editor: ReactEditor) => {
   const { setFragmentData } = editor;

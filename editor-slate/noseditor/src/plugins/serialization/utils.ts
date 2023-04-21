@@ -64,7 +64,10 @@ export const isHtmlElement = (node: Node): node is Element => {
   return node.nodeType === Node.ELEMENT_NODE;
 };
 
-export const getPlainText = (domNode: Node) => {
+/**
+ * convert html to plain text
+ */
+export const convertHtmlToPlainText = (domNode: Node) => {
   let text = '';
 
   if (isHtmlText(domNode) && domNode.nodeValue) {
@@ -77,7 +80,7 @@ export const getPlainText = (domNode: Node) => {
     }
 
     for (const childNode of Array.from(domNode.childNodes)) {
-      text += getPlainText(childNode);
+      text += convertHtmlToPlainText(childNode);
     }
 
     const skipLinebreak =

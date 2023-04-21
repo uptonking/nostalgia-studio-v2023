@@ -40,7 +40,7 @@ import {
  */
 export interface ReactEditor extends BaseEditor {
   /** Insert data from a `DataTransfer` into the editor.
-   * - This is a proxy method to call in this order `insertFragmentData(editor: ReactEditor, data: DataTransfer)` and then `insertTextData(editor: ReactEditor, data: DataTransfer)`. */
+   * - This is a proxy method to call in this order `insertFragmentData` and then `insertTextData`. */
   insertData: (data: DataTransfer) => void;
   /** Insert fragment data from a DataTransfer into the editor. Returns true if some content has been effectively inserted. */
   insertFragmentData: (data: DataTransfer) => boolean;
@@ -58,9 +58,8 @@ export const ReactEditor = {
   /**
    * Check if the user is currently composing inside the editor.
    */
-
   isComposing(editor: ReactEditor): boolean {
-    return !!IS_COMPOSING.get(editor);
+    return Boolean(IS_COMPOSING.get(editor));
   },
 
   /**
@@ -149,7 +148,7 @@ export const ReactEditor = {
    */
 
   isFocused(editor: ReactEditor): boolean {
-    return !!IS_FOCUSED.get(editor);
+    return Boolean(IS_FOCUSED.get(editor));
   },
 
   /**
@@ -157,7 +156,7 @@ export const ReactEditor = {
    */
 
   isReadOnly(editor: ReactEditor): boolean {
-    return !!IS_READ_ONLY.get(editor);
+    return Boolean(IS_READ_ONLY.get(editor));
   },
 
   /**
@@ -247,7 +246,7 @@ export const ReactEditor = {
         : (typeof targetEl.isContentEditable === 'boolean' && // isContentEditable exists only on HTMLElement, and on other nodes it will be undefined
             // this is the core logic that lets you know you got the right editor.selection instead of null when editor is contenteditable="false"(readOnly)
             targetEl.closest('[contenteditable="false"]') === editorEl) ||
-          !!targetEl.getAttribute('data-slate-zero-width'))
+          Boolean(targetEl.getAttribute('data-slate-zero-width')))
     );
   },
 
@@ -262,7 +261,6 @@ export const ReactEditor = {
   /**
    * Insert fragment data from a `DataTransfer` into the editor.
    */
-
   insertFragmentData(editor: ReactEditor, data: DataTransfer): boolean {
     return editor.insertFragmentData(data);
   },
@@ -270,7 +268,6 @@ export const ReactEditor = {
   /**
    * Insert text data from a `DataTransfer` into the editor.
    */
-
   insertTextData(editor: ReactEditor, data: DataTransfer): boolean {
     return editor.insertTextData(data);
   },
@@ -382,11 +379,11 @@ export const ReactEditor = {
     const startEl = (
       isDOMElement(startNode) ? startNode : startNode.parentElement
     ) as HTMLElement;
-    const isStartAtZeroWidth = !!startEl.getAttribute('data-slate-zero-width');
+    const isStartAtZeroWidth = Boolean(startEl.getAttribute('data-slate-zero-width'));
     const endEl = (
       isDOMElement(endNode) ? endNode : endNode.parentElement
     ) as HTMLElement;
-    const isEndAtZeroWidth = !!endEl.getAttribute('data-slate-zero-width');
+    const isEndAtZeroWidth = Boolean(endEl.getAttribute('data-slate-zero-width'));
 
     domRange.setStart(startNode, isStartAtZeroWidth ? 1 : startOffset);
     domRange.setEnd(endNode, isEndAtZeroWidth ? 1 : endOffset);

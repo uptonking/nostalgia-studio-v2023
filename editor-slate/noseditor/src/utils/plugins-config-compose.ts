@@ -1,6 +1,5 @@
 import React, { DOMAttributes, SyntheticEvent } from 'react';
 
-import { flatten, mergeWith } from 'ramda';
 import { Editor } from 'slate';
 
 import type { EnhanceEditorFnOrWithArgs } from '../plugins/types';
@@ -35,28 +34,29 @@ type DOMHandlersKeys = KeysMatching<DOMAttributes<Element>, Handler>;
 
 /**
  * compose event handlers of the same name into one event
- *
- * todo remove ramda
  */
 export const composeHandlers = (
   editor: Editor,
   handlersConfig: Partial<Record<DOMHandlersKeys, EditorHandler>>[],
 ) => {
-  const grouped = handlersConfig.reduce(
-    (acc, x) => mergeWith((a, b) => flatten([a, b]), acc, x),
-    {},
-  ) as unknown as Record<DOMHandlersKeys, Array<EditorHandler>>;
+  const grouped = {} as Record<DOMHandlersKeys, Array<EditorHandler>>;
+  handlersConfig.forEach((handlers) => {
+    Object.keys(handlers).forEach((eventName) => {
+      const eventHandlers = grouped[eventName];
+      if (eventHandlers) {
+        eventHandlers.push(handlers[eventName]);
+      } else {
+        grouped[eventName] = [handlers[eventName]];
+      }
+    });
+  });
+
   // console.log(';; grouped ', grouped, handlersConfig);
 
   const composed: Partial<Record<string, Handler>> = {};
   for (const [eventName, callbacks] of Object.entries(grouped)) {
-    let _callbacks = callbacks;
-    if (!Array.isArray(callbacks)) {
-      _callbacks = [callbacks];
-    }
-
-    composed[eventName] = (e: SyntheticEvent) => {
-      _callbacks.forEach((handler) => handler && handler(editor)!(e));
+    composed[eventName] = (event: SyntheticEvent) => {
+      callbacks.forEach((handler) => handler && handler(editor)!(event));
     };
   }
 

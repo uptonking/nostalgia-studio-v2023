@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid';
-import { clone } from 'ramda';
 import { BaseEditor, Editor, Element, Node } from 'slate';
 
 import { isDefined } from '../../utils';
@@ -20,7 +19,8 @@ export const withNodeId = <T extends Editor>(editor: T) => {
   editor.apply = (operation) => {
     if (operation.type === 'insert_node') {
       // clone to be able to write (read-only)
-      const node = clone(operation.node);
+      // const node = clone(operation.node);
+      const node = JSON.parse(JSON.stringify((operation.node)));
       assignIdRecursively(node);
       return apply({
         ...operation,

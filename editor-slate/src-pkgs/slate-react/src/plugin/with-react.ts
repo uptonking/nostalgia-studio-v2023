@@ -132,7 +132,6 @@ export const withReact = <T extends Editor>(editor: T) => {
 
   e.setFragmentData = (data: Pick<DataTransfer, 'getData' | 'setData'>) => {
     const { selection } = e;
-
     if (!selection) {
       return;
     }
@@ -180,9 +179,9 @@ export const withReact = <T extends Editor>(editor: T) => {
     // Remove any zero-width space spans from the cloned DOM so that they don't
     // show up elsewhere when pasted.
     Array.from(contents.querySelectorAll('[data-slate-zero-width]')).forEach(
-      (zw) => {
-        const isNewline = zw.getAttribute('data-slate-zero-width') === 'n';
-        zw.textContent = isNewline ? '\n' : '';
+      (zeroWidth) => {
+        const isNewline = zeroWidth.getAttribute('data-slate-zero-width') === 'n';
+        zeroWidth.textContent = isNewline ? '\n' : '';
       },
     );
 
@@ -216,12 +215,6 @@ export const withReact = <T extends Editor>(editor: T) => {
     return data;
   };
 
-  e.insertData = (data: DataTransfer) => {
-    if (!e.insertFragmentData(data)) {
-      e.insertTextData(data);
-    }
-  };
-
   e.insertFragmentData = (data: DataTransfer): boolean => {
     /**
      * Checking copied fragment from application/x-slate-fragment or data-slate-fragment
@@ -236,7 +229,14 @@ export const withReact = <T extends Editor>(editor: T) => {
       e.insertFragment(parsed);
       return true;
     }
+
     return false;
+  };
+
+  e.insertData = (data: DataTransfer) => {
+    if (!e.insertFragmentData(data)) {
+      e.insertTextData(data);
+    }
   };
 
   e.insertTextData = (data: DataTransfer): boolean => {

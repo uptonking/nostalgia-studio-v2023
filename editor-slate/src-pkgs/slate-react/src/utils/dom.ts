@@ -79,7 +79,6 @@ export const isDOMSelection = (value: any): value is DOMSelection => {
 /**
  * Check if a DOM node is an element node.
  */
-
 export const isDOMText = (value: any): value is DOMText => {
   return isDOMNode(value) && value.nodeType === 3;
 };
@@ -87,7 +86,6 @@ export const isDOMText = (value: any): value is DOMText => {
 /**
  * Checks whether a paste event is a plaintext-only event.
  */
-
 export const isPlainTextOnlyPaste = (event: ClipboardEvent) => {
   return (
     event.clipboardData &&

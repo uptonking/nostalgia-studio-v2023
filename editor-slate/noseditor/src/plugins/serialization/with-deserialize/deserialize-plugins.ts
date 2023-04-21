@@ -165,6 +165,3 @@ export const deserializePlugins = rules.map((rule) =>
   }),
 );
 
-deserializePlugins.forEach((p) => {
-  p.inject = {};
-});

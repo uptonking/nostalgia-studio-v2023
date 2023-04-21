@@ -25,7 +25,9 @@ import {
 import { ReactEditor } from '..';
 import { useChildren } from '../hooks/use-children';
 import { DecorateContext } from '../hooks/use-decorate';
-import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
+import {
+  useIsomorphicLayoutEffect,
+} from '../hooks/use-isomorphic-layout-effect';
 import { ReadOnlyContext } from '../hooks/use-read-only';
 import { useSlate } from '../hooks/use-slate';
 import { TRIPLE_CLICK } from '../utils/constants';
@@ -993,6 +995,7 @@ export const Editable = (props: EditableProps) => {
                   event.clipboardData,
                   'copy',
                 );
+                // console.log(';; copyData ', event.clipboardData, event.clipboardData.getData('text/plain'),event.clipboardData.getData('text/html'))
               }
             },
             [attributes.onCopy],
@@ -1014,6 +1017,7 @@ export const Editable = (props: EditableProps) => {
                 ) {
                   event.preventDefault();
                   ReactEditor.insertData(editor, event.clipboardData);
+                  // console.log(';; pasteData ', event.clipboardData)
                 }
               }
             },
@@ -1204,7 +1208,7 @@ export const Editable = (props: EditableProps) => {
                 const { selection } = editor;
                 const element =
                   editor.children[
-                    selection !== null ? selection.focus.path[0] : 0
+                  selection !== null ? selection.focus.path[0] : 0
                   ];
                 const isRTL = getDirection(Node.string(element)) === 'rtl';
 

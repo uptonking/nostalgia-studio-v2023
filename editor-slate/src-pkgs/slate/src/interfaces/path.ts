@@ -26,12 +26,16 @@ export interface PathTransformOptions {
 
 export interface PathInterface {
   ancestors: (path: Path, options?: PathAncestorsOptions) => Path[];
+  /** Get the common ancestor path of two paths. */
   common: (path: Path, another: Path) => Path;
   compare: (path: Path, another: Path) => -1 | 0 | 1;
   endsAfter: (path: Path, another: Path) => boolean;
   endsAt: (path: Path, another: Path) => boolean;
   endsBefore: (path: Path, another: Path) => boolean;
   equals: (path: Path, another: Path) => boolean;
+  /**
+ * Check if the path of previous sibling node exists
+ */
   hasPrevious: (path: Path) => boolean;
   isAfter: (path: Path, another: Path) => boolean;
   isAncestor: (path: Path, another: Path) => boolean;
@@ -85,7 +89,6 @@ export const Path: PathInterface = {
   /**
    * Get the common ancestor path of two paths.
    */
-
   common(path: Path, another: Path): Path {
     const common: Path = [];
 
@@ -163,7 +166,6 @@ export const Path: PathInterface = {
   /**
    * Check if a path is exactly equal to another.
    */
-
   equals(path: Path, another: Path): boolean {
     return (
       path.length === another.length && path.every((n, i) => n === another[i])
@@ -173,7 +175,6 @@ export const Path: PathInterface = {
   /**
    * Check if the path of previous sibling node exists
    */
-
   hasPrevious(path: Path): boolean {
     return path[path.length - 1] > 0;
   },
@@ -181,7 +182,6 @@ export const Path: PathInterface = {
   /**
    * Check if a path is after another.
    */
-
   isAfter(path: Path, another: Path): boolean {
     return Path.compare(path, another) === 1;
   },
@@ -189,7 +189,6 @@ export const Path: PathInterface = {
   /**
    * Check if a path is an ancestor of another.
    */
-
   isAncestor(path: Path, another: Path): boolean {
     return path.length < another.length && Path.compare(path, another) === 0;
   },

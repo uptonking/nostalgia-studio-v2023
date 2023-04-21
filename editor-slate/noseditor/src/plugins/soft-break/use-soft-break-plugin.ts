@@ -1,7 +1,7 @@
-import { UseNosPlugin } from '../types';
+import { CreateNosPluginType } from '../types';
 import * as handlers from './handlers';
 
-export const useSoftBreakPlugin: UseNosPlugin = () => {
+export const useSoftBreakPlugin: CreateNosPluginType = () => {
   return {
     handlers,
   };

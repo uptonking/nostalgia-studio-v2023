@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { UseNosPlugin } from '../types';
+import { CreateNosPluginType } from '../types';
 import { Heading1, Heading2, Heading3 } from './components/heading';
 import {
   isHeading1Element,
@@ -9,7 +9,7 @@ import {
 } from './utils';
 import { withHeading } from './with-heading';
 
-export const useHeadingPlugin: UseNosPlugin = () => {
+export const useHeadingPlugin: CreateNosPluginType = () => {
   return {
     withOverrides: withHeading,
     renderElement: (props) => {

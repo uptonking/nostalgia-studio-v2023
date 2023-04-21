@@ -9,17 +9,15 @@ import type {
 import { crawlChildren } from './utils';
 import { ELEMENT_TO_SEMANTIC_PATH } from './weakmaps';
 
-// type CollapsibleElement = CollapsibleElement &
-
 export interface DraggableCollapsibleEditor extends BaseEditor {
-  children: Element[];
+  semanticChildren: SemanticNode[];
   compareLevels: (a: Element, b: Element) => number;
   /** default false */
   isCollapsibleElement: (element: Element) => boolean;
   /** default false */
   isNestableElement: (element: Element) => boolean;
-  semanticChildren: SemanticNode[];
   getSemanticChildren: (children: Descendant[]) => SemanticNode[];
+  /** default false */
   hasSemanticChildren: (element: Element) => boolean;
 }
 

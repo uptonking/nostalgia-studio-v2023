@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { UseNosPlugin } from '../types';
+import { CreateNosPluginType } from '../types';
 import { Divider } from './components/divider';
 import { isDividerElement } from './utils';
 import { withDivider } from './with-divider';
 
-export const useDividerPlugin: UseNosPlugin = () => {
+export const useDividerPlugin: CreateNosPluginType = () => {
   return {
     withOverrides: withDivider,
     renderElement: (props) => {

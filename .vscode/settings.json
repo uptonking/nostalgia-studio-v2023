@@ -97,5 +97,6 @@
   "markdownFormatter.formatULSymbol": false,
   "markdownFormatter.fullWidthTurnHalfWidth": "auto",
   "tsImportSorter.configuration.autoFormat": "onSave",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "vue.features.codeActions.enable": false
 }

@@ -1,7 +1,7 @@
-import { UseNosPlugin } from '../types';
+import { CreateNosPluginType } from '../types';
 import { withResetInsertType } from './with-reset-insert-type';
 
-export const useResetInsertTypePlugin: UseNosPlugin = () => {
+export const useResetInsertTypePlugin: CreateNosPluginType = () => {
   return {
     withOverrides: withResetInsertType,
   };

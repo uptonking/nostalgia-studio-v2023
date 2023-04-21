@@ -1,7 +1,7 @@
-import type { UseNosPlugin } from '../types';
+import type { CreateNosPluginType } from '../types';
 import { withNodeId } from './with-node-id';
 
-export const useNodeIdPlugin: UseNosPlugin = () => {
+export const useNodeIdPlugin: CreateNosPluginType = () => {
   return {
     withOverrides: withNodeId,
   };

@@ -1,7 +1,7 @@
-import type { UseNosPlugin } from '../types';
+import type { CreateNosPluginType } from '../types';
 import * as handlers from './handlers';
 
-export const useExitBreakPlugin: UseNosPlugin = () => {
+export const useExitBreakPlugin: CreateNosPluginType = () => {
   return {
     handlers,
   };

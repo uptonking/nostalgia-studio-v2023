@@ -6,7 +6,7 @@ import type {
 } from '../draggable-collapsible-feature/types';
 import type { ListVariants } from './utils';
 
-export type ListItemType = 'list_item';
+export type ListItemType = 'listItem';
 
 type BaseListItemElement = {
   type: ListItemType;

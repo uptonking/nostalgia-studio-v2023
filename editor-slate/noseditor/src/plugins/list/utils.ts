@@ -8,7 +8,7 @@ import type {
   NumberedListItemElement,
 } from './types';
 
-export const ListItemSpec: ListItemType = 'list_item';
+export const ListItemSpec: ListItemType = 'listItem';
 
 export const ListVariants = {
   Bulleted: 'bulleted',
@@ -41,4 +41,26 @@ export const isCheckboxListItemElement = (
   value: any,
 ): value is CheckboxListItemElement => {
   return isListItemElement(value) && value.listType === ListVariants.Checkbox;
+};
+
+export const createListItemElement = (
+  listItemProps: Partial<ListItemElement> = {},
+): ListItemElement => {
+  const listItem: Partial<ListItemElement> = {
+    listType: ListVariants.Bulleted,
+    depth: 0,
+    ...listItemProps,
+  };
+
+  return {
+    type: ListItemSpec,
+    children: [
+      {
+        text: '',
+      },
+    ],
+    listType: listItem.listType,
+    checked: false,
+    depth: listItem.depth,
+  };
 };

@@ -24,7 +24,8 @@ import {
 import type { NosPlugin } from '../plugins/types';
 
 /** collect configs of all plugins
- *
+ * - register order is from bottom to top;
+ * - execution order is from top to bottom
  * todo name not start with use
  */
 export const usePlugins = (): NosPlugin[] => {

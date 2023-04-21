@@ -382,7 +382,7 @@ export const Editable = (props: EditableProps) => {
         const { selection } = editor;
         const { inputType: type } = event;
         const data = (event as any).dataTransfer || event.data || undefined;
-        // console.log(';; beforeInput ', type, JSON.stringify(editor.selection));
+        // console.log(';; beforeInput ', type, data, JSON.stringify(editor.selection));
 
         // These two types occur while a user is composing text and can't be
         // cancelled. Let them through and wait for the composition to end.
@@ -494,6 +494,7 @@ export const Editable = (props: EditableProps) => {
           }
 
           case 'deleteContentBackward': {
+            // console.log(';; deleteContentBackward ')
             Editor.deleteBackward(editor);
             break;
           }
@@ -713,6 +714,7 @@ export const Editable = (props: EditableProps) => {
             // Allow for passed-in styles to override anything.
             ...style,
           }}
+          // native `beforeinput` event is added in useEffect
           onBeforeInput={useCallback(
             (event: React.FormEvent<HTMLDivElement>) => {
               // COMPAT: Certain browsers don't support the `beforeinput` event, so we
@@ -1355,6 +1357,7 @@ export const Editable = (props: EditableProps) => {
                     if (selection && Range.isExpanded(selection)) {
                       Editor.deleteFragment(editor, { direction: 'backward' });
                     } else {
+                      console.log(';; key-back ')
                       Editor.deleteBackward(editor);
                     }
 

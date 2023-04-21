@@ -1,17 +1,17 @@
-import { Editor } from 'slate';
+import { Editor, Element } from 'slate';
 
-import { compareLevels as compare } from '../../components/utils';
-import { UseNosPlugin } from '../types';
+import type { CreateNosPluginType } from '../types';
 import { DraggableCollapsibleEditor } from './collapsible-editor';
+import { compareLevels as compare } from './utils';
 import { withDraggableCollapsible } from './with-draggable-collapsible';
 
 type CollapsibleOptions = {
   compareLevels?: (
-    editor: Editor,
-  ) => DraggableCollapsibleEditor['compareLevels'];
+    editor: DraggableCollapsibleEditor,
+  ) => (a: Element, b: Element) => number;
 };
 
-export const useDraggableCollapsiblePlugin: UseNosPlugin<
+export const useDraggableCollapsiblePlugin: CreateNosPluginType<
   CollapsibleOptions
 > = ({ compareLevels = compare } = {}) => {
   return {

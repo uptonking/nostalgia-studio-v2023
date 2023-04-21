@@ -1,11 +1,11 @@
 import React from 'react';
 
-import type { UseNosPlugin } from '../types';
+import type { CreateNosPluginType } from '../types';
 import { Image } from './components/image';
 import { isImageElement } from './utils';
 import { withImage } from './with-image';
 
-export const useImagePlugin: UseNosPlugin = () => {
+export const useImagePlugin: CreateNosPluginType = () => {
   return {
     withOverrides: withImage,
     renderElement: (props) => {

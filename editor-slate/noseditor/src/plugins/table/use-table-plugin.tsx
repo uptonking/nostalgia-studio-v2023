@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { UseNosPlugin } from '../types';
+import type { CreateNosPluginType } from '../types';
 import { CustomTable, CustomTableCell, CustomTableRow } from './components';
 import * as handlers from './handlers';
 import {
@@ -10,7 +10,7 @@ import {
 } from './utils/utils';
 import { withTable } from './with-table';
 
-export const useTablePlugin: UseNosPlugin = () => {
+export const useTablePlugin: CreateNosPluginType = () => {
   return {
     withOverrides: withTable,
     handlers,

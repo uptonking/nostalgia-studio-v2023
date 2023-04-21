@@ -1,37 +1,43 @@
 import { nanoid } from 'nanoid';
 import { Editor, Element, Node, Path, Range, Transforms } from 'slate';
 
-import { type ListItemElement } from '../list/types';
-import { ListItemSpec, ListVariants } from '../list/utils';
-import { type ParagraphElement } from '../paragraph/types';
-import { createParagraphElement, ParagraphSpec } from '../paragraph/utils';
+import { createListItemElement } from '../list/utils';
+import { createParagraphElement } from '../paragraph/utils';
 import { DraggableCollapsibleEditor } from './collapsible-editor';
 import type { CollapsibleElement, HashedElement } from './types';
 
+type WithCollapsibleOptions = {
+  compareLevels: (
+    editor: DraggableCollapsibleEditor,
+  ) => (a: Element, b: Element) => number;
+};
+
 export const withDraggableCollapsible =
-  ({
-    compareLevels,
-  }: {
-    compareLevels: (
-      editor: Editor,
-    ) => DraggableCollapsibleEditor['compareLevels'];
-  }) =>
-  <T extends DraggableCollapsibleEditor>(editor: T) => {
+  ({ compareLevels }: WithCollapsibleOptions) =>
+  <T extends Editor>(editor: T) => {
     const e = editor as T & DraggableCollapsibleEditor;
 
     const { insertBreak, deleteBackward } = e;
 
     e.deleteBackward = (unit) => {
       if (editor.selection) {
-        const path = Editor.path(editor, editor.selection, { depth: 1 });
-        const atStart = Range.includes(
+        const firstLevelPath = Editor.path(editor, editor.selection, {
+          depth: 1,
+        });
+        const isSelAtFirstLevelElement = Range.includes(
           editor.selection,
-          Editor.start(editor, path),
+          Editor.start(editor, firstLevelPath),
         );
 
-        if (atStart && Path.hasPrevious(path)) {
-          const prevEntry = Editor.previous(editor, { at: path })!;
+        // console.log(
+        //   ';; isSelAtFirstLevelElement ',
+        //   isSelAtFirstLevelElement,
+        //   JSON.stringify(editor.selection),
+        //   Editor.start(editor, firstLevelPath)
+        // );
 
+        if (isSelAtFirstLevelElement && Path.hasPrevious(firstLevelPath)) {
+          const prevEntry = Editor.previous(editor, { at: firstLevelPath })!;
           const node = prevEntry[0] as Element;
           const { hidden } = DraggableCollapsibleEditor.semanticNode(node);
           const semanticPath = DraggableCollapsibleEditor.semanticPath(node);
@@ -47,10 +53,8 @@ export const withDraggableCollapsible =
               {
                 at,
                 match: (node) =>
-                  DraggableCollapsibleEditor.isCollapsibleElement(
-                    editor,
-                    node,
-                  ) && Boolean(node.folded),
+                  DraggableCollapsibleEditor.isCollapsibleElement(e, node) &&
+                  Boolean(node.folded),
               },
             );
 
@@ -73,7 +77,7 @@ export const withDraggableCollapsible =
       const [entry] = Editor.nodes(editor, {
         match: (node, path): node is Element & CollapsibleElement =>
           path.length === 1 &&
-          DraggableCollapsibleEditor.isCollapsibleElement(editor, node) &&
+          DraggableCollapsibleEditor.isCollapsibleElement(e, node) &&
           Boolean(node.folded) &&
           Boolean(editor.selection) &&
           Range.includes(editor.selection, Editor.end(editor, path)),
@@ -86,11 +90,8 @@ export const withDraggableCollapsible =
         const skipCount = node.foldedCount || 0;
         const at = [index + skipCount + 1];
 
-        const newNode = DraggableCollapsibleEditor.isNestableElement(
-          editor,
-          node,
-        )
-          ? getEmptyListItem({ depth: node.depth })
+        const newNode = DraggableCollapsibleEditor.isNestableElement(e, node)
+          ? createListItemElement({ depth: node.depth })
           : createParagraphElement();
 
         Transforms.insertNodes(editor, newNode, {
@@ -118,19 +119,3 @@ export const withDraggableCollapsible =
 
     return e;
   };
-
-const getEmptyListItem = (
-  listItem: Partial<ListItemElement>,
-): ListItemElement => {
-  return {
-    type: ListItemSpec,
-    children: [
-      {
-        text: '',
-      },
-    ],
-    listType: listItem.listType ?? ListVariants.Bulleted,
-    checked: false,
-    depth: listItem.depth ?? 0,
-  };
-};

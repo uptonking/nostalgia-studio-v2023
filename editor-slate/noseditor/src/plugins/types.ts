@@ -36,7 +36,7 @@ export type NosPlugin = {
 };
 
 /** NosPlugin factory
- *
- * todo name not start with Use.
  */
-export type UseNosPlugin<Options = {}> = (options?: Options) => NosPlugin;
+export type CreateNosPluginType<Options = Record<string, unknown>> = (
+  options?: Options,
+) => NosPlugin;

@@ -80,7 +80,7 @@ export const toggleList = (
       Transforms.unsetNodes(editor, 'listType');
       Transforms.setNodes<ParagraphElement>(editor, { type: ParagraphSpec });
     } else {
-      // change list type to args' listType
+      // set listType
       Transforms.setNodes(
         editor,
         { type: ListItemSpec, listType },
@@ -95,7 +95,7 @@ export const toggleList = (
       // change paragraph or non-list to list
       Transforms.setNodes<ListItemElement>(
         editor,
-        { type: ListItemSpec, depth: currElem?.depth ?? 0, listType },
+        { type: ListItemSpec, depth: currElem['depth'] ?? 0, listType },
         {
           match: (node, path) =>
             Range.isExpanded(selection)

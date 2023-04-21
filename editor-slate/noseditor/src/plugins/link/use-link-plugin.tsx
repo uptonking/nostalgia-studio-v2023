@@ -1,11 +1,11 @@
 import React from 'react';
 
-import type { UseNosPlugin } from '../types';
+import type { CreateNosPluginType } from '../types';
 import { Link } from './components/link';
 import { isLinkElement } from './utils';
 import { withLink } from './with-link';
 
-export const useLinkPlugin: UseNosPlugin = () => {
+export const useLinkPlugin: CreateNosPluginType = () => {
   return {
     withOverrides: withLink,
     renderElement: (props) => {

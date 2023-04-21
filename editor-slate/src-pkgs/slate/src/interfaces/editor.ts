@@ -111,6 +111,9 @@ export interface BaseEditor {
   removeMark: (key: string) => void;
   /** apply is implemented in `createEditor()` */
   apply: (operation: Operation) => void;
+  /**
+ * Delete content in the editor backward from the current selection.
+ */
   deleteBackward: (unit: TextUnit) => void;
   deleteForward: (unit: TextUnit) => void;
   deleteFragment: (direction?: TextDirection) => void;
@@ -214,6 +217,7 @@ export interface EditorParentOptions {
 }
 
 export interface EditorPathOptions {
+  /** start from 0 */
   depth?: number;
   edge?: LeafEdge;
 }
@@ -282,6 +286,9 @@ export interface EditorInterface {
    * `editor.marks` and applied to the text inserted next.
    */
   removeMark: (editor: Editor, key: string) => void;
+  /**
+  * Delete content in the editor backward from the current selection.
+  */
   deleteBackward: (
     editor: Editor,
     options?: EditorDirectedDeletionOptions,
@@ -311,6 +318,9 @@ export interface EditorInterface {
    * Get the end point of a location.
    */
   end: (editor: Editor, at: Location) => Point;
+  /**
+  * Get the start point of a location.
+  */
   start: (editor: Editor, at: Location) => Point;
   /** Get the first node at a location. */
   first: (editor: Editor, at: Location) => NodeEntry;
@@ -377,6 +387,9 @@ Note: If you are looking for the next Point, and not the next Node, you are prob
     at: Location,
     options?: EditorParentOptions,
   ) => NodeEntry<Ancestor>;
+  /**
+  * Get the path of a location.
+  */
   path: (editor: Editor, at: Location, options?: EditorPathOptions) => Path;
   pathRef: (
     editor: Editor,
@@ -400,8 +413,8 @@ Note: If you are looking for the next Point, and not the next Node, you are prob
     editor: Editor,
     options?: EditorPositionsOptions,
   ) => Generator<Point, void, undefined>;
-  /** Get the matching node in the branch of the document before a location.
-Note: If you are looking for the previous Point, and not the previous Node, you are probably looking for the method Editor.before */
+  /** Get the matching `Node` in the branch of the document before a location.
+Note: If you are looking for the previous `Point`, and not the previous `Node`, you are probably looking for the method `Editor.before` */
   previous: <T extends Node>(
     editor: Editor,
     options?: EditorPreviousOptions<T>,
@@ -566,7 +579,6 @@ export const Editor: EditorInterface = {
   /**
    * Delete content in the editor backward from the current selection.
    */
-
   deleteBackward(
     editor: Editor,
     options: EditorDirectedDeletionOptions = {},
@@ -590,7 +602,6 @@ export const Editor: EditorInterface = {
   /**
    * Delete the content in the current selection.
    */
-
   deleteFragment(
     editor: Editor,
     options: EditorFragmentDeletionOptions = {},
@@ -602,7 +613,6 @@ export const Editor: EditorInterface = {
   /**
    * Get the start and end points of a location.
    */
-
   edges(editor: Editor, at: Location): [Point, Point] {
     return [Editor.start(editor, at), Editor.end(editor, at)];
   },
@@ -1211,7 +1221,6 @@ export const Editor: EditorInterface = {
   /**
    * Get the path of a location.
    */
-
   path(editor: Editor, at: Location, options: EditorPathOptions = {}): Path {
     const { depth, edge } = options;
 
@@ -1231,6 +1240,7 @@ export const Editor: EditorInterface = {
       } else if (edge === 'end') {
         at = Range.end(at);
       } else {
+        // Get the common ancestor path of two paths.
         at = Path.common(at.anchor.path, at.focus.path);
       }
     }
@@ -1254,7 +1264,6 @@ export const Editor: EditorInterface = {
    * Create a mutable ref for a `Path` object, which will stay in sync as new
    * operations are applied to the editor.
    */
-
   pathRef(
     editor: Editor,
     path: Path,

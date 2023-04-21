@@ -65,7 +65,6 @@ export const ReactEditor = {
   /**
    * Return the host window of the current editor.
    */
-
   getWindow(editor: ReactEditor): Window {
     const window = EDITOR_TO_WINDOW.get(editor);
     if (!window) {
@@ -162,7 +161,6 @@ export const ReactEditor = {
   /**
    * Blur the editor.
    */
-
   blur(editor: ReactEditor): void {
     const el = ReactEditor.toDOMNode(editor, editor);
     const root = ReactEditor.findDocumentOrShadowRoot(editor);
@@ -209,7 +207,6 @@ export const ReactEditor = {
   /**
    * Check if a DOM node is within the editor.
    */
-
   hasDOMNode(
     editor: ReactEditor,
     target: DOMNode,
@@ -305,7 +302,6 @@ export const ReactEditor = {
   /**
    * Find a native DOM selection point from a Slate point.
    */
-
   toDOMPoint(editor: ReactEditor, point: Point): DOMPoint {
     const [node] = Editor.node(editor, point.path);
     const el = ReactEditor.toDOMNode(editor, node);
@@ -412,7 +408,6 @@ export const ReactEditor = {
   /**
    * Get the target range from a DOM `event`.
    */
-
   findEventRange(editor: ReactEditor, event: any): Range {
     if ('nativeEvent' in event) {
       event = event.nativeEvent;

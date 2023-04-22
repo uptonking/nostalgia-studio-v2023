@@ -27,8 +27,9 @@ import {
 import { ListItemDefaultIndentWidth } from '../../../utils/constants';
 import { DraggableCollapsibleEditor } from '../collapsible-editor';
 import { updateElementByDnd } from '../commands/update-element-by-dnd';
+import type { DraggableCollapsibleElement } from '../types';
 import { sortableCollisionDetection } from './sortable-collision-detection';
-import { DndStateProvider } from './use-dnd-state';
+import { DndContextProvider } from './use-dnd-context';
 import { getDepth } from './utils';
 
 const measuring = {
@@ -38,6 +39,7 @@ const measuring = {
 };
 
 type DndPluginProviderProps = {
+  children?: React.ReactNode;
   editor: DraggableCollapsibleEditor & ReactEditor;
   onDragStart?(event: DragStartEvent): void;
   onDragEnd?(event: DragEndEvent): void;
@@ -48,46 +50,46 @@ type DndPluginProviderProps = {
   }) => React.ReactElement;
 };
 
-export const DndPluginProvider = ({
+export const DndFeatureProvider = ({
   editor,
   onDragStart,
   onDragEnd,
   renderDragOverlay,
   children,
-}: React.PropsWithChildren<DndPluginProviderProps>) => {
+}: DndPluginProviderProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
-  const activeElement = editor.children.find((x) => x.id === activeId) || null;
+  const [overId, setOverId] = useState<string | null>(null);
+  const [offsetLeft, setOffsetLeft] = useState<number>(0);
+  const [dragOverlayHeight, setDragOverlayHeight] = useState<number | null>(
+    null,
+  );
+
+  const activeElement = (editor.children.find((x) => x['id'] === activeId) || null) as DraggableCollapsibleElement;
   const semanticNode = activeElement
     ? DraggableCollapsibleEditor.semanticNode(activeElement)
     : null;
-
-  const [overId, setOverId] = useState<string | null>(null);
-  const [offsetLeft, setOffsetLeft] = useState<number>(0);
-  const [_dragOverlayHeight, setDragOverlayHeight] = useState<number | null>(
-    null,
-  );
   const minOverlayHeight = semanticNode
     ? (semanticNode.descendants.filter((x) => !x.hidden).length + 1) * 26
     : 0;
-  const dragOverlayHeight =
-    _dragOverlayHeight &&
-    DraggableCollapsibleEditor.isCollapsibleElement(editor, activeElement) &&
-    DraggableCollapsibleEditor.isNestableElement(editor, activeElement) &&
-    !activeElement.folded
-      ? Math.max(minOverlayHeight, _dragOverlayHeight)
+  const overlayHeight =
+    dragOverlayHeight &&
+      DraggableCollapsibleEditor.isCollapsibleElement(editor, activeElement) &&
+      DraggableCollapsibleEditor.isNestableElement(editor, activeElement) &&
+      !activeElement.folded
+      ? Math.max(minOverlayHeight, dragOverlayHeight)
       : null;
 
   const offsetDepth = Math.round(offsetLeft / ListItemDefaultIndentWidth);
   const dragDepth = useMemo(
     () =>
       overId && Element.isElement(activeElement)
-        ? getDepth(editor, editor.children, activeElement, overId, offsetDepth)
+        ? getDepth(editor, editor.children as DraggableCollapsibleElement[], activeElement, overId, offsetDepth)
         : 0,
     [editor.children, overId, activeElement, offsetDepth],
   );
 
   const items = useMemo(
-    () => editor.children.map((item) => item.id!).filter(Boolean),
+    () => editor.children.map((item) => item['id']!).filter(Boolean),
     [editor.children],
   );
 
@@ -144,7 +146,7 @@ export const DndPluginProvider = ({
         updateElementByDnd(editor, active, over, dragDepth);
       }
 
-      const selectIndex = editor.children.findIndex((x) => x.id === active.id);
+      const selectIndex = editor.children.findIndex((x) => x['id'] === active.id);
       ReactEditor.focus(editor);
       Transforms.select(editor, Editor.end(editor, [selectIndex]));
 
@@ -160,20 +162,19 @@ export const DndPluginProvider = ({
   const resetState = () => {
     setActiveId(null);
     setOffsetLeft(0);
-
     document.body.classList.remove('dragging');
   };
 
   return (
-    <DndStateProvider
+    <DndContextProvider
       value={useMemo(
         () => ({
           activeId,
           activeElement,
           dragDepth,
-          dragOverlayHeight,
+          dragOverlayHeight: overlayHeight,
         }),
-        [activeId, activeElement, dragDepth, dragOverlayHeight],
+        [activeId, activeElement, dragDepth, overlayHeight],
       )}
     >
       <DndContext
@@ -220,6 +221,6 @@ export const DndPluginProvider = ({
           document.body,
         )}
       </DndContext>
-    </DndStateProvider>
+    </DndContextProvider>
   );
 };

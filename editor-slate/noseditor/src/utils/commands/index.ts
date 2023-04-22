@@ -1,10 +1,12 @@
-import { Editor, Element, Text, Transforms } from 'slate';
+import { Editor, Element, Transforms } from 'slate';
 
-import { TextAlignValues, type TextAlignValueType } from '../constants';
+import type { FormattedText } from '../../plugins/marks/types';
+import type { ParagraphElement } from '../../plugins/paragraph/types';
+import { TextAlignValues, type TextAlignValuesType } from '../constants';
 
 export const isMarkActive = (
   editor: Editor,
-  format: keyof Omit<Text, 'text'>,
+  format: keyof Omit<FormattedText, 'text'>,
 ) => {
   const marks = Editor.marks(editor);
   return marks ? marks[format] === true : false;
@@ -12,7 +14,7 @@ export const isMarkActive = (
 
 export const toggleMark = (
   editor: Editor,
-  format: keyof Omit<Text, 'text'>,
+  format: keyof Omit<FormattedText, 'text'>,
 ) => {
   const isActive = isMarkActive(editor, format);
 
@@ -25,7 +27,7 @@ export const toggleMark = (
 
 export const addMarkData = (
   editor: Editor,
-  data: { format: keyof Omit<Text, 'text'>; value?: string | boolean },
+  data: { format: keyof Omit<FormattedText, 'text'>; value?: string | boolean },
 ) => {
   // const isActive = isMarkActive(editor, format);
   const isActive = false;
@@ -51,17 +53,17 @@ export const isTextAlignActive = (editor, align) => {
   return Boolean(match);
 };
 
-export const toggleTextAlign = (editor: Editor, align: TextAlignValueType) => {
+export const toggleTextAlign = (editor: Editor, align: TextAlignValuesType) => {
   const isActive = isTextAlignActive(editor, align);
 
-  let newProperties: Partial<Element>;
+  let newProperties: Partial<ParagraphElement>;
   if (Object.values(TextAlignValues).includes(align)) {
     newProperties = {
       textAlign: isActive ? undefined : align,
     };
   }
 
-  Transforms.setNodes<Element>(editor, newProperties);
+  Transforms.setNodes<ParagraphElement>(editor, newProperties);
 };
 
 export const isBlockActive = (

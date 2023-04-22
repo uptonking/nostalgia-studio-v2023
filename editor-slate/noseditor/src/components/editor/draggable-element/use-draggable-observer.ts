@@ -4,7 +4,9 @@ import create from 'zustand';
 
 import { useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
-import { useZustandStoreSelector } from '../../../hooks/utils/use-zustand-store';
+import {
+  useZustandStoreSelector,
+} from '../../../hooks/utils/use-zustand-store';
 
 type ObserverState = {
   isScrolling: boolean;
@@ -34,7 +36,7 @@ export const createState = () =>
 /**
  * using InteractionObserver
  */
-export const useDragObserver = (
+export const useDraggableObserver = (
   ref: any,
   isDragging: boolean,
   deps: any[] = [],

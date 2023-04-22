@@ -17,10 +17,11 @@ export { useAutoformatPlugin } from './autoformat/use-autoformat-plugin';
 export {
   useDraggableCollapsiblePlugin,
   DraggableFeatureInitializer,
-  DndPluginProvider,
+  DndFeatureProvider,
   DraggableCollapsibleEditor,
-  useDndState,
-  DndStateProvider,
+  useDndContext,
+  DndContextProvider,
   type CollapsibleElement,
   type NestableElement,
+  type DraggableCollapsibleElement,
 } from './draggable-collapsible-feature';

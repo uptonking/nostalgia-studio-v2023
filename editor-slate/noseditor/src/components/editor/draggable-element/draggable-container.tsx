@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
 import cx from 'clsx';
+import { Element } from 'slate';
 import {
   type ReactEditor,
   RenderElementProps,
@@ -8,25 +9,33 @@ import {
   useSlateStatic,
 } from 'slate-react';
 
-import { DraggableCollapsibleEditor, useDndState } from '../../../plugins';
-import { collapseElement } from '../../../plugins/draggable-collapsible-feature/commands/collapse-element';
-import { ELEMENT_TO_SEMANTIC_PATH } from '../../../plugins/draggable-collapsible-feature/weakmaps';
+import { DraggableCollapsibleEditor, useDndContext } from '../../../plugins';
+import {
+  toggleCollapsibleElement,
+} from '../../../plugins/draggable-collapsible-feature/commands';
+import type {
+  IdentityElement,
+} from '../../../plugins/draggable-collapsible-feature/types';
+import {
+  ELEMENT_TO_SEMANTIC_PATH,
+} from '../../../plugins/draggable-collapsible-feature/weakmaps';
 import { isCheckboxListItemElement } from '../../../plugins/list/utils';
 import { createListItemAttributes } from '../../../plugins/serialization/utils';
 import { ListItemDefaultIndentWidth } from '../../../utils/constants';
-import { SortableUnit } from './components/sortable-unit';
-import { UnitItem, type UnitItemProps } from './components/unit-element';
-import { useDragObserver } from './use-drag-observer';
+import { UnitItem, type UnitItemProps } from './components/unit-item';
+import { UnitSortable } from './components/unit-sortable';
+import { useDraggableObserver } from './use-draggable-observer';
 
 /**
  * may wrap item in sortable container
  */
-export const DragWrapper = (
+export const DraggableContainer = (
   props: Omit<RenderElementProps, 'children'> & { children: React.ReactNode },
 ) => {
-  const { attributes, children, element } = props;
+  const { attributes, children } = props;
+  const element = props.element as IdentityElement & Element;
   const { activeId, activeElement, dragDepth, dragOverlayHeight } =
-    useDndState();
+    useDndContext();
 
   const editor = useSlateStatic() as DraggableCollapsibleEditor & ReactEditor;
   const selected = useSelected();
@@ -53,7 +62,7 @@ export const DragWrapper = (
     DraggableCollapsibleEditor.isHiddenById(element, activeId);
   const hidden = semanticNode.hidden || isHiddenById;
 
-  const isInViewport = useDragObserver(attributes.ref, activeId != null, [
+  const isInViewport = useDraggableObserver(attributes.ref, activeId != null, [
     hidden,
   ]);
 
@@ -61,7 +70,7 @@ export const DragWrapper = (
     !hidden && (selected || isInViewport || activeId === element.id);
 
   const handleCollapse = useCallback(() => {
-    collapseElement(editor, element);
+    toggleCollapsibleElement(editor, element);
   }, [editor, element]);
 
   const itemProps: UnitItemProps = {
@@ -99,15 +108,15 @@ export const DragWrapper = (
       {...attributes}
       {...(DraggableCollapsibleEditor.isNestableElement(editor, element)
         ? createListItemAttributes({
-            depth: element.depth,
-            // @ts-expect-error fix-types
-            listType: element.listType,
-            index: listIndex,
-            checked: isCheckboxListItemElement(element) && element.checked,
-          })
+          depth: element.depth,
+          // @ts-expect-error fix-types
+          listType: element.listType,
+          index: listIndex,
+          checked: isCheckboxListItemElement(element) && element.checked,
+        })
         : {})}
       // ? data-slate-node-type only used for css?
-      data-slate-node-type={element.type}
+      data-slate-node-type={element['type']}
       className={cx('item-container', 'clipboardSkipLinebreak', {
         'item-container-list': DraggableCollapsibleEditor.isNestableElement(
           editor,
@@ -120,17 +129,17 @@ export const DragWrapper = (
           '--spacing': `${isDragging ? dragSpacing : realSpacing}px`,
           ...(dragOverlayHeight
             ? {
-                '--drag-overlay-height': `${dragOverlayHeight}px`,
-              }
+              '--drag-overlay-height': `${dragOverlayHeight}px`,
+            }
             : null),
         } as React.CSSProperties
       }
     >
       {isSortableEnabled ? (
-        <SortableUnit id={id} {...itemProps}>
+        <UnitSortable id={id} {...itemProps}>
           {/* <span>{realSpacing}{' - '   + ' - ' +ExtendedEditor.hasSemanticChildren(element)}</span> */}
           {children}
-        </SortableUnit>
+        </UnitSortable>
       ) : (
         <UnitItem {...itemProps}>{children}</UnitItem>
       )}

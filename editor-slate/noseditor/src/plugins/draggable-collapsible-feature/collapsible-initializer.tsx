@@ -15,7 +15,7 @@ export const DraggableFeatureInitializer = (props: {
 }) => {
   const editor = useSlate() as DraggableCollapsibleEditor;
   const { children } = props;
-  // console.log(';; render-SlateExtended');
+  // console.log(';; render-DraggableFeatureInitializer');
 
   const initDraggableEditor = () => {
     editor.semanticChildren = DraggableCollapsibleEditor.getSemanticChildren(

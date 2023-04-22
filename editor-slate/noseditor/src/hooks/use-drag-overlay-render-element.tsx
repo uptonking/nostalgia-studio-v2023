@@ -3,12 +3,14 @@ import React, { useCallback } from 'react';
 import { Editor } from 'slate';
 import { DefaultElement } from 'slate-react';
 
-import { DragOverlayWrapper } from '../components';
-import { DraggableCollapsibleEditor } from '../plugins/draggable-collapsible-feature/collapsible-editor';
-import { ElementProps, NosPlugin } from '../plugins/types';
+import { DragOverlayContainer } from '../components';
+import {
+  DraggableCollapsibleEditor,
+} from '../plugins/draggable-collapsible-feature';
+import type { ElementProps, NosPlugin } from '../plugins/types';
 
 export const useDragOverlayRenderElement = (
-  editor: Editor,
+  editor: DraggableCollapsibleEditor,
   plugins: NosPlugin[],
 ) => {
   const renderers = plugins
@@ -21,9 +23,9 @@ export const useDragOverlayRenderElement = (
         const { attributes, element } = props;
 
         return (
-          <DragOverlayWrapper attributes={attributes} element={element}>
+          <DragOverlayContainer attributes={attributes} element={element}>
             {renderElementContent(props, renderers)}
-          </DragOverlayWrapper>
+          </DragOverlayContainer>
         );
       }
 
@@ -34,8 +36,6 @@ export const useDragOverlayRenderElement = (
 
   return renderElement;
 };
-
-export default useDragOverlayRenderElement;
 
 export const renderElementContent = (
   props: ElementProps,

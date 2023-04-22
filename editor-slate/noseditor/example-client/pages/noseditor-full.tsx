@@ -6,7 +6,7 @@ import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
 import type { CustomEditor, CustomElement, CustomText } from '../../src';
 import {
-  DndPluginProvider,
+  DndFeatureProvider,
   DragOverlayContent,
   useEditor,
   usePersistedState,
@@ -86,7 +86,7 @@ export const NosEditorFullFeatures = (props) => {
         </div>
         <div className='nosedit-body'>
           <div className='nos-editor-container'>
-            <DndPluginProvider
+            <DndFeatureProvider
               editor={editor}
               onDragEnd={useCallback(() => {
                 // after dnd ends to provide the right DragOverlay drop animation
@@ -106,7 +106,7 @@ export const NosEditorFullFeatures = (props) => {
                 renderLeaf={renderLeaf}
                 {...handlers}
               />
-            </DndPluginProvider>
+            </DndFeatureProvider>
           </div>
         </div>
       </Slate>

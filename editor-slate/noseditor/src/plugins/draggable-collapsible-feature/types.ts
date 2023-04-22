@@ -1,11 +1,7 @@
-import { BaseElement, Element } from 'slate';
+import { Element } from 'slate';
 
 export interface IdentityElement {
   id?: string;
-}
-
-export interface HashedElement {
-  hash?: string;
 }
 
 export type CollapsibleElement = {
@@ -13,9 +9,21 @@ export type CollapsibleElement = {
   foldedCount?: number;
 };
 
+/**
+ * todo remove hash
+ */
+export interface HashedElement {
+  hash?: string;
+}
+
 export type NestableElement = {
   depth: number;
 };
+
+export type DraggableCollapsibleElement = NestableElement &
+  CollapsibleElement &
+  IdentityElement &
+  Element;
 
 /**
  * slateElement with dragSortInfo

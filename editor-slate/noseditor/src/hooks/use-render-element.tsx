@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { Editor } from 'slate';
 import { DefaultElement, ReactEditor, RenderElementProps } from 'slate-react';
 
-import { DragWrapper } from '../components';
+import { DraggableContainer } from '../components';
 import { ElementProps, NosPlugin } from '../plugins/types';
 
 /**
@@ -23,7 +23,7 @@ export const useRenderElement = (editor: ReactEditor, plugins: NosPlugin[]) => {
       if (path.length === 1) {
         // /only wrap top level element
         return (
-          <DragWrapper attributes={attributes} element={element}>
+          <DraggableContainer attributes={attributes} element={element}>
             {renderElementContent(
               {
                 element,
@@ -31,7 +31,7 @@ export const useRenderElement = (editor: ReactEditor, plugins: NosPlugin[]) => {
               },
               renderers,
             )}
-          </DragWrapper>
+          </DraggableContainer>
         );
       }
 

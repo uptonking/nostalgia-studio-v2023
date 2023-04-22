@@ -13,13 +13,14 @@ import { DraggableCollapsibleEditor } from '../../../../plugins';
 import { isHeadingElement } from '../../../../plugins/heading/utils';
 import { isParagraphElement } from '../../../../plugins/paragraph/utils';
 import { CollapsibleIcon } from './collapsible-icon';
-import { CollapsibleLine } from './collapsible-unit';
+import { CollapsibleUnit } from './collapsible-unit';
 import { DragHandle } from './drag-handle';
 import { Placeholder } from './placeholder';
 
 type SortableAttributes = ReturnType<typeof useSortable>['attributes'];
 
 export type UnitItemProps = {
+  children?: React.ReactNode;
   element: Element;
   elementRef?: React.RefObject<HTMLDivElement>;
 
@@ -39,7 +40,7 @@ export type UnitItemProps = {
   isSorting?: boolean;
 };
 
-const UnitComponent = (props: React.PropsWithChildren<UnitItemProps>) => {
+const UnitComponent = (props: UnitItemProps) => {
   const {
     element,
     children,
@@ -66,7 +67,7 @@ const UnitComponent = (props: React.PropsWithChildren<UnitItemProps>) => {
           hidden: hidden,
           'is-heading': isHeadingElement(element),
           'is-foldable':
-            DraggableCollapsibleEditor.hasSemanticChildren(element),
+            DraggableCollapsibleEditor.hasSemanticChildren(editor, element),
         })}
       />
       {
@@ -104,7 +105,7 @@ const UnitComponent = (props: React.PropsWithChildren<UnitItemProps>) => {
         {DraggableCollapsibleEditor.isNestableElement(editor, element) &&
           DraggableCollapsibleEditor.isCollapsibleElement(editor, element) && (
             // vertical line indicating folding
-            <CollapsibleLine
+            <CollapsibleUnit
               element={element}
               onCollapse={onCollapse}
               transform={transform}

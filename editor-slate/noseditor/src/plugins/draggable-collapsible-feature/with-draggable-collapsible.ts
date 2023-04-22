@@ -107,6 +107,7 @@ export const withDraggableCollapsible =
     e.compareLevels = compareLevels(e);
 
     e.isCollapsibleElement = () => false;
+
     e.isNestableElement = (element) =>
       Boolean(
         element &&
@@ -114,8 +115,6 @@ export const withDraggableCollapsible =
           typeof element['depth'] === 'number' &&
           element['depth'] > 0,
       );
-
-    e.hasSemanticChildren = () => false;
 
     return e;
   };

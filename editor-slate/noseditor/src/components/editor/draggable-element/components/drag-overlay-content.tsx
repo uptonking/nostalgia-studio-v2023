@@ -36,9 +36,9 @@ export const DragOverlayContent = (props: DragOverlayContentProps) => {
       const elementContent = element['folded']
         ? [element]
         : [
-            element,
-            ...descendants.filter((x) => !x.hidden).map((x) => x.element),
-          ];
+          element,
+          ...descendants.filter((x) => !x.hidden).map((x) => x.element),
+        ];
       // content = clone(elementContent);
       content = JSON.parse(JSON.stringify(elementContent));
 
@@ -71,7 +71,7 @@ export const DragOverlayContent = (props: DragOverlayContentProps) => {
   );
 };
 
-export const DragOverlayWrapper = (props: RenderElementProps) => {
+export const DragOverlayContainer = (props: RenderElementProps) => {
   const { element, children } = props;
   const editor = useSlateStatic() as DraggableCollapsibleEditor;
 

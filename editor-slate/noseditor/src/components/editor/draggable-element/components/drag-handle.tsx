@@ -24,4 +24,3 @@ export const DragHandle = ({ listeners, classes }: DragHandleProps) => {
   );
 };
 
-export default DragHandle;

@@ -12,9 +12,9 @@ import {
   useRenderLeaf,
 } from '../../hooks';
 import { usePersistedState } from '../../hooks/utils';
-import { DndPluginProvider } from '../../plugins';
+import { DndFeatureProvider } from '../../plugins';
 import type { CustomEditor } from '../../types/slate';
-import { DragOverlayContent } from './drag-wrapper';
+import { DragOverlayContent } from './draggable-element';
 import { EditorToolbar } from './editor-toolbar';
 
 export type NosEditorProps = {
@@ -76,7 +76,7 @@ export const NosEditor = (props: NosEditorProps) => {
   return (
     <NosIconProvider>
       <Slate editor={editor} value={value} onChange={setValue}>
-        <DndPluginProvider
+        <DndFeatureProvider
           editor={editor}
           onDragEnd={useCallback(() => {
             // after dnd ends to provide the right DragOverlay drop animation
@@ -96,7 +96,7 @@ export const NosEditor = (props: NosEditorProps) => {
             renderLeaf={renderLeaf}
             {...handlers}
           />
-        </DndPluginProvider>
+        </DndFeatureProvider>
       </Slate>
     </NosIconProvider>
   );

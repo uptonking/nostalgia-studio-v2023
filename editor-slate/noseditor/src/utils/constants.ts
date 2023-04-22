@@ -1,11 +1,11 @@
 export const TextAlignValues = {
-  ALIGN_LEFT: 'alignLeft',
-  ALIGN_CENTER: 'alignCenter',
-  ALIGN_Right: 'alignRight',
-  ALIGN_JUSTIFY: 'alignJustify',
+  AlignLeft: 'alignLeft',
+  AlignCenter: 'alignCenter',
+  AlignRight: 'alignRight',
+  AlignJustify: 'alignJustify',
 } as const;
 
-export type TextAlignValueType =
+export type TextAlignValuesType =
   (typeof TextAlignValues)[keyof typeof TextAlignValues];
 
 export const ListItemDefaultIndentWidth = 24;

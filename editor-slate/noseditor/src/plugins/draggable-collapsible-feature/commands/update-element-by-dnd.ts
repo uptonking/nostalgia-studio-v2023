@@ -3,6 +3,7 @@ import { Editor, Element, Node, Transforms } from 'slate';
 import type { Active, Over } from '@dnd-kit/core';
 
 import { DraggableCollapsibleEditor } from '../collapsible-editor';
+import type { NestableElement } from '../types';
 
 export const updateElementByDnd = (
   editor: DraggableCollapsibleEditor,
@@ -13,7 +14,7 @@ export const updateElementByDnd = (
   const activeIndex = active.data.current?.sortable.index;
   let overIndex = over.data.current?.sortable.index;
 
-  const element = editor.children.find((x) => x.id === active.id);
+  const element = editor.children.find((x) => x['id'] === active.id);
 
   if (activeIndex < overIndex) {
     const droppableIntervals = DraggableCollapsibleEditor.getDroppableIntervals(
@@ -49,7 +50,7 @@ export const moveDndElements = (
   activeId: string,
   overIndex: number,
 ) => {
-  const element = editor.children.find((x) => x.id === activeId);
+  const element = editor.children.find((x) => x['id'] === activeId);
 
   if (!element) {
     return;
@@ -66,15 +67,15 @@ export const moveDndElements = (
     element,
   )
     ? DraggableCollapsibleEditor.semanticDescendants(element)
-    : DraggableCollapsibleEditor.semanticDescendants(element)?.slice(
-        0,
-        collapsedCount,
-      );
+    : DraggableCollapsibleEditor.semanticDescendants(element as Element)?.slice(
+      0,
+      collapsedCount,
+    );
 
   const match = (node: Node) =>
     node === element ||
     (Element.isElement(node) &&
-      semanticDescendants.some((x) => x.element.id === node.id));
+      semanticDescendants.some((x) => x.element['id'] === node['id']));
 
   Transforms.moveNodes(editor, {
     at: [],
@@ -89,14 +90,14 @@ export const updateDndDepth = (
   dragDepth: number = 0,
 ) => {
   Editor.withoutNormalizing(editor, () => {
-    const element = editor.children.find((x) => x.id === activeId);
+    const element = editor.children.find((x) => x['id'] === activeId);
 
     if (DraggableCollapsibleEditor.isNestableElement(editor, element)) {
       const foldedCount = DraggableCollapsibleEditor.isCollapsibleElement(
         editor,
         element,
       )
-        ? element.foldedCount || 0
+        ? element['foldedCount'] || 0
         : 0;
       const semanticDescendants = DraggableCollapsibleEditor.isNestableElement(
         editor,
@@ -104,22 +105,22 @@ export const updateDndDepth = (
       )
         ? DraggableCollapsibleEditor.semanticDescendants(element)
         : DraggableCollapsibleEditor.semanticDescendants(element)?.slice(
-            0,
-            foldedCount,
-          );
+          0,
+          foldedCount,
+        );
 
       const depthDiff = element.depth - dragDepth;
 
       const match = (node: Node) =>
         node === element ||
         (Element.isElement(node) &&
-          semanticDescendants.some((x) => x.element.id === node.id));
+          semanticDescendants.some((x) => x.element['id'] === node['id']));
 
       const entries = Editor.nodes(editor, { at: [], match });
 
       for (const [node] of entries) {
         if (DraggableCollapsibleEditor.isNestableElement(editor, node)) {
-          Transforms.setNodes(
+          Transforms.setNodes<NestableElement & Node>(
             editor,
             {
               depth: node.depth - depthDiff,

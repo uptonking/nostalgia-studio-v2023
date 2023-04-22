@@ -1,14 +1,14 @@
-import { Editor, Element, Range, Transforms } from 'slate';
+import { Editor, Element, Node, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
 import { DraggableCollapsibleEditor } from '../collapsible-editor';
-import { SemanticNode } from '../types';
+import type { CollapsibleElement, SemanticNode } from '../types';
 import { updateHash } from './update-hash';
 
 /**
- * editor command, collapse element and its children
+ * collapse element and its children
  */
-export const collapseElement = (
+export const toggleCollapsibleElement = (
   editor: DraggableCollapsibleEditor & ReactEditor,
   element: Element,
 ) => {
@@ -42,14 +42,14 @@ export const collapseElement = (
         }
       }
 
-      Transforms.setNodes(
+      Transforms.setNodes<CollapsibleElement & Node>(
         editor,
         element.folded
           ? { folded: false, foldedCount: 0 }
           : {
-              folded: true,
-              foldedCount: semanticDescendants.length,
-            },
+            folded: true,
+            foldedCount: semanticDescendants.length,
+          },
         {
           at: path,
           match: (node) => node === element,
@@ -80,7 +80,7 @@ const updateCollapsedCount = (
     DraggableCollapsibleEditor.isCollapsibleElement(editor, element) &&
     element.folded
   ) {
-    Transforms.setNodes(
+    Transforms.setNodes<CollapsibleElement & Node>(
       editor,
       { foldedCount: semanticDescendants.length },
       {

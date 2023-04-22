@@ -19,7 +19,7 @@ export {
 export { EditorToolbar } from './editor/editor-toolbar';
 export { NosEditor } from './editor/noseditor';
 export {
-  DragWrapper,
+  DraggableContainer,
   DragOverlayContent,
-  DragOverlayWrapper,
-} from './editor/drag-wrapper';
+  DragOverlayContainer,
+} from './editor/draggable-element';

@@ -5,9 +5,9 @@ import { useFocused } from 'slate-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
-import { UnitItem, UnitItemProps } from './unit-element';
+import { UnitItem, UnitItemProps } from './unit-item';
 
-export const SortableUnit = ({
+export const UnitSortable = ({
   id,
   ...props
 }: {
@@ -34,7 +34,7 @@ export const SortableUnit = ({
   const focused = useFocused();
 
   useIsomorphicLayoutEffect(() => {
-    props.elementRef && setNodeRef(props.elementRef.current);
+    if (props.elementRef) setNodeRef(props.elementRef.current);
   });
 
   return (

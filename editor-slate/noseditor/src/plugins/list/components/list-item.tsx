@@ -6,8 +6,12 @@ import { useSlate } from 'slate-react';
 import { css } from '@linaria/core';
 
 import { themed } from '../../../styles';
-import { DraggableCollapsibleEditor } from '../../draggable-collapsible-feature/collapsible-editor';
-import { collapseElement } from '../../draggable-collapsible-feature/commands/collapse-element';
+import {
+  DraggableCollapsibleEditor,
+} from '../../draggable-collapsible-feature/collapsible-editor';
+import {
+  toggleCollapsibleElement,
+} from '../../draggable-collapsible-feature/commands/toggle-collapsible-element';
 import { ElementProps } from '../../types';
 import { checkItem } from '../commands';
 import {

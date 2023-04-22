@@ -6,18 +6,22 @@ import { ReactEditor, useSlate } from 'slate-react';
 import { getClientRect } from '@dnd-kit/core';
 import { Transform } from '@dnd-kit/utilities';
 
-import { DraggableCollapsibleEditor, useDndState } from '../../../../plugins';
+import {
+  DraggableCollapsibleEditor,
+  type DraggableCollapsibleElement,
+  useDndContext,
+} from '../../../../plugins';
 
-type CollapsibleLineProps = {
+type CollapsibleUnitProps = {
   onCollapse?: React.MouseEventHandler;
   transform?: Transform | null;
 };
 
-export const CollapsibleLine = (
-  props: CollapsibleLineProps & { element: Element },
+export const CollapsibleUnit = (
+  props: CollapsibleUnitProps & { element: DraggableCollapsibleElement },
 ) => {
   const editor = useSlate() as DraggableCollapsibleEditor & ReactEditor;
-  const { activeId } = useDndState();
+  const { activeId } = useDndContext();
   const { element, onCollapse, transform } = props;
   const [height, setHeight] = useState(0);
 
@@ -36,8 +40,8 @@ export const CollapsibleLine = (
       const semanticDescendants =
         DraggableCollapsibleEditor.semanticDescendants(element);
 
-      const lastDescendant =
-        semanticDescendants[semanticDescendants.length - 1]?.element;
+      const lastDescendant = semanticDescendants[semanticDescendants.length - 1]
+        ?.element as DraggableCollapsibleElement;
 
       if (!lastDescendant) {
         return;
@@ -81,7 +85,7 @@ export const CollapsibleLine = (
 
   if (hasCollapsedLine && activeId == null) {
     return (
-      <CollapsibleLineMemoized
+      <CollapsibleUnitMemoized
         depth={element.depth}
         height={height}
         onCollapse={onCollapse}
@@ -92,12 +96,12 @@ export const CollapsibleLine = (
   return null;
 };
 
-const CollapsibleLineMemoized = memo(
+const CollapsibleUnitMemoized = memo(
   ({
     depth,
     height,
     onCollapse,
-  }: CollapsibleLineProps & { depth: number; height: number }) => {
+  }: CollapsibleUnitProps & { depth: number; height: number }) => {
     return (
       <div
         contentEditable={false}

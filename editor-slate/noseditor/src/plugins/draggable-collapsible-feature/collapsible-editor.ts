@@ -1,6 +1,6 @@
 import { BaseEditor, Descendant, Editor, Element } from 'slate';
 
-import { isDefined } from '../../utils';
+import { isDefined, isNullOrUndefined } from '../../utils';
 import type {
   CollapsibleElement,
   NestableElement,
@@ -18,13 +18,17 @@ export interface DraggableCollapsibleEditor extends BaseEditor {
   isNestableElement: (element: Element) => boolean;
   getSemanticChildren: (children: Descendant[]) => SemanticNode[];
   /** default false */
-  hasSemanticChildren: (element: Element) => boolean;
+  hasSemanticChildren: (
+    editor: DraggableCollapsibleEditor,
+    element: Element,
+  ) => boolean;
 }
 
 export const DraggableCollapsibleEditor = {
-  hasSemanticChildren(element: Element) {
-    const editorElem = DraggableCollapsibleEditor.semanticNode(element);
-    return editorElem.children.length > 0;
+  hasSemanticChildren(editor: DraggableCollapsibleEditor, element: Element) {
+    const elemCollapsibleNode =
+      DraggableCollapsibleEditor.semanticNode(element);
+    return elemCollapsibleNode.children.length > 0;
   },
 
   /**
@@ -66,7 +70,7 @@ export const DraggableCollapsibleEditor = {
       let listIndex = 0;
       if (DraggableCollapsibleEditor.isNestableElement(editor, element)) {
         // init counter
-        if (depthCounters[element.depth] == null) {
+        if (isNullOrUndefined(depthCounters[element.depth])) {
           depthCounters[element.depth] = 0;
         }
 
@@ -178,7 +182,6 @@ export const DraggableCollapsibleEditor = {
 
   semanticPath(element: Element): SemanticNode[] {
     const path = ELEMENT_TO_SEMANTIC_PATH.get(element);
-
     if (!path) {
       throw new Error(
         `Cannot resolve a semantic path from Slate element: ${JSON.stringify(

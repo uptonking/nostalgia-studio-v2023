@@ -1,4 +1,7 @@
-export { type TextAlignValuesType as TextAlignValueType, TextAlignValues } from './constants';
+export {
+  type TextAlignValuesType as TextAlignValueType,
+  TextAlignValues,
+} from './constants';
 
 export { isNullOrUndefined, isDefined } from './js-types';
 

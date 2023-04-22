@@ -64,7 +64,8 @@ export const DndFeatureProvider = ({
     null,
   );
 
-  const activeElement = (editor.children.find((x) => x['id'] === activeId) || null) as DraggableCollapsibleElement;
+  const activeElement = (editor.children.find((x) => x['id'] === activeId) ||
+    null) as DraggableCollapsibleElement;
   const semanticNode = activeElement
     ? DraggableCollapsibleEditor.semanticNode(activeElement)
     : null;
@@ -73,9 +74,9 @@ export const DndFeatureProvider = ({
     : 0;
   const overlayHeight =
     dragOverlayHeight &&
-      DraggableCollapsibleEditor.isCollapsibleElement(editor, activeElement) &&
-      DraggableCollapsibleEditor.isNestableElement(editor, activeElement) &&
-      !activeElement.folded
+    DraggableCollapsibleEditor.isCollapsibleElement(editor, activeElement) &&
+    DraggableCollapsibleEditor.isNestableElement(editor, activeElement) &&
+    !activeElement.folded
       ? Math.max(minOverlayHeight, dragOverlayHeight)
       : null;
 
@@ -83,7 +84,13 @@ export const DndFeatureProvider = ({
   const dragDepth = useMemo(
     () =>
       overId && Element.isElement(activeElement)
-        ? getDepth(editor, editor.children as DraggableCollapsibleElement[], activeElement, overId, offsetDepth)
+        ? getDepth(
+            editor,
+            editor.children as DraggableCollapsibleElement[],
+            activeElement,
+            overId,
+            offsetDepth,
+          )
         : 0,
     [editor.children, overId, activeElement, offsetDepth],
   );
@@ -146,7 +153,9 @@ export const DndFeatureProvider = ({
         updateElementByDnd(editor, active, over, dragDepth);
       }
 
-      const selectIndex = editor.children.findIndex((x) => x['id'] === active.id);
+      const selectIndex = editor.children.findIndex(
+        (x) => x['id'] === active.id,
+      );
       ReactEditor.focus(editor);
       Transforms.select(editor, Editor.end(editor, [selectIndex]));
 

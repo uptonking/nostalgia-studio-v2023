@@ -68,9 +68,9 @@ export const moveDndElements = (
   )
     ? DraggableCollapsibleEditor.semanticDescendants(element)
     : DraggableCollapsibleEditor.semanticDescendants(element as Element)?.slice(
-      0,
-      collapsedCount,
-    );
+        0,
+        collapsedCount,
+      );
 
   const match = (node: Node) =>
     node === element ||
@@ -105,9 +105,9 @@ export const updateDndDepth = (
       )
         ? DraggableCollapsibleEditor.semanticDescendants(element)
         : DraggableCollapsibleEditor.semanticDescendants(element)?.slice(
-          0,
-          foldedCount,
-        );
+            0,
+            foldedCount,
+          );
 
       const depthDiff = element.depth - dragDepth;
 

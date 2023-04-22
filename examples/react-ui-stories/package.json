@@ -1,0 +1,29 @@
+{
+  "name": "@examples-hub/react-ui-stories",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "build": "rimraf dist && npm run build:prod",
+    "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
+    "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "build:types": "",
+    "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.js",
+    "start": "npm run demo",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:log": "node index.js --name nested-a"
+  },
+  "dependencies": {
+    "@dnd-kit/accessibility": "3.0.1111",
+    "@dnd-kit/core": "6.0.8111",
+    "@dnd-kit/modifiers": "6.0.1111",
+    "@dnd-kit/sortable": "7.0.2111",
+    "@dnd-kit/utilities": "3.2.1111",
+    "classnames": "^2.3.1",
+    "clsx": "^1.2.1",
+    "reactjs-popup": "2.0.5111",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {}
+}

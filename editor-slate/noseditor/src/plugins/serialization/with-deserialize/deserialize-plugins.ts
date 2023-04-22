@@ -164,4 +164,3 @@ export const deserializePlugins = rules.map((rule) =>
     deserializeHtml: rule,
   }),
 );
-

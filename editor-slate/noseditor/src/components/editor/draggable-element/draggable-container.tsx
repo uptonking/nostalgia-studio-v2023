@@ -10,15 +10,9 @@ import {
 } from 'slate-react';
 
 import { DraggableCollapsibleEditor, useDndContext } from '../../../plugins';
-import {
-  toggleCollapsibleElement,
-} from '../../../plugins/draggable-collapsible-feature/commands';
-import type {
-  IdentityElement,
-} from '../../../plugins/draggable-collapsible-feature/types';
-import {
-  ELEMENT_TO_SEMANTIC_PATH,
-} from '../../../plugins/draggable-collapsible-feature/weakmaps';
+import { toggleCollapsibleElement } from '../../../plugins/draggable-collapsible-feature/commands';
+import type { IdentityElement } from '../../../plugins/draggable-collapsible-feature/types';
+import { ELEMENT_TO_SEMANTIC_PATH } from '../../../plugins/draggable-collapsible-feature/weakmaps';
 import { isCheckboxListItemElement } from '../../../plugins/list/utils';
 import { createListItemAttributes } from '../../../plugins/serialization/utils';
 import { ListItemDefaultIndentWidth } from '../../../utils/constants';
@@ -108,12 +102,12 @@ export const DraggableContainer = (
       {...attributes}
       {...(DraggableCollapsibleEditor.isNestableElement(editor, element)
         ? createListItemAttributes({
-          depth: element.depth,
-          // @ts-expect-error fix-types
-          listType: element.listType,
-          index: listIndex,
-          checked: isCheckboxListItemElement(element) && element.checked,
-        })
+            depth: element.depth,
+            // @ts-expect-error fix-types
+            listType: element.listType,
+            index: listIndex,
+            checked: isCheckboxListItemElement(element) && element.checked,
+          })
         : {})}
       // ? data-slate-node-type only used for css?
       data-slate-node-type={element['type']}
@@ -129,8 +123,8 @@ export const DraggableContainer = (
           '--spacing': `${isDragging ? dragSpacing : realSpacing}px`,
           ...(dragOverlayHeight
             ? {
-              '--drag-overlay-height': `${dragOverlayHeight}px`,
-            }
+                '--drag-overlay-height': `${dragOverlayHeight}px`,
+              }
             : null),
         } as React.CSSProperties
       }

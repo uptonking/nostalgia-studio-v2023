@@ -20,7 +20,7 @@ export const withNodeId = <T extends Editor>(editor: T) => {
     if (operation.type === 'insert_node') {
       // clone to be able to write (read-only)
       // const node = clone(operation.node);
-      const node = JSON.parse(JSON.stringify((operation.node)));
+      const node = JSON.parse(JSON.stringify(operation.node));
       assignIdRecursively(node);
       return apply({
         ...operation,

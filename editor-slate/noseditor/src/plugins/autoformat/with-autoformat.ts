@@ -10,36 +10,38 @@ import { getMatchRange, getRangeFromBlockStart, getText } from './utils';
  */
 export const withAutoformat =
   (rules: AutoformatRule[] = []) =>
-    (editor: Editor) => {
-      const { insertText } = editor;
+  (editor: Editor) => {
+    const { insertText } = editor;
 
-      editor.insertText = (text) => {
-        if (editor.selection && !Range.isCollapsed(editor.selection)) {
-          return insertText(text);
-        }
+    editor.insertText = (text) => {
+      if (editor.selection && !Range.isCollapsed(editor.selection)) {
+        return insertText(text);
+      }
 
-        for (const rule of rules) {
-          const { mode = 'text', insertTrigger, query } = rule;
+      for (const rule of rules) {
+        const { mode = 'text', insertTrigger, query } = rule;
 
-          // if (query && !query(editor, { ...rule, text })) continue;
+        // if (query && !query(editor, { ...rule, text })) continue;
 
-          const formatter = {
-            block: autoformatBlock,
-          };
+        const formatter = {
+          block: autoformatBlock,
+        };
 
-          if (formatter[mode]?.(editor, {
+        if (
+          formatter[mode]?.(editor, {
             ...(rule as any),
             text,
-          })) {
-            return;
-          }
+          })
+        ) {
+          return;
         }
+      }
 
-        insertText(text);
-      };
-
-      return editor;
+      insertText(text);
     };
+
+    return editor;
+  };
 
 const autoformatBlock = (
   editor: Editor,

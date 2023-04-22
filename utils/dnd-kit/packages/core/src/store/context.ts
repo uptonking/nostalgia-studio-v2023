@@ -1,6 +1,7 @@
 import { createContext } from 'react';
 
 import { noop } from '../utilities/other';
+import { defaultMeasuringConfiguration } from '../components/DndContext/defaults';
 import { DroppableContainersMap } from './constructors';
 import type {
   InternalContextDescriptor,
@@ -14,7 +15,7 @@ export const defaultPublicContext: PublicContextDescriptor = {
   activeNodeRect: null,
   collisions: null,
   containerNodeRect: null,
-  draggableNodes: {},
+  draggableNodes: new Map(),
   droppableRects: new Map(),
   droppableContainers: new DroppableContainersMap(),
   over: null,
@@ -27,6 +28,7 @@ export const defaultPublicContext: PublicContextDescriptor = {
   },
   scrollableAncestors: [],
   scrollableAncestorRects: [],
+  measuringConfiguration: defaultMeasuringConfiguration,
   measureDroppableContainers: noop,
   windowRect: null,
   measuringScheduled: false,
@@ -41,7 +43,7 @@ export const defaultInternalContext: InternalContextDescriptor = {
     draggable: '',
   },
   dispatch: noop,
-  draggableNodes: {},
+  draggableNodes: new Map(),
   over: null,
   measureDroppableContainers: noop,
 };

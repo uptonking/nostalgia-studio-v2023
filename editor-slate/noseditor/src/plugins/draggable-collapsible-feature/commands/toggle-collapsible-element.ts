@@ -47,9 +47,9 @@ export const toggleCollapsibleElement = (
         element.folded
           ? { folded: false, foldedCount: 0 }
           : {
-            folded: true,
-            foldedCount: semanticDescendants.length,
-          },
+              folded: true,
+              foldedCount: semanticDescendants.length,
+            },
         {
           at: path,
           match: (node) => node === element,

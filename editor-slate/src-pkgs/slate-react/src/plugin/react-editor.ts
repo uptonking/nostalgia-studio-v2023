@@ -239,9 +239,9 @@ export const ReactEditor = {
       (!editable || targetEl.isContentEditable
         ? true
         : (typeof targetEl.isContentEditable === 'boolean' && // isContentEditable exists only on HTMLElement, and on other nodes it will be undefined
-          // this is the core logic that lets you know you got the right editor.selection instead of null when editor is contenteditable="false"(readOnly)
-          targetEl.closest('[contenteditable="false"]') === editorEl) ||
-        Boolean(targetEl.getAttribute('data-slate-zero-width')))
+            // this is the core logic that lets you know you got the right editor.selection instead of null when editor is contenteditable="false"(readOnly)
+            targetEl.closest('[contenteditable="false"]') === editorEl) ||
+          Boolean(targetEl.getAttribute('data-slate-zero-width')))
     );
   },
 
@@ -373,11 +373,15 @@ export const ReactEditor = {
     const startEl = (
       isDOMElement(startNode) ? startNode : startNode.parentElement
     ) as HTMLElement;
-    const isStartAtZeroWidth = Boolean(startEl.getAttribute('data-slate-zero-width'));
+    const isStartAtZeroWidth = Boolean(
+      startEl.getAttribute('data-slate-zero-width'),
+    );
     const endEl = (
       isDOMElement(endNode) ? endNode : endNode.parentElement
     ) as HTMLElement;
-    const isEndAtZeroWidth = Boolean(endEl.getAttribute('data-slate-zero-width'));
+    const isEndAtZeroWidth = Boolean(
+      endEl.getAttribute('data-slate-zero-width'),
+    );
 
     domRange.setStart(startNode, isStartAtZeroWidth ? 1 : startOffset);
     domRange.setEnd(endNode, isEndAtZeroWidth ? 1 : endOffset);
@@ -666,9 +670,9 @@ export const ReactEditor = {
     const focus = isCollapsed
       ? anchor
       : ReactEditor.toSlatePoint(editor, [focusNode, focusOffset], {
-        exactMatch,
-        suppressThrow,
-      });
+          exactMatch,
+          suppressThrow,
+        });
     if (!focus) {
       return null as T extends true ? Range | null : Range;
     }

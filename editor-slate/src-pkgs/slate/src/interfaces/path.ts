@@ -34,8 +34,8 @@ export interface PathInterface {
   endsBefore: (path: Path, another: Path) => boolean;
   equals: (path: Path, another: Path) => boolean;
   /**
- * Check if the path of previous sibling node exists
- */
+   * Check if the path of previous sibling node exists
+   */
   hasPrevious: (path: Path) => boolean;
   isAfter: (path: Path, another: Path) => boolean;
   isAncestor: (path: Path, another: Path) => boolean;

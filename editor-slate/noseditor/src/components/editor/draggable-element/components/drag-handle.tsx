@@ -23,4 +23,3 @@ export const DragHandle = ({ listeners, classes }: DragHandleProps) => {
     </div>
   );
 };
-

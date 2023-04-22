@@ -1,4 +1,7 @@
-export { defaultAnnouncements } from './Accessibility';
+export {
+  defaultAnnouncements,
+  defaultScreenReaderInstructions,
+} from './Accessibility';
 export type { Announcements, ScreenReaderInstructions } from './Accessibility';
 export { DndContext } from './DndContext';
 export type {
@@ -7,5 +10,18 @@ export type {
   DraggableMeasuring,
   MeasuringConfiguration,
 } from './DndContext';
-export { DragOverlay, defaultDropAnimation } from './DragOverlay';
-export type { DropAnimation, Props as DragOverlayProps } from './DragOverlay';
+export { useDndMonitor } from './DndMonitor';
+export type { DndMonitorListener } from './DndMonitor';
+export {
+  DragOverlay,
+  defaultDropAnimation,
+  defaultDropAnimationSideEffects,
+} from './DragOverlay';
+export type {
+  DropAnimation,
+  DropAnimationFunction,
+  DropAnimationFunctionArguments,
+  DropAnimationKeyframeResolver,
+  DropAnimationSideEffects,
+  Props as DragOverlayProps,
+} from './DragOverlay';

@@ -5,10 +5,11 @@ import {
   UseDraggableArguments,
   UseDroppableArguments,
 } from '@dnd-kit/core';
+import type { Data } from '@dnd-kit/core';
 import { CSS, isKeyboardEvent, useCombinedRefs } from '@dnd-kit/utilities';
 
 import { Context } from '../components';
-import type { SortingStrategy } from '../types';
+import type { Disabled, SortableData, SortingStrategy } from '../types';
 import { isValidIndex } from '../utilities';
 import {
   defaultAnimateLayoutChanges,
@@ -26,9 +27,10 @@ import type {
 import { useDerivedTransform } from './utilities';
 
 export interface Arguments
-  extends UseDraggableArguments,
+  extends Omit<UseDraggableArguments, 'disabled'>,
     Pick<UseDroppableArguments, 'resizeObserverConfig'> {
   animateLayoutChanges?: AnimateLayoutChanges;
+  disabled?: boolean | Disabled;
   getNewIndex?: NewIndexGetter;
   strategy?: SortingStrategy;
   transition?: SortableTransition | null;
@@ -37,7 +39,7 @@ export interface Arguments
 export function useSortable({
   animateLayoutChanges = defaultAnimateLayoutChanges,
   attributes: userDefinedAttributes,
-  disabled,
+  disabled: localDisabled,
   data: customData,
   getNewIndex = defaultNewIndexGetter,
   id,
@@ -49,14 +51,19 @@ export function useSortable({
     items,
     containerId,
     activeIndex,
+    disabled: globalDisabled,
     disableTransforms,
     sortedRects,
     overIndex,
     useDragOverlay,
     strategy: globalStrategy,
   } = useContext(Context);
+  const disabled: Disabled = normalizeLocalDisabled(
+    localDisabled,
+    globalDisabled,
+  );
   const index = items.indexOf(id);
-  const data = useMemo(
+  const data = useMemo<SortableData & Data>(
     () => ({ sortable: { containerId, index, items }, ...customData }),
     [containerId, customData, index, items],
   );
@@ -72,6 +79,7 @@ export function useSortable({
   } = useDroppable({
     id,
     data,
+    disabled: disabled.droppable,
     resizeObserverConfig: {
       updateMeasurementsFor: itemsAfterCurrentSortable,
       ...resizeObserverConfig,
@@ -86,6 +94,7 @@ export function useSortable({
     listeners,
     isDragging,
     over,
+    setActivatorNodeRef,
     transform,
   } = useDraggable({
     id,
@@ -94,7 +103,7 @@ export function useSortable({
       ...defaultAttributes,
       ...userDefinedAttributes,
     },
-    disabled,
+    disabled: disabled.draggable,
   });
   const setNodeRef = useCombinedRefs(setDroppableNodeRef, setDraggableNodeRef);
   const isSorting = Boolean(active);
@@ -143,6 +152,7 @@ export function useSortable({
     transition,
     wasDragging: previous.current.activeId != null,
   });
+
   const derivedTransform = useDerivedTransform({
     disabled: !shouldAnimateLayoutChanges,
     index,
@@ -162,16 +172,30 @@ export function useSortable({
     if (items !== previous.current.items) {
       previous.current.items = items;
     }
+  }, [isSorting, newIndex, containerId, items]);
 
-    if (activeId !== previous.current.activeId) {
-      previous.current.activeId = activeId;
+  useEffect(() => {
+    if (activeId === previous.current.activeId) {
+      return;
     }
-  }, [activeId, isSorting, newIndex, containerId, items]);
+
+    if (activeId && !previous.current.activeId) {
+      previous.current.activeId = activeId;
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      previous.current.activeId = activeId;
+    }, 50);
+
+    return () => clearTimeout(timeoutId);
+  }, [activeId]);
 
   return {
     active,
     activeIndex,
     attributes,
+    data,
     rect,
     index,
     newIndex,
@@ -184,6 +208,7 @@ export function useSortable({
     overIndex,
     over,
     setNodeRef,
+    setActivatorNodeRef,
     setDroppableNodeRef,
     setDraggableNodeRef,
     transform: derivedTransform ?? finalTransform,
@@ -216,4 +241,22 @@ export function useSortable({
 
     return undefined;
   }
+}
+
+function normalizeLocalDisabled(
+  localDisabled: Arguments['disabled'],
+  globalDisabled: Disabled,
+) {
+  if (typeof localDisabled === 'boolean') {
+    return {
+      draggable: localDisabled,
+      // Backwards compatibility
+      droppable: false,
+    };
+  }
+
+  return {
+    draggable: localDisabled?.draggable ?? globalDisabled.draggable,
+    droppable: localDisabled?.droppable ?? globalDisabled.droppable,
+  };
 }

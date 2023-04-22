@@ -112,8 +112,8 @@ export interface BaseEditor {
   /** apply is implemented in `createEditor()` */
   apply: (operation: Operation) => void;
   /**
- * Delete content in the editor backward from the current selection.
- */
+   * Delete content in the editor backward from the current selection.
+   */
   deleteBackward: (unit: TextUnit) => void;
   deleteForward: (unit: TextUnit) => void;
   deleteFragment: (direction?: TextDirection) => void;
@@ -287,8 +287,8 @@ export interface EditorInterface {
    */
   removeMark: (editor: Editor, key: string) => void;
   /**
-  * Delete content in the editor backward from the current selection.
-  */
+   * Delete content in the editor backward from the current selection.
+   */
   deleteBackward: (
     editor: Editor,
     options?: EditorDirectedDeletionOptions,
@@ -319,8 +319,8 @@ export interface EditorInterface {
    */
   end: (editor: Editor, at: Location) => Point;
   /**
-  * Get the start point of a location.
-  */
+   * Get the start point of a location.
+   */
   start: (editor: Editor, at: Location) => Point;
   /** Get the first node at a location. */
   first: (editor: Editor, at: Location) => NodeEntry;
@@ -388,8 +388,8 @@ Note: If you are looking for the next Point, and not the next Node, you are prob
     options?: EditorParentOptions,
   ) => NodeEntry<Ancestor>;
   /**
-  * Get the path of a location.
-  */
+   * Get the path of a location.
+   */
   path: (editor: Editor, at: Location, options?: EditorPathOptions) => Path;
   pathRef: (
     editor: Editor,

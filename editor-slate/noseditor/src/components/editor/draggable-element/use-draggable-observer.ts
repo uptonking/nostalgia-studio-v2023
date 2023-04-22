@@ -4,9 +4,7 @@ import create from 'zustand';
 
 import { useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
-import {
-  useZustandStoreSelector,
-} from '../../../hooks/utils/use-zustand-store';
+import { useZustandStoreSelector } from '../../../hooks/utils/use-zustand-store';
 
 type ObserverState = {
   isScrolling: boolean;

@@ -53,9 +53,7 @@ export function useDerivedTransform({
 
   useEffect(() => {
     if (derivedTransform) {
-      requestAnimationFrame(() => {
-        setDerivedtransform(null);
-      });
+      setDerivedtransform(null);
     }
   }, [derivedTransform]);
 

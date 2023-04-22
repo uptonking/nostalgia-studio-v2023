@@ -14,11 +14,11 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@dnd-kit/accessibility": "3.0.0111",
-    "@dnd-kit/core": "5.0.3111",
-    "@dnd-kit/modifiers": "5.0.0111",
-    "@dnd-kit/sortable": "6.0.1111",
-    "@dnd-kit/utilities": "3.1.0111",
+    "@dnd-kit/accessibility": "3.0.1111",
+    "@dnd-kit/core": "6.0.8111",
+    "@dnd-kit/modifiers": "6.0.1111",
+    "@dnd-kit/sortable": "7.0.2111",
+    "@dnd-kit/utilities": "3.2.1111",
     "@floating-ui/core": "1.2.5111",
     "@floating-ui/dom": "1.2.5111",
     "@floating-ui/react": "0.22.2111",

@@ -1,6 +1,6 @@
 {
   "name": "@dnd-kit/accessibility",
-  "version": "3.0.0111",
+  "version": "3.0.1111",
   "description": "A generic toolkit to help with accessibility",
   "author": "Claudéric Demers",
   "license": "MIT",
@@ -27,7 +27,7 @@
   "peerDependencies": {
     "react": "^18.2.0"
   },
-  "dependencies": {
+  "devDependencies": {
     "tslib": "^2.4.0"
   },
   "publishConfig": {

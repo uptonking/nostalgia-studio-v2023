@@ -180,7 +180,8 @@ export const withReact = <T extends Editor>(editor: T) => {
     // show up elsewhere when pasted.
     Array.from(contents.querySelectorAll('[data-slate-zero-width]')).forEach(
       (zeroWidth) => {
-        const isNewline = zeroWidth.getAttribute('data-slate-zero-width') === 'n';
+        const isNewline =
+          zeroWidth.getAttribute('data-slate-zero-width') === 'n';
         zeroWidth.textContent = isNewline ? '\n' : '';
       },
     );

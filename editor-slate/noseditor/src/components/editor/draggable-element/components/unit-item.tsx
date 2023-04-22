@@ -66,8 +66,10 @@ const UnitComponent = (props: UnitItemProps) => {
         classes={cx({
           hidden: hidden,
           'is-heading': isHeadingElement(element),
-          'is-foldable':
-            DraggableCollapsibleEditor.hasSemanticChildren(editor, element),
+          'is-foldable': DraggableCollapsibleEditor.hasSemanticChildren(
+            editor,
+            element,
+          ),
         })}
       />
       {

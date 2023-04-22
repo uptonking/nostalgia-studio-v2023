@@ -79,7 +79,7 @@ export const sortableCollisionDetectionAlgorithm = (
       const includes =
         testInterval[0] < activeInterval[0] &&
         testInterval[1] >= activeInterval[1];
-        // sign defines if active points inside test interval
+      // sign defines if active points inside test interval
       const sign = includes ? -1 : 1;
 
       // not really important

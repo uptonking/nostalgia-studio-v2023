@@ -33,8 +33,6 @@ export const crawlChildren = <
   );
 };
 
-
-
 const getSemanticLevel = (editor: Editor, element: Element) => {
   if (
     isParagraphElement(element) &&

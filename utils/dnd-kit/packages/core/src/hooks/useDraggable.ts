@@ -8,11 +8,12 @@ import {
 } from '@dnd-kit/utilities';
 
 import { InternalContext, Data } from '../store';
+import type { UniqueIdentifier } from '../types';
 import { ActiveDraggableContext } from '../components/DndContext';
 import { useSyntheticListeners, SyntheticListenerMap } from './utilities';
 
 export interface UseDraggableArguments {
-  id: string;
+  id: UniqueIdentifier;
   data?: Data;
   disabled?: boolean;
   attributes?: {
@@ -25,6 +26,7 @@ export interface UseDraggableArguments {
 export interface DraggableAttributes {
   role: string;
   tabIndex: number;
+  'aria-disabled': boolean;
   'aria-pressed': boolean | undefined;
   'aria-roledescription': string;
   'aria-describedby': string;
@@ -64,18 +66,19 @@ export function useDraggable({
     isDragging ? ActiveDraggableContext : NullContext,
   );
   const [node, setNodeRef] = useNodeRef();
+  const [activatorNode, setActivatorNodeRef] = useNodeRef();
   const listeners = useSyntheticListeners(activators, id);
   const dataRef = useLatestValue(data);
 
   useIsomorphicLayoutEffect(
     () => {
-      draggableNodes[id] = { id, key, node, data: dataRef };
+      draggableNodes.set(id, { id, key, node, activatorNode, data: dataRef });
 
       return () => {
-        const node = draggableNodes[id];
+        const node = draggableNodes.get(id);
 
         if (node && node.key === key) {
-          delete draggableNodes[id];
+          draggableNodes.delete(id);
         }
       };
     },
@@ -87,11 +90,19 @@ export function useDraggable({
     () => ({
       role,
       tabIndex,
+      'aria-disabled': disabled,
       'aria-pressed': isDragging && role === defaultRole ? true : undefined,
       'aria-roledescription': roleDescription,
       'aria-describedby': ariaDescribedById.draggable,
     }),
-    [role, tabIndex, isDragging, roleDescription, ariaDescribedById.draggable],
+    [
+      disabled,
+      role,
+      tabIndex,
+      isDragging,
+      roleDescription,
+      ariaDescribedById.draggable,
+    ],
   );
 
   return {
@@ -104,6 +115,7 @@ export function useDraggable({
     node,
     over,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
   };
 }

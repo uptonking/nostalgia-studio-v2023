@@ -1,8 +1,11 @@
 import type { MutableRefObject } from 'react';
+import type { DeepRequired } from '@dnd-kit/utilities';
 
-import type { Coordinates, ClientRect, UniqueIdentifier } from '../types';
-import type { Collision } from '../utilities/algorithms';
 import type { SyntheticListeners } from '../hooks/utilities';
+import type { Collision } from '../utilities/algorithms';
+import type { MeasuringConfiguration } from '../components';
+import type { Coordinates, ClientRect, UniqueIdentifier } from '../types';
+
 import type { Actions } from './actions';
 import type { DroppableContainersMap } from './constructors';
 
@@ -14,9 +17,11 @@ export interface DraggableElement {
   disabled: boolean;
 }
 
-export type Data = Record<string, any>;
+type AnyData = Record<string, any>;
 
-export type DataRef = MutableRefObject<Data | undefined>;
+export type Data<T = AnyData> = T & AnyData;
+
+export type DataRef<T = AnyData> = MutableRefObject<Data<T> | undefined>;
 
 export interface DroppableContainer {
   id: UniqueIdentifier;
@@ -47,13 +52,11 @@ export type DraggableNode = {
   id: UniqueIdentifier;
   key: UniqueIdentifier;
   node: MutableRefObject<HTMLElement | null>;
+  activatorNode: MutableRefObject<HTMLElement | null>;
   data: DataRef;
 };
 
-export type DraggableNodes = Record<
-  UniqueIdentifier,
-  DraggableNode | undefined
->;
+export type DraggableNodes = Map<UniqueIdentifier, DraggableNode | undefined>;
 
 export type DroppableContainers = DroppableContainersMap;
 
@@ -89,6 +92,7 @@ export interface PublicContextDescriptor {
   };
   scrollableAncestors: Element[];
   scrollableAncestorRects: ClientRect[];
+  measuringConfiguration: DeepRequired<MeasuringConfiguration>;
   measureDroppableContainers(ids: UniqueIdentifier[]): void;
   measuringScheduled: boolean;
   windowRect: ClientRect | null;
@@ -100,7 +104,7 @@ export interface InternalContextDescriptor {
   active: Active | null;
   activeNodeRect: ClientRect | null;
   ariaDescribedById: {
-    draggable: UniqueIdentifier;
+    draggable: string;
   };
   dispatch: React.Dispatch<Actions>;
   draggableNodes: DraggableNodes;

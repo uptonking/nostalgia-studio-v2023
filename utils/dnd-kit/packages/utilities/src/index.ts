@@ -1,10 +1,12 @@
 export {
   useCombinedRefs,
+  useEvent,
   useIsomorphicLayoutEffect,
   useInterval,
   useLatestValue,
   useLazyMemo,
   useNodeRef,
+  usePrevious,
   useUniqueId,
 } from './hooks';
 
@@ -19,6 +21,7 @@ export {
   isTouchEvent,
 } from './event';
 export { canUseDOM, getOwnerDocument, getWindow } from './execution-context';
+export { findFirstFocusableNode } from './focus';
 export {
   isDocument,
   isHTMLElement,
@@ -26,4 +29,4 @@ export {
   isSVGElement,
   isWindow,
 } from './type-guards';
-export type { Arguments, FirstArgument, Without } from './types';
+export type { Arguments, DeepRequired, FirstArgument, Without } from './types';

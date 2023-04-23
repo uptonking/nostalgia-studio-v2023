@@ -22,7 +22,8 @@ module.exports = merge(devServerConfig, {
   //     'react-dom': path.resolve(__dirname, '../../node_modules/react-dom'),
   //   },
   // },
-  // devServer: {
-  //   contentBase: path.resolve(__dirname, '../dist'),
-  // },
+  devServer: {
+    // contentBase: path.resolve(__dirname, '../dist'),
+    port: 7990
+  },
 });

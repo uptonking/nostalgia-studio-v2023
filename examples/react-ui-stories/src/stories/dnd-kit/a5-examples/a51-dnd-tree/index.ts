@@ -1,1 +1,1 @@
-export { TreeApp } from './tree-app';
+export { DndTreeApp, TreeUpdateOnDrop } from './tree-app';

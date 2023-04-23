@@ -16,12 +16,13 @@ type DraggableProps = {
 };
 
 /**
- * - 参数-id；返回-setNodeRef/listeners/attributes/transform
+ * - 参数-id；
+ * - 返回-setNodeRef/listeners/attributes/transform
  * - attach listeners and a ref to the DOM element that you would like to become draggable.
  * - transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`
  */
 function DraggableItem({
-  id = 'hi-drag-item',
+  id = 'hiDragItem',
   children = '🤔 Drag Me',
 }: DraggableProps) {
   const { attributes, isDragging, transform, setNodeRef, listeners } =
@@ -52,10 +53,11 @@ type DroppableProps = {
 };
 
 /**
- * - 参数-id；返回-setNodeRef/isOver；
+ * - 参数-id；
+ * - 返回-setNodeRef/isOver；
  * - When a draggable element is moved over your droppable element, the `isOver` property will become true.
  */
-function DroppableItem({ id = 'hi-drop-item', children }: DroppableProps) {
+function DroppableItem({ id = 'hiDropItem', children }: DroppableProps) {
   const { isOver, setNodeRef } = useDroppable({ id });
 
   return (
@@ -78,8 +80,8 @@ function DroppableItem({ id = 'hi-drop-item', children }: DroppableProps) {
 }
 
 /** 一个可拖拽元素，一个可放置容器 */
-export const SingleDragSingleDropApp = () => {
-  const DROP_ID = 'DROP_ID';
+export const OneDragOneDropApp = () => {
+  const DropId = 'DROP_ID';
   const [isDropped, setIsDropped] = useState(false);
 
   const draggableMarkup = <DraggableItem>Drag me</DraggableItem>;
@@ -87,14 +89,14 @@ export const SingleDragSingleDropApp = () => {
   return (
     <DndContext onDragEnd={handleDragEnd}>
       {isDropped ? null : draggableMarkup}
-      <DroppableItem id={DROP_ID}>
+      <DroppableItem id={DropId}>
         {isDropped ? draggableMarkup : 'Drop here'}
       </DroppableItem>
     </DndContext>
   );
 
   function handleDragEnd(event) {
-    if (event.over && event.over.id === DROP_ID) {
+    if (event.over?.id === DropId) {
       setIsDropped(true);
     } else {
       setIsDropped(false);
@@ -103,7 +105,7 @@ export const SingleDragSingleDropApp = () => {
 };
 
 /** 一个可拖拽元素，多个可放置容器 */
-export const SingleDragMultiDropApp = () => {
+export const OneDragMultiDropApp = () => {
   // 可放置容器的id
   const containers = ['A', 'B', 'C'];
   const [parent, setParent] = useState<UniqueIdentifier | null>(null);
@@ -131,4 +133,3 @@ export const SingleDragMultiDropApp = () => {
   }
 };
 
-export default SingleDragMultiDropApp;

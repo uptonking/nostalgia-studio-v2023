@@ -129,12 +129,6 @@ export function Sortable({
   useDragOverlay = true,
   wrapperStyle = () => ({}),
 }: SortableProps) {
-  const [items, setItems] = useState<UniqueIdentifier[]>(
-    () =>
-      initialItems ??
-      createRange<UniqueIdentifier>(itemCount, (index) => index + 1),
-  );
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint,
@@ -148,21 +142,31 @@ export function Sortable({
       coordinateGetter,
     }),
   );
-  const isFirstAnnouncement = useRef(true);
+
+  const [items, setItems] = useState<UniqueIdentifier[]>(
+    () =>
+      initialItems ??
+      createRange<UniqueIdentifier>(itemCount, (index) => index + 1),
+  );
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+
+
   const getIndex = (id: UniqueIdentifier) => items.indexOf(id);
   const getPosition = (id: UniqueIdentifier) => getIndex(id) + 1;
   const activeIndex = activeId ? getIndex(activeId) : -1;
+
   const handleRemove = removable
     ? (id: UniqueIdentifier) =>
-        setItems((items) => items.filter((item) => item !== id))
+      setItems((items) => items.filter((item) => item !== id))
     : undefined;
+
+  const isFirstAnnouncement = useRef(true);
   const announcements: Announcements = {
     onDragStart({ active: { id } }) {
       return `Picked up sortable item ${String(
         id,
-      )}. Sortable item ${id} is in position ${getPosition(id)} of ${
-        items.length
-      }`;
+      )}. Sortable item ${id} is in position ${getPosition(id)} of ${items.length
+        }`;
     },
     onDragOver({ active, over }) {
       // In this specific use-case, the picked up item's `id` is always the same as the first `over` id.
@@ -174,18 +178,16 @@ export function Sortable({
       }
 
       if (over) {
-        return `Sortable item ${
-          active.id
-        } was moved into position ${getPosition(over.id)} of ${items.length}`;
+        return `Sortable item ${active.id
+          } was moved into position ${getPosition(over.id)} of ${items.length}`;
       }
 
       return;
     },
     onDragEnd({ active, over }) {
       if (over) {
-        return `Sortable item ${
-          active.id
-        } was dropped at position ${getPosition(over.id)} of ${items.length}`;
+        return `Sortable item ${active.id
+          } was dropped at position ${getPosition(over.id)} of ${items.length}`;
       }
 
       return;
@@ -215,12 +217,10 @@ export function Sortable({
         if (!active) {
           return;
         }
-
         setActiveId(active.id);
       }}
       onDragEnd={({ over }) => {
         setActiveId(null);
-
         if (over) {
           const overIndex = getIndex(over.id);
           if (activeIndex !== overIndex) {
@@ -256,35 +256,35 @@ export function Sortable({
       </Wrapper>
       {useDragOverlay
         ? createPortal(
-            <DragOverlay
-              adjustScale={adjustScale}
-              dropAnimation={dropAnimation}
-            >
-              {activeId ? (
-                <Item
-                  value={items[activeIndex]}
-                  handle={handle}
-                  renderItem={renderItem}
-                  wrapperStyle={wrapperStyle({
-                    active: { id: activeId },
-                    index: activeIndex,
-                    isDragging: true,
-                    id: items[activeIndex],
-                  })}
-                  style={getItemStyles({
-                    id: items[activeIndex],
-                    index: activeIndex,
-                    isSorting: activeId !== null,
-                    isDragging: true,
-                    overIndex: -1,
-                    isDragOverlay: true,
-                  })}
-                  dragOverlay
-                />
-              ) : null}
-            </DragOverlay>,
-            document.body,
-          )
+          <DragOverlay
+            adjustScale={adjustScale}
+            dropAnimation={dropAnimation}
+          >
+            {activeId ? (
+              <Item
+                value={items[activeIndex]}
+                handle={handle}
+                renderItem={renderItem}
+                wrapperStyle={wrapperStyle({
+                  active: { id: activeId },
+                  index: activeIndex,
+                  isDragging: true,
+                  id: items[activeIndex],
+                })}
+                style={getItemStyles({
+                  id: items[activeIndex],
+                  index: activeIndex,
+                  isSorting: activeId !== null,
+                  isDragging: true,
+                  overIndex: -1,
+                  isDragOverlay: true,
+                })}
+                dragOverlay
+              />
+            ) : null}
+          </DragOverlay>,
+          document.body,
+        )
         : null}
     </DndContext>
   );
@@ -346,8 +346,8 @@ export function SortableItem({
       handleProps={
         handle
           ? {
-              ref: setActivatorNodeRef,
-            }
+            ref: setActivatorNodeRef,
+          }
           : undefined
       }
       renderItem={renderItem}

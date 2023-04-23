@@ -75,6 +75,7 @@ function DraggableStory({
 }
 
 interface DraggableItemProps {
+  id?: string;
   label: string;
   handle?: boolean;
   style?: React.CSSProperties;
@@ -85,6 +86,7 @@ interface DraggableItemProps {
 }
 
 function DraggableItem({
+  id = 'draggable',
   axis,
   label,
   style,
@@ -94,9 +96,7 @@ function DraggableItem({
   buttonStyle,
 }: DraggableItemProps) {
   const { attributes, isDragging, listeners, setNodeRef, transform } =
-    useDraggable({
-      id: 'draggable',
-    });
+    useDraggable({ id });
 
   return (
     <Draggable
@@ -114,4 +114,4 @@ function DraggableItem({
   );
 }
 
-export const DragMeAnywhere = () => <DraggableStory />;
+export const DragMeAnywhere = () => <DraggableStory label='Drag Me Anywhere With NO Droppable' />;

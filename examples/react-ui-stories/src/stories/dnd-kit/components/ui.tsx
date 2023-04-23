@@ -33,6 +33,9 @@ interface ListProps {
   horizontal?: boolean;
 }
 
+/**
+ * ul list
+ */
 export const List = forwardRef<HTMLUListElement, ListProps>(
   ({ children, columns = 1, horizontal, style }: ListProps, ref) => {
     return (
@@ -85,6 +88,9 @@ export interface ItemProps {
   }): React.ReactElement;
 }
 
+/**
+ * ListItem component
+ */
 export const Item = React.memo(
   forwardRef<HTMLLIElement, ItemProps>(
     (
@@ -111,6 +117,7 @@ export const Item = React.memo(
       },
       ref,
     ) => {
+
       useEffect(() => {
         if (!dragOverlay) {
           return;

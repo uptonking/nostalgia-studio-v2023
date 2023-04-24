@@ -32,6 +32,9 @@ import {
   setProperty,
 } from './utils';
 
+/**
+ * id as content
+ */
 const initialItems: TreeItems = [
   {
     id: 'Recent',

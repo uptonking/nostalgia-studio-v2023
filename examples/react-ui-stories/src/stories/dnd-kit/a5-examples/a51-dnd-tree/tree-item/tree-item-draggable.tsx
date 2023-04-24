@@ -7,22 +7,19 @@ import { CSS } from '@dnd-kit/utilities';
 import { iOS } from '../utils';
 import { TreeItem, TreeItemProps } from './tree-item';
 
-type DndTreeItemProps = TreeItemProps & {
-  id: UniqueIdentifier;
-  onlyUpdatePostionOnDrop?: boolean;
-};
+type TreeItemDraggableProps = TreeItemProps;
 
 const animateLayoutChanges: AnimateLayoutChanges = ({
   isSorting,
   wasDragging,
 }) => (isSorting || wasDragging ? false : true);
 
-export function DndTreeItem({
+export function TreeItemDraggable({
   id,
   depth,
   onlyUpdatePostionOnDrop,
   ...props
-}: DndTreeItemProps) {
+}: TreeItemDraggableProps) {
   const {
     attributes,
     isDragging,
@@ -44,6 +41,7 @@ export function DndTreeItem({
 
   return (
     <TreeItem
+      id={id}
       ref={setDraggableNodeRef}
       wrapperRef={setDroppableNodeRef}
       style={style}

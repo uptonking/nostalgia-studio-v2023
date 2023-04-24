@@ -1,4 +1,5 @@
 .Wrapper {
+  position: relative;
   box-sizing: border-box;
   padding-left: var(--spacing);
   margin-bottom: -1px;
@@ -21,6 +22,8 @@
   }
 
   &.ghost {
+    // whether isDragging
+
     &.indicator {
       opacity: 1;
       position: relative;
@@ -34,18 +37,18 @@
         border-color: #2389ff;
         // background-color: #56a1f8;
 
-        &:before {
-          position: absolute;
-          left: -8px;
-          top: -4px;
-          display: block;
-          content: '';
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          border: 2px solid #2389ff;
-          background-color: #ffffff;
-        }
+        // &:before {
+        //   position: absolute;
+        //   left: -8px;
+        //   top: -4px;
+        //   display: block;
+        //   content: '';
+        //   width: 12px;
+        //   height: 12px;
+        //   border-radius: 50%;
+        //   border: 2px solid #2389ff;
+        //   background-color: #ffffff;
+        // }
 
         > * {
           /* Items are hidden using height and opacity to retain focus */
@@ -63,6 +66,18 @@
       box-shadow: none;
       background-color: transparent;
     }
+  }
+}
+
+.dropIndicator {
+  position: absolute;
+  width: 100%;
+  height: 8px;
+  background-color: dodgerblue;
+  visibility: hidden;
+  z-index: 10;
+  &.showDropIndicator {
+    visibility: visible;
   }
 }
 
@@ -125,4 +140,3 @@
     transform: rotate(-90deg);
   }
 }
-

@@ -1,2 +1,2 @@
-export { DndTreeItem } from './dnd-tree-item';
+export { TreeItemDraggable } from './tree-item-draggable';
 export { TreeItem } from './tree-item';

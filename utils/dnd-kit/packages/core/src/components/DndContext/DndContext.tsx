@@ -1,6 +1,6 @@
 import React, {
-  memo,
   createContext,
+  memo,
   useCallback,
   useEffect,
   useMemo,
@@ -9,26 +9,21 @@ import React, {
   useState,
 } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
+
+import type { Transform } from '@dnd-kit/utilities';
 import {
   add,
   getEventCoordinates,
   getWindow,
-  useLatestValue,
   useIsomorphicLayoutEffect,
+  useLatestValue,
   useUniqueId,
 } from '@dnd-kit/utilities';
-import type { Transform } from '@dnd-kit/utilities';
 
-import {
-  Action,
-  PublicContext,
-  InternalContext,
-  PublicContextDescriptor,
-  InternalContextDescriptor,
-  getInitialState,
-  reducer,
-} from '../../store';
-import { DndMonitorContext, useDndMonitorProvider } from '../DndMonitor';
+import type {
+  AutoScrollOptions,
+  SyntheticListener,
+} from '../../hooks/utilities';
 import {
   useAutoScroller,
   useCachedNode,
@@ -45,17 +40,32 @@ import {
   useSensorSetup,
   useWindowRect,
 } from '../../hooks/utilities';
-import type {
-  AutoScrollOptions,
-  SyntheticListener,
-} from '../../hooks/utilities';
+import { applyModifiers, Modifiers } from '../../modifiers';
 import type {
   Sensor,
+  SensorActivatorFunction,
   SensorContext,
   SensorDescriptor,
-  SensorActivatorFunction,
   SensorInstance,
 } from '../../sensors';
+import {
+  Action,
+  getInitialState,
+  InternalContext,
+  InternalContextDescriptor,
+  PublicContext,
+  PublicContextDescriptor,
+  reducer,
+} from '../../store';
+import type { Active, Over } from '../../store/types';
+import type {
+  DragCancelEvent,
+  DragEndEvent,
+  DragMoveEvent,
+  DragOverEvent,
+  DragStartEvent,
+  UniqueIdentifier,
+} from '../../types';
 import {
   adjustScale,
   CollisionDetection,
@@ -64,23 +74,13 @@ import {
   getFirstCollision,
   rectIntersection,
 } from '../../utilities';
-import { applyModifiers, Modifiers } from '../../modifiers';
-import type { Active, Over } from '../../store/types';
-import type {
-  DragStartEvent,
-  DragCancelEvent,
-  DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
-  UniqueIdentifier,
-} from '../../types';
 import {
   Accessibility,
   Announcements,
   RestoreFocus,
   ScreenReaderInstructions,
 } from '../Accessibility';
-
+import { DndMonitorContext, useDndMonitorProvider } from '../DndMonitor';
 import { defaultData, defaultSensors } from './defaults';
 import {
   useLayoutShiftScrollCompensation,
@@ -103,10 +103,19 @@ export interface Props {
   measuring?: MeasuringConfiguration;
   modifiers?: Modifiers;
   sensors?: SensorDescriptor<any>[];
+  /** Fires when a drag event that meets the activation constraints for that sensor happens,
+   * along with the unique identifier of the draggable element that was picked up. */
   onDragStart?(event: DragStartEvent): void;
+  /** Fires anytime as the draggable item is moved. */
   onDragMove?(event: DragMoveEvent): void;
+  /** Fires when a draggable item is moved over a droppable container,
+   * along with the unique identifier of that droppable container. */
   onDragOver?(event: DragOverEvent): void;
+  /** Fires after a draggable item is dropped.
+   * - onDragEnd event does not move draggable items into droppable containers.
+   */
   onDragEnd?(event: DragEndEvent): void;
+  /** Fires if a drag operation is cancelled, for example, if the user presses escape while dragging a draggable item. */
   onDragCancel?(event: DragCancelEvent): void;
 }
 

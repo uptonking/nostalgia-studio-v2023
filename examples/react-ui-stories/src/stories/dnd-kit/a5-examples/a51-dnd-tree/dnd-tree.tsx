@@ -26,7 +26,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import { DndTreeItem } from './tree-item';
+import { TreeItem, TreeItemDraggable } from './tree-item';
 import type { TreeItems } from './types';
 import { useDndTree } from './use-dnd-tree';
 import { getChildCount } from './utils';
@@ -88,6 +88,7 @@ export function DndTree(props: DndTreeProps) {
     activeId,
     flattenedItems,
     projected,
+    overId,
     handleDragStart,
     handleDragMove,
     handleDragOver,
@@ -120,20 +121,21 @@ export function DndTree(props: DndTreeProps) {
       <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
         <button onClick={() => handleAdd()}> 添加顶级节点</button>
         {flattenedItems.map(({ id, children, collapsed, depth }) => (
-          <DndTreeItem
+          <TreeItemDraggable
             key={id}
             id={String(id)}
             value={String(id)}
-            collapsed={Boolean(collapsed && children.length)}
             depth={id === activeId && projected ? projected.depth : depth}
             indentationWidth={indentationWidth}
             indicator={showDropIndicator}
-            onlyUpdatePostionOnDrop={onlyUpdatePostionOnDrop}
+            indicatorLineStyle={id === overId}
+            collapsed={Boolean(collapsed && children.length)}
             onCollapse={
               collapsible && children.length
                 ? () => handleCollapse(id)
                 : undefined
             }
+            onlyUpdatePostionOnDrop={onlyUpdatePostionOnDrop}
             onRemove={removable ? () => handleRemove(id) : undefined}
           />
         ))}
@@ -143,12 +145,12 @@ export function DndTree(props: DndTreeProps) {
             modifiers={showDropIndicator ? [adjustTranslate] : undefined}
           >
             {activeId && activeItem ? (
-              <DndTreeItem
+              <TreeItem
                 id={String(activeId)}
-                depth={activeItem.depth}
-                clone
-                childCount={getChildCount(items, activeId) + 1}
                 value={activeId.toString()}
+                depth={activeItem.depth}
+                clone={true}
+                childCount={getChildCount(items, activeId) + 1}
                 indentationWidth={indentationWidth}
               />
             ) : null}

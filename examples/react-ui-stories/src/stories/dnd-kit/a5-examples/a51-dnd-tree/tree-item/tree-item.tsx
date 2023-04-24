@@ -2,11 +2,14 @@ import React, { CSSProperties, forwardRef, HTMLAttributes } from 'react';
 
 import cx from 'clsx';
 
+import type { UniqueIdentifier } from '@dnd-kit/core';
+
 import { Action, Handle, Remove } from '../../../components';
 import styles from './tree-item.module.scss';
 
 export type TreeItemProps = {
-  /** 该行要显示的主要文字 */
+  id: UniqueIdentifier;
+  /** 该行显示的文字内容 */
   value: string;
   /** node所在层数，0、1、2 */
   depth: number;
@@ -16,10 +19,13 @@ export type TreeItemProps = {
   collapsed?: boolean;
   disableInteraction?: boolean;
   disableSelection?: boolean;
-  /** isDragging */
+  /** whether isDragging */
   ghost?: boolean;
   handleProps?: any;
   indicator?: boolean;
+  indicatorLineStyle?: boolean;
+  /** original item wont move position until dropped */
+  onlyUpdatePostionOnDrop?: boolean;
   indentationWidth: number;
   onCollapse?(): void;
   onRemove?(): void;
@@ -29,7 +35,7 @@ export type TreeItemProps = {
 
 export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
   (
-    {
+    { id,
       childCount,
       clone,
       depth,
@@ -39,6 +45,7 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
       handleProps,
       indentationWidth,
       indicator,
+      indicatorLineStyle,
       collapsed,
       onCollapse,
       onRemove,
@@ -71,6 +78,7 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
         }
         {...props}
       >
+        <div className={cx(styles.dropIndicator, { [styles.showDropIndicator]: indicatorLineStyle })} />
         <div ref={ref} className={styles.TreeItem} style={style}>
           <Handle {...handleProps} />
           {onCollapse && (

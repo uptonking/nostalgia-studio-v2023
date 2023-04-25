@@ -84,6 +84,9 @@ module.exports = {
             loader: 'css-loader',
             options: {
               sourceMap: !isProd,
+              modules: isProd ? undefined : {
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
             },
           },
           {

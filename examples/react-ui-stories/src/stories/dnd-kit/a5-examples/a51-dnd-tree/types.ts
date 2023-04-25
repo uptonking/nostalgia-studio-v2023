@@ -5,10 +5,10 @@ import type { UniqueIdentifier } from '@dnd-kit/core';
 export type TreeItem = {
   /** page id */
   id: UniqueIdentifier;
-  /** page title */
-  title?: string;
   /** sub pages */
   children: TreeItem[];
+  /** page title */
+  title?: string;
   collapsed?: boolean;
 };
 

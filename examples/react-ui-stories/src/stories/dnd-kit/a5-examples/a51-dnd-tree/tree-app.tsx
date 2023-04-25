@@ -21,7 +21,7 @@ export const TreeUpdateOnDrop = () => {
         // isCollapsible={false}
         // isRemovable={false}
         showDropIndicator={true}
-        onlyUpdatePostionOnDrop={true}
+        retainLayoutWhenDragging={true}
       />
     </div>
   );

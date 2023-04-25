@@ -49,17 +49,19 @@ const initialItems: TreeItems = [
   },
   {
     id: 'Personal',
-    children: [],
-  },
-  {
-    id: 'Templates',
-    children: [],
+    children: [
+      {
+        id: 'Templates',
+        children: [],
+      },
+    ],
   },
 ];
 
 export const useDndTree = ({
   defaultItems = initialItems,
   indentationWidth = 48,
+  retainLayoutWhenDragging = false,
 }: DndTreeProps) => {
   const [items, setItems] = useState(() => defaultItems);
   const [activeId, setActiveId] = useState<UniqueIdentifier | undefined>(
@@ -72,30 +74,35 @@ export const useDndTree = ({
     overId: UniqueIdentifier;
   } | null>(null);
 
+  /** if activeId exists and activeId-item has children, it will be removed.  */
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items);
+
+    if (retainLayoutWhenDragging) return flattenedTree;
+
     const collapsedItems = flattenedTree.reduce<UniqueIdentifier[]>(
       (acc, { children, collapsed, id }) =>
         collapsed && children.length ? [...acc, id] : acc,
       [],
     );
 
+
     return removeChildrenOf(
       flattenedTree,
       activeId ? [activeId, ...collapsedItems] : collapsedItems,
     );
-  }, [activeId, items]);
+  }, [activeId, items, retainLayoutWhenDragging]);
 
   const projected = useMemo(
     () =>
       activeId && overId
         ? getProjection(
-            flattenedItems,
-            activeId,
-            overId,
-            offsetLeft,
-            indentationWidth,
-          )
+          flattenedItems,
+          activeId,
+          overId,
+          offsetLeft,
+          indentationWidth,
+        )
         : null,
     [activeId, flattenedItems, indentationWidth, offsetLeft, overId],
   );
@@ -121,9 +128,11 @@ export const useDndTree = ({
         });
       }
 
+      console.log(';; start ', flattenedItems);
+
       document.body.style.setProperty('cursor', 'grabbing');
     },
-    [],
+    [flattenedItems],
   );
 
   const handleDragMove = useCallback(({ delta }: DragMoveEvent) => {
@@ -181,6 +190,8 @@ export const useDndTree = ({
     );
   }, []);
 
+  // console.log(';; flattenedItems-length ', flattenedItems.length)
+
   return {
     items,
     activeId,
@@ -199,4 +210,4 @@ export const useDndTree = ({
   };
 };
 
-export const useDndTreeAutoUpdate = () => {};
+export const useDndTreeAutoUpdate = () => { };

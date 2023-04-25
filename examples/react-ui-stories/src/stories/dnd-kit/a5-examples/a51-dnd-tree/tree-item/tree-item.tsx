@@ -24,8 +24,8 @@ export type TreeItemProps = {
   handleProps?: any;
   indicator?: boolean;
   indicatorLineStyle?: boolean;
-  /** original item wont move position until dropped */
-  onlyUpdatePostionOnDrop?: boolean;
+  /** original draggable item wont move position until dropped, use with indicatorLineStyle */
+  retainLayoutWhenDragging?: boolean;
   indentationWidth: number;
   onCollapse?(): void;
   onRemove?(): void;
@@ -35,7 +35,8 @@ export type TreeItemProps = {
 
 export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
   (
-    { id,
+    {
+      id,
       childCount,
       clone,
       depth,
@@ -73,12 +74,18 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
         )}
         style={
           {
-            '--spacing': `${indentationWidth * depth}px`,
+            // todo migrate to translate
+            paddingLeft: `${indentationWidth * depth}px`,
+            // '--spacing': `${indentationWidth * depth}px`,
           } as CSSProperties
         }
         {...props}
       >
-        <div className={cx(styles.dropIndicator, { [styles.showDropIndicator]: indicatorLineStyle })} />
+        <div
+          className={cx(styles.dropIndicator, {
+            [styles.showDropIndicator]: indicatorLineStyle,
+          })}
+        />
         <div ref={ref} className={styles.TreeItem} style={style}>
           <Handle {...handleProps} />
           {onCollapse && (

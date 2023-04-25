@@ -197,6 +197,13 @@ export function getChildCount(items: TreeItems, id: UniqueIdentifier) {
   return item ? countChildren(item.children) : 0;
 }
 
+export function getFlatChildrenOf(items: TreeItem[], id?: UniqueIdentifier) {
+  if (id === undefined) flattenTree(items);
+
+  const parent = findItemDeep(items, id);
+  return parent ? flattenTree([parent]) : [];
+}
+
 export function removeChildrenOf(
   items: FlattenedItem[],
   ids: UniqueIdentifier[],

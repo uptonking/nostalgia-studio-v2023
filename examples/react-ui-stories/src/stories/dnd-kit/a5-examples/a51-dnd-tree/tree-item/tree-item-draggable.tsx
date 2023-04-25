@@ -17,7 +17,7 @@ const animateLayoutChanges: AnimateLayoutChanges = ({
 export function TreeItemDraggable({
   id,
   depth,
-  onlyUpdatePostionOnDrop,
+  retainLayoutWhenDragging,
   ...props
 }: TreeItemDraggableProps) {
   const {
@@ -35,7 +35,7 @@ export function TreeItemDraggable({
     transition,
   };
 
-  if (!onlyUpdatePostionOnDrop) {
+  if (!retainLayoutWhenDragging) {
     style.transform = CSS.Translate.toString(transform);
   }
 

@@ -44,11 +44,12 @@ export function TreeItemDraggable({
       id={id}
       ref={setDraggableNodeRef}
       wrapperRef={setDroppableNodeRef}
-      style={style}
       depth={depth}
+      style={style}
       ghost={isDragging}
       disableSelection={iOS}
       disableInteraction={isSorting}
+      retainLayoutWhenDragging={retainLayoutWhenDragging}
       handleProps={{
         ...attributes,
         ...listeners,

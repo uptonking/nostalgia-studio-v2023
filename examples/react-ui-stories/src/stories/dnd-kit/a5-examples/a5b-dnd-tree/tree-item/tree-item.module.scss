@@ -1,15 +1,18 @@
 .Wrapper {
-  position: relative;
+  // position: relative;
   box-sizing: border-box;
-  // padding-left: var(--spacing);
+  padding-left: var(--spacing);
   margin-bottom: -1px;
   list-style: none;
+  // border: 1px solid teal;
 
   &.clone {
+    // /if item is in overlay
+
     display: inline-block;
     padding: 0;
-    margin-left: 10px;
-    margin-top: 5px;
+    padding-left: 10px;
+    padding-top: 5px;
     pointer-events: none;
 
     .TreeItem {
@@ -18,11 +21,12 @@
       padding-right: 24px;
       border-radius: 4px;
       box-shadow: 0px 15px 15px 0 rgba(34, 33, 81, 0.1);
+      // border: 1px solid gold;
     }
   }
 
   &.ghost {
-    // whether isDragging
+    // /whether isDragging
 
     &.indicator {
       opacity: 1;

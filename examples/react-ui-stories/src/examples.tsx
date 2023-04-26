@@ -8,7 +8,7 @@ const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
   // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('A5b2TreeUpdateOnDrop');
+  const [currentStory, setCurrentStory] = useState('A5c1Vertical');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

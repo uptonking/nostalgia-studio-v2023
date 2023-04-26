@@ -132,4 +132,3 @@ export const OneDragMultiDropApp = () => {
     setParent(over ? over.id : null);
   }
 };
-

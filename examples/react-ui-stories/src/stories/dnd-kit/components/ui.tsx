@@ -1,6 +1,6 @@
 import React, { forwardRef, useEffect } from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 
 import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 import type { Transform } from '@dnd-kit/utilities';
@@ -89,7 +89,7 @@ export interface ItemProps {
 }
 
 /**
- * ListItem component
+ * ListItem component, render `li` by default
  */
 export const Item = React.memo(
   forwardRef<HTMLLIElement, ItemProps>(
@@ -117,7 +117,6 @@ export const Item = React.memo(
       },
       ref,
     ) => {
-
       useEffect(() => {
         if (!dragOverlay) {
           return;
@@ -146,8 +145,9 @@ export const Item = React.memo(
         })
       ) : (
         <li
+          ref={ref}
           className={cx(
-            styles.Wrapper,
+            styles.ItemWrapper,
             fadeIn && styles.fadeIn,
             sorting && styles.sorting,
             dragOverlay && styles.dragOverlay,
@@ -174,7 +174,6 @@ export const Item = React.memo(
               '--color': color,
             } as React.CSSProperties
           }
-          ref={ref}
         >
           <div
             className={cx(

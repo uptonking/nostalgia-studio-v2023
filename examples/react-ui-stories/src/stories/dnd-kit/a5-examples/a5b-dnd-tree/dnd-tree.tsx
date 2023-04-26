@@ -154,12 +154,14 @@ export function DndTree(props: DndTreeProps) {
         {createPortal(
           <DragOverlay
             dropAnimation={dropAnimationConfig}
+            // 注释后，点击拖拽按钮时当前元素和下个元素会快速交换
             modifiers={showDropIndicator ? [adjustTranslate] : undefined}
+            debug={true}
           >
             {activeId && activeItem ? (
               <TreeItem
                 id={String(activeId)}
-                value={activeId.toString()}
+                value={String(activeId)}
                 depth={activeItem.depth}
                 clone={true}
                 childCount={getChildCount(items, activeId) + 1}

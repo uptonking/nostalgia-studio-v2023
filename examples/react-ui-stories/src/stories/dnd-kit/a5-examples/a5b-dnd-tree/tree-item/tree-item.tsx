@@ -13,7 +13,7 @@ export type TreeItemProps = {
   value: string;
   /** node所在层数，0、1、2 */
   depth: number;
-  /** DragOverlay中的item为clone，普通列表中的不为clone，通过clone控制显示删除图标 */
+  /** DragOverlay中的item为clone，普通列表中的不为clone */
   clone?: boolean;
   childCount?: number;
   collapsed?: boolean;
@@ -52,6 +52,7 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
       onRemove,
       style,
       value,
+      retainLayoutWhenDragging,
       wrapperRef,
       ...props
     },
@@ -74,9 +75,9 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
         )}
         style={
           {
-            // todo migrate to translate
-            paddingLeft: `${indentationWidth * depth}px`,
-            // '--spacing': `${indentationWidth * depth}px`,
+            // migrate to translate，if in overlay, paddingLeft will be overridden
+            // paddingLeft: `${indentationWidth * depth}px`,
+            '--spacing': `${indentationWidth * depth}px`,
           } as CSSProperties
         }
         {...props}

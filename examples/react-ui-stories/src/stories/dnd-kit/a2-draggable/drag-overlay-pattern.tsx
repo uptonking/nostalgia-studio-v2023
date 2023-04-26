@@ -4,6 +4,7 @@ import { DndContext, DragOverlay, useDraggable } from '@dnd-kit/core';
 
 /**
  * render our presentational components within `<Draggable>` and within `<DragOverlay>`
+ * - 官方提供了 wrapper 和 forwardRef 2种思路
  */
 function DragOverlayApp() {
   const [isDragging, setIsDragging] = useState(false);

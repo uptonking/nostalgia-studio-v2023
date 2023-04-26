@@ -24,6 +24,6 @@ module.exports = merge(devServerConfig, {
   // },
   devServer: {
     // contentBase: path.resolve(__dirname, '../dist'),
-    port: 7990
+    port: 7990,
   },
 });

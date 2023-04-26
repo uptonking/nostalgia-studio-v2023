@@ -1,19 +1,18 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
-import { applyModifiers, Modifiers } from '../../modifiers';
-import { ActiveDraggableContext } from '../DndContext';
 import { useDndContext } from '../../hooks';
 import { useInitialValue } from '../../hooks/utilities';
-
+import { applyModifiers, Modifiers } from '../../modifiers';
+import type { ClientRect } from '../../types';
+import { ActiveDraggableContext } from '../DndContext';
+import type { PositionedOverlayProps } from './components';
 import {
   AnimationManager,
   NullifiedContextProvider,
   PositionedOverlay,
 } from './components';
-import type { PositionedOverlayProps } from './components';
-
-import { useDropAnimation, useKey } from './hooks';
 import type { DropAnimation } from './hooks';
+import { useDropAnimation, useKey } from './hooks';
 
 export interface Props
   extends Pick<
@@ -21,11 +20,22 @@ export interface Props
     'adjustScale' | 'children' | 'className' | 'style' | 'transition'
   > {
   dropAnimation?: DropAnimation | null | undefined;
+  /** Modifiers let you dynamically modify the movement coordinates that are detected by sensors. */
   modifiers?: Modifiers;
   wrapperElement?: keyof JSX.IntrinsicElements;
+  /** sets the z-order of the drag overlay.
+   * - The default value is 999 for compatibility reasons, but we highly recommend you use a lower value.
+   */
   zIndex?: number;
+  debug?: boolean | { border?: string };
 }
 
+/**
+ * `<DragOverlay>` component provides a way to render a draggable overlay that is
+ * removed from the normal document flow and is positioned relative to the viewport.
+ * - position: 'fixed'
+ * - https://docs.dndkit.com/api-documentation/draggable/drag-overlay
+ */
 export const DragOverlay = React.memo(
   ({
     adjustScale = false,
@@ -37,6 +47,7 @@ export const DragOverlay = React.memo(
     wrapperElement = 'div',
     className,
     zIndex = 999,
+    debug = false,
   }: Props) => {
     const {
       activatorEvent,
@@ -67,7 +78,7 @@ export const DragOverlay = React.memo(
       transform,
       windowRect,
     });
-    const initialRect = useInitialValue(activeNodeRect);
+    const initialRect = useInitialValue(activeNodeRect) as ClientRect;
     const dropAnimation = useDropAnimation({
       config: dropAnimationConfig,
       draggableNodes,
@@ -77,6 +88,13 @@ export const DragOverlay = React.memo(
     // We need to wait for the active node to be measured before connecting the drag overlay ref
     // otherwise collisions can be computed against a mispositioned drag overlay
     const ref = initialRect ? dragOverlay.setRef : undefined;
+
+    const styles = useMemo(() => {
+      return {
+        zIndex,
+        ...style,
+      };
+    }, [style, zIndex]);
 
     return (
       <NullifiedContextProvider>
@@ -92,11 +110,9 @@ export const DragOverlay = React.memo(
               className={className}
               transition={transition}
               rect={initialRect}
-              style={{
-                zIndex,
-                ...style,
-              }}
+              style={styles}
               transform={modifiedTransform}
+              debug={debug}
             >
               {children}
             </PositionedOverlay>

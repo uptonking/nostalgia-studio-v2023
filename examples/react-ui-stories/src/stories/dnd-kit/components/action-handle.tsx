@@ -1,6 +1,6 @@
 import React, { CSSProperties, forwardRef } from 'react';
 
-import cx from 'classnames';
+import cx from 'clsx';
 
 import styles from './action-handle.module.scss';
 
@@ -10,11 +10,12 @@ export interface ActionProps extends React.HTMLAttributes<HTMLButtonElement> {
     background: string;
   };
   cursor?: CSSProperties['cursor'];
+  showBorder?: boolean;
 }
 
 /** 可定制样式的button */
 export const Action = forwardRef<HTMLButtonElement, ActionProps>(
-  ({ active, className, cursor, style, ...props }, ref) => {
+  ({ active, className, cursor, showBorder, style, ...props }, ref) => {
     return (
       <button
         ref={ref}
@@ -25,6 +26,7 @@ export const Action = forwardRef<HTMLButtonElement, ActionProps>(
           {
             ...style,
             cursor,
+            border: showBorder ? '1px solid gold' : undefined,
             '--fill': active?.fill,
             '--background': active?.background,
           } as CSSProperties

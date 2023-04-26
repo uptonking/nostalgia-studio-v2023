@@ -86,7 +86,6 @@ export const useDndTree = ({
       [],
     );
 
-
     return removeChildrenOf(
       flattenedTree,
       activeId ? [activeId, ...collapsedItems] : collapsedItems,
@@ -97,12 +96,12 @@ export const useDndTree = ({
     () =>
       activeId && overId
         ? getProjection(
-          flattenedItems,
-          activeId,
-          overId,
-          offsetLeft,
-          indentationWidth,
-        )
+            flattenedItems,
+            activeId,
+            overId,
+            offsetLeft,
+            indentationWidth,
+          )
         : null,
     [activeId, flattenedItems, indentationWidth, offsetLeft, overId],
   );
@@ -149,16 +148,16 @@ export const useDndTree = ({
 
       if (projected && over) {
         const { depth, parentId } = projected;
-        const clonedItems: FlattenedItem[] = JSON.parse(
+        const itemsCopy: FlattenedItem[] = JSON.parse(
           JSON.stringify(flattenTree(items)),
         );
-        const overIndex = clonedItems.findIndex(({ id }) => id === over.id);
-        const activeIndex = clonedItems.findIndex(({ id }) => id === active.id);
-        const activeTreeItem = clonedItems[activeIndex];
+        const overIndex = itemsCopy.findIndex(({ id }) => id === over.id);
+        const activeIndex = itemsCopy.findIndex(({ id }) => id === active.id);
+        const activeTreeItem = itemsCopy[activeIndex];
 
-        clonedItems[activeIndex] = { ...activeTreeItem, depth, parentId };
+        itemsCopy[activeIndex] = { ...activeTreeItem, depth, parentId };
 
-        const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
+        const sortedItems = arrayMove(itemsCopy, activeIndex, overIndex);
         const newItems = buildTree(sortedItems);
 
         setItems(newItems);
@@ -210,4 +209,4 @@ export const useDndTree = ({
   };
 };
 
-export const useDndTreeAutoUpdate = () => { };
+export const useDndTreeAutoUpdate = () => {};

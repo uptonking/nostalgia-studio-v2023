@@ -114,4 +114,6 @@ function DraggableItem({
   );
 }
 
-export const DragMeAnywhere = () => <DraggableStory label='Drag Me Anywhere With NO Droppable' />;
+export const DragMeAnywhere = () => (
+  <DraggableStory label='Drag Me Anywhere With NO Droppable' />
+);

@@ -1,5 +1,6 @@
-import cx from 'classnames';
 import React, { forwardRef } from 'react';
+
+import cx from 'clsx';
 
 import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 import type { Transform } from '@dnd-kit/utilities';
@@ -18,7 +19,7 @@ export enum Axis {
   Horizontal,
 }
 
-interface Props {
+interface DraggableProps {
   axis?: Axis;
   dragOverlay?: boolean;
   dragging?: boolean;
@@ -30,7 +31,10 @@ interface Props {
   transform?: Transform | null;
 }
 
-export const Draggable = forwardRef<HTMLButtonElement, Props>(
+/**
+ * draggable button for use with `useDraggable` or `DragOverlay`
+ */
+export const Draggable = forwardRef<HTMLButtonElement, DraggableProps>(
   function Draggable(
     {
       axis,

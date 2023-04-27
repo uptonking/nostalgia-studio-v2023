@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLAttributes } from 'react';
+import React, { forwardRef, type HTMLAttributes } from 'react';
 
 import cx from 'clsx';
 
@@ -22,6 +22,7 @@ export interface PageProps
   extends Omit<HTMLAttributes<HTMLButtonElement>, 'id'> {
   active?: boolean;
   clone?: boolean;
+  /** only for keyboard-darg */
   insertPosition?: Position;
   id: UniqueIdentifier;
   index?: number;
@@ -30,7 +31,7 @@ export interface PageProps
 }
 
 /**
- * like a card item
+ * like a card
  * - 卡片前后的指示线都通过::after伪元素实现
  */
 export const Page = forwardRef<HTMLLIElement, PageProps>(function PageRef(
@@ -52,7 +53,9 @@ export const Page = forwardRef<HTMLLIElement, PageProps>(function PageRef(
       ref={ref}
       className={cx(
         styles.Wrapper,
+        // is dragging
         active && styles.active,
+        // is in overlay
         clone && styles.clone,
         insertPosition === Position.Before && styles.insertBefore,
         insertPosition === Position.After && styles.insertAfter,
@@ -60,12 +63,14 @@ export const Page = forwardRef<HTMLLIElement, PageProps>(function PageRef(
       )}
       style={style}
     >
-      <button className={styles.Page} data-id={id.toString()} {...props}>
-        {index != null ? (
-          <span className={styles.PageNumber}>{index}</span>
-        ) : (
-          ''
-        )}
+      <button
+        className={styles.Page}
+        data-id={id.toString()}
+        {...props}
+      >
+        {
+          index != null ? <span className={styles.PageNumber}>{index}</span> : '' // '' or null
+        }
       </button>
       {!active && onRemove ? (
         <Remove className={styles.Remove} onClick={onRemove} />

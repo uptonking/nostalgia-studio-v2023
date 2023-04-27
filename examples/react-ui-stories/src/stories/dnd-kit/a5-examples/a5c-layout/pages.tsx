@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import cx from 'clsx';
 
@@ -34,7 +34,7 @@ import { Layout, Page, type PageProps, Position } from './page';
 import pageStyles from './page.module.scss';
 import styles from './pages.module.scss';
 
-interface Props {
+interface PagesProps {
   layout: Layout;
 }
 
@@ -65,12 +65,18 @@ const dropAnimation: DropAnimation = {
   }),
 };
 
-export function Pages({ layout }: Props) {
+/**
+ * a list of card using `useSortable`
+ */
+export function Pages({ layout }: PagesProps) {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [items, setItems] = useState(() =>
     createRange<UniqueIdentifier>(20, (index) => `${index + 1}`),
   );
-  const activeIndex = activeId ? items.indexOf(activeId) : -1;
+  const activeIndex = useMemo(
+    () => (activeId ? items.indexOf(activeId) : -1),
+    [activeId, items],
+  );
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -103,7 +109,7 @@ export function Pages({ layout }: Props) {
           ))}
         </ul>
       </SortableContext>
-      <DragOverlay dropAnimation={dropAnimation}>
+      <DragOverlay dropAnimation={dropAnimation} debug={true}>
         {activeId ? (
           <PageOverlay id={activeId} layout={layout} items={items} />
         ) : null}
@@ -148,7 +154,7 @@ function PageOverlay({
     <Page
       id={id}
       {...props}
-      clone
+      clone={true}
       insertPosition={
         isKeyboardSorting && overIndex !== activeIndex
           ? overIndex > activeIndex

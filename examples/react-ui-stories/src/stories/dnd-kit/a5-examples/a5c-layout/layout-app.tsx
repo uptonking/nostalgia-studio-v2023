@@ -3,8 +3,24 @@ import React from 'react';
 import { Layout } from './page';
 import { Pages } from './pages';
 
-export const Horizontal = () => <Pages layout={Layout.Horizontal} />;
+const EgContainer = ({ children }) => (
+  <div style={{ minWidth: 560, maxWidth: 720 }}>{children}</div>
+);
 
-export const Vertical = () => <Pages layout={Layout.Vertical} />;
+export const Horizontal = () => (
+  <EgContainer>
+    <Pages layout={Layout.Horizontal} />
+  </EgContainer>
+);
 
-export const Grid = () => <Pages layout={Layout.Grid} />;
+export const Vertical = () => (
+  <EgContainer>
+    <Pages layout={Layout.Vertical} />
+  </EgContainer>
+);
+
+export const Grid = () => (
+  <EgContainer>
+    <Pages layout={Layout.Grid} />
+  </EgContainer>
+);

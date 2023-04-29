@@ -1,6 +1,5 @@
 /* eslint-disable no-redeclare */
 import type { ClientRect } from '../../types';
-
 import type { Collision, CollisionDescriptor } from './types';
 
 /**
@@ -50,7 +49,7 @@ export function cornersOfRectangle({ left, top, height, width }: ClientRect) {
 
 /**
  * Returns the first collision, or null if there isn't one.
- * If a property is specified, returns the specified property of the first collision.
+ * - If a property is specified, returns the specified property of the first collision.
  */
 export function getFirstCollision(
   collisions: Collision[] | null | undefined,

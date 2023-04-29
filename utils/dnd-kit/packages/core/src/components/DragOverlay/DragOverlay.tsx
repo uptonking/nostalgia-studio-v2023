@@ -20,7 +20,7 @@ export interface Props
     'adjustScale' | 'children' | 'className' | 'style' | 'transition'
   > {
   dropAnimation?: DropAnimation | null | undefined;
-  /** Modifiers let you dynamically modify the movement coordinates that are detected by sensors. */
+  /** use to dynamically modify the movement coordinates that are detected by sensors. */
   modifiers?: Modifiers;
   wrapperElement?: keyof JSX.IntrinsicElements;
   /** sets the z-order of the drag overlay.

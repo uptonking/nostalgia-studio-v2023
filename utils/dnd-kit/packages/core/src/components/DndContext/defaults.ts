@@ -1,13 +1,12 @@
 import type { DeepRequired } from '@dnd-kit/utilities';
 
-import type { DataRef } from '../../store/types';
+import { MeasuringFrequency, MeasuringStrategy } from '../../hooks/utilities';
 import { KeyboardSensor, PointerSensor } from '../../sensors';
-import { MeasuringStrategy, MeasuringFrequency } from '../../hooks/utilities';
+import type { DataRef } from '../../store/types';
 import {
   getClientRect,
   getTransformAgnosticClientRect,
 } from '../../utilities/rect';
-
 import type { MeasuringConfiguration } from './types';
 
 export const defaultSensors = [
@@ -15,6 +14,7 @@ export const defaultSensors = [
   { sensor: KeyboardSensor, options: {} },
 ];
 
+/** empty {} */
 export const defaultData: DataRef = { current: {} };
 
 export const defaultMeasuringConfiguration: DeepRequired<MeasuringConfiguration> =

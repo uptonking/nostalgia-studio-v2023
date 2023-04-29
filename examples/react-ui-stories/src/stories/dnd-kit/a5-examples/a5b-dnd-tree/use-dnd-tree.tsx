@@ -1,23 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import {
-  Announcements,
-  closestCenter,
-  defaultDropAnimation,
-  DndContext,
   DragEndEvent,
   DragMoveEvent,
   DragOverEvent,
-  DragOverlay,
   DragStartEvent,
-  DropAnimation,
-  KeyboardSensor,
-  MeasuringStrategy,
-  Modifier,
-  PointerSensor,
   UniqueIdentifier,
-  useSensor,
-  useSensors,
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 
@@ -26,7 +14,7 @@ import type { FlattenedItem, TreeItems } from './types';
 import {
   buildTree,
   flattenTree,
-  getProjection,
+  getDepthCandidate,
   removeChildrenOf,
   removeItem,
   setProperty,
@@ -60,7 +48,7 @@ const initialItems: TreeItems = [
 
 export const useDndTree = ({
   defaultItems = initialItems,
-  indentationWidth = 48,
+  indentationWidth = 50,
   retainLayoutWhenDragging = false,
 }: DndTreeProps) => {
   const [items, setItems] = useState(() => defaultItems);
@@ -92,10 +80,10 @@ export const useDndTree = ({
     );
   }, [activeId, items, retainLayoutWhenDragging]);
 
-  const projected = useMemo(
+  const candidate = useMemo(
     () =>
       activeId && overId
-        ? getProjection(
+        ? getDepthCandidate(
             flattenedItems,
             activeId,
             overId,
@@ -127,7 +115,7 @@ export const useDndTree = ({
         });
       }
 
-      console.log(';; start ', flattenedItems);
+      // console.log(';; start ', flattenedItems);
 
       document.body.style.setProperty('cursor', 'grabbing');
     },
@@ -146,8 +134,8 @@ export const useDndTree = ({
     ({ active, over }: DragEndEvent) => {
       resetState();
 
-      if (projected && over) {
-        const { depth, parentId } = projected;
+      if (candidate && over) {
+        const { depth, parentId } = candidate;
         const itemsCopy: FlattenedItem[] = JSON.parse(
           JSON.stringify(flattenTree(items)),
         );
@@ -163,7 +151,7 @@ export const useDndTree = ({
         setItems(newItems);
       }
     },
-    [items, projected, resetState],
+    [items, candidate, resetState],
   );
 
   const handleDragCancel = useCallback(() => {
@@ -197,7 +185,7 @@ export const useDndTree = ({
     overId,
     offsetLeft,
     flattenedItems,
-    projected,
+    candidate,
     handleAdd,
     handleDragStart,
     handleDragMove,

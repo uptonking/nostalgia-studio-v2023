@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+
 import { useInterval, useLazyMemo, usePrevious } from '@dnd-kit/utilities';
 
-import { getScrollDirectionAndSpeed } from '../../utilities';
+import type { ClientRect, Coordinates } from '../../types';
 import { Direction } from '../../types';
-import type { Coordinates, ClientRect } from '../../types';
+import { getScrollDirectionAndSpeed } from '../../utilities';
 
 export type ScrollAncestorSortingFn = (ancestors: Element[]) => Element[];
 
@@ -70,6 +71,8 @@ export function useAutoScroller({
   const [setAutoScrollInterval, clearAutoScrollInterval] = useInterval();
   const scrollSpeed = useRef<Coordinates>({ x: 0, y: 0 });
   const scrollDirection = useRef<ScrollDirection>({ x: 0, y: 0 });
+  const scrollContainerRef = useRef<Element | null>(null);
+
   const rect = useMemo(() => {
     switch (activator) {
       case AutoScrollActivator.Pointer:
@@ -85,10 +88,9 @@ export function useAutoScroller({
         return draggingRect;
     }
   }, [activator, draggingRect, pointerCoordinates]);
-  const scrollContainerRef = useRef<Element | null>(null);
+
   const autoScroll = useCallback(() => {
     const scrollContainer = scrollContainerRef.current;
-
     if (!scrollContainer) {
       return;
     }
@@ -96,8 +98,10 @@ export function useAutoScroller({
     const scrollLeft = scrollSpeed.current.x * scrollDirection.current.x;
     const scrollTop = scrollSpeed.current.y * scrollDirection.current.y;
 
+    // 👇🏻 scroll
     scrollContainer.scrollBy(scrollLeft, scrollTop);
   }, []);
+
   const sortedScrollableAncestors = useMemo(
     () =>
       order === TraversalOrder.TreeOrder

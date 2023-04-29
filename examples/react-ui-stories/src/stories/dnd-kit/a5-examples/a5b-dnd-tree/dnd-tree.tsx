@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import {
@@ -7,6 +7,7 @@ import {
   DndContext,
   DragOverlay,
   DropAnimation,
+  KeyboardSensor,
   MeasuringStrategy,
   Modifier,
   PointerSensor,
@@ -19,8 +20,9 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
+import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates';
 import { TreeItem, TreeItemDraggable } from './tree-item';
-import type { TreeItems } from './types';
+import type { SensorContext, TreeItems } from './types';
 import { useDndTree } from './use-dnd-tree';
 import { getChildCount, getFlatChildrenOf } from './utils';
 
@@ -75,21 +77,20 @@ export type DndTreeProps = {
  */
 export function DndTree(props: DndTreeProps) {
   const {
-    indentationWidth = 48,
+    indentationWidth = 50,
     isCollapsible,
     isRemovable,
     showDropIndicator = false,
     retainLayoutWhenDragging = false,
   } = props;
 
-  const sensors = useSensors(useSensor(PointerSensor));
-
   const {
     items,
     activeId,
     flattenedItems,
-    projected,
+    candidate,
     overId,
+    offsetLeft,
     handleDragStart,
     handleDragMove,
     handleDragOver,
@@ -99,6 +100,26 @@ export function DndTree(props: DndTreeProps) {
     handleAdd,
     handleCollapse,
   } = useDndTree(props);
+  window['tree'] = items;
+  window['flat'] = flattenedItems;
+
+  // console.log(';; candidate ', activeId, overId, candidate);
+
+  const sensorConfig: SensorContext = useRef({
+    items: flattenedItems,
+    offset: offsetLeft,
+  });
+  const [coordinateGetter] = useState(() =>
+    sortableTreeKeyboardCoordinates(
+      sensorConfig,
+      showDropIndicator,
+      indentationWidth,
+    ),
+  );
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, { coordinateGetter }),
+  );
 
   const sortedIds = useMemo(
     () => flattenedItems.map(({ id }) => id),
@@ -134,7 +155,7 @@ export function DndTree(props: DndTreeProps) {
               key={id}
               id={String(id)}
               value={String(id)}
-              depth={id === activeId && projected ? projected.depth : depth}
+              depth={id === activeId && candidate ? candidate.depth : depth}
               indentationWidth={indentationWidth}
               indicator={showDropIndicator}
               indicatorLineStyle={
@@ -154,7 +175,6 @@ export function DndTree(props: DndTreeProps) {
         {createPortal(
           <DragOverlay
             dropAnimation={dropAnimationConfig}
-            // 注释后，点击拖拽按钮时当前元素和下个元素会快速交换
             modifiers={showDropIndicator ? [adjustTranslate] : undefined}
             debug={true}
           >

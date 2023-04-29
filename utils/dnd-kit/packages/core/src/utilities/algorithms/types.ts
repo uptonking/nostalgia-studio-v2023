@@ -1,6 +1,7 @@
 import type { Active, Data, DroppableContainer, RectMap } from '../../store';
-import type { Coordinates, ClientRect, UniqueIdentifier } from '../../types';
+import type { ClientRect, Coordinates, UniqueIdentifier } from '../../types';
 
+/** id + data, candidate node data for drop */
 export interface Collision {
   id: UniqueIdentifier;
   data?: Data;

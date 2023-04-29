@@ -35,6 +35,9 @@ const defaultTransition: TransitionGetter = (activatorEvent) => {
   return isKeyboardActivator ? 'transform 250ms ease' : undefined;
 };
 
+/**
+ * default style `position: 'fixed'`
+ */
 export const PositionedOverlay = forwardRef<HTMLElement, Props>(
   (
     {
@@ -89,7 +92,7 @@ export const PositionedOverlay = forwardRef<HTMLElement, Props>(
           }
         : undefined;
 
-      if (debug) {
+      if (styl && debug) {
         style.border = '1px solid red';
       }
 

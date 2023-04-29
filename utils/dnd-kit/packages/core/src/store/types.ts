@@ -1,21 +1,13 @@
 import type { MutableRefObject } from 'react';
+
 import type { DeepRequired } from '@dnd-kit/utilities';
 
-import type { SyntheticListeners } from '../hooks/utilities';
-import type { Collision } from '../utilities/algorithms';
 import type { MeasuringConfiguration } from '../components';
-import type { Coordinates, ClientRect, UniqueIdentifier } from '../types';
-
+import type { SyntheticListeners } from '../hooks/utilities';
+import type { ClientRect, Coordinates, UniqueIdentifier } from '../types';
+import type { Collision } from '../utilities/algorithms';
 import type { Actions } from './actions';
 import type { DroppableContainersMap } from './constructors';
-
-export interface DraggableElement {
-  node: DraggableNode;
-  id: UniqueIdentifier;
-  index: number;
-  collection: string;
-  disabled: boolean;
-}
 
 type AnyData = Record<string, any>;
 
@@ -23,15 +15,7 @@ export type Data<T = AnyData> = T & AnyData;
 
 export type DataRef<T = AnyData> = MutableRefObject<Data<T> | undefined>;
 
-export interface DroppableContainer {
-  id: UniqueIdentifier;
-  key: UniqueIdentifier;
-  data: DataRef;
-  disabled: boolean;
-  node: MutableRefObject<HTMLElement | null>;
-  rect: MutableRefObject<ClientRect | null>;
-}
-
+/** active dragging node data */
 export interface Active {
   id: UniqueIdentifier;
   data: DataRef;
@@ -41,13 +25,15 @@ export interface Active {
   }>;
 }
 
+/** over node data */
 export interface Over {
   id: UniqueIdentifier;
+  data: DataRef;
   rect: ClientRect;
   disabled: boolean;
-  data: DataRef;
 }
 
+/** data + domNode + activatorNode */
 export type DraggableNode = {
   id: UniqueIdentifier;
   key: UniqueIdentifier;
@@ -58,10 +44,31 @@ export type DraggableNode = {
 
 export type DraggableNodes = Map<UniqueIdentifier, DraggableNode | undefined>;
 
+/** DraggableNode + collection */
+export interface DraggableElement {
+  node: DraggableNode;
+  id: UniqueIdentifier;
+  index: number;
+  collection: string;
+  disabled: boolean;
+}
+
+/** data + domNode + rect */
+export interface DroppableContainer {
+  id: UniqueIdentifier;
+  key: UniqueIdentifier;
+  data: DataRef;
+  disabled: boolean;
+  node: MutableRefObject<HTMLElement | null>;
+  rect: MutableRefObject<ClientRect | null>;
+}
+
+/** es Map, { id: DroppableContainer } */
 export type DroppableContainers = DroppableContainersMap;
 
 export type RectMap = Map<UniqueIdentifier, ClientRect>;
 
+/** dnd-kit global state */
 export interface State {
   droppable: {
     containers: DroppableContainers;

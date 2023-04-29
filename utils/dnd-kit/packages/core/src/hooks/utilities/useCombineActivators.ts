@@ -6,6 +6,7 @@ import type {
   SyntheticListeners,
 } from './useSyntheticListeners';
 
+/** collect sensors.activators */
 export function useCombineActivators(
   sensors: SensorDescriptor<any>[],
   getSyntheticHandler: (
@@ -16,13 +17,11 @@ export function useCombineActivators(
   return useMemo(
     () =>
       sensors.reduce<SyntheticListeners>((accumulator, sensor) => {
-        const { sensor: Sensor } = sensor;
-
-        const sensorActivators = Sensor.activators.map((activator) => ({
+        const { sensor: currSensor } = sensor;
+        const sensorActivators = currSensor.activators.map((activator) => ({
           eventName: activator.eventName,
           handler: getSyntheticHandler(activator.handler, sensor),
         }));
-
         return [...accumulator, ...sensorActivators];
       }, []),
     [sensors, getSyntheticHandler],

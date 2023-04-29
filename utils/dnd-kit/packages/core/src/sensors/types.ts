@@ -1,18 +1,19 @@
 import type { MutableRefObject } from 'react';
+
 import type {
   Active,
-  Over,
   DraggableNode,
   DraggableNodes,
   DroppableContainers,
+  Over,
   RectMap,
 } from '../store';
 import type {
+  ClientRect,
   Coordinates,
   SyntheticEventName,
   Translate,
   UniqueIdentifier,
-  ClientRect,
 } from '../types';
 import type { Collision } from '../utilities/algorithms';
 
@@ -76,6 +77,7 @@ type Teardown = () => void;
 export interface Sensor<T extends Object> {
   new (props: SensorProps<T>): SensorInstance;
   activators: Activators<T>;
+  /** only implemented in TouchSensor */
   setup?(): Teardown | undefined;
 }
 

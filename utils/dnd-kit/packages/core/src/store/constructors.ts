@@ -3,6 +3,7 @@ import type { DroppableContainer } from './types';
 
 type Identifier = UniqueIdentifier | null | undefined;
 
+/** es Map, { id: DroppableContainer } */
 export class DroppableContainersMap extends Map<
   UniqueIdentifier,
   DroppableContainer

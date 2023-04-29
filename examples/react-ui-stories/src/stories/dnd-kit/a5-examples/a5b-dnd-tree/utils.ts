@@ -5,11 +5,20 @@ import type { FlattenedItem, TreeItem, TreeItems } from './types';
 
 export const iOS = /iPad|iPhone|iPod/.test(navigator.platform);
 
+/** offset/indentationWidth */
 function getDragDepth(offset: number, indentationWidth: number) {
   return Math.round(offset / indentationWidth);
 }
 
-export function getProjection(
+function getMaxDepth({ previousItem }: { previousItem: FlattenedItem }) {
+  return previousItem ? previousItem.depth + 1 : 0;
+}
+
+function getMinDepth({ nextItem }: { nextItem: FlattenedItem }) {
+  return nextItem ? nextItem.depth : 0;
+}
+
+export function getDepthCandidate(
   items: FlattenedItem[],
   activeId: UniqueIdentifier,
   overId: UniqueIdentifier,
@@ -22,58 +31,43 @@ export function getProjection(
   const newItems = arrayMove(items, activeItemIndex, overItemIndex);
   const previousItem = newItems[overItemIndex - 1];
   const nextItem = newItems[overItemIndex + 1];
+  const maxDepth = getMaxDepth({ previousItem });
+  const minDepth = getMinDepth({ nextItem });
   const dragDepth = getDragDepth(dragOffset, indentationWidth);
   const projectedDepth = activeItem.depth + dragDepth;
-  const maxDepth = getMaxDepth({
-    previousItem,
-  });
-  const minDepth = getMinDepth({ nextItem });
-  let depth = projectedDepth;
-
+  let depthCandidate = projectedDepth;
   if (projectedDepth >= maxDepth) {
-    depth = maxDepth;
-  } else if (projectedDepth < minDepth) {
-    depth = minDepth;
+    depthCandidate = maxDepth;
+  }
+  if (projectedDepth < minDepth) {
+    depthCandidate = minDepth;
   }
 
-  return { depth, maxDepth, minDepth, parentId: getParentId() };
+  return {
+    depth: depthCandidate,
+    maxDepth,
+    minDepth,
+    parentId: getParentIdForCandidate(),
+  };
 
-  function getParentId() {
-    if (depth === 0 || !previousItem) {
+  function getParentIdForCandidate() {
+    if (depthCandidate === 0 || !previousItem) {
       return null;
     }
-
-    if (depth === previousItem.depth) {
+    if (depthCandidate === previousItem.depth) {
       return previousItem.parentId;
     }
-
-    if (depth > previousItem.depth) {
+    if (depthCandidate > previousItem.depth) {
       return previousItem.id;
     }
 
     const newParent = newItems
       .slice(0, overItemIndex)
       .reverse()
-      .find((item) => item.depth === depth)?.parentId;
+      .find((item) => item.depth === depthCandidate);
 
-    return newParent ?? null;
+    return newParent?.parentId ?? null;
   }
-}
-
-function getMaxDepth({ previousItem }: { previousItem: FlattenedItem }) {
-  if (previousItem) {
-    return previousItem.depth + 1;
-  }
-
-  return 0;
-}
-
-function getMinDepth({ nextItem }: { nextItem: FlattenedItem }) {
-  if (nextItem) {
-    return nextItem.depth;
-  }
-
-  return 0;
 }
 
 function flatten(

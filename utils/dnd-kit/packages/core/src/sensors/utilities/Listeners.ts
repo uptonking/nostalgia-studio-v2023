@@ -1,3 +1,4 @@
+/** domTarget with listeners */
 export class Listeners {
   private listeners: [
     string,

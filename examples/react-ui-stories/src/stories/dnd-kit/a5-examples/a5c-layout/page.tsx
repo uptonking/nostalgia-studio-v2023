@@ -63,13 +63,13 @@ export const Page = forwardRef<HTMLLIElement, PageProps>(function PageRef(
       )}
       style={style}
     >
-      <button
-        className={styles.Page}
-        data-id={id.toString()}
-        {...props}
-      >
+      <button className={styles.Page} data-id={id.toString()} {...props}>
         {
-          index != null ? <span className={styles.PageNumber}>{index}</span> : '' // '' or null
+          index != null ? (
+            <span className={styles.PageNumber}>{index}</span>
+          ) : (
+            ''
+          ) // '' or null
         }
       </button>
       {!active && onRemove ? (

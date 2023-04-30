@@ -16,12 +16,13 @@ export type TreeItems = TreeItem[];
 
 export type FlattenedItem = TreeItem & {
   index: number;
+  /** top level depth is 0 */
+  depth: number;
   /** parent page id */
   parentId: UniqueIdentifier | null;
-  depth: number;
 };
 
-export type SensorContext = MutableRefObject<{
+export type SensorConfig = MutableRefObject<{
   items: FlattenedItem[];
   offset: number;
 }>;

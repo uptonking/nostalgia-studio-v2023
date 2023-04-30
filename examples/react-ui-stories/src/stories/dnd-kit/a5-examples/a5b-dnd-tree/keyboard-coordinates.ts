@@ -7,7 +7,7 @@ import {
   KeyboardCoordinateGetter,
 } from '@dnd-kit/core';
 
-import type { SensorContext } from './types';
+import type { SensorConfig } from './types';
 import { getDepthCandidate } from './utils';
 
 const directions: string[] = [
@@ -21,7 +21,7 @@ const horizontal: string[] = [KeyboardCode.Left, KeyboardCode.Right];
 
 export const sortableTreeKeyboardCoordinates =
   (
-    context: SensorContext,
+    context: SensorConfig,
     showIndicator: boolean,
     indentationWidth: number,
   ): KeyboardCoordinateGetter =>

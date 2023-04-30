@@ -131,7 +131,7 @@ export interface Props {
   onDragCancel?(event: DragCancelEvent): void;
 }
 
-export interface CancelDropArguments extends DragEndEvent {}
+export interface CancelDropArguments extends DragEndEvent { }
 
 export type CancelDrop = (
   args: CancelDropArguments,
@@ -155,6 +155,9 @@ enum Status {
   Initialized,
 }
 
+/**
+ * dnd-kit global state provider
+ */
 export const DndContext = memo(function DndContextInner({
   id,
   accessibility,
@@ -187,11 +190,11 @@ export const DndContext = memo(function DndContextInner({
     () =>
       activeId != null
         ? {
-            id: activeId,
-            // It's possible for the active node to unmount while dragging
-            data: activeNodeOrNull?.data ?? defaultData,
-            rect: activeRects,
-          }
+          id: activeId,
+          // It's possible for the active node to unmount while dragging
+          data: activeNodeOrNull?.data ?? defaultData,
+          rect: activeRects,
+        }
         : null,
     [activeId, activeNodeOrNull],
   );
@@ -328,12 +331,12 @@ export const DndContext = memo(function DndContextInner({
   const collisions =
     active && collisionRect
       ? collisionDetection({
-          active,
-          collisionRect,
-          droppableRects,
-          droppableContainers: enabledDroppableContainers,
-          pointerCoordinates,
-        })
+        active,
+        collisionRect,
+        droppableRects,
+        droppableContainers: enabledDroppableContainers,
+        pointerCoordinates,
+      })
       : null;
   const overId = getFirstCollision(collisions, 'id');
   const [over, setOver] = useState<Over | null>(null);
@@ -359,7 +362,6 @@ export const DndContext = memo(function DndContextInner({
       }
 
       const activeNode = draggableNodes.get(activeRef.current);
-
       if (!activeNode) {
         return;
       }
@@ -376,13 +378,11 @@ export const DndContext = memo(function DndContextInner({
         context: sensorContext,
         onStart(initialCoordinates) {
           const id = activeRef.current;
-
           if (id == null) {
             return;
           }
 
           const draggableNode = draggableNodes.get(id);
-
           if (!draggableNode) {
             return;
           }
@@ -423,10 +423,8 @@ export const DndContext = memo(function DndContextInner({
           const { active, collisions, over, scrollAdjustedTranslate } =
             sensorContext.current;
           let event: DragEndEvent | null = null;
-
           if (active && scrollAdjustedTranslate) {
             const { cancelDrop } = latestProps.current;
-
             event = {
               activatorEvent,
               active: active,
@@ -458,7 +456,6 @@ export const DndContext = memo(function DndContextInner({
 
             if (event) {
               const handler = latestProps.current[eventName];
-
               handler?.(event);
               dispatchMonitorEvent({ type: eventName, event });
             }
@@ -470,6 +467,7 @@ export const DndContext = memo(function DndContextInner({
     [draggableNodes],
   );
 
+  /** wrap instantiateSensor */
   const bindActivatorToSensorInstantiator = useCallback(
     (
       handler: SensorActivatorFunction<any>,
@@ -580,11 +578,11 @@ export const DndContext = memo(function DndContextInner({
       const over =
         overContainer && overContainer.rect.current
           ? {
-              id: overContainer.id,
-              rect: overContainer.rect.current,
-              data: overContainer.data,
-              disabled: overContainer.disabled,
-            }
+            id: overContainer.id,
+            rect: overContainer.rect.current,
+            data: overContainer.data,
+            disabled: overContainer.disabled,
+          }
           : null;
       const event: DragOverEvent = {
         active,

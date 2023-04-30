@@ -3,7 +3,35 @@ import { arrayMove } from '@dnd-kit/sortable';
 
 import type { FlattenedItem, TreeItem, TreeItems } from './types';
 
+/**
+ * id as content
+ */
+export const simpleTreeData: TreeItems = [
+  {
+    id: 'Recent',
+    children: [],
+  },
+  {
+    id: 'Favorites',
+    children: [
+      { id: 'Notion', children: [] },
+      { id: 'FlowUs', children: [] },
+    ],
+  },
+  {
+    id: 'Personal',
+    children: [
+      {
+        id: 'Templates',
+        children: [],
+      },
+    ],
+  },
+];
+
 export const iOS = /iPad|iPhone|iPod/.test(navigator.platform);
+
+
 
 /** offset/indentationWidth */
 function getDragDepth(offset: number, indentationWidth: number) {
@@ -187,7 +215,6 @@ export function getChildCount(items: TreeItems, id: UniqueIdentifier) {
   }
 
   const item = findItemDeep(items, id);
-
   return item ? countChildren(item.children) : 0;
 }
 

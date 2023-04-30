@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import {
@@ -22,9 +22,9 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates';
 import { TreeItem, TreeItemDraggable } from './tree-item';
-import type { SensorContext, TreeItems } from './types';
+import type { SensorConfig, TreeItems } from './types';
 import { useDndTree } from './use-dnd-tree';
-import { getChildCount, getFlatChildrenOf } from './utils';
+import { getChildCount, getFlatChildrenOf, simpleTreeData } from './utils';
 
 const measuring = {
   droppable: {
@@ -56,7 +56,7 @@ const dropAnimationConfig: DropAnimation = {
 };
 
 export type DndTreeProps = {
-  defaultItems?: TreeItems;
+  initialData?: TreeItems;
   isCollapsible?: boolean;
   isRemovable?: boolean;
   showDropIndicator?: boolean;
@@ -66,20 +66,21 @@ export type DndTreeProps = {
 };
 
 /**
+ * react tree component that is draggable/collapsible/removable
+ *
  * - 点击父级菜单时，会先隐藏所有子级内容，显示为指示线，符合预期
+ * - 渲染时使用的是扁平化数据结构，未直接使用原树型数据
  *
  * todo
  *
  * - 优化 retainLayoutWhenDragging 模式
  * - item不支持向左水平拖动提升层级
- * - onlyUpdateOnDrop模式下，首尾项的处理应该特殊处理
- * - 不支持使用键盘方式拖拽
  */
 export function DndTree(props: DndTreeProps) {
   const {
     indentationWidth = 50,
-    isCollapsible,
-    isRemovable,
+    isCollapsible = false,
+    isRemovable = false,
     showDropIndicator = false,
     retainLayoutWhenDragging = false,
   } = props;
@@ -99,13 +100,13 @@ export function DndTree(props: DndTreeProps) {
     handleRemove,
     handleAdd,
     handleCollapse,
-  } = useDndTree(props);
+  } = useDndTree({ initialData: simpleTreeData, indentationWidth, ...props });
   window['tree'] = items;
   window['flat'] = flattenedItems;
 
   // console.log(';; candidate ', activeId, overId, candidate);
 
-  const sensorConfig: SensorContext = useRef({
+  const sensorConfig: SensorConfig = useRef({
     items: flattenedItems,
     offset: offsetLeft,
   });
@@ -128,10 +129,18 @@ export function DndTree(props: DndTreeProps) {
   const activeItem = useMemo(() => {
     return activeId ? flattenedItems.find(({ id }) => id === activeId) : null;
   }, [activeId, flattenedItems]);
-
-  const activeItemsFlat = useMemo(() => {
+  const activeItemChildrenFlat = useMemo(() => {
     return activeId ? getFlatChildrenOf(items, activeId).map((x) => x.id) : [];
   }, [activeId, items]);
+
+
+  useEffect(() => {
+    sensorConfig.current = {
+      items: flattenedItems,
+      offset: offsetLeft,
+    };
+  }, [flattenedItems, offsetLeft]);
+
 
   return (
     <DndContext
@@ -148,18 +157,20 @@ export function DndTree(props: DndTreeProps) {
         <button onClick={() => handleAdd()}> 添加顶级节点</button>
         {flattenedItems.map((item, index) => {
           const { id, children, collapsed, depth } = item;
-          // console.log(';; item ', index, JSON.stringify(item))
+          // console.log(';; item ', index, depth, JSON.stringify(item))
           // if (index === flattenedItems.length - 1) console.log(';; ==== ')
           return (
             <TreeItemDraggable
               key={id}
               id={String(id)}
               value={String(id)}
-              depth={id === activeId && candidate ? candidate.depth : depth}
+              depth={id === activeId && candidate && !retainLayoutWhenDragging ? candidate.depth : depth}
               indentationWidth={indentationWidth}
               indicator={showDropIndicator}
               indicatorLineStyle={
-                activeId && id === overId && !activeItemsFlat.includes(id)
+                activeId &&
+                id === overId &&
+                !activeItemChildrenFlat.includes(id)
               }
               collapsed={Boolean(collapsed && children.length)}
               onCollapse={

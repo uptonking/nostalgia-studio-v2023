@@ -1,11 +1,12 @@
 import { useContext, useEffect, useMemo, useRef } from 'react';
+
+import type { Data } from '@dnd-kit/core';
 import {
   useDraggable,
-  useDroppable,
   UseDraggableArguments,
+  useDroppable,
   UseDroppableArguments,
 } from '@dnd-kit/core';
-import type { Data } from '@dnd-kit/core';
 import { CSS, isKeyboardEvent, useCombinedRefs } from '@dnd-kit/utilities';
 
 import { Context } from '../components';
@@ -36,6 +37,9 @@ export interface Arguments
   transition?: SortableTransition | null;
 }
 
+/**
+ * an abstraction that composes the `useDroppable` and `useDraggable` hooks.
+ */
 export function useSortable({
   animateLayoutChanges = defaultAnimateLayoutChanges,
   attributes: userDefinedAttributes,
@@ -58,6 +62,7 @@ export function useSortable({
     useDragOverlay,
     strategy: globalStrategy,
   } = useContext(Context);
+
   const disabled: Disabled = normalizeLocalDisabled(
     localDisabled,
     globalDisabled,
@@ -105,6 +110,7 @@ export function useSortable({
     },
     disabled: disabled.draggable,
   });
+
   const setNodeRef = useCombinedRefs(setDroppableNodeRef, setDraggableNodeRef);
   const isSorting = Boolean(active);
   const displaceItem =

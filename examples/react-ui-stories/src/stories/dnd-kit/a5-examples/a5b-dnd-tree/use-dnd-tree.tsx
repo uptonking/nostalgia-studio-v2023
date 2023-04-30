@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import {
+import type {
   DragEndEvent,
   DragMoveEvent,
   DragOverEvent,
@@ -21,41 +21,16 @@ import {
 } from './utils';
 
 /**
- * id as content
+ * use to store and update tree state
  */
-const initialItems: TreeItems = [
-  {
-    id: 'Recent',
-    children: [],
-  },
-  {
-    id: 'Favorites',
-    children: [
-      { id: 'Notion', children: [] },
-      { id: 'FlowUs', children: [] },
-    ],
-  },
-  {
-    id: 'Personal',
-    children: [
-      {
-        id: 'Templates',
-        children: [],
-      },
-    ],
-  },
-];
-
 export const useDndTree = ({
-  defaultItems = initialItems,
+  initialData = [],
   indentationWidth = 50,
   retainLayoutWhenDragging = false,
 }: DndTreeProps) => {
-  const [items, setItems] = useState(() => defaultItems);
-  const [activeId, setActiveId] = useState<UniqueIdentifier | undefined>(
-    undefined,
-  );
-  const [overId, setOverId] = useState<UniqueIdentifier | undefined>(undefined);
+  const [items, setItems] = useState<TreeItems>(() => initialData);
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+  const [overId, setOverId] = useState<UniqueIdentifier | null>(null);
   const [offsetLeft, setOffsetLeft] = useState<number>(0);
   const [currentPosition, setCurrentPosition] = useState<{
     parentId: UniqueIdentifier | null;
@@ -123,6 +98,7 @@ export const useDndTree = ({
   );
 
   const handleDragMove = useCallback(({ delta }: DragMoveEvent) => {
+    // console.log(';; dragMv ', delta);
     setOffsetLeft(delta.x);
   }, []);
 
@@ -186,12 +162,12 @@ export const useDndTree = ({
     offsetLeft,
     flattenedItems,
     candidate,
-    handleAdd,
     handleDragStart,
     handleDragMove,
     handleDragOver,
     handleDragEnd,
     handleDragCancel,
+    handleAdd,
     handleRemove,
     handleCollapse,
   };

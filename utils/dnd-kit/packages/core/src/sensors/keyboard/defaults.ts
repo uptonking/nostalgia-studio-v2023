@@ -1,4 +1,4 @@
-import { KeyboardCoordinateGetter, KeyboardCode, KeyboardCodes } from './types';
+import { KeyboardCode, KeyboardCodes, KeyboardCoordinateGetter } from './types';
 
 export const defaultKeyboardCodes: KeyboardCodes = {
   start: [KeyboardCode.Space, KeyboardCode.Enter],
@@ -6,6 +6,10 @@ export const defaultKeyboardCodes: KeyboardCodes = {
   end: [KeyboardCode.Space, KeyboardCode.Enter],
 };
 
+/**
+ * By default, the Keyboard sensor moves in any given direction by 25 pixels when any of the arrow keys are pressed while dragging.
+ * - This is an arbitrary sensible default that you can customize by your own coordGetter
+ */
 export const defaultKeyboardCoordinateGetter: KeyboardCoordinateGetter = (
   event,
   { currentCoordinates },

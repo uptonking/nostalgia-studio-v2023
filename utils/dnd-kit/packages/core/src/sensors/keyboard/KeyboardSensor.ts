@@ -1,32 +1,31 @@
 import {
   add as getAdjustedCoordinates,
-  subtract as getCoordinatesDelta,
   getOwnerDocument,
   getWindow,
   isKeyboardEvent,
+  subtract as getCoordinatesDelta,
 } from '@dnd-kit/utilities';
 
 import type { Coordinates } from '../../types';
 import {
   defaultCoordinates,
-  getScrollPosition,
   getScrollElementRect,
+  getScrollPosition,
 } from '../../utilities';
 import { scrollIntoViewIfNeeded } from '../../utilities/scroll';
 import { EventName } from '../events';
-import { Listeners } from '../utilities';
 import type {
   Activators,
   SensorInstance,
-  SensorProps,
   SensorOptions,
+  SensorProps,
 } from '../types';
-
-import { KeyboardCoordinateGetter, KeyboardCode, KeyboardCodes } from './types';
+import { Listeners } from '../utilities';
 import {
   defaultKeyboardCodes,
   defaultKeyboardCoordinateGetter,
 } from './defaults';
+import { KeyboardCode, KeyboardCodes, KeyboardCoordinateGetter } from './types';
 
 export interface KeyboardSensorOptions extends SensorOptions {
   keyboardCodes?: KeyboardCodes;
@@ -40,7 +39,9 @@ export type KeyboardSensorProps = SensorProps<KeyboardSensorOptions>;
 export class KeyboardSensor implements SensorInstance {
   public autoScrollEnabled = false;
   private referenceCoordinates: Coordinates | undefined;
+  /** callbacks added to `document` */
   private listeners: Listeners;
+  /** callbacks added to `window` */
   private windowListeners: Listeners;
 
   constructor(private props: KeyboardSensorProps) {
@@ -286,7 +287,6 @@ export class KeyboardSensor implements SensorInstance {
 
         if (keyboardCodes.start.includes(code)) {
           const activator = active.activatorNode.current;
-
           if (activator && event.target !== activator) {
             return false;
           }

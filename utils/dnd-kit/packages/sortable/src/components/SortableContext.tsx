@@ -1,13 +1,18 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useDndContext, ClientRect, UniqueIdentifier } from '@dnd-kit/core';
+
+import { ClientRect, UniqueIdentifier, useDndContext } from '@dnd-kit/core';
 import { useIsomorphicLayoutEffect, useUniqueId } from '@dnd-kit/utilities';
 
+import { rectSortingStrategy } from '../strategies';
 import type { Disabled, SortingStrategy } from '../types';
 import { getSortedRects, itemsEqual, normalizeDisabled } from '../utilities';
-import { rectSortingStrategy } from '../strategies';
 
 export interface Props {
   children: React.ReactNode;
+  /** a sorted array of the unique identifiers associated with the elements
+   * - It's important that the items prop passed to SortableContext be sorted
+   * in the same order in which the items are rendered, otherwise you may see unexpected results.
+   */
   items: (UniqueIdentifier | { id: UniqueIdentifier })[];
   strategy?: SortingStrategy;
   id?: string;
@@ -43,6 +48,10 @@ export const Context = React.createContext<ContextDescriptor>({
   },
 });
 
+/**
+ * sortable state provider, using `useDndContext`
+ * - has no callback type of props
+ */
 export function SortableContext({
   children,
   id,
@@ -57,6 +66,7 @@ export function SortableContext({
     over,
     measureDroppableContainers,
   } = useDndContext();
+
   const containerId = useUniqueId(ID_PREFIX, id);
   const useDragOverlay = Boolean(dragOverlay.rect !== null);
   const items = useMemo<UniqueIdentifier[]>(

@@ -87,8 +87,8 @@ export function DndTree(props: DndTreeProps) {
 
   const {
     items,
-    activeId,
     flattenedItems,
+    activeId,
     candidate,
     overId,
     offsetLeft,

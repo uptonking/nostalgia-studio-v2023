@@ -31,19 +31,17 @@ export const simpleTreeData: TreeItems = [
 
 export const iOS = /iPad|iPhone|iPod/.test(navigator.platform);
 
-
-
 /** offset/indentationWidth */
 function getDragDepth(offset: number, indentationWidth: number) {
   return Math.round(offset / indentationWidth);
 }
 
 function getMaxDepth({ previousItem }: { previousItem: FlattenedItem }) {
-  return previousItem ? previousItem.depth + 1 : 0;
+  return previousItem && 'depth' in previousItem ? previousItem.depth + 1 : 0;
 }
 
 function getMinDepth({ nextItem }: { nextItem: FlattenedItem }) {
-  return nextItem ? nextItem.depth : 0;
+  return nextItem && 'depth' in nextItem && nextItem.depth > 1 ? nextItem.depth - 1 : 0;
 }
 
 export function getDepthCandidate(
@@ -56,12 +54,17 @@ export function getDepthCandidate(
   const overItemIndex = items.findIndex(({ id }) => id === overId);
   const activeItemIndex = items.findIndex(({ id }) => id === activeId);
   const activeItem = items[activeItemIndex];
-  const newItems = arrayMove(items, activeItemIndex, overItemIndex);
+  const newItems =
+    activeItemIndex === overItemIndex
+      ? items.slice()
+      : arrayMove(items, activeItemIndex, overItemIndex);
   const previousItem = newItems[overItemIndex - 1];
   const nextItem = newItems[overItemIndex + 1];
   const maxDepth = getMaxDepth({ previousItem });
   const minDepth = getMinDepth({ nextItem });
   const dragDepth = getDragDepth(dragOffset, indentationWidth);
+  // console.log(';; can-depth ', activeItemIndex, overItemIndex, activeItem.depth, dragDepth, dragOffset);
+
   const projectedDepth = activeItem.depth + dragDepth;
   let depthCandidate = projectedDepth;
   if (projectedDepth >= maxDepth) {

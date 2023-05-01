@@ -59,12 +59,12 @@ export const useDndTree = ({
     () =>
       activeId && overId
         ? getDepthCandidate(
-            flattenedItems,
-            activeId,
-            overId,
-            offsetLeft,
-            indentationWidth,
-          )
+          flattenedItems,
+          activeId,
+          overId,
+          offsetLeft,
+          indentationWidth,
+        )
         : null,
     [activeId, flattenedItems, indentationWidth, offsetLeft, overId],
   );
@@ -153,7 +153,7 @@ export const useDndTree = ({
     );
   }, []);
 
-  // console.log(';; flattenedItems-length ', flattenedItems.length)
+  // console.log(';; flattenedItems-length ', flattenedItems.length, offsetLeft)
 
   return {
     items,
@@ -173,4 +173,4 @@ export const useDndTree = ({
   };
 };
 
-export const useDndTreeAutoUpdate = () => {};
+export const useDndTreeAutoUpdate = () => { };

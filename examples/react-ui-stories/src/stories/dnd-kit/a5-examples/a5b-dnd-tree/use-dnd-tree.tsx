@@ -59,12 +59,12 @@ export const useDndTree = ({
     () =>
       activeId && overId
         ? getDepthCandidate(
-          flattenedItems,
-          activeId,
-          overId,
-          offsetLeft,
-          indentationWidth,
-        )
+            flattenedItems,
+            activeId,
+            overId,
+            offsetLeft,
+            indentationWidth,
+          )
         : null,
     [activeId, flattenedItems, indentationWidth, offsetLeft, overId],
   );
@@ -173,4 +173,4 @@ export const useDndTree = ({
   };
 };
 
-export const useDndTreeAutoUpdate = () => { };
+export const useDndTreeAutoUpdate = () => {};

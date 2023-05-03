@@ -13,7 +13,6 @@ const isProd = process.env.NODE_ENV === 'production';
 module.exports = {
   // mode: 'development',
   // devtool: 'eval-source-map',
-
   // entry: path.resolve(__dirname, '../src/render.js'),
   // output: {
   //   filename: 'main.js',
@@ -77,8 +76,31 @@ module.exports = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
+        exclude: /\.module\.(sa|sc|c)ss$/,
         use: [
           // isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: !isProd,
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              // when node-sass and sass were installed，by default sass-loader prefers sass.
+              implementation: require('sass'),
+              sassOptions: {
+                // fiber: require('fibers'),
+              },
+            },
+          },
+        ],
+      },
+      {
+        test: /\.module\.(sa|sc|c)ss$/,
+        use: [
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',

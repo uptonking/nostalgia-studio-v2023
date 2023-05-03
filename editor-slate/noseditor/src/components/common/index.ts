@@ -10,7 +10,7 @@ export {
   PopoverTrigger,
   usePopover,
 } from './popover';
-export { IconButton } from './icon-button';
+export { IconButton, type IconButtonProps } from './icon-button';
 export { NosIconProvider } from './icon-provider';
 export { Menu, MenuItem } from './dropdown-menu';
 export { ParagraphBase } from './basic';

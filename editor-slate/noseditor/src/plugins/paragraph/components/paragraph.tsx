@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { styled } from '@linaria/react';
+import { css } from '@linaria/core';
 
 import { ParagraphBase } from '../../../components';
 import { type TextAlignValueType } from '../../../utils';
@@ -18,23 +18,31 @@ export const Paragraph = (
     [element.textAlign],
   );
 
+  const stylesMap = useMemo(() => getParagraphStylesMap(), []);
+
   return (
-    <StyledParagraph
-      {...attributes}
-      align={align}
-      className={align ? 'pAlign' : ''}
-    >
+    <ParagraphBase {...attributes} className={align ? stylesMap[align] : ''}>
       {children}
-    </StyledParagraph>
+    </ParagraphBase>
   );
 };
 
-export const StyledParagraph = styled(ParagraphBase)<{
-  align: TextAlignCssValue | '';
-}>`
-  &.pAlign {
-    text-align: ${({ align }) => align};
-  }
+function getParagraphStylesMap() {
+  return {
+    center: textAlignCenter,
+    end: textAlignRight,
+    justify: textAlignJustify,
+  };
+}
+
+const textAlignRight = css`
+  text-align: right;
+`;
+const textAlignCenter = css`
+  text-align: center;
+`;
+const textAlignJustify = css`
+  text-align: justify;
 `;
 
 function getTextAlignCssValue(prop: TextAlignValueType) {

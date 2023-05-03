@@ -131,7 +131,7 @@ export interface Props {
   onDragCancel?(event: DragCancelEvent): void;
 }
 
-export interface CancelDropArguments extends DragEndEvent { }
+export interface CancelDropArguments extends DragEndEvent {}
 
 export type CancelDrop = (
   args: CancelDropArguments,
@@ -190,11 +190,11 @@ export const DndContext = memo(function DndContextInner({
     () =>
       activeId != null
         ? {
-          id: activeId,
-          // It's possible for the active node to unmount while dragging
-          data: activeNodeOrNull?.data ?? defaultData,
-          rect: activeRects,
-        }
+            id: activeId,
+            // It's possible for the active node to unmount while dragging
+            data: activeNodeOrNull?.data ?? defaultData,
+            rect: activeRects,
+          }
         : null,
     [activeId, activeNodeOrNull],
   );
@@ -331,12 +331,12 @@ export const DndContext = memo(function DndContextInner({
   const collisions =
     active && collisionRect
       ? collisionDetection({
-        active,
-        collisionRect,
-        droppableRects,
-        droppableContainers: enabledDroppableContainers,
-        pointerCoordinates,
-      })
+          active,
+          collisionRect,
+          droppableRects,
+          droppableContainers: enabledDroppableContainers,
+          pointerCoordinates,
+        })
       : null;
   const overId = getFirstCollision(collisions, 'id');
   const [over, setOver] = useState<Over | null>(null);
@@ -578,11 +578,11 @@ export const DndContext = memo(function DndContextInner({
       const over =
         overContainer && overContainer.rect.current
           ? {
-            id: overContainer.id,
-            rect: overContainer.rect.current,
-            data: overContainer.data,
-            disabled: overContainer.disabled,
-          }
+              id: overContainer.id,
+              rect: overContainer.rect.current,
+              data: overContainer.data,
+              disabled: overContainer.disabled,
+            }
           : null;
       const event: DragOverEvent = {
         active,

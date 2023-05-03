@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
+import cx from 'clsx';
+
 import type { IIconProps } from '@icon-park/react/lib/runtime';
-import { styled } from '@linaria/react';
+import { css } from '@linaria/core';
 
 import { themed } from '../../styles';
 
-type IconButtonProps = {
+export type IconButtonProps = {
   className?: string;
   style?: React.CSSProperties;
   children: React.ReactElement<IIconProps>;
@@ -15,15 +17,15 @@ type IconButtonProps = {
 } & Omit<React.HTMLProps<HTMLButtonElement>, 'type'>;
 
 export const IconButton = (props_: IconButtonProps) => {
-  const { children, ...props } = props_;
+  const { children, className, ...props } = props_;
   return (
-    <StyledButton type='button' {...props}>
+    <button type='button' className={cx(iconBtnCss, className)} {...props}>
       {children}
-    </StyledButton>
+    </button>
   );
 };
 
-const StyledButton = styled.button<IconButtonProps>`
+const iconBtnCss = css`
   width: 28px;
   height: 28px;
   padding-top: 4px;

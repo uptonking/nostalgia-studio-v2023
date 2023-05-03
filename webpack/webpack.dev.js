@@ -25,6 +25,7 @@ module.exports = merge(commonConfig, {
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: JSON.stringify(true),
+      // 'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV) },
     }),
     // new webpack.HotModuleReplacementPlugin(),
     isEnvReactHotReload && new ReactRefreshWebpackPlugin(),

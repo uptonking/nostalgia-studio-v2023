@@ -1,9 +1,9 @@
 import React, { forwardRef, useCallback, useState } from 'react';
 
+import cx from 'clsx';
 import { useSlateStatic } from 'slate-react';
 
 import { css } from '@linaria/core';
-import { styled } from '@linaria/react';
 
 import {
   CheckIcon,
@@ -11,6 +11,7 @@ import {
   DeleteIcon,
   EditIcon,
   IconButton,
+  type IconButtonProps,
 } from '../../../components';
 import { themed } from '../../../styles/theme-vars';
 import { removeLink, updateLink } from '../commands';
@@ -72,7 +73,7 @@ export const LinkInput = forwardRef<HTMLDivElement, LinkInputProps>(
             </div>
           )}
           <div className=''>
-            <StyledIconButton
+            <ActionIconButton
               title={isEditing ? 'Remove Link' : 'Copy Link'}
               onClick={() => {
                 if (isEditing) {
@@ -86,13 +87,13 @@ export const LinkInput = forwardRef<HTMLDivElement, LinkInputProps>(
               }}
             >
               {isEditing ? <DeleteIcon /> : <CopyIcon />}
-            </StyledIconButton>
-            <StyledIconButton
+            </ActionIconButton>
+            <ActionIconButton
               title={isEditing ? 'Save' : 'Edit Link'}
               onClick={updateLinkDataAndStopEditing}
             >
               {isEditing ? <CheckIcon /> : <EditIcon />}
-            </StyledIconButton>
+            </ActionIconButton>
           </div>
         </div>
       </div>
@@ -100,7 +101,15 @@ export const LinkInput = forwardRef<HTMLDivElement, LinkInputProps>(
   },
 );
 
-const StyledIconButton = styled(IconButton)`
+const ActionIconButton = (props_: IconButtonProps) => {
+  const { className, children, ...props } = props_;
+  return (
+    <IconButton className={cx(className, actionBtnCss)} {...props}>
+      {children}
+    </IconButton>
+  );
+};
+const actionBtnCss = css`
   margin-left: 6px;
 `;
 

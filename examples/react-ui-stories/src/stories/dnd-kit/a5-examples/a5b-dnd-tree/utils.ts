@@ -41,7 +41,9 @@ function getMaxDepth({ previousItem }: { previousItem: FlattenedItem }) {
 }
 
 function getMinDepth({ nextItem }: { nextItem: FlattenedItem }) {
-  return nextItem && 'depth' in nextItem && nextItem.depth > 1 ? nextItem.depth - 1 : 0;
+  return nextItem && 'depth' in nextItem && nextItem.depth > 1
+    ? nextItem.depth - 1
+    : 0;
 }
 
 export function getDepthCandidate(

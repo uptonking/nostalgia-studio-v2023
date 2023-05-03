@@ -103,7 +103,9 @@ export const TreeItem = forwardRef<HTMLDivElement, TreeItemProps>(
               </svg>
             </Action>
           )}
-          <span className={styles.Text}>{value}{' '}{indentationWidth}{' '}{depth}</span>
+          <span className={styles.Text}>
+            {value} {indentationWidth} {depth}
+          </span>
           {!clone && onRemove && <Remove onClick={onRemove} />}
           {clone && childCount && childCount > 1 ? (
             <span className={styles.Count}>{childCount}</span>

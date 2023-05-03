@@ -133,14 +133,12 @@ export function DndTree(props: DndTreeProps) {
     return activeId ? getFlatChildrenOf(items, activeId).map((x) => x.id) : [];
   }, [activeId, items]);
 
-
   useEffect(() => {
     sensorConfig.current = {
       items: flattenedItems,
       offset: offsetLeft,
     };
   }, [flattenedItems, offsetLeft]);
-
 
   return (
     <DndContext
@@ -164,7 +162,11 @@ export function DndTree(props: DndTreeProps) {
               key={id}
               id={String(id)}
               value={String(id)}
-              depth={id === activeId && candidate && !retainLayoutWhenDragging ? candidate.depth : depth}
+              depth={
+                id === activeId && candidate && !retainLayoutWhenDragging
+                  ? candidate.depth
+                  : depth
+              }
               indentationWidth={indentationWidth}
               indicator={showDropIndicator}
               indicatorLineStyle={

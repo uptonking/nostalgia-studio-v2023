@@ -22,3 +22,4 @@ export {
   Horizontal as A5c2Horizontal,
   Vertical as A5c1Vertical,
 } from './a5-examples/a5c-layout';
+export { DragDropRenderCountApp as A6b1RenderCount } from './a6-issues/a6b-rerender/drag-drop-render-count';

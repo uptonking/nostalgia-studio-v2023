@@ -3,6 +3,7 @@ export * from './icons';
 export {
   ParagraphBase,
   IconButton,
+  type IconButtonProps,
   NosIconProvider,
   Menu,
   MenuItem,

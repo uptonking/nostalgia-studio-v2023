@@ -17,8 +17,8 @@ const Draggable = React.memo(function DraggableInner({ id }: DraggableProps) {
 
   const style = transform
     ? {
-      transform: `translate(${transform.x}px, ${transform.y}px)`,
-    }
+        transform: `translate(${transform.x}px, ${transform.y}px)`,
+      }
     : undefined;
 
   return (

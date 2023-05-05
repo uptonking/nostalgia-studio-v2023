@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 
-// import * as stories from './stories/dnd-kit';
-import * as stories from './stories/react-window';
-
-// import * as stories from './stories/react-tiny-virtual-list';
+import * as stories from './stories/docs-examples';
 
 // import * as stories from './stories/reactjs-popup';
 

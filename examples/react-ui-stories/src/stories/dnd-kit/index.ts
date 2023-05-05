@@ -12,7 +12,8 @@ export {
   BasicSetup as A4b1VerticalList,
   WithoutDragOverlay as A4b2NoOverlay,
   DragHandle as A4b3DragHandle,
-} from './a4-sortable/a4b1-vertical-list';
+} from './a4-sortable/a4b-vertical-list';
+export { A4c1DndVirtualList } from './a4-sortable/a4c-virtual-list';
 export {
   DndTreeApp as A5b1DndTree,
   TreeUpdateOnDrop as A5b2TreeUpdateOnDrop,

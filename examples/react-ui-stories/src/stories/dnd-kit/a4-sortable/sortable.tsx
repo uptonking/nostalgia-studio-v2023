@@ -92,19 +92,6 @@ const screenReaderInstructions: ScreenReaderInstructions = {
   `,
 };
 
-const storiesProps: Partial<SortableProps> = {
-  strategy: verticalListSortingStrategy,
-  itemCount: 50,
-};
-
-export const BasicSetup = () => <Sortable {...storiesProps} />;
-
-export const WithoutDragOverlay = () => (
-  <Sortable {...storiesProps} useDragOverlay={false} />
-);
-
-export const DragHandle = () => <Sortable {...storiesProps} handle />;
-
 export function Sortable({
   activationConstraint,
   animateLayoutChanges,

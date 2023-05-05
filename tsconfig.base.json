@@ -94,6 +94,10 @@
       "@tanstack/react-virtual": [
         "excel-tanstack-table/src-pkgs/react-virtual"
       ],
+      "react-tiny-virtual-list": [
+        "excel-tanstack-table/src-react-tiny-virtual-list/src/"
+      ],
+      "react-window": ["excel-tanstack-table/src-react-window/src/"],
       "yjs": ["collab-yjs/src-pkgs/yjs/src"],
       "lib0": ["collab-yjs/src-pkgs/yjs-lib0"],
       "y-protocols": ["collab-yjs/src-pkgs/y-protocols"],

@@ -5,6 +5,8 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const commonConfig = require('./webpack.common');
+const BundleAnalyzerPlugin =
+  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 function checkAppEnv(env) {
   return (
@@ -27,6 +29,7 @@ module.exports = merge(commonConfig, {
       __DEV__: JSON.stringify(true),
       // 'process.env': { NODE_ENV: JSON.stringify(process.env.NODE_ENV) },
     }),
+    // new BundleAnalyzerPlugin(),
     // new webpack.HotModuleReplacementPlugin(),
     isEnvReactHotReload && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),

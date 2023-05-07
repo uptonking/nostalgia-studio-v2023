@@ -1,4 +1,4 @@
-/* Forked from react-virtualized 💖 */
+/* copied from react-virtualized 💖 */
 import { ALIGNMENT } from './constants';
 
 export type ItemSizeGetter = (index: number) => number;
@@ -23,18 +23,16 @@ export class SizeAndPositionManager {
   private itemSizeGetter: ItemSizeGetter;
   private itemCount: number;
   private estimatedItemSize: number;
+  /** Measurements for items up to this index can be trusted; items afterward is estimated. */
   private lastMeasuredIndex: number;
+  /** Cache of size and position data for items, mapped by item index. */
   private itemSizeAndPositionData: SizeAndPositionData;
 
   constructor({ itemCount, itemSizeGetter, estimatedItemSize }: Options) {
     this.itemSizeGetter = itemSizeGetter;
     this.itemCount = itemCount;
     this.estimatedItemSize = estimatedItemSize;
-
-    // Cache of size and position data for items, mapped by item index.
     this.itemSizeAndPositionData = {};
-
-    // Measurements for items up to this index can be trusted; items afterward should be estimated.
     this.lastMeasuredIndex = -1;
   }
 
@@ -62,7 +60,7 @@ export class SizeAndPositionManager {
 
   /**
    * This method returns the size and position for the item at the specified index.
-   * It just-in-time calculates (or used cached values) for items leading up to the index.
+   * - It just-in-time calculates (or used cached values) for items leading up to the index.
    */
   getSizeAndPositionForIndex(index: number) {
     if (index < 0 || index >= this.itemCount) {
@@ -77,9 +75,9 @@ export class SizeAndPositionManager {
       let offset =
         lastMeasuredSizeAndPosition.offset + lastMeasuredSizeAndPosition.size;
 
+      // for unmeasured items, use estimated size
       for (let i = this.lastMeasuredIndex + 1; i <= index; i++) {
         const size = this.itemSizeGetter(i);
-
         if (size == null || isNaN(size)) {
           throw Error(`Invalid size returned for index ${i} of value ${size}`);
         }
@@ -106,8 +104,8 @@ export class SizeAndPositionManager {
 
   /**
    * Total size of all items being measured.
-   * This value will be completedly estimated initially.
-   * As items as measured the estimate will be updated.
+   * - This value will be completely estimated initially.
+   * - As items as measured the estimate will be updated.
    */
   getTotalSize(): number {
     const lastMeasuredSizeAndPosition =
@@ -178,6 +176,7 @@ export class SizeAndPositionManager {
     return Math.max(0, Math.min(totalSize - containerSize, idealOffset));
   }
 
+  /** get item index of visible range, start from 0 */
   getVisibleRange({
     containerSize,
     offset,
@@ -188,7 +187,6 @@ export class SizeAndPositionManager {
     overscanCount: number;
   }): { start?: number; stop?: number } {
     const totalSize = this.getTotalSize();
-
     if (totalSize === 0) {
       return {};
     }
@@ -223,8 +221,8 @@ export class SizeAndPositionManager {
 
   /**
    * Clear all cached values for items after the specified index.
-   * This method should be called for any item that has changed its size.
-   * It will not immediately perform any calculations; they'll be performed the next time getSizeAndPositionForIndex() is called.
+   * - This method should be called for any item that has changed its size.
+   * - It will not immediately perform any calculations; they'll be performed the next time getSizeAndPositionForIndex() is called.
    */
   resetItem(index: number) {
     this.lastMeasuredIndex = Math.min(this.lastMeasuredIndex, index - 1);
@@ -232,9 +230,8 @@ export class SizeAndPositionManager {
 
   /**
    * Searches for the item (index) nearest the specified offset.
-   *
-   * If no exact match is found the next lowest item index will be returned.
-   * This allows partially visible items (with offsets just before/above the fold) to be visible.
+   * - If no exact match is found the next lowest item index will be returned.
+   * - This allows partially visible items (with offsets just before/above the fold) to be visible.
    */
   findNearestItem(offset: number) {
     if (isNaN(offset)) {
@@ -283,22 +280,24 @@ export class SizeAndPositionManager {
       middle = low + Math.floor((high - low) / 2);
       currentOffset = this.getSizeAndPositionForIndex(middle).offset;
 
-      if (currentOffset === offset) {
+      if (offset === currentOffset) {
         return middle;
-      } else if (currentOffset < offset) {
+      } else if (offset > currentOffset) {
         low = middle + 1;
-      } else if (currentOffset > offset) {
+      } else if (offset < currentOffset) {
         high = middle - 1;
       }
     }
 
     if (low > 0) {
+      // if not found in range, return the previous one
       return low - 1;
     }
 
     return 0;
   }
 
+  /** first expo search, then binary search */
   private exponentialSearch({
     index,
     offset,

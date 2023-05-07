@@ -5,9 +5,7 @@ export * from './utils';
 //
 
 type ScrollDirection = 'forward' | 'backward';
-
 type ScrollAlignment = 'start' | 'center' | 'end' | 'auto';
-
 type ScrollBehavior = 'auto' | 'smooth';
 
 /**
@@ -20,7 +18,6 @@ export interface ScrollToOptions {
 }
 
 type ScrollToOffsetOptions = ScrollToOptions;
-
 type ScrollToIndexOptions = ScrollToOptions;
 
 export interface Range {
@@ -51,6 +48,8 @@ export interface VirtualItem {
    * - After an item is measured (if you choose to measure), this value will be the number(which by default is configured to measure elements with `getBoundingClientRect()`).
    */
   size: number;
+  /** The number of lanes the list is divided into (aka columns for vertical lists and rows for horizontal lists). */
+  lane: number;
 }
 
 interface Rect {
@@ -65,7 +64,6 @@ export const defaultKeyExtractor = (index: number) => index;
 export const defaultRangeExtractor = (range: Range) => {
   const start = Math.max(range.startIndex - range.overscan, 0);
   const end = Math.min(range.endIndex + range.overscan, range.count - 1);
-
   const arr = [];
 
   for (let i = start; i <= end; i++) {
@@ -76,7 +74,7 @@ export const defaultRangeExtractor = (range: Range) => {
 };
 
 /**
- * use `ResizeObserver`  to trigger `cb(element.getBoundingClientRect())`
+ * use `ResizeObserver` to trigger `cb(element.getBoundingClientRect())`
  */
 export const observeElementRect = <T extends Element>(
   instance: Virtualizer<T, any>,
@@ -87,7 +85,7 @@ export const observeElementRect = <T extends Element>(
     return;
   }
 
-  const handler = (rect: { width: number; height: number }) => {
+  const handler = (rect: Rect) => {
     const { width, height } = rect;
     cb({ width: Math.round(width), height: Math.round(height) });
   };
@@ -96,7 +94,7 @@ export const observeElementRect = <T extends Element>(
 
   const observer = new ResizeObserver((entries) => {
     const entry = entries[0];
-    if (entry) {
+    if (entry?.borderBoxSize) {
       const box = entry.borderBoxSize[0];
       if (box) {
         handler({ width: box.inlineSize, height: box.blockSize });
@@ -192,7 +190,7 @@ export const measureElement = <TItemElement extends Element>(
   entry: ResizeObserverEntry | undefined,
   instance: Virtualizer<any, TItemElement>,
 ) => {
-  if (entry) {
+  if (entry?.borderBoxSize) {
     const box = entry.borderBoxSize[0];
     if (box) {
       const size = Math.round(
@@ -201,6 +199,7 @@ export const measureElement = <TItemElement extends Element>(
       return size;
     }
   }
+
   return Math.round(
     element.getBoundingClientRect()[
       instance.options.horizontal ? 'width' : 'height'
@@ -314,6 +313,8 @@ export interface VirtualizerOptions<
   scrollingDelay?: number;
   indexAttribute?: string;
   initialMeasurementsCache?: VirtualItem[];
+  /** The number of lanes the list is divided into (aka columns for vertical lists and rows for horizontal lists). */
+  lanes?: number;
 }
 
 export class Virtualizer<
@@ -340,6 +341,12 @@ export class Virtualizer<
   scrollOffset: number;
   scrollDirection: ScrollDirection | null = null;
   private scrollAdjustments: number = 0;
+
+  /** items index for visible range */
+  range: { startIndex: number; endIndex: number } = {
+    startIndex: 0,
+    endIndex: 0,
+  };
 
   /**
    * use ResizeObserver to trigger `_measureElement()`
@@ -369,11 +376,6 @@ export class Virtualizer<
       unobserve: (target: Element) => get()?.unobserve(target),
     };
   })();
-
-  range: { startIndex: number; endIndex: number } = {
-    startIndex: 0,
-    endIndex: 0,
-  };
 
   constructor(opts: VirtualizerOptions<TScrollElement, TItemElement>) {
     this.setOptions(opts);
@@ -410,6 +412,7 @@ export class Virtualizer<
       scrollingDelay: 150,
       indexAttribute: 'data-index',
       initialMeasurementsCache: [],
+      lanes: 1,
       ...opts,
     };
   };
@@ -502,14 +505,8 @@ export class Virtualizer<
 
   /** iterate each item, and try to use `estimateSize` if not measured */
   private getMeasurements = memo(
-    () => [
-      this.options.count,
-      this.options.paddingStart,
-      this.options.scrollMargin,
-      this.options.getItemKey,
-      this.itemSizeCache,
-    ],
-    (count, paddingStart, scrollMargin, getItemKey, itemSizeCache) => {
+    () => [this.memoOptions(), this.itemSizeCache],
+    ({ count, paddingStart, scrollMargin, getItemKey }, itemSizeCache) => {
       const min =
         this.pendingMeasuredCacheIndexes.length > 0
           ? Math.min(...this.pendingMeasuredCacheIndexes)
@@ -520,16 +517,36 @@ export class Virtualizer<
 
       for (let i = min; i < count; i++) {
         const key = getItemKey(i);
-        const measuredSize = itemSizeCache.get(key);
-        const start = measurements[i - 1]
-          ? measurements[i - 1]!.end
+
+        const furthestMeasurement =
+          this.options.lanes === 1
+            ? measurements[i - 1]
+            : this.getFurthestMeasurement(measurements, i);
+
+        const start = furthestMeasurement
+          ? furthestMeasurement.end
           : paddingStart + scrollMargin;
+
+        const measuredSize = itemSizeCache.get(key);
         const size =
           typeof measuredSize === 'number'
             ? measuredSize
             : this.options.estimateSize(i);
+
         const end = start + size;
-        measurements[i] = { index: i, start, size, end, key };
+
+        const lane = furthestMeasurement
+          ? furthestMeasurement.lane
+          : i % this.options.lanes;
+
+        measurements[i] = {
+          index: i,
+          start,
+          size,
+          end,
+          key,
+          lane,
+        };
       }
 
       this.measurementsCache = measurements;
@@ -541,6 +558,64 @@ export class Virtualizer<
       debug: () => this.options.debug,
     },
   );
+
+  private memoOptions = memo(
+    () => [
+      this.options.count,
+      this.options.paddingStart,
+      this.options.scrollMargin,
+      this.options.getItemKey,
+    ],
+    (count, paddingStart, scrollMargin, getItemKey) => {
+      this.pendingMeasuredCacheIndexes = [];
+      return {
+        count,
+        paddingStart,
+        scrollMargin,
+        getItemKey,
+      };
+    },
+    {
+      key: false,
+    },
+  );
+
+  private getFurthestMeasurement = (
+    measurements: VirtualItem[],
+    index: number,
+  ) => {
+    const furthestMeasurementsFound = new Map<number, true>();
+    const furthestMeasurements = new Map<number, VirtualItem>();
+    for (let m = index - 1; m >= 0; m--) {
+      const measurement = measurements[m]!;
+
+      if (furthestMeasurementsFound.has(measurement.lane)) {
+        continue;
+      }
+
+      const previousFurthestMeasurement = furthestMeasurements.get(
+        measurement.lane,
+      );
+      if (
+        previousFurthestMeasurement == null ||
+        measurement.end > previousFurthestMeasurement.end
+      ) {
+        furthestMeasurements.set(measurement.lane, measurement);
+      } else if (measurement.end < previousFurthestMeasurement.end) {
+        furthestMeasurementsFound.set(measurement.lane, true);
+      }
+
+      if (furthestMeasurementsFound.size === this.options.lanes) {
+        break;
+      }
+    }
+
+    return furthestMeasurements.size === this.options.lanes
+      ? Array.from(furthestMeasurements.values()).sort(
+          (a, b) => a.end - b.end,
+        )[0]
+      : undefined;
+  };
 
   /**  calculate minimal range index */
   calculateRange = memo(
@@ -560,14 +635,22 @@ export class Virtualizer<
 
   /** trigger `this.options.onChange()` only when range index changes */
   private maybeNotify = memo(
-    () => [...Object.values(this.calculateRange()), this.isScrolling],
+    () => {
+      const range = this.calculateRange();
+
+      return [range.startIndex, range.endIndex, this.isScrolling];
+    },
     () => {
       this.notify();
     },
     {
       key: process.env.NODE_ENV !== 'production' && 'maybeNotify',
       debug: () => this.options.debug,
-      initialDeps: [...Object.values(this.range), this.isScrolling],
+      initialDeps: [
+        this.range.startIndex,
+        this.range.endIndex,
+        this.isScrolling,
+      ],
     },
   );
 
@@ -590,7 +673,6 @@ export class Virtualizer<
       debug: () => this.options.debug,
     },
   );
-
   indexFromElement = (node: TItemElement) => {
     const attributeName = this.options.indexAttribute;
     const indexStr = node.getAttribute(attributeName);
@@ -616,8 +698,6 @@ export class Virtualizer<
     const index = this.indexFromElement(node);
 
     const item = this.measurementsCache[index];
-    // console.log(';; _measureElem ', item);
-
     if (!item) {
       return;
     }
@@ -637,7 +717,6 @@ export class Virtualizer<
         this.observer.unobserve(prevNode);
       }
       this.observer.observe(node);
-      // 👇🏻 cache rendered dom
       this.measureElementCache.set(item.key, node);
     }
 
@@ -678,7 +757,7 @@ export class Virtualizer<
   };
 
   /**
-   * Returns the virtual items for the current state of the virtualizer.
+   * Returns the visible virtual items for the current state of the virtualizer.
    */
   getVirtualItems = memo(
     () => [this.getIndexes(), this.getMeasurements()],

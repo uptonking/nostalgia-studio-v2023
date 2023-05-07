@@ -32,30 +32,23 @@ const renderItem = ({ style, index }: { style: ItemStyle; index: number }) => {
 };
 
 export const A1b1ListSimple = () => {
-  const renderItem = ({
-    style,
-    index,
-  }: {
-    style: ItemStyle;
-    index: number;
-  }) => {
-    return (
-      <div className={rowCss} style={style} key={index}>
-        Row #{index}
-      </div>
-    );
-  };
-
   return (
     <div style={{ border: '3px solid #edeff0' }}>
       <VirtualList
+        // width='100%' // 🚨 cause overflow
         width='auto'
         height={400}
         itemCount={1000}
-        renderItem={renderItem}
         itemSize={40}
-        className={listCss}
         overscanCount={2}
+        className={listCss}
+        renderItem={({ style, index }) => {
+          return (
+            <div className={rowCss} style={style} key={index}>
+              Row #{index}
+            </div>
+          );
+        }}
       />
     </div>
   );

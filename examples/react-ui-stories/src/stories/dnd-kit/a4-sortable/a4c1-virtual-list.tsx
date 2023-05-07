@@ -29,7 +29,7 @@ const props = {
   strategy: verticalListSortingStrategy,
 };
 
-export const A4c1DndVirtualList = () => <Sortable {...props} />;
+export const A4c1VirtualDndList = () => <Sortable {...props} />;
 
 function Sortable({
   adjustScale = false,
@@ -79,7 +79,7 @@ function Sortable({
           <VirtualList
             width={500}
             height={600}
-            className={virtualListCss}
+            // className={virtualListCss}
             itemCount={items.length}
             itemSize={64}
             stickyIndices={activeId ? [items.indexOf(activeId)] : undefined}

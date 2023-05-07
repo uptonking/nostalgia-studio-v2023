@@ -88,23 +88,20 @@ function VirtualPage() {
     [],
   );
 
-  //react-query has an useInfiniteQuery hook just for this situation!
   const { data, fetchNextPage, isFetching, isLoading } =
-    useInfiniteQuery<PersonApiResponse>(
-      ['table-data', sorting], //adding sorting state as key causes table to reset and fetch from new beginning upon sort
-      async ({ pageParam = 0 }) => {
+    useInfiniteQuery<PersonApiResponse>({
+      queryKey: ['table-data', sorting], //adding sorting state as key causes table to reset and fetch from new beginning upon sort
+      queryFn: async ({ pageParam = 0 }) => {
         const start = pageParam * fetchSize;
         const fetchedData = fetchVirtualPagesData(start, fetchSize, sorting); //pretend api call
         return fetchedData;
       },
-      {
-        getNextPageParam: (_lastGroup, groups) => groups.length,
-        keepPreviousData: true,
-        refetchOnWindowFocus: false,
-      },
-    );
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    });
 
-  //we must flatten the array of arrays from the useInfiniteQuery hook
+  // we must flatten the array of arrays from the useInfiniteQuery hook
   const flatData = React.useMemo(
     () => data?.pages?.flatMap((page) => page.data) ?? [],
     [data],
@@ -112,7 +109,7 @@ function VirtualPage() {
   const totalDBRowCount = data?.pages?.[0]?.meta?.totalRowCount ?? 0;
   const totalFetched = flatData.length;
 
-  //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
+  // called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
   const fetchMoreOnBottomReached = React.useCallback(
     (containerRefElement?: HTMLDivElement | null) => {
       if (containerRefElement) {
@@ -158,12 +155,12 @@ function VirtualPage() {
 
   const { rows } = table.getRowModel();
 
-  //Virtualizing is optional, but might be necessary if we are going to potentially have hundreds or thousands of rows
+  // Virtualizing is optional, but might be necessary if we are going to potentially have hundreds or thousands of rows
   const rowVirtualizer = useVirtualizer({
     getScrollElement: () => tableContainerRef.current,
     count: rows.length,
-    estimateSize: () => 54,
-    overscan: 10,
+    estimateSize: () => 32,
+    overscan: 2,
   });
 
   // 测试表明这里不能memo

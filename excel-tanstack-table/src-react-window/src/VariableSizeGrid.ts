@@ -1,6 +1,7 @@
-import createGridComponent from './createGridComponent';
-
-import { Props, ScrollToAlign } from './createGridComponent';
+import createGridComponent, {
+  Props,
+  ScrollToAlign,
+} from './createGridComponent';
 
 const DEFAULT_ESTIMATED_ITEM_SIZE = 50;
 
@@ -84,7 +85,9 @@ const getItemMetadata = (
   index: number,
   instanceProps: InstanceProps,
 ): ItemMetadata => {
-  let itemMetadataMap, itemSize, lastMeasuredIndex;
+  let itemMetadataMap;
+  let itemSize;
+  let lastMeasuredIndex;
   if (itemType === 'column') {
     itemMetadataMap = instanceProps.columnMetadataMap;
     itemSize = props.columnWidth as any as itemSizeGetter;
@@ -103,7 +106,7 @@ const getItemMetadata = (
     }
 
     for (let i = lastMeasuredIndex + 1; i <= index; i++) {
-      let size = itemSize(i);
+      const size = itemSize(i);
 
       itemMetadataMap[i] = {
         offset,
@@ -129,7 +132,8 @@ const findNearestItem = (
   instanceProps: InstanceProps,
   offset: number,
 ) => {
-  let itemMetadataMap, lastMeasuredIndex;
+  let itemMetadataMap;
+  let lastMeasuredIndex;
   if (itemType === 'column') {
     itemMetadataMap = instanceProps.columnMetadataMap;
     lastMeasuredIndex = instanceProps.lastMeasuredColumnIndex;

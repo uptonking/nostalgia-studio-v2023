@@ -1,4 +1,4 @@
-export { default, VirtualList, type Props, type State } from './virtual-list';
+export { default, VirtualList } from './virtual-list';
 export {
   DIRECTION as ScrollDirection,
   ALIGNMENT as ScrollAlignment,

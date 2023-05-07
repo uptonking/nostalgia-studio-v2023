@@ -2,19 +2,14 @@
 
 import * as React from 'react';
 
+import { A5b1VirtualQuery } from './stories/tanstack-virtual';
+
 export function App() {
   return (
     <div>
       <h1>本项目 react-ui-stories</h1>
-      <a href='https://github.com/examples-hub/react-monorepo-starter-ts'>
-        <h4>github repo</h4>
-      </a>
       <div>
-        <br />
-        <input type='text' />
-      </div>
-      <div>
-        <hr />
+        <A5b1VirtualQuery />
       </div>
     </div>
   );

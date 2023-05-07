@@ -12,7 +12,9 @@ export enum DIRECTION {
 }
 
 export enum SCROLL_CHANGE_REASON {
+  /** caused by scroll event */
   OBSERVED = 'observed',
+  /** caused by controlled update */
   REQUESTED = 'requested',
 }
 

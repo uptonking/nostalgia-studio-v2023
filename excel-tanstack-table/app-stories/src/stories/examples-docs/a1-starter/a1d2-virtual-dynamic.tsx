@@ -37,7 +37,7 @@ export const StyledContainer = styled(StyledRTableCore)`
 const MOCK_DATA_LEN = 20;
 
 /**
- * Renders fixed height virtualized table, with sorting
+ * Renders variable height virtualized table, with sorting
  */
 export function DynamicHeightTable({ data, columns, height = 240 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -77,7 +77,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
       id='vTbFixedHeight'
       className='container'
       style={{ height }}
-      // style={{ height, width: 640 }}
+    // style={{ height, width: 640 }}
     >
       <div
         style={{

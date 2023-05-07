@@ -8,7 +8,11 @@ import { cancelTimeout, requestTimeout, TimeoutID } from './timer';
 
 export type ScrollToAlign = 'auto' | 'smart' | 'center' | 'start' | 'end';
 
+/** Returns the size of a item in the direction being windowed.
+ * - For vertical lists, this is the row height. For horizontal lists, this is the column width.
+ */
 type itemSize = number | ((index: number) => number);
+
 // TODO Deprecate directions "horizontal" and "vertical"
 type Direction = 'ltr' | 'rtl' | 'horizontal' | 'vertical';
 type Layout = 'horizontal' | 'vertical';
@@ -57,27 +61,71 @@ type InnerProps = {
 };
 
 export type Props<T> = {
+  /** React component responsible for rendering the individual item specified by an index prop */
   children: RenderComponent<T>;
+  /** Optional CSS class to attach to outermost `<div>` element. */
   className?: string;
+  /** Determines the direction of text and horizontal scrolling.
+   * - This property also automatically sets the CSS direction style for the list component.
+   * - Specifying "horizontal" or "vertical" for this value is deprecated. Use "layout" prop instead.
+   * @default "ltr"
+   */
   direction: Direction;
+  /** Height of the list.
+   * - For vertical lists, this must be a number. It affects the number of rows that will be rendered (and displayed) at any given time.
+   * - For horizontal lists, this can be a number or a string (e.g. "50%").
+   */
   height: number | string;
+  /** Scroll offset for initial render. */
   initialScrollOffset?: number;
+  /** Ref to attach to the inner container element. */
   innerRef?: any;
+  /** Tag name passed to `document.createElement` to create the inner container element.
+   * - default ("div")
+   */
   innerElementType?: string | any;
-  innerTagName?: string; // deprecated
+  /** @deprecated use `innerElementType` */
+  innerTagName?: string;
+  /** Total number of items in the list.
+   * - Note that only a few items will be rendered and displayed at a time. */
   itemCount: number;
+  /** Contextual data to be passed to the item renderer as a data prop.
+   * - This is a light-weight alternative to React's built-in context API. */
   itemData: T;
+  /** By default, lists will use an item's index as its key. */
   itemKey?: (index: number, data: T) => any;
+  /** Size of a item in the direction being windowed.
+   * - For vertical lists, this is the row height.
+   * - For horizontal lists, this is the column width.
+   */
   itemSize: itemSize;
+  /** Layout/orientation of the list. default vertical
+   * - Note that lists may scroll in both directions (depending on CSS) but content will only be windowed in the layout direction specified.
+   */
   layout: Layout;
+  /** Called when the range of items rendered by the list changes.
+   * - This callback will only be called when item indices change. It will not be called if items are re-rendered for other reasons (e.g. a change in isScrolling or data params).
+   */
   onItemsRendered?: onItemsRenderedCallback;
+  /** Called when the list scroll positions changes, as a result of user scrolling or scroll-to method calls. */
   onScroll?: onScrollCallback;
   outerRef?: any;
   outerElementType?: string | any;
-  outerTagName?: string; // deprecated
-  overscanCount: number;
+  /** @deprecated use `outerElementType` */
+  outerTagName?: string;
+  /** The number of items (rows or columns) to render outside of the visible area.
+   * - By default, List overscans by one item.
+   */
+  overscanCount?: number;
+  /** inline style to attach to outermost <div> element. */
   style?: Object;
+  /** Adds an additional `isScrolling` parameter to the `children` render function.
+   * This parameter can be used to show a placeholder row or column while the list is being scrolled. */
   useIsScrolling: boolean;
+  /** Width of the list.
+   * - For horizontal lists, this must be a number. It affects the number of columns that will be rendered (and displayed) at any given time.
+   * - For vertical lists, this can be a number or a string (e.g. "50%").
+   */
   width: number | string;
 };
 
@@ -136,7 +184,7 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-export default function createListComponent({
+export function createListComponent({
   getItemOffset,
   getEstimatedTotalSize,
   getItemSize,
@@ -357,8 +405,8 @@ export default function createListComponent({
             direction,
             ...style,
           },
-          // eslint-disable-next-line react/no-children-prop
         },
+        // eslint-disable-next-line react/no-children-prop
         createElement(innerElementType || innerTagName || 'div', {
           children: items,
           ref: innerRef,
@@ -716,3 +764,5 @@ const validateSharedProps = (
     }
   }
 };
+
+export default createListComponent;

@@ -5,7 +5,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 
 import { StyledRTableCore } from '../editor-examples.styles';
 import { makeData, Person, tableColumns } from '../utils/makeData';
-import { FixedHeightTable } from './components/fixed-heght-table';
+import { FixedHeightTable } from './components/fixed-height-table';
 import { WindowHeightTable } from './components/window-height-table';
 
 export const StyledContainer = styled(StyledRTableCore)`

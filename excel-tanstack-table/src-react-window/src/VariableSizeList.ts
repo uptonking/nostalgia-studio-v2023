@@ -1,10 +1,16 @@
-import createListComponent from './createListComponent';
-
-import { Props, ScrollToAlign } from './createListComponent';
+import {
+  createListComponent,
+  Props,
+  ScrollToAlign,
+} from './createListComponent';
 
 const DEFAULT_ESTIMATED_ITEM_SIZE = 50;
 
 type VariableSizeProps = Props<any> & {
+  /** Estimated size of a item in the direction being windowed. For vertical lists, this is the row height.
+   * - This value is used to calculated the estimated total size of a list before its items have all been measured.
+   * - It is updated whenever new items are measured.
+   */
   estimatedItemSize: number;
 };
 
@@ -274,6 +280,9 @@ const VariableSizeList = createListComponent({
       lastMeasuredIndex: -1,
     };
 
+    // VariableSizeList caches offsets and measurements for each index for performance purposes.
+    // This method clears that cached data for all items after (and including) the specified index.
+    // It should be called whenever a item's size changes. (Note that this is not a typical occurrance.)
     instance.resetAfterIndex = (index: number, shouldForceUpdate?: boolean) => {
       instanceProps.lastMeasuredIndex = Math.min(
         instanceProps.lastMeasuredIndex,
@@ -301,8 +310,8 @@ const VariableSizeList = createListComponent({
       if (typeof itemSize !== 'function') {
         throw Error(
           'An invalid "itemSize" prop has been specified. ' +
-            'Value should be a function. ' +
-            `"${itemSize === null ? 'null' : typeof itemSize}" was specified.`,
+          'Value should be a function. ' +
+          `"${itemSize === null ? 'null' : typeof itemSize}" was specified.`,
         );
       }
     }

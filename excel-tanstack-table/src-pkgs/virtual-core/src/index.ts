@@ -2,8 +2,6 @@ import { approxEqual, memo, notUndefined } from './utils';
 
 export * from './utils';
 
-//
-
 type ScrollDirection = 'forward' | 'backward';
 type ScrollAlignment = 'start' | 'center' | 'end' | 'auto';
 type ScrollBehavior = 'auto' | 'smooth';
@@ -16,7 +14,6 @@ export interface ScrollToOptions {
   align?: ScrollAlignment;
   behavior?: ScrollBehavior;
 }
-
 type ScrollToOffsetOptions = ScrollToOptions;
 type ScrollToIndexOptions = ScrollToOptions;
 
@@ -65,13 +62,13 @@ export const defaultRangeExtractor = (range: Range) => {
   const start = Math.max(range.startIndex - range.overscan, 0);
   const end = Math.min(range.endIndex + range.overscan, range.count - 1);
   const arr = [];
-
   for (let i = start; i <= end; i++) {
     arr.push(i);
   }
-
   return arr;
 };
+
+// #region - utils for element observer/scroll
 
 /**
  * use `ResizeObserver` to trigger `cb(element.getBoundingClientRect())`
@@ -158,7 +155,7 @@ export const observeElementOffset = <T extends Element>(
   };
 };
 
-/** listen to element `scroll` event */
+/** listen to window `scroll` event */
 export const observeWindowOffset = (
   instance: Virtualizer<Window, any>,
   cb: (offset: number) => void,
@@ -183,7 +180,7 @@ export const observeWindowOffset = (
 };
 
 /**
- * by `getBoundingClientRect()`
+ * get element's `borderBoxSize` or `getBoundingClientRect()`
  */
 export const measureElement = <TItemElement extends Element>(
   element: TItemElement,
@@ -240,6 +237,8 @@ export const elementScroll = <T extends Element>(
   });
 };
 
+// #endregion - utils for element observer/scroll
+
 export interface VirtualizerOptions<
   TScrollElement extends Element | Window,
   TItemElement extends Element,
@@ -286,7 +285,7 @@ export interface VirtualizerOptions<
    */
   onChange?: (instance: Virtualizer<TScrollElement, TItemElement>) => void;
   /**
-   * This optional function is called when the virtualizer needs to dynamically measure the size (width or height) of an item when virtualItem.measureElement is called.
+   * This optional function is called when the virtualizer needs to dynamically measure the size (width or height) of an item when `virtualItem.measureElement` is called.
    * - By default configured to measure elements with `getBoundingClientRect()`
    */
   measureElement?: (
@@ -311,6 +310,7 @@ export interface VirtualizerOptions<
   rangeExtractor?: (range: Range) => number[];
   scrollMargin?: number;
   scrollingDelay?: number;
+  /** attributeName on measured element */
   indexAttribute?: string;
   initialMeasurementsCache?: VirtualItem[];
   /** The number of lanes the list is divided into (aka columns for vertical lists and rows for horizontal lists). */
@@ -332,11 +332,13 @@ export class Virtualizer<
   private scrollToIndexTimeoutId: ReturnType<typeof setTimeout> | null = null;
   /** use `estimateSize` for all elements */
   measurementsCache: VirtualItem[] = [];
-  /** measured elements */
+  /** measured elements {key, elementDom}, only used in dynamic mode */
   measureElementCache = new Map<Key, TItemElement>();
   /** measured elements {key, measurementsCache.item.size} */
   private itemSizeCache = new Map<Key, number>();
+  /**  */
   private pendingMeasuredCacheIndexes: number[] = [];
+  /** DOMRect of scrollElement */
   private scrollRect: Rect;
   scrollOffset: number;
   scrollDirection: ScrollDirection | null = null;
@@ -350,7 +352,7 @@ export class Virtualizer<
 
   /**
    * use ResizeObserver to trigger `_measureElement()`
-   * todo rewrite to class.
+   * todo rewrite iife.
    */
   private observer = (() => {
     let _ro: ResizeObserver | null = null;
@@ -438,13 +440,15 @@ export class Virtualizer<
     };
   };
 
-  /** only when `this.scrollElement` changed, unsubs-listeners will be registered  */
+  /** scrollToOffset
+   * - observe scrollElement's rect by ResizeObserver
+   * - observe scrollElement's scrollLeft/Top by scroll event
+   */
   _willUpdate = () => {
     const scrollElement = this.options.getScrollElement();
 
     if (this.scrollElement !== scrollElement) {
       this.cleanup();
-
       this.scrollElement = scrollElement;
 
       this._scrollToOffset(this.scrollOffset, {
@@ -453,6 +457,7 @@ export class Virtualizer<
       });
 
       this.unsubs.push(
+        // use `ResizeObserver` to trigger `cb(element.getBoundingClientRect())`
         this.options.observeElementRect(this, (rect) => {
           const prev = this.scrollRect;
           this.scrollRect = rect;
@@ -541,8 +546,8 @@ export class Virtualizer<
 
         measurements[i] = {
           index: i,
-          start,
           size,
+          start,
           end,
           key,
           lane,
@@ -580,6 +585,7 @@ export class Virtualizer<
     },
   );
 
+  /**  */
   private getFurthestMeasurement = (
     measurements: VirtualItem[],
     index: number,
@@ -617,7 +623,7 @@ export class Virtualizer<
       : undefined;
   };
 
-  /**  calculate minimal range index */
+  /** calculate items index of visible range */
   calculateRange = memo(
     () => [this.getMeasurements(), this.getSize(), this.scrollOffset],
     (measurements, outerSize, scrollOffset) => {
@@ -673,6 +679,7 @@ export class Virtualizer<
       debug: () => this.options.debug,
     },
   );
+
   indexFromElement = (node: TItemElement) => {
     const attributeName = this.options.indexAttribute;
     const indexStr = node.getAttribute(attributeName);
@@ -767,7 +774,6 @@ export class Virtualizer<
       for (let k = 0, len = indexes.length; k < len; k++) {
         const i = indexes[k]!;
         const measurement = measurements[i]!;
-
         virtualItems.push(measurement);
       }
 
@@ -792,6 +798,35 @@ export class Virtualizer<
         )
       ],
     );
+  };
+
+  getOffsetForIndex = (index: number, align: ScrollAlignment = 'auto') => {
+    index = Math.max(0, Math.min(index, this.options.count - 1));
+
+    const measurement = notUndefined(this.getMeasurements()[index]);
+
+    if (align === 'auto') {
+      if (
+        measurement.end >=
+        this.scrollOffset + this.getSize() - this.options.scrollPaddingEnd
+      ) {
+        align = 'end';
+      } else if (
+        measurement.start <=
+        this.scrollOffset + this.options.scrollPaddingStart
+      ) {
+        align = 'start';
+      } else {
+        return [this.scrollOffset, align] as const;
+      }
+    }
+
+    const toOffset =
+      align === 'end'
+        ? measurement.end + this.options.scrollPaddingEnd
+        : measurement.start - this.options.scrollPaddingStart;
+
+    return [this.getOffsetForAlignment(toOffset, align), align] as const;
   };
 
   getOffsetForAlignment = (toOffset: number, align: ScrollAlignment) => {
@@ -829,35 +864,6 @@ export class Virtualizer<
     return Math.max(Math.min(maxOffset, toOffset), 0);
   };
 
-  getOffsetForIndex = (index: number, align: ScrollAlignment = 'auto') => {
-    index = Math.max(0, Math.min(index, this.options.count - 1));
-
-    const measurement = notUndefined(this.getMeasurements()[index]);
-
-    if (align === 'auto') {
-      if (
-        measurement.end >=
-        this.scrollOffset + this.getSize() - this.options.scrollPaddingEnd
-      ) {
-        align = 'end';
-      } else if (
-        measurement.start <=
-        this.scrollOffset + this.options.scrollPaddingStart
-      ) {
-        align = 'start';
-      } else {
-        return [this.scrollOffset, align] as const;
-      }
-    }
-
-    const toOffset =
-      align === 'end'
-        ? measurement.end + this.options.scrollPaddingEnd
-        : measurement.start - this.options.scrollPaddingStart;
-
-    return [this.getOffsetForAlignment(toOffset, align), align] as const;
-  };
-
   /** check if `this.measureElementCache.size > 0` */
   private isDynamicMode = () => this.measureElementCache.size > 0;
 
@@ -887,7 +893,9 @@ export class Virtualizer<
   };
 
   /**
-   * Scrolls the virtualizer to the items of the index provided. You can optionally pass an alignment mode to anchor the scroll to a specific part of the scrollElement.
+   * Scrolls the virtualizer to the items of the index provided.
+   * - You can optionally pass an alignment mode to anchor the scroll to a specific part of the scrollElement.
+   * - use `_scrollToOffset` internally
    */
   scrollToIndex = (
     index: number,
@@ -955,7 +963,7 @@ export class Virtualizer<
 
   /**
    * Scrolls the virtualizer to the pixel offset provided.
-   * You can optionally pass an alignment mode to anchor the scroll to a specific part of the scrollElement.
+   * - You can optionally pass an alignment mode to anchor the scroll to a specific part of the scrollElement.
    */
   private _scrollToOffset = (
     offset: number,
@@ -971,7 +979,7 @@ export class Virtualizer<
   };
 
   /**
-   * Resets any prev item measurements.
+   * empty `this.itemSizeCache` map, then `this.notify()` to do sth like rerender
    */
   measure = () => {
     this.itemSizeCache = new Map();

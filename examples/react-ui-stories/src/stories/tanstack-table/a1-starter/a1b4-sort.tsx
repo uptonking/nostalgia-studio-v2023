@@ -9,13 +9,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
 /**
  * ✨ sort
  */
-export const A1c2Sort = () => {
+export const A1b4Sort = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -97,7 +97,7 @@ export const A1c2Sort = () => {
   // console.log(';; rdr');
 
   return (
-    <StyledRTableCore>
+    <div className={tableBaseCss}>
       <div className='p-2'>
         <div className='h-2' />
         <table>
@@ -163,6 +163,6 @@ export const A1c2Sort = () => {
         </div>
         <pre>{JSON.stringify(sorting, null, 2)}</pre>
       </div>
-    </StyledRTableCore>
+    </div>
   );
 };

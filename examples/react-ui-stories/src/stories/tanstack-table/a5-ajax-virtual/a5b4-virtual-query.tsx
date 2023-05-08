@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styled from '@emotion/styled';
+import { css } from '@linaria/core';
 import {
   QueryClient,
   QueryClientProvider,
@@ -17,7 +17,7 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import {
   fetchVirtualPagesData,
   Person,
@@ -26,14 +26,18 @@ import {
 
 const fetchSize = 25;
 
-export const StyledContainer = styled(StyledRTableCore)`
-  #vTbFixedHeight {
-    border: 1px solid lightgray;
-    height: 500px;
-    max-width: 900px !important;
-    overflow: auto;
-  }
-`;
+const queryClient = new QueryClient();
+
+/**
+ * todo fixme
+ */
+export const A5b4VirtualQuery = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <VirtualPage />
+    </QueryClientProvider>
+  );
+};
 
 function VirtualPage() {
   const rerender = React.useReducer(() => ({}), {})[1];
@@ -182,7 +186,7 @@ function VirtualPage() {
   }
 
   return (
-    <StyledContainer>
+    <div className={tableBaseCss + ' ' + rootCss}>
       <div className='p-2'>
         <div className='h-2' />
         <div
@@ -268,16 +272,14 @@ function VirtualPage() {
           <button onClick={() => rerender()}>Force Rerender</button>
         </div>
       </div>
-    </StyledContainer>
+    </div>
   );
 }
 
-const queryClient = new QueryClient();
-
-export const A1d4VirtualQuery = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <VirtualPage />
-    </QueryClientProvider>
-  );
-};
+export const rootCss = css`
+  #vTbFixedHeight {
+    border: 1px solid lightgray;
+    max-width: 900px !important;
+    overflow: auto;
+  }
+`;

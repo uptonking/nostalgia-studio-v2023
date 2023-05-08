@@ -1,11 +1,7 @@
 import { createRow } from '../core/row';
-import type { Row, RowData, RowModel, Table } from '../types';
+import { Table, Row, RowModel, RowData } from '../types';
 import { memo } from '../utils';
 
-/**
- * get a memoized rowModel object for table data
- * - `{ rows: [], flatRows: [], rowsById: {}, }`
- */
 export function getCoreRowModel<TData extends RowData>(): (
   table: Table<TData>,
 ) => () => RowModel<TData> {
@@ -28,7 +24,7 @@ export function getCoreRowModel<TData extends RowData>(): (
         const accessRows = (
           originalRows: TData[],
           depth = 0,
-          parent?: Row<TData>,
+          parentRow?: Row<TData>,
         ): Row<TData>[] => {
           const rows = [] as Row<TData>[];
 
@@ -43,10 +39,12 @@ export function getCoreRowModel<TData extends RowData>(): (
             // Make the row
             const row = createRow(
               table,
-              table._getRowId(originalRows[i]!, i, parent),
+              table._getRowId(originalRows[i]!, i, parentRow),
               originalRows[i]!,
               i,
               depth,
+              undefined,
+              parentRow?.id,
             );
 
             // Keep track of every row in a flat array

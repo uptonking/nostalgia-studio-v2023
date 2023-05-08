@@ -22,9 +22,9 @@ import { DIRTY_PATH_KEYS, DIRTY_PATHS, FLUSHING } from './utils/weak-maps';
 export const createEditor = (): Editor => {
   const editor: Editor = {
     children: [],
-    operations: [],
     selection: null,
     marks: null,
+    operations: [],
     isInline: () => false,
     isVoid: () => false,
     onChange: () => {},

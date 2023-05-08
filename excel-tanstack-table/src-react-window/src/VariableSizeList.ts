@@ -310,8 +310,8 @@ const VariableSizeList = createListComponent({
       if (typeof itemSize !== 'function') {
         throw Error(
           'An invalid "itemSize" prop has been specified. ' +
-          'Value should be a function. ' +
-          `"${itemSize === null ? 'null' : typeof itemSize}" was specified.`,
+            'Value should be a function. ' +
+            `"${itemSize === null ? 'null' : typeof itemSize}" was specified.`,
         );
       }
     }

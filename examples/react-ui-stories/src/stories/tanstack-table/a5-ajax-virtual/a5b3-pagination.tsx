@@ -13,13 +13,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
 /**
  * ✨ 最小react-table示例，仅展示
  */
-export const A1d3Pagination = () => {
+export const A5b3Pagination = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
@@ -81,7 +81,7 @@ export const A1d3Pagination = () => {
   const refreshData = () => setData(() => makeData(100000));
 
   return (
-    <StyledRTableCore>
+    <div className={tableBaseCss}>
       <Table
         {...{
           data,
@@ -95,7 +95,7 @@ export const A1d3Pagination = () => {
       <div>
         <button onClick={() => refreshData()}>Refresh Data</button>
       </div>
-    </StyledRTableCore>
+    </div>
   );
 };
 

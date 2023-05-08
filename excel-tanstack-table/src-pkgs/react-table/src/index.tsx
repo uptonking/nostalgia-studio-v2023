@@ -68,7 +68,7 @@ export function useReactTable<TData extends RowData>(
     ...options,
   };
 
-  // 👇🏻 Create a new table and store it in state
+  // Create a new table and store it in state
   const [tableRef] = React.useState(() => ({
     current: createTable<TData>(resolvedOptions),
   }));
@@ -85,7 +85,8 @@ export function useReactTable<TData extends RowData>(
       ...state,
       ...options.state,
     },
-    // Similarly, we'll maintain both internal state and any user-provided state.
+    // Similarly, we'll maintain both our internal state and any user-provided
+    // state.
     onStateChange: (updater) => {
       setState(updater);
       options.onStateChange?.(updater);

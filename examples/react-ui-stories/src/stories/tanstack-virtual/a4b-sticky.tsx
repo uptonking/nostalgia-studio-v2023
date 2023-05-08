@@ -8,7 +8,7 @@ import { defaultRangeExtractor, useVirtualizer } from '@tanstack/react-virtual';
 import { listCss, listItemCss, listItemEvenCss } from './styles';
 
 const groupedNames = groupBy(
-  Array.from({ length: 1000 })
+  Array.from({ length: 20 })
     .map(() => faker.name.firstName())
     .sort(),
   (name) => name[0],
@@ -16,6 +16,9 @@ const groupedNames = groupBy(
 const groups = Object.keys(groupedNames);
 const rows = groups.reduce((acc, k) => [...acc, k, ...groupedNames[k]], []);
 
+/**
+ * sticky item implemented using `position: sticky`
+ */
 export const A4b1StickyItem = () => {
   const parentRef = React.useRef();
 
@@ -26,13 +29,12 @@ export const A4b1StickyItem = () => {
     [],
   );
 
-  const isSticky = (index) => stickyIndexes.includes(index);
-
+  const isStickyable = (index) => stickyIndexes.includes(index);
   const isActiveSticky = (index) => activeStickyIndexRef.current === index;
 
-  const rowVirtualizer = useVirtualizer({
+  const virtualizer = useVirtualizer({
     count: rows.length,
-    estimateSize: () => 50,
+    estimateSize: () => 40,
     getScrollElement: () => parentRef.current,
     rangeExtractor: React.useCallback(
       (range) => {
@@ -64,12 +66,12 @@ export const A4b1StickyItem = () => {
       >
         <div
           style={{
-            height: `${rowVirtualizer.getTotalSize()}px`,
+            height: `${virtualizer.getTotalSize()}px`,
             width: '100%',
             position: 'relative',
           }}
         >
-          {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+          {virtualizer.getVirtualItems().map((virtualRow) => (
             <div
               key={virtualRow.index}
               className={
@@ -78,11 +80,11 @@ export const A4b1StickyItem = () => {
                 (virtualRow.index % 2 ? '' : listItemEvenCss)
               }
               style={{
-                ...(isSticky(virtualRow.index)
+                ...(isStickyable(virtualRow.index)
                   ? {
+                      zIndex: 1,
                       background: '#fff',
                       borderBottom: '1px solid #ddd',
-                      zIndex: 1,
                     }
                   : {}),
                 ...(isActiveSticky(virtualRow.index)

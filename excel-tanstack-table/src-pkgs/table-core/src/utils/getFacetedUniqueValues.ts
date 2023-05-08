@@ -1,4 +1,4 @@
-import type { RowData, Table } from '../types';
+import { Table, RowData } from '../types';
 import { memo } from '../utils';
 
 export function getFacetedUniqueValues<TData extends RowData>(): (

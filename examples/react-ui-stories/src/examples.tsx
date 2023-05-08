@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-import * as stories from './stories/dnd-kit';
+import * as stories from './stories/tanstack-table';
 
+// import * as stories from './stories/dnd-kit';
 // import * as stories from './stories/tanstack-virtual';
 // import * as stories from './stories/react-window';
 // import * as stories from './stories/react-tiny-virtual-list';
@@ -11,7 +12,7 @@ const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
   const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  // const [currentStory, setCurrentStory] = useState('A5b1VirtualQuery');
+  // const [currentStory, setCurrentStory] = useState('A3b1DynamicSize');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]
@@ -26,7 +27,6 @@ export function ExamplesApp() {
           style={{
             width: 200,
             // padding: '8px',
-            // 如果设置overflowX为hidden，窄屏幕上这个toc菜单会全部隐藏
             // overflowX: 'hidden',
             backgroundColor: 'beige',
           }}

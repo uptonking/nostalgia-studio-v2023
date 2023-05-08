@@ -72,6 +72,7 @@ export class VirtualList extends React.PureComponent<
 
   private rootNode: HTMLElement;
 
+  /** cache styles for all measured items */
   private styleCache: StyleCache = {};
 
   constructor(props: VirtualListProps) {
@@ -331,7 +332,6 @@ export class VirtualList extends React.PureComponent<
   /** get item style from cache */
   private getStyle(index: number, sticky: boolean) {
     const style = this.styleCache[index];
-
     if (style) {
       return style;
     }

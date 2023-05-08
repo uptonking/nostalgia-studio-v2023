@@ -40,7 +40,7 @@ export interface TableFeature {
   createRow?: (row: any, table: any) => any;
 }
 
-/** features flag array */
+/** featureFlags array */
 const features = [
   Headers,
   Visibility,

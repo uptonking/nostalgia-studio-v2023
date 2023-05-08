@@ -1,4 +1,4 @@
-import type { Row, RowData, RowModel, Table } from '../types';
+import { Table, RowModel, Row, RowData } from '../types';
 import { memo } from '../utils';
 import { expandRows } from './getExpandedRowModel';
 

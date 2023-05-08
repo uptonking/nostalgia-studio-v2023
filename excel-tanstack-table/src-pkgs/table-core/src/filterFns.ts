@@ -7,7 +7,11 @@ const includesString: FilterFn<any> = (
 ) => {
   const search = filterValue.toLowerCase();
   return Boolean(
-    row.getValue<string>(columnId)?.toLowerCase().includes(search),
+    row
+      .getValue<string | null>(columnId)
+      ?.toString()
+      ?.toLowerCase()
+      ?.includes(search),
   );
 };
 
@@ -18,7 +22,9 @@ const includesStringSensitive: FilterFn<any> = (
   columnId: string,
   filterValue: string,
 ) => {
-  return Boolean(row.getValue<string>(columnId)?.includes(filterValue));
+  return Boolean(
+    row.getValue<string | null>(columnId)?.toString()?.includes(filterValue),
+  );
 };
 
 includesStringSensitive.autoRemove = (val: any) => testFalsey(val);
@@ -29,7 +35,8 @@ const equalsString: FilterFn<any> = (
   filterValue: string,
 ) => {
   return (
-    row.getValue<string>(columnId)?.toLowerCase() === filterValue.toLowerCase()
+    row.getValue<string | null>(columnId)?.toString()?.toLowerCase() ===
+    filterValue?.toLowerCase()
   );
 };
 

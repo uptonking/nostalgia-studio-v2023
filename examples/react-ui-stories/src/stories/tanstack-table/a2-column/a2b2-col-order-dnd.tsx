@@ -14,7 +14,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
 const defaultColumns: ColumnDef<Person>[] = [
@@ -122,7 +122,7 @@ const DraggableColumnHeader = ({
 /**
  * ✨ 示例，仅展示
  */
-export const A1c5ColumnOrderDnd = () => {
+export const A2b2ColumnOrderDnd = () => {
   const [data, setData] = React.useState(() => makeData(20));
   const [columns] = React.useState(() => [...defaultColumns]);
 
@@ -149,7 +149,7 @@ export const A1c5ColumnOrderDnd = () => {
   });
 
   return (
-    <StyledRTableCore>
+    <div className={tableBaseCss}>
       <h3> column order dnd example with react-dnd </h3>
       <DndProvider backend={HTML5Backend}>
         <div className='p-2'>
@@ -211,6 +211,6 @@ export const A1c5ColumnOrderDnd = () => {
           <pre>{JSON.stringify(table.getState().columnOrder, null, 2)}</pre>
         </div>
       </DndProvider>
-    </StyledRTableCore>
+    </div>
   );
 };

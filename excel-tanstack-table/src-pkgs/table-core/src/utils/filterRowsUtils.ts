@@ -1,5 +1,5 @@
 import { createRow } from '../core/row';
-import type { Row, RowData, RowModel, Table } from '../types';
+import { Row, RowModel, Table, RowData } from '../types';
 
 export function filterRows<TData extends RowData>(
   rows: Row<TData>[],
@@ -35,6 +35,8 @@ export function filterRowModelFromLeafs<TData extends RowData>(
         row.original,
         row.index,
         row.depth,
+        undefined,
+        row.parentId,
       );
       newRow.columnFilters = row.columnFilters;
 
@@ -104,6 +106,8 @@ export function filterRowModelFromRoot<TData extends RowData>(
             row.original,
             row.index,
             row.depth,
+            undefined,
+            row.parentId,
           );
           newRow.subRows = recurseFilterRows(row.subRows, depth + 1);
           row = newRow;

@@ -25,7 +25,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
 // declare module '@tanstack/table-core' {
@@ -70,7 +70,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 /**
  * ✨ filter
  */
-export const A1c1Filter = () => {
+export const A1b3Filter = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
 
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -179,7 +179,7 @@ export const A1c1Filter = () => {
   }, [table.getState().columnFilters[0]?.id]);
 
   return (
-    <StyledRTableCore>
+    <div className={tableBaseCss}>
       <div className='p-2'>
         <div>
           <DebouncedInput
@@ -319,7 +319,7 @@ export const A1c1Filter = () => {
         </div>
         <pre>{JSON.stringify(table.getState(), null, 2)}</pre>
       </div>
-    </StyledRTableCore>
+    </div>
   );
 };
 

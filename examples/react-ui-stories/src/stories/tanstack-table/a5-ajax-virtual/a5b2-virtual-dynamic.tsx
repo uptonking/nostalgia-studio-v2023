@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styled from '@emotion/styled';
+import { css } from '@linaria/core';
 import {
   ColumnDef,
   flexRender,
@@ -12,27 +12,8 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import { makeData, Person, tableColumns } from '../utils/makeData';
-
-export const StyledContainer = styled(StyledRTableCore)`
-  & .sticky-header {
-    position: sticky;
-    top: 0;
-    background-color: beige;
-  }
-  & .fixed-header {
-    position: fixed;
-    top: 0;
-    z-index: 1;
-    width: 900px;
-  }
-  #vTbFixedHeight {
-    border: 1px solid lightgray;
-    max-width: 900px !important;
-    overflow: auto;
-  }
-`;
 
 const MOCK_DATA_LEN = 20;
 
@@ -77,7 +58,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
       id='vTbFixedHeight'
       className='container'
       style={{ height }}
-    // style={{ height, width: 640 }}
+      // style={{ height, width: 640 }}
     >
       <div
         style={{
@@ -171,7 +152,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
  * ✨ virtualized表格，每行高度不同
  * - createdAt列内容文本会换行，不便于分析高度
  */
-export function A1d2VirtualDynamic() {
+export function A5b2VirtualDynamic() {
   const rerender = React.useReducer(() => ({}), {})[1];
 
   const columns = React.useMemo<ColumnDef<Person>[]>(() => tableColumns, []);
@@ -180,7 +161,7 @@ export function A1d2VirtualDynamic() {
   const refreshData = () => setData(() => makeData(MOCK_DATA_LEN));
 
   return (
-    <StyledContainer>
+    <div className={tableBaseCss + ' ' + rootCss}>
       <div className='p-2'>
         <div>
           <p>
@@ -200,6 +181,26 @@ export function A1d2VirtualDynamic() {
           <button onClick={() => refreshData()}>Refresh Data</button>
         </div>
       </div>
-    </StyledContainer>
+    </div>
   );
 }
+
+export const rootCss = css`
+  .sticky-header {
+    position: sticky;
+    top: 0;
+    background-color: beige;
+  }
+  .fixed-header {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    width: 900px;
+  }
+
+  #vTbFixedHeight {
+    border: 1px solid lightgray;
+    max-width: 900px !important;
+    overflow: auto;
+  }
+`;

@@ -33,7 +33,7 @@ export const A5b1VirtualQuery = () => {
 };
 
 export function InfiniteScroll() {
-  const parentRef = React.useRef();
+  const scrollElemRef = React.useRef();
 
   const {
     status,
@@ -51,10 +51,10 @@ export function InfiniteScroll() {
 
   const allRows = data ? data.pages.flatMap((d) => d.rows) : [];
 
-  const rowVirtualizer = useVirtualizer({
+  const virtualizer = useVirtualizer({
     count: hasNextPage ? allRows.length + 1 : allRows.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 100,
+    getScrollElement: () => scrollElemRef.current,
+    estimateSize: () => 40,
     overscan: 5,
   });
 
@@ -65,7 +65,7 @@ export function InfiniteScroll() {
   // );
 
   React.useEffect(() => {
-    const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
+    const [lastItem] = [...virtualizer.getVirtualItems()].reverse();
     if (!lastItem) {
       return;
     }
@@ -78,13 +78,14 @@ export function InfiniteScroll() {
     ) {
       fetchNextPage();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     hasNextPage,
     fetchNextPage,
     allRows.length,
     isFetchingNextPage,
     // 🚨 use get function here, memoed value won't work
-    rowVirtualizer.getVirtualItems(),
+    virtualizer.getVirtualItems(),
   ]);
 
   return (
@@ -95,18 +96,15 @@ export function InfiniteScroll() {
         used along with a loader-row placed at the bottom of the list to trigger
         the next page to load.
       </p>
-
-      <br />
       <br />
 
-      {/* {status === 'pending' ? ( */}
       {status === 'loading' ? (
         <p>Loading...</p>
       ) : status === 'error' ? (
         <span>Error: {(error as Error).message}</span>
       ) : (
         <div
-          ref={parentRef}
+          ref={scrollElemRef}
           className={listCss}
           style={{
             height: `500px`,
@@ -116,12 +114,12 @@ export function InfiniteScroll() {
         >
           <div
             style={{
-              height: `${rowVirtualizer.getTotalSize()}px`,
+              height: `${virtualizer.getTotalSize()}px`,
               width: '100%',
               position: 'relative',
             }}
           >
-            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+            {virtualizer.getVirtualItems().map((virtualRow) => {
               const isLoaderRow = virtualRow.index > allRows.length - 1;
               const post = allRows[virtualRow.index];
 

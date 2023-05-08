@@ -3,7 +3,7 @@ import * as React from 'react';
 import { faker } from '@faker-js/faker';
 import { useVirtualizer, useWindowVirtualizer } from '@tanstack/react-virtual';
 
-import { listCss, listItemCss, listItemEvenCss } from './styles';
+import { listCss, listItemEvenCss } from './styles';
 
 const randomNumber = (min: number, max: number) =>
   faker.datatype.number({ min, max });
@@ -12,57 +12,121 @@ const sentences = new Array(10000)
   .fill(true)
   .map(() => faker.lorem.sentence(randomNumber(20, 70)));
 
+/**
+ * fixme grid示例异常
+ */
+export function A3b1DynamicSize() {
+  const pathname = location.pathname;
+
+  return (
+    <div>
+      <p>
+        These components are using <strong>dynamic</strong> sizes. This means
+        that each element's exact dimensions are unknown when rendered. An
+        estimated dimension is used to get an a initial measurement, then this
+        measurement is readjusted on the fly as each element is rendered.
+      </p>
+      <nav>
+        <ul>
+          <li>
+            <a href='/'>List</a>
+          </li>
+          <li>
+            <a href='/window-list'>List - window as scroller</a>
+          </li>
+          <li>
+            <a href='/columns'>Column</a>
+          </li>
+          <li>
+            <a href='/grid'>Grid</a>
+          </li>
+        </ul>
+      </nav>
+      {(() => {
+        switch (pathname) {
+          case '/':
+            return <RowVirtualizerDynamic />;
+          case '/columns':
+            return <ColumnVirtualizerDynamic />;
+          case '/window-list':
+            return <RowVirtualizerDynamicWindow />;
+          case '/grid': {
+            const columns = generateColumns(30);
+            const data = generateData(columns);
+            return <GridVirtualizerDynamic columns={columns} data={data} />;
+          }
+          default:
+            return <div>Not found</div>;
+        }
+      })()}
+      <br />
+      <br />
+      {process.env.NODE_ENV === 'development' ? (
+        <p>
+          <strong>Notice:</strong> You are currently running React in
+          development mode. Rendering performance will be slightly degraded
+          until this application is build for production.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 function RowVirtualizerDynamic() {
-  const parentRef = React.useRef<HTMLDivElement>(null);
+  const scrollElemRef = React.useRef<HTMLDivElement>(null);
 
   const count = sentences.length;
+
   const virtualizer = useVirtualizer({
     count,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 45,
+    getScrollElement: () => scrollElemRef.current,
+    estimateSize: () => 40,
+    overscan: 2,
   });
 
   const items = virtualizer.getVirtualItems();
 
   return (
     <div>
-      <button
-        onClick={() => {
-          virtualizer.scrollToIndex(0);
-        }}
-      >
-        scroll to the top
-      </button>
-      <span style={{ padding: '0 4px' }} />
-      <button
-        onClick={() => {
-          virtualizer.scrollToIndex(count / 2);
-        }}
-      >
-        scroll to the middle
-      </button>
-      <span style={{ padding: '0 4px' }} />
-      <button
-        onClick={() => {
-          virtualizer.scrollToIndex(count - 1);
-        }}
-      >
-        scroll to the end
-      </button>
+      <div>
+        <button
+          onClick={() => {
+            virtualizer.scrollToIndex(0);
+          }}
+        >
+          scroll to the top
+        </button>
+        <span style={{ padding: '0 4px' }} />
+        <button
+          onClick={() => {
+            virtualizer.scrollToIndex(count / 2);
+          }}
+        >
+          scroll to the middle
+        </button>
+        <span style={{ padding: '0 4px' }} />
+        <button
+          onClick={() => {
+            virtualizer.scrollToIndex(count - 1);
+          }}
+        >
+          scroll to the end
+        </button>
+      </div>
       <hr />
       <div
-        ref={parentRef}
+        ref={scrollElemRef}
         className={listCss}
         style={{
-          height: 400,
-          width: 400,
+          height: '400px',
+          width: '400px',
           overflowY: 'auto',
           contain: 'strict',
         }}
       >
         <div
           style={{
-            height: virtualizer.getTotalSize(),
+            height: virtualizer.getTotalSize() + 'px',
             width: '100%',
             position: 'relative',
           }}
@@ -76,19 +140,25 @@ function RowVirtualizerDynamic() {
               transform: `translateY(${items[0].start}px)`,
             }}
           >
-            {items.map((virtualRow) => (
-              <div
-                key={virtualRow.key}
-                data-index={virtualRow.index}
-                ref={virtualizer.measureElement}
-                className={virtualRow.index % 2 ? '' : listItemEvenCss}
-              >
-                <div style={{ padding: '10px 0' }}>
-                  <div>Row {virtualRow.index}</div>
-                  <div>{sentences[virtualRow.index]}</div>
+            {items.map((virtualRow) => {
+              const { key, index } = virtualRow;
+
+              return (
+                <div
+                  // 💡 dynamic measure
+                  ref={virtualizer.measureElement}
+                  // check when measuring
+                  data-index={index}
+                  key={index}
+                  className={index % 2 ? '' : listItemEvenCss}
+                >
+                  <div style={{ padding: '10px 0' }}>
+                    <div>Row {index}</div>
+                    <div>{sentences[index]}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -137,7 +207,7 @@ const RowVirtualizerDynamicWindow = () => {
               key={virtualRow.key}
               data-index={virtualRow.index}
               ref={virtualizer.measureElement}
-              className={virtualRow.index % 2 ? 'ListItemOdd' : 'ListItemEven'}
+              className={virtualRow.index % 2 ? '' : listItemEvenCss}
             >
               <div style={{ padding: '10px 0' }}>
                 <div>Row {virtualRow.index}</div>
@@ -326,59 +396,3 @@ const generateData = (columns: Column[], count = 300) => {
     }, []),
   );
 };
-
-export function A3b1DynamicSize() {
-  const pathname = location.pathname;
-  return (
-    <div>
-      <p>
-        These components are using <strong>dynamic</strong> sizes. This means
-        that each element's exact dimensions are unknown when rendered. An
-        estimated dimension is used to get an a initial measurement, then this
-        measurement is readjusted on the fly as each element is rendered.
-      </p>
-      <nav>
-        <ul>
-          <li>
-            <a href='/'>List</a>
-          </li>
-          <li>
-            <a href='/window-list'>List - window as scroller</a>
-          </li>
-          <li>
-            <a href='/columns'>Column</a>
-          </li>
-          <li>
-            <a href='/grid'>Grid</a>
-          </li>
-        </ul>
-      </nav>
-      {(() => {
-        switch (pathname) {
-          case '/':
-            return <RowVirtualizerDynamic />;
-          case '/columns':
-            return <ColumnVirtualizerDynamic />;
-          case '/window-list':
-            return <RowVirtualizerDynamicWindow />;
-          case '/grid': {
-            const columns = generateColumns(30);
-            const data = generateData(columns);
-            return <GridVirtualizerDynamic columns={columns} data={data} />;
-          }
-          default:
-            return <div>Not found</div>;
-        }
-      })()}
-      <br />
-      <br />
-      {process.env.NODE_ENV === 'development' ? (
-        <p>
-          <strong>Notice:</strong> You are currently running React in
-          development mode. Rendering performance will be slightly degraded
-          until this application is build for production.
-        </p>
-      ) : null}
-    </div>
-  );
-}

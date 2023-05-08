@@ -7,6 +7,7 @@ export interface CoreRow<TData extends RowData> {
    * - Defaults to the row's index (or relative index if it is a subRow)
    */
   id: string;
+  parentId?: string;
   /**  index of the row within its parent array (or the root data array) */
   index: number;
   /** depth of the row (if nested or grouped) relative to the root row array. */
@@ -31,6 +32,8 @@ export interface CoreRow<TData extends RowData> {
   /** Returns all of the Cells for the row. */
   getAllCells: () => Cell<TData, unknown>[];
   _getAllCellsByColumnId: () => Record<string, Cell<TData, unknown>>;
+  getParentRow: () => Row<TData> | undefined;
+  getParentRows: () => Row<TData>[];
 }
 
 export const createRow = <TData extends RowData>(
@@ -40,12 +43,14 @@ export const createRow = <TData extends RowData>(
   rowIndex: number,
   depth: number,
   subRows?: Row<TData>[],
+  parentId?: string,
 ): Row<TData> => {
   let row: CoreRow<TData> = {
     id,
     index: rowIndex,
     original,
     depth,
+    parentId,
     _valuesCache: {},
     _uniqueValuesCache: {},
     getValue: (columnId) => {
@@ -93,6 +98,18 @@ export const createRow = <TData extends RowData>(
       row.getValue(columnId) ?? table.options.renderFallbackValue,
     subRows: subRows ?? [],
     getLeafRows: () => flattenBy(row.subRows, (d) => d.subRows),
+    getParentRow: () => (row.parentId ? table.getRow(row.parentId) : undefined),
+    getParentRows: () => {
+      let parentRows: Row<TData>[] = [];
+      let currentRow = row;
+      while (true) {
+        const parentRow = currentRow.getParentRow();
+        if (!parentRow) break;
+        parentRows.push(parentRow);
+        currentRow = parentRow;
+      }
+      return parentRows.reverse();
+    },
     getAllCells: memo(
       () => [table.getAllLeafColumns()],
       (leafColumns) => {

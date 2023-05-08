@@ -12,13 +12,13 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
 /**
  * ✨ group rows by column
  */
-export const A1c3Group = () => {
+export const A1b5Group = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
@@ -100,7 +100,7 @@ export const A1c3Group = () => {
   });
 
   return (
-    <StyledRTableCore>
+    <div className={tableBaseCss}>
       <div className='p-2'>
         <div className='h-2' />
         <table>
@@ -275,6 +275,6 @@ export const A1c3Group = () => {
         </div>
         <pre>{JSON.stringify(grouping, null, 2)}</pre>
       </div>
-    </StyledRTableCore>
+    </div>
   );
 };

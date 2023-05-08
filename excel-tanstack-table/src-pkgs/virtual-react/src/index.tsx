@@ -20,7 +20,7 @@ const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
 
 /**
- * create a virtualizerInstance, and trigger _didMount + _willUpdate
+ * create a virtualizerInstance, and register _didMount + _willUpdate
  */
 function useVirtualizerBase<
   TScrollElement extends Element | Window,
@@ -47,6 +47,7 @@ function useVirtualizerBase<
   React.useEffect(() => {
     window['vir'] = instance;
     return instance._didMount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useIsomorphicLayoutEffect(() => {

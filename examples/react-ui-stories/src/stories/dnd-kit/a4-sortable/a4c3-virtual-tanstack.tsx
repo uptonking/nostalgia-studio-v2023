@@ -30,7 +30,13 @@ const props = {
 
 export const A4c3VirtualTanstack = () => <Sortable {...props} />;
 
-export const VirtualList = ({ width, height, itemCount, itemSize, renderItem }) => {
+export const VirtualList = ({
+  width,
+  height,
+  itemCount,
+  itemSize,
+  renderItem,
+}) => {
   const scrollElemRef = React.useRef();
 
   const rowVirtualizer = useVirtualizer({
@@ -42,13 +48,13 @@ export const VirtualList = ({ width, height, itemCount, itemSize, renderItem }) 
 
   return (
     <div
-      ref={scrollElemRef}
       // className={listCss}
+      ref={scrollElemRef}
       style={{
         height: height + 'px',
         width: width + 'px',
-        // width: `100%`, // auto not work
-        overflow: 'auto',
+        // width: `100%`, // `auto` not work
+        overflowY: 'auto',
       }}
     >
       <div

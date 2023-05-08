@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
 const defaultColumns: ColumnDef<Person>[] = [
@@ -63,7 +63,7 @@ const defaultColumns: ColumnDef<Person>[] = [
   },
 ];
 
-export function A1b3ControlledTable() {
+export function A1b2ControlledTable() {
   const [data] = React.useState(() => makeData(1000));
   const [columns] = React.useState<typeof defaultColumns>(() => [
     ...defaultColumns,
@@ -96,7 +96,7 @@ export function A1b3ControlledTable() {
   }));
 
   return (
-    <StyledRTableCore>
+    <div className={tableBaseCss}>
       <div className='p-2'>
         <table>
           <thead>
@@ -210,6 +210,6 @@ export function A1b3ControlledTable() {
           Rerender
         </button>
       </div>
-    </StyledRTableCore>
+    </div>
   );
 }

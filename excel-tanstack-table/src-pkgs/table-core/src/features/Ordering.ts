@@ -3,11 +3,11 @@ import type { Column, OnChangeFn, RowData, Table, Updater } from '../types';
 import { makeStateUpdater, memo } from '../utils';
 import { orderColumns } from './Grouping';
 
-export type ColumnOrderState = string[];
-
 export interface ColumnOrderTableState {
   columnOrder: ColumnOrderState;
 }
+
+export type ColumnOrderState = string[];
 
 export interface ColumnOrderOptions {
   onColumnOrderChange?: OnChangeFn<ColumnOrderState>;

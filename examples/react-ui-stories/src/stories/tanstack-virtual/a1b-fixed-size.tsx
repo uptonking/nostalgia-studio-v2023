@@ -39,34 +39,36 @@ export const A1b1VirtualFixedSize = () => {
 };
 
 function RowVirtualizerFixed() {
-  const parentRef = React.useRef();
+  const scrollElemRef = React.useRef();
 
-  const rowVirtualizer = useVirtualizer({
+  const virtualizer = useVirtualizer({
     count: 10000,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 35,
-    overscan: 5,
+    getScrollElement: () => scrollElemRef.current,
+    estimateSize: () => 40,
+    overscan: 2,
   });
+
+  const items = virtualizer.getVirtualItems();
 
   return (
     <div
-      ref={parentRef}
+      ref={scrollElemRef}
       className={listCss}
       style={{
-        height: `200px`,
-        width: `400px`,
-        overflow: 'auto',
+        height: '200px',
+        width: '400px',
+        overflowY: 'auto',
       }}
     >
       <div
         style={{
-          height: `${rowVirtualizer.getTotalSize()}px`,
+          height: virtualizer.getTotalSize() + 'px',
           width: '100%',
           position: 'relative',
         }}
       >
         {/* Only the visible items in the virtualizer, manually positioned to be in view */}
-        {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+        {items.map((virtualRow) => (
           <div
             key={virtualRow.index}
             className={
@@ -74,8 +76,8 @@ function RowVirtualizerFixed() {
             }
             style={{
               position: 'absolute',
-              top: 0,
               left: 0,
+              top: 0,
               width: '100%',
               height: `${virtualRow.size}px`,
               transform: `translateY(${virtualRow.start}px)`,

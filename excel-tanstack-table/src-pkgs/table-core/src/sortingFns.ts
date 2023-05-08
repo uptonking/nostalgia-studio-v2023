@@ -117,20 +117,11 @@ function compareAlphanumeric(aStr: string, bStr: string) {
 // Exports
 
 export const sortingFns = {
-  /** Sorts by mixed alphanumeric values without case-sensitivity.
-   * - Slower, but more accurate if your strings contain numbers that need to be naturally sorted.
-   */
   alphanumeric,
   alphanumericCaseSensitive,
-  /** Sorts by text/string values without case-sensitivity.
-   * - Faster, but less accurate if your strings contain numbers that need to be naturally sorted.
-   */
   text,
   textCaseSensitive,
-  /** Sorts by time, use this if your values are `Date` objects. */
   datetime,
-  /** Sorts using a basic/standard `a > b ? -1 : b < a ? 1 : 0` comparison.
-   * - This is the fastest sorting function, but may not be the most accurate. */
   basic,
 };
 

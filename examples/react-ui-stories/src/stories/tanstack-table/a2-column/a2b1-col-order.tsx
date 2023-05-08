@@ -9,7 +9,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { StyledRTableCore } from '../editor-examples.styles';
+import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
 const defaultColumns: ColumnDef<Person>[] = [
@@ -67,7 +67,7 @@ const defaultColumns: ColumnDef<Person>[] = [
 /**
  * ✨ 示例，仅展示
  */
-export const A1c4ColumnOrder = () => {
+export const A2b1ColumnOrder = () => {
   const [data, setData] = React.useState(() => makeData(20));
   const [columns] = React.useState(() => [...defaultColumns]);
 
@@ -98,7 +98,7 @@ export const A1c4ColumnOrder = () => {
   };
 
   return (
-    <StyledRTableCore>
+    <div className={tableBaseCss}>
       <h3> column order Example </h3>
       <div className='p-2'>
         <div className='inline-block border border-black shadow rounded'>
@@ -188,6 +188,6 @@ export const A1c4ColumnOrder = () => {
         </table>
         <pre>{JSON.stringify(table.getState().columnOrder, null, 2)}</pre>
       </div>
-    </StyledRTableCore>
+    </div>
   );
 };

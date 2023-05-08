@@ -36,9 +36,6 @@ export interface FilterFn<TData extends RowData> {
     row: Row<TData>,
     columnId: string,
     filterValue: any,
-    /** filterFns can optionally mark results with a filter meta value that can be used later to sort/group/etc the data
-     * - This is done by calling the addMeta function supplied to your custom filterFn
-     */
     addMeta: (meta: FilterMeta) => void,
   ): boolean;
 
@@ -193,9 +190,7 @@ export const Filters: TableFeature = {
       getColumnCanGlobalFilter: (column) => {
         const value = table
           .getCoreRowModel()
-          // eslint-disable-next-line
-          .flatRows[0]?._getAllCellsByColumnId()
-          [column.id]?.getValue();
+          .flatRows[0]?._getAllCellsByColumnId()[column.id]?.getValue();
 
         return typeof value === 'string' || typeof value === 'number';
       },

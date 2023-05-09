@@ -1,10 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 import {
-  Column,
+  DndContext,
+  type DragEndEvent,
+  DragOverlay,
+  DragStartEvent,
+  PointerSensor,
+  useDraggable,
+  useDroppable,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
   ColumnDef,
   ColumnOrderState,
   flexRender,
@@ -72,6 +80,46 @@ const reorderColumn = (
   return [...columnOrder];
 };
 
+const ColumnHeaderDragOverlay = ({ header, activeId }) => {
+  const [styles, setStyles] = useState({});
+
+  useLayoutEffect(() => {
+    if (activeId) {
+      const elem: HTMLElement = document.querySelector(`#${activeId}`);
+      setStyles({
+        width: elem.offsetWidth,
+        height: elem.offsetHeight,
+      });
+    } else {
+      setStyles({});
+    }
+  }, [activeId]);
+
+  return createPortal(
+    <DragOverlay debug={true}>
+      {activeId ? (
+        <th
+          colSpan={header.colSpan}
+          style={{
+            display: 'flex',
+            border: '1px solid black',
+            backgroundColor: '#fff',
+            ...styles,
+          }}
+        >
+          <div>
+            {header.isPlaceholder
+              ? null
+              : flexRender(header.column.columnDef.header, header.getContext())}
+            <button>⠿</button>
+          </div>
+        </th>
+      ) : null}
+    </DragOverlay>,
+    document.body,
+  );
+};
+
 const DraggableColumnHeader = ({
   header,
   table,
@@ -79,60 +127,61 @@ const DraggableColumnHeader = ({
   header: Header<Person, unknown>;
   table: Table<Person>;
 }) => {
-  const { getState, setColumnOrder } = table;
-  const { columnOrder } = getState();
   const { column } = header;
 
-  const [, dropRef] = useDrop({
-    accept: 'column',
-    drop: (draggedColumn: Column<Person>) => {
-      const newColumnOrder = reorderColumn(
-        draggedColumn.id,
-        column.id,
-        columnOrder,
-      );
-      setColumnOrder(newColumnOrder);
-    },
+  const {
+    attributes,
+    isDragging,
+    transform,
+    setNodeRef: setDragRef,
+    listeners,
+  } = useDraggable({
+    id: column.id,
+    // data: { column },
   });
 
-  const [{ isDragging }, dragRef, previewRef] = useDrag({
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-    item: () => column,
-    type: 'column',
+  const { isOver, setNodeRef: setDropRef } = useDroppable({
+    id: column.id,
+    // data: { column },
   });
 
   return (
     <th
-      ref={dropRef}
+      ref={setDropRef}
+      id={column.id}
       colSpan={header.colSpan}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        backgroundColor: isOver ? 'lavender' : undefined,
+        // transform: transform ? CSS.Translate.toString(transform) : undefined,
+      }}
     >
-      <div ref={previewRef}>
+      <div>
         {header.isPlaceholder
           ? null
           : flexRender(header.column.columnDef.header, header.getContext())}
-        <button ref={dragRef}>🟰</button>
+        <button ref={setDragRef} {...attributes} {...listeners}>
+          ⠿
+        </button>
       </div>
     </th>
   );
 };
 
 /**
- * ✨ 示例，仅展示
+ * ✨ 示例，使用dnd-kit实现拖拽列的顺序
  */
 export const A2b2ColumnOrderDnd = () => {
   const [data, setData] = React.useState(() => makeData(20));
+  const regenerateData = () => setData(() => makeData(20));
   const [columns] = React.useState(() => [...defaultColumns]);
 
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>(
-    columns.map((column) => column.id as string), //must start out with populated columnOrder so we can splice
+    //must start out with populated columnOrder so we can splice
+    columns.map((column) => column.id as string),
   );
 
-  const regenerateData = () => setData(() => makeData(20));
-
-  const resetOrder = () =>
+  const resetColumnOrder = () =>
     setColumnOrder(columns.map((column) => column.id as string));
 
   const table = useReactTable({
@@ -148,17 +197,42 @@ export const A2b2ColumnOrderDnd = () => {
     debugColumns: true,
   });
 
+  const [draggingColumnId, setDraggingColumnId] = useState('');
+  const sensors = useSensors(useSensor(PointerSensor));
+
+  function handleDragStart(event: DragStartEvent) {
+    setDraggingColumnId(String(event.active.id));
+  }
+
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      const newColumnOrder = reorderColumn(
+        String(active.id),
+        String(over.id),
+        columnOrder,
+      );
+      table.setColumnOrder(newColumnOrder);
+      setDraggingColumnId('');
+    },
+    [columnOrder, table],
+  );
+
   return (
     <div className={tableBaseCss}>
       <h3> column order dnd example with react-dnd </h3>
-      <DndProvider backend={HTML5Backend}>
+      <DndContext
+        sensors={sensors}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
         <div className='p-2'>
           <div className='h-4' />
           <div className='flex flex-wrap gap-2'>
             <button onClick={() => regenerateData()} className='border p-1'>
               Regenerate
             </button>
-            <button onClick={() => resetOrder()} className='border p-1'>
+            <button onClick={() => resetColumnOrder()} className='border p-1'>
               Reset Order
             </button>
           </div>
@@ -199,9 +273,9 @@ export const A2b2ColumnOrderDnd = () => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.footer,
-                            header.getContext(),
-                          )}
+                          header.column.columnDef.footer,
+                          header.getContext(),
+                        )}
                     </th>
                   ))}
                 </tr>
@@ -210,7 +284,13 @@ export const A2b2ColumnOrderDnd = () => {
           </table>
           <pre>{JSON.stringify(table.getState().columnOrder, null, 2)}</pre>
         </div>
-      </DndProvider>
+        <ColumnHeaderDragOverlay
+          activeId={draggingColumnId}
+          header={table
+            .getFlatHeaders()
+            .find((item) => item.id === draggingColumnId)}
+        />
+      </DndContext>
     </div>
   );
 };

@@ -26,9 +26,7 @@ function DraggableItem({
   children = '🤔 Drag Me',
 }: DraggableProps) {
   const { attributes, isDragging, transform, setNodeRef, listeners } =
-    useDraggable({
-      id,
-    });
+    useDraggable({ id });
 
   return (
     <button
@@ -128,7 +126,6 @@ export const OneDragMultiDropApp = () => {
 
   function handleDragEnd(event: DragEndEvent) {
     const { over } = event;
-
     setParent(over ? over.id : null);
   }
 };

@@ -1,10 +1,11 @@
 import { createRow } from '../core/row';
-import { Table, Row, RowModel, RowData } from '../types';
+import type { Row, RowData, RowModel, Table } from '../types';
 import { memo } from '../utils';
 
 export function getCoreRowModel<TData extends RowData>(): (
   table: Table<TData>,
 ) => () => RowModel<TData> {
+
   return (table) =>
     memo(
       () => [table.options.data],
@@ -21,6 +22,7 @@ export function getCoreRowModel<TData extends RowData>(): (
           rowsById: {},
         };
 
+        /** iterate originalRows, and add item to `rowModel` */
         const accessRows = (
           originalRows: TData[],
           depth = 0,

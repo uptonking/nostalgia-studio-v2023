@@ -28,15 +28,6 @@ import {
 import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
-// declare module '@tanstack/table-core' {
-//   interface FilterFns {
-//     fuzzy?: FilterFn<unknown>
-//   }
-//   interface FilterMeta {
-//     itemRank?: RankingInfo
-//   }
-// }
-
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
@@ -56,10 +47,8 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
   // Only sort by rank if the column has ranking information
   if (rowA.columnFiltersMeta[columnId]) {
     dir = compareItems(
-      // @ts-expect-error fix-types
-      rowA.columnFiltersMeta[columnId]?.itemRank!,
-      // @ts-expect-error fix-types
-      rowB.columnFiltersMeta[columnId]?.itemRank!,
+      rowA.columnFiltersMeta[columnId]?.['itemRank'],
+      rowB.columnFiltersMeta[columnId]?.['itemRank'],
     );
   }
 
@@ -68,7 +57,7 @@ const fuzzySort: SortingFn<any> = (rowA, rowB, columnId) => {
 };
 
 /**
- * ✨ filter
+ * ✨ filter ui in thead>th
  */
 export const A1b3Filter = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
@@ -142,6 +131,7 @@ export const A1b3Filter = () => {
     [],
   );
 
+  // 💡 filter时表格数据未修改
   const [data, setData] = React.useState<Person[]>(() => makeData(50000));
   const refreshData = () => setData((old) => makeData(50000));
 
@@ -249,7 +239,7 @@ export const A1b3Filter = () => {
           </tbody>
         </table>
         <div className='h-2' />
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2' style={{ display: 'flex' }}>
           <button
             className='border rounded p-1'
             onClick={() => table.setPageIndex(0)}
@@ -278,14 +268,14 @@ export const A1b3Filter = () => {
           >
             {'>>'}
           </button>
-          <span className='flex items-center gap-1'>
+          <span className='flex items-center gap-1' style={{ display: 'flex' }}>
             <div>Page</div>
             <strong>
               {table.getState().pagination.pageIndex + 1} of{' '}
               {table.getPageCount()}
             </strong>
           </span>
-          <span className='flex items-center gap-1'>
+          <span className='flex items-center gap-1' style={{ display: 'flex' }}>
             | Go to page:
             <input
               type='number'
@@ -355,11 +345,10 @@ function Filter({
           onChange={(value) =>
             column.setFilterValue((old: [number, number]) => [value, old?.[1]])
           }
-          placeholder={`Min ${
-            column.getFacetedMinMaxValues()?.[0]
-              ? `(${column.getFacetedMinMaxValues()?.[0]})`
-              : ''
-          }`}
+          placeholder={`Min ${column.getFacetedMinMaxValues()?.[0]
+            ? `(${column.getFacetedMinMaxValues()?.[0]})`
+            : ''
+            }`}
           className='w-24 border shadow rounded'
         />
         <DebouncedInput
@@ -370,11 +359,10 @@ function Filter({
           onChange={(value) =>
             column.setFilterValue((old: [number, number]) => [old?.[0], value])
           }
-          placeholder={`Max ${
-            column.getFacetedMinMaxValues()?.[1]
-              ? `(${column.getFacetedMinMaxValues()?.[1]})`
-              : ''
-          }`}
+          placeholder={`Max ${column.getFacetedMinMaxValues()?.[1]
+            ? `(${column.getFacetedMinMaxValues()?.[1]})`
+            : ''
+            }`}
           className='w-24 border shadow rounded'
         />
       </div>
@@ -433,3 +421,12 @@ function DebouncedInput({
     />
   );
 }
+
+// declare module '@tanstack/table-core' {
+//   interface FilterFns {
+//     fuzzy?: FilterFn<unknown>
+//   }
+//   interface FilterMeta {
+//     itemRank?: RankingInfo
+//   }
+// }

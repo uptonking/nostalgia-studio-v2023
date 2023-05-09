@@ -58,7 +58,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
       id='vTbFixedHeight'
       className='container'
       style={{ height }}
-      // style={{ height, width: 640 }}
+    // style={{ height, width: 640 }}
     >
       <div
         style={{
@@ -111,7 +111,6 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
                   })}
                 </tr>
               ))}
-              n
             </thead>
             <tbody>
               {virtualRows.map((virtualRow) => {
@@ -191,6 +190,7 @@ export const rootCss = css`
     top: 0;
     background-color: beige;
   }
+  /* unused */
   .fixed-header {
     position: fixed;
     top: 0;

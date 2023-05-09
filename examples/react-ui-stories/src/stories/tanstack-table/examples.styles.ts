@@ -10,7 +10,7 @@ export const tableBaseCss = css`
 
   tr:last-child {
       td {
-        border-bottom: 0;
+        border-bottom-width: 0px;
       }
     }
 
@@ -18,8 +18,8 @@ export const tableBaseCss = css`
   td {
     margin: 0;
     padding: 0.5rem;
-    border-bottom: 1px solid black;
     border-right: 1px solid black;
+    border-bottom: 1px solid black;
 
     :last-child {
       border-right: 0;
@@ -30,10 +30,10 @@ export const tableBaseCss = css`
     tr:first-of-type {
       td,
       th {
-        border-top: 2px solid black;
+        border-top: 1px solid black;
+        border-bottom-width: 0px;
       }
     }
-    font-weight: bold;
   }
 `;
 

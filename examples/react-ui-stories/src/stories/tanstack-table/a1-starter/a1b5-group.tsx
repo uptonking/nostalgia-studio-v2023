@@ -17,6 +17,7 @@ import { makeData, Person } from '../utils/makeData';
 
 /**
  * ✨ group rows by column
+ * - 支持分组后再次分组
  */
 export const A1b5Group = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
@@ -79,6 +80,7 @@ export const A1b5Group = () => {
     [],
   );
 
+  // 💡 group时表格数据未修改
   const [data, setData] = React.useState(() => makeData(100000));
   const refreshData = () => setData(() => makeData(100000));
 
@@ -124,8 +126,8 @@ export const A1b5Group = () => {
                               }}
                             >
                               {header.column.getIsGrouped()
-                                ? `🛑(${header.column.getGroupedIndex()}) `
-                                : `👊 `}
+                                ? `🙏🏻(${header.column.getGroupedIndex()}) `
+                                : `👏🏻 `}
                             </button>
                           ) : null}{' '}
                           {flexRender(
@@ -147,46 +149,43 @@ export const A1b5Group = () => {
                   {row.getVisibleCells().map((cell) => {
                     return (
                       <td
+                        key={cell.id}
                         {...{
-                          key: cell.id,
                           style: {
                             background: cell.getIsGrouped()
                               ? '#0aff0082'
                               : cell.getIsAggregated()
-                              ? '#ffa50078'
-                              : cell.getIsPlaceholder()
-                              ? '#ff000042'
-                              : 'white',
+                                ? '#ffa50078'
+                                : cell.getIsPlaceholder()
+                                  ? '#ff000042'
+                                  : 'white',
                           },
                         }}
                       >
                         {cell.getIsGrouped() ? (
                           // If it's a grouped cell, add an expander and row count
-                          <>
-                            <button
-                              {...{
-                                onClick: row.getToggleExpandedHandler(),
-                                style: {
-                                  cursor: row.getCanExpand()
-                                    ? 'pointer'
-                                    : 'normal',
-                                },
-                              }}
-                            >
-                              {row.getIsExpanded() ? '👇' : '👉'}{' '}
-                              {flexRender(
-                                cell.column.columnDef.cell,
-                                cell.getContext(),
-                              )}{' '}
-                              ({row.subRows.length})
-                            </button>
-                          </>
+                          <button
+                            {...{
+                              onClick: row.getToggleExpandedHandler(),
+                              style: {
+                                cursor: row.getCanExpand()
+                                  ? 'pointer'
+                                  : 'normal',
+                              },
+                            }}
+                          >
+                            {row.getIsExpanded() ? '👇' : '👉'}{' '}
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}{' '}
+                            ({row.subRows.length})
+                          </button>
                         ) : cell.getIsAggregated() ? (
-                          // If the cell is aggregated, use the Aggregated
-                          // renderer for cell
+                          // for aggregated cell, use the Aggregated renderer for cell
                           flexRender(
                             cell.column.columnDef.aggregatedCell ??
-                              cell.column.columnDef.cell,
+                            cell.column.columnDef.cell,
                             cell.getContext(),
                           )
                         ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null
@@ -205,7 +204,7 @@ export const A1b5Group = () => {
           </tbody>
         </table>
         <div className='h-2' />
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2' style={{ display: 'flex' }}>
           <button
             className='border rounded p-1'
             onClick={() => table.setPageIndex(0)}
@@ -234,14 +233,14 @@ export const A1b5Group = () => {
           >
             {'>>'}
           </button>
-          <span className='flex items-center gap-1'>
+          <span className='flex items-center gap-1' style={{ display: 'flex' }}>
             <div>Page</div>
             <strong>
               {table.getState().pagination.pageIndex + 1} of{' '}
               {table.getPageCount()}
             </strong>
           </span>
-          <span className='flex items-center gap-1'>
+          <span className='flex items-center gap-1' style={{ display: 'flex' }}>
             | Go to page:
             <input
               type='number'

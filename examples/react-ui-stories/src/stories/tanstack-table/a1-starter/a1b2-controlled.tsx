@@ -65,7 +65,7 @@ const defaultColumns: ColumnDef<Person>[] = [
 
 export function A1b2ControlledTable() {
   const [data] = React.useState(() => makeData(1000));
-  const [columns] = React.useState<typeof defaultColumns>(() => [
+  const [columns] = React.useState<ColumnDef<Person>[]>(() => [
     ...defaultColumns,
   ]);
 
@@ -79,7 +79,7 @@ export function A1b2ControlledTable() {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-  // Manage your own state
+  // 👇🏻 Manage your own state
   const [state, setState] = React.useState(table.initialState);
 
   // Override the state managers for the table to your own
@@ -107,9 +107,9 @@ export function A1b2ControlledTable() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                   </th>
                 ))}
               </tr>
@@ -134,9 +134,9 @@ export function A1b2ControlledTable() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.footer,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.footer,
+                        header.getContext(),
+                      )}
                   </th>
                 ))}
               </tr>
@@ -144,7 +144,7 @@ export function A1b2ControlledTable() {
           </tfoot>
         </table>
         <div className='h-2' />
-        <div className='flex items-center gap-2'>
+        <div className='flex items-center gap-2' style={{ display: 'flex' }}>
           <button
             className='border rounded p-1'
             onClick={() => table.setPageIndex(0)}
@@ -173,14 +173,14 @@ export function A1b2ControlledTable() {
           >
             {'>>'}
           </button>
-          <span className='flex items-center gap-1'>
+          <span className='flex items-center gap-1' style={{ display: 'flex' }}>
             <div>Page</div>
             <strong>
               {table.getState().pagination.pageIndex + 1} of{' '}
               {table.getPageCount()}
             </strong>
           </span>
-          <span className='flex items-center gap-1'>
+          <span className='flex items-center gap-1' >
             | Go to page:
             <input
               type='number'

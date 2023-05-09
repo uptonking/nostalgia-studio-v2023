@@ -79,6 +79,7 @@ export const A1b4Sort = () => {
     [],
   );
 
+  // 💡 sort时表格数据未修改
   const [data, setData] = React.useState(() => makeData(100000));
   const refreshData = () => setData(() => makeData(100000));
 
@@ -113,6 +114,7 @@ export const A1b4Sort = () => {
                             className: header.column.getCanSort()
                               ? 'cursor-pointer select-none'
                               : '',
+                            // 👇🏻 sort by click
                             onClick: header.column.getToggleSortingHandler(),
                           }}
                         >

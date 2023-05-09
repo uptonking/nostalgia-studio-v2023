@@ -12,7 +12,7 @@ const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
   // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('A5b4VirtualQuery');
+  const [currentStory, setCurrentStory] = useState('A2b3ColWithResize');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

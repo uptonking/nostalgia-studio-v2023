@@ -138,6 +138,7 @@ export interface TableOptions<TData extends RowData>
     'state' | 'onStateChange' | 'renderFallbackValue'
   > { }
 
+/** default initial state is empty object {} */
 export interface TableState
   extends CoreTableState,
   VisibilityTableState,
@@ -178,6 +179,9 @@ export interface Row<TData extends RowData>
   RowSelectionRow,
   ExpandedRow { }
 
+/**
+ * core data model for table data, rows/flatRows/rowsById
+ */
 export interface RowModel<TData extends RowData> {
   rows: Row<TData>[];
   flatRows: Row<TData>[];

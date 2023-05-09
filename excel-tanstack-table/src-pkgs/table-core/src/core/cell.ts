@@ -15,6 +15,7 @@ export interface CoreCell<TData extends RowData, TValue> {
   id: string;
   /** Returns the value for the cell, accessed via the associated column's accessor key or accessor function. */
   getValue: CellContext<TData, TValue>['getValue'];
+  /** return getValue if it exists, otherwise return renderFallbackValue */
   renderValue: CellContext<TData, TValue>['renderValue'];
   /** associated Row object for the cell. */
   row: Row<TData>;
@@ -56,6 +57,7 @@ export function createCell<TData extends RowData, TValue>(
     ),
   };
 
+  // enhance `cell` with feature
   table._features.forEach((feature) => {
     Object.assign(
       cell,

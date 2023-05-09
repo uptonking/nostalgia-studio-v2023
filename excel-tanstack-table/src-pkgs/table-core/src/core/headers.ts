@@ -112,6 +112,7 @@ function createHeader<TData extends RowData, TValue>(
     }),
   };
 
+  // enhance header with feature
   table._features.forEach((feature) => {
     Object.assign(header, feature.createHeader?.(header, table));
   });
@@ -128,6 +129,7 @@ export const Headers: TableFeature = {
 
       getHeaderGroups: memo(
         () => [
+          // 👇🏻 createColumn here
           table.getAllColumns(),
           table.getVisibleLeafColumns(),
           table.getState().columnPinning.left,
@@ -429,7 +431,6 @@ export function buildHeaderGroups<TData extends RowData>(
         }
       }, 0);
   };
-
   findMaxDepth(allColumns);
 
   let headerGroups: HeaderGroup<TData>[] = [];
@@ -482,9 +483,8 @@ export function buildHeaderGroups<TData extends RowData>(
             .join('_'),
           isPlaceholder,
           placeholderId: isPlaceholder
-            ? `${
-                pendingParentHeaders.filter((d) => d.column === column).length
-              }`
+            ? `${pendingParentHeaders.filter((d) => d.column === column).length
+            }`
             : undefined,
           depth,
           index: pendingParentHeaders.length,

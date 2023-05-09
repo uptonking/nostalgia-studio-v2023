@@ -65,16 +65,16 @@ const defaultColumns: ColumnDef<Person>[] = [
 ];
 
 /**
- * ✨ 示例，仅展示
+ * ✨ 示例，通过外部checkbox控制列的显示隐藏
  */
 export const A2b1ColumnOrder = () => {
   const [data, setData] = React.useState(() => makeData(20));
+  const rerender = () => setData(() => makeData(20));
   const [columns] = React.useState(() => [...defaultColumns]);
 
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>([]);
 
-  const rerender = () => setData(() => makeData(20));
 
   const table = useReactTable({
     data,
@@ -110,7 +110,7 @@ export const A2b1ColumnOrder = () => {
                   checked: table.getIsAllColumnsVisible(),
                   onChange: table.getToggleAllColumnsVisibilityHandler(),
                 }}
-              />{' '}
+              />
               Toggle All
             </label>
           </div>
@@ -124,7 +124,7 @@ export const A2b1ColumnOrder = () => {
                       checked: column.getIsVisible(),
                       onChange: column.getToggleVisibilityHandler(),
                     }}
-                  />{' '}
+                  />
                   {column.id}
                 </label>
               </div>
@@ -150,9 +150,9 @@ export const A2b1ColumnOrder = () => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                   </th>
                 ))}
               </tr>
@@ -177,9 +177,9 @@ export const A2b1ColumnOrder = () => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.footer,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.footer,
+                        header.getContext(),
+                      )}
                   </th>
                 ))}
               </tr>

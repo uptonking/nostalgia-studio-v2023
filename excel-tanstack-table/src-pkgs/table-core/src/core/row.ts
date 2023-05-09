@@ -19,9 +19,10 @@ export interface CoreRow<TData extends RowData> {
   original: TData;
   _valuesCache: Record<string, unknown>;
   _uniqueValuesCache: Record<string, unknown>;
-  /** Returns the value from the row for a given columnId */
+  /** Returns the value from the row for a given columnId. value is got from cache */
   getValue: <TValue>(columnId: string) => TValue;
   getUniqueValues: <TValue>(columnId: string) => TValue[];
+  /** return getValue if it exists, otherwise return renderFallbackValue */
   renderValue: <TValue>(columnId: string) => TValue;
   /** An array of subRows for the row as returned and created by the `options.getSubRows` option. */
   subRows: Row<TData>[];
@@ -39,6 +40,7 @@ export interface CoreRow<TData extends RowData> {
   getParentRows: () => Row<TData>[];
 }
 
+/** convert a data item to flatRow object */
 export const createRow = <TData extends RowData>(
   table: Table<TData>,
   id: string,
@@ -60,9 +62,7 @@ export const createRow = <TData extends RowData>(
       if (row._valuesCache.hasOwnProperty(columnId)) {
         return row._valuesCache[columnId];
       }
-
       const column = table.getColumn(columnId);
-
       if (!column?.accessorFn) {
         return undefined;
       }
@@ -117,6 +117,7 @@ export const createRow = <TData extends RowData>(
       () => [table.getAllLeafColumns()],
       (leafColumns) => {
         return leafColumns.map((column) => {
+          // 👇🏻 ❓ why only leftColumn
           return createCell(table, row as Row<TData>, column, column.id);
         });
       },

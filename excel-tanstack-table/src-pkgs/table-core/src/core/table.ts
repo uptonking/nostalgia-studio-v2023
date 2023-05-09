@@ -143,6 +143,7 @@ export interface CoreInstance<TData extends RowData> {
    */
   setState: (updater: Updater<TableState>) => void;
   _features: readonly TableFeature[];
+  /** add cb to taskQueue, and exec the cb if no task is running */
   _queue: (cb: () => void) => void;
   _getRowId: (_: TData, index: number, parent?: Row<TData>) => string;
   /** Returns the core row model before any processing has been applied. */
@@ -189,7 +190,6 @@ export function createTable<TData extends RowData>(
     if (table.options.mergeOptions) {
       return table.options.mergeOptions(defaultOptions, options);
     }
-
     return {
       ...defaultOptions,
       ...options,
@@ -264,6 +264,7 @@ export function createTable<TData extends RowData>(
 
     getCoreRowModel: () => {
       if (!table._getCoreRowModel) {
+        // 👇🏻 set default _getCoreRowModel
         table._getCoreRowModel = table.options.getCoreRowModel(table);
       }
 
@@ -335,6 +336,7 @@ export function createTable<TData extends RowData>(
           depth = 0,
         ): Column<TData, unknown>[] => {
           return columnDefs.map((columnDef) => {
+            // 👇🏻
             const column = createColumn(table, columnDef, depth, parent);
 
             const groupingColumnDef = columnDef as GroupColumnDef<

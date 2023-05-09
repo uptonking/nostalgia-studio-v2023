@@ -69,6 +69,7 @@ export const rootCss = css`
     top: 0;
     background-color: beige;
   }
+  /* unused */
   .fixed-header {
     position: fixed;
     top: 0;

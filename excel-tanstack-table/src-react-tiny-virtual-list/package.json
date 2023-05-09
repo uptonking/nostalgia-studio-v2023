@@ -19,11 +19,6 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@dnd-kit/accessibility": "3.0.1111",
-    "@dnd-kit/core": "6.0.8111",
-    "@dnd-kit/modifiers": "6.0.1111",
-    "@dnd-kit/sortable": "7.0.2111",
-    "@dnd-kit/utilities": "3.2.1111",
     "@linaria/babel-preset": "^4.4.4",
     "@linaria/core": "^4.2.9",
     "@linaria/react": "^4.3.6",

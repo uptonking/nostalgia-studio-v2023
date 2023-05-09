@@ -14,7 +14,7 @@ type Person = {
   lastName: string;
   age: number;
   visits: number;
-  status: string;
+  status: 'single' | 'relationship' | 'complicated';
   progress: number;
 };
 
@@ -24,7 +24,7 @@ const defaultData: Person[] = [
     lastName: 'linsley',
     age: 24,
     visits: 100,
-    status: 'In Relationship',
+    status: 'relationship',
     progress: 50,
   },
   {
@@ -32,7 +32,7 @@ const defaultData: Person[] = [
     lastName: 'miller',
     age: 40,
     visits: 40,
-    status: 'Single',
+    status: 'single',
     progress: 80,
   },
   {
@@ -40,7 +40,7 @@ const defaultData: Person[] = [
     lastName: 'Dit',
     age: 45,
     visits: 20,
-    status: 'Complicated',
+    status: 'complicated',
     progress: 10,
   },
 ];
@@ -85,6 +85,8 @@ export const A1b1TableStarter = () => {
   const [data] = React.useState(() => [...defaultData]);
   const rerender = React.useReducer(() => ({}), {})[1];
 
+  // console.log(';; col-data ', columns, data)
+
   const table = useReactTable({
     data,
     columns,
@@ -92,11 +94,13 @@ export const A1b1TableStarter = () => {
   });
   window['table'] = table;
 
+  // start from getPaginationRowModel, then create row only, but not create cell
   const rowModel = table.getRowModel();
+  // create header group
   const headerGroups = table.getHeaderGroups();
   const footerGroups = table.getFooterGroups();
 
-  console.log(';; rows ', rowModel, headerGroups, footerGroups);
+  // console.log(';; rows ', rowModel, headerGroups, footerGroups);
 
   return (
     <div className={tableBaseCss}>

@@ -13,7 +13,7 @@ export type Renderable<TProps> = React.ReactNode | React.ComponentType<TProps>;
 
 //
 
-/** default cell renderer */
+/** default cell renderer, support Comp as plain value or reactElement */
 export function flexRender<TProps extends object>(
   Comp: Renderable<TProps>,
   props: TProps,

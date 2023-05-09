@@ -28,6 +28,12 @@ export interface ColumnFilter {
 export interface ResolvedColumnFilter<TData extends RowData> {
   id: string;
   resolvedValue: unknown;
+  /** Every filter function receives:
+   * 1. The row to filter
+   * 2. The columnId to use to retrieve the row's value
+   * 3. The filter value
+   * - return true if the row should be included in the filtered rows
+   */
   filterFn: FilterFn<TData>;
 }
 
@@ -36,6 +42,7 @@ export interface FilterFn<TData extends RowData> {
     row: Row<TData>,
     columnId: string,
     filterValue: any,
+    /** mark results with a filter meta value that can be used later to sort/group/etc the data to your liking. */
     addMeta: (meta: FilterMeta) => void,
   ): boolean;
 

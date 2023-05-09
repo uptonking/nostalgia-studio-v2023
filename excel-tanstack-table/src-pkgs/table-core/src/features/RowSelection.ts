@@ -22,6 +22,7 @@ export interface RowSelectionOptions<TData extends RowData> {
    */
   enableRowSelection?: boolean | ((row: Row<TData>) => boolean);
   enableMultiRowSelection?: boolean | ((row: Row<TData>) => boolean);
+  /** Enables/disables automatic sub-row selection when a parent row is selected */
   enableSubRowSelection?: boolean | ((row: Row<TData>) => boolean);
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
   // enableGroupingRowSelection?:

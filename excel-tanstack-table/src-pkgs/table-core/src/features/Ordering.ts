@@ -19,6 +19,7 @@ export interface ColumnOrderDefaultOptions {
 
 export interface ColumnOrderInstance<TData extends RowData> {
   setColumnOrder: (updater: Updater<ColumnOrderState>) => void;
+  /** Resets the columnOrder state to initialState.columnOrder, or true can be passed to force a default blank state reset to []. */
   resetColumnOrder: (defaultState?: boolean) => void;
   _getOrderColumnsFn: () => (
     columns: Column<TData, unknown>[],

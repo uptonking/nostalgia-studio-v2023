@@ -7,7 +7,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { tableBaseCss } from '../examples.styles';
+import { tableBaseCss, tableTailwindCss } from '../examples.styles';
 
 type Person = {
   firstName: string;
@@ -96,7 +96,7 @@ export const A1b1TableStarter = () => {
   const headerGroups = table.getHeaderGroups();
   const footerGroups = table.getFooterGroups();
 
-  console.log(';; rows-h ', rowModel, headerGroups, footerGroups);
+  console.log(';; rows ', rowModel, headerGroups, footerGroups);
 
   return (
     <div className={tableBaseCss}>
@@ -110,9 +110,9 @@ export const A1b1TableStarter = () => {
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
                 </th>
               ))}
             </tr>
@@ -137,16 +137,15 @@ export const A1b1TableStarter = () => {
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext(),
-                      )}
+                      header.column.columnDef.footer,
+                      header.getContext(),
+                    )}
                 </th>
               ))}
             </tr>
           ))}
         </tfoot>
       </table>
-      {/* <div className='h-4' /> */}
       <button onClick={() => rerender()} className='border p-2'>
         Rerender
       </button>

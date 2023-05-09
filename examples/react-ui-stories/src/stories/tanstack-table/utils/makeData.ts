@@ -24,7 +24,7 @@ const range = (len: number) => {
   return arr;
 };
 
-const newPerson = (): Person => {
+const newPerson = (index = 0): Person => {
   return {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
@@ -44,9 +44,9 @@ export function makeData(...lens: number[]) {
     const len = lens[depth]!;
     return range(len).map((d, index): Person => {
       return {
+        ...newPerson(),
         id: index + 1,
         createdAt: faker.datatype.datetime({ max: new Date().getTime() }),
-        ...newPerson(),
         subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
       };
     });
@@ -124,7 +124,7 @@ export type PersonApiResponse = {
   };
 };
 
-//simulates a backend api
+/** simulates a paginateable backend api */
 export const fetchVirtualPagesData = (
   start: number,
   size: number,

@@ -8,13 +8,11 @@ export const tableBaseCss = css`
     border-spacing: 0;
   }
 
-  tr {
-    :last-child {
+  tr:last-child {
       td {
         border-bottom: 0;
       }
     }
-  }
 
   th,
   td {

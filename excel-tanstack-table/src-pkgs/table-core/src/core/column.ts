@@ -11,12 +11,11 @@ import { memo } from '../utils';
 export interface CoreColumn<TData extends RowData, TValue> {
   /** The resolved unique identifier for the column resolved in this priority:
    * - A manual `id` property from the column def
-   * - The `accessor` key from the column def
+   * - The `accessorKey` from the column def
    * - The `header` string from the column def
    */
   id: string;
   /** The depth of the column (if grouped) relative to the root column def array.
-   *
    */
   depth: number;
   accessorFn?: AccessorFn<TData, TValue>;
@@ -30,7 +29,8 @@ export interface CoreColumn<TData extends RowData, TValue> {
   parent?: Column<TData, TValue>;
   /** Returns the flattened array of this column and all child/grand-child columns for this column. */
   getFlatColumns: () => Column<TData, TValue>[];
-  /** Returns an array of all leaf-node columns for this column. If a column has no children, it is considered the only leaf-node column. */
+  /** Returns an array of all leaf-node columns for this column.
+   * - If a column has no children, it is considered the only leaf-node column. */
   getLeafColumns: () => Column<TData, TValue>[];
 }
 

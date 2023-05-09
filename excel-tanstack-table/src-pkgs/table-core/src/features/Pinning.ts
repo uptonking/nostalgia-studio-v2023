@@ -49,6 +49,7 @@ export interface ColumnPinningRow<TData extends RowData> {
 
 export interface ColumnPinningInstance<TData extends RowData> {
   setColumnPinning: (updater: Updater<ColumnPinningState>) => void;
+  /** Resets the columnPinning state to initialState.columnPinning, or true can be passed to force a default blank state reset to { left: [], right: [], }. */
   resetColumnPinning: (defaultState?: boolean) => void;
   getIsSomeColumnsPinned: (position?: ColumnPinningPosition) => boolean;
   getLeftLeafColumns: () => Column<TData, unknown>[];

@@ -7,6 +7,7 @@ export interface CoreRow<TData extends RowData> {
    * - Defaults to the row's index (or relative index if it is a subRow)
    */
   id: string;
+  /** If nested, this row's parent row id. */
   parentId?: string;
   /**  index of the row within its parent array (or the root data array) */
   index: number;
@@ -32,7 +33,9 @@ export interface CoreRow<TData extends RowData> {
   /** Returns all of the Cells for the row. */
   getAllCells: () => Cell<TData, unknown>[];
   _getAllCellsByColumnId: () => Record<string, Cell<TData, unknown>>;
+  /** Returns the parent row for the row, if it exists. */
   getParentRow: () => Row<TData> | undefined;
+  /** Returns the parent rows for the row, all the way up to a root row. */
   getParentRows: () => Row<TData>[];
 }
 

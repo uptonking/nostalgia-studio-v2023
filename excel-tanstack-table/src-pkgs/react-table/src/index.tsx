@@ -13,7 +13,7 @@ export type Renderable<TProps> = React.ReactNode | React.ComponentType<TProps>;
 
 //
 
-/** used to render cell */
+/** default cell renderer */
 export function flexRender<TProps extends object>(
   Comp: Renderable<TProps>,
   props: TProps,
@@ -55,6 +55,7 @@ function isExoticComponent(component: any) {
 
 /**
  * a wrapper around the core table logic.
+ * - `createTable` + `setOptions`
  * - Most of its job is related to managing state the "react" way, providing types and the rendering implementation of cell/header/footer templates
  */
 export function useReactTable<TData extends RowData>(
@@ -63,21 +64,21 @@ export function useReactTable<TData extends RowData>(
   // Compose in the generic options to the user options
   const resolvedOptions: TableOptionsResolved<TData> = {
     state: {}, // Dummy state
-    onStateChange: () => {}, // noop
+    onStateChange: () => { }, // noop
     renderFallbackValue: null,
     ...options,
   };
 
-  // Create a new table and store it in state
+  // 👇🏻 Create a stable table instance and store it in state
   const [tableRef] = React.useState(() => ({
     current: createTable<TData>(resolvedOptions),
   }));
 
-  // By default, manage table state here using the table's initial state
+  // 👀 By default, manage table state here using the table's initial state
   const [state, setState] = React.useState(() => tableRef.current.initialState);
 
-  // Compose the default state above with any user state. This will allow the user
-  // to only control a subset of the state if desired.
+  // Compose the default state above with any user state.
+  // This will allow the user to only control a subset of the state if desired.
   tableRef.current.setOptions((prev) => ({
     ...prev,
     ...options,

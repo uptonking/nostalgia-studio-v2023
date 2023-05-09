@@ -40,7 +40,7 @@ export interface TableFeature {
   createRow?: (row: any, table: any) => any;
 }
 
-/** featureFlags array */
+/** features array */
 const features = [
   Headers,
   Visibility,
@@ -57,14 +57,21 @@ const features = [
 
 //
 
-export interface CoreTableState {}
+export interface CoreTableState { }
 
 export interface CoreOptions<TData extends RowData> {
-  /** data for the table to display, could be an array of anything
+  /** data for the table to display. This array should match the type you provided to `table.setRowType<...>`
    * - When the `data` option changes reference (compared via `Object.is`), the table will reprocess the data.
    * - Make sure your data option is only changing when you want the table to reprocess.
    */
   data: TData[];
+  /** array of column defs for the table */
+  columns: ColumnDef<TData, any>[];
+  /** Default column options to use for all column defs
+   * - useful for providing default cell/header/footer renderers, sorting/filtering/grouping options, etc
+   * - All column definitions passed to `options.columns` are merged with this default column definition to produce the final column definitions.
+   */
+  defaultColumn?: Partial<ColumnDef<TData, unknown>>;
   /** used when resetting various table states either automatically by the table (eg. options.autoResetPageIndex) or via functions like table.resetRowSelection().
    * - Table state will not be reset when this object changes, which also means that the initial state object does not need to be stable
    */
@@ -73,11 +80,10 @@ export interface CoreOptions<TData extends RowData> {
    * - The state you pass here will merge with and overwrite the internal automatically-managed state to produce the final state for the table.
    */
   state: Partial<TableState>;
-  /** listen to state changes within the table.
+  /** used to listen to state changes within the table.
    * - If you provide this options, you will be responsible for controlling and updating the table state yourself.
    */
   onStateChange: (updater: Updater<TableState>) => void;
-
   /** Set this option to override any of the `autoReset...` feature options. */
   autoResetAll?: boolean;
   /** implement the merging of table options.
@@ -95,23 +101,20 @@ export interface CoreOptions<TData extends RowData> {
   meta?: TableMeta<TData>;
   /** computes and returns the core row model for the table.
    * - It is called once per table and should return a new function which will calculate and return the row model for the table.
-   * - If you need to identify individual rows that are originating from any server-side operations, it's suggested you use this function to return an ID
    */
   getCoreRowModel: (table: Table<any>) => () => RowModel<any>;
   /** used to access the sub rows for any given row. */
   getSubRows?: (originalRow: TData, index: number) => undefined | TData[];
-  /** used to derive a unique ID for any given row.
-   * - If not provided the rows index is used (nested rows join together with `.` using their grandparents' index
+  /** get a unique ID for any given row.
+   * - If not provided, the rows index is used (nested rows join together with `.` using their grandparents' index
+   * - If you need to identify individual rows that are originating from any server-side operations, it's suggested you use this function to return an ID
    */
   getRowId?: (originalRow: TData, index: number, parent?: Row<TData>) => string;
-  /**  array of column defs to use for the table */
-  columns: ColumnDef<TData, any>[];
-  /** Default column options to use for all column defs
-   * - All column definitions passed to `options.columns` are merged with this default column definition to produce the final column definitions.
-   */
-  defaultColumn?: Partial<ColumnDef<TData, unknown>>;
   renderFallbackValue: any;
+  /** provides a renderer implementation for the table. This implementation is used to turn a table's various column header and cell templates into a result that is supported by the user's framework. */
+  render?: <TProps>(template: any, props: TProps) => any;
 
+  /** Set this option to true to output all debugging information to the console. */
   debugAll?: boolean;
   debugTable?: boolean;
   debugHeaders?: boolean;
@@ -124,14 +127,19 @@ export interface CoreInstance<TData extends RowData> {
   initialState: TableState;
   /** reset the table state to the initial state. */
   reset: () => void;
-  /** A read-only reference to the table's current options. */
+  /** A read-only reference to the table's current options.
+   * - This property is generally used internally or by adapters.
+   */
   options: RequiredKeys<TableOptionsResolved<TData>, 'state'>;
-  /** generally used by adapters to update the table options.  */
+  /** generally used by adapters to update the table options.
+   * - This function is generally used by adapters to update the table options. It can be used to update the table options directly, but it is generally not recommended to bypass your adapters strategy for updating table options.
+    */
   setOptions: (newOptions: Updater<TableOptionsResolved<TData>>) => void;
   /** get the table's current state.  */
   getState: () => TableState;
   /** update the table state.
    * - It's recommended you pass an updater function in the form of `(prevState) => newState` to update the state, but a direct object can also be passed.
+   * - If `options.onStateChange` is provided, it will be triggered by this function with the new state.
    */
   setState: (updater: Updater<TableState>) => void;
   _features: readonly TableFeature[];
@@ -157,11 +165,11 @@ export interface CoreInstance<TData extends RowData> {
 }
 
 /**
- * - createTable 的初始化流程
- * - 计算插件options，~~合并feature options~~
- * - 添加插件initialState到全局initialState
- * - 合并coreInstance到table
- * - 逐个执行插件的createTable方法，并更新table
+ * createTable workflow
+ * - compute table options，合并features options
+ * - compute table initialState，合并features initialState
+ * - add core props and methods to table instance
+ * - 逐个执行插件的createTable方法，将table实例作为参数传入来增强
  */
 export function createTable<TData extends RowData>(
   options: TableOptionsResolved<TData>,
@@ -170,6 +178,7 @@ export function createTable<TData extends RowData>(
     console.info('Creating Table Instance...');
   }
 
+  /** the table instance to return */
   let table = { _features: features } as unknown as Table<TData>;
 
   const defaultOptions = table._features.reduce((obj, feature) => {
@@ -193,11 +202,11 @@ export function createTable<TData extends RowData>(
     ...coreInitialState,
     ...(options.initialState ?? {}),
   } as TableState;
-
   table._features.forEach((feature) => {
     initialState = feature.getInitialState?.(initialState) ?? initialState;
   });
 
+  /** task queue */
   const queued: (() => void)[] = [];
   let queuedTimeout = false;
 
@@ -404,6 +413,7 @@ export function createTable<TData extends RowData>(
   Object.assign(table, coreInstance);
 
   table._features.forEach((feature) => {
+    // 💡 take table, and return enhanced table; props with the same name will be overridden
     return Object.assign(table, feature.createTable?.(table));
   });
 

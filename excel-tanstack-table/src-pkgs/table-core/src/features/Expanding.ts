@@ -17,6 +17,8 @@ export interface ExpandedRow {
 }
 
 export interface ExpandedOptions<TData extends RowData> {
+  /** if true, getExpandedRowModel will not be used to expand rows and you would be expected to perform the expansion in your own data model.
+   * - This is useful if you are doing server-side expansion. */
   manualExpanding?: boolean;
   onExpandedChange?: OnChangeFn<ExpandedState>;
   autoResetExpanded?: boolean;
@@ -24,6 +26,9 @@ export interface ExpandedOptions<TData extends RowData> {
   getExpandedRowModel?: (table: Table<any>) => () => RowModel<any>;
   getIsRowExpanded?: (row: Row<TData>) => boolean;
   getRowCanExpand?: (row: Row<TData>) => boolean;
+  /** If true expanded rows will be paginated along with the rest of the table (which means expanded rows may span multiple pages).
+   * - If false expanded rows will not be considered for pagination (which means expanded rows will always render on their parents page. This also means more rows will be rendered than the set page size)
+   */
   paginateExpandedRows?: boolean;
 }
 

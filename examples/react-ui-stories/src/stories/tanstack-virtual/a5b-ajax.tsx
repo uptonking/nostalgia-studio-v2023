@@ -9,8 +9,6 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 
 import { listCss, listItemCss, listItemEvenCss } from './styles';
 
-const queryClient = new QueryClient();
-
 async function fetchServerPage(
   limit: number,
   offset: number = 0,
@@ -23,6 +21,8 @@ async function fetchServerPage(
 
   return { rows, nextOffset: offset + 1 };
 }
+
+const queryClient = new QueryClient();
 
 export const A5b1VirtualQuery = () => {
   return (
@@ -47,9 +47,14 @@ export function InfiniteScroll() {
     queryKey: ['infiniteScroll'],
     queryFn: (ctx) => fetchServerPage(10, ctx.pageParam),
     getNextPageParam: (_lastGroup, groups) => groups.length,
+    networkMode: 'always'
   });
 
+
+
   const allRows = data ? data.pages.flatMap((d) => d.rows) : [];
+
+  // console.log(';; fetchData ', data, allRows)
 
   const virtualizer = useVirtualizer({
     count: hasNextPage ? allRows.length + 1 : allRows.length,

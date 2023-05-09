@@ -46,6 +46,7 @@ export interface GroupingColumnDef<TData extends RowData, TValue> {
 export interface GroupingColumn<TData extends RowData> {
   getCanGroup: () => boolean;
   getIsGrouped: () => boolean;
+  /** Returns the index of the column in the grouping state. */
   getGroupedIndex: () => number;
   toggleGrouping: () => void;
   getToggleGroupingHandler: () => () => void;
@@ -74,6 +75,8 @@ export interface ColumnDefaultOptions {
 }
 
 interface GroupingOptionsBase {
+  /** if true, the table will not automatically group rows using getGroupedRowModel() and instead will expect you to manually group the rows before passing them to the table.
+   * - This is useful if you are doing server-side grouping and aggregation. */
   manualGrouping?: boolean;
   onGroupingChange?: OnChangeFn<GroupingState>;
   enableGrouping?: boolean;

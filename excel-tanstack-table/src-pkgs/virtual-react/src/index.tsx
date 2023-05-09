@@ -32,13 +32,14 @@ function useVirtualizerBase<
 
   const resolvedOptions: VirtualizerOptions<TScrollElement, TItemElement> = {
     ...options,
+    // rerender if scrollOffset changes or resizing
     onChange: (instance) => {
       rerender();
       options.onChange?.(instance);
     },
   };
 
-  /** 👇🏻 a stable virtualizerInstance */
+  /** 👇🏻 create a stable virtualizer instance */
   const [instance] = React.useState(
     () => new Virtualizer<TScrollElement, TItemElement>(resolvedOptions),
   );

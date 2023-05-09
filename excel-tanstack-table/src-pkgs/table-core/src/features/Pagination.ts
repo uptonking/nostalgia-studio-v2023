@@ -53,7 +53,9 @@ export interface PaginationInstance<TData extends RowData> {
   getCanNextPage: () => boolean;
   previousPage: () => void;
   nextPage: () => void;
+  /** Returns the row model for the table before any pagination has been applied. */
   getPrePaginationRowModel: () => RowModel<TData>;
+  /** Returns the row model for the table after pagination has been applied. */
   getPaginationRowModel: () => RowModel<TData>;
   _getPaginationRowModel?: () => RowModel<TData>;
   getPageCount: () => number;
@@ -138,7 +140,7 @@ export const Pagination: TableFeature = {
 
           const maxPageIndex =
             typeof table.options.pageCount === 'undefined' ||
-            table.options.pageCount === -1
+              table.options.pageCount === -1
               ? Number.MAX_SAFE_INTEGER
               : table.options.pageCount - 1;
 
@@ -238,6 +240,7 @@ export const Pagination: TableFeature = {
       },
 
       getPrePaginationRowModel: () => table.getExpandedRowModel(),
+
       getPaginationRowModel: () => {
         if (
           !table._getPaginationRowModel &&
@@ -259,7 +262,7 @@ export const Pagination: TableFeature = {
           table.options.pageCount ??
           Math.ceil(
             table.getPrePaginationRowModel().rows.length /
-              table.getState().pagination.pageSize,
+            table.getState().pagination.pageSize,
           )
         );
       },

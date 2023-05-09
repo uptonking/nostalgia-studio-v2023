@@ -27,7 +27,7 @@ export interface Range {
 type Key = number | string;
 
 /** represents a single item returned by the virtualizer.
- * - It contains information you need to render the item in the cooredinate space within your virtualizer's scrollElement and other helpful properties/functions.
+ * - It contains information you need to render the item in the coordinate space within your virtualizer's scrollElement and other helpful properties/functions.
  */
 export interface VirtualItem {
   /** The unique key for the item. By default this is the item index, but should be configured via the `getItemKey` Virtualizer option. */
@@ -42,10 +42,11 @@ export interface VirtualItem {
   end: number;
   /** The size of the item. usually mapped to a css property like `width/height`.
    * - Before an item is measured via the `VirtualItem.measureElement` method, this will be the estimated size returned from your `estimateSize` virtualizer option.
-   * - After an item is measured (if you choose to measure), this value will be the number(which by default is configured to measure elements with `getBoundingClientRect()`).
+   * - After an item is measured (if you choose to measure), this value will be the number returned by `measureElement`( `getBoundingClientRect()` by default).
    */
   size: number;
-  /** The number of lanes the list is divided into (aka columns for vertical lists and rows for horizontal lists). */
+  /** The index of lanes the list is divided into (aka columns for vertical lists and rows for horizontal lists).
+   * - In regular lists it will always be set to `0` but becomes useful for masonry layouts. */
   lane: number;
 }
 
@@ -199,7 +200,7 @@ export const measureElement = <TItemElement extends Element>(
 
   return Math.round(
     element.getBoundingClientRect()[
-      instance.options.horizontal ? 'width' : 'height'
+    instance.options.horizontal ? 'width' : 'height'
     ],
   );
 };
@@ -407,7 +408,7 @@ export class Virtualizer<
       horizontal: false,
       getItemKey: defaultKeyExtractor,
       rangeExtractor: defaultRangeExtractor,
-      onChange: () => {},
+      onChange: () => { },
       measureElement,
       initialRect: { width: 0, height: 0 },
       scrollMargin: 0,
@@ -618,8 +619,8 @@ export class Virtualizer<
 
     return furthestMeasurements.size === this.options.lanes
       ? Array.from(furthestMeasurements.values()).sort(
-          (a, b) => a.end - b.end,
-        )[0]
+        (a, b) => a.end - b.end,
+      )[0]
       : undefined;
   };
 
@@ -639,7 +640,7 @@ export class Virtualizer<
     },
   );
 
-  /** trigger `this.options.onChange()` only when range index changes */
+  /** trigger `this.options.onChange()` only when range index changes, used in observers */
   private maybeNotify = memo(
     () => {
       const range = this.calculateRange();
@@ -790,12 +791,12 @@ export class Virtualizer<
 
     return notUndefined(
       measurements[
-        findNearestBinarySearch(
-          0,
-          measurements.length - 1,
-          (index: number) => notUndefined(measurements[index]).start,
-          offset,
-        )
+      findNearestBinarySearch(
+        0,
+        measurements.length - 1,
+        (index: number) => notUndefined(measurements[index]).start,
+        offset,
+      )
       ],
     );
   };

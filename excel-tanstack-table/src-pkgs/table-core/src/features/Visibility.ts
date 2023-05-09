@@ -27,6 +27,7 @@ export interface VisibilityDefaultOptions {
 
 export interface VisibilityInstance<TData extends RowData> {
   getVisibleFlatColumns: () => Column<TData, unknown>[];
+  /** Returns a flat array of leaf-node columns that are visible. */
   getVisibleLeafColumns: () => Column<TData, unknown>[];
   getLeftVisibleLeafColumns: () => Column<TData, unknown>[];
   getRightVisibleLeafColumns: () => Column<TData, unknown>[];

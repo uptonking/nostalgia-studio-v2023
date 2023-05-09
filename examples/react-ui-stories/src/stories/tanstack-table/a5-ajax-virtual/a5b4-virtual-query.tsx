@@ -17,19 +17,18 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
-import { tableBaseCss } from '../examples.styles';
 import {
   fetchVirtualPagesData,
   Person,
   PersonApiResponse,
 } from '../utils/makeData';
 
-const fetchSize = 25;
+const fetchSize = 10;
 
 const queryClient = new QueryClient();
 
 /**
- * todo fixme
+ * tanstack-table + tanstack-query + tanstack-virtual
  */
 export const A5b4VirtualQuery = () => {
   return (
@@ -92,17 +91,22 @@ function VirtualPage() {
     [],
   );
 
-  const { data, fetchNextPage, isFetching, isLoading } =
+  const { data, fetchNextPage, isFetching, isLoading, hasNextPage } =
     useInfiniteQuery<PersonApiResponse>({
       queryKey: ['table-data', sorting], //adding sorting state as key causes table to reset and fetch from new beginning upon sort
       queryFn: async ({ pageParam = 0 }) => {
         const start = pageParam * fetchSize;
         const fetchedData = fetchVirtualPagesData(start, fetchSize, sorting); //pretend api call
+        // console.log(';; fake ', fetchedData)
+
+        await new Promise((r) => setTimeout(r, 500));
+
         return fetchedData;
       },
       getNextPageParam: (_lastGroup, groups) => groups.length,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
+      networkMode: 'always'
     });
 
   // we must flatten the array of arrays from the useInfiniteQuery hook
@@ -159,17 +163,20 @@ function VirtualPage() {
 
   const { rows } = table.getRowModel();
 
+  // console.log(';; rows ', data, columns, rows);
+
+
   // Virtualizing is optional, but might be necessary if we are going to potentially have hundreds or thousands of rows
-  const rowVirtualizer = useVirtualizer({
+  const virtualizer = useVirtualizer({
     getScrollElement: () => tableContainerRef.current,
     count: rows.length,
-    estimateSize: () => 32,
+    estimateSize: () => 30,
     overscan: 2,
   });
 
   // 测试表明这里不能memo
-  const virtualRows = rowVirtualizer.getVirtualItems();
-  const totalSize = rowVirtualizer.getTotalSize();
+  const virtualRows = virtualizer.getVirtualItems();
+  const totalSize = virtualizer.getTotalSize();
   // const virtualRows = React.useMemo(
   //   () => rowVirtualizer.getVirtualItems(),
   //   [rowVirtualizer],
@@ -186,17 +193,17 @@ function VirtualPage() {
   }
 
   return (
-    <div className={tableBaseCss + ' ' + rootCss}>
+    <div className={tableRefCss}>
       <div className='p-2'>
         <div className='h-2' />
         <div
-          id='vTbFixedHeight'
-          className='container'
+          ref={tableContainerRef}
+          id='idTbFixedHeight'
           onScroll={(e) => {
             // console.log(';; scroll-fetch ');
             fetchMoreOnBottomReached(e.target as HTMLDivElement);
           }}
-          ref={tableContainerRef}
+          className={tableContainerCss}
         >
           <table>
             <thead>
@@ -276,10 +283,47 @@ function VirtualPage() {
   );
 }
 
-export const rootCss = css`
-  #vTbFixedHeight {
-    border: 1px solid lightgray;
-    max-width: 900px !important;
-    overflow: auto;
+export const tableContainerCss = css`
+  overflow: auto;
+  max-width: 900px;
+  height: 500px;
+  /* border: 1px solid lightgray; */
+  color: #313131;
+  font-family: arial, sans-serif;
+  /* 👀 字体会决定单元格高度，从而影响行高，下面的一些特殊字体可能导致表格每行高度不同 */
+  /* font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'; */
+  /* font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Ubuntu, noto, arial, sans-serif; */
+`;
+
+export const tableRefCss = css`
+  table {
+    table-layout: fixed;
+    width: 100%;
+    /** applies only when border-collapse is separate */
+    border-spacing: 0;
+    border: 1px solid #dee2e6;
+  }
+
+  thead {
+    position: sticky;
+    top: 0;
+    margin: 0;
+    background-color: #f1f3f5;
+    th {
+      text-align: left;
+    }
+  }
+
+  th,
+  td {
+    margin: 0;
+    padding: 0px;
+    padding-left: 8px;
+    border-bottom: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+
+    :last-child {
+      border-right: 0;
+    }
   }
 `;

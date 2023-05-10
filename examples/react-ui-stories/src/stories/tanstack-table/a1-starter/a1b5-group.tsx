@@ -155,10 +155,10 @@ export const A1b5Group = () => {
                             background: cell.getIsGrouped()
                               ? '#0aff0082'
                               : cell.getIsAggregated()
-                                ? '#ffa50078'
-                                : cell.getIsPlaceholder()
-                                  ? '#ff000042'
-                                  : 'white',
+                              ? '#ffa50078'
+                              : cell.getIsPlaceholder()
+                              ? '#ff000042'
+                              : 'white',
                           },
                         }}
                       >
@@ -185,7 +185,7 @@ export const A1b5Group = () => {
                           // for aggregated cell, use the Aggregated renderer for cell
                           flexRender(
                             cell.column.columnDef.aggregatedCell ??
-                            cell.column.columnDef.cell,
+                              cell.column.columnDef.cell,
                             cell.getContext(),
                           )
                         ) : cell.getIsPlaceholder() ? null : ( // For cells with repeated values, render null

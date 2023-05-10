@@ -57,7 +57,7 @@ const features = [
 
 //
 
-export interface CoreTableState { }
+export interface CoreTableState {}
 
 export interface CoreOptions<TData extends RowData> {
   /** data for the table to display. This array should match the type you provided to `table.setRowType<...>`
@@ -133,7 +133,7 @@ export interface CoreInstance<TData extends RowData> {
   options: RequiredKeys<TableOptionsResolved<TData>, 'state'>;
   /** generally used by adapters to update the table options.
    * - This function is generally used by adapters to update the table options. It can be used to update the table options directly, but it is generally not recommended to bypass your adapters strategy for updating table options.
-    */
+   */
   setOptions: (newOptions: Updater<TableOptionsResolved<TData>>) => void;
   /** get the table's current state.  */
   getState: () => TableState;

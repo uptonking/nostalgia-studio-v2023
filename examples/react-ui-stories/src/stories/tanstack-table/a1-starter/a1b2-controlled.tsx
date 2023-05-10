@@ -107,9 +107,9 @@ export function A1b2ControlledTable() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </th>
                 ))}
               </tr>
@@ -134,9 +134,9 @@ export function A1b2ControlledTable() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.footer,
+                          header.getContext(),
+                        )}
                   </th>
                 ))}
               </tr>
@@ -180,7 +180,7 @@ export function A1b2ControlledTable() {
               {table.getPageCount()}
             </strong>
           </span>
-          <span className='flex items-center gap-1' >
+          <span className='flex items-center gap-1'>
             | Go to page:
             <input
               type='number'

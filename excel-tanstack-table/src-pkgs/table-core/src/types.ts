@@ -81,17 +81,17 @@ import type {
 } from './features/Visibility';
 import type { PartialKeys, UnionToIntersection } from './utils';
 
-export interface TableMeta<TData extends RowData> { }
+export interface TableMeta<TData extends RowData> {}
 
-export interface ColumnMeta<TData extends RowData, TValue> { }
+export interface ColumnMeta<TData extends RowData, TValue> {}
 
-export interface FilterMeta { }
+export interface FilterMeta {}
 
-export interface FilterFns { }
+export interface FilterFns {}
 
-export interface SortingFns { }
+export interface SortingFns {}
 
-export interface AggregationFns { }
+export interface AggregationFns {}
 
 export type Updater<T> = T | ((old: T) => T);
 export type OnChangeFn<T> = (updaterOrValue: Updater<T>) => void;
@@ -105,29 +105,29 @@ export type AnyRender = (Comp: any, props: any) => any;
  */
 export interface Table<TData extends RowData>
   extends CoreInstance<TData>,
-  HeadersInstance<TData>,
-  VisibilityInstance<TData>,
-  ColumnOrderInstance<TData>,
-  ColumnPinningInstance<TData>,
-  FiltersInstance<TData>,
-  SortingInstance<TData>,
-  GroupingInstance<TData>,
-  ColumnSizingInstance,
-  ExpandedInstance<TData>,
-  PaginationInstance<TData>,
-  RowSelectionInstance<TData> { }
+    HeadersInstance<TData>,
+    VisibilityInstance<TData>,
+    ColumnOrderInstance<TData>,
+    ColumnPinningInstance<TData>,
+    FiltersInstance<TData>,
+    SortingInstance<TData>,
+    GroupingInstance<TData>,
+    ColumnSizingInstance,
+    ExpandedInstance<TData>,
+    PaginationInstance<TData>,
+    RowSelectionInstance<TData> {}
 
 interface FeatureOptions<TData extends RowData>
   extends VisibilityOptions,
-  ColumnOrderOptions,
-  ColumnPinningOptions,
-  FiltersOptions<TData>,
-  SortingOptions<TData>,
-  GroupingOptions,
-  ExpandedOptions<TData>,
-  ColumnSizingOptions,
-  PaginationOptions,
-  RowSelectionOptions<TData> { }
+    ColumnOrderOptions,
+    ColumnPinningOptions,
+    FiltersOptions<TData>,
+    SortingOptions<TData>,
+    GroupingOptions,
+    ExpandedOptions<TData>,
+    ColumnSizingOptions,
+    PaginationOptions,
+    RowSelectionOptions<TData> {}
 
 export type TableOptionsResolved<TData extends RowData> = CoreOptions<TData> &
   FeatureOptions<TData>;
@@ -136,48 +136,48 @@ export interface TableOptions<TData extends RowData>
   extends PartialKeys<
     TableOptionsResolved<TData>,
     'state' | 'onStateChange' | 'renderFallbackValue'
-  > { }
+  > {}
 
 /** default initial state is empty object {} */
 export interface TableState
   extends CoreTableState,
-  VisibilityTableState,
-  ColumnOrderTableState,
-  ColumnPinningTableState,
-  FiltersTableState,
-  SortingTableState,
-  ExpandedTableState,
-  GroupingTableState,
-  ColumnSizingTableState,
-  PaginationTableState,
-  RowSelectionTableState { }
+    VisibilityTableState,
+    ColumnOrderTableState,
+    ColumnPinningTableState,
+    FiltersTableState,
+    SortingTableState,
+    ExpandedTableState,
+    GroupingTableState,
+    ColumnSizingTableState,
+    PaginationTableState,
+    RowSelectionTableState {}
 
 interface CompleteInitialTableState
   extends CoreTableState,
-  VisibilityTableState,
-  ColumnOrderTableState,
-  ColumnPinningTableState,
-  FiltersTableState,
-  SortingTableState,
-  ExpandedTableState,
-  GroupingTableState,
-  ColumnSizingTableState,
-  PaginationInitialTableState,
-  RowSelectionTableState { }
+    VisibilityTableState,
+    ColumnOrderTableState,
+    ColumnPinningTableState,
+    FiltersTableState,
+    SortingTableState,
+    ExpandedTableState,
+    GroupingTableState,
+    ColumnSizingTableState,
+    PaginationInitialTableState,
+    RowSelectionTableState {}
 
-export interface InitialTableState extends Partial<CompleteInitialTableState> { }
+export interface InitialTableState extends Partial<CompleteInitialTableState> {}
 
 /**
  * Each row mirrors its respective row data and provides row-specific APIs
  */
 export interface Row<TData extends RowData>
   extends CoreRow<TData>,
-  VisibilityRow<TData>,
-  ColumnPinningRow<TData>,
-  FiltersRow<TData>,
-  GroupingRow,
-  RowSelectionRow,
-  ExpandedRow { }
+    VisibilityRow<TData>,
+    ColumnPinningRow<TData>,
+    FiltersRow<TData>,
+    GroupingRow,
+    RowSelectionRow,
+    ExpandedRow {}
 
 /**
  * core data model for table data, rows/flatRows/rowsById
@@ -219,11 +219,11 @@ type ColumnIdentifiers<TData extends RowData, TValue> =
 
 interface ColumnDefExtensions<TData extends RowData, TValue = unknown>
   extends VisibilityColumnDef,
-  ColumnPinningColumnDef,
-  FiltersColumnDef<TData>,
-  SortingColumnDef<TData>,
-  GroupingColumnDef<TData, TValue>,
-  ColumnSizingColumnDef { }
+    ColumnPinningColumnDef,
+    FiltersColumnDef<TData>,
+    SortingColumnDef<TData>,
+    GroupingColumnDef<TData, TValue>,
+    ColumnSizingColumnDef {}
 
 export interface ColumnDefBase<TData extends RowData, TValue = unknown>
   extends ColumnDefExtensions<TData, TValue> {
@@ -337,29 +337,29 @@ export type ColumnDefResolved<
  */
 export interface Column<TData extends RowData, TValue = unknown>
   extends CoreColumn<TData, TValue>,
-  ColumnVisibilityColumn,
-  ColumnPinningColumn,
-  FiltersColumn<TData>,
-  SortingColumn<TData>,
-  GroupingColumn<TData>,
-  ColumnSizingColumn { }
+    ColumnVisibilityColumn,
+    ColumnPinningColumn,
+    FiltersColumn<TData>,
+    SortingColumn<TData>,
+    GroupingColumn<TData>,
+    ColumnSizingColumn {}
 
 /**
  * Each cell mirrors its respective row-column intersection and provides cell-specific APIs
  */
 export interface Cell<TData extends RowData, TValue>
   extends CoreCell<TData, TValue>,
-  GroupingCell { }
+    GroupingCell {}
 
 /**
  * Each header is either directly associated with or derived from its column def and provides header-specific APIs
  */
 export interface Header<TData extends RowData, TValue>
   extends CoreHeader<TData, TValue>,
-  ColumnSizingHeader { }
+    ColumnSizingHeader {}
 
 /**
  * Header groups are computed slices of nested header levels, each containing a group of headers
  */
 export interface HeaderGroup<TData extends RowData>
-  extends CoreHeaderGroup<TData> { }
+  extends CoreHeaderGroup<TData> {}

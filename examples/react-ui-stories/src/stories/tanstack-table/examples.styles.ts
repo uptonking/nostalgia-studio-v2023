@@ -9,10 +9,10 @@ export const tableBaseCss = css`
   }
 
   tr:last-child {
-      td {
-        border-bottom-width: 0px;
-      }
+    td {
+      border-bottom-width: 0px;
     }
+  }
 
   th,
   td {

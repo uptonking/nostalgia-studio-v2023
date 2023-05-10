@@ -483,8 +483,9 @@ export function buildHeaderGroups<TData extends RowData>(
             .join('_'),
           isPlaceholder,
           placeholderId: isPlaceholder
-            ? `${pendingParentHeaders.filter((d) => d.column === column).length
-            }`
+            ? `${
+                pendingParentHeaders.filter((d) => d.column === column).length
+              }`
             : undefined,
           depth,
           index: pendingParentHeaders.length,

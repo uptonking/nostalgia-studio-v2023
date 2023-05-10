@@ -273,9 +273,9 @@ export const A2b2ColumnOrderDnd = () => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.footer,
-                          header.getContext(),
-                        )}
+                            header.column.columnDef.footer,
+                            header.getContext(),
+                          )}
                     </th>
                   ))}
                 </tr>

@@ -106,7 +106,7 @@ function VirtualPage() {
       getNextPageParam: (_lastGroup, groups) => groups.length,
       keepPreviousData: true,
       refetchOnWindowFocus: false,
-      networkMode: 'always'
+      networkMode: 'always',
     });
 
   // we must flatten the array of arrays from the useInfiniteQuery hook
@@ -164,7 +164,6 @@ function VirtualPage() {
   const { rows } = table.getRowModel();
 
   // console.log(';; rows ', data, columns, rows);
-
 
   // Virtualizing is optional, but might be necessary if we are going to potentially have hundreds or thousands of rows
   const virtualizer = useVirtualizer({

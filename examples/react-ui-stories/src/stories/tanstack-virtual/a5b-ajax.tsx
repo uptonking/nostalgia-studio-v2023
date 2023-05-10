@@ -47,10 +47,8 @@ export function InfiniteScroll() {
     queryKey: ['infiniteScroll'],
     queryFn: (ctx) => fetchServerPage(10, ctx.pageParam),
     getNextPageParam: (_lastGroup, groups) => groups.length,
-    networkMode: 'always'
+    networkMode: 'always',
   });
-
-
 
   const allRows = data ? data.pages.flatMap((d) => d.rows) : [];
 

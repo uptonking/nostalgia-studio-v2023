@@ -32,8 +32,15 @@ export type ColumnResizeMode = 'onChange' | 'onEnd';
 
 export interface ColumnSizingOptions {
   enableColumnResizing?: boolean;
+  /** Determines when the columnSizing state is updated.
+   * - `onChange` updates the state when the user is dragging the resize handle.
+   * - `onEnd` updates the state when the user releases the resize handle. */
   columnResizeMode?: ColumnResizeMode;
   onColumnSizingChange?: OnChangeFn<ColumnSizingState>;
+  /** This optional function will be called when the `columnSizingInfo` state changes.
+   * - If you provide this function, you will be responsible for maintaining its state yourself.
+   * - You can pass this state back to the table via the `state.columnSizingInfo` table option.
+   */
   onColumnSizingInfoChange?: OnChangeFn<ColumnSizingInfoState>;
 }
 

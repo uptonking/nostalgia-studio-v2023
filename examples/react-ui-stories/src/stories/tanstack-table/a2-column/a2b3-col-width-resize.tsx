@@ -163,24 +163,26 @@ export function A2b3ColWithResize() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     <div
                       {...{
                         // 👇🏻 resize column
                         onMouseDown: header.getResizeHandler(),
                         onTouchStart: header.getResizeHandler(),
-                        className: `${resizerCss} ${header.column.getIsResizing()
+                        className: `${resizerCss} ${
+                          header.column.getIsResizing()
                             ? resizerIsResizingCss
                             : ''
-                          }`,
+                        }`,
                         style: {
                           transform:
                             columnResizeMode === 'onEnd' &&
-                              header.column.getIsResizing()
-                              ? `translateX(${table.getState().columnSizingInfo.deltaOffset
-                              }px)`
+                            header.column.getIsResizing()
+                              ? `translateX(${
+                                  table.getState().columnSizingInfo.deltaOffset
+                                }px)`
                               : '',
                         },
                       }}
@@ -242,21 +244,23 @@ export function A2b3ColWithResize() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     <div
                       {...{
                         onMouseDown: header.getResizeHandler(),
                         onTouchStart: header.getResizeHandler(),
-                        className: `resizer ${header.column.getIsResizing() ? 'isResizing' : ''
-                          }`,
+                        className: `resizer ${
+                          header.column.getIsResizing() ? 'isResizing' : ''
+                        }`,
                         style: {
                           transform:
                             columnResizeMode === 'onEnd' &&
-                              header.column.getIsResizing()
-                              ? `translateX(${table.getState().columnSizingInfo.deltaOffset
-                              }px)`
+                            header.column.getIsResizing()
+                              ? `translateX(${
+                                  table.getState().columnSizingInfo.deltaOffset
+                                }px)`
                               : '',
                         },
                       }}
@@ -333,21 +337,23 @@ export function A2b3ColWithResize() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                     <div
                       {...{
                         onMouseDown: header.getResizeHandler(),
                         onTouchStart: header.getResizeHandler(),
-                        className: `resizer ${header.column.getIsResizing() ? 'isResizing' : ''
-                          }`,
+                        className: `resizer ${
+                          header.column.getIsResizing() ? 'isResizing' : ''
+                        }`,
                         style: {
                           transform:
                             columnResizeMode === 'onEnd' &&
-                              header.column.getIsResizing()
-                              ? `translateX(${table.getState().columnSizingInfo.deltaOffset
-                              }px)`
+                            header.column.getIsResizing()
+                              ? `translateX(${
+                                  table.getState().columnSizingInfo.deltaOffset
+                                }px)`
                               : '',
                         },
                       }}

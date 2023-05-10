@@ -12,3 +12,4 @@ export { A5b1VirtualTable } from './a5-ajax-virtual/a5b1-virtual';
 export { A5b2VirtualDynamic } from './a5-ajax-virtual/a5b2-virtual-dynamic';
 export { A5b3Pagination } from './a5-ajax-virtual/a5b3-pagination';
 export { A5b4VirtualQuery } from './a5-ajax-virtual/a5b4-virtual-query';
+export { B1b1PivotTableApp } from './b1-pivot-table/app';

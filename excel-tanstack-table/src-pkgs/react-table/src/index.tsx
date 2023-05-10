@@ -64,7 +64,7 @@ export function useReactTable<TData extends RowData>(
   // Compose in the generic options to the user options
   const resolvedOptions: TableOptionsResolved<TData> = {
     state: {}, // Dummy state
-    onStateChange: () => { }, // noop
+    onStateChange: () => {}, // noop
     renderFallbackValue: null,
     ...options,
   };

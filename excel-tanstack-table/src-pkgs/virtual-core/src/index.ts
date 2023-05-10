@@ -200,7 +200,7 @@ export const measureElement = <TItemElement extends Element>(
 
   return Math.round(
     element.getBoundingClientRect()[
-    instance.options.horizontal ? 'width' : 'height'
+      instance.options.horizontal ? 'width' : 'height'
     ],
   );
 };
@@ -408,7 +408,7 @@ export class Virtualizer<
       horizontal: false,
       getItemKey: defaultKeyExtractor,
       rangeExtractor: defaultRangeExtractor,
-      onChange: () => { },
+      onChange: () => {},
       measureElement,
       initialRect: { width: 0, height: 0 },
       scrollMargin: 0,
@@ -619,8 +619,8 @@ export class Virtualizer<
 
     return furthestMeasurements.size === this.options.lanes
       ? Array.from(furthestMeasurements.values()).sort(
-        (a, b) => a.end - b.end,
-      )[0]
+          (a, b) => a.end - b.end,
+        )[0]
       : undefined;
   };
 
@@ -791,12 +791,12 @@ export class Virtualizer<
 
     return notUndefined(
       measurements[
-      findNearestBinarySearch(
-        0,
-        measurements.length - 1,
-        (index: number) => notUndefined(measurements[index]).start,
-        offset,
-      )
+        findNearestBinarySearch(
+          0,
+          measurements.length - 1,
+          (index: number) => notUndefined(measurements[index]).start,
+          offset,
+        )
       ],
     );
   };

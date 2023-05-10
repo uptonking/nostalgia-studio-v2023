@@ -94,15 +94,15 @@ interface SortingOptionsBase {
 
 type ResolvedSortingFns = keyof SortingFns extends never
   ? {
-    sortingFns?: Record<string, SortingFn<any>>;
-  }
+      sortingFns?: Record<string, SortingFn<any>>;
+    }
   : {
-    sortingFns: Record<keyof SortingFns, SortingFn<any>>;
-  };
+      sortingFns: Record<keyof SortingFns, SortingFn<any>>;
+    };
 
 export interface SortingOptions<TData extends RowData>
   extends SortingOptionsBase,
-  ResolvedSortingFns { }
+    ResolvedSortingFns {}
 
 export interface SortingInstance<TData extends RowData> {
   setSorting: (updater: Updater<SortingState>) => void;
@@ -190,8 +190,8 @@ export const Sorting: TableFeature = {
         return isFunction(column.columnDef.sortingFn)
           ? column.columnDef.sortingFn
           : column.columnDef.sortingFn === 'auto'
-            ? column.getAutoSortingFn()
-            : table.options.sortingFns?.[column.columnDef.sortingFn as string] ??
+          ? column.getAutoSortingFn()
+          : table.options.sortingFns?.[column.columnDef.sortingFn as string] ??
             sortingFns[column.columnDef.sortingFn as BuiltInSortingFn];
       },
       toggleSorting: (desc, multi) => {
@@ -260,7 +260,7 @@ export const Sorting: TableFeature = {
             newSorting.splice(
               0,
               newSorting.length -
-              (table.options.maxMultiSortColCount ?? Number.MAX_SAFE_INTEGER),
+                (table.options.maxMultiSortColCount ?? Number.MAX_SAFE_INTEGER),
             );
           } else if (sortAction === 'toggle') {
             // This flips (or sets) the

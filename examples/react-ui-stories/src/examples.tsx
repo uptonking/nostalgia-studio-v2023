@@ -12,7 +12,7 @@ const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
   // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('A2b3ColWithResize');
+  const [currentStory, setCurrentStory] = useState('B1b1PivotTableApp');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

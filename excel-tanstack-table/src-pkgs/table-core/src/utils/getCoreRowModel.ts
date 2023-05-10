@@ -5,7 +5,6 @@ import { memo } from '../utils';
 export function getCoreRowModel<TData extends RowData>(): (
   table: Table<TData>,
 ) => () => RowModel<TData> {
-
   return (table) =>
     memo(
       () => [table.options.data],

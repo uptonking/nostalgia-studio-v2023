@@ -197,7 +197,8 @@ export const Filters: TableFeature = {
       getColumnCanGlobalFilter: (column) => {
         const value = table
           .getCoreRowModel()
-          .flatRows[0]?._getAllCellsByColumnId()[column.id]?.getValue();
+          .flatRows[0]?._getAllCellsByColumnId()
+          [column.id]?.getValue();
 
         return typeof value === 'string' || typeof value === 'number';
       },

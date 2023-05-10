@@ -140,7 +140,7 @@ export const Pagination: TableFeature = {
 
           const maxPageIndex =
             typeof table.options.pageCount === 'undefined' ||
-              table.options.pageCount === -1
+            table.options.pageCount === -1
               ? Number.MAX_SAFE_INTEGER
               : table.options.pageCount - 1;
 
@@ -262,7 +262,7 @@ export const Pagination: TableFeature = {
           table.options.pageCount ??
           Math.ceil(
             table.getPrePaginationRowModel().rows.length /
-            table.getState().pagination.pageSize,
+              table.getState().pagination.pageSize,
           )
         );
       },

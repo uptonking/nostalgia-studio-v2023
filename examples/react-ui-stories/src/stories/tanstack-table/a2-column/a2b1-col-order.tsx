@@ -75,7 +75,6 @@ export const A2b1ColumnOrder = () => {
   const [columnVisibility, setColumnVisibility] = React.useState({});
   const [columnOrder, setColumnOrder] = React.useState<ColumnOrderState>([]);
 
-
   const table = useReactTable({
     data,
     columns,
@@ -150,9 +149,9 @@ export const A2b1ColumnOrder = () => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </th>
                 ))}
               </tr>
@@ -177,9 +176,9 @@ export const A2b1ColumnOrder = () => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.footer,
+                          header.getContext(),
+                        )}
                   </th>
                 ))}
               </tr>

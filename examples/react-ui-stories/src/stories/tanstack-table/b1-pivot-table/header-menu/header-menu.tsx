@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { usePopper } from 'react-popper';
+import { css } from '@linaria/core';
 
+import {
+  PopoverContent,
+  PopoverProvider,
+  PopoverTrigger,
+} from '../../../floating-ui';
 import {
   ArrowDownIcon,
   ArrowLeftIcon,
@@ -9,6 +14,11 @@ import {
   ArrowUpIcon,
   TrashIcon,
 } from '../icons';
+import {
+  headerMenuContainerCss,
+  listContainerCss,
+  menuItemBtnCss,
+} from '../styles';
 import { ActionNames, grey, shortId } from '../utils';
 import { ColumnTypeIcon } from './column-type-icon';
 import { ColumnTypeList } from './column-type-list';
@@ -17,9 +27,9 @@ export function HeaderMenu({
   label,
   dataType,
   columnId,
-  setSortBy,
-  popper,
-  popperRef,
+  setSortBy = (...args: any[]) => { },
+  // popper,
+  // popperRef,
   dataDispatch,
   setShowHeaderMenu,
 }) {
@@ -27,14 +37,10 @@ export function HeaderMenu({
   const [header, setHeader] = useState(label);
   const [typeReferenceElement, setTypeReferenceElement] = useState(null);
   const [typePopperElement, setTypePopperElement] = useState(null);
-  const typePopper = usePopper(typeReferenceElement, typePopperElement, {
-    placement: 'right',
-    strategy: 'fixed',
-  });
-  const [showTypeMenu, setShowTypeMenu] = useState(false);
+  const [showTypeList, setShowTypeList] = useState(false);
 
   function onTypeMenuClose() {
-    setShowTypeMenu(false);
+    setShowTypeList(false);
     setShowHeaderMenu(false);
   }
 
@@ -146,26 +152,15 @@ export function HeaderMenu({
 
   return (
     <div
-      ref={popperRef}
-      style={{ ...popper.styles.popper, zIndex: 3 }}
-      {...popper.attributes.popper}
+    // ref={popperRef}
+    // style={{ ...popper.styles.popper, zIndex: 3 }}
+    // {...popper.attributes.popper}
     >
-      <div
-        className='bg-white shadow-5 border-radius-md'
-        style={{
-          width: 240,
-        }}
-      >
-        <div
-          style={{
-            paddingTop: '0.75rem',
-            paddingLeft: '0.75rem',
-            paddingRight: '0.75rem',
-          }}
-        >
-          <div className='is-fullwidth' style={{ marginBottom: 12 }}>
+      <div className={headerMenuContainerCss + ' ' + headerMenuCss}>
+        <div className={columnTypeContainerCss}>
+          <div className={columnTypeInputContainerCss}>
             <input
-              className='form-input is-fullwidth'
+              className={columnTypeInputCss}
               ref={setInputRef}
               type='text'
               value={header}
@@ -174,40 +169,49 @@ export function HeaderMenu({
               onKeyDown={handleColumnNameKeyDown}
             />
           </div>
-          <span className='font-weight-600 font-size-75 color-grey-500 text-transform-uppercase'>
-            Property Type
-          </span>
+          <span className={columnTypeTextCss}>Property Type</span>
         </div>
-        <div className='list-padding'>
-          <button
-            className='sort-button'
-            type='button'
-            onMouseEnter={() => setShowTypeMenu(true)}
-            onMouseLeave={() => setShowTypeMenu(false)}
-            ref={setTypeReferenceElement}
+        <div className={listContainerCss}>
+          <PopoverProvider
+            open={showTypeList}
+            onOpenChange={setShowTypeList}
+            placement='right-start'
+            offsetValue={-4}
           >
-            <span className='svg-icon svg-text icon-margin'>
-              <ColumnTypeIcon dataType={dataType} />
-            </span>
-            <span className='text-transform-capitalize'>{dataType}</span>
-          </button>
-          {showTypeMenu && (
-            <ColumnTypeList
-              popper={typePopper}
-              popperRef={setTypePopperElement}
-              onClose={onTypeMenuClose}
-              setShowTypeMenu={setShowTypeMenu}
-              columnId={columnId}
-              dataDispatch={dataDispatch}
-            />
-          )}
+            <PopoverTrigger
+              asChild={true}
+              onClick={(e) => setShowTypeList((v) => !v)}
+            >
+              <button
+                className={menuItemBtnCss}
+                onMouseEnter={() => setShowTypeList(true)}
+                onMouseLeave={() => setShowTypeList(false)}
+                type='button'
+              >
+                <span className='svg-icon svg-text icon-margin'>
+                  <ColumnTypeIcon dataType={dataType} />
+                </span>
+                <span className='text-transform-capitalize'>{dataType}</span>
+              </button>
+            </PopoverTrigger>
+            <PopoverContent initialFocus={false}>
+              <ColumnTypeList
+                onClose={onTypeMenuClose}
+                setShowTypeMenu={setShowTypeList}
+                columnId={columnId}
+                dataDispatch={dataDispatch}
+              />
+            </PopoverContent>
+          </PopoverProvider>
         </div>
+
         <div style={{ borderTop: `2px solid ${grey(200)}` }} />
-        <div className='list-padding'>
+
+        <div className={listContainerCss}>
           {buttons.map((button) => (
             <button
               type='button'
-              className='sort-button'
+              className={menuItemBtnCss}
               onMouseDown={button.onClick}
               key={shortId()}
             >
@@ -222,3 +226,43 @@ export function HeaderMenu({
     </div>
   );
 }
+
+const headerMenuCss = css`
+  width: 240px;
+`;
+
+const columnTypeContainerCss = css`
+  padding-top: 0.75rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+`;
+
+const columnTypeInputContainerCss = css`
+  width: 100%;
+  margin-bottom: 12px;
+`;
+
+const columnTypeInputCss = css`
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.375rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background-color: #eeeeee;
+  color: #424242;
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 1px 2px #8ecae6;
+  }
+`;
+
+const columnTypeTextCss = css`
+  color: #9e9e9e;
+  text-transform: capitalize;
+  font-size: 0.75rem;
+  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
+    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+    sans-serif;
+  font-weight: 600;
+`;

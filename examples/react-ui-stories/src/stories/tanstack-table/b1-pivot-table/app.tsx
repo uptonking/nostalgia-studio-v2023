@@ -7,7 +7,7 @@ import { Table } from './table';
 import { ActionNames, makeData } from './utils';
 
 export function B1b1PivotTableApp() {
-  const [state, dispatch] = useReducer(reducer, makeData(3));
+  const [state, dispatch] = useReducer(reducer, makeData(30));
 
   useEffect(() => {
     dispatch({ type: ActionNames.ENABLE_RESET });
@@ -15,7 +15,7 @@ export function B1b1PivotTableApp() {
 
   return (
     <div className={appCss}>
-      <h1>PivotTable using tanstack-table</h1>
+      {/* <h1>PivotTable using tanstack-table</h1> */}
       <Table
         columns={state.columns}
         data={state.data}
@@ -32,4 +32,5 @@ const appCss = css`
   width: '100vw';
   height: '100vh';
   padding: 10px;
+  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Ubuntu, noto, arial, sans-serif;
 `;

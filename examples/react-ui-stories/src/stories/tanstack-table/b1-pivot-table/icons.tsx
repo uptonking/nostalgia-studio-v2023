@@ -10,7 +10,7 @@ export {
   Redo as RedoIcon,
   RightOne as TriangleRightIcon,
   Strikethrough as StrikethroughIcon,
-  Text as TextIcon,
+  AddText as TextIcon,
   TextBold as BoldIcon,
   TextItalic as ItalicIcon,
   TextUnderline as UnderlineIcon,

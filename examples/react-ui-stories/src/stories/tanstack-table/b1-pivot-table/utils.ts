@@ -32,8 +32,8 @@ export function makeData(count) {
   const columns = [
     {
       id: 'firstName',
-      header: 'First Name',
       accessorKey: 'firstName',
+      label: 'First Name',
       minSize: 100,
       dataType: ColumnTypes.TEXT,
       options: [],
@@ -41,7 +41,7 @@ export function makeData(count) {
     {
       id: 'lastName',
       accessorKey: 'lastName',
-      header: 'Last Name',
+      label: 'Last Name',
       minSize: 100,
       dataType: ColumnTypes.TEXT,
       options: [],
@@ -49,7 +49,7 @@ export function makeData(count) {
     {
       id: 'age',
       accessorKey: 'age',
-      header: 'Age',
+      label: 'Age',
       size: 80,
       dataType: ColumnTypes.NUMBER,
       options: [],
@@ -57,7 +57,7 @@ export function makeData(count) {
     {
       id: 'email',
       accessorKey: 'email',
-      header: 'Email',
+      label: 'Email',
       size: 300,
       dataType: ColumnTypes.TEXT,
       options: [],
@@ -65,14 +65,14 @@ export function makeData(count) {
     {
       id: 'music',
       accessorKey: 'music',
-      header: 'Music Preference',
+      label: 'Music Preference',
       dataType: ColumnTypes.SELECT,
       size: 200,
       options: options,
     },
     // {
     //   id: Constants.ADD_COLUMN_ID,
-    //   header: '+',
+    //   label: '+',
     //   size: 20,
     //   disableResizing: true,
     //   dataType: 'null',

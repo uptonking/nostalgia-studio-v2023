@@ -8,6 +8,7 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  RowData,
   SortingState,
   useReactTable,
 } from '@tanstack/react-table';
@@ -66,37 +67,19 @@ export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     columnResizeMode: 'onChange',
+    meta: {
+      dataDispatch,
+    },
     debugTable: true,
-    // defaultColumn,
-    // dataDispatch,
     // autoResetSortBy: !skipReset,
     // autoResetFilters: !skipReset,
     // autoResetRowState: !skipReset,
     // sortTypes,
   });
 
-  const rows = table.getRowModel().rows;
+  const { rows } = table.getRowModel();
   const headerGroups = table.getHeaderGroups();
-  console.log(';; col-data ', columns, data, rows, headerGroups);
-
-  const RenderRow = React.useCallback(
-    ({ index, style }) => {
-      const row = rows[index];
-      return (
-        <div className={trCss}>
-          {row.getVisibleCells().map((cell) => {
-            // console.log('cell', cell)
-            return (
-              <div key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </div>
-            );
-          })}
-        </div>
-      );
-    },
-    [rows],
-  );
+  // console.log(';; col-data ', columns, data, rows, headerGroups);
 
   function isTableResizing() {
     // for (let headerGroup of headerGroups) {
@@ -117,13 +100,13 @@ export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
       >
         <div>
           {headerGroups.map((headerGroup) => (
-            <div key={headerGroup.id} className={trCss}>
+            <div className={trCss} key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 // console.log(';; header ', header)
                 return (
                   <div
-                    key={header.id}
-                    className={thCss}
+                    className={cx(thTdCss, thCss)}
+                    key={header.column.id}
                     {...{
                       colSpan: header.colSpan,
                       style: {
@@ -147,7 +130,7 @@ export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
         </div>
         <div>
           {rows.map((row) => (
-            <div key={row.id} className={trCss}>
+            <div className={trCss} key={row.id}>
               {row.getVisibleCells().map((cell) => {
                 // console.log('cell', cell)
                 return (
@@ -174,7 +157,7 @@ export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
             <span className='svg-icon svg-gray icon-margin'>
               <PlusIcon />
             </span>
-            New
+            New Row
           </div>
         </div>
       </div>
@@ -183,49 +166,7 @@ export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
 }
 
 const tableCss = css`
-  /* display: inline-block; */
   border-spacing: 0;
-`;
-
-const trCss = css`
-  display: flex;
-
-  &:last-child .td {
-    border-bottom: 0;
-  }
-
-  &:first-child .td {
-    border-top: 0;
-  }
-`;
-
-const thTdCss = css`
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  white-space: nowrap;
-  border-left: 1px solid #e0e0e0;
-  border-top: 1px solid #e0e0e0;
-`;
-
-const thCss = css`
-  color: #9e9e9e;
-  font-weight: 500;
-  font-size: 0.875rem;
-  cursor: pointer;
-  border-bottom: 1px solid #e0e0e0;
-
-  &:hover {
-    background-color: #f5f5f5;
-  }
-`;
-const thContentCss = css`
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  height: 50px;
 `;
 
 const tdCss = css`
@@ -241,16 +182,60 @@ const tdContentCss = css`
   display: block;
 `;
 
-const addRowCss = css`
+const trCss = css`
   display: flex;
-  height: 50px;
+
+  &:last-child ${tdCss} {
+    border-bottom: 0;
+  }
+
+  &:first-child ${tdCss} {
+    border-top: 0;
+  }
+`;
+
+const thTdCss = css`
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  white-space: nowrap;
+  border-left: 1px solid #e0e0e0;
+  border-top: 1px solid #e0e0e0;
+  &:last-child   {
+    border-right: 1px solid #e0e0e0;
+  }
+`;
+
+const thCss = css`
   color: #9e9e9e;
-  padding: 0.5rem;
-  align-items: center;
-  font-size: 0.875rem;
+  font-weight: 500;
+  font-size: 0.9rem;
   cursor: pointer;
-  border: 1px solid #e0e0e0;
   &:hover {
     background-color: #f5f5f5;
   }
 `;
+
+const addRowCss = css`
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  color: #9e9e9e;
+  font-size: 0.875rem;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+
+  & svg{
+    margin-top: 4px;
+    margin-right: 8px;
+  }
+`;
+
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    dataDispatch?: any;
+  }
+}

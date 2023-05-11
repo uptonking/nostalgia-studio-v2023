@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import ContentEditable from 'react-contenteditable';
 
+import { textInputCss } from '../styles';
 import { ActionNames } from '../utils';
 
 export function NumberCell({ initialValue, columnId, rowIndex, dataDispatch }) {
@@ -36,7 +37,7 @@ export function NumberCell({ initialValue, columnId, rowIndex, dataDispatch }) {
       html={(value.value && value.value.toString()) || ''}
       onChange={onChange}
       onBlur={onBlur}
-      className='data-input text-align-right'
+      className={textInputCss}
     />
   );
 }

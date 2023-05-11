@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
-import { usePopper } from 'react-popper';
+import { css } from '@linaria/core';
 
+import {
+  PopoverContent,
+  PopoverProvider,
+  PopoverTrigger,
+} from '../../../floating-ui';
 import { Constants } from '../utils';
 import { AddColumnHeader } from './add-column-header';
 import { ColumnTypeIcon } from './column-type-icon';
 import { HeaderMenu } from './header-menu';
 
-export function Header({
-  column: { id, created, label, dataType, getResizerProps, getHeaderProps },
-  setSortBy,
-  dataDispatch,
-}) {
+export function Header(props) {
+  const {
+    column: {
+      columnDef: { id, created, label, dataType },
+    },
+    table,
+  } = props;
+  const dataDispatch = table.options.meta.dataDispatch;
+  // console.log(';; header ', props);
+
   const [showHeaderMenu, setShowHeaderMenu] = useState(created || false);
-  const [headerMenuAnchorRef, setHeaderMenuAnchorRef] = useState(null);
-  const [headerMenuPopperRef, setHeaderMenuPopperRef] = useState(null);
-  const headerMenuPopper = usePopper(headerMenuAnchorRef, headerMenuPopperRef, {
-    placement: 'bottom',
-    strategy: 'absolute',
-  });
 
   /* when the column is newly created, set it to open */
   useEffect(() => {
@@ -29,47 +33,64 @@ export function Header({
 
   function getHeader() {
     if (id === Constants.ADD_COLUMN_ID) {
-      return (
-        <AddColumnHeader
-          dataDispatch={dataDispatch}
-          getHeaderProps={getHeaderProps}
-        />
-      );
+      return <AddColumnHeader dataDispatch={dataDispatch} />;
     }
 
     return (
-      <>
-        <div {...getHeaderProps()} className='th noselect d-inline-block'>
-          <div
-            className='th-content'
-            onClick={() => setShowHeaderMenu(true)}
-            ref={setHeaderMenuAnchorRef}
-          >
-            <span className='svg-icon svg-gray icon-margin'>
-              <ColumnTypeIcon dataType={dataType} />
-            </span>
-            {label}
+      <PopoverProvider
+        open={showHeaderMenu}
+        onOpenChange={setShowHeaderMenu}
+        placement='bottom-start'
+        offsetValue={0}
+      >
+        <PopoverTrigger
+          asChild={true}
+          onClick={(e) => setShowHeaderMenu((v) => !v)}
+        >
+          <div className='th noselect d-inline-block'>
+            <div className={thContentCss}>
+              <span className={thIconCss}>
+                <ColumnTypeIcon dataType={dataType} />
+              </span>
+              {label}
+            </div>
+            <div
+              // {...getResizerProps()}
+              className='resizer'
+            />
           </div>
-          <div {...getResizerProps()} className='resizer' />
-        </div>
-        {showHeaderMenu && (
-          <div className='overlay' onClick={() => setShowHeaderMenu(false)} />
-        )}
-        {showHeaderMenu && (
+        </PopoverTrigger>
+        <PopoverContent initialFocus={false}>
           <HeaderMenu
             label={label}
             dataType={dataType}
-            popper={headerMenuPopper}
-            popperRef={setHeaderMenuPopperRef}
+            // popper={headerMenuPopper}
+            // popperRef={setHeaderMenuPopperRef}
             dataDispatch={dataDispatch}
-            setSortBy={setSortBy}
             columnId={id}
             setShowHeaderMenu={setShowHeaderMenu}
+          // setSortBy={setSortBy}
           />
-        )}
-      </>
+        </PopoverContent>
+      </PopoverProvider>
     );
   }
 
   return getHeader();
 }
+
+const thIconCss = css`
+  margin-right: 6px;
+  & svg {
+    margin-top: 4px;
+  }
+`;
+
+const thContentCss = css`
+  display: flex;
+  align-items: center;
+  overflow-x: hidden;
+  padding: 0.5rem;
+  text-overflow: ellipsis;
+  font-weight: 500;
+`;

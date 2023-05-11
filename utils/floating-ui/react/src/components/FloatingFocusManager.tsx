@@ -46,6 +46,10 @@ export interface Props<RT extends ReferenceType = ReferenceType> {
   context: FloatingContext<RT>;
   children: JSX.Element;
   order?: Array<'reference' | 'floating' | 'content'>;
+  /** default: 0
+   * - Can be either a number (tabbable index as specified by the order) or a ref.
+   * - You can set this to a negative number to ignore the initial focus.
+   */
   initialFocus?: number | React.MutableRefObject<HTMLElement | null>;
   guards?: boolean;
   returnFocus?: boolean;

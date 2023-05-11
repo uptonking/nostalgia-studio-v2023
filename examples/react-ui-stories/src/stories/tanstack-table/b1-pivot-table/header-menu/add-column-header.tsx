@@ -3,7 +3,7 @@ import React from 'react';
 import { PlusIcon } from '../icons';
 import { ActionNames, Constants } from '../utils';
 
-export function AddColumnHeader({ getHeaderProps, dataDispatch }) {
+export function AddColumnHeader({  dataDispatch }) {
   return (
     <div className='th noselect d-inline-block'>
       <div

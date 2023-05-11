@@ -1,5 +1,10 @@
 import React from 'react';
 
+import {
+  headerMenuContainerCss,
+  listContainerCss,
+  menuItemBtnCss,
+} from '../styles';
 import { ActionNames, ColumnTypes, shortId } from '../utils';
 import { ColumnTypeIcon } from './column-type-icon';
 
@@ -8,8 +13,8 @@ function getLabel(type) {
 }
 
 export function ColumnTypeList({
-  popper,
-  popperRef,
+  // popper,
+  // popperRef,
   dataDispatch,
   setShowTypeMenu,
   onClose,
@@ -59,20 +64,20 @@ export function ColumnTypeList({
 
   return (
     <div
-      className='shadow-5 bg-white border-radius-md list-padding'
-      ref={popperRef}
+      // ref={popperRef}
+      // {...popper.attributes.popper}
+      className={headerMenuContainerCss + ' ' + listContainerCss}
       onMouseEnter={() => setShowTypeMenu(true)}
       onMouseLeave={() => setShowTypeMenu(false)}
-      {...popper.attributes.popper}
       style={{
-        ...popper.styles.popper,
+        // ...popper.styles.popper,
         width: 200,
         backgroundColor: 'white',
         zIndex: 4,
       }}
     >
       {types.map((type) => (
-        <button className='sort-button' onClick={type.onClick} key={shortId()}>
+        <button className={menuItemBtnCss} onClick={type.onClick} key={shortId()}>
           <span className='svg-icon svg-text icon-margin'>{type.icon}</span>
           {type.label}
         </button>

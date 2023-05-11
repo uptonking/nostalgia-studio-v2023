@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 
 import { usePopper } from 'react-popper';
 
+import { css } from '@linaria/core';
+
+import {
+  PopoverContent,
+  PopoverProvider,
+  PopoverTrigger,
+} from '../../../floating-ui';
 import { PlusIcon } from '../icons';
+import { headerMenuContainerCss } from '../styles';
 import { ActionNames, grey, randomColor } from '../utils';
 
 export function SelectCell({
@@ -15,13 +22,10 @@ export function SelectCell({
 }) {
   const [selectRef, setSelectRef] = useState(null);
   const [selectPop, setSelectPop] = useState(null);
-  const [showSelect, setShowSelect] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
+  const [showOptionsPanel, setShowOptionsPanel] = useState(false);
+  const [showAddOptionInput, setShowAddOptionInput] = useState(false);
   const [addSelectRef, setAddSelectRef] = useState(null);
-  const { styles, attributes } = usePopper(selectRef, selectPop, {
-    placement: 'bottom-start',
-    strategy: 'fixed',
-  });
+
   const [value, setValue] = useState({ value: initialValue, update: false });
 
   useEffect(() => {
@@ -41,18 +45,18 @@ export function SelectCell({
   }, [value, columnId, rowIndex]);
 
   useEffect(() => {
-    if (addSelectRef && showAdd) {
+    if (addSelectRef && showAddOptionInput) {
       addSelectRef.focus();
     }
-  }, [addSelectRef, showAdd]);
+  }, [addSelectRef, showAddOptionInput]);
 
   function getColor() {
-    let match = options.find((option) => option.label === value.value);
+    const match = options.find((option) => option.label === value.value);
     return (match && match.backgroundColor) || grey(200);
   }
 
   function handleAddOption(e) {
-    setShowAdd(true);
+    setShowAddOptionInput(true);
   }
 
   function handleOptionKeyDown(e) {
@@ -65,7 +69,7 @@ export function SelectCell({
           columnId,
         });
       }
-      setShowAdd(false);
+      setShowAddOptionInput(false);
     }
   }
 
@@ -78,114 +82,141 @@ export function SelectCell({
         columnId,
       });
     }
-    setShowAdd(false);
+    setShowAddOptionInput(false);
   }
 
   function handleOptionClick(option) {
     setValue({ value: option.label, update: true });
-    setShowSelect(false);
+    setShowOptionsPanel(false);
   }
 
   useEffect(() => {
-    if (addSelectRef && showAdd) {
+    if (addSelectRef && showAddOptionInput) {
       addSelectRef.focus();
     }
-  }, [addSelectRef, showAdd]);
+  }, [addSelectRef, showAddOptionInput]);
 
   return (
-    <>
-      <div
-        ref={setSelectRef}
-        className='cell-padding d-flex cursor-default align-items-center flex-1'
-        onClick={() => setShowSelect(true)}
+    <PopoverProvider
+      open={showOptionsPanel}
+      onOpenChange={setShowOptionsPanel}
+      placement='bottom-start'
+      offsetValue={-4}
+    >
+      <PopoverTrigger
+        asChild={true}
+        onClick={(e) => setShowOptionsPanel((v) => !v)}
       >
-        {value.value && (
-          <Badge value={value.value} backgroundColor={getColor()} />
-        )}
-      </div>
-      {showSelect && (
-        <div className='overlay' onClick={() => setShowSelect(false)} />
-      )}
-      {showSelect &&
-        createPortal(
-          <div
-            className='shadow-5 bg-white border-radius-md'
-            ref={setSelectPop}
-            {...attributes.popper}
-            style={{
-              ...styles.popper,
-              zIndex: 4,
-              minWidth: 200,
-              maxWidth: 320,
-              maxHeight: 400,
-              padding: '0.75rem',
-              overflow: 'auto',
-            }}
-          >
-            <div
-              className='d-flex flex-wrap-wrap'
-              style={{ marginTop: '-0.5rem' }}
-            >
-              {options.map((option) => (
-                <div
-                  className='cursor-pointer mr-5 mt-5'
-                  onClick={() => handleOptionClick(option)}
-                >
-                  <Badge
-                    value={option.label}
-                    backgroundColor={option.backgroundColor}
-                  />
-                </div>
-              ))}
-              {showAdd && (
-                <div
-                  className='mr-5 mt-5 bg-grey-200 border-radius-sm'
-                  style={{
-                    width: 120,
-                    padding: '2px 4px',
-                  }}
-                >
-                  <input
-                    type='text'
-                    className='option-input'
-                    onBlur={handleOptionBlur}
-                    ref={setAddSelectRef}
-                    onKeyDown={handleOptionKeyDown}
-                  />
-                </div>
-              )}
+        <div className={optionsCellCss}>
+          {value.value && (
+            <OptionItem value={value.value} backgroundColor={getColor()} />
+          )}
+        </div>
+      </PopoverTrigger>
+      <PopoverContent initialFocus={false}>
+        <div
+          className={headerMenuContainerCss}
+          style={{
+            zIndex: 4,
+            minWidth: 200,
+            maxWidth: 320,
+            maxHeight: 400,
+            padding: '0.75rem',
+            overflow: 'auto',
+          }}
+        >
+          <div className={optionsContainerCss}>
+            {options.map((option) => (
               <div
-                className='cursor-pointer mr-5 mt-5'
-                onClick={handleAddOption}
+                key={option.label}
+                className={optionItemContainerCss}
+                onClick={() => handleOptionClick(option)}
               >
-                <Badge
-                  value={
-                    <span className='svg-icon-sm svg-text'>
-                      <PlusIcon />
-                    </span>
-                  }
-                  backgroundColor={grey(200)}
+                <OptionItem
+                  value={option.label}
+                  backgroundColor={option.backgroundColor}
                 />
               </div>
+            ))}
+            {showAddOptionInput && (
+              <div
+                className='mr-5 mt-5 bg-grey-200 border-radius-sm'
+                style={{
+                  width: 120,
+                  padding: '2px 4px',
+                }}
+              >
+                <input
+                  type='text'
+                  className={addOptionItemInputCss}
+                  onBlur={handleOptionBlur}
+                  ref={setAddSelectRef}
+                  onKeyDown={handleOptionKeyDown}
+                />
+              </div>
+            )}
+            <div className={optionItemContainerCss} onClick={handleAddOption}>
+              <OptionItem
+                value={
+                  <span className='svg-icon-sm svg-text'>
+                    <PlusIcon />
+                  </span>
+                }
+                backgroundColor={grey(200)}
+              />
             </div>
-          </div>,
-          // document.querySelector('#popper-portal')
-          document.body,
-        )}
-    </>
+          </div>
+        </div>
+      </PopoverContent>
+    </PopoverProvider>
   );
 }
 
-export function Badge({ value, backgroundColor }) {
+export function OptionItem({ value, backgroundColor }) {
   return (
-    <span
-      className='font-weight-400 d-inline-block color-grey-800 border-radius-sm text-transform-capitalize'
-      style={{
-        backgroundColor: backgroundColor,
-        padding: '2px 6px',
-      }}
-    >
+    <span className={optionItemCss} style={{ backgroundColor }}>
       {value}
     </span>
   );
 }
+
+const optionsCellCss = css`
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+`;
+
+const optionsContainerCss = css`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: -0.5rem;
+`;
+
+const optionItemContainerCss = css`
+  margin-top: 5px;
+  margin-right: 5px;
+`;
+
+const optionItemCss = css`
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: capitalize;
+  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
+    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+    sans-serif;
+`;
+
+const addOptionItemInputCss = css`
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  font-size: 1rem;
+  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
+    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+    sans-serif;
+  &:focus {
+    outline: none;
+  }
+`;

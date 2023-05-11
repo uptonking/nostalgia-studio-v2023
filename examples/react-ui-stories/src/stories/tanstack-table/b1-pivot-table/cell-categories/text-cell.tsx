@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import ContentEditable from 'react-contenteditable';
 
+import { css } from '@linaria/core';
+
+import { textInputCss } from '../styles';
 import { ActionNames } from '../utils';
 
 export function TextCell({ initialValue, columnId, rowIndex, dataDispatch }) {
@@ -37,7 +40,7 @@ export function TextCell({ initialValue, columnId, rowIndex, dataDispatch }) {
       html={(value.value && value.value.toString()) || ''}
       onChange={onChange}
       onBlur={onBlur}
-      className='data-input'
+      className={textInputCss}
     />
   );
 }

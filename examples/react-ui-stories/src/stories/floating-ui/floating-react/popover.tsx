@@ -20,9 +20,6 @@ import {
 type PopoverOptions = {
   initialOpen?: boolean;
   placement?: Placement;
-  /** default false
-   * - if true. The popover and its contents are the only elements that can receive focus. When the popover is open, the user cannot interact with the rest of the page
-   */
   modal?: boolean;
   open?: boolean;
   offsetValue?: number;
@@ -55,7 +52,7 @@ export function usePopover({
     onOpenChange: setOpen,
     whileElementsMounted: autoUpdate,
     middleware: [
-      offset(5),
+      offset(offsetValue),
       flip({
         fallbackAxisSideDirection: 'end',
       }),
@@ -91,11 +88,11 @@ export function usePopover({
 
 type PopoverContextType =
   | (ReturnType<typeof usePopover> & {
-      setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
-      setDescriptionId: React.Dispatch<
-        React.SetStateAction<string | undefined>
-      >;
-    })
+    setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
+    setDescriptionId: React.Dispatch<
+      React.SetStateAction<string | undefined>
+    >;
+  })
   | null;
 
 const PopoverContext = React.createContext<PopoverContextType>(null);
@@ -169,6 +166,7 @@ export const PopoverTrigger = React.forwardRef<
 
 type PopoverContentProps = {
   closeOnMouseLeave?: boolean;
+  initialFocus?: boolean;
 };
 
 export const PopoverContent = React.forwardRef<
@@ -178,11 +176,15 @@ export const PopoverContent = React.forwardRef<
   const { context: floatingContext, ...context } = usePopoverContext();
   const ref = useMergeRefs([context.refs.setFloating, propRef]);
 
-  const { closeOnMouseLeave, ...restProps } = props;
+  const { closeOnMouseLeave, initialFocus, ...restProps } = props;
   return (
     <FloatingPortal>
       {context.open && (
-        <FloatingFocusManager context={floatingContext} modal={context.modal}>
+        <FloatingFocusManager
+          context={floatingContext}
+          modal={context.modal}
+          initialFocus={initialFocus ? undefined : -3}
+        >
           <div
             ref={ref}
             style={{

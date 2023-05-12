@@ -129,7 +129,7 @@ export const Headers: TableFeature = {
 
       getHeaderGroups: memo(
         () => [
-          // 👇🏻 createColumn here
+          // 👇🏻 exec createColumn
           table.getAllColumns(),
           table.getVisibleLeafColumns(),
           table.getState().columnPinning.left,
@@ -151,6 +151,7 @@ export const Headers: TableFeature = {
               !left?.includes(column.id) && !right?.includes(column.id),
           );
 
+          // 👇🏻
           const headerGroups = buildHeaderGroups(
             allColumns,
             [...leftColumns, ...centerColumns, ...rightColumns],
@@ -435,6 +436,7 @@ export function buildHeaderGroups<TData extends RowData>(
 
   let headerGroups: HeaderGroup<TData>[] = [];
 
+  /** recursively */
   const createHeaderGroup = (
     headersToGroup: Header<TData, unknown>[],
     depth: number,

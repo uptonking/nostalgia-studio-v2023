@@ -1,5 +1,5 @@
-import { Table, Row, RowModel, RowData } from '../types';
-import { SortingFn } from '../features/Sorting';
+import type { SortingFn } from '../features/Sorting';
+import type { Row, RowData, RowModel, Table } from '../types';
 import { memo } from '../utils';
 
 export function getSortedRowModel<TData extends RowData>(): (
@@ -42,11 +42,13 @@ export function getSortedRowModel<TData extends RowData>(): (
           };
         });
 
+        /** recursively sort rows and subrows */
         const sortData = (rows: Row<TData>[]) => {
           // This will also perform a stable sorting using the row index
           // if needed.
           const sortedData = [...rows];
 
+          // to-better improve sort by index
           sortedData.sort((rowA, rowB) => {
             for (let i = 0; i < availableSorting.length; i += 1) {
               const sortEntry = availableSorting[i]!;
@@ -64,8 +66,8 @@ export function getSortedRowModel<TData extends RowData>(): (
                   return aUndefined && bUndefined
                     ? 0
                     : aUndefined
-                    ? columnInfo.sortUndefined
-                    : -columnInfo.sortUndefined;
+                      ? columnInfo.sortUndefined
+                      : -columnInfo.sortUndefined;
                 }
               }
 

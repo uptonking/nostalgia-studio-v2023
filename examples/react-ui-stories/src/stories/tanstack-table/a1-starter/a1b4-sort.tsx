@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { css } from '@linaria/core';
 import {
   ColumnDef,
   flexRender,
@@ -12,13 +13,16 @@ import {
 import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
+const SORT_DIRECTION_ICONS = {
+  asc: ' 🔼',
+  desc: ' 🔽',
+} as const;
+
 /**
  * ✨ sort
  */
 export const A1b4Sort = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
-
-  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
     () => [
@@ -72,6 +76,7 @@ export const A1b4Sort = () => {
           {
             accessorKey: 'createdAt',
             header: 'Created At',
+            cell: (info) => (info.getValue() as Date).toISOString(),
           },
         ],
       },
@@ -82,6 +87,8 @@ export const A1b4Sort = () => {
   // 💡 sort时表格数据未修改
   const [data, setData] = React.useState(() => makeData(100000));
   const refreshData = () => setData(() => makeData(100000));
+
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
     data,
@@ -99,72 +106,73 @@ export const A1b4Sort = () => {
 
   return (
     <div className={tableBaseCss}>
-      <div className='p-2'>
-        <div className='h-2' />
-        <table>
-          <thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <th key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder ? null : (
-                        <div
-                          {...{
-                            className: header.column.getCanSort()
-                              ? 'cursor-pointer select-none'
-                              : '',
-                            // 👇🏻 sort by click
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {{
-                            asc: ' 🔼',
-                            desc: ' 🔽',
-                          }[header.column.getIsSorted() as string] ?? null}
-                        </div>
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table
-              .getRowModel()
-              .rows.slice(0, 10)
-              .map((row) => {
+      <table>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
                 return (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <td key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
+                  <th key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          className: header.column.getCanSort()
+                            ? sortedHeaderCss
+                            : '',
+                          // 👇🏻 sort by click
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {SORT_DIRECTION_ICONS[
+                          header.column.getIsSorted() as string
+                        ] ?? null}
+                      </div>
+                    )}
+                  </th>
                 );
               })}
-          </tbody>
-        </table>
-        <div>{table.getRowModel().rows.length} Rows</div>
-        <div>
-          <button onClick={() => rerender()}>Force Rerender</button>
-        </div>
-        <div>
-          <button onClick={() => refreshData()}>Refresh Data</button>
-        </div>
-        <pre>{JSON.stringify(sorting, null, 2)}</pre>
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table
+            .getRowModel()
+            .rows.slice(0, 10)
+            .map((row) => {
+              return (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
+      <div>{table.getRowModel().rows.length} Rows</div>
+      <div>
+        <button onClick={() => rerender()}>Force Rerender</button>
       </div>
+      <div>
+        <button onClick={() => refreshData()}>Refresh Data</button>
+      </div>
+      <pre>{JSON.stringify(sorting, null, 2)}</pre>
     </div>
   );
 };
+
+const sortedHeaderCss = css`
+  cursor: pointer;
+  user-select: none;
+`;

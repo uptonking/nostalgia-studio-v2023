@@ -34,6 +34,9 @@ export interface CoreColumn<TData extends RowData, TValue> {
   getLeafColumns: () => Column<TData, TValue>[];
 }
 
+/** create a column by columnDef
+ * - accessorKey doesnot exist in column, it's converted to accessorFn
+ */
 export function createColumn<TData extends RowData, TValue>(
   table: Table<TData>,
   columnDef: ColumnDef<TData, TValue>,

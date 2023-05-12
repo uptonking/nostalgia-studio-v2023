@@ -18,9 +18,6 @@ import { Header } from './header-menu/header';
 import { PlusIcon } from './icons';
 import { ActionNames } from './utils';
 
-// import { FixedSizeList } from 'react-window';
-// import scrollbarWidth from './scrollbarWidth';
-
 const defaultColumn = {
   cell: Cell,
   header: Header,

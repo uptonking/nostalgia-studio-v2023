@@ -8,16 +8,14 @@ export const tableBaseCss = css`
     border-spacing: 0;
   }
 
-  tr:last-child {
-    td {
-      border-bottom-width: 0px;
-    }
+  tr:last-child td {
+    border-bottom-width: 0px;
   }
 
   th,
   td {
-    margin: 0;
     padding: 0.5rem;
+    margin: 0;
     border-right: 1px solid black;
     border-bottom: 1px solid black;
 

@@ -49,6 +49,9 @@ export interface SortingColumnDef<TData extends RowData> {
   /** Set to true for sorting toggles on this column to start in the descending direction. */
   sortDescFirst?: boolean;
   enableSorting?: boolean;
+  /** enabled by default.
+   * - To multi-sort the table via UI, hold `shift` while clicking on any header
+   */
   enableMultiSort?: boolean;
   invertSorting?: boolean;
   /**
@@ -353,6 +356,7 @@ export const Sorting: TableFeature = {
 
         return (e: unknown) => {
           if (!canSort) return;
+          // As of v17, e.persist() doesn’t do anything because the SyntheticEvent is no longer pooled.
           (e as any).persist?.();
           column.toggleSorting?.(
             undefined,

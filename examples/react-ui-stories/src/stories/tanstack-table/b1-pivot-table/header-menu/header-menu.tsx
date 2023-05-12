@@ -27,16 +27,14 @@ export function HeaderMenu({
   label,
   dataType,
   columnId,
+  header,
   setSortBy = (...args: any[]) => { },
-  // popper,
-  // popperRef,
   dataDispatch,
   setShowHeaderMenu,
+  table,
 }) {
   const [inputRef, setInputRef] = useState(null);
-  const [header, setHeader] = useState(label);
-  const [typeReferenceElement, setTypeReferenceElement] = useState(null);
-  const [typePopperElement, setTypePopperElement] = useState(null);
+  const [title, setTitle] = useState(label);
   const [showTypeList, setShowTypeList] = useState(false);
 
   function onTypeMenuClose() {
@@ -45,7 +43,7 @@ export function HeaderMenu({
   }
 
   useEffect(() => {
-    setHeader(label);
+    setTitle(label);
   }, [label]);
 
   useEffect(() => {
@@ -61,9 +59,15 @@ export function HeaderMenu({
         dataDispatch({
           type: ActionNames.UPDATE_COLUMN_HEADER,
           columnId,
-          label: header,
+          label: title,
         });
-        setSortBy([{ id: columnId, desc: false }]);
+        // console.log(';; sortAsc ', header.column.getNextSortingOrder(), header);
+        const nextSort = header.column.getNextSortingOrder();
+        if (nextSort === 'desc' || nextSort === 'asc') {
+          table.setSorting([{ id: columnId, desc: false }]);
+        } else {
+          table.resetSorting();
+        }
         setShowHeaderMenu(false);
       },
       icon: <ArrowUpIcon />,
@@ -74,9 +78,15 @@ export function HeaderMenu({
         dataDispatch({
           type: ActionNames.UPDATE_COLUMN_HEADER,
           columnId,
-          label: header,
+          label: title,
         });
-        setSortBy([{ id: columnId, desc: true }]);
+        // console.log(';; sortDesc ', header.column.getNextSortingOrder(), header);
+        const nextSort = header.column.getNextSortingOrder();
+        if (nextSort === 'desc' || nextSort === false) {
+          table.setSorting([{ id: columnId, desc: true }]);
+        } else {
+          table.resetSorting();
+        }
         setShowHeaderMenu(false);
       },
       icon: <ArrowDownIcon />,
@@ -87,7 +97,7 @@ export function HeaderMenu({
         dataDispatch({
           type: ActionNames.UPDATE_COLUMN_HEADER,
           columnId,
-          label: header,
+          label: title,
         });
         dataDispatch({
           type: ActionNames.ADD_COLUMN_TO_LEFT,
@@ -104,7 +114,7 @@ export function HeaderMenu({
         dataDispatch({
           type: ActionNames.UPDATE_COLUMN_HEADER,
           columnId,
-          label: header,
+          label: title,
         });
         dataDispatch({
           type: ActionNames.ADD_COLUMN_TO_RIGHT,
@@ -131,14 +141,14 @@ export function HeaderMenu({
       dataDispatch({
         type: ActionNames.UPDATE_COLUMN_HEADER,
         columnId,
-        label: header,
+        label: title,
       });
       setShowHeaderMenu(false);
     }
   }
 
   function handleColumnNameChange(e) {
-    setHeader(e.target.value);
+    setTitle(e.target.value);
   }
 
   function handleColumnNameBlur(e) {
@@ -146,7 +156,7 @@ export function HeaderMenu({
     dataDispatch({
       type: ActionNames.UPDATE_COLUMN_HEADER,
       columnId,
-      label: header,
+      label: title,
     });
   }
 
@@ -163,7 +173,7 @@ export function HeaderMenu({
               className={columnTypeInputCss}
               ref={setInputRef}
               type='text'
-              value={header}
+              value={title}
               onChange={handleColumnNameChange}
               onBlur={handleColumnNameBlur}
               onKeyDown={handleColumnNameKeyDown}

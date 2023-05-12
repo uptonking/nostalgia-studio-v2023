@@ -7,7 +7,7 @@ import { Table } from './table';
 import { ActionNames, makeData } from './utils';
 
 export function B1b1PivotTableApp() {
-  const [state, dispatch] = useReducer(reducer, makeData(30));
+  const [state, dispatch] = useReducer(reducer, makeData(5));
 
   useEffect(() => {
     dispatch({ type: ActionNames.ENABLE_RESET });

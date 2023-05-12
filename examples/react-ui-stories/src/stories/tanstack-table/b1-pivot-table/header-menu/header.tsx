@@ -17,6 +17,7 @@ export function Header(props) {
     column: {
       columnDef: { id, created, label, dataType },
     },
+    header,
     table,
   } = props;
   const dataDispatch = table.options.meta.dataDispatch;
@@ -64,11 +65,11 @@ export function Header(props) {
           <HeaderMenu
             label={label}
             dataType={dataType}
-            // popper={headerMenuPopper}
-            // popperRef={setHeaderMenuPopperRef}
             dataDispatch={dataDispatch}
             columnId={id}
+            header={header}
             setShowHeaderMenu={setShowHeaderMenu}
+            table={table}
           // setSortBy={setSortBy}
           />
         </PopoverContent>

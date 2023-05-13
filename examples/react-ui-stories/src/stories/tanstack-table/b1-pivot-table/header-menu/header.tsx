@@ -44,20 +44,21 @@ export function Header(props) {
         placement='bottom-start'
         offsetValue={0}
       >
-        <PopoverTrigger
-          asChild={true}
-          onClick={(e) => setShowHeaderMenu((v) => !v)}
-        >
+        <PopoverTrigger asChild={true}>
           <div className='th noselect d-inline-block'>
-            <div className={thContentCss}>
+            <div
+              className={thContentCss}
+              onClick={(e) => setShowHeaderMenu((v) => !v)}
+            >
               <span className={thIconCss}>
                 <ColumnTypeIcon dataType={dataType} />
               </span>
               {label}
             </div>
             <div
-              // {...getResizerProps()}
-              className='resizer'
+              onMouseDown={header.getResizeHandler()}
+              onTouchStart={header.getResizeHandler()}
+              className={resizerCss}
             />
           </div>
         </PopoverTrigger>
@@ -70,7 +71,6 @@ export function Header(props) {
             header={header}
             setShowHeaderMenu={setShowHeaderMenu}
             table={table}
-          // setSortBy={setSortBy}
           />
         </PopoverContent>
       </PopoverProvider>
@@ -94,4 +94,23 @@ const thContentCss = css`
   padding: 0.5rem;
   text-overflow: ellipsis;
   font-weight: 500;
+`;
+
+const resizerCss = css`
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: inline-block;
+  width: 8px;
+  height: 100%;
+  transform: translateX(50%);
+  z-index: 1;
+  cursor: col-resize;
+  touch-action: none;
+  background: transparent;
+
+  &:hover {
+    background-color: #a5d8ff;
+    cursor: col-resize;
+  }
 `;

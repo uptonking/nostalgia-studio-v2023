@@ -67,13 +67,22 @@ export interface SortingColumn<TData extends RowData> {
   getAutoSortDir: () => SortDirection;
   getSortingFn: () => SortingFn<TData>;
   getFirstSortDir: () => SortDirection;
+  /** Returns the next sorting order that after click and before render.
+   * - sort order is: `asc` > `desc` > false
+   */
   getNextSortingOrder: () => SortDirection | false;
   getCanSort: () => boolean;
   getCanMultiSort: () => boolean;
   getSortIndex: () => number;
   getIsSorted: () => false | SortDirection;
   clearSorting: () => void;
+  /** Toggles this columns sorting state. If desc is provided, it will force the sort direction to that value.  */
   toggleSorting: (desc?: boolean, isMulti?: boolean) => void;
+  /** Returns a function that can be used to toggle this column's sorting state.
+   * - This is useful for attaching a click handler to the column header.
+   * - for text column, toggle order is: `asc` > `desc` > false
+   * - for number column, toggle order is: `desc` > `asc` > false
+   */
   getToggleSortingHandler: () => undefined | ((event: unknown) => void);
 }
 
@@ -83,6 +92,10 @@ interface SortingOptionsBase {
   manualSorting?: boolean;
   onSortingChange?: OnChangeFn<SortingState>;
   enableSorting?: boolean;
+  /** Enables/Disables the ability to remove sorting for the table.
+   * - If `true` then changing sort order will circle like: 'none' -> 'desc' -> 'asc' -> 'none'
+   * - If `false` then changing sort order will circle like: 'none' -> 'desc' -> 'asc' -> 'desc' -> 'asc'
+ */
   enableSortingRemoval?: boolean;
   enableMultiRemove?: boolean;
   enableMultiSort?: boolean;
@@ -97,15 +110,15 @@ interface SortingOptionsBase {
 
 type ResolvedSortingFns = keyof SortingFns extends never
   ? {
-      sortingFns?: Record<string, SortingFn<any>>;
-    }
+    sortingFns?: Record<string, SortingFn<any>>;
+  }
   : {
-      sortingFns: Record<keyof SortingFns, SortingFn<any>>;
-    };
+    sortingFns: Record<keyof SortingFns, SortingFn<any>>;
+  };
 
 export interface SortingOptions<TData extends RowData>
   extends SortingOptionsBase,
-    ResolvedSortingFns {}
+  ResolvedSortingFns { }
 
 export interface SortingInstance<TData extends RowData> {
   setSorting: (updater: Updater<SortingState>) => void;
@@ -193,8 +206,8 @@ export const Sorting: TableFeature = {
         return isFunction(column.columnDef.sortingFn)
           ? column.columnDef.sortingFn
           : column.columnDef.sortingFn === 'auto'
-          ? column.getAutoSortingFn()
-          : table.options.sortingFns?.[column.columnDef.sortingFn as string] ??
+            ? column.getAutoSortingFn()
+            : table.options.sortingFns?.[column.columnDef.sortingFn as string] ??
             sortingFns[column.columnDef.sortingFn as BuiltInSortingFn];
       },
       toggleSorting: (desc, multi) => {
@@ -263,7 +276,7 @@ export const Sorting: TableFeature = {
             newSorting.splice(
               0,
               newSorting.length -
-                (table.options.maxMultiSortColCount ?? Number.MAX_SAFE_INTEGER),
+              (table.options.maxMultiSortColCount ?? Number.MAX_SAFE_INTEGER),
             );
           } else if (sortAction === 'toggle') {
             // This flips (or sets) the

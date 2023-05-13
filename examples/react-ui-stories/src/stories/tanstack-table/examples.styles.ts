@@ -2,6 +2,10 @@ import { css } from '@linaria/core';
 
 /** base table css */
 export const tableBaseCss = css`
+  * {
+    box-sizing: border-box;
+  }
+
   table {
     border: 1px solid black;
     /** applies only when border-collapse is separate */

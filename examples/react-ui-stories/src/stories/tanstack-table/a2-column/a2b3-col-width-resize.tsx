@@ -101,6 +101,7 @@ const defaultColumns: ColumnDef<Person>[] = [
 
 /**
  * ✨ resize column with `onMouseDown`
+ * - onEnd模式下，拖拽时指示线变化但列宽不变
  */
 export function A2b3ColWithResize() {
   const rerender = React.useReducer(() => ({}), {})[1];
@@ -124,7 +125,7 @@ export function A2b3ColWithResize() {
   });
 
   return (
-    <div className='p-2'>
+    <div className={tableBaseCss}>
       <select
         value={columnResizeMode}
         onChange={(e) =>
@@ -135,9 +136,8 @@ export function A2b3ColWithResize() {
         <option value='onEnd'>Resize: "onEnd"</option>
         <option value='onChange'>Resize: "onChange"</option>
       </select>
-      <div className='h-4' />
-      <div className='text-xl'>{'<table/> element'}</div>
-      <div className={tableBaseCss}>
+      <div className='text-xl'>{'✨ <table/> element'}</div>
+      <div>
         <table
           {...{
             style: {
@@ -152,37 +152,36 @@ export function A2b3ColWithResize() {
                   <th
                     key={header.id}
                     {...{
-                      colSpan: header.colSpan,
+                      // position: 'relative',
+                      className: thCss,
                       style: {
-                        position: 'relative',
                         // 💡 dynamic column width
                         width: header.getSize(),
                       },
+                      colSpan: header.colSpan,
                     }}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                     <div
                       {...{
                         // 👇🏻 resize column
                         onMouseDown: header.getResizeHandler(),
                         onTouchStart: header.getResizeHandler(),
-                        className: `${resizerCss} ${
-                          header.column.getIsResizing()
-                            ? resizerIsResizingCss
-                            : ''
-                        }`,
+                        className: `${resizerCss} ${header.column.getIsResizing()
+                          ? resizerIsResizingCss
+                          : ''
+                          }`,
                         style: {
                           transform:
                             columnResizeMode === 'onEnd' &&
-                            header.column.getIsResizing()
-                              ? `translateX(${
-                                  table.getState().columnSizingInfo.deltaOffset
-                                }px)`
+                              header.column.getIsResizing()
+                              ? `translateX(${table.getState().columnSizingInfo.deltaOffset
+                              }px)`
                               : '',
                         },
                       }}
@@ -212,30 +211,30 @@ export function A2b3ColWithResize() {
           </tbody>
         </table>
       </div>
-      <div className='h-4' />
-      <div className='text-xl'>{'<div/> (position: relative)'}</div>
+      <br />
+      <br />
+      <div className='text-xl'>{'✨ <div/> (position: relative)'}</div>
       <div className='overflow-x-auto'>
         <div
           {...{
-            className: 'divTable',
             style: {
               width: table.getTotalSize(),
             },
           }}
         >
-          <div className='thead'>
+          <div>
             {table.getHeaderGroups().map((headerGroup) => (
               <div
                 key={headerGroup.id}
                 {...{
-                  className: 'tr',
+                  className: trCss,
                 }}
               >
                 {headerGroup.headers.map((header) => (
                   <div
                     key={header.id}
                     {...{
-                      className: 'th',
+                      className: thTdCss + ' ' + thCss,
                       style: {
                         width: header.getSize(),
                       },
@@ -244,23 +243,23 @@ export function A2b3ColWithResize() {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                     <div
                       {...{
                         onMouseDown: header.getResizeHandler(),
                         onTouchStart: header.getResizeHandler(),
-                        className: `resizer ${
-                          header.column.getIsResizing() ? 'isResizing' : ''
-                        }`,
+                        className: `${resizerCss} ${header.column.getIsResizing()
+                          ? resizerIsResizingCss
+                          : ''
+                          }`,
                         style: {
                           transform:
                             columnResizeMode === 'onEnd' &&
-                            header.column.getIsResizing()
-                              ? `translateX(${
-                                  table.getState().columnSizingInfo.deltaOffset
-                                }px)`
+                              header.column.getIsResizing()
+                              ? `translateX(${table.getState().columnSizingInfo.deltaOffset
+                              }px)`
                               : '',
                         },
                       }}
@@ -270,23 +269,19 @@ export function A2b3ColWithResize() {
               </div>
             ))}
           </div>
-          <div
-            {...{
-              className: 'tbody',
-            }}
-          >
+          <div>
             {table.getRowModel().rows.map((row) => (
               <div
                 key={row.id}
                 {...{
-                  className: 'tr',
+                  className: trCss,
                 }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <div
                     key={cell.id}
                     {...{
-                      className: 'td',
+                      className: thTdCss + ' ',
                       style: {
                         width: cell.column.getSize(),
                       },
@@ -300,25 +295,26 @@ export function A2b3ColWithResize() {
           </div>
         </div>
       </div>
-      <div className='h-4' />
-      <div className='text-xl'>{'<div/> (position: absolute)'}</div>
+      <br />
+      <br />
+      <div className='text-xl'>{'✨ <div/> (position: absolute)'}</div>
       <div className='overflow-x-auto'>
         <div
           {...{
-            className: 'divTable',
             style: {
               width: table.getTotalSize(),
             },
           }}
         >
-          <div className='thead'>
+          <div>
             {table.getHeaderGroups().map((headerGroup) => (
               <div
                 key={headerGroup.id}
                 {...{
-                  className: 'tr',
+                  className: trCss,
                   style: {
                     position: 'relative',
+                    height: 32,
                   },
                 }}
               >
@@ -326,34 +322,36 @@ export function A2b3ColWithResize() {
                   <div
                     key={header.id}
                     {...{
-                      className: 'th',
+                      className: thTdCss + ' ' + thCss,
                       style: {
                         position: 'absolute',
                         left: header.getStart(),
                         width: header.getSize(),
+                        // use fixed height to make empty th filled
+                        height: 32,
                       },
                     }}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                     <div
                       {...{
                         onMouseDown: header.getResizeHandler(),
                         onTouchStart: header.getResizeHandler(),
-                        className: `resizer ${
-                          header.column.getIsResizing() ? 'isResizing' : ''
-                        }`,
+                        className: `${resizerCss} ${header.column.getIsResizing()
+                          ? resizerIsResizingCss
+                          : ''
+                          }`,
                         style: {
                           transform:
                             columnResizeMode === 'onEnd' &&
-                            header.column.getIsResizing()
-                              ? `translateX(${
-                                  table.getState().columnSizingInfo.deltaOffset
-                                }px)`
+                              header.column.getIsResizing()
+                              ? `translateX(${table.getState().columnSizingInfo.deltaOffset
+                              }px)`
                               : '',
                         },
                       }}
@@ -363,18 +361,15 @@ export function A2b3ColWithResize() {
               </div>
             ))}
           </div>
-          <div
-            {...{
-              className: 'tbody',
-            }}
-          >
+          <div>
             {table.getRowModel().rows.map((row) => (
               <div
                 key={row.id}
                 {...{
-                  className: 'tr',
+                  className: trCss,
                   style: {
                     position: 'relative',
+                    height: 32,
                   },
                 }}
               >
@@ -382,7 +377,7 @@ export function A2b3ColWithResize() {
                   <div
                     key={cell.id}
                     {...{
-                      className: 'td',
+                      className: thTdCss,
                       style: {
                         position: 'absolute',
                         left: cell.column.getStart(),
@@ -416,23 +411,38 @@ export function A2b3ColWithResize() {
   );
 }
 
+const trCss = css`
+  display: flex;
+`;
+
+const thTdCss = css`
+  padding: 0.5rem;
+  box-shadow: inset 0 0 0 1px black;
+`;
+
+const thCss = css`
+  position: relative;
+`;
+
 const resizerCss = css`
   position: absolute;
   right: 0;
   top: 0;
   height: 100%;
   width: 5px;
-  background: rgba(0, 0, 0, 0.5);
+  background: lightgray;
   cursor: col-resize;
   user-select: none;
   touch-action: none;
+  /* opacity: 0; */
   opacity: 1;
+
   &:hover {
     opacity: 1;
   }
 `;
 
 const resizerIsResizingCss = css`
-  background: blue;
+  background: royalblue;
   opacity: 1;
 `;

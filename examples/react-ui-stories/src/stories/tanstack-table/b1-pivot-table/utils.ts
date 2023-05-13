@@ -8,7 +8,7 @@ export function randomColor() {
   return `hsl(${Math.floor(Math.random() * 360)}, 95%, 90%)`;
 }
 
-export function makeData(count) {
+export function makeData(count: number) {
   const data = [];
   let options = [];
   for (let i = 0; i < count; i++) {
@@ -104,7 +104,8 @@ export const Constants = Object.freeze({
   ADD_COLUMN_ID: 999999,
 });
 
-export function grey(value) {
+/** get a gray color by level, from 50,100,200,...,900 */
+export function grey(level: number) {
   const reference = {
     50: '#fafafa',
     100: '#f5f5f5',
@@ -118,66 +119,23 @@ export function grey(value) {
     900: '#212121',
   };
 
-  return reference[value];
+  return reference[level];
 }
 
+export const sortByAlphanumericFalsyLast = (rowA, rowB, columnId, desc) => {
+  if (!rowA.values[columnId] && !rowB.values[columnId]) {
+    return 0;
+  }
 
-const columnsBak = [
-  {
-    id: 'firstName',
-    header: 'First Name',
-    columns: {
-      accessorKey: 'firstName',
-      minSize: 100,
-      dataType: ColumnTypes.TEXT,
-    },
-    options: [],
-  },
-  {
-    id: 'lastName',
-    header: 'Last Name',
-    columns: {
-      accessorKey: 'lastName',
-      minSize: 100,
-      dataType: ColumnTypes.TEXT,
-    },
-    options: [],
-  },
-  {
-    id: 'age',
-    header: 'Age',
-    columns: {
-      accessorKey: 'age',
-      size: 80,
-      dataType: ColumnTypes.NUMBER,
-    },
-    options: [],
-  },
-  {
-    id: 'email',
-    header: 'Email',
-    columns: {
-      accessorKey: 'email',
-      size: 300,
-      dataType: ColumnTypes.TEXT,
-    },
-    options: [],
-  },
-  {
-    id: 'music',
-    header: 'Music Preference',
-    columns: {
-      accessorKey: 'music',
-      dataType: ColumnTypes.SELECT,
-      size: 200,
-    },
-    // options: options,
-  },
-  // {
-  //   id: Constants.ADD_COLUMN_ID,
-  //   header: '+',
-  //   size: 20,
-  //   disableResizing: true,
-  //   dataType: 'null',
-  // },
-];
+  if (!rowA.values[columnId]) {
+    return desc ? -1 : 1;
+  }
+
+  if (!rowB.values[columnId]) {
+    return desc ? 1 : -1;
+  }
+
+  return isNaN(rowA.values[columnId])
+    ? rowA.values[columnId].localeCompare(rowB.values[columnId])
+    : rowA.values[columnId] - rowB.values[columnId];
+};

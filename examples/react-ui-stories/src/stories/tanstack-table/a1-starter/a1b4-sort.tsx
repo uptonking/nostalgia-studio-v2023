@@ -13,7 +13,7 @@ import {
 import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
-const SORT_DIRECTION_ICONS = {
+const Sort_Direction_Icons = {
   asc: ' 🔼',
   desc: ' 🔽',
 } as const;
@@ -85,8 +85,8 @@ export const A1b4Sort = () => {
   );
 
   // 💡 sort时表格数据未修改
-  const [data, setData] = React.useState(() => makeData(100000));
-  const refreshData = () => setData(() => makeData(100000));
+  const [data, setData] = React.useState(() => makeData(30));
+  const refreshData = () => setData(() => makeData(30));
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
@@ -119,15 +119,31 @@ export const A1b4Sort = () => {
                           className: header.column.getCanSort()
                             ? sortedHeaderCss
                             : '',
-                          // 👇🏻 sort by click
-                          onClick: header.column.getToggleSortingHandler(),
+                          // 👇🏻 sort by click.
+                          // 🤔 注意before/after的值相同;
+                          // 文本列默认asc > desc > false; 数字列默认 desc > asc > false
+                          onClick: (e) => {
+                            console.log(
+                              ';; beforeSort-curr-next ',
+                              header.column.id,
+                              header.column.getIsSorted(),
+                              header.column.getNextSortingOrder(),
+                            );
+                            header.column.getToggleSortingHandler()(e);
+                            console.log(
+                              ';; afterSort--curr-next ',
+                              header.column.id,
+                              header.column.getIsSorted(),
+                              header.column.getNextSortingOrder(),
+                            );
+                          },
                         }}
                       >
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                        {SORT_DIRECTION_ICONS[
+                        {Sort_Direction_Icons[
                           header.column.getIsSorted() as string
                         ] ?? null}
                       </div>

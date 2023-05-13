@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { usePopper } from 'react-popper';
-
 import { css } from '@linaria/core';
 
 import {
@@ -20,8 +18,6 @@ export function SelectCell({
   rowIndex,
   dataDispatch,
 }) {
-  const [selectRef, setSelectRef] = useState(null);
-  const [selectPop, setSelectPop] = useState(null);
   const [showOptionsPanel, setShowOptionsPanel] = useState(false);
   const [showAddOptionInput, setShowAddOptionInput] = useState(false);
   const [addSelectRef, setAddSelectRef] = useState(null);

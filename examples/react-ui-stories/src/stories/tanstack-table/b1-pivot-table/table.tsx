@@ -13,7 +13,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 
-import { Cell } from './cell-categories/cell';
+import { Cell } from './cell-types/cell';
 import { Header } from './header-menu/header';
 import { PlusIcon } from './icons';
 import { ActionNames } from './utils';
@@ -21,36 +21,12 @@ import { ActionNames } from './utils';
 const defaultColumn = {
   cell: Cell,
   header: Header,
-  sortType: 'alphanumericFalsyLast',
   minSize: 50,
   size: 150,
   maxSize: 400,
 } as any;
 
 export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
-  const sortTypes = useMemo(
-    () => ({
-      alphanumericFalsyLast(rowA, rowB, columnId, desc) {
-        if (!rowA.values[columnId] && !rowB.values[columnId]) {
-          return 0;
-        }
-
-        if (!rowA.values[columnId]) {
-          return desc ? -1 : 1;
-        }
-
-        if (!rowB.values[columnId]) {
-          return desc ? 1 : -1;
-        }
-
-        return isNaN(rowA.values[columnId])
-          ? rowA.values[columnId].localeCompare(rowB.values[columnId])
-          : rowA.values[columnId] - rowB.values[columnId];
-      },
-    }),
-    [],
-  );
-
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
@@ -68,31 +44,29 @@ export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
       dataDispatch,
     },
     debugTable: true,
-    // autoResetSortBy: !skipReset,
-    // autoResetFilters: !skipReset,
-    // autoResetRowState: !skipReset,
-    // sortTypes,
   });
 
   const { rows } = table.getRowModel();
   const headerGroups = table.getHeaderGroups();
   // console.log(';; col-data ', columns, data, rows, headerGroups);
 
-  function isTableResizing() {
-    // for (let headerGroup of headerGroups) {
-    //   for (let column of headerGroup.headers) {
-    //     if (column.isResizing) {
-    //       return true;
-    //     }
-    //   }
-    // }
+  const isTableResizing = useMemo(() => {
+    for (const headerGroup of headerGroups) {
+      for (const { column } of headerGroup.headers) {
+        if (column.getIsResizing()) {
+          return true;
+        }
+      }
+    }
     return false;
-  }
+  }, [headerGroups]);
 
   return (
-    <div style={{ maxWidth: '100vw', overflow: 'auto' }}>
+    <div
+    // style={{ maxWidth: '100vw', overflow: 'auto' }} // useful for virtualize
+    >
       <div
-        className={cx(tableCss, isTableResizing() && 'noselect')}
+        className={cx(tableCss, { [noSelectCss]: isTableResizing })}
         style={{ width: table.getCenterTotalSize() }}
       >
         <div>
@@ -198,7 +172,7 @@ const thTdCss = css`
   white-space: nowrap;
   border-left: 1px solid #e0e0e0;
   border-top: 1px solid #e0e0e0;
-  &:last-child   {
+  &:last-child {
     border-right: 1px solid #e0e0e0;
   }
 `;
@@ -225,12 +199,15 @@ const addRowCss = css`
     background-color: #f5f5f5;
   }
 
-  & svg{
+  & svg {
     margin-top: 4px;
     margin-right: 8px;
   }
 `;
 
+const noSelectCss = css`
+  user-select: none;
+`;
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
     dataDispatch?: any;

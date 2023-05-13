@@ -28,13 +28,12 @@ export function HeaderMenu({
   dataType,
   columnId,
   header,
-  setSortBy = (...args: any[]) => { },
   dataDispatch,
   setShowHeaderMenu,
   table,
 }) {
   const [inputRef, setInputRef] = useState(null);
-  const [title, setTitle] = useState(label);
+  const [inputHeader, setInputHeader] = useState(label);
   const [showTypeList, setShowTypeList] = useState(false);
 
   function onTypeMenuClose() {
@@ -43,15 +42,15 @@ export function HeaderMenu({
   }
 
   useEffect(() => {
-    setTitle(label);
+    setInputHeader(label);
   }, [label]);
 
-  useEffect(() => {
-    if (inputRef) {
-      inputRef.focus();
-      inputRef.select();
-    }
-  }, [inputRef]);
+  // useEffect(() => {
+  //   if (inputRef) {
+  //     inputRef.focus();
+  //     inputRef.select();
+  //   }
+  // }, [inputRef]);
 
   const buttons = [
     {
@@ -59,14 +58,15 @@ export function HeaderMenu({
         dataDispatch({
           type: ActionNames.UPDATE_COLUMN_HEADER,
           columnId,
-          label: title,
+          label: inputHeader,
         });
-        // console.log(';; sortAsc ', header.column.getNextSortingOrder(), header);
-        const nextSort = header.column.getNextSortingOrder();
-        if (nextSort === 'desc' || nextSort === 'asc') {
-          table.setSorting([{ id: columnId, desc: false }]);
+        const currentSort = header.column.getIsSorted();
+        // console.log(';; sortAsc- ', currentSort, header);
+        if (currentSort !== 'asc') {
+          header.column.toggleSorting(false);
+          // header.column.toggleSorting(false, true);
         } else {
-          table.resetSorting();
+          header.column.clearSorting();
         }
         setShowHeaderMenu(false);
       },
@@ -78,14 +78,15 @@ export function HeaderMenu({
         dataDispatch({
           type: ActionNames.UPDATE_COLUMN_HEADER,
           columnId,
-          label: title,
+          label: inputHeader,
         });
-        // console.log(';; sortDesc ', header.column.getNextSortingOrder(), header);
-        const nextSort = header.column.getNextSortingOrder();
-        if (nextSort === 'desc' || nextSort === false) {
-          table.setSorting([{ id: columnId, desc: true }]);
+        const currentSort = header.column.getIsSorted();
+        // console.log(';; sortDesc ', currentSort, header);
+        if (currentSort !== 'desc') {
+          header.column.toggleSorting(true);
+          // header.column.toggleSorting(true, true);
         } else {
-          table.resetSorting();
+          header.column.clearSorting();
         }
         setShowHeaderMenu(false);
       },
@@ -97,7 +98,7 @@ export function HeaderMenu({
         dataDispatch({
           type: ActionNames.UPDATE_COLUMN_HEADER,
           columnId,
-          label: title,
+          label: inputHeader,
         });
         dataDispatch({
           type: ActionNames.ADD_COLUMN_TO_LEFT,
@@ -114,7 +115,7 @@ export function HeaderMenu({
         dataDispatch({
           type: ActionNames.UPDATE_COLUMN_HEADER,
           columnId,
-          label: title,
+          label: inputHeader,
         });
         dataDispatch({
           type: ActionNames.ADD_COLUMN_TO_RIGHT,
@@ -141,14 +142,14 @@ export function HeaderMenu({
       dataDispatch({
         type: ActionNames.UPDATE_COLUMN_HEADER,
         columnId,
-        label: title,
+        label: inputHeader,
       });
       setShowHeaderMenu(false);
     }
   }
 
   function handleColumnNameChange(e) {
-    setTitle(e.target.value);
+    setInputHeader(e.target.value);
   }
 
   function handleColumnNameBlur(e) {
@@ -156,7 +157,7 @@ export function HeaderMenu({
     dataDispatch({
       type: ActionNames.UPDATE_COLUMN_HEADER,
       columnId,
-      label: title,
+      label: inputHeader,
     });
   }
 
@@ -173,7 +174,7 @@ export function HeaderMenu({
               className={columnTypeInputCss}
               ref={setInputRef}
               type='text'
-              value={title}
+              value={inputHeader}
               onChange={handleColumnNameChange}
               onBlur={handleColumnNameBlur}
               onKeyDown={handleColumnNameKeyDown}

@@ -1,17 +1,17 @@
 import React from 'react';
 
 import { PlusIcon } from '../icons';
-import { ActionNames, Constants } from '../utils';
+import { ACTION_TYPES, COLUMN_PLACEHOLDER_ID } from '../utils';
 
-export function AddColumnHeader({  dataDispatch }) {
+export function AddColumnHeader({ dataDispatch }) {
   return (
     <div className='th noselect d-inline-block'>
       <div
         className='th-content d-flex justify-content-center'
         onClick={(e) =>
           dataDispatch({
-            type: ActionNames.ADD_COLUMN_TO_LEFT,
-            columnId: Constants.ADD_COLUMN_ID,
+            type: ACTION_TYPES.Add_column_to_left,
+            columnId: COLUMN_PLACEHOLDER_ID,
             focus: true,
           })
         }

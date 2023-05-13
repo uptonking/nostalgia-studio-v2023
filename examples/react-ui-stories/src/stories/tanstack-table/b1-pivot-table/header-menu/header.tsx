@@ -7,7 +7,7 @@ import {
   PopoverProvider,
   PopoverTrigger,
 } from '../../../floating-ui';
-import { Constants } from '../utils';
+import { COLUMN_PLACEHOLDER_ID } from '../utils';
 import { AddColumnHeader } from './add-column-header';
 import { ColumnTypeIcon } from './column-type-icon';
 import { HeaderMenu } from './header-menu';
@@ -33,7 +33,7 @@ export function Header(props) {
   }, [created]);
 
   function getHeader() {
-    if (id === Constants.ADD_COLUMN_ID) {
+    if (id === COLUMN_PLACEHOLDER_ID) {
       return <AddColumnHeader dataDispatch={dataDispatch} />;
     }
 

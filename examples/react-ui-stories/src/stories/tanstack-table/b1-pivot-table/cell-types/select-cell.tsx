@@ -9,8 +9,9 @@ import {
 } from '../../../floating-ui';
 import { PlusIcon } from '../icons';
 import { headerMenuContainerCss } from '../styles';
-import { ActionNames, grey, randomColor } from '../utils';
+import { ACTION_TYPES, grey, randomColor } from '../utils';
 
+/** cell for single select  */
 export function SelectCell({
   initialValue,
   options,
@@ -31,7 +32,7 @@ export function SelectCell({
   useEffect(() => {
     if (value.update) {
       dataDispatch({
-        type: ActionNames.UPDATE_CELL,
+        type: ACTION_TYPES.Update_cell,
         columnId,
         rowIndex,
         value: value.value,
@@ -59,7 +60,7 @@ export function SelectCell({
     if (e.key === 'Enter') {
       if (e.target.value !== '') {
         dataDispatch({
-          type: ActionNames.ADD_OPTION_TO_COLUMN,
+          type: ACTION_TYPES.Add_option_to_column,
           option: e.target.value,
           backgroundColor: randomColor(),
           columnId,
@@ -72,7 +73,7 @@ export function SelectCell({
   function handleOptionBlur(e) {
     if (e.target.value !== '') {
       dataDispatch({
-        type: ActionNames.ADD_OPTION_TO_COLUMN,
+        type: ACTION_TYPES.Add_option_to_column,
         option: e.target.value,
         backgroundColor: randomColor(),
         columnId,
@@ -104,23 +105,15 @@ export function SelectCell({
         onClick={(e) => setShowOptionsPanel((v) => !v)}
       >
         <div className={optionsCellCss}>
-          {value.value && (
+          {value.value ? (
             <OptionItem value={value.value} backgroundColor={getColor()} />
+          ) : (
+            ' '
           )}
         </div>
       </PopoverTrigger>
       <PopoverContent initialFocus={false}>
-        <div
-          className={headerMenuContainerCss}
-          style={{
-            zIndex: 4,
-            minWidth: 200,
-            maxWidth: 320,
-            maxHeight: 400,
-            padding: '0.75rem',
-            overflow: 'auto',
-          }}
-        >
+        <div className={headerMenuContainerCss + ' ' + optionsPopoverCss}>
           <div className={optionsContainerCss}>
             {options.map((option) => (
               <div
@@ -183,6 +176,15 @@ const optionsCellCss = css`
   cursor: pointer;
 `;
 
+const optionsPopoverCss = css`
+  z-index: 10;
+  overflow: auto;
+  min-width: 200px;
+  max-width: 320px;
+  max-height: 400px;
+  padding: 0.75rem;
+`;
+
 const optionsContainerCss = css`
   display: flex;
   flex-wrap: wrap;
@@ -199,6 +201,7 @@ const optionItemCss = css`
   padding: 2px 6px;
   border-radius: 4px;
   text-transform: capitalize;
+  cursor: pointer;
   font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
     avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
     sans-serif;
@@ -206,6 +209,7 @@ const optionItemCss = css`
 
 const addOptionItemInputCss = css`
   width: 100%;
+  margin-top: 4px;
   border: none;
   background-color: transparent;
   font-size: 1rem;
@@ -214,5 +218,6 @@ const addOptionItemInputCss = css`
     sans-serif;
   &:focus {
     outline: none;
+    box-shadow: 0 0 1px 2px #8ecae6;
   }
 `;

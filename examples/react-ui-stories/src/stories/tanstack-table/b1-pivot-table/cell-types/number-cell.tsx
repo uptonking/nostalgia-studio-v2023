@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ContentEditable from 'react-contenteditable';
 
 import { textInputCss } from '../styles';
-import { ActionNames } from '../utils';
+import { ACTION_TYPES } from '../utils';
 
 export function NumberCell({ initialValue, columnId, rowIndex, dataDispatch }) {
   const [value, setValue] = useState({ value: initialValue, update: false });
@@ -23,7 +23,7 @@ export function NumberCell({ initialValue, columnId, rowIndex, dataDispatch }) {
   useEffect(() => {
     if (value.update) {
       dataDispatch({
-        type: ActionNames.UPDATE_CELL,
+        type: ACTION_TYPES.Update_cell,
         columnId,
         rowIndex,
         value: value.value,

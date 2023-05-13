@@ -5,7 +5,7 @@ import ContentEditable from 'react-contenteditable';
 import { css } from '@linaria/core';
 
 import { textInputCss } from '../styles';
-import { ActionNames } from '../utils';
+import { ACTION_TYPES } from '../utils';
 
 export function TextCell({ initialValue, columnId, rowIndex, dataDispatch }) {
   const [value, setValue] = useState({ value: initialValue, update: false });
@@ -25,7 +25,7 @@ export function TextCell({ initialValue, columnId, rowIndex, dataDispatch }) {
   useEffect(() => {
     if (value.update) {
       dataDispatch({
-        type: ActionNames.UPDATE_CELL,
+        type: ACTION_TYPES.Update_cell,
         columnId,
         rowIndex,
         value: value.value,

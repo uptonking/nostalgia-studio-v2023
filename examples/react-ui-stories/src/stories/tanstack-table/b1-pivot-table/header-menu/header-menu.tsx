@@ -19,7 +19,7 @@ import {
   listContainerCss,
   menuItemBtnCss,
 } from '../styles';
-import { ActionNames, grey, shortId } from '../utils';
+import { ACTION_TYPES, grey, shortId } from '../utils';
 import { ColumnTypeIcon } from './column-type-icon';
 import { ColumnTypeList } from './column-type-list';
 
@@ -56,7 +56,7 @@ export function HeaderMenu({
     {
       onClick: (e) => {
         dataDispatch({
-          type: ActionNames.UPDATE_COLUMN_HEADER,
+          type: ACTION_TYPES.Update_column_header,
           columnId,
           label: inputHeader,
         });
@@ -76,7 +76,7 @@ export function HeaderMenu({
     {
       onClick: (e) => {
         dataDispatch({
-          type: ActionNames.UPDATE_COLUMN_HEADER,
+          type: ACTION_TYPES.Update_column_header,
           columnId,
           label: inputHeader,
         });
@@ -96,12 +96,12 @@ export function HeaderMenu({
     {
       onClick: (e) => {
         dataDispatch({
-          type: ActionNames.UPDATE_COLUMN_HEADER,
+          type: ACTION_TYPES.Update_column_header,
           columnId,
           label: inputHeader,
         });
         dataDispatch({
-          type: ActionNames.ADD_COLUMN_TO_LEFT,
+          type: ACTION_TYPES.Add_column_to_left,
           columnId,
           focus: false,
         });
@@ -113,12 +113,12 @@ export function HeaderMenu({
     {
       onClick: (e) => {
         dataDispatch({
-          type: ActionNames.UPDATE_COLUMN_HEADER,
+          type: ACTION_TYPES.Update_column_header,
           columnId,
           label: inputHeader,
         });
         dataDispatch({
-          type: ActionNames.ADD_COLUMN_TO_RIGHT,
+          type: ACTION_TYPES.Add_column_to_right,
           columnId,
           focus: false,
         });
@@ -129,7 +129,7 @@ export function HeaderMenu({
     },
     {
       onClick: (e) => {
-        dataDispatch({ type: ActionNames.DELETE_COLUMN, columnId });
+        dataDispatch({ type: ACTION_TYPES.Delete_column, columnId });
         setShowHeaderMenu(false);
       },
       icon: <TrashIcon />,
@@ -140,7 +140,7 @@ export function HeaderMenu({
   function handleColumnNameKeyDown(e) {
     if (e.key === 'Enter') {
       dataDispatch({
-        type: ActionNames.UPDATE_COLUMN_HEADER,
+        type: ACTION_TYPES.Update_column_header,
         columnId,
         label: inputHeader,
       });
@@ -155,7 +155,7 @@ export function HeaderMenu({
   function handleColumnNameBlur(e) {
     e.preventDefault();
     dataDispatch({
-      type: ActionNames.UPDATE_COLUMN_HEADER,
+      type: ACTION_TYPES.Update_column_header,
       columnId,
       label: inputHeader,
     });

@@ -13,7 +13,7 @@ export function makeData(count: number) {
   let options = [];
   for (let i = 0; i < count; i++) {
     const row = {
-      ID: i,
+      id: i,
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
@@ -26,7 +26,7 @@ export function makeData(count: number) {
   }
 
   options = options.filter(
-    (a, i, self) => self.findIndex((b) => b.label === a.label) === i,
+    (option, i, self) => self.findIndex((b) => b.label === option.label) === i,
   );
 
   const columns = [
@@ -35,7 +35,7 @@ export function makeData(count: number) {
       accessorKey: 'firstName',
       label: 'First Name',
       minSize: 100,
-      dataType: ColumnTypes.TEXT,
+      dataType: COLUMN_TYPES.Text,
       options: [],
     },
     {
@@ -43,7 +43,7 @@ export function makeData(count: number) {
       accessorKey: 'lastName',
       label: 'Last Name',
       minSize: 100,
-      dataType: ColumnTypes.TEXT,
+      dataType: COLUMN_TYPES.Text,
       options: [],
     },
     {
@@ -51,7 +51,7 @@ export function makeData(count: number) {
       accessorKey: 'age',
       label: 'Age',
       size: 80,
-      dataType: ColumnTypes.NUMBER,
+      dataType: COLUMN_TYPES.Number,
       options: [],
     },
     {
@@ -59,14 +59,14 @@ export function makeData(count: number) {
       accessorKey: 'email',
       label: 'Email',
       size: 300,
-      dataType: ColumnTypes.TEXT,
+      dataType: COLUMN_TYPES.Text,
       options: [],
     },
     {
       id: 'music',
       accessorKey: 'music',
       label: 'Music Preference',
-      dataType: ColumnTypes.SELECT,
+      dataType: COLUMN_TYPES.Select,
       size: 200,
       options: options,
     },
@@ -79,30 +79,30 @@ export function makeData(count: number) {
     // },
   ];
 
-  return { columns: columns, data: data, skipReset: false };
+  return { columns, data, skipReset: false };
 }
 
-export const ActionNames = Object.freeze({
-  ADD_OPTION_TO_COLUMN: 'add_option_to_column',
-  ADD_ROW: 'add_row',
-  UPDATE_COLUMN_TYPE: 'update_column_type',
-  UPDATE_COLUMN_HEADER: 'update_column_header',
-  UPDATE_CELL: 'update_cell',
-  ADD_COLUMN_TO_LEFT: 'add_column_to_left',
-  ADD_COLUMN_TO_RIGHT: 'add_column_to_right',
-  DELETE_COLUMN: 'delete_column',
-  ENABLE_RESET: 'enable_reset',
+export const ACTION_TYPES = Object.freeze({
+  Add_option_to_column: 'add_option_to_column',
+  Add_row: 'add_row',
+  Update_column_type: 'update_column_type',
+  Update_column_header: 'update_column_header',
+  Update_cell: 'update_cell',
+  Add_column_to_left: 'add_column_to_left',
+  Add_column_to_right: 'add_column_to_right',
+  Delete_column: 'delete_column',
+  Enable_reset: 'enable_reset',
 });
 
-export const ColumnTypes = Object.freeze({
-  NUMBER: 'number',
-  TEXT: 'text',
-  SELECT: 'select',
+export type ActionTypesType = keyof typeof ACTION_TYPES;
+
+export const COLUMN_TYPES = Object.freeze({
+  Number: 'number',
+  Text: 'text',
+  Select: 'select',
 });
 
-export const Constants = Object.freeze({
-  ADD_COLUMN_ID: 999999,
-});
+export const COLUMN_PLACEHOLDER_ID = 99999999;
 
 /** get a gray color by level, from 50,100,200,...,900 */
 export function grey(level: number) {

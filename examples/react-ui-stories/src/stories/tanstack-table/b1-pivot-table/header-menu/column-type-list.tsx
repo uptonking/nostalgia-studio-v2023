@@ -1,11 +1,13 @@
 import React from 'react';
 
+import { css } from '@linaria/core';
+
 import {
   headerMenuContainerCss,
   listContainerCss,
   menuItemBtnCss,
 } from '../styles';
-import { ActionNames, ColumnTypes, shortId } from '../utils';
+import { ACTION_TYPES, COLUMN_TYPES, shortId } from '../utils';
 import { ColumnTypeIcon } from './column-type-icon';
 
 function getLabel(type) {
@@ -13,8 +15,6 @@ function getLabel(type) {
 }
 
 export function ColumnTypeList({
-  // popper,
-  // popperRef,
   dataDispatch,
   setShowTypeMenu,
   onClose,
@@ -22,62 +22,60 @@ export function ColumnTypeList({
 }) {
   const types = [
     {
-      type: ColumnTypes.SELECT,
+      type: COLUMN_TYPES.Select,
       onClick: (e) => {
         dataDispatch({
-          type: ActionNames.UPDATE_COLUMN_TYPE,
+          type: ACTION_TYPES.Update_column_type,
           columnId,
-          dataType: ColumnTypes.SELECT,
+          dataType: COLUMN_TYPES.Select,
         });
         onClose();
       },
-      icon: <ColumnTypeIcon dataType={ColumnTypes.SELECT} />,
-      label: getLabel(ColumnTypes.SELECT),
+      icon: <ColumnTypeIcon dataType={COLUMN_TYPES.Select} />,
+      label: getLabel(COLUMN_TYPES.Select),
     },
     {
-      type: ColumnTypes.TEXT,
+      type: COLUMN_TYPES.Text,
       onClick: (e) => {
         dataDispatch({
-          type: ActionNames.UPDATE_COLUMN_TYPE,
+          type: ACTION_TYPES.Update_column_type,
           columnId,
-          dataType: ColumnTypes.TEXT,
+          dataType: COLUMN_TYPES.Text,
         });
         onClose();
       },
-      icon: <ColumnTypeIcon dataType={ColumnTypes.TEXT} />,
-      label: getLabel(ColumnTypes.TEXT),
+      icon: <ColumnTypeIcon dataType={COLUMN_TYPES.Text} />,
+      label: getLabel(COLUMN_TYPES.Text),
     },
     {
-      type: ColumnTypes.NUMBER,
+      type: COLUMN_TYPES.Number,
       onClick: (e) => {
         dataDispatch({
-          type: ActionNames.UPDATE_COLUMN_TYPE,
+          type: ACTION_TYPES.Update_column_type,
           columnId,
-          dataType: ColumnTypes.NUMBER,
+          dataType: COLUMN_TYPES.Number,
         });
         onClose();
       },
-      icon: <ColumnTypeIcon dataType={ColumnTypes.NUMBER} />,
-      label: getLabel(ColumnTypes.NUMBER),
+      icon: <ColumnTypeIcon dataType={COLUMN_TYPES.Number} />,
+      label: getLabel(COLUMN_TYPES.Number),
     },
   ];
 
   return (
     <div
-      // ref={popperRef}
-      // {...popper.attributes.popper}
-      className={headerMenuContainerCss + ' ' + listContainerCss}
+      className={
+        headerMenuContainerCss + ' ' + listContainerCss + ' ' + rootCss
+      }
       onMouseEnter={() => setShowTypeMenu(true)}
       onMouseLeave={() => setShowTypeMenu(false)}
-      style={{
-        // ...popper.styles.popper,
-        width: 200,
-        backgroundColor: 'white',
-        zIndex: 4,
-      }}
     >
       {types.map((type) => (
-        <button className={menuItemBtnCss} onClick={type.onClick} key={shortId()}>
+        <button
+          className={menuItemBtnCss}
+          onClick={type.onClick}
+          key={shortId()}
+        >
           <span className='svg-icon svg-text icon-margin'>{type.icon}</span>
           {type.label}
         </button>
@@ -85,3 +83,9 @@ export function ColumnTypeList({
     </div>
   );
 }
+
+const rootCss = css`
+  width: 200px;
+  background-color: white;
+  z-index: 10;
+`;

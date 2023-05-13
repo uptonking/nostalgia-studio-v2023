@@ -13,7 +13,7 @@ import {
 import { tableBaseCss } from '../examples.styles';
 import { makeData, Person } from '../utils/makeData';
 
-const Sort_Direction_Icons = {
+const SORT_DIRECTION_ICONS = {
   asc: ' 🔼',
   desc: ' 🔽',
 } as const;
@@ -143,7 +143,7 @@ export const A1b4Sort = () => {
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                        {Sort_Direction_Icons[
+                        {SORT_DIRECTION_ICONS[
                           header.column.getIsSorted() as string
                         ] ?? null}
                       </div>

@@ -16,7 +16,7 @@ import {
 import { Cell } from './cell-types/cell';
 import { Header } from './header-menu/header';
 import { PlusIcon } from './icons';
-import { ActionNames } from './utils';
+import { ACTION_TYPES } from './utils';
 
 const defaultColumn = {
   cell: Cell,
@@ -123,7 +123,7 @@ export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
           ))}
           <div
             className={cx(trCss, addRowCss)}
-            onClick={() => dataDispatch({ type: ActionNames.ADD_ROW })}
+            onClick={() => dataDispatch({ type: ACTION_TYPES.Add_row })}
           >
             <span className='svg-icon svg-gray icon-margin'>
               <PlusIcon />

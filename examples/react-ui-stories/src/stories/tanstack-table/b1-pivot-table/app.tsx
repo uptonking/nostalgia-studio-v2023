@@ -4,14 +4,14 @@ import { css } from '@linaria/core';
 
 import { reducer } from './store';
 import { Table } from './table';
-import { ActionNames, makeData } from './utils';
+import { ACTION_TYPES, makeData } from './utils';
 
 export function B1b1PivotTableApp() {
   const [state, dispatch] = useReducer(reducer, makeData(30));
 
-  useEffect(() => {
-    dispatch({ type: ActionNames.ENABLE_RESET });
-  }, [state.data, state.columns]);
+  // useEffect(() => {
+  //   dispatch({ type: ACTION_TYPES.Enable_reset });
+  // }, [state.data, state.columns]);
 
   return (
     <div className={appCss}>
@@ -20,7 +20,7 @@ export function B1b1PivotTableApp() {
         columns={state.columns}
         data={state.data}
         dispatch={dispatch}
-        skipReset={state.skipReset}
+         skipReset={state.skipReset}
       />
     </div>
   );

@@ -24,11 +24,11 @@ const range = (len: number) => {
 
 const newPerson = (index = 0): Person => {
   return {
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    age: faker.datatype.number(40),
-    visits: faker.datatype.number(1000),
-    progress: faker.datatype.number(100),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    age: faker.number.int(40),
+    visits: faker.number.int(1000),
+    progress: faker.number.int(100),
     status: faker.helpers.shuffle<Person['status']>([
       'relationship',
       'complicated',
@@ -44,7 +44,7 @@ export function makeData(...lens: number[]) {
       return {
         ...newPerson(),
         id: index + 1,
-        createdAt: faker.datatype.datetime({ max: new Date().getTime() }),
+        createdAt: faker.date.past({ years: 50 }),
         subRows: lens[depth + 1] ? makeDataLevel(depth + 1) : undefined,
       };
     });

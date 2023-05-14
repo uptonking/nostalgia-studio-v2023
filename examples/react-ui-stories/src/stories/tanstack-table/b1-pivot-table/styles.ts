@@ -37,7 +37,9 @@ export const menuItemBtnCss = css`
   background-color: transparent;
   color: #757575;
   font-size: 0.875rem;
-  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, "avenir next", avenir, "segoe ui", "helvetica neue", helvetica, Ubuntu, noto, arial, sans-serif;
+  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
+    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+    sans-serif;
   text-align: left;
   text-transform: capitalize;
   cursor: pointer;
@@ -48,7 +50,7 @@ export const menuItemBtnCss = css`
   & svg {
     width: 18px;
     height: 18px;
-    margin-top:4px;
+    margin-top: 4px;
     margin-right: 8px;
   }
 `;

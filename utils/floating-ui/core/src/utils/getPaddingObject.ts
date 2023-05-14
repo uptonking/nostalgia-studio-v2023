@@ -1,4 +1,4 @@
-import { Padding, SideObject } from '../types';
+import type { Padding, SideObject } from '../types';
 import { expandPaddingObject } from './expandPaddingObject';
 
 export function getSideObjectFromPadding(padding: Padding): SideObject {

@@ -47,7 +47,7 @@ module.exports = {
                     {
                       modules: false,
                       useBuiltIns: 'usage',
-                      corejs: { version: '3.29', proposals: true },
+                      corejs: { version: '3.30', proposals: true },
                       shippedProposals: true,
                       debug: false,
                     },
@@ -109,8 +109,8 @@ module.exports = {
               modules: isProd
                 ? undefined
                 : {
-                    localIdentName: '[name]__[local]__[hash:base64:5]',
-                  },
+                  localIdentName: '[name]__[local]__[hash:base64:5]',
+                },
             },
           },
           {

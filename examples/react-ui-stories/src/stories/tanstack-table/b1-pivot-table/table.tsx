@@ -90,9 +90,9 @@ export function Table({ columns, data, dispatch: dataDispatch, skipReset }) {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </div>
                 );
               })}
@@ -180,7 +180,7 @@ const thTdCss = css`
 const thCss = css`
   color: #9e9e9e;
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
   &:hover {
     background-color: #f5f5f5;

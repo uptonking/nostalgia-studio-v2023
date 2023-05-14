@@ -52,7 +52,7 @@
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
     "lodash.toarray": "^4.4.0",
-    "nanoid": "^3.3.1",
+    "nanoid": "^4.0.2",
     "slate": "0.78.1111",
     "snabbdom": "^3.1.0"
   },

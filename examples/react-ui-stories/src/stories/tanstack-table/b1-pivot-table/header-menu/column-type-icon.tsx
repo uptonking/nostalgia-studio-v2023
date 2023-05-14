@@ -4,7 +4,6 @@ import { HashIcon, MultiSelectIcon, TextIcon } from '../icons';
 import { COLUMN_TYPES } from '../utils';
 
 export function ColumnTypeIcon({ dataType }) {
-
   switch (dataType) {
     case COLUMN_TYPES.Number:
       return <HashIcon />;

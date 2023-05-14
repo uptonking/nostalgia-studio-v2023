@@ -63,7 +63,7 @@ module.exports = function (api) {
         // targets: 'defaults', // '> 0.5%, last 2 versions, not dead',
         targets: 'last 2 Chrome versions',
         useBuiltIns: 'usage',
-        corejs: { version: '3.29', proposals: true },
+        corejs: { version: '3.30', proposals: true },
         shippedProposals: true,
         debug: false,
       },
@@ -100,7 +100,7 @@ module.exports = function (api) {
               {
                 modules: false,
                 useBuiltIns: 'usage',
-                corejs: { version: '3.29', proposals: true },
+                corejs: { version: '3.30', proposals: true },
                 shippedProposals: true,
                 debug: false,
               },

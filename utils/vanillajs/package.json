@@ -22,7 +22,7 @@
     "test:utils1": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only' jest"
   },
   "dependencies": {
-    "@faker-js/faker": "^7.6.0",
+    "@faker-js/faker": "^8.0.0",
     "classnames": "^2.3.2",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",

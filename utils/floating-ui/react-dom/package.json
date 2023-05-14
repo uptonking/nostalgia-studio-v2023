@@ -1,16 +1,12 @@
 {
   "name": "@floating-ui/react-dom",
-  "version": "1.3.1111",
+  "version": "2.0.1111",
   "description": "Floating UI for React DOM",
   "keywords": [
     "tooltip",
     "popover",
     "dropdown",
-    "menu",
-    "popup",
-    "positioning",
-    "react",
-    "react-dom"
+    "popup"
   ],
   "homepage": "https://floating-ui.com/docs/react-dom",
   "bugs": "https://github.com/floating-ui/floating-ui",
@@ -40,7 +36,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
-    "@types/react": "^18.0.31",
+    "@types/react": "^18.2.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

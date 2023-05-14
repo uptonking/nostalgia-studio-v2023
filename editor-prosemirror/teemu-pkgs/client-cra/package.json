@@ -23,7 +23,6 @@
     ]
   },
   "dependencies": {
-    "@atlaskit/icon": "^21.10.7",
     "@example/full-v2": "0.0.1111",
     "@example/minimal": "0.0.1111",
     "@example/types": "0.0.1111",
@@ -48,11 +47,11 @@
     "@types/jest": "29.5.0",
     "@types/lodash.debounce": "^4.0.7",
     "@types/node": "^18.11.18",
-    "@types/react": "^18.0.31",
+    "@types/react": "^18.2.5",
     "@types/react-dom": "^18.0.11",
     "@types/react-icons": "^3.0.0",
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
-    "@types/styled-components": "^5.1.25"
+    "@types/styled-components": "^5.1.26"
   }
 }

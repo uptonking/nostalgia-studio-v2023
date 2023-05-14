@@ -17,7 +17,7 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@faker-js/faker": "^7.6.0",
+    "@faker-js/faker": "^8.0.0",
     "classnames": "^2.3.2",
     "codemirror": "^5.65.0",
     "cors": "^2.8.5",

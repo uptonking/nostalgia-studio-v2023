@@ -16,6 +16,8 @@ I haven't re-implemented all the features and widgets of the full editor nor wil
 
 ## How to install
 
+- 注意@atlaskit/icon被移除，因为peerDeps异常
+
 This project uses Yarn workspaces so you don't really have to install anything. By running `yarn` in the root folder all the dependencies should be installed automatically.
 
 ## Commands

@@ -20,7 +20,7 @@ export function B1b1PivotTableApp() {
         columns={state.columns}
         data={state.data}
         dispatch={dispatch}
-         skipReset={state.skipReset}
+        skipReset={state.skipReset}
       />
     </div>
   );

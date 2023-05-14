@@ -33,8 +33,6 @@
     "test-node": "(nyc -s node test.js | faucet) && nyc report"
   },
   "devDependencies": {
-    "airtap": "^4.0.4",
-    "airtap-playwright": "^1.0.1",
     "faucet": "^0.0.3",
     "memory-level": "1.0.1111",
     "nyc": "^15.1.0",

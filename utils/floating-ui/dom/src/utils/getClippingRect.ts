@@ -7,7 +7,7 @@ import type {
 } from '@floating-ui/core';
 import { rectToClientRect } from '@floating-ui/core';
 
-import { Platform, ReferenceElement } from '../types';
+import type { Platform, ReferenceElement } from '../types';
 import { getBoundingClientRect } from './getBoundingClientRect';
 import { getComputedStyle } from './getComputedStyle';
 import { getDocumentElement } from './getDocumentElement';

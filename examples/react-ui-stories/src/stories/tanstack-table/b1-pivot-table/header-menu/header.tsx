@@ -53,7 +53,10 @@ export function Header(props) {
               <span className={thIconCss}>
                 <ColumnTypeIcon dataType={dataType} />
               </span>
-              {label}
+              {
+                // header title
+                label
+              }
             </div>
             <div
               onMouseDown={header.getResizeHandler()}

@@ -3,7 +3,7 @@ import { arrow as arrowCore } from '@floating-ui/dom';
 import * as React from 'react';
 
 export interface Options {
-  element: React.MutableRefObject<Element | null> | Element;
+  element: React.MutableRefObject<Element | null> | Element | null;
   padding?: number | SideObject;
 }
 
@@ -17,14 +17,14 @@ export const arrow = (options: Options): Middleware => {
   const { element, padding } = options;
 
   function isRef(value: unknown): value is React.MutableRefObject<unknown> {
-    return Object.prototype.hasOwnProperty.call(value, 'current');
+    return {}.hasOwnProperty.call(value, 'current');
   }
 
   return {
     name: 'arrow',
     options,
     fn(args) {
-      if (isRef(element)) {
+      if (element && isRef(element)) {
         if (element.current != null) {
           return arrowCore({ element: element.current, padding }).fn(args);
         }

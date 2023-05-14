@@ -13,9 +13,7 @@ export function deepEqual(a: any, b: any) {
     return true;
   }
 
-  let length;
-  let i;
-  let keys;
+  let length, i, keys;
 
   if (a && b && typeof a == 'object') {
     if (Array.isArray(a)) {
@@ -37,7 +35,7 @@ export function deepEqual(a: any, b: any) {
     }
 
     for (i = length; i-- !== 0; ) {
-      if (!Object.prototype.hasOwnProperty.call(b, keys[i])) {
+      if (!{}.hasOwnProperty.call(b, keys[i])) {
         return false;
       }
     }

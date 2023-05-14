@@ -42,9 +42,6 @@
     "queue-microtask": "^1.2.3"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
-    "airtap": "^4.0.4",
-    "airtap-playwright": "^1.0.1",
     "faucet": "^0.0.3",
     "nyc": "^15.1.0",
     "sinon": "^14.0.0",

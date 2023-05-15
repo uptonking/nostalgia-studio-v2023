@@ -17,13 +17,17 @@ async function fetchServerPage(
     .fill(0)
     .map((e, i) => `Async loaded row #${i + offset * limit}`);
 
-  await new Promise((r) => setTimeout(r, 500));
+  await new Promise((r) => setTimeout(r, 1000));
 
   return { rows, nextOffset: offset + 1 };
 }
 
 const queryClient = new QueryClient();
 
+/** ✨ Virtualized Infinite Scrolling
+ * - fetch条件是，virtualItems最后一个的索引大于已fetched的数据长度-1
+ *
+ */
 export const A5b1VirtualQuery = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -45,11 +49,13 @@ export function InfiniteScroll() {
     hasNextPage,
   } = useInfiniteQuery({
     queryKey: ['infiniteScroll'],
-    queryFn: (ctx) => fetchServerPage(10, ctx.pageParam),
+    queryFn: (ctx) => fetchServerPage(10, ctx.pageParam as number),
+    defaultPageParam: 0,
     getNextPageParam: (_lastGroup, groups) => groups.length,
     networkMode: 'always',
   });
 
+  // 所有已fetch的数据
   const allRows = data ? data.pages.flatMap((d) => d.rows) : [];
 
   // console.log(';; fetchData ', data, allRows)
@@ -101,7 +107,7 @@ export function InfiniteScroll() {
       </p>
       <br />
 
-      {status === 'loading' ? (
+      {status === 'pending' ? (
         <p>Loading...</p>
       ) : status === 'error' ? (
         <span>Error: {(error as Error).message}</span>
@@ -156,6 +162,9 @@ export function InfiniteScroll() {
       )}
       <div>
         {isFetching && !isFetchingNextPage ? 'Background Updating...' : null}
+      </div>
+      <div>
+        {isFetching ? 'Fetching...' : null}
       </div>
       <br />
       <br />

@@ -122,7 +122,9 @@ export type PersonApiResponse = {
   };
 };
 
-/** simulates a paginateable backend api */
+/** simulates a paginateable backend api
+ * @param start item index in all data, not pageIndex
+ */
 export const fetchVirtualPagesData = (
   start: number,
   size: number,
@@ -147,3 +149,20 @@ export const fetchVirtualPagesData = (
     },
   };
 };
+
+
+export async function fetchPagingData(options: {
+  pageIndex: number
+  pageSize: number
+}) {
+  // Simulate some network latency
+  await new Promise(r => setTimeout(r, 500))
+
+  return {
+    rows: data.slice(
+      options.pageIndex * options.pageSize,
+      (options.pageIndex + 1) * options.pageSize
+    ),
+    pageCount: Math.ceil(data.length / options.pageSize),
+  }
+}

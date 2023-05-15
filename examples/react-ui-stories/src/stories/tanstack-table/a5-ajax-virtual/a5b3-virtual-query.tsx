@@ -27,10 +27,14 @@ const fetchSize = 10;
 
 const queryClient = new QueryClient();
 
-/**
- * tanstack-table + tanstack-query + tanstack-virtual
+/** ✨ React Example: Virtualized Infinite Scrolling
+ * - https://tanstack.com/table/v8/docs/examples/react/virtualized-infinite-scrolling
+ * - tanstack-table + tanstack-query + tanstack-virtual
+ * - 🚧 fetch条件是，在table容器div上注册onScroll事件，当滚动高度满足条件时fetch
+ * - sort时先在服务端排序后再返回前端
+ * - 一开始不work是因为表格css缺失
  */
-export const A5b4VirtualQuery = () => {
+export const A5b3VirtualQuery = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <VirtualPage />
@@ -95,6 +99,7 @@ function VirtualPage() {
     useInfiniteQuery<PersonApiResponse>({
       queryKey: ['table-data', sorting], //adding sorting state as key causes table to reset and fetch from new beginning upon sort
       queryFn: async ({ pageParam = 0 }) => {
+        // @ts-expect-error fix-types
         const start = pageParam * fetchSize;
         const fetchedData = fetchVirtualPagesData(start, fetchSize, sorting); //pretend api call
         // console.log(';; fake ', fetchedData)
@@ -103,23 +108,26 @@ function VirtualPage() {
 
         return fetchedData;
       },
+      defaultPageParam: 0,
       getNextPageParam: (_lastGroup, groups) => groups.length,
-      keepPreviousData: true,
+      // keepPreviousData: true,
       refetchOnWindowFocus: false,
       networkMode: 'always',
     });
 
   // we must flatten the array of arrays from the useInfiniteQuery hook
+  // 👀 这里不是某一次fetch的数据，是所有已fetch过的分页数据
   const flatData = React.useMemo(
-    () => data?.pages?.flatMap((page) => page.data) ?? [],
+    () => data?.pages?.flatMap((page) => page['data']) ?? [],
     [data],
   );
-  const totalDBRowCount = data?.pages?.[0]?.meta?.totalRowCount ?? 0;
+  const totalDBRowCount = data?.pages?.[0]?.['meta']?.totalRowCount ?? 0;
   const totalFetched = flatData.length;
 
   // called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
   const fetchMoreOnBottomReached = React.useCallback(
     (containerRefElement?: HTMLDivElement | null) => {
+
       if (containerRefElement) {
         const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
         // console.log(
@@ -177,7 +185,7 @@ function VirtualPage() {
   const virtualRows = virtualizer.getVirtualItems();
   const totalSize = virtualizer.getTotalSize();
   // const virtualRows = React.useMemo(
-  //   () => rowVirtualizer.getVirtualItems(),
+  //   () => virtualizer.getVirtualItems(),
   //   [rowVirtualizer],
   // );
 
@@ -200,9 +208,12 @@ function VirtualPage() {
           id='idTbFixedHeight'
           onScroll={(e) => {
             // console.log(';; scroll-fetch ');
+            // todo throttle
             fetchMoreOnBottomReached(e.target as HTMLDivElement);
           }}
           className={tableContainerCss}
+          // 👇🏻 scrollable
+          style={{ overflow: 'auto', height: 500 }}
         >
           <table>
             <thead>
@@ -283,9 +294,7 @@ function VirtualPage() {
 }
 
 export const tableContainerCss = css`
-  overflow: auto;
   max-width: 900px;
-  height: 500px;
   /* border: 1px solid lightgray; */
   color: #313131;
   font-family: arial, sans-serif;

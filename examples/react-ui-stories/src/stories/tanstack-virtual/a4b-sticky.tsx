@@ -9,7 +9,7 @@ import { listCss, listItemCss, listItemEvenCss } from './styles';
 
 const groupedNames = groupBy(
   Array.from({ length: 20 })
-    .map(() => faker.name.firstName())
+    .map(() => faker.person.firstName())
     .sort(),
   (name) => name[0],
 );

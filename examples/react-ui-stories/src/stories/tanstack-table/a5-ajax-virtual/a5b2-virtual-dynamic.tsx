@@ -18,7 +18,45 @@ import { makeData, Person, tableColumns } from '../utils/makeData';
 const MOCK_DATA_LEN = 20;
 
 /**
+ * ✨ virtualized表格，每行高度不同
+ * - createdAt列内容文本会换行，不便于分析高度
+ */
+export function A5b2VirtualDynamic() {
+  const rerender = React.useReducer(() => ({}), {})[1];
+
+  const columns = React.useMemo<ColumnDef<Person>[]>(() => tableColumns, []);
+
+  const [data, setData] = React.useState(() => makeData(MOCK_DATA_LEN));
+  const refreshData = () => setData(() => makeData(MOCK_DATA_LEN));
+
+  return (
+    <div className={tableBaseCss + ' ' + rootCss}>
+      <div className='p-2'>
+        <div>
+          <p>
+            This demo shows a virtualised table with 50,000 rows. There are two
+            versions, one is a fixed height table using{' '}
+            <strong>useVirtualizer</strong>, the other is a window height table
+            using <strong>useWindowVirtualizer</strong>.
+          </p>
+        </div>
+        <div className='h-2' />
+        <DynamicHeightTable data={data} columns={columns} height={240} />
+        <div>{data.length} Rows</div>
+        <div>
+          <button onClick={() => rerender()}>Force Rerender</button>
+        </div>
+        <div>
+          <button onClick={() => refreshData()}>Refresh Data</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Renders variable height virtualized table, with sorting
+ * - 每行高度是在渲染后dynamically measure计算得到
  */
 export function DynamicHeightTable({ data, columns, height = 240 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -58,7 +96,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
       id='vTbFixedHeight'
       className='container'
       style={{ height }}
-      // style={{ height, width: 640 }}
+    // style={{ height, width: 640 }}
     >
       <div
         style={{
@@ -117,8 +155,6 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
                 const row = rows[virtualRow.index] as Row<Person>;
                 return (
                   <tr
-                    // key={virtualRow.index}
-                    // data-index={virtualRow.index}
                     key={row.id}
                     data-index={row.id}
                     // 👇🏻 measure row height dynamically; callback ref在useLayoutEffect前执行
@@ -141,43 +177,6 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
               })}
             </tbody>
           </table>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * ✨ virtualized表格，每行高度不同
- * - createdAt列内容文本会换行，不便于分析高度
- */
-export function A5b2VirtualDynamic() {
-  const rerender = React.useReducer(() => ({}), {})[1];
-
-  const columns = React.useMemo<ColumnDef<Person>[]>(() => tableColumns, []);
-
-  const [data, setData] = React.useState(() => makeData(MOCK_DATA_LEN));
-  const refreshData = () => setData(() => makeData(MOCK_DATA_LEN));
-
-  return (
-    <div className={tableBaseCss + ' ' + rootCss}>
-      <div className='p-2'>
-        <div>
-          <p>
-            This demo shows a virtualised table with 50,000 rows. There are two
-            versions, one is a fixed height table using{' '}
-            <strong>useVirtualizer</strong>, the other is a window height table
-            using <strong>useWindowVirtualizer</strong>.
-          </p>
-        </div>
-        <div className='h-2' />
-        <DynamicHeightTable data={data} columns={columns} height={240} />
-        <div>{data.length} Rows</div>
-        <div>
-          <button onClick={() => rerender()}>Force Rerender</button>
-        </div>
-        <div>
-          <button onClick={() => refreshData()}>Refresh Data</button>
         </div>
       </div>
     </div>

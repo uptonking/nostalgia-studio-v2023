@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query';
+import {
   Column,
   ColumnDef,
   flexRender,
@@ -14,12 +19,22 @@ import {
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { fetchPagingData, makeData, Person } from '../utils/makeData';
+
+const queryClient = new QueryClient();
 
 /**
- * ✨ 最小react-table示例，仅展示
+ * ✨ pagination, state controlled by custom useState
  */
-export const A5b3Pagination = () => {
+export const A5b5PagingControlled = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <PagingControlled />
+    </QueryClientProvider>
+  );
+};
+
+export const PagingControlled = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
 
   const columns = React.useMemo<ColumnDef<Person>[]>(
@@ -77,49 +92,46 @@ export const A5b3Pagination = () => {
     [],
   );
 
-  const [data, setData] = React.useState(() => makeData(100000));
-  const refreshData = () => setData(() => makeData(100000));
+  const [{ pageIndex, pageSize }, setPagination] =
+    React.useState<PaginationState>({
+      pageIndex: 0,
+      pageSize: 10,
+    });
 
-  return (
-    <div className={tableBaseCss}>
-      <Table
-        {...{
-          data,
-          columns,
-        }}
-      />
-      <hr />
-      <div>
-        <button onClick={() => rerender()}>Force Rerender</button>
-      </div>
-      <div>
-        <button onClick={() => refreshData()}>Refresh Data</button>
-      </div>
-    </div>
+  const dataQuery = useQuery({
+    queryKey: ['pages', { pageIndex, pageSize }],
+    queryFn: () => fetchPagingData({ pageIndex, pageSize }),
+    // 👇🏻 如果去掉，加载数据时就会出现空白
+    placeholderData: (prev) => prev
+  });
+
+  const defaultData = React.useMemo(() => [], []);
+
+  const pagination = React.useMemo(
+    () => ({
+      pageIndex,
+      pageSize,
+    }),
+    [pageIndex, pageSize],
   );
-};
 
-function Table({
-  data,
-  columns,
-}: {
-  data: Person[];
-  columns: ColumnDef<Person>[];
-}) {
   const table = useReactTable({
-    data,
+    data: dataQuery.data?.rows ?? defaultData,
     columns,
-    // Pipeline
+    pageCount: dataQuery.data?.pageCount ?? -1,
+    state: {
+      pagination,
+    },
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    //
+    manualPagination: true,
+    // 👇🏻 If only doing manual pagination, you don't need this
+    // getPaginationRowModel: getPaginationRowModel(),
     debugTable: true,
   });
 
   return (
-    <div className='p-2'>
-      <div className='h-2' />
+    <div className={tableBaseCss}>
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -133,11 +145,6 @@ function Table({
                           header.column.columnDef.header,
                           header.getContext(),
                         )}
-                        {header.column.getCanFilter() ? (
-                          <div>
-                            <Filter column={header.column} table={table} />
-                          </div>
-                        ) : null}
                       </div>
                     )}
                   </th>
@@ -166,7 +173,7 @@ function Table({
         </tbody>
       </table>
       <div className='h-2' />
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-2' style={{ display: 'flex' }}>
         <button
           className='border rounded p-1'
           onClick={() => table.setPageIndex(0)}
@@ -195,14 +202,14 @@ function Table({
         >
           {'>>'}
         </button>
-        <span className='flex items-center gap-1'>
+        <span className='flex items-center gap-1' style={{ display: 'flex' }}>
           <div>Page</div>
           <strong>
             {table.getState().pagination.pageIndex + 1} of{' '}
             {table.getPageCount()}
           </strong>
         </span>
-        <span className='flex items-center gap-1'>
+        <span className='flex items-center gap-1' style={{ display: 'flex' }}>
           | Go to page:
           <input
             type='number'
@@ -226,59 +233,13 @@ function Table({
             </option>
           ))}
         </select>
+        {dataQuery.isFetching ? 'Loading...' : null}
       </div>
       <div>{table.getRowModel().rows.length} Rows</div>
-      <pre>{JSON.stringify(table.getState().pagination, null, 2)}</pre>
+      <div>
+        <button onClick={() => rerender()}>Force Rerender</button>
+      </div>
+      <pre>{JSON.stringify(pagination, null, 2)}</pre>
     </div>
   );
-}
-function Filter({
-  column,
-  table,
-}: {
-  column: Column<any, any>;
-  table: ReactTable<any>;
-}) {
-  const firstValue = table
-    .getPreFilteredRowModel()
-    .flatRows[0]?.getValue(column.id);
-
-  const columnFilterValue = column.getFilterValue();
-
-  return typeof firstValue === 'number' ? (
-    <div className='flex space-x-2'>
-      <input
-        type='number'
-        value={(columnFilterValue as [number, number])?.[0] ?? ''}
-        onChange={(e) =>
-          column.setFilterValue((old: [number, number]) => [
-            e.target.value,
-            old?.[1],
-          ])
-        }
-        placeholder={`Min`}
-        className='w-24 border shadow rounded'
-      />
-      <input
-        type='number'
-        value={(columnFilterValue as [number, number])?.[1] ?? ''}
-        onChange={(e) =>
-          column.setFilterValue((old: [number, number]) => [
-            old?.[0],
-            e.target.value,
-          ])
-        }
-        placeholder={`Max`}
-        className='w-24 border shadow rounded'
-      />
-    </div>
-  ) : (
-    <input
-      type='text'
-      value={(columnFilterValue ?? '') as string}
-      onChange={(e) => column.setFilterValue(e.target.value)}
-      placeholder={`Search...`}
-      className='w-36 border shadow rounded'
-    />
-  );
-}
+};

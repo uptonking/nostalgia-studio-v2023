@@ -1,0 +1,27 @@
+{
+  "name": "@datalking/pivot-store",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "lint": "eslint *.ts*"
+  },
+  "dependencies": {
+    "@datalking/pivot-core": "^0.0.1",
+    "@datalking/pivot-cqrs": "^0.0.1",
+    "@reduxjs/toolkit": "^1.9.5",
+    "lodash": "^4.17.21",
+    "redux": "^4.2.1",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.194",
+    "@types/redux-logger": "^3.0.9",
+    "immer": "^10.0.2",
+    "react": "^18.2.0",
+    "reselect": "^4.1.8"
+  }
+}

@@ -163,9 +163,7 @@ export function InfiniteScroll() {
       <div>
         {isFetching && !isFetchingNextPage ? 'Background Updating...' : null}
       </div>
-      <div>
-        {isFetching ? 'Fetching...' : null}
-      </div>
+      <div>{isFetching ? 'Fetching...' : null}</div>
       <br />
       <br />
       {process.env.NODE_ENV === 'development' ? (

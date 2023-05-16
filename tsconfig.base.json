@@ -31,6 +31,7 @@
     "strictNullChecks": false,
     "declaration": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
       "@dnd-kit/core": ["utils/dnd-kit/packages/core/src"],
@@ -93,6 +94,18 @@
       "@tanstack/virtual-core": ["excel-tanstack-table/src-pkgs/virtual-core"],
       "@tanstack/react-virtual": [
         "excel-tanstack-table/src-pkgs/react-virtual"
+      ],
+      "@datalking/pivot-core": ["excel-tanstack-table/pivot-views/core/src/"],
+      "@datalking/pivot-cqrs": ["excel-tanstack-table/pivot-views/cqrs/src/"],
+      "@datalking/pivot-entity": [
+        "excel-tanstack-table/pivot-views/entity/src/"
+      ],
+      "@datalking/pivot-i18n": ["excel-tanstack-table/pivot-views/i18n/src/"],
+      "@datalking/pivot-store": ["excel-tanstack-table/pivot-views/store/src/"],
+      "@datalking/pivot-ui": ["excel-tanstack-table/pivot-views/ui/src/"],
+      "@datalking/pivot-views": ["excel-tanstack-table/pivot-views/views/src/"],
+      "@datalking/pivot-app-shared-lib": [
+        "excel-tanstack-table/pivot-views/app-shared-lib/src/"
       ],
       "react-tiny-virtual-list": [
         "excel-tanstack-table/src-react-tiny-virtual-list/src/"

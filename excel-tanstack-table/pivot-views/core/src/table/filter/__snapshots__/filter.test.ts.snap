@@ -1,0 +1,215 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`should create root filter 1`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringEqual {
+    "fieldId": "name",
+    "value": StringFieldValue {
+      "props": {
+        "value": "hello",
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 2`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringContain {
+    "fieldId": "name",
+    "value": StringFieldValue {
+      "props": {
+        "value": "hello",
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 3`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringStartsWith {
+    "fieldId": "name",
+    "value": StringFieldValue {
+      "props": {
+        "value": "starts with",
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 4`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringEndsWith {
+    "fieldId": "name",
+    "value": StringFieldValue {
+      "props": {
+        "value": "ends with",
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 5`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): T {
+    "spec": NumberEqual {
+      "fieldId": "name",
+      "value": NumberFieldValue {
+        "props": {
+          "value": 1,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 6`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): T {
+    "spec": NumberEqual {
+      "fieldId": "name.nested",
+      "value": NumberFieldValue {
+        "props": {
+          "value": 1,
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 7`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringEqual {
+    "fieldId": "name",
+    "value": StringFieldValue {
+      "props": {
+        "value": "hello",
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 8`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): StringEqual {
+    "fieldId": "name",
+    "value": StringFieldValue {
+      "props": {
+        "value": "hello",
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 9`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): NumberGreaterThan {
+    "fieldId": "gt",
+    "value": NumberFieldValue {
+      "props": {
+        "value": 1,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 10`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): NumberGreaterThanOrEqual {
+    "fieldId": "gte",
+    "value": NumberFieldValue {
+      "props": {
+        "value": 1,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 11`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): NumberLessThan {
+    "fieldId": "lt",
+    "value": NumberFieldValue {
+      "props": {
+        "value": 1,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 12`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): NumberLessThanOrEqual {
+    "fieldId": "lte",
+    "value": NumberFieldValue {
+      "props": {
+        "value": 1,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 13`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateIsToday {
+    "fieldId": "is_today",
+    "value": DateFieldValue {
+      "props": {
+        "value": null,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 14`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): BoolIsTrue {
+    "fieldId": "field",
+    "value": BoolFieldValue {
+      "props": {
+        "value": true,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 15`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): BoolIsFalse {
+    "fieldId": "field",
+    "value": BoolFieldValue {
+      "props": {
+        "value": false,
+      },
+    },
+  },
+}
+`;

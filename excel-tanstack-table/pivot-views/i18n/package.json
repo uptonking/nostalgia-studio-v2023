@@ -1,0 +1,27 @@
+{
+  "name": "@datalking/pivot-i18n",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "keywords": [],
+  "author": "",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "prebuild": "pnpm run clean",
+    "build": "tsup",
+    "clean": "rimraf dist",
+    "coverage": "vitest run --coverage",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "zod-i18n-map": "^2.12.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.1",
+    "i18next": "^22.4.15",
+    "rimraf": "^5.0.0"
+  }
+}

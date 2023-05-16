@@ -1,0 +1,39 @@
+{
+  "name": "@datalking/pivot-core",
+  "version": "0.0.1",
+  "private": true,
+  "description": "",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "prebuild": "pnpm run clean",
+    "build": "tsup",
+    "clean": "rimraf dist",
+    "coverage": "vitest run --coverage",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "TZ=UTC vitest"
+  },
+  "dependencies": {
+    "@datalking/pivot-entity": "^0.0.1",
+    "array-move": "^4.0.0",
+    "date-fns": "^2.30.0",
+    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
+    "mime-types": "^2.1.35",
+    "oxide.ts": "^1.1.0",
+    "ts-mixer": "^6.0.3",
+    "zod": "^3.21.4",
+    "zod-i18n-map": "^2.12.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.194",
+    "@types/lodash-es": "^4.17.7",
+    "@types/mime-types": "^2.1.1",
+    "i18next": "^22.4.15",
+    "rimraf": "^5.0.0",
+    "type-fest": "^3.10.0"
+  }
+}

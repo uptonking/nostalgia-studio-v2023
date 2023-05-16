@@ -96,7 +96,7 @@ export function DynamicHeightTable({ data, columns, height = 240 }) {
       id='vTbFixedHeight'
       className='container'
       style={{ height }}
-    // style={{ height, width: 640 }}
+      // style={{ height, width: 640 }}
     >
       <div
         style={{

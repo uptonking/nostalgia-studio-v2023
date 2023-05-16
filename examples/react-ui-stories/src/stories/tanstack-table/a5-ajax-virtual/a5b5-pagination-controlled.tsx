@@ -102,7 +102,7 @@ export const PagingControlled = () => {
     queryKey: ['pages', { pageIndex, pageSize }],
     queryFn: () => fetchPagingData({ pageIndex, pageSize }),
     // 👇🏻 如果去掉，加载数据时就会出现空白
-    placeholderData: (prev) => prev
+    placeholderData: (prev) => prev,
   });
 
   const defaultData = React.useMemo(() => [], []);

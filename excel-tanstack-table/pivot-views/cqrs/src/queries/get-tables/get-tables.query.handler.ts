@@ -1,8 +1,8 @@
 import { type ITableQueryModel } from '@datalking/pivot-core';
 import type { IQueryHandler } from '@datalking/pivot-entity';
 
-import type { IGetTablesOutput } from './get-tables.query.interface.js';
-import type { GetTablesQuery } from './get-tables.query.js';
+import type { GetTablesQuery } from './get-tables.query';
+import type { IGetTablesOutput } from './get-tables.query.interface';
 
 export class GetTablesQueryHandler
   implements IQueryHandler<GetTablesQuery, IGetTablesOutput>

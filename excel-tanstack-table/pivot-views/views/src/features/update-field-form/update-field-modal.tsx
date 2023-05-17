@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { ContextModalProps } from '@datalking/pivot-ui';
 
 import { UpdateFieldForm } from './update-field-form';

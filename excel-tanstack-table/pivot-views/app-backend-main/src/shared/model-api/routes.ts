@@ -1,15 +1,16 @@
 import express from 'express';
 import { Model, ModelStatic, Order } from 'sequelize/types';
+
 import Connection, { EntityConfig } from '../db';
+import logger from '../logger';
 import { EnrichedRequest } from '../types';
 import {
   createOrUpdate,
   getIfExists,
-  gridPatch,
   gridDelete,
+  gridPatch,
   list,
 } from './controller';
-import logger from '../logger';
 
 export interface ModelApiConfig {
   userIdColumn: string;
@@ -106,7 +107,7 @@ export async function getUserRelatedRecord(
       throw new Error('Unauthorized access of another user data');
     } else {
       logger.warn(
-        `user accesing another user ${model.tableName} ${authId} != 
+        `user accesing another user ${model.tableName} ${authId} !=
         ${item[modelApiConfig.userIdColumn]}`,
       );
     }
@@ -144,8 +145,8 @@ export async function getHandler(
 /**
  * Get Listing
  *
- * Auto detects and filters table based on request.auth.userId === table.userId
- * Import and modify static modelApiConfig to customize
+ * - Auto detects and filters table based on `request.auth.userId === table.userId`
+ * - Import and modify static modelApiConfig to customize
  * @param req
  * @param res
  */

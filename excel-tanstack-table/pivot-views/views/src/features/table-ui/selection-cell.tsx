@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Box, Center, Checkbox, Text, useHover } from '@datalking/pivot-ui';
 import type { Row } from '@tanstack/react-table';
 

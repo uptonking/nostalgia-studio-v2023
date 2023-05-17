@@ -1,36 +1,39 @@
+import React from 'react';
+
+import _ from 'lodash';
+
+import {
+  PagedResult,
+  Subscription,
+  SubscriptionPlan,
+} from '@datalking/pivot-app-shared-lib';
+import { Delete, Edit, Search as SearchIcon } from '@mui/icons-material';
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+  Accordion,
+  AccordionActions,
+  AccordionDetails,
+  AccordionSummary,
   Alert,
   Box,
   Button,
   ButtonGroup,
+  debounce,
+  Dialog,
+  Divider,
   IconButton,
   InputAdornment,
   TextField,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
-  debounce,
-  Dialog,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  AccordionActions,
-  Divider,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
-import {
-  PagedResult,
-  Subscription,
-  SubscriptionPlan,
-} from '@datalking/pivot-app-shared-lib';
-import React from 'react';
+
 import { useGet } from '../../app';
 import AlertDialog, { ShowDialogProps } from '../../ui/AlertDialog';
 import { PagingProps } from '../Data';
-import _ from 'lodash';
-import { Delete, Edit, Search as SearchIcon } from '@mui/icons-material';
 import PlanEdit from './PlanEdit';
 import SubscriptionEdit from './Subscription';
 
@@ -68,7 +71,7 @@ export default function Subscriptions() {
     'plans',
     `subscriptionplan`,
   );
-  const refresh = React.useMemo(() => debounce(refetch, 500), [refetch]);
+  const refetchSubscription = React.useMemo(() => debounce(refetch, 500), [refetch]);
 
   const filters = ['all', 'active', 'expired', 'cancelled'];
 
@@ -119,7 +122,7 @@ export default function Subscriptions() {
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
     setSearchText(e.target.value);
-    refresh();
+    refetchSubscription();
   };
 
   const handleViewDetails = () => {

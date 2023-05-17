@@ -4,16 +4,16 @@ import { None, Option } from 'oxide.ts';
 import type { CompositeSpecification } from '@datalking/pivot-entity';
 import { and, ValueObject } from '@datalking/pivot-entity';
 
-import type { Field, FieldId } from '../field/index.js';
-import type { IFilterOrGroupList, IRootFilter } from '../filter/index.js';
-import { RootFilter } from '../filter/index.js';
-import { WithFilter } from '../specifications/index.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import { Calendar } from './calendar/index.js';
-import { Kanban } from './kanban/index.js';
-import type { ISortDirection } from './sort/sort.schema.js';
-import { Sorts } from './sort/sorts.js';
-import { WithDisplayType } from './specifications/display-type.specification.js';
+import type { Field, FieldId } from '../field/index';
+import type { IFilterOrGroupList, IRootFilter } from '../filter/index';
+import { RootFilter } from '../filter/index';
+import { WithFilter } from '../specifications/index';
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { Calendar } from './calendar/index';
+import { Kanban } from './kanban/index';
+import type { ISortDirection } from './sort/sort.schema';
+import { Sorts } from './sort/sorts';
+import { WithDisplayType } from './specifications/display-type.specification';
 import {
   WithCalendarField,
   WithKanbanField,
@@ -21,29 +21,32 @@ import {
   WithViewFieldsOrder,
   WithViewName,
   WithViewPinnedFields,
-} from './specifications/index.js';
+} from './specifications/index';
 import {
   WithFieldOption,
   WithFieldVisibility,
   WithFieldWidth,
-} from './specifications/view-field-option.specification.js';
-import { TreeView } from './tree-view/index.js';
-import type { IViewFieldOption } from './view-field-options.js';
-import { ViewFieldOptions } from './view-field-options.js';
-import { ViewFieldsOrder } from './view-fields-order.vo.js';
-import { ViewId } from './view-id.vo.js';
-import { ViewName } from './view-name.vo.js';
-import type { IViewPinnedFields } from './view-pinned-fields.js';
-import { ViewPinnedFields } from './view-pinned-fields.js';
-import { createViewInput_internal } from './view.schema.js';
+} from './specifications/view-field-option.specification';
+import { TreeView } from './tree-view/index';
+import type { IViewFieldOption } from './view-field-options';
+import { ViewFieldOptions } from './view-field-options';
+import { ViewFieldsOrder } from './view-fields-order.vo';
+import { ViewId } from './view-id.vo';
+import { ViewName } from './view-name.vo';
+import type { IViewPinnedFields } from './view-pinned-fields';
+import { ViewPinnedFields } from './view-pinned-fields';
+import { createViewInput_internal } from './view.schema';
 import type {
   ICreateViewInput_internal,
   IView,
   IViewDisplayType,
-} from './view.type.js';
+} from './view.type';
 
 export const defaultViewDiaplyType: IViewDisplayType = 'grid';
 
+/**
+ * crud for different view types
+ */
 export class View extends ValueObject<IView> {
   public get id() {
     return this.props.id;

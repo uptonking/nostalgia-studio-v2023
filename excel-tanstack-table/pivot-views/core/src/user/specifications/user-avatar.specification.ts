@@ -3,8 +3,8 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { User } from '../user.js';
-import type { IUserSpecVisitor } from './interface.js';
+import type { User } from '../user';
+import type { IUserSpecVisitor } from './interface';
 
 export class WithUserAvatar extends CompositeSpecification<
   User,

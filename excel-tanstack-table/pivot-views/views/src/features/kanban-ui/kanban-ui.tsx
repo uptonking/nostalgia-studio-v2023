@@ -1,12 +1,15 @@
+import React from 'react';
+
 import type { IKanbanField } from '@datalking/pivot-core';
 import { Box, Overlay } from '@datalking/pivot-ui';
-import loadable from '@loadable/component';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { useCurrentView } from '../../hooks/use-current-view';
+import { KanbanBoard } from './kanban-board';
 import { SelectKanbanField } from './select-kanban-field';
 
-const KanbanBoard = loadable(() => import('./kanban-board'));
+// import loadable from '@loadable/component';
+// const KanbanBoard = loadable(() => import('./kanban-board'));
 
 export const KanbanUI: React.FC = () => {
   const table = useCurrentTable();

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { ICollaboratorProfile } from '@datalking/pivot-core';
 import { Avatar, Group, Text } from '@datalking/pivot-ui';
 

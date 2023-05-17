@@ -1,14 +1,15 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { RecordFactory } from '@datalking/pivot-core';
 import { LoadingOverlay, useDebouncedValue } from '@datalking/pivot-ui';
-import loadable from '@loadable/component';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { useFetchRecords } from '../../hooks/use-fetch-records';
 import { LoadingTable } from './loading';
+import { EGOTable } from './table';
 
-const EGOTable = loadable(() => import('./table'));
+// import loadable from '@loadable/component';
+// const EGOTable = loadable(() => import('./table'));
 
 export const TableUI: React.FC = () => {
   const table = useCurrentTable();

@@ -1,5 +1,7 @@
 import '@emotion/react';
 
+import React from 'react';
+
 import { createStyles } from '@datalking/pivot-ui';
 
 export const useMenuStyle: ReturnType<typeof createStyles<'menu', object>> =

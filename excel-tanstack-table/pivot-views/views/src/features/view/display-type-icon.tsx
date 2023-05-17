@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { IViewDisplayType } from '@datalking/pivot-core';
 import type {
   DefaultMantineColor,

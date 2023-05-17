@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -7,6 +9,7 @@ import { Button, IconPlus } from '@datalking/pivot-ui';
 
 export const CreateTableAddFieldButton: React.FC = () => {
   const form = useFormContext<ICreateTableInput>();
+  // @ts-ignore
   const { append } = useFieldArray<ICreateTableInput>({
     name: 'schema',
   });

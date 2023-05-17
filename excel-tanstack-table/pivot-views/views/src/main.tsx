@@ -9,13 +9,13 @@ import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { createStore, PersistGate } from '@datalking/pivot-store';
 import { EgoUIProvider, Notifications } from '@datalking/pivot-ui';
 
-import App from './App';
+import { App } from './App';
 import { I18n } from './i18n/i18n';
 
 const { store, persist } = createStore();
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+const AppRoot = () => {
+  return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persist}>
         <I18n>
@@ -34,5 +34,11 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </I18n>
       </PersistGate>
     </Provider>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <AppRoot />
   </React.StrictMode>,
 );

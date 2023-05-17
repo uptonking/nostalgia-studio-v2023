@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
-import express from 'express';
 import axios from 'axios';
-import { config } from './config';
+import express from 'express';
+
 import { decodeToken } from './auth';
+import { config } from './config';
+import { logger } from './logger';
 import { getRoutesFromApp } from './server';
-import logger from './logger';
 
 export function endpointTracingMiddleware(
   req: express.Request,
@@ -20,6 +20,7 @@ export function endpointTracingMiddleware(
   ) {
     return next();
   }
+
   const token = req.headers.authorization?.replace('Bearer ', '') || '';
   if (config.auth.trace) {
     console.log('Token: ', token);
@@ -29,7 +30,7 @@ export function endpointTracingMiddleware(
   console.table({
     method: req.method,
     endpoint: req.originalUrl,
-    tokenOk: !!decoded,
+    tokenOk: Boolean(decoded),
     userId: decoded?.userId,
   });
   if (req.body) {

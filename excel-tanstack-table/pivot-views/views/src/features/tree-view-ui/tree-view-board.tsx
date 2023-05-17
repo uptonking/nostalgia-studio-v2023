@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { ITreeViewField } from '@datalking/pivot-core';
 import { useListTreeQuery } from '@datalking/pivot-store';
 

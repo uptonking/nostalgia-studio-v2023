@@ -5,10 +5,10 @@ import * as z from 'zod';
 
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { ClsStore } from '../../cls/cls.js';
-import { CreatedAtField } from '../field/created-at-field.js';
-import { FieldFactory } from '../field/field.factory.js';
-import { IdField } from '../field/id-field.js';
+import type { ClsStore } from '../../cls/cls';
+import { CreatedAtField } from '../field/created-at-field';
+import { FieldFactory } from '../field/field.factory';
+import { IdField } from '../field/id-field';
 import type {
   AggregateFieldType,
   Field,
@@ -16,7 +16,7 @@ import type {
   IFieldType,
   LookingFieldTypes,
   NoneSystemField,
-} from '../field/index.js';
+} from '../field/index';
 import {
   CreatedByField,
   createFieldSchema,
@@ -27,13 +27,13 @@ import {
   TreeField,
   UpdatedByField,
   WithoutField,
-} from '../field/index.js';
-import { UpdatedAtField } from '../field/updated-at-field.js';
-import { fieldNameSchema } from '../field/value-objects/field-name.schema.js';
-import { WithNewField } from '../specifications/table-field.specification.js';
-import type { ICalendarField } from '../view/calendar/index.js';
-import type { IKanbanField, ITreeViewField } from '../view/index.js';
-import { ViewFieldsOrder } from '../view/view-fields-order.vo.js';
+} from '../field/index';
+import { UpdatedAtField } from '../field/updated-at-field';
+import { fieldNameSchema } from '../field/value-objects/field-name.schema';
+import { WithNewField } from '../specifications/table-field.specification';
+import type { ICalendarField } from '../view/calendar/index';
+import type { IKanbanField, ITreeViewField } from '../view/index';
+import { ViewFieldsOrder } from '../view/view-fields-order.vo';
 
 function hasDuplicates(names: string[]): boolean {
   return names.length === new Set(names).size;

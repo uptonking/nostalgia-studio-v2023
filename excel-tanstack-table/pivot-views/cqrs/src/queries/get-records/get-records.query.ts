@@ -1,7 +1,7 @@
 import { IRootFilter } from '@datalking/pivot-core';
 import { Query } from '@datalking/pivot-entity';
 
-import type { IGetRecordsQuery } from './get-records.query.interface.js';
+import type { IGetRecordsQuery } from './get-records.query.interface';
 
 export class GetRecordsQuery extends Query implements IGetRecordsQuery {
   readonly tableId: string;

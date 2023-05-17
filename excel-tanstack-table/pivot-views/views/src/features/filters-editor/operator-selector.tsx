@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useTranslation } from 'react-i18next';
 
 import type { Field, IOperator } from '@datalking/pivot-core';

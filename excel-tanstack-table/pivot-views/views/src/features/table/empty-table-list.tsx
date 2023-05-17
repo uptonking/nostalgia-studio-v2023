@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useSetAtom } from 'jotai';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -10,7 +12,9 @@ import {
   Text,
 } from '@datalking/pivot-ui';
 
-import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom';
+import {
+  createTableFormDrawerOpened,
+} from '../create-table-form/drawer-opened.atom';
 
 export const EmptyTableList: React.FC = () => {
   const { t } = useTranslation();
@@ -30,6 +34,7 @@ export const EmptyTableList: React.FC = () => {
               i18nKey={'shortcut T'}
               t={t}
               values={{ shortcut: 'T' }}
+              // eslint-disable-next-line react/jsx-key, react/no-children-prop
               components={[<Code fz='md' children={null} />]}
             />
           </Text>

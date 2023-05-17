@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { ActionIcon, IconDots, Menu } from '@datalking/pivot-ui';
 
 interface IProps {

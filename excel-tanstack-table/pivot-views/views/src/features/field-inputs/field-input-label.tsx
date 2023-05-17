@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Group, Text } from '@datalking/pivot-ui';
 
 export const FieldInputLabel: React.FC<{ children: React.ReactNode }> = ({

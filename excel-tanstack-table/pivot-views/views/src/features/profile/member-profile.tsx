@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { IQueryUser } from '@datalking/pivot-core';
 import { SimpleGrid, Stack, TextInput, Title } from '@datalking/pivot-ui';
 

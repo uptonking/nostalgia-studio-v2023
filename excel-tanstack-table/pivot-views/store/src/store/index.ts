@@ -1,7 +1,8 @@
-import { configureStore } from '@reduxjs/toolkit';
 import { persistStore } from 'redux-persist';
-import { rootReducder } from '../reducers';
 
+import { configureStore } from '@reduxjs/toolkit';
+
+import { rootReducder } from '../reducers';
 import { attachment, authApi, userApi } from '../services';
 import { api } from '../services/api';
 
@@ -11,7 +12,7 @@ export const createStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false })
         .concat(api.middleware)
-        .concat(attachment.middleware)
+        // .concat(attachment.middleware)
         .concat(authApi.middleware)
         .concat(userApi.middleware),
     devTools: process.env.NODE_ENV !== 'production',
@@ -24,7 +25,7 @@ export const createStore = () => {
 
 export type AppStore = ReturnType<typeof createStore>['store'];
 
-export { PersistGate } from 'redux-persist/integration/react';
-
 export type RootState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];
+
+export { PersistGate } from 'redux-persist/integration/react';

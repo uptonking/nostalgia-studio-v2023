@@ -1,6 +1,5 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type { ICalendarField, IQueryRecords } from '@datalking/pivot-core';
 import { RecordFactory } from '@datalking/pivot-core';
 import { Calendar } from '@datalking/pivot-ui';

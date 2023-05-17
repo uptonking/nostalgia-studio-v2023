@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -8,7 +8,9 @@ import type { MultiSelectProps } from '@datalking/pivot-ui';
 import { Group, Loader, MultiSelect, useDisclosure } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
-import { useReferenceDisplayValues } from '../../hooks/use-reference-display-values';
+import {
+  useReferenceDisplayValues,
+} from '../../hooks/use-reference-display-values';
 import { RecordValue } from '../field-value/record-value';
 import { FieldIcon } from './field-Icon';
 

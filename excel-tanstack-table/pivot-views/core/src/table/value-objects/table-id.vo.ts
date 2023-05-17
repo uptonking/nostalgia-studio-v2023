@@ -4,7 +4,7 @@ import * as z from 'zod';
 
 import { NanoID } from '@datalking/pivot-entity';
 
-import { InvalidTableIdError } from '../table.errors.js';
+import { InvalidTableIdError } from '../table.errors';
 
 export const tableIdSchema = z.string().min(1);
 

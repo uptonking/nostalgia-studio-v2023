@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { format } from 'date-fns';
 
 import type { DateFieldTypes } from '@datalking/pivot-core';

@@ -2,17 +2,15 @@ import { Option } from 'oxide.ts';
 
 import { andOptions, ValueObject } from '@datalking/pivot-entity';
 
-import type { Field } from '../field/index.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import type { WithTableView } from './specifications/views.specification.js';
-import {
-  WithNewView,
-  WithoutView,
-} from './specifications/views.specification.js';
-import { View } from './view.js';
-import type { ICreateViewSchema } from './view.schema.js';
-import type { ICreateViewInput_internal } from './view.type.js';
+import type { Field } from '../field/index';
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import type { WithTableView } from './specifications/views.specification';
+import { WithNewView, WithoutView } from './specifications/views.specification';
+import { View } from './view';
+import type { ICreateViewSchema } from './view.schema';
+import type { ICreateViewInput_internal } from './view.type';
 
+/** manager of multi views */
 export class Views extends ValueObject<View[]> {
   get views() {
     return this.props;
@@ -59,11 +57,11 @@ export class Views extends ValueObject<View[]> {
     return andOptions(...specs);
   }
 
-  static create(views: ICreateViewInput_internal[] = []): Views {
-    return new this(views.map((v) => View.create(v)));
-  }
-
   getById(viewId?: string): Option<View> {
     return Option(this.views.find((v) => v.id.value === viewId));
+  }
+
+  static create(views: ICreateViewInput_internal[] = []): Views {
+    return new this(views.map((v) => View.create(v)));
   }
 }

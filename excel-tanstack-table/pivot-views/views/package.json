@@ -25,6 +25,7 @@
     "@emotion/styled": "^11.11.0",
     "@formkit/auto-animate": "^1.0.0-beta.6",
     "@hookform/resolvers": "^3.1.0",
+    "@linaria/core": "^4.2.9",
     "@loadable/component": "^5.15.3",
     "@tanstack/react-table": "8.7.9111",
     "@tanstack/react-virtual": "3.0.1111",
@@ -49,6 +50,8 @@
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
+    "@linaria/babel-preset": "^4.4.4",
+    "@linaria/webpack5-loader": "^4.1.16",
     "@types/loadable__component": "^5.13.4",
     "@types/lodash-es": "^4.17.7",
     "@types/react": "^18.2.6",

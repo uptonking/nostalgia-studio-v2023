@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Badge } from '@datalking/pivot-ui';
 
 export const RecordValue: React.FC<{ value: string }> = ({ value }) => {

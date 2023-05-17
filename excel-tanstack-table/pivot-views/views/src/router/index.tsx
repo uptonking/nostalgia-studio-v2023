@@ -1,14 +1,21 @@
+import React from 'react';
+
 import type { RouteObject } from 'react-router-dom';
+
 import { ProtectedRoute } from '../guard/protected-route';
-import loadable from '@loadable/component';
+import { Login } from '../pages/login';
 import { Members } from '../pages/members';
 import { MyProfile } from '../pages/my-profile';
 import { Record } from '../pages/record';
+import { Register } from '../pages/register';
+import { Root } from '../pages/root';
+import { Table } from '../pages/table';
 
-const Table = loadable(() => import('../pages/table'));
-const Root = loadable(() => import('../pages/root'));
-const Login = loadable(() => import('../pages/login'));
-const Register = loadable(() => import('../pages/register'));
+// import loadable from '@loadable/component';
+// const Table = loadable(() => import('../pages/table'));
+// const Root = loadable(() => import('../pages/root'));
+// const Login = loadable(() => import('../pages/login'));
+// const Register = loadable(() => import('../pages/register'));
 
 export const routes: RouteObject[] = [
   {

@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { Field } from '../field/index.js';
+import type { Field } from '../field/index';
 
 export const DEFAULT_WIDTH = 200;
 

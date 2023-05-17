@@ -3,8 +3,8 @@ import { z } from 'zod';
 
 import { OrderVO } from '@datalking/pivot-entity';
 
-import { WithViewsOrder } from './specifications/index.js';
-import type { View } from './view.js';
+import { WithViewsOrder } from './specifications/index';
+import type { View } from './view';
 
 export const viewsOrderSchema = z.string().array();
 

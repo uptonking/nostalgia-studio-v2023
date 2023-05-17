@@ -1,7 +1,6 @@
 {
   "name": "@datalking/pivot-cqrs",
   "version": "0.0.1",
-  "private": true,
   "description": "",
   "keywords": [],
   "author": "",

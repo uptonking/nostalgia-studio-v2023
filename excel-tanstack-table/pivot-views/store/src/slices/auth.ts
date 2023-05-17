@@ -1,5 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+
 import type { RootState } from '../reducers';
 import { authApi } from '../services';
 
@@ -52,4 +53,5 @@ export const { setToken, resetToken, logout } = authSlice.actions;
 
 export const authReducer = authSlice.reducer;
 
-export const getIsAuthorized = (state: RootState) => !!state.auth.token;
+/** check if auth token exists */
+export const getIsAuthorized = (state: RootState) => Boolean(state.auth.token);

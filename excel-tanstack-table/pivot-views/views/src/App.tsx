@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useSetAtom } from 'jotai';
 import { useSelector } from 'react-redux';
 import { useRoutes } from 'react-router-dom';
@@ -5,11 +7,14 @@ import { useRoutes } from 'react-router-dom';
 import { getIsAuthorized, useMeQuery } from '@datalking/pivot-store';
 import { useHotkeys } from '@datalking/pivot-ui';
 
-import { createTableFormDrawerOpened } from './features/create-table-form/drawer-opened.atom';
+import {
+  createTableFormDrawerOpened,
+} from './features/create-table-form/drawer-opened.atom';
 import { routes } from './router';
 
-function App() {
+export function App() {
   const isAuthorized = useSelector(getIsAuthorized);
+
   useMeQuery(undefined, {
     refetchOnMountOrArgChange: true,
     skip: !isAuthorized,

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { Field } from '@datalking/pivot-core';
 
 import { ReferenceFieldMenuItems } from './reference-field-menu-items';

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { SelectProps } from '@datalking/pivot-ui';
 import { Select } from '@datalking/pivot-ui';
 

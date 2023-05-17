@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useSwitchDisplayTypeMutation } from '@datalking/pivot-store';
 import { LoadingOverlay, useDebouncedValue } from '@datalking/pivot-ui';
 

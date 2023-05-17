@@ -1,5 +1,4 @@
-import type { ReactNode } from 'react';
-import React, { useMemo, useRef } from 'react';
+import React, { type ReactNode, useMemo, useRef } from 'react';
 
 import { useSetAtom } from 'jotai';
 
@@ -23,8 +22,12 @@ import { CSS } from '@dnd-kit/utilities';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
-import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom';
-import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom';
+import {
+  createRecordInitialValueAtom,
+} from '../create-record-form/create-record-initial-value.atom';
+import {
+  createRecordFormDrawerOpened,
+} from '../create-record-form/drawer-opened.atom';
 import type { SortableProps } from '../sortable.interface';
 import { SortableKanbanCard } from './kanban-card';
 import { KANBAN_DATE_STACKS } from './kanban-date.utils';

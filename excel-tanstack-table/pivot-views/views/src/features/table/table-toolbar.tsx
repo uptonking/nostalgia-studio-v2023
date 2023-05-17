@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 
@@ -13,7 +15,9 @@ import {
 
 import { useAppSelector } from '../../hooks';
 import { useFetchRecords } from '../../hooks/use-fetch-records';
-import { updateTableFormDrawerOpened } from '../update-table-form/drawer-opened.atom';
+import {
+  updateTableFormDrawerOpened,
+} from '../update-table-form/drawer-opened.atom';
 import { RecordsTotal } from './records-total';
 import { TableCreateNewRecordButton } from './table-create-new-record-button';
 import { TableFilterEditor } from './table-filter-editor';

@@ -1,6 +1,7 @@
 import { arrayMoveImmutable } from 'array-move';
 import { None, Option, Some } from 'oxide.ts';
-import { ValueObject } from './value-object.js';
+
+import { ValueObject } from './value-object';
 
 export class OrderVO extends ValueObject<string[]> {
   public get order() {

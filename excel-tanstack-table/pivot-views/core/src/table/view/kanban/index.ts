@@ -1,3 +1,3 @@
-export * from './kanban.js';
-export * from './kanban.schema.js';
-export * from './kanban.type.js';
+export * from './kanban';
+export * from './kanban.schema';
+export * from './kanban.type';

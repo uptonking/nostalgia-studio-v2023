@@ -1,6 +1,7 @@
 import type { Option } from 'oxide.ts';
-import type { ITableSpec } from './specifications/interface.js';
-import type { IQueryTable } from './table.js';
+
+import type { ITableSpec } from './specifications/interface';
+import type { IQueryTable } from './table';
 
 export interface ITableQueryModel {
   findOne(spec: ITableSpec): Promise<Option<IQueryTable>>;

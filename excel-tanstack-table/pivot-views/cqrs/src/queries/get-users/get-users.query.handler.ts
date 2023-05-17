@@ -1,8 +1,8 @@
 import { IUserQueryModel } from '@datalking/pivot-core';
 import type { IQueryHandler } from '@datalking/pivot-entity';
 
-import type { IGetUsersOutput } from './get-users.query.interface.js';
-import type { GetUsersQuery } from './get-users.query.js';
+import type { GetUsersQuery } from './get-users.query';
+import type { IGetUsersOutput } from './get-users.query.interface';
 
 export class GetUsersQueryHandler
   implements IQueryHandler<GetUsersQuery, IGetUsersOutput>

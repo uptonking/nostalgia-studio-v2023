@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 import { NanoID } from '@datalking/pivot-entity';
 
-import { InvalidUserIdError } from '../user.errors.js';
+import { InvalidUserIdError } from '../user.errors';
 
 export class UserId extends NanoID {
   public static USER_ID_PREFIX = 'usr';

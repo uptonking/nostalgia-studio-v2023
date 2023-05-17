@@ -3,6 +3,9 @@ import config from '../config';
 import logger from '../logger';
 import { checkMigrations } from './migrator';
 
+/**
+ * createDatabaseIfNotExists and sync models
+ */
 export async function checkDatabase(syncOverride?: boolean): Promise<boolean> {
   if (!Connection.initialized) {
     logger.error('DB Connection not initialized');
@@ -16,7 +19,7 @@ export async function checkDatabase(syncOverride?: boolean): Promise<boolean> {
     config.db.models = Connection.entities.map((m) => m.name);
     await Connection.db.authenticate();
     logger.info(
-      `Database: models: 
+      `Database: models:
         ${Connection.entities.map((a) => a.name).join(', ')}`,
     );
     if (syncModels) {

@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -8,7 +8,9 @@ import type { SelectProps } from '@datalking/pivot-ui';
 import { Group, Loader, Select } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
-import { useReferenceDisplayValues } from '../../hooks/use-reference-display-values';
+import {
+  useReferenceDisplayValues,
+} from '../../hooks/use-reference-display-values';
 import { RecordValue } from '../field-value/record-value';
 import { FieldIcon } from './field-Icon';
 

@@ -1,4 +1,4 @@
-import type { ID } from './id.vo.js';
+import type { ID } from './id-vo';
 
 export interface BaseEntityProps<TI extends ID> {
   id: TI;
@@ -13,6 +13,9 @@ export interface CreateEntityProps<TI extends ID, T> {
   updatedAt?: Date;
 }
 
+/**
+ * base model, with _id/_createdAt/_updatedAt
+ */
 export abstract class Entity<TI extends ID, EntityProps = any> {
   constructor({
     id,
@@ -21,10 +24,10 @@ export abstract class Entity<TI extends ID, EntityProps = any> {
     props,
   }: CreateEntityProps<TI, EntityProps>) {
     this._id = id;
+    this.props = props;
     const now = new Date();
     this._createdAt = createdAt || now;
     this._updatedAt = updatedAt || now;
-    this.props = props;
   }
 
   protected readonly props: EntityProps;

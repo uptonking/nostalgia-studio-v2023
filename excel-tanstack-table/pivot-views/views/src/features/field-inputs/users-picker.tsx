@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { uniq } from 'lodash-es';
 
 import { useGetUsersQuery } from '@datalking/pivot-store';

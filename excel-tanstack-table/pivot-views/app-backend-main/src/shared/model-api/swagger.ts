@@ -1,11 +1,12 @@
 import express from 'express';
+import fs from 'fs';
 import { Model, ModelStatic } from 'sequelize';
 import swaggerJsdoc, { OAS3Definition, Schema } from 'swagger-jsdoc';
-import config from '../config';
-import Connection, { EntityConfig } from '../db';
-import logger from '../logger';
+
+import { config } from '../config';
+import { Connection, EntityConfig } from '../db';
+import { logger } from '../logger';
 import { getRoutesFromApp } from '../server';
-import fs from 'fs';
 
 const conversions: Record<string, string> = {
   INTEGER: 'number',
@@ -153,8 +154,10 @@ export function getPaths(model: typeof Model) {
 }
 
 export function autoCompleteResponses(swaggerDoc: OAS3Definition) {
+  // eslint-disable-next-line guard-for-in
   for (const path in swaggerDoc.paths) {
     const def = swaggerDoc.paths[path];
+    // eslint-disable-next-line guard-for-in
     for (const method in def) {
       if (!def[method]) {
         def[method] = { summary: 'No summary' };
@@ -192,6 +195,7 @@ export function applyEntitiesToSwaggerDoc(
       swaggerDoc.paths = {};
     }
     const paths = getPaths(model);
+    // eslint-disable-next-line guard-for-in
     for (const p in paths) {
       const existingPath = swaggerDoc.paths[p];
       if (!existingPath) {
@@ -215,14 +219,14 @@ export function getParameters(method: string, path: string) {
   }
   return ['post', 'put', 'patch', 'delete'].includes(method)
     ? {
-        requestBody: {
-          content: {
-            'application/json': {
-              schema: {},
-            },
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {},
           },
         },
-      }
+      },
+    }
     : {};
 }
 
@@ -271,7 +275,6 @@ export function prepareSwagger(
   const swaggerProd = fs.existsSync('swagger.json')
     ? JSON.parse(fs.readFileSync('swagger.json', 'utf8'))
     : {};
-
   const swaggerDoc = { ...swaggerDev, ...swaggerProd };
 
   applyRoutes(app, swaggerDoc);

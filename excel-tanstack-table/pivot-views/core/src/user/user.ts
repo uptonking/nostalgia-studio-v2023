@@ -1,13 +1,14 @@
 import type { IQueryUser } from './user.type';
-import type { UserId } from './value-objects/index.js';
+import type { UserId } from './value-objects/index';
 
 export class User {
   public userId!: UserId;
   public username!: string;
-  public avatar?: string;
-  public email!: string;
   public password!: string;
+  public email!: string;
+  public avatar?: string;
 
+  /** create a new User object */
   static empty() {
     return new User();
   }

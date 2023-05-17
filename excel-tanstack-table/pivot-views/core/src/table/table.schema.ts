@@ -1,16 +1,17 @@
 import { z } from 'zod';
-import { querySchemaSchema } from './field/index.js';
+
+import { querySchemaSchema } from './field/index';
 import {
   createTableSchemaSchema,
   tableIdSchema,
   tableNameSchema,
-} from './value-objects/index.js';
-import { tableEmojiSchema } from './value-objects/table-emoji.vo.js';
+} from './value-objects/index';
+import { tableEmojiSchema } from './value-objects/table-emoji.vo';
 import {
   createViewInput_internal,
   queryViews,
   viewsOrderSchema,
-} from './view/index.js';
+} from './view/index';
 
 const createViewsSchema = z.array(createViewInput_internal).optional();
 export type ICreateViewsSchema = z.infer<typeof createViewsSchema>;

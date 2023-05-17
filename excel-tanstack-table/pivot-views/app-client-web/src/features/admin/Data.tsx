@@ -54,14 +54,14 @@ export default function Data() {
     model,
     `${model}`,
     {
-      enabled: !!model,
+      enabled: Boolean(model),
     },
     {
       ...paging,
       search: searchText,
     },
   );
-  const refresh = React.useMemo(() => debounce(refetch, 500), [refetch]);
+  const refetchModel = React.useMemo(() => debounce(refetch, 500), [refetch]);
   const modelPlural = !model
     ? ''
     : _.capitalize(model) + (model?.endsWith('s') ? '' : 's');
@@ -77,7 +77,7 @@ export default function Data() {
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
     setSearchText(e.target.value);
-    refresh();
+    refetchModel();
   };
 
   const handleDelete = () => {
@@ -99,7 +99,7 @@ export default function Data() {
     if (response.data?.deleted > 0) {
       dispatch(notify('Deleted ' + response.data.deleted + ' item(s)'));
       setAlert({ open: false });
-      refresh();
+      refetchModel();
       return;
     }
     dispatch(notify('Failed to delete: ' + response.statusText));
@@ -107,7 +107,7 @@ export default function Data() {
 
   const handlePaging = (newValues: Partial<PagingProps>) => {
     setPaging(newValues as PagingProps);
-    refresh();
+    refetchModel();
   };
 
   return (

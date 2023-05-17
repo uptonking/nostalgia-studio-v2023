@@ -1,4 +1,4 @@
-import { useLayoutEffect, useMemo, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
@@ -20,7 +20,7 @@ export const CustomDisplayFieldsPicker: React.FC<IForeignTablePickerProps> = (
     { skip: !foreignTableId },
   );
   const table = useMemo(
-    () => (data ? TableFactory.fromQuery(data) : undefined),
+    () => (data ? TableFactory.fromQuery(data as any) : undefined),
     [data],
   );
   const displayFields =

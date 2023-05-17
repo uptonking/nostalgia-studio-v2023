@@ -30,7 +30,7 @@ export interface BackendOptions {
 }
 
 /**
- * connect-db + config-express + routes
+ * connect-db + config-express + routes + swagger-api-docs
  */
 export function createBackendApp(
   { checks, trace }: BackendOptions = { checks: true },
@@ -46,13 +46,13 @@ export function createBackendApp(
     activateAxiosTrace();
   }
 
-  // Startup
+  // db init; sequelize model class is created on import, before db init
   Connection.init();
   const promises = [
     checks
       ? checkDatabase()
-          .then(async (ok) => (ok ? await loadSettingsAsync() : ok))
-          .then(async (ok) => (ok ? await authProviderAutoConfigure() : ok))
+        .then(async (ok) => (ok ? await loadSettingsAsync() : ok))
+        .then(async (ok) => (ok ? await authProviderAutoConfigure() : ok))
       : Promise.resolve(true),
   ];
 
@@ -60,10 +60,10 @@ export function createBackendApp(
   app.use(cors());
   app.use(express.json({ limit: config.jsonLimit }));
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(endpointTracingMiddleware);
+  app.use(endpointTracingMiddleware); // trace post/put/delete
   app.use(modelAuthMiddleware);
 
-  // Add Routes
+  // Add Routes based on db model
   registerModelApiRoutes(Connection.entities, router);
   app.use(router);
 

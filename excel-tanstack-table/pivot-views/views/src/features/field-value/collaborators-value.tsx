@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Avatar, Center, Text } from '@datalking/pivot-ui';
 
 interface IProps {

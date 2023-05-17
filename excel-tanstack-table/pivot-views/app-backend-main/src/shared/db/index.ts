@@ -78,11 +78,11 @@ export class Connection {
         ssl: Boolean(config.db.ssl),
         dialectOptions: config.db.ssl
           ? {
-              ssl: {
-                require: true,
-                rejectUnauthorized: false,
-              },
-            }
+            ssl: {
+              require: true,
+              rejectUnauthorized: false,
+            },
+          }
           : {},
       });
 
@@ -212,7 +212,9 @@ export function addModel<T extends object>(
   publicWrite?: boolean,
   onChanges?: (source?: string, model?: Model<T>) => Promise<void> | void,
 ): ModelStatic<Model<T, T>> {
-  const model = class extends Model {};
+  /** 👇🏻 db table model */
+  const model = class extends Model { };
+
   const cfg: EntityConfig = {
     name,
     attributes,
@@ -225,8 +227,9 @@ export function addModel<T extends object>(
   };
   Connection.entities.push(cfg);
   if (config.db.trace) {
-    logger.info(`Registered model ${name}`);
+    logger.info(`Created and Registered model ${name}`);
   }
+
   return model;
 }
 

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useSelector } from 'react-redux';
 import { createSearchParams, Navigate, useLocation } from 'react-router-dom';
 
@@ -6,9 +8,10 @@ import { getIsAuthorized } from '@datalking/pivot-store';
 export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const isAutorhized = useSelector(getIsAuthorized);
+  const isAuthorized = useSelector(getIsAuthorized);
   const location = useLocation();
-  if (!isAutorhized) {
+
+  if (!isAuthorized) {
     return (
       <Navigate
         to={{

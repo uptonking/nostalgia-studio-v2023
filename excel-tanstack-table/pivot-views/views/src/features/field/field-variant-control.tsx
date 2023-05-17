@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { UseFormReturn } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -14,10 +16,14 @@ import { RATING_MAX, RATING_MAX_DEFAULT } from '@datalking/pivot-core';
 import { NumberInput, Switch, TextInput } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
-import { CustomDisplayFieldsPicker } from '../field-inputs/custom-display-fields-picker';
+import {
+  CustomDisplayFieldsPicker,
+} from '../field-inputs/custom-display-fields-picker';
 import { FieldInputLabel } from '../field-inputs/field-input-label';
 import { FieldPicker } from '../field-inputs/field-picker';
-import type { IForeignTablePickerProps } from '../field-inputs/foreign-fields-picker';
+import type {
+  IForeignTablePickerProps,
+} from '../field-inputs/foreign-fields-picker';
 import { ForeignFieldsPicker } from '../field-inputs/foreign-fields-picker';
 import { SelectFieldControl } from '../field-inputs/select-field-control';
 import { TablePicker } from '../table/table-picker';

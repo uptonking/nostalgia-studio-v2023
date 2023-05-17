@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Badge, Group } from '@datalking/pivot-ui';
 
 export const ReferenceValue: React.FC<{

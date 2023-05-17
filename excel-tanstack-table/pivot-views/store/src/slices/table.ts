@@ -1,7 +1,9 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createSelector, createSlice } from '@reduxjs/toolkit';
 import 'immer';
 import 'reselect';
+
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
+
 import type { RootState } from '../reducers';
 import { tableApi } from '../services';
 

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { isNumber } from 'lodash-es';
 
 import type { AutoIncrementField } from '@datalking/pivot-core';

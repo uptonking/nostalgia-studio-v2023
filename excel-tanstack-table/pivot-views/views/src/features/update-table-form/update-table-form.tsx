@@ -1,3 +1,5 @@
+import React from 'react';
+
 import EmojiPicker, { Emoji } from 'emoji-picker-react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

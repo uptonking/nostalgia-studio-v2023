@@ -1,5 +1,6 @@
 import { customAlphabet } from 'nanoid';
-import { ID } from './id.vo.js';
+
+import { ID } from './id-vo';
 
 export abstract class NanoID extends ID {
   private static ALPHABETS = '0123456789abcdefghijklmnopqrstuvwxyz';

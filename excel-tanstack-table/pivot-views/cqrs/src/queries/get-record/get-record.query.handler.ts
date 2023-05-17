@@ -4,8 +4,8 @@ import {
 } from '@datalking/pivot-core';
 import type { IQueryHandler } from '@datalking/pivot-entity';
 
-import type { IGetRecordOutput } from './get-record.query.interface.js';
-import type { GetRecordQuery } from './get-record.query.js';
+import type { GetRecordQuery } from './get-record.query';
+import type { IGetRecordOutput } from './get-record.query.interface';
 
 export class GetRecordQueryHandler
   implements IQueryHandler<GetRecordQuery, IGetRecordOutput>

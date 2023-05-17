@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useSetAtom } from 'jotai';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -21,7 +23,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { useCurrentView } from '../../hooks/use-current-view';
-import { CustomDisplayFieldsPicker } from '../field-inputs/custom-display-fields-picker';
+import {
+  CustomDisplayFieldsPicker,
+} from '../field-inputs/custom-display-fields-picker';
 import { FieldInputLabel } from '../field-inputs/field-input-label';
 import { treeStepZeroAtom } from './tree-step.atom';
 

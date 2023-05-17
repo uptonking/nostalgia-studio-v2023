@@ -1,6 +1,7 @@
 import type { Option } from 'oxide.ts';
-import type { ITableSpec } from './specifications/interface.js';
-import { type Table } from './table.js';
+
+import type { ITableSpec } from './specifications/interface';
+import { type Table } from './table';
 
 export interface ITableRepository {
   findOneById(id: string): Promise<Option<Table>>;

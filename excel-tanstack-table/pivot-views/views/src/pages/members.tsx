@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Box, Container } from '@datalking/pivot-ui';
 
 import { Header } from '../features/header/header';

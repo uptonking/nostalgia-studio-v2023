@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { IMutateOptionSchema } from '@datalking/pivot-core';
 import { OptionColor, optionColorOrder } from '@datalking/pivot-core';
 import {

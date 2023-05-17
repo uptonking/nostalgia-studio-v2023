@@ -1,8 +1,10 @@
 import type { CSSProperties } from 'react';
 import React from 'react';
+
 import type { AnimateLayoutChanges } from '@dnd-kit/sortable';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+
 import type { Props } from './tree-view-item';
 import { TreeItem } from './tree-view-item';
 

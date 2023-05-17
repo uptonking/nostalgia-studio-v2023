@@ -1,3 +1,5 @@
+import React from 'react';
+
 import EmojiPicker, { Emoji } from 'emoji-picker-react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -56,7 +58,7 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
   const { t } = useTranslation();
 
-  const displayFields = form.watch('schema').filter((s) => !!s?.display);
+  const displayFields = form.watch('schema').filter((s) => Boolean(s?.display));
 
   return (
     <form onSubmit={onSubmit}>
@@ -139,9 +141,9 @@ export const CreateTableForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
 
       <Space h='xs' />
 
-      {!!displayFields.length && (
+      {Boolean(displayFields.length) && (
         <>
-          <DisplayFields displayFields={displayFields} />
+          <DisplayFields displayFields={displayFields as any} />
           <Space h='xs' />
         </>
       )}

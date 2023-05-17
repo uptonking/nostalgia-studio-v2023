@@ -1,5 +1,5 @@
-import './setup-zod.js';
+import './setup-zod';
 
-export * from './cls/cls.js';
-export * from './table/index.js';
-export * from './user/index.js';
+export * from './cls/cls';
+export * from './table/index';
+export * from './user/index';

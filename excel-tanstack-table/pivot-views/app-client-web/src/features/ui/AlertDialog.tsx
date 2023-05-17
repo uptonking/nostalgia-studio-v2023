@@ -1,10 +1,12 @@
+import React from 'react';
+
 import {
+  Button,
   Dialog,
-  DialogTitle,
+  DialogActions,
   DialogContent,
   DialogContentText,
-  DialogActions,
-  Button,
+  DialogTitle,
 } from '@mui/material';
 
 export interface ShowDialogProps {
@@ -17,7 +19,7 @@ export interface ShowDialogProps {
   alert?: boolean;
 }
 
-export default function ConfirmDialog({
+export function ConfirmDialog({
   message,
   title,
   open,
@@ -47,3 +49,5 @@ export default function ConfirmDialog({
     </Dialog>
   );
 }
+
+export default ConfirmDialog

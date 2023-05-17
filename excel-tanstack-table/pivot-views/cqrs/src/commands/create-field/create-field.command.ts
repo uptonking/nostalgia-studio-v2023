@@ -2,7 +2,9 @@ import { ICreateFieldSchema } from '@datalking/pivot-core';
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ICreateFieldCommandInput } from './create-field.command.interface.js';
+import type {
+  ICreateFieldCommandInput,
+} from './create-field.command.interface';
 
 export class CreateFieldCommand
   extends Command

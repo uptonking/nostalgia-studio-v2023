@@ -1,5 +1,7 @@
 import 'dayjs/locale/zh-cn';
 
+import React from 'react';
+
 import { DatesProvider } from '@datalking/pivot-ui';
 
 import i18n from './client';

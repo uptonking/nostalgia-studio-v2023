@@ -1,29 +1,8 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Alert,
-  Box,
-  Button,
-  ButtonGroup,
-  IconButton,
-  InputAdornment,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-  debounce,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from '@mui/material';
-import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
-import { PagedResult, User } from '@datalking/pivot-app-shared-lib';
 import React from 'react';
-import { useGet } from '../../app';
-import AlertDialog, { ShowDialogProps } from '../../ui/AlertDialog';
-import { PagingProps } from '../Data';
+
 import _ from 'lodash';
+
+import type { PagedResult, User } from '@datalking/pivot-app-shared-lib';
 import {
   Edit,
   EditAttributes,
@@ -32,8 +11,29 @@ import {
   Person,
   Search as SearchIcon,
 } from '@mui/icons-material';
+import {
+  Alert,
+  Box,
+  Button,
+  ButtonGroup,
+  debounce,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  InputAdornment,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
+import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
+
+import { useGet } from '../../app';
+import AlertDialog, { ShowDialogProps } from '../../ui/AlertDialog';
+import { PagingProps } from '../Data';
 import UserDetail from './Detail';
-import { title } from 'process';
 
 /**
  *
@@ -41,7 +41,7 @@ import { title } from 'process';
  * maybe we can enrich generic editor via props, think
  * - Auth0 Roles, Password stuff
  */
-export default function Users() {
+export function Users() {
   const [tab, setTab] = React.useState('all');
   const [searchText, setSearchText] = React.useState('');
   const [selectedItems, setSelectedItems] = React.useState<(string | number)[]>(
@@ -66,7 +66,7 @@ export default function Users() {
       search: searchText,
     },
   );
-  const refresh = React.useMemo(() => debounce(refetch, 500), [refetch]);
+  const refetchUsers = React.useMemo(() => debounce(refetch, 500), [refetch]);
 
   const columns: GridColDef[] = [
     {
@@ -131,7 +131,7 @@ export default function Users() {
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
     setSearchText(e.target.value);
-    refresh();
+    refetchUsers();
   };
 
   const handleViewDetails = () => {
@@ -203,7 +203,8 @@ export default function Users() {
           columns={columns}
           pageSize={paging.limit}
           page={paging.page}
-          rowsPerPageOptions={[5]}
+          rowsPerPageOptions={[10, 20, 100]}
+          // rowsPerPageOptions={[10, 20]} // not work
           checkboxSelection
           loading={isLoading}
           experimentalFeatures={{ newEditingApi: true }}
@@ -241,3 +242,5 @@ export default function Users() {
     </Box>
   );
 }
+
+export default Users

@@ -7,8 +7,8 @@ import {
 } from '@datalking/pivot-core';
 import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { ICreateTableOutput } from './create-table.command.interface.js';
-import type { CreateTableCommand } from './create-table.command.js';
+import type { CreateTableCommand } from './create-table.command';
+import type { ICreateTableOutput } from './create-table.command.interface';
 
 type ICreateTableCommandHandler = ICommandHandler<
   CreateTableCommand,

@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 
 import { identity } from 'lodash-es';
 
@@ -59,7 +59,7 @@ export const ForeignFieldsPicker: React.FC<IForeignTablePickerProps> = ({
   );
   const [state, handlers] = useListState<string>(props.value);
 
-  const table = data ? TableFactory.fromQuery(data) : undefined;
+  const table = data ? TableFactory.fromQuery(data as any) : undefined;
 
   const items =
     table?.schema?.fields.filter(fieldFilter ?? identity).map((f, index) => ({

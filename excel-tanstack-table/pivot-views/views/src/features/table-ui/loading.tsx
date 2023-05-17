@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Skeleton, Stack } from '@datalking/pivot-ui';
 
 export const LoadingTable: React.FC = () => {

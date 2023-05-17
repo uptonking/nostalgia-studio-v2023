@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useResetAtom } from 'jotai/utils';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +26,7 @@ export const FieldCommonControl: React.FC<IProps> = ({ index }) => {
   const form = useFormContext<ICreateTableInput>();
   const type = form.watch(`schema.${index}.type`);
 
+  // @ts-expect-error fix-types
   const { remove } = useFieldArray<ICreateTableInput>({
     name: 'schema',
   });

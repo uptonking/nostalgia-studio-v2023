@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Group, Square, Text } from '@datalking/pivot-ui';
 
 export const ColorValue: React.FC<{ value: string }> = ({ value }) => {

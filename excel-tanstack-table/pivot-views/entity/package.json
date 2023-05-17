@@ -1,9 +1,7 @@
 {
   "name": "@datalking/pivot-entity",
   "version": "0.0.1",
-  "private": true,
   "description": "",
-  "keywords": [],
   "author": "",
   "type": "module",
   "main": "src/index.ts",

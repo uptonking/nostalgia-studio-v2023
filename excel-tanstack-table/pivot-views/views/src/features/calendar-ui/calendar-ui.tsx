@@ -1,12 +1,15 @@
+import React from 'react';
+
 import type { ICalendarField } from '@datalking/pivot-core';
 import { Box, Overlay } from '@datalking/pivot-ui';
-import loadable from '@loadable/component';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { useCurrentView } from '../../hooks/use-current-view';
+import { CalendarBoard } from './calendar-board';
 import { SelectCalendarField } from './select-calendar-field';
 
-const CalendarBoard = loadable(() => import('./calendar-board'));
+// import loadable from '@loadable/component';
+// const CalendarBoard = loadable(() => import('./calendar-board'));
 
 export const CalendarUI: React.FC = () => {
   const table = useCurrentTable();

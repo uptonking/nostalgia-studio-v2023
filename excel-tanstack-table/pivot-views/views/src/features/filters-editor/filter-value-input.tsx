@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { castArray } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 
@@ -138,7 +140,7 @@ export const FilterValueInput: React.FC<IProps> = ({
         size='xs'
         variant='filled'
         type='range'
-        value={(value as IDateRangeFieldValue) ?? undefined}
+        value={(value as any) ?? undefined}
         onChange={(range) =>
           onChange([
             range.at(0)?.toISOString() ?? null,

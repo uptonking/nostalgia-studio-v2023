@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { t } from 'i18next';
 
 import type { Field } from '@datalking/pivot-core';

@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
 import { useSetAtom } from 'jotai';
@@ -12,7 +12,6 @@ import {
   setCurrentViewId,
   useGetTableQuery,
 } from '@datalking/pivot-store';
-import type { TRPCError } from '@datalking/pivot-trpc';
 import {
   Alert,
   Box,
@@ -25,15 +24,23 @@ import {
 
 import { CurrentTableContext } from '../context/current-table';
 import { CurrentViewContext } from '../context/current-view';
-import { CreateRecordFormDrawer } from '../features/create-record-form/create-record-form-drawer';
-import { createRecordFormDrawerOpened } from '../features/create-record-form/drawer-opened.atom';
+import {
+  CreateRecordFormDrawer,
+} from '../features/create-record-form/create-record-form-drawer';
+import {
+  createRecordFormDrawerOpened,
+} from '../features/create-record-form/drawer-opened.atom';
 import { TableLoading } from '../features/loading';
-import { RecordSelectionDialog } from '../features/record-selection/record-selection-dialog';
+import {
+  RecordSelectionDialog,
+} from '../features/record-selection/record-selection-dialog';
 import { TableToolbar } from '../features/table/table-toolbar';
 import { ViewDisplay } from '../features/table/view-display';
 import { ViewsListDrawer } from '../features/views/views-list-drawer';
 import { useAppDispatch } from '../hooks';
 import { modals } from '../modals';
+
+type TRPCError = any;
 
 export const Table = () => {
   const { tableId, viewId } = useParams();
@@ -88,7 +95,7 @@ export const Table = () => {
     navigate('/', { replace: true });
     return null;
   }
-  const table = TableFactory.fromQuery(data);
+  const table = TableFactory.fromQuery(data as any);
   const view = table.mustGetView(viewId);
 
   return (

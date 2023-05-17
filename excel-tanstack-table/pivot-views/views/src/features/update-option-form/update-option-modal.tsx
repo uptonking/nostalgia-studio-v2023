@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { IMutateOptionSchema, SelectField } from '@datalking/pivot-core';
 import type { ContextModalProps } from '@datalking/pivot-ui';
 

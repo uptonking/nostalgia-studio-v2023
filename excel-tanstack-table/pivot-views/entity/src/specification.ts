@@ -14,6 +14,7 @@ export interface ISpecification<
   accept(v: V): Result<void, string>;
 }
 
+/** logical operator factory */
 export abstract class CompositeSpecification<
   T = any,
   V extends ISpecVisitor = ISpecVisitor,

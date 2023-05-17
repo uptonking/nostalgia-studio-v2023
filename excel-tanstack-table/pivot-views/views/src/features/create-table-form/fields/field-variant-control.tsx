@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { Controller, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -9,7 +11,9 @@ import {
 import type { ICreateTableInput } from '@datalking/pivot-cqrs';
 import { NumberInput, Switch, TextInput } from '@datalking/pivot-ui';
 
-import { CustomDisplayFieldsPicker } from '../../field-inputs/custom-display-fields-picker';
+import {
+  CustomDisplayFieldsPicker,
+} from '../../field-inputs/custom-display-fields-picker';
 import { FieldInputLabel } from '../../field-inputs/field-input-label';
 import { FieldPicker } from '../../field-inputs/field-picker';
 import type { FieldBase } from '../../field-inputs/field-picker.type';

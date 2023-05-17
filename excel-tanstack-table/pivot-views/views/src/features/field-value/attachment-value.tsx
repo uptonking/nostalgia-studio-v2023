@@ -1,3 +1,5 @@
+import React from 'react';
+
 import type { IAttachmentItem } from '@datalking/pivot-core';
 import { getExtension, isImage } from '@datalking/pivot-core';
 import type { DefaultExtensionType } from '@datalking/pivot-ui';

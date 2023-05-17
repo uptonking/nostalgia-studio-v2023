@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
 import { Emoji } from 'emoji-picker-react';
@@ -21,12 +21,16 @@ import {
 import { CurrentTableContext } from '../../context/current-table';
 import { useAppSelector } from '../../hooks';
 import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers';
-import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom';
-import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-drawer';
+import {
+  createTableFormDrawerOpened,
+} from '../create-table-form/drawer-opened.atom';
+import {
+  UpdateTableFormDrawer,
+} from '../update-table-form/update-table-form-drawer';
 import { EmptyTableList } from './empty-table-list';
 import { TableMenuDropdown } from './table-menu-dropdown';
 
-export const TableList: React.FC = () => {
+export const TableTitleList: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { tableId } = useParams();
@@ -108,7 +112,7 @@ export const TableList: React.FC = () => {
               </Tabs.Tab>
             ))}
         </Tabs>
-        {!!(isSuccess && data.ids.length) && (
+        {Boolean(isSuccess && data.ids.length) && (
           <ActionIcon
             variant='subtle'
             onClick={(e) => {

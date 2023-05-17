@@ -1,6 +1,7 @@
 import type { TFunction } from 'i18next';
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 declare const TERMINAL_BRAND: unique symbol;
+
 export declare class BrandedTerminal {
   private [TERMINAL_BRAND]?;
 }
@@ -65,9 +66,9 @@ export declare type StringIfNever<C> = TypeIfNever<C, string>;
 
 export interface ClsStore {
   [key: symbol]: any;
+  t: TFunction;
   requestId: string;
   lang: 'en' | 'zh-CN';
-  t: TFunction;
   user: {
     userId: string;
   };

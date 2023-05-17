@@ -108,7 +108,7 @@ export function parseDatabaseConfig(
 export function getConfig(): Config {
   dotenv.config({});
 
-  // const production = !['development', 'test'].includes(
+  // const isProd = !['development', 'test'].includes(
   //   env.NODE_ENV?.toLowerCase() || '',
   // );
   const isProd = env.NODE_ENV?.toLowerCase() === 'production';
@@ -149,7 +149,8 @@ export function getConfig(): Config {
       origin: env.CORS_ORIGIN || '*',
     },
     db: {
-      trace: false,
+      // trace: false,
+      trace: true,
       sync: true,
       force: false,
       alter: true,

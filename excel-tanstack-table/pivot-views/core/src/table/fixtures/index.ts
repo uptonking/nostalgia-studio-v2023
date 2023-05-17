@@ -1,1 +1,1 @@
-export * from './table.fixture.js';
+export * from './table.fixture';

@@ -9,26 +9,25 @@ import type {
   IQuerySchemaSchema,
   IReorderOptionsSchema,
   IUpdateFieldSchema,
-} from './field/index.js';
-import { SelectField } from './field/index.js';
-import type { IRootFilter } from './filter/index.js';
-import type {
-  ICreateOptionSchema,
-  IUpdateOptionSchema,
-} from './option/index.js';
-import type { Record } from './record/index.js';
-import { WithRecordTableId } from './record/index.js';
-import { RecordFactory } from './record/record.factory.js';
-import type { IMutateRecordValueSchema } from './record/record.schema.js';
-import { createRecordInputs } from './record/record.utils.js';
-import { WithRecordValues } from './record/specifications/record-values.specification.js';
-import { WithTableEmoji, WithTableName } from './specifications/index.js';
-import type { TableCompositeSpecificaiton } from './specifications/interface.js';
-import type { IUpdateTableSchema } from './table.schema.js';
-import type { TableId } from './value-objects/index.js';
-import { TableSchema } from './value-objects/index.js';
-import type { TableEmoji } from './value-objects/table-emoji.vo.js';
-import type { TableName } from './value-objects/table-name.vo.js';
+} from './field/index';
+import { SelectField } from './field/index';
+import type { IRootFilter } from './filter/index';
+import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index';
+import type { Record } from './record/index';
+import { WithRecordTableId } from './record/index';
+import { RecordFactory } from './record/record.factory';
+import type { IMutateRecordValueSchema } from './record/record.schema';
+import { createRecordInputs } from './record/record.utils';
+import {
+  WithRecordValues,
+} from './record/specifications/record-values.specification';
+import { WithTableEmoji, WithTableName } from './specifications/index';
+import type { TableCompositeSpecificaiton } from './specifications/interface';
+import type { IUpdateTableSchema } from './table.schema';
+import type { TableId } from './value-objects/index';
+import { TableSchema } from './value-objects/index';
+import type { TableEmoji } from './value-objects/table-emoji.vo';
+import type { TableName } from './value-objects/table-name.vo';
 import type {
   ICreateViewSchema,
   IMoveFieldSchema,
@@ -45,7 +44,7 @@ import type {
   ISwitchDisplayTypeSchema,
   IUpdateViewNameSchema,
   ViewFieldsOrder,
-} from './view/index.js';
+} from './view/index';
 import {
   defaultViewDiaplyType,
   Sorts,
@@ -55,11 +54,11 @@ import {
   WithTableView,
   WithViewFieldsOrder,
   WithViewsOrder,
-} from './view/index.js';
-import { WithFilter } from './view/specifications/filters.specificaiton.js';
-import { WithSorts } from './view/specifications/sorts.specification.js';
-import { ViewId } from './view/view-id.vo.js';
-import { Views } from './view/views.js';
+} from './view/index';
+import { WithFilter } from './view/specifications/filters.specificaiton';
+import { WithSorts } from './view/specifications/sorts.specification';
+import { ViewId } from './view/view-id.vo';
+import { Views } from './view/views';
 
 /**
  * QueryTable
@@ -73,6 +72,9 @@ export interface IQueryTable {
   viewsOrder?: string[];
 }
 
+/**
+ * table has id/name + schema + views
+ */
 export class Table {
   public id!: TableId;
   public name!: TableName;
@@ -81,8 +83,7 @@ export class Table {
   public views: Views = new Views([]);
   public viewsOrder: ViewsOrder = ViewsOrder.empty();
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private constructor() {}
+  private constructor() { }
 
   static empty() {
     return new Table();

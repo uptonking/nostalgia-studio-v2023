@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 
 import { useAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
@@ -18,6 +18,7 @@ import { FieldAccordionItem } from './fields/field-accordion-item';
 
 export const CreateTableFormSchema: React.FC = () => {
   const form = useFormContext<ICreateTableInput>();
+  // @ts-ignore
   const { move } = useFieldArray<ICreateTableInput>({
     name: 'schema',
   });

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useTranslation } from 'react-i18next';
 
 import { getCurrentTableRecordsTotal } from '@datalking/pivot-store';

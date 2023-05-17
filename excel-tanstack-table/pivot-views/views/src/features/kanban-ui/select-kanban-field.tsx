@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useAtomValue } from 'jotai';
 
 import { Box } from '@datalking/pivot-ui';

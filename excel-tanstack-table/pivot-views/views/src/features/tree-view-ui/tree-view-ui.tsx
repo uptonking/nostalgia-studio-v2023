@@ -1,12 +1,15 @@
+import React from 'react';
+
 import type { ITreeViewField } from '@datalking/pivot-core';
 import { Box, Overlay } from '@datalking/pivot-ui';
-import loadable from '@loadable/component';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { useCurrentView } from '../../hooks/use-current-view';
 import { SelectTreeViewField } from './select-tree-view-field';
+import { TreeViewBoard } from './tree-view-board';
 
-const TreeViewBoard = loadable(() => import('./tree-view-board'));
+// import loadable from '@loadable/component';
+// const TreeViewBoard = loadable(() => import('./tree-view-board'));
 
 export const TreeViewUI: React.FC = () => {
   const table = useCurrentTable();

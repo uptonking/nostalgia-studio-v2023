@@ -1,19 +1,20 @@
 import { z } from 'zod';
-import { fieldIdSchema } from '../field/value-objects/field-id.schema.js';
-import { fieldNameSchema } from '../field/value-objects/field-name.schema.js';
-import { rootFilter } from '../filter/filter.js';
-import { calendarSchema } from './calendar/index.js';
-import { kanbanSchema } from './kanban/index.js';
-import { sortsSchema } from './sort/sort.schema.js';
-import { treeViewSchema } from './tree-view/index.js';
+
+import { fieldIdSchema } from '../field/value-objects/field-id.schema';
+import { fieldNameSchema } from '../field/value-objects/field-name.schema';
+import { rootFilter } from '../filter/filter';
+import { calendarSchema } from './calendar/index';
+import { kanbanSchema } from './kanban/index';
+import { sortsSchema } from './sort/sort.schema';
+import { treeViewSchema } from './tree-view/index';
 import {
   fieldHiddenSchema,
   fieldWidthSchema,
   viewFieldOption,
-} from './view-field-options.js';
-import { viewIdSchema } from './view-id.vo.js';
-import { viewNameSchema } from './view-name.vo.js';
-import { viewPinnedFields } from './view-pinned-fields.js';
+} from './view-field-options';
+import { viewIdSchema } from './view-id.vo';
+import { viewNameSchema } from './view-name.vo';
+import { viewPinnedFields } from './view-pinned-fields';
 
 export const viewDisplayType = z.enum(['grid', 'kanban', 'calendar', 'tree']);
 

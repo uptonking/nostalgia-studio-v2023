@@ -1,6 +1,6 @@
 import { Query } from '@datalking/pivot-entity';
 
-import type { IGetRecordQuery } from './get-record.query.interface.js';
+import type { IGetRecordQuery } from './get-record.query.interface';
 
 export class GetRecordQuery extends Query implements IGetRecordQuery {
   readonly tableId: string;

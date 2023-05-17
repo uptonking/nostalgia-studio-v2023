@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { groupBy } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
@@ -50,7 +50,9 @@ import { confirmModal } from '../../hooks';
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { CREATE_OPTION_MODAL_ID, UDPATE_OPTION_MODAL_ID } from '../../modals';
 import { Option } from '../option/option';
-import type { IUpdateOptionModalProps } from '../update-option-form/update-option-modal';
+import type {
+  IUpdateOptionModalProps,
+} from '../update-option-form/update-option-modal';
 import { KanbanCard } from './kanban-card';
 import { KanbanLane, SortableKanbanLane } from './kanban-lane';
 import { UNCATEGORIZED_OPTION_ID } from './kanban.constants';

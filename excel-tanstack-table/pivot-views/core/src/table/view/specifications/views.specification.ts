@@ -3,13 +3,13 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { ICreateViewsSchema } from '../../table.schema.js';
-import type { ViewName } from '../view-name.vo.js';
-import type { View } from '../view.js';
-import { Views } from '../views.js';
-import { BaseViewSpecification } from './base-view-specification.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { ICreateViewsSchema } from '../../table.schema';
+import type { ViewName } from '../view-name.vo';
+import type { View } from '../view';
+import { Views } from '../views';
+import { BaseViewSpecification } from './base-view-specification';
 
 export class WithTableViews extends CompositeSpecification<
   Table,

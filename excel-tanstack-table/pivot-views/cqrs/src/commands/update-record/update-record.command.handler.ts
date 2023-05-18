@@ -5,7 +5,7 @@ import {
 } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type * as updateRecordCommandJs from './update-record.command.js';
+import type * as updateRecordCommandJs from './update-record.command';
 
 export class UpdateRecordCommandHandler
   implements ICommandHandler<updateRecordCommandJs.UpdateRecordCommand, void>

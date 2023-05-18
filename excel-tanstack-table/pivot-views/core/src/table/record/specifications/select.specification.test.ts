@@ -1,6 +1,6 @@
-import { SelectFieldValue } from '../../field/index.js';
-import { createTestRecord } from '../fixtures/index.js';
-import { SelectEqual, SelectIn } from './select.specification.js';
+import { SelectFieldValue } from '../../field/index';
+import { createTestRecord } from '../fixtures/index';
+import { SelectEqual, SelectIn } from './select.specification';
 
 test('should create with select value', () => {
   const spec = new SelectEqual('hello', new SelectFieldValue('world'));

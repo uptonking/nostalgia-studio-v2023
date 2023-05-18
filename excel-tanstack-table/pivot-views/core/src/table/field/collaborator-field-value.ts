@@ -1,6 +1,6 @@
-import type { ICollaboratorFieldValue } from './collaborator-field.type.js';
-import { FieldValueBase } from './field-value.base.js';
-import type { IFieldValueVisitor } from './field-value.visitor.js';
+import type { ICollaboratorFieldValue } from './collaborator-field.type';
+import { FieldValueBase } from './field-value.base';
+import type { IFieldValueVisitor } from './field-value.visitor';
 
 export class CollaboratorFieldValue extends FieldValueBase<ICollaboratorFieldValue> {
   constructor(value: ICollaboratorFieldValue) {

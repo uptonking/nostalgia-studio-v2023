@@ -7,9 +7,7 @@ import { useDeleteTableMutation } from '@datalking/pivot-store';
 import { IconPencil, IconTrash, Menu, Text } from '@datalking/pivot-ui';
 
 import { confirmModal } from '../../hooks';
-import {
-  updateTableFormDrawerOpened,
-} from '../update-table-form/drawer-opened.atom';
+import { updateTableFormDrawerOpened } from '../update-table-form/drawer-opened.atom';
 
 interface IProps {
   tableId: string;

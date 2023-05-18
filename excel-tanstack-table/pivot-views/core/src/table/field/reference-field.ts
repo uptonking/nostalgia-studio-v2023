@@ -4,13 +4,13 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { IReferenceFilterOperator } from '../filter/operators.js';
-import type { IReferenceFilter } from '../filter/reference.filter.js';
-import { TableId } from '../value-objects/table-id.vo.js';
-import { AbstractLookingField, AbstractReferenceField } from './field.base.js';
-import type { IReferenceField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { ReferenceFieldValue } from './reference-field-value.js';
+import { TableId } from '../value-objects/table-id.vo';
+import { AbstractLookingField, AbstractReferenceField } from './field.base';
+import type { IReferenceField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { IReferenceFilterOperator } from './filter/operators';
+import type { IReferenceFilter } from './filter/reference.filter';
+import { ReferenceFieldValue } from './reference-field-value';
 import type {
   ICreateReferenceFieldInput,
   ICreateReferenceFieldValue,
@@ -18,10 +18,10 @@ import type {
   IUpdateReferenceFieldInput,
   ReferenceFieldIssue,
   ReferenceFieldType,
-} from './reference-field.type.js';
-import { DisplayFields } from './value-objects/display-fields.vo.js';
-import { FieldId } from './value-objects/field-id.vo.js';
-import { FieldIssue } from './value-objects/field-issue.vo.js';
+} from './reference-field.type';
+import { DisplayFields } from './value-objects/display-fields.vo';
+import { FieldId } from './value-objects/field-id.vo';
+import { FieldIssue } from './value-objects/field-issue.vo';
 
 export class ReferenceField extends Mixin(
   AbstractReferenceField<IReferenceField>,
@@ -33,7 +33,7 @@ export class ReferenceField extends Mixin(
     return true;
   }
 
-  // https://github.com/undb-xyz/undb/issues/781
+  // todo 支持 reference filter
   override get filterable(): boolean {
     return false;
   }

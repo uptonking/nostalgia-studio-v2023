@@ -3,12 +3,12 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ICreateFieldsSchema_internal } from '../../field/index.js';
-import type { TableSchemaIdMap } from '../../value-objects/index.js';
-import type { Record } from '../record.js';
-import type { IQueryRecordValues } from '../record.type.js';
-import { RecordValues } from '../value-objects/index.js';
-import type { IRecordVisitor } from './interface.js';
+import type { ICreateFieldsSchema_internal } from '../../field/index';
+import type { TableSchemaIdMap } from '../../value-objects/index';
+import type { Record } from '../record';
+import type { IQueryRecordValues } from '../record.type';
+import { RecordValues } from '../value-objects/index';
+import type { IRecordVisitor } from './interface';
 
 export class WithRecordValues extends CompositeSpecification<
   Record,

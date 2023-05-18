@@ -1,11 +1,11 @@
 import * as z from 'zod';
-import { AttachmentField } from './attachment-field.js';
+import { AttachmentField } from './attachment-field';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
 
 export const attachmentTypeSchema = z.literal('attachment');
 export type AttachmentFieldType = z.infer<typeof attachmentTypeSchema>;

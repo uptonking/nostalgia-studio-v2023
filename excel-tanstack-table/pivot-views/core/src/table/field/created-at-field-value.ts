@@ -1,9 +1,9 @@
 import type {
   ICreatedAtFieldQueryValue,
   ICreatedAtFieldValue,
-} from './created-at-field.type.js';
-import { FieldValueBase } from './field-value.base.js';
-import type { IFieldValueVisitor } from './field-value.visitor.js';
+} from './created-at-field.type';
+import { FieldValueBase } from './field-value.base';
+import type { IFieldValueVisitor } from './field-value.visitor';
 
 export class CreatedAtFieldValue extends FieldValueBase<ICreatedAtFieldValue> {
   constructor(value: ICreatedAtFieldValue) {

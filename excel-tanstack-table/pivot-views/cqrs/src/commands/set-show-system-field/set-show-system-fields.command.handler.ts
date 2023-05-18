@@ -1,7 +1,7 @@
 import type { ITableRepository } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { SetShowSystemFieldsCommand } from './set-show-system-fields.command.js';
+import type { SetShowSystemFieldsCommand } from './set-show-system-fields.command';
 
 type ISetShowSystemFieldsCommandHandler = ICommandHandler<
   SetShowSystemFieldsCommand,

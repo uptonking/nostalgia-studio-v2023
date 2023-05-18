@@ -2,7 +2,7 @@ import { IMutateRecordValueSchema } from '@datalking/pivot-core';
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IUpdateRecordCommandInput } from './update-record.command.input.js';
+import type { IUpdateRecordCommandInput } from './update-record.command.input';
 
 export class UpdateRecordCommand
   extends Command

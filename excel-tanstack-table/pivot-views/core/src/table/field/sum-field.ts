@@ -3,22 +3,22 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { ISumFilter, ISumFilterOperator } from '../filter/sum.filter.js';
 import {
   AbstractAggregateField,
   AbstractLookupField,
   BaseField,
-} from './field.base.js';
-import type { ISumField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { SumFieldValue } from './sum-field-value.js';
+} from './field.base';
+import type { ISumField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { ISumFilter, ISumFilterOperator } from './filter/sum.filter';
+import { SumFieldValue } from './sum-field-value';
 import type {
   ICreateSumFieldInput,
   ICreateSumFieldValue,
   IUpdateSumFieldInput,
   SumType,
-} from './sum-field.type.js';
-import { FieldId } from './value-objects/field-id.vo.js';
+} from './sum-field.type';
+import { FieldId } from './value-objects/field-id.vo';
 
 export class SumField extends Mixin(
   AbstractAggregateField<ISumField>,

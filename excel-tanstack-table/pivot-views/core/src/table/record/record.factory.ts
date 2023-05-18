@@ -2,9 +2,9 @@ import type { Result } from 'oxide.ts';
 
 import { and } from '@datalking/pivot-entity';
 
-import type { TableSchemaIdMap } from '../value-objects/index.js';
-import { Record } from './record.js';
-import type { IQueryRecordSchema, Records } from './record.type.js';
+import type { TableSchemaIdMap } from '../value-objects/index';
+import { Record } from './record';
+import type { IQueryRecordSchema, Records } from './record.type';
 import {
   WithDisplayValues,
   WithRecordCreatedAt,
@@ -14,13 +14,13 @@ import {
   WithRecordTableId,
   WithRecordUpdatedAt,
   WithRecordValues,
-} from './specifications/index.js';
-import type { RecordCompositeSpecification } from './specifications/interface.js';
-import { WithRecordAutoIncrement } from './specifications/record-auto-increment.specification.js';
+} from './specifications/index';
+import type { RecordCompositeSpecification } from './specifications/interface';
+import { WithRecordAutoIncrement } from './specifications/record-auto-increment.specification';
 import {
   WithRecordUpdatedBy,
   WithRecordUpdatedByProfile,
-} from './specifications/record-updated-by.specification.js';
+} from './specifications/record-updated-by.specification';
 
 export class RecordFactory {
   static create(

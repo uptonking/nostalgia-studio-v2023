@@ -19,9 +19,7 @@ import {
 } from '@datalking/pivot-ui';
 
 import { CREATE_FIELD_MODAL_ID } from '../../modals';
-import {
-  createFieldInitialValueAtom,
-} from '../create-field-form/create-field-initial-value.atom';
+import { createFieldInitialValueAtom } from '../create-field-form/create-field-initial-value.atom';
 import { FieldIcon } from '../field-inputs/field-Icon';
 import { useMenuStyle } from './menu-item';
 

@@ -4,10 +4,10 @@ import { Ok } from 'oxide.ts';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { Record } from '../record.js';
-import type { IRecordDisplayValues } from '../record.type.js';
-import { RecordDisplayValues } from '../value-objects/record-display-values.vo.js';
-import type { IRecordVisitor } from './interface.js';
+import type { Record } from '../record';
+import type { IRecordDisplayValues } from '../record.type';
+import { RecordDisplayValues } from '../value-objects/record-display-values.vo';
+import type { IRecordVisitor } from './interface';
 
 export class WithDisplayValues extends CompositeSpecification<
   Record,

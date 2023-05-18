@@ -3,9 +3,9 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ICollaboratorProfile } from '../../field/collaborator-field.type.js';
-import type { Record } from '../record.js';
-import type { IRecordVisitor } from './interface.js';
+import type { ICollaboratorProfile } from '../../field/collaborator-field.type';
+import type { Record } from '../record';
+import type { IRecordVisitor } from './interface';
 
 export class WithRecordCreatedBy extends CompositeSpecification<
   Record,

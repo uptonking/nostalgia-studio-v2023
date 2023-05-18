@@ -1,3 +1,3 @@
-export * from './duplicate-view.comand.js';
-export * from './duplicate-view.command.handler.js';
-export * from './duplicate-view.command.input.js';
+export * from './duplicate-view.comand';
+export * from './duplicate-view.command.handler';
+export * from './duplicate-view.command.input';

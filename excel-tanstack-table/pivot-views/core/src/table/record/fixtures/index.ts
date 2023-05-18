@@ -1,1 +1,1 @@
-export * from './record.fixture.js';
+export * from './record.fixture';

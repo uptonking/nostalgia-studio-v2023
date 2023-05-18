@@ -1,11 +1,11 @@
 import * as z from 'zod';
-import { AutoIncrementField } from './auto-increment-field.js';
+import { AutoIncrementField } from './auto-increment-field';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
 
 export const autoIncrementTypeSchema = z.literal('auto-increment');
 export type AutoIncrementFieldType = z.infer<typeof autoIncrementTypeSchema>;

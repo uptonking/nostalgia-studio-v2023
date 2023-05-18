@@ -1,7 +1,7 @@
 import type { ITableRepository } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { SetFieldSortCommand } from './set-field-sort.command.js';
+import type { SetFieldSortCommand } from './set-field-sort.command';
 
 type ISetFieldSortCommandHandler = ICommandHandler<SetFieldSortCommand, void>;
 

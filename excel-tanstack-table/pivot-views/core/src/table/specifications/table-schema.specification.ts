@@ -3,11 +3,11 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ClsStore } from '../../cls/cls.js';
-import type { Table } from '../table.js';
-import type { ICreateTableSchemaInput } from '../value-objects/index.js';
-import { TableSchema } from '../value-objects/index.js';
-import type { ITableSpecVisitor } from './interface.js';
+import type { ClsStore } from '../../cls/cls';
+import type { Table } from '../table';
+import type { ICreateTableSchemaInput } from '../value-objects/index';
+import { TableSchema } from '../value-objects/index';
+import type { ITableSpecVisitor } from './interface';
 
 export class WithTableSchema extends CompositeSpecification<
   Table,

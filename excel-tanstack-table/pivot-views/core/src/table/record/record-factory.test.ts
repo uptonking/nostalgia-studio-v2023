@@ -5,19 +5,19 @@ import {
   FieldValueConstraints,
   SelectField,
   StringField,
-} from '../field/index.js';
+} from '../field/index';
 import {
   Option,
   OptionColor,
   OptionKey,
   OptionName,
   Options,
-} from '../option/index.js';
-import { TableSchemaIdMap } from '../value-objects/index.js';
-import { RecordFactory } from './record.factory.js';
-import { IQueryRecordSchema } from './record.type.js';
-import { WithRecordId, WithRecordTableId } from './specifications/index.js';
-import { RecordCompositeSpecification } from './specifications/interface.js';
+} from '../option/index';
+import { TableSchemaIdMap } from '../value-objects/index';
+import { RecordFactory } from './record.factory';
+import { IQueryRecordSchema } from './record.type';
+import { WithRecordId, WithRecordTableId } from './specifications/index';
+import { RecordCompositeSpecification } from './specifications/interface';
 
 beforeAll(() => {
   vi.setSystemTime(new Date(2022, 1, 1));

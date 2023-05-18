@@ -1,6 +1,6 @@
-import { createTestRecord } from '../fixtures/index.js';
-import { Record } from '../record.js';
-import { WithRecordId } from './record-id.specification.js';
+import { createTestRecord } from '../fixtures/index';
+import { Record } from '../record';
+import { WithRecordId } from './record-id.specification';
 
 describe('WithRecordId', () => {
   test('#isSatisfiedBy', () => {

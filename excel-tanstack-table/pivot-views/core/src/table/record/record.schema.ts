@@ -1,11 +1,11 @@
 import type { Merge, ValueOf } from 'type-fest';
 import { z } from 'zod';
-import { userIdSchema } from '../../user/value-objects/user-id.vo.js';
+import { userIdSchema } from '../../user/value-objects/user-id.vo';
 import type {
   Field,
   FieldValue,
   ICollaboratorProfile,
-} from '../field/index.js';
+} from '../field/index';
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
@@ -15,9 +15,9 @@ import {
   INTERNAL_DISPLAY_VALUES_NAME,
   INTERNAL_INCREAMENT_ID_NAME,
   collaboratorProfile,
-} from '../field/index.js';
-import { recordDisplayValues } from './record.type.js';
-import { recordIdSchema } from './value-objects/record-id.schema.js';
+} from '../field/index';
+import { recordDisplayValues } from './record.type';
+import { recordIdSchema } from './value-objects/record-id.schema';
 
 export const internalRecordValues = z.object({
   [INTERNAL_COLUMN_ID_NAME]: recordIdSchema,

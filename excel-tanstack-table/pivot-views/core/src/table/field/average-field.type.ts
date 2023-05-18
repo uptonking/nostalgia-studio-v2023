@@ -1,12 +1,12 @@
 import * as z from 'zod';
-import { AverageField } from './average-field.js';
+import { AverageField } from './average-field';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { fieldIdSchema } from './value-objects/field-id.schema.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { fieldIdSchema } from './value-objects/field-id.schema';
 
 export const averageTypeSchema = z.literal('average');
 export type AverageType = z.infer<typeof averageTypeSchema>;

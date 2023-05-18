@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import { FieldId } from './field-id.vo.js';
+import { FieldId } from './field-id.vo';
 
 export const fieldIdSchema = z
   .string()

@@ -3,9 +3,9 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { FieldValue } from '../../field/index.js';
-import type { Record } from '../record.js';
-import type { IRecordVisitor } from './interface.js';
+import type { FieldValue } from '../../field/index';
+import type { Record } from '../record';
+import type { IRecordVisitor } from './interface';
 
 export abstract class BaseRecordSpecification<
   V extends FieldValue,

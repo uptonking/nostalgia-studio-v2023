@@ -78,11 +78,11 @@ export class Connection {
         ssl: Boolean(config.db.ssl),
         dialectOptions: config.db.ssl
           ? {
-            ssl: {
-              require: true,
-              rejectUnauthorized: false,
-            },
-          }
+              ssl: {
+                require: true,
+                rejectUnauthorized: false,
+              },
+            }
           : {},
       });
 
@@ -213,7 +213,7 @@ export function addModel<T extends object>(
   onChanges?: (source?: string, model?: Model<T>) => Promise<void> | void,
 ): ModelStatic<Model<T, T>> {
   /** 👇🏻 db table model */
-  const model = class extends Model { };
+  const model = class extends Model {};
 
   const cfg: EntityConfig = {
     name,

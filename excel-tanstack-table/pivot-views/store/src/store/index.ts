@@ -2,13 +2,13 @@ import { persistStore } from 'redux-persist';
 
 import { configureStore } from '@reduxjs/toolkit';
 
-import { rootReducder } from '../reducers';
+import { rootReducer } from '../reducers';
 import { attachment, authApi, userApi } from '../services';
 import { api } from '../services/api';
 
 export const createStore = () => {
   const store = configureStore({
-    reducer: rootReducder,
+    reducer: rootReducer,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false })
         .concat(api.middleware)

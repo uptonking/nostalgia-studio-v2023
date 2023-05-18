@@ -4,7 +4,7 @@ import {
 } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { DuplicateRecordCommand } from './duplicate-record.comand.js';
+import type { DuplicateRecordCommand } from './duplicate-record.comand';
 
 export class DuplicateRecordCommandHandler
   implements ICommandHandler<DuplicateRecordCommand, void>

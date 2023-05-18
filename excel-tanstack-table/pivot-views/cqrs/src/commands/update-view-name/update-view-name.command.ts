@@ -2,7 +2,7 @@ import { IUpdateViewNameSchema } from '@datalking/pivot-core';
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IUpdateViewNameCommandInput } from './update-view-name.command.interface.js';
+import type { IUpdateViewNameCommandInput } from './update-view-name.command.interface';
 
 export class UpdateViewNameCommand
   extends Command

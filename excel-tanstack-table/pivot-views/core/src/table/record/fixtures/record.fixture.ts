@@ -1,6 +1,6 @@
-import { RecordFactory } from '../record.factory.js';
-import { WithRecordId, WithRecordTableId } from '../specifications/index.js';
-import type { RecordCompositeSpecification } from '../specifications/interface.js';
+import { RecordFactory } from '../record.factory';
+import { WithRecordId, WithRecordTableId } from '../specifications/index';
+import type { RecordCompositeSpecification } from '../specifications/interface';
 
 export const createTestRecord = (...specs: RecordCompositeSpecification[]) => {
   let spec = WithRecordTableId.fromString('tableId')

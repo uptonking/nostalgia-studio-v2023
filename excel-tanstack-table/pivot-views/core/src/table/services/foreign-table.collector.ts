@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { ParentField, ReferenceField, TreeField } from '../field/index.js';
-import type { Table } from '../table.js';
-import { AbstractReferenceFieldSpecVisitor } from './abstract-reference-field-spec.visitor.js';
+import type { ParentField, ReferenceField, TreeField } from '../field/index';
+import type { Table } from '../table';
+import { AbstractReferenceFieldSpecVisitor } from './abstract-reference-field-spec.visitor';
 
 export class ForeignTableCollector extends AbstractReferenceFieldSpecVisitor {
   constructor(private readonly table: Table) {

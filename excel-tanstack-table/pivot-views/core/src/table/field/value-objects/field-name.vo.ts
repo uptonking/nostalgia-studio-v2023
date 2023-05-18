@@ -1,6 +1,6 @@
 import { ValueObject } from '@datalking/pivot-entity';
 
-import { fieldNameSchema } from './field-name.schema.js';
+import { fieldNameSchema } from './field-name.schema';
 
 export class FieldName extends ValueObject<string> {
   private constructor(value: string) {

@@ -1,5 +1,5 @@
 export * from './field/index';
-export * from './filter/index';
+export * from './field/filter/index';
 export * from './fixtures/index';
 export * from './option/index';
 export * from './record/index';

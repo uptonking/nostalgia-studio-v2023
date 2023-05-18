@@ -1,6 +1,6 @@
-import { FieldValueBase } from './field-value.base.js';
-import type { IFieldValueVisitor } from './field-value.visitor.js';
-import type { ISumFieldValue } from './sum-field.type.js';
+import { FieldValueBase } from './field-value.base';
+import type { IFieldValueVisitor } from './field-value.visitor';
+import type { ISumFieldValue } from './sum-field.type';
 
 export class SumFieldValue extends FieldValueBase<ISumFieldValue> {
   constructor(value: ISumFieldValue) {

@@ -21,12 +21,8 @@ import {
 import { CurrentTableContext } from '../../context/current-table';
 import { useAppSelector } from '../../hooks';
 import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers';
-import {
-  createTableFormDrawerOpened,
-} from '../create-table-form/drawer-opened.atom';
-import {
-  UpdateTableFormDrawer,
-} from '../update-table-form/update-table-form-drawer';
+import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom';
+import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-drawer';
 import { EmptyTableList } from './empty-table-list';
 import { TableMenuDropdown } from './table-menu-dropdown';
 

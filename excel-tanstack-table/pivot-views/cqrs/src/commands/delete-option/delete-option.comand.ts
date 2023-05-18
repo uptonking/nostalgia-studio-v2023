@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IDeleteOptionInput } from './delete-option.command.input.js';
+import type { IDeleteOptionInput } from './delete-option.command.input';
 
 export class DeleteOptionCommand extends Command implements IDeleteOptionInput {
   readonly id: string;

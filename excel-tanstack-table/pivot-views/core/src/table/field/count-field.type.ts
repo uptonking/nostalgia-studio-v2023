@@ -1,12 +1,12 @@
 import * as z from 'zod';
-import { CountField } from './count-field.js';
+import { CountField } from './count-field';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { fieldIdSchema } from './value-objects/field-id.schema.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { fieldIdSchema } from './value-objects/field-id.schema';
 
 export const countTypeSchema = z.literal('count');
 export type CountType = z.infer<typeof countTypeSchema>;

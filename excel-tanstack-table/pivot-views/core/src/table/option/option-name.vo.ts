@@ -1,6 +1,6 @@
 import { ValueObject } from '@datalking/pivot-entity';
 
-import { optionNameSchema } from './option.schema.js';
+import { optionNameSchema } from './option.schema';
 
 export class OptionName extends ValueObject<string> {
   private constructor(value: string) {

@@ -3,21 +3,21 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { IDateFilter } from '../filter/date.filter.js';
-import type { IDateFilterOperator } from '../filter/index.js';
-import { dateBuiltInOperators } from '../filter/operators.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import { DateFieldValue } from './date-field-value.js';
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { DateFieldValue } from './date-field-value';
 import type {
   DateType,
   ICreateDateFieldSchema,
   IDateFieldQueryValue,
   IUpdateDateFieldInput,
-} from './date-field.type.js';
-import { AbstractDateField } from './field.base.js';
-import type { IDateField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { DateFormat } from './value-objects/date-format.vo.js';
+} from './date-field.type';
+import { AbstractDateField } from './field.base';
+import type { IDateField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { IDateFilter } from './filter/date.filter';
+import type { IDateFilterOperator } from './filter/index';
+import { dateBuiltInOperators } from './filter/operators';
+import { DateFormat } from './value-objects/date-format.vo';
 
 export class DateField extends AbstractDateField<IDateField> {
   type: DateType = 'date';

@@ -1,6 +1,6 @@
 import { Query } from '@datalking/pivot-entity';
 
-import type { IGetParentAvailableRecordQuery } from './get-parent-available-records.query.interface.js';
+import type { IGetParentAvailableRecordQuery } from './get-parent-available-records.query.interface';
 
 export class GetParentAvailableRecordsQuery
   extends Query

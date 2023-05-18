@@ -1,7 +1,7 @@
 import type { ITableRepository } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { SetCalendarFieldCommand } from './set-calendar-field.command.js';
+import type { SetCalendarFieldCommand } from './set-calendar-field.command';
 
 type ISetCalendarFieldCommandHandler = ICommandHandler<
   SetCalendarFieldCommand,

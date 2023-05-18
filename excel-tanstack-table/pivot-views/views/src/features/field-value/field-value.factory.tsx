@@ -23,7 +23,6 @@ import type {
 import { AspectRatio, Divider, Group, Rating, Text } from '@datalking/pivot-ui';
 
 import { Option } from '../option/option';
-import { AttachmentValue } from './attachment-value';
 import { BoolValue } from './bool-value';
 import { CollaboratorValue } from './collaborator-value';
 import { CollaboratorsValue } from './collaborators-value';
@@ -32,6 +31,8 @@ import { DateRangeValue } from './date-range-value';
 import { DateValue } from './date-value';
 import { RecordId } from './record-id';
 import { ReferenceValue } from './reference-value';
+
+// import { AttachmentValue } from './attachment-value';
 
 export const FieldValueFactory: React.FC<{
   field: Field;
@@ -146,20 +147,20 @@ export const FieldValueFactory: React.FC<{
       );
     }
 
-    case 'attachment': {
-      const unpacked = (value as AttachmentFieldValue | undefined)?.unpack();
-      if (!unpacked?.length) return null;
+    // case 'attachment': {
+    //   const unpacked = (value as AttachmentFieldValue | undefined)?.unpack();
+    //   if (!unpacked?.length) return null;
 
-      return (
-        <Group h='100%' noWrap>
-          {unpacked.map((value) => (
-            <AspectRatio key={value.id} ratio={1} h='100%' w='20px'>
-              <AttachmentValue attachment={value} />
-            </AspectRatio>
-          ))}
-        </Group>
-      );
-    }
+    //   return (
+    //     <Group h='100%' noWrap>
+    //       {unpacked.map((value) => (
+    //         <AspectRatio key={value.id} ratio={1} h='100%' w='20px'>
+    //           <AttachmentValue attachment={value} />
+    //         </AspectRatio>
+    //       ))}
+    //     </Group>
+    //   );
+    // }
 
     case 'lookup': {
       const values = field.getDisplayValues(displayValues);

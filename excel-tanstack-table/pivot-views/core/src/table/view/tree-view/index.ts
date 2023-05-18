@@ -1,3 +1,3 @@
-export * from './tree-view.js';
-export * from './tree-view.schema.js';
-export * from './tree-view.type.js';
+export * from './tree-view';
+export * from './tree-view.schema';
+export * from './tree-view.type';

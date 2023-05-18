@@ -3,9 +3,9 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { Record } from '../record.js';
-import { RecordId } from '../value-objects/index.js';
-import type { IRecordVisitor } from './interface.js';
+import type { Record } from '../record';
+import { RecordId } from '../value-objects/index';
+import type { IRecordVisitor } from './interface';
 
 export class WithRecordId extends CompositeSpecification {
   constructor(public readonly id: RecordId) {

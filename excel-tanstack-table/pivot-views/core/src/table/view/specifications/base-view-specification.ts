@@ -1,8 +1,8 @@
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { View } from '../view.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { View } from '../view';
 
 export abstract class BaseViewSpecification extends CompositeSpecification<
   Table,

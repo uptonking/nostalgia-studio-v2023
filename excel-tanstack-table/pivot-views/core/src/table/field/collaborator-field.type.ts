@@ -1,15 +1,15 @@
 import * as z from 'zod';
-import { userIdSchema } from '../../user/value-objects/user-id.vo.js';
-import { tableIdSchema } from '../value-objects/table-id.vo.js';
-import { CollaboratorField } from './collaborator-field.js';
+import { userIdSchema } from '../../user/value-objects/user-id.vo';
+import { tableIdSchema } from '../value-objects/table-id.vo';
+import { CollaboratorField } from './collaborator-field';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { fieldIdSchema } from './value-objects/field-id.schema.js';
-import type { FieldIssue } from './value-objects/field-issue.vo.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { fieldIdSchema } from './value-objects/field-id.schema';
+import type { FieldIssue } from './value-objects/field-issue.vo';
 
 export const collaboratorTypeSchema = z.literal('collaborator');
 export type CollaboratorFieldType = z.infer<typeof collaboratorTypeSchema>;

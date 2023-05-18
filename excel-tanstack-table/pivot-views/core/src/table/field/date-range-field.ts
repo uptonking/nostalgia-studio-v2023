@@ -3,20 +3,20 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { IDateRangeFilter } from '../filter/date-range.filter.js';
-import type { IDateRangeFilterOperator } from '../filter/index.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import { DateRangeFieldValue } from './date-range-field-value.js';
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { DateRangeFieldValue } from './date-range-field-value';
 import type {
   DateRangeType,
   ICreateDateRangeFieldSchema,
   IDateRangeFieldQueryValue,
   IUpdateDateRangeFieldInput,
-} from './date-range-field.type.js';
-import { AbstractDateField } from './field.base.js';
-import type { IDateRangeField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { DateFormat } from './value-objects/date-format.vo.js';
+} from './date-range-field.type';
+import { AbstractDateField } from './field.base';
+import type { IDateRangeField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { IDateRangeFilter } from './filter/date-range.filter';
+import type { IDateRangeFilterOperator } from './filter/index';
+import { DateFormat } from './value-objects/date-format.vo';
 
 export class DateRangeField extends AbstractDateField<IDateRangeField> {
   type: DateRangeType = 'date-range';

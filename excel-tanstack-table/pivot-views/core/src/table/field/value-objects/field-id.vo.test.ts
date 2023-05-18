@@ -1,4 +1,4 @@
-import { FieldId } from './field-id.vo.js';
+import { FieldId } from './field-id.vo';
 
 describe('FieldId.createId', () => {
   test('should create field id', () => {

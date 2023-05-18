@@ -1,7 +1,7 @@
 import type { z } from 'zod';
 
-import type { IRootFilter } from '../filter/index';
-import type { RootFilter } from '../filter/root-filter';
+import type { IRootFilter } from '../field/filter/index';
+import type { RootFilter } from '../field/filter/root-filter';
 import type { Calendar, ICalendarSchema } from './calendar/index';
 import type { IKanbanSchema, Kanban } from './kanban/index';
 import type { ISorts } from './sort/sort.schema';

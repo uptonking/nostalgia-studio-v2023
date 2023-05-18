@@ -4,15 +4,15 @@ import {
   mutateOptionSchema,
   optionIdSchema,
   optionsSchema,
-} from '../option/option.schema.js';
+} from '../option/option.schema';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { SelectField } from './select-field.js';
-import { fieldIdSchema } from './value-objects/field-id.schema.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { SelectField } from './select-field';
+import { fieldIdSchema } from './value-objects/field-id.schema';
 
 export const selectTypeSchema = z.literal('select');
 export type SelectFieldType = z.infer<typeof selectTypeSchema>;

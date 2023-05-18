@@ -1,4 +1,4 @@
-import { BoolFieldValue } from './bool-field-value.js';
+import { BoolFieldValue } from './bool-field-value';
 
 test('should create bool field value with true', () => {
   const value = new BoolFieldValue(true);

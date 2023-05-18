@@ -4,14 +4,14 @@ import type {
 } from '@datalking/pivot-entity';
 import { type ISpecification } from '@datalking/pivot-entity';
 
-import { type Record } from '../record.js';
+import { type Record } from '../record';
 import type {
   HasExtension,
   HasFileType,
   IsAttachmentEmpty,
-} from './attachment.specification.js';
-import type { BoolIsFalse, BoolIsTrue } from './bool.specification.js';
-import type { DateRangeEqual } from './date-range.specification.js';
+} from './attachment.specification';
+import type { BoolIsFalse, BoolIsTrue } from './bool.specification';
+import type { DateRangeEqual } from './date-range.specification';
 import type {
   DateEqual,
   DateGreaterThan,
@@ -19,33 +19,33 @@ import type {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
-} from './date.specification.js';
+} from './date.specification';
 import type {
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
-} from './number.specification.js';
-import type { ParentAvailableSpec } from './parent.specification.js';
-import type { WithRecordAutoIncrement } from './record-auto-increment.specification.js';
-import type { WithRecordCreatedAt } from './record-created-at.specification.js';
-import type { WithRecordCreatedBy } from './record-created-by.specification.js';
-import type { WithRecordId, WithRecordIds } from './record-id.specification.js';
-import type { WithRecordTableId } from './record-table-id.specification.js';
-import type { WithRecordUpdatedAt } from './record-updated-at.specification.js';
-import type { WithRecordUpdatedBy } from './record-updated-by.specification.js';
-import type { WithRecordValues } from './record-values.specification.js';
-import type { ReferenceEqual } from './reference.specification.js';
-import type { SelectEqual, SelectIn } from './select.specification.js';
+} from './number.specification';
+import type { ParentAvailableSpec } from './parent.specification';
+import type { WithRecordAutoIncrement } from './record-auto-increment.specification';
+import type { WithRecordCreatedAt } from './record-created-at.specification';
+import type { WithRecordCreatedBy } from './record-created-by.specification';
+import type { WithRecordId, WithRecordIds } from './record-id.specification';
+import type { WithRecordTableId } from './record-table-id.specification';
+import type { WithRecordUpdatedAt } from './record-updated-at.specification';
+import type { WithRecordUpdatedBy } from './record-updated-by.specification';
+import type { WithRecordValues } from './record-values.specification';
+import type { ReferenceEqual } from './reference.specification';
+import type { SelectEqual, SelectIn } from './select.specification';
 import type {
   StringContain,
   StringEndsWith,
   StringEqual,
   StringRegex,
   StringStartsWith,
-} from './string.specification.js';
-import type { IsTreeRoot, TreeAvailableSpec } from './tree.specification.js';
+} from './string.specification';
+import type { IsTreeRoot, TreeAvailableSpec } from './tree.specification';
 
 interface IRecordSpecVisitor {
   idEqual(s: WithRecordId): void;

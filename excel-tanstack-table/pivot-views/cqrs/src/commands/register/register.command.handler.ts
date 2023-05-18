@@ -8,8 +8,8 @@ import {
 } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import { IRegisterCommandOutput } from './register.command.interface.js';
-import type { RegisterCommand } from './register.command.js';
+import { IRegisterCommandOutput } from './register.command.interface';
+import type { RegisterCommand } from './register.command';
 
 type IRegisterCommandHandler = ICommandHandler<
   RegisterCommand,

@@ -4,11 +4,11 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { IAbstractLookingField } from '../field.type.js';
-import type { ReferenceField } from '../reference-field.js';
-import { FieldId } from '../value-objects/field-id.vo.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { IAbstractLookingField } from '../field.type';
+import type { ReferenceField } from '../reference-field';
+import { FieldId } from '../value-objects/field-id.vo';
 
 export class WithDisplayFields extends CompositeSpecification<
   Table,

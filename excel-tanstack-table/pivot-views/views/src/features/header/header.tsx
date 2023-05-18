@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getMe, logout } from '@datalking/pivot-store';
+import { getAuthedMe, logout } from '@datalking/pivot-store';
 import {
   ActionIcon,
   Avatar,
@@ -20,12 +20,12 @@ import {
   Text,
 } from '@datalking/pivot-ui';
 
-import logo from '../../assets/logo.svg';
+import logo from '../../assets/watarble-logo.svg';
 
 export const Header = () => {
   const { i18n, t } = useTranslation();
   const language = i18n.language;
-  const me = useSelector(getMe);
+  const me = useSelector(getAuthedMe);
   const dispatch = useDispatch();
 
   return (
@@ -47,9 +47,9 @@ export const Header = () => {
             userSelect: 'none',
           }}
         >
-          <Image src={logo} alt='undb' width='20px' height='20px' />
+          <Image src={logo} alt='watarble' width='32px' height='32px' />
           <Text pl='xs' color='blue.9' fw={600}>
-            undb
+            watarble
           </Text>
         </Link>
       </Center>

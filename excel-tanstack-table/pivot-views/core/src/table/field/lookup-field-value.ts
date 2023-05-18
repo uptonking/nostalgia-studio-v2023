@@ -1,6 +1,6 @@
-import { FieldValueBase } from './field-value.base.js';
-import type { IFieldValueVisitor } from './field-value.visitor.js';
-import type { ILookupFieldValue } from './lookup-field.type.js';
+import { FieldValueBase } from './field-value.base';
+import type { IFieldValueVisitor } from './field-value.visitor';
+import type { ILookupFieldValue } from './lookup-field.type';
 
 export class LookupFieldValue extends FieldValueBase<ILookupFieldValue> {
   constructor(value: ILookupFieldValue) {

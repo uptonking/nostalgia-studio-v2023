@@ -1,6 +1,9 @@
 import type { z } from 'zod';
-import type { setShowSystemFieldssCommandInput } from './set-show-system-fields.command.input.js';
+
+import type {
+  setShowSystemFieldsCommandInput,
+} from './set-show-system-fields.command.input';
 
 export type ISetShowSystemFieldsCommandInput = z.infer<
-  typeof setShowSystemFieldssCommandInput
+  typeof setShowSystemFieldsCommandInput
 >;

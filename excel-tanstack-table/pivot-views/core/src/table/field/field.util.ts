@@ -19,7 +19,7 @@ const displayFieldTypes: Set<IFieldType> = new Set<IFieldType>([
   'color',
   'date',
   'email',
-  // FIXME: https://github.com/undb-xyz/undb/issues/780
+  // FIXME: 支持选择 attachment 作为 display field
   // 'attachment',
   'number',
   'rating',

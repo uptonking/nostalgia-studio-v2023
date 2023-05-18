@@ -3,19 +3,19 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { IParentFilterOperator } from '../filter/operators.js';
-import type { IParentFilter } from '../filter/parent.filter.js';
-import { AbstractLookingField, AbstractReferenceField } from './field.base.js';
-import type { IParentField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { ParentFieldValue } from './parent-field-value.js';
+import { AbstractLookingField, AbstractReferenceField } from './field.base';
+import type { IParentField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { IParentFilterOperator } from './filter/operators';
+import type { IParentFilter } from './filter/parent.filter';
+import { ParentFieldValue } from './parent-field-value';
 import type {
   ICreateParentFieldInput,
   ICreateParentFieldValue,
   ParentFieldType,
-} from './parent-field.type.js';
-import type { IUpdateReferenceFieldInput } from './reference-field.type.js';
-import { DisplayFields, FieldId } from './value-objects/index.js';
+} from './parent-field.type';
+import type { IUpdateReferenceFieldInput } from './reference-field.type';
+import { DisplayFields, FieldId } from './value-objects/index';
 
 export class ParentField extends Mixin(
   AbstractReferenceField<IParentField>,

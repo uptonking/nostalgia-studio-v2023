@@ -3,10 +3,10 @@ import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { SumField } from './sum-field.js';
-import { fieldIdSchema } from './value-objects/field-id.schema.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { SumField } from './sum-field';
+import { fieldIdSchema } from './value-objects/field-id.schema';
 
 export const sumTypeSchema = z.literal('sum');
 export type SumType = z.infer<typeof sumTypeSchema>;

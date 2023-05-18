@@ -10,8 +10,8 @@ import {
 import type { IQueryHandler } from '@datalking/pivot-entity';
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { IGetTreeAvailableRecordsOutput } from './get-tree-available-records.query.interface.js';
-import type { GetTreeAvailableRecordsQuery } from './get-tree-available-records.query.js';
+import type { IGetTreeAvailableRecordsOutput } from './get-tree-available-records.query.interface';
+import type { GetTreeAvailableRecordsQuery } from './get-tree-available-records.query';
 
 export class GetTreeAvailableRecordsQueryHandler
   implements

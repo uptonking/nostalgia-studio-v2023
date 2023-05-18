@@ -1,19 +1,19 @@
 import type {
   ICreateSelectFieldSchema,
   ICreateStringFieldInput,
-} from '../field/index.js';
-import { FieldFactory, SelectField, StringField } from '../field/index.js';
+} from '../field/index';
+import { FieldFactory, SelectField, StringField } from '../field/index';
 import {
   WithNewField,
   WithTableEmoji,
   WithTableId,
   WithTableName,
-} from '../specifications/index.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import { TableFactory } from '../table.factory.js';
-import type { ICreateViewInput_internal } from '../view/index.js';
-import { View, Views } from '../view/index.js';
-import { WithTableViews } from '../view/specifications/views.specification.js';
+} from '../specifications/index';
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { TableFactory } from '../table.factory';
+import type { ICreateViewInput_internal } from '../view/index';
+import { View, Views } from '../view/index';
+import { WithTableViews } from '../view/specifications/views.specification';
 
 export const createTestTable = (...specs: TableCompositeSpecificaiton[]) => {
   let spec: TableCompositeSpecificaiton = WithTableId.fromExistingString(

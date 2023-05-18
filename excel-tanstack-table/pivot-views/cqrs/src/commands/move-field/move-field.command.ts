@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IMoveFieldCommandInput } from './move-field.command.interface.js';
+import type { IMoveFieldCommandInput } from './move-field.command.interface';
 
 export class MoveFieldCommand
   extends Command

@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IBulkDeleteRecordsInput } from './bulk-delete-records.command.input.js';
+import type { IBulkDeleteRecordsInput } from './bulk-delete-records.command.input';
 
 export class BulkDeleteRecordsCommand extends Command {
   readonly ids: string[];

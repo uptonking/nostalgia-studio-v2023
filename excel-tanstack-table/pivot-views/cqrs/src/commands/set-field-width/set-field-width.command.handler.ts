@@ -1,7 +1,7 @@
 import type { ITableRepository } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { SetFieldWidthCommand } from './set-field-width.command.js';
+import type { SetFieldWidthCommand } from './set-field-width.command';
 
 export class SetFieldWidthCommandHandler
   implements ICommandHandler<SetFieldWidthCommand, void>

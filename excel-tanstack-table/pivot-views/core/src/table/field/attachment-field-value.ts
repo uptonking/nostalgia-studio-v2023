@@ -1,7 +1,7 @@
-import { getExtension, getMimeType } from './attachment-field-value.util.js';
-import type { IAttachmentFieldValue } from './attachment-field.type.js';
-import { FieldValueBase } from './field-value.base.js';
-import type { IFieldValueVisitor } from './field-value.visitor.js';
+import { getExtension, getMimeType } from './attachment-field-value.util';
+import type { IAttachmentFieldValue } from './attachment-field.type';
+import { FieldValueBase } from './field-value.base';
+import type { IFieldValueVisitor } from './field-value.visitor';
 
 export class AttachmentFieldValue extends FieldValueBase<IAttachmentFieldValue> {
   constructor(value: IAttachmentFieldValue) {

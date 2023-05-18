@@ -1,7 +1,7 @@
 import { type ITableRepository } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { UpdateViewNameCommand } from './update-view-name.command.js';
+import type { UpdateViewNameCommand } from './update-view-name.command';
 
 type IUpdateViewNameCommandHandler = ICommandHandler<
   UpdateViewNameCommand,

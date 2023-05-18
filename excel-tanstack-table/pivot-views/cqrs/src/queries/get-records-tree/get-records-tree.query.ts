@@ -1,6 +1,6 @@
 import { Query } from '@datalking/pivot-entity';
 
-import type { IGetRecordsTreeQuery } from './get-records-tree.query.interface.js';
+import type { IGetRecordsTreeQuery } from './get-records-tree.query.interface';
 
 export class GetRecordsTreeQuery extends Query implements IGetRecordsTreeQuery {
   readonly tableId: string;

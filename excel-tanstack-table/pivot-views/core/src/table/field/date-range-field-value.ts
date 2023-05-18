@@ -2,9 +2,9 @@ import { Option } from 'oxide.ts';
 import type {
   IDateRangeFieldQueryValue,
   IDateRangeFieldValue,
-} from './date-range-field.type.js';
-import { FieldValueBase } from './field-value.base.js';
-import type { IFieldValueVisitor } from './field-value.visitor.js';
+} from './date-range-field.type';
+import { FieldValueBase } from './field-value.base';
+import type { IFieldValueVisitor } from './field-value.visitor';
 
 export class DateRangeFieldValue extends FieldValueBase<IDateRangeFieldValue> {
   constructor(value: IDateRangeFieldValue) {

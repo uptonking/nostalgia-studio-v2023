@@ -3,25 +3,25 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type {
-  IAverageFilter,
-  IAverageFilterOperator,
-} from '../filter/average.filter.js';
-import { AverageFieldValue } from './average-field-value.js';
+import { AverageFieldValue } from './average-field-value';
 import type {
   AverageType,
   ICreateAverageFieldInput,
   ICreateAverageFieldValue,
   IUpdateAverageFieldInput,
-} from './average-field.type.js';
+} from './average-field.type';
 import {
   AbstractAggregateField,
   AbstractLookupField,
   BaseField,
-} from './field.base.js';
-import type { IAverageField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { FieldId } from './value-objects/field-id.vo.js';
+} from './field.base';
+import type { IAverageField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type {
+  IAverageFilter,
+  IAverageFilterOperator,
+} from './filter/average.filter';
+import { FieldId } from './value-objects/field-id.vo';
 
 export class AverageField extends Mixin(
   AbstractAggregateField<IAverageField>,

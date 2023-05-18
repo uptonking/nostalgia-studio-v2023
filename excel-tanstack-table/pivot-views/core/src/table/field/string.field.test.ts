@@ -1,4 +1,4 @@
-import { StringField } from './string-field.js';
+import { StringField } from './string-field';
 
 it('should create new text field', () => {
   const field = StringField.create({

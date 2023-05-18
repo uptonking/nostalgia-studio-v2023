@@ -3,9 +3,9 @@ import {
   INTERNAL_COLUMN_ID_NAME,
   INTERNAL_COLUMN_UPDATED_AT_NAME,
   StringField,
-} from '../field/index.js';
-import { createTestRecord } from './fixtures/index.js';
-import { WithRecordValues } from './specifications/index.js';
+} from '../field/index';
+import { createTestRecord } from './fixtures/index';
+import { WithRecordValues } from './specifications/index';
 
 describe('Record', () => {
   beforeAll(() => {

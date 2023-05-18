@@ -2,7 +2,7 @@ import { IViewPinnedFields } from '@datalking/pivot-core';
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetPinnedFieldsCommandInput } from './set-pinned-fields.command.interface.js';
+import type { ISetPinnedFieldsCommandInput } from './set-pinned-fields.command.interface';
 
 export class SetPinnedFieldsCommand
   extends Command

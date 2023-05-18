@@ -1,4 +1,4 @@
-import { OptionColor } from './option-color.js';
+import { OptionColor } from './option-color';
 
 describe('create', () => {
   test('should create default option color', () => {

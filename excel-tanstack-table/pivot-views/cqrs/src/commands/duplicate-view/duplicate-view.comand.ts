@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IDuplicateViewInput } from './duplicate-view.command.input.js';
+import type { IDuplicateViewInput } from './duplicate-view.command.input';
 
 export class DuplicateViewCommand extends Command {
   readonly id: string;

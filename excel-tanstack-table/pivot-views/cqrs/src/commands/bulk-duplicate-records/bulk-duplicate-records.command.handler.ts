@@ -5,7 +5,7 @@ import {
 } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { BulkDuplicateRecordsCommand } from './bulk-duplicate-records.comand.js';
+import type { BulkDuplicateRecordsCommand } from './bulk-duplicate-records.comand';
 
 export class BulkDuplicateRecordsCommandHandler
   implements ICommandHandler<BulkDuplicateRecordsCommand, void>

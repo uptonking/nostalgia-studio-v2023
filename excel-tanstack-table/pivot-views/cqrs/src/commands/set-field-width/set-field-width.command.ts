@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetFieldWidthCommandInput } from './set-field-width.command.interface.js';
+import type { ISetFieldWidthCommandInput } from './set-field-width.command.interface';
 
 export class SetFieldWidthCommand
   extends Command

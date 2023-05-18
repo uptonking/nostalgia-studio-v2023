@@ -1,12 +1,12 @@
 import * as z from 'zod';
-import { recordIdSchema } from '../record/value-objects/record-id.schema.js';
+import { recordIdSchema } from '../record/value-objects/record-id.schema';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { IdField } from './id-field.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { IdField } from './id-field';
 
 export const idTypeSchema = z.literal('id');
 export type IdFieldType = z.infer<typeof idTypeSchema>;

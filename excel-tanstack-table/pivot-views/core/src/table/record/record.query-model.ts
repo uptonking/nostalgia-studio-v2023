@@ -1,7 +1,7 @@
 import type { Option } from 'oxide.ts';
-import type { ViewId } from '../view/index.js';
-import type { IQueryRecords, IQueryRecordSchema } from './record.type.js';
-import type { IRecordSpec } from './specifications/index.js';
+import type { ViewId } from '../view/index';
+import type { IQueryRecords, IQueryRecordSchema } from './record.type';
+import type { IRecordSpec } from './specifications/index';
 
 export interface IRecordQueryModel {
   findOne(

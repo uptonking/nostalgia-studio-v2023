@@ -1,15 +1,15 @@
 import * as z from 'zod';
-import { recordIdSchema } from '../record/value-objects/record-id.schema.js';
-import { tableIdSchema } from '../value-objects/table-id.vo.js';
+import { recordIdSchema } from '../record/value-objects/record-id.schema';
+import { tableIdSchema } from '../value-objects/table-id.vo';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { ReferenceField } from './reference-field.js';
-import { fieldIdSchema } from './value-objects/field-id.schema.js';
-import type { FieldIssue } from './value-objects/field-issue.vo.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { ReferenceField } from './reference-field';
+import { fieldIdSchema } from './value-objects/field-id.schema';
+import type { FieldIssue } from './value-objects/field-issue.vo';
 
 export const referenceTypeSchema = z.literal('reference');
 export type ReferenceFieldType = z.infer<typeof referenceTypeSchema>;

@@ -1,15 +1,16 @@
 import { z } from 'zod';
-import type { IAutoIncrementFilter } from '../filter/auto-increment.filter.js';
-import type { IAutoIncrementFilterOperator } from '../filter/operators.js';
-import { AutoIncrementFieldValue } from './auto-increment-field-value.js';
+
+import { AutoIncrementFieldValue } from './auto-increment-field-value';
 import type {
   AutoIncrementFieldType,
   ICreateAutoIncrementFieldInput,
   ICreateAutoIncrementFieldValue,
-} from './auto-increment-field.type.js';
-import { BaseField } from './field.base.js';
-import type { IAutoIncrementField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
+} from './auto-increment-field.type';
+import { BaseField } from './field.base';
+import type { IAutoIncrementField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { IAutoIncrementFilter } from './filter/auto-increment.filter';
+import type { IAutoIncrementFilterOperator } from './filter/operators';
 
 export class AutoIncrementField extends BaseField<IAutoIncrementField> {
   type: AutoIncrementFieldType = 'auto-increment';

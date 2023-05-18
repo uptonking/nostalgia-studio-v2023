@@ -1,5 +1,5 @@
-import type { Table } from '../table.js';
-import { createFieldSchema, updateFieldSchema } from './field.type.js';
+import type { Table } from '../table';
+import { createFieldSchema, updateFieldSchema } from './field.type';
 
 export const createCreateFieldSchema = (table: Table) => {
   return createFieldSchema.refine(

@@ -1,11 +1,11 @@
 import type { Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
-import type { Option, OptionKey } from '../../option/index.js';
-import { Options } from '../../option/index.js';
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { SelectField } from '../select-field.js';
-import { BaseFieldSpecification } from './base-field.specification.js';
+import type { Option, OptionKey } from '../../option/index';
+import { Options } from '../../option/index';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { SelectField } from '../select-field';
+import { BaseFieldSpecification } from './base-field.specification';
 
 export class WithOptions extends BaseFieldSpecification<SelectField> {
   constructor(field: SelectField, public readonly options: Options) {

@@ -5,8 +5,8 @@ import type {
   IOptionColor,
   IOptionColorName,
   IOptionColorShade,
-} from './option.schema.js';
-import { optionColorOrder } from './option.schema.js';
+} from './option.schema';
+import { optionColorOrder } from './option.schema';
 
 export class OptionColor extends ValueObject<IOptionColor> {
   get name() {

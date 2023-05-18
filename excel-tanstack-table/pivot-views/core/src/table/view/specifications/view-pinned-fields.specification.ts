@@ -1,10 +1,10 @@
 import type { Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { ViewPinnedFields } from '../view-pinned-fields.js';
-import type { View } from '../view.js';
-import { BaseViewSpecification } from './base-view-specification.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { ViewPinnedFields } from '../view-pinned-fields';
+import type { View } from '../view';
+import { BaseViewSpecification } from './base-view-specification';
 
 export class WithViewPinnedFields extends BaseViewSpecification {
   constructor(

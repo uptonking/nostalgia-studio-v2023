@@ -4,25 +4,25 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { ILookupFilter } from '../filter/lookup.filter.js';
-import type { ILookupFilterOperator } from '../filter/operators.js';
-import type { TableCompositeSpecificaiton } from '../specifications/index.js';
+import type { TableCompositeSpecificaiton } from '../specifications/index';
 import {
   AbstractLookingField,
   AbstractLookupField,
   BaseField,
-} from './field.base.js';
-import type { ILookupField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { LookupFieldValue } from './lookup-field-value.js';
+} from './field.base';
+import type { ILookupField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { ILookupFilter } from './filter/lookup.filter';
+import type { ILookupFilterOperator } from './filter/operators';
+import { LookupFieldValue } from './lookup-field-value';
 import type {
   ICreateLookupFieldInput,
   ICreateLookupFieldValue,
   IUpdateLookupFieldInput,
   LookupType,
-} from './lookup-field.type.js';
-import { DisplayFields } from './value-objects/display-fields.vo.js';
-import { FieldId } from './value-objects/field-id.vo.js';
+} from './lookup-field.type';
+import { DisplayFields } from './value-objects/display-fields.vo';
+import { FieldId } from './value-objects/field-id.vo';
 
 export class LookupField extends Mixin(
   AbstractLookingField<ILookupField>,

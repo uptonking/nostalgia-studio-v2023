@@ -1,12 +1,12 @@
 import { isAfter } from 'date-fns';
 import { z } from 'zod';
-import { DateRangeField } from './date-range-field.js';
+import { DateRangeField } from './date-range-field';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
 
 export const dateRangeTypeSchema = z.literal('date-range');
 export type DateRangeType = z.infer<typeof dateRangeTypeSchema>;

@@ -1,11 +1,11 @@
 import * as z from 'zod';
-import { ColorField } from './color-field.js';
+import { ColorField } from './color-field';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
 
 export const colorTypeSchema = z.literal('color');
 export type ColorFieldType = z.infer<typeof colorTypeSchema>;

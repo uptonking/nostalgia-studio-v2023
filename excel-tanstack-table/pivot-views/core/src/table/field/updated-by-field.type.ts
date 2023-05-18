@@ -1,12 +1,12 @@
 import * as z from 'zod';
-import { userIdSchema } from '../../user/value-objects/user-id.vo.js';
+import { userIdSchema } from '../../user/value-objects/user-id.vo';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { UpdatedByField } from './updated-by-field.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { UpdatedByField } from './updated-by-field';
 
 export const updatedByTypeSchema = z.literal('updated-by');
 export type UpdatedByFieldType = z.infer<typeof updatedByTypeSchema>;

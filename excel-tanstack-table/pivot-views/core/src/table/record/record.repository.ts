@@ -1,7 +1,7 @@
 import type { Option } from 'oxide.ts';
-import type { TableSchemaIdMap } from '../value-objects/index.js';
-import type { Record } from './record.js';
-import type { IRecordSpec } from './specifications/interface.js';
+import type { TableSchemaIdMap } from '../value-objects/index';
+import type { Record } from './record';
+import type { IRecordSpec } from './specifications/interface';
 
 export interface IRecordRepository {
   insert(record: Record, schema: TableSchemaIdMap): Promise<void>;

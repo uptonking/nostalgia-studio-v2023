@@ -3,10 +3,10 @@ import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { LookupField } from './lookup-field.js';
-import { fieldIdSchema } from './value-objects/field-id.schema.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { LookupField } from './lookup-field';
+import { fieldIdSchema } from './value-objects/field-id.schema';
 
 export const lookupTypeSchema = z.literal('lookup');
 export type LookupType = z.infer<typeof lookupTypeSchema>;

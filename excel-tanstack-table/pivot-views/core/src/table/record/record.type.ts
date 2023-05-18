@@ -1,14 +1,14 @@
 import { z } from 'zod';
-import { userIdSchema } from '../../user/value-objects/user-id.vo.js';
+import { userIdSchema } from '../../user/value-objects/user-id.vo';
 import {
   collaboratorProfile,
   createFieldsSchema_internal,
   fieldQueryValue,
-} from '../field/index.js';
-import { fieldIdSchema } from '../field/value-objects/field-id.schema.js';
-import { TableId, tableIdSchema } from '../value-objects/index.js';
-import type { Record } from './record.js';
-import { recordIdSchema } from './value-objects/record-id.schema.js';
+} from '../field/index';
+import { fieldIdSchema } from '../field/value-objects/field-id.schema';
+import { TableId, tableIdSchema } from '../value-objects/index';
+import type { Record } from './record';
+import { recordIdSchema } from './value-objects/record-id.schema';
 
 export type Records = Record[];
 

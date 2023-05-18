@@ -1,17 +1,18 @@
 import { z } from 'zod';
-import type {
-  IAttachmentFilter,
-  IAttachmentFilterOperator,
-} from '../filter/attachment.filter.js';
-import { AttachmentFieldValue } from './attachment-field-value.js';
+
+import { AttachmentFieldValue } from './attachment-field-value';
 import type {
   AttachmentFieldType,
   ICreateAttachmentFieldInput,
   ICreateAttachmentFieldValue,
-} from './attachment-field.type.js';
-import { BaseField } from './field.base.js';
-import type { IAttachmentField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
+} from './attachment-field.type';
+import { BaseField } from './field.base';
+import type { IAttachmentField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type {
+  IAttachmentFilter,
+  IAttachmentFilterOperator,
+} from './filter/attachment.filter';
 
 export class AttachmentField extends BaseField<IAttachmentField> {
   type: AttachmentFieldType = 'attachment';

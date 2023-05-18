@@ -3,9 +3,9 @@ import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { RatingField } from './rating-field.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { RatingField } from './rating-field';
 
 export const RATING_MAX = 10;
 export const RATING_MAX_DEFAULT = 5;

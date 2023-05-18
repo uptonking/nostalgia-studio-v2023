@@ -3,9 +3,9 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { RatingField } from '../rating-field.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { RatingField } from '../rating-field';
 
 export class WithRatingMax extends CompositeSpecification<
   Table,

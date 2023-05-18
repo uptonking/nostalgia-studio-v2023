@@ -4,20 +4,20 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { ICreatedAtFilter } from '../filter/created-at.filter.js';
-import type { ICreatedAtFilterOperator } from '../filter/operators.js';
-import type { TableCompositeSpecificaiton } from '../specifications/index.js';
-import { CreatedAtFieldValue } from './created-at-field-value.js';
+import type { TableCompositeSpecificaiton } from '../specifications/index';
+import { CreatedAtFieldValue } from './created-at-field-value';
 import type {
   CreatedAtFieldType,
   ICreateCreatedAtFieldInput,
   ICreatedAtFieldQueryValue,
   IUpdateCreatedAtFieldInput,
-} from './created-at-field.type.js';
-import { AbstractDateField } from './field.base.js';
-import type { ICreatedAtField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { DateFormat } from './value-objects/date-format.vo.js';
+} from './created-at-field.type';
+import { AbstractDateField } from './field.base';
+import type { ICreatedAtField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { ICreatedAtFilter } from './filter/created-at.filter';
+import type { ICreatedAtFilterOperator } from './filter/operators';
+import { DateFormat } from './value-objects/date-format.vo';
 
 export class CreatedAtField extends AbstractDateField<ICreatedAtField> {
   type: CreatedAtFieldType = 'created-at';

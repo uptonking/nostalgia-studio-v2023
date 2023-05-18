@@ -3,10 +3,10 @@ import { None, Some } from 'oxide.ts';
 
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { Field } from '../../field/index.js';
-import { FieldId } from '../../field/index.js';
-import type { ICalendarSchema } from './calendar.schema.js';
-import type { ICalendar } from './calendar.type.js';
+import type { Field } from '../../field/index';
+import { FieldId } from '../../field/index';
+import type { ICalendarSchema } from './calendar.schema';
+import type { ICalendar } from './calendar.type';
 
 export class Calendar extends ValueObject<ICalendar> {
   static from(input: ICalendarSchema) {

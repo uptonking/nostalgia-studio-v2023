@@ -22,12 +22,8 @@ import type { UniqueIdentifier } from '@dnd-kit/core';
 
 import { confirmModal } from '../../hooks';
 import { useCurrentTable } from '../../hooks/use-current-table';
-import {
-  createRecordInitialValueAtom,
-} from '../create-record-form/create-record-initial-value.atom';
-import {
-  createRecordFormDrawerOpened,
-} from '../create-record-form/drawer-opened.atom';
+import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom';
+import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom';
 import { RecordId } from '../field-value/record-id';
 import { RecordValues } from '../record/record-values';
 

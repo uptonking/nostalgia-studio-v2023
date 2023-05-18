@@ -3,9 +3,9 @@ import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { NumberField } from './number-field.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { NumberField } from './number-field';
 
 export const numberTypeSchema = z.literal('number');
 export type NumberType = z.infer<typeof numberTypeSchema>;

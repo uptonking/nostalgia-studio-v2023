@@ -6,12 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Button, IconRowInsertBottom } from '@datalking/pivot-ui';
 
-import {
-  createRecordInitialValueAtom,
-} from '../create-record-form/create-record-initial-value.atom';
-import {
-  createRecordFormDrawerOpened,
-} from '../create-record-form/drawer-opened.atom';
+import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom';
+import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom';
 
 export const TableCreateNewRecordButton: React.FC = () => {
   const setOpened = useSetAtom(createRecordFormDrawerOpened);

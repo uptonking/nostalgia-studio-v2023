@@ -23,7 +23,6 @@ import {
 } from '@datalking/pivot-ui';
 
 import { useColors } from '../../hooks/use-colors';
-import { AttachmentInput } from '../field-inputs/attachment-input';
 import { AutoIncrementInput } from '../field-inputs/auto-increment-input';
 import { FieldIcon } from '../field-inputs/field-Icon';
 import { FieldInputLabel } from '../field-inputs/field-input-label';
@@ -33,6 +32,8 @@ import { TreeRecordsPicker } from '../field-inputs/tree-records-picker';
 import { UsersPicker } from '../field-inputs/users-picker';
 import { FieldIssue } from '../field/field-issue';
 import { OptionPicker } from '../option/option-picker';
+
+// import { AttachmentInput } from '../field-inputs/attachment-input';
 
 interface IProps {
   field: Field;
@@ -361,23 +362,23 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
     );
   }
 
-  if (field.type === 'attachment') {
-    return (
-      <Controller
-        name={name}
-        rules={{ required: field.required }}
-        render={(form) => (
-          <>
-            <Group spacing='xs'>
-              <FieldIcon type={field.type} />
-              <FieldInputLabel>{field.name.value}</FieldInputLabel>
-            </Group>
-            <AttachmentInput {...form.field} />
-          </>
-        )}
-      />
-    );
-  }
+  // if (field.type === 'attachment') {
+  //   return (
+  //     <Controller
+  //       name={name}
+  //       rules={{ required: field.required }}
+  //       render={(form) => (
+  //         <>
+  //           <Group spacing='xs'>
+  //             <FieldIcon type={field.type} />
+  //             <FieldInputLabel>{field.name.value}</FieldInputLabel>
+  //           </Group>
+  //           <AttachmentInput {...form.field} />
+  //         </>
+  //       )}
+  //     />
+  //   );
+  // }
 
   if (field.type === 'created-at' || field.type === 'updated-at') {
     return (

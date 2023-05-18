@@ -2,7 +2,7 @@ import { IFilterOrGroupList } from '@datalking/pivot-core';
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetFilterCommandInput } from './set-filters.command.interface.js';
+import type { ISetFilterCommandInput } from './set-filters.command.interface';
 
 export class SetFitlersCommand
   extends Command

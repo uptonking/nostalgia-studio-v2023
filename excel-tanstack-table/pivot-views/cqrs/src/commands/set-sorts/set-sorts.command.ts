@@ -2,7 +2,7 @@ import { ISorts } from '@datalking/pivot-core';
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetSortsCommandInput } from './set-sorts.command.interface.js';
+import type { ISetSortsCommandInput } from './set-sorts.command.interface';
 
 export class SetSortsCommand extends Command implements ISetSortsCommandInput {
   readonly tableId: string;

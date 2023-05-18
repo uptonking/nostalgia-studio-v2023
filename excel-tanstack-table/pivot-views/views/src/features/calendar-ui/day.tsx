@@ -19,12 +19,8 @@ import { useDraggable, useDroppable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 
 import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers';
-import {
-  createRecordInitialValueAtom,
-} from '../create-record-form/create-record-initial-value.atom';
-import {
-  createRecordFormDrawerOpened,
-} from '../create-record-form/drawer-opened.atom';
+import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom';
+import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom';
 import { RecordValues } from '../record/record-values';
 
 interface IProps {

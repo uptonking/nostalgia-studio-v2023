@@ -1,7 +1,7 @@
 import 'immer';
 import 'reselect';
 
-import fp from 'lodash/fp.js';
+import fp from 'lodash/fp';
 import { persistReducer } from 'redux-persist';
 import sessionStorage from 'redux-persist/es/storage/session';
 
@@ -45,6 +45,7 @@ export const recordSlice = createSlice({
       .addMatcher(
         recordApi.endpoints.bulkDeleteRecords.matchFulfilled,
         (state, action) => {
+          // @ts-expect-error fix-types
           const { ids, tableId } = action.meta.arg.originalArgs;
           state.selectedRecordIds = omit(ids, state.selectedRecordIds[tableId]);
         },
@@ -52,6 +53,7 @@ export const recordSlice = createSlice({
       .addMatcher(
         recordApi.endpoints.bulkDuplicateRecord.matchFulfilled,
         (state, action) => {
+          // @ts-expect-error fix-types
           delete state.selectedRecordIds[action.meta.arg.originalArgs.tableId];
         },
       );

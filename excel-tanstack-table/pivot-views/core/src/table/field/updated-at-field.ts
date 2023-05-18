@@ -3,20 +3,20 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { IUpdatedAtFilterOperator } from '../filter/operators.js';
-import type { IUpdatedAtFilter } from '../filter/updated-at.filter.js';
-import type { TableCompositeSpecificaiton } from '../specifications/index.js';
-import { AbstractDateField } from './field.base.js';
-import type { IUpdatedAtField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { UpdatedAtFieldValue } from './updated-at-field-value.js';
+import type { TableCompositeSpecificaiton } from '../specifications/index';
+import { AbstractDateField } from './field.base';
+import type { IUpdatedAtField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { IUpdatedAtFilterOperator } from './filter/operators';
+import type { IUpdatedAtFilter } from './filter/updated-at.filter';
+import { UpdatedAtFieldValue } from './updated-at-field-value';
 import type {
   ICreateUpdatedAtFieldInput,
   IUpdatedAtFieldQueryValue,
   IUpdateUpdatedAtFieldInput,
   UpdatedAtFieldType,
-} from './updated-at-field.type.js';
-import { DateFormat } from './value-objects/date-format.vo.js';
+} from './updated-at-field.type';
+import { DateFormat } from './value-objects/date-format.vo';
 
 export class UpdatedAtField extends AbstractDateField<IUpdatedAtField> {
   type: UpdatedAtFieldType = 'updated-at';

@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetTreeViewFieldCommandInput } from './set-tree-view-field.command.interface.js';
+import type { ISetTreeViewFieldCommandInput } from './set-tree-view-field.command.interface';
 
 export class SetTreeViewFieldCommand
   extends Command

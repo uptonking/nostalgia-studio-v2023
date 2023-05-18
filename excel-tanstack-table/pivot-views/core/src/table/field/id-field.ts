@@ -1,15 +1,16 @@
 import { z } from 'zod';
-import type { IIdFilter } from '../filter/id.filter.js';
-import type { IIdFilterOperator } from '../filter/operators.js';
-import { BaseField } from './field.base.js';
-import type { IIdField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { IdFieldValue } from './id-field-value.js';
+
+import { BaseField } from './field.base';
+import type { IIdField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { IIdFilter } from './filter/id.filter';
+import type { IIdFilterOperator } from './filter/operators';
+import { IdFieldValue } from './id-field-value';
 import type {
   ICreateIdFieldInput,
   ICreateIdFieldValue,
   IdFieldType,
-} from './id-field.type.js';
+} from './id-field.type';
 
 export class IdField extends BaseField<IIdField> {
   type: IdFieldType = 'id';

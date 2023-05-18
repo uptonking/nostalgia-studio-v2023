@@ -50,4 +50,4 @@ export function ConfirmDialog({
   );
 }
 
-export default ConfirmDialog
+export default ConfirmDialog;

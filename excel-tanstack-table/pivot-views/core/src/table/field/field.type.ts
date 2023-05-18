@@ -1,14 +1,14 @@
 import type { Option } from 'oxide.ts';
 import * as z from 'zod';
-import type { IReferenceFilterValue } from '../filter/reference.filter.js';
-import type { Options } from '../option/options.js';
-import type { IRecordDisplayValues } from '../record/index.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import type { TableId } from '../value-objects/table-id.vo.js';
-import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js';
-import type { AttachmentFieldValue } from './attachment-field-value.js';
-import type { AttachmentField } from './attachment-field.js';
-import type { IAttachmentFieldValue } from './attachment-field.type.js';
+
+import type { Options } from '../option/options';
+import type { IRecordDisplayValues } from '../record/index';
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import type { TableId } from '../value-objects/table-id.vo';
+import type { TableSchemaIdMap } from '../value-objects/table-schema.vo';
+import type { AttachmentField } from './attachment-field';
+import type { AttachmentFieldValue } from './attachment-field-value';
+import type { IAttachmentFieldValue } from './attachment-field.type';
 import {
   attachmentFieldQuerySchema,
   attachmentFieldQueryValue,
@@ -16,10 +16,10 @@ import {
   createAttachmentFieldSchema,
   createAttachmentFieldValue_internal,
   updateAttachmentFieldSchema,
-} from './attachment-field.type.js';
-import type { AutoIncrementFieldValue } from './auto-increment-field-value.js';
-import type { AutoIncrementField } from './auto-increment-field.js';
-import type { IAutoIncrementFieldValue } from './auto-increment-field.type.js';
+} from './attachment-field.type';
+import type { AutoIncrementField } from './auto-increment-field';
+import type { AutoIncrementFieldValue } from './auto-increment-field-value';
+import type { IAutoIncrementFieldValue } from './auto-increment-field.type';
 import {
   autoIncrementFieldQuerySchema,
   autoIncrementQueryValue,
@@ -27,10 +27,10 @@ import {
   createAutoIncrementFieldSchema,
   createAutoIncrementFieldValue_internal,
   updateAutoIncrementFieldSchema,
-} from './auto-increment-field.type.js';
-import type { AverageFieldValue } from './average-field-value.js';
-import type { AverageField } from './average-field.js';
-import type { IAverageFieldValue } from './average-field.type.js';
+} from './auto-increment-field.type';
+import type { AverageField } from './average-field';
+import type { AverageFieldValue } from './average-field-value';
+import type { IAverageFieldValue } from './average-field.type';
 import {
   averageFieldQuerySchema,
   averageFieldQueryValue,
@@ -38,10 +38,10 @@ import {
   createAverageFieldSchema,
   createAverageFieldValue_internal,
   updateAverageFieldSchema,
-} from './average-field.type.js';
-import type { BoolFieldValue } from './bool-field-value.js';
-import type { BoolField } from './bool-field.js';
-import type { IBoolFieldValue } from './bool-field.type.js';
+} from './average-field.type';
+import type { BoolField } from './bool-field';
+import type { BoolFieldValue } from './bool-field-value';
+import type { IBoolFieldValue } from './bool-field.type';
 import {
   boolFieldQuerySchema,
   boolFieldQueryValue,
@@ -49,10 +49,10 @@ import {
   createBoolFieldSchema,
   createBoolFieldValue_internal,
   updateBoolFieldSchema,
-} from './bool-field.type.js';
-import type { CollaboratorFieldValue } from './collaborator-field-value.js';
-import type { CollaboratorField } from './collaborator-field.js';
-import type { ICollaboratorFieldValue } from './collaborator-field.type.js';
+} from './bool-field.type';
+import type { CollaboratorField } from './collaborator-field';
+import type { CollaboratorFieldValue } from './collaborator-field-value';
+import type { ICollaboratorFieldValue } from './collaborator-field.type';
 import {
   collaboratorFieldQuerySchema,
   collaboratorFieldQueryValue,
@@ -60,10 +60,10 @@ import {
   createCollaboratorFieldSchema,
   createCollaboratorFieldValue_internal,
   updateCollaboratorFieldSchema,
-} from './collaborator-field.type.js';
-import type { ColorFieldValue } from './color-field-value.js';
-import type { ColorField } from './color-field.js';
-import type { IColorFieldValue } from './color-field.type.js';
+} from './collaborator-field.type';
+import type { ColorField } from './color-field';
+import type { ColorFieldValue } from './color-field-value';
+import type { IColorFieldValue } from './color-field.type';
 import {
   colorFieldQuerySchema,
   colorFieldQueryValue,
@@ -71,10 +71,10 @@ import {
   createColorFieldSchema,
   createColorFieldValue_internal,
   updateColorFieldSchema,
-} from './color-field.type.js';
-import type { CountFieldValue } from './count-field-value.js';
-import type { CountField } from './count-field.js';
-import type { ICountFieldValue } from './count-field.type.js';
+} from './color-field.type';
+import type { CountField } from './count-field';
+import type { CountFieldValue } from './count-field-value';
+import type { ICountFieldValue } from './count-field.type';
 import {
   countFieldQuerySchema,
   countFieldQueryValue,
@@ -82,10 +82,10 @@ import {
   createCountFieldSchema,
   createCountFieldValue_internal,
   updateCountFieldSchema,
-} from './count-field.type.js';
-import type { CreatedAtFieldValue } from './created-at-field-value.js';
-import type { CreatedAtField } from './created-at-field.js';
-import type { ICreatedAtFieldValue } from './created-at-field.type.js';
+} from './count-field.type';
+import type { CreatedAtField } from './created-at-field';
+import type { CreatedAtFieldValue } from './created-at-field-value';
+import type { ICreatedAtFieldValue } from './created-at-field.type';
 import {
   createCreatedAtFieldSchema,
   createCreatedAtFieldValue_internal,
@@ -93,10 +93,10 @@ import {
   createdAtFieldQueryValue,
   createdAtTypeSchema,
   updateCreatedAtFieldSchema,
-} from './created-at-field.type.js';
-import type { CreatedByFieldValue } from './created-by-field-value.js';
-import type { CreatedByField } from './created-by-field.js';
-import type { ICreatedByFieldValue } from './created-by-field.type.js';
+} from './created-at-field.type';
+import type { CreatedByField } from './created-by-field';
+import type { CreatedByFieldValue } from './created-by-field-value';
+import type { ICreatedByFieldValue } from './created-by-field.type';
 import {
   createCreatedByFieldSchema,
   createCreatedByFieldValue_internal,
@@ -104,10 +104,10 @@ import {
   createdByFieldQueryValue,
   createdByTypeSchema,
   updateCreatedByFieldSchema,
-} from './created-by-field.type.js';
-import type { DateFieldValue } from './date-field-value.js';
-import type { DateField } from './date-field.js';
-import type { IDateFieldValue } from './date-field.type.js';
+} from './created-by-field.type';
+import type { DateField } from './date-field';
+import type { DateFieldValue } from './date-field-value';
+import type { IDateFieldValue } from './date-field.type';
 import {
   createDateFieldSchema,
   createDateFieldValue_internal,
@@ -115,10 +115,10 @@ import {
   dateFieldQueryValue,
   dateTypeSchema,
   updateDateFieldSchema,
-} from './date-field.type.js';
-import type { DateRangeFieldValue } from './date-range-field-value.js';
-import type { DateRangeField } from './date-range-field.js';
-import type { IDateRangeFieldValue } from './date-range-field.type.js';
+} from './date-field.type';
+import type { DateRangeField } from './date-range-field';
+import type { DateRangeFieldValue } from './date-range-field-value';
+import type { IDateRangeFieldValue } from './date-range-field.type';
 import {
   createDateRangeFieldSchema,
   createDateRangeFieldValue_internal,
@@ -126,10 +126,10 @@ import {
   dateRangeFieldQueryValue,
   dateRangeTypeSchema,
   updateDateRangeFieldSchema,
-} from './date-range-field.type.js';
-import type { EmailFieldValue } from './email-field-value.js';
-import type { EmailField } from './email-field.js';
-import type { IEmailFieldValue } from './email-field.type.js';
+} from './date-range-field.type';
+import type { EmailField } from './email-field';
+import type { EmailFieldValue } from './email-field-value';
+import type { IEmailFieldValue } from './email-field.type';
 import {
   createEmailFieldSchema,
   createEmailFieldValue_internal,
@@ -137,11 +137,12 @@ import {
   emailFieldQueryValue,
   emailTypeSchema,
   updateEmailFieldSchema,
-} from './email-field.type.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import type { IdFieldValue } from './id-field-value.js';
-import type { IdField } from './id-field.js';
-import type { IIdFieldValue } from './id-field.type.js';
+} from './email-field.type';
+import { FIELD_TYPE_KEY } from './field.constants';
+import type { IReferenceFilterValue } from './filter/reference.filter';
+import type { IdField } from './id-field';
+import type { IdFieldValue } from './id-field-value';
+import type { IIdFieldValue } from './id-field.type';
 import {
   createIdFieldSchema,
   createIdFieldValue_internal,
@@ -149,10 +150,10 @@ import {
   idFieldQueryValue,
   idTypeSchema,
   updateIdFieldSchema,
-} from './id-field.type.js';
-import type { LookupFieldValue } from './lookup-field-value.js';
-import type { LookupField } from './lookup-field.js';
-import type { ILookupFieldValue } from './lookup-field.type.js';
+} from './id-field.type';
+import type { LookupField } from './lookup-field';
+import type { LookupFieldValue } from './lookup-field-value';
+import type { ILookupFieldValue } from './lookup-field.type';
 import {
   createLookupFieldSchema,
   createLookupFieldValue_internal,
@@ -160,10 +161,10 @@ import {
   lookupFieldQueryValue,
   lookupTypeSchema,
   updateLookupFieldSchema,
-} from './lookup-field.type.js';
-import type { NumberFieldValue } from './number-field-value.js';
-import type { NumberField } from './number-field.js';
-import type { INumberFieldValue } from './number-field.type.js';
+} from './lookup-field.type';
+import type { NumberField } from './number-field';
+import type { NumberFieldValue } from './number-field-value';
+import type { INumberFieldValue } from './number-field.type';
 import {
   createNumberFieldSchema,
   createNumberFieldValue_internal,
@@ -171,10 +172,10 @@ import {
   numberFieldQueryValue,
   numberTypeSchema,
   updateNumberFieldSchema,
-} from './number-field.type.js';
-import type { ParentFieldValue } from './parent-field-value.js';
-import type { ParentField } from './parent-field.js';
-import type { IParentFieldValue } from './parent-field.type.js';
+} from './number-field.type';
+import type { ParentField } from './parent-field';
+import type { ParentFieldValue } from './parent-field-value';
+import type { IParentFieldValue } from './parent-field.type';
 import {
   createParentFieldSchema,
   createParentFieldValue_internal,
@@ -182,10 +183,10 @@ import {
   parentFieldQueryValue,
   parentTypeSchema,
   updateParentFieldSchema,
-} from './parent-field.type.js';
-import type { RatingFieldValue } from './rating-field-value.js';
-import type { RatingField } from './rating-field.js';
-import type { IRatingFieldValue } from './rating-field.type.js';
+} from './parent-field.type';
+import type { RatingField } from './rating-field';
+import type { RatingFieldValue } from './rating-field-value';
+import type { IRatingFieldValue } from './rating-field.type';
 import {
   createRatingFieldSchema,
   createRatingFieldValue_internal,
@@ -193,9 +194,9 @@ import {
   ratingFieldQueryValue,
   ratingTypeSchema,
   updateRatingFieldSchema,
-} from './rating-field.type.js';
-import type { ReferenceFieldValue } from './reference-field-value.js';
-import type { ReferenceField } from './reference-field.js';
+} from './rating-field.type';
+import type { ReferenceField } from './reference-field';
+import type { ReferenceFieldValue } from './reference-field-value';
 import {
   createReferenceFieldSchema,
   createReferenceFieldValue_internal,
@@ -203,10 +204,10 @@ import {
   referenceFieldQueryValue,
   referenceTypeSchema,
   updateReferenceFieldSchema,
-} from './reference-field.type.js';
-import type { SelectFieldValue } from './select-field-value.js';
-import type { SelectField } from './select-field.js';
-import type { ISelectFieldValue } from './select-field.type.js';
+} from './reference-field.type';
+import type { SelectField } from './select-field';
+import type { SelectFieldValue } from './select-field-value';
+import type { ISelectFieldValue } from './select-field.type';
 import {
   createSelectFieldSchema,
   createSelectFieldValue_internal,
@@ -214,10 +215,10 @@ import {
   selectFieldQueryValue,
   selectTypeSchema,
   updateSelectFieldSchema,
-} from './select-field.type.js';
-import type { StringFieldValue } from './string-field-value.js';
-import type { StringField } from './string-field.js';
-import type { IStringFieldValue } from './string-field.type.js';
+} from './select-field.type';
+import type { StringField } from './string-field';
+import type { StringFieldValue } from './string-field-value';
+import type { IStringFieldValue } from './string-field.type';
 import {
   createStringFieldSchema,
   createStringFieldValue_internal,
@@ -225,10 +226,10 @@ import {
   stringFieldQueryValue,
   stringTypeSchema,
   updateStringFieldSchema,
-} from './string-field.type.js';
-import type { SumFieldValue } from './sum-field-value.js';
-import type { SumField } from './sum-field.js';
-import type { ISumFieldValue } from './sum-field.type.js';
+} from './string-field.type';
+import type { SumField } from './sum-field';
+import type { SumFieldValue } from './sum-field-value';
+import type { ISumFieldValue } from './sum-field.type';
 import {
   createSumFieldSchema,
   createSumFieldValue_internal,
@@ -236,10 +237,10 @@ import {
   sumFieldQueryValue,
   sumTypeSchema,
   updateSumFieldSchema,
-} from './sum-field.type.js';
-import type { TreeFieldValue } from './tree-field-value.js';
-import type { TreeField } from './tree-field.js';
-import type { ITreeFieldValue } from './tree-field.type.js';
+} from './sum-field.type';
+import type { TreeField } from './tree-field';
+import type { TreeFieldValue } from './tree-field-value';
+import type { ITreeFieldValue } from './tree-field.type';
 import {
   createTreeFieldSchema,
   createTreeFieldValue_internal,
@@ -247,37 +248,37 @@ import {
   treeFieldQueryValue,
   treeTypeSchema,
   updateTreeFieldSchema,
-} from './tree-field.type.js';
-import type { UpdatedAtFieldValue } from './updated-at-field-value.js';
-import type { UpdatedAtField } from './updated-at-field.js';
-import type { IUpdatedAtFieldValue } from './updated-at-field.type.js';
+} from './tree-field.type';
+import type { UpdatedAtField } from './updated-at-field';
+import type { UpdatedAtFieldValue } from './updated-at-field-value';
+import type { IUpdatedAtFieldValue } from './updated-at-field.type';
 import {
   createUpdatedAtFieldSchema,
   createUpdatedAtFieldValue_internal,
-  updateUpdatedAtFieldSchema,
   updatedAtFieldQuerySchema,
   updatedAtFieldQueryValue,
   updatedAtTypeSchema,
-} from './updated-at-field.type.js';
-import type { UpdatedByFieldValue } from './updated-by-field-value.js';
-import type { UpdatedByField } from './updated-by-field.js';
-import type { IUpdatedByFieldValue } from './updated-by-field.type.js';
+  updateUpdatedAtFieldSchema,
+} from './updated-at-field.type';
+import type { UpdatedByField } from './updated-by-field';
+import type { UpdatedByFieldValue } from './updated-by-field-value';
+import type { IUpdatedByFieldValue } from './updated-by-field.type';
 import {
   createUpdatedByFieldSchema,
   createUpdatedByFieldValue_internal,
-  updateUpdatedByFieldSchema,
   updatedByFieldQuerySchema,
   updatedByFieldQueryValue,
   updatedByTypeSchema,
-} from './updated-by-field.type.js';
-import type { FieldDescription } from './value-objects/field-description.js';
+  updateUpdatedByFieldSchema,
+} from './updated-by-field.type';
+import type { FieldDescription } from './value-objects/field-description';
 import type {
   DateFormat,
   DisplayFields,
   FieldId,
   FieldName,
   FieldValueConstraints,
-} from './value-objects/index.js';
+} from './value-objects/index';
 
 export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createIdFieldSchema,

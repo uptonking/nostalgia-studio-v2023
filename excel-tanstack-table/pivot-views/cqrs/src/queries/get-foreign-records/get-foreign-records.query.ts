@@ -1,9 +1,7 @@
 import { IRootFilter } from '@datalking/pivot-core';
 import { Query } from '@datalking/pivot-entity';
 
-import type {
-  IGetForeignRecordsQuery,
-} from './get-foreign-records.query.interface';
+import type { IGetForeignRecordsQuery } from './get-foreign-records.query.interface';
 
 export class GetForeignRecordsQuery
   extends Query

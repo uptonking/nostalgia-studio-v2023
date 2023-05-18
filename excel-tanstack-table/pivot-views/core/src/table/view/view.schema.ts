@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
+import { rootFilter } from '../field/filter/filter';
 import { fieldIdSchema } from '../field/value-objects/field-id.schema';
 import { fieldNameSchema } from '../field/value-objects/field-name.schema';
-import { rootFilter } from '../filter/filter';
 import { calendarSchema } from './calendar/index';
 import { kanbanSchema } from './kanban/index';
 import { sortsSchema } from './sort/sort.schema';

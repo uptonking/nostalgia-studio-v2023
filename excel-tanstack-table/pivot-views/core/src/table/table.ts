@@ -4,6 +4,7 @@ import { None, Ok, Some } from 'oxide.ts';
 
 import { and, andOptions } from '@datalking/pivot-entity';
 
+import type { IRootFilter } from './field/filter/index';
 import type {
   ICreateFieldSchema,
   IQuerySchemaSchema,
@@ -11,7 +12,6 @@ import type {
   IUpdateFieldSchema,
 } from './field/index';
 import { SelectField } from './field/index';
-import type { IRootFilter } from './filter/index';
 import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index';
 import type { Record } from './record/index';
 import { WithRecordTableId } from './record/index';
@@ -83,7 +83,7 @@ export class Table {
   public views: Views = new Views([]);
   public viewsOrder: ViewsOrder = ViewsOrder.empty();
 
-  private constructor() { }
+  private constructor() {}
 
   static empty() {
     return new Table();

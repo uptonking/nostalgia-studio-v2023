@@ -3,9 +3,9 @@ import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { UpdatedAtField } from './updated-at-field.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { UpdatedAtField } from './updated-at-field';
 
 export const updatedAtTypeSchema = z.literal('updated-at');
 export type UpdatedAtFieldType = z.infer<typeof updatedAtTypeSchema>;

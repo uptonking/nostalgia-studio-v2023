@@ -4,7 +4,7 @@ import {
 } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { DeleteRecordCommand } from './delete-record.comand.js';
+import type { DeleteRecordCommand } from './delete-record.comand';
 
 export class DeleteRecordCommandHandler
   implements ICommandHandler<DeleteRecordCommand, void>

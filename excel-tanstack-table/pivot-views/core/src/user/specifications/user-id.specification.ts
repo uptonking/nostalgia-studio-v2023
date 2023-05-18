@@ -3,9 +3,9 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { User } from '../user.js';
-import { UserId } from '../value-objects/user-id.vo.js';
-import type { IUserSpecVisitor } from './interface.js';
+import type { User } from '../user';
+import { UserId } from '../value-objects/user-id.vo';
+import type { IUserSpecVisitor } from './interface';
 
 export class WithUserId extends CompositeSpecification<User, IUserSpecVisitor> {
   constructor(public readonly userId: UserId) {

@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetKanbanFieldCommandInput } from './set-kanban-field.command.interface.js';
+import type { ISetKanbanFieldCommandInput } from './set-kanban-field.command.interface';
 
 export class SetKanbanFieldCommand
   extends Command

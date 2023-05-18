@@ -1,5 +1,5 @@
 import * as z from 'zod';
-import { RecordId } from './record-id.vo.js';
+import { RecordId } from './record-id.vo';
 
 export const recordIdSchema = z
   .string()

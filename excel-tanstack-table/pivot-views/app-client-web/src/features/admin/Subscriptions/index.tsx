@@ -71,7 +71,10 @@ export default function Subscriptions() {
     'plans',
     `subscriptionplan`,
   );
-  const refetchSubscription = React.useMemo(() => debounce(refetch, 500), [refetch]);
+  const refetchSubscription = React.useMemo(
+    () => debounce(refetch, 500),
+    [refetch],
+  );
 
   const filters = ['all', 'active', 'expired', 'cancelled'];
 

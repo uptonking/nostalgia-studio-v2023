@@ -4,9 +4,9 @@ import { None, Option } from 'oxide.ts';
 import type { CompositeSpecification } from '@datalking/pivot-entity';
 import { and, ValueObject } from '@datalking/pivot-entity';
 
+import type { IFilterOrGroupList, IRootFilter } from '../field/filter/index';
+import { RootFilter } from '../field/filter/index';
 import type { Field, FieldId } from '../field/index';
-import type { IFilterOrGroupList, IRootFilter } from '../filter/index';
-import { RootFilter } from '../filter/index';
 import { WithFilter } from '../specifications/index';
 import type { TableCompositeSpecificaiton } from '../specifications/interface';
 import { Calendar } from './calendar/index';

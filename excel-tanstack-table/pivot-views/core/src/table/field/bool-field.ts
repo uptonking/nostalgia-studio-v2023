@@ -1,15 +1,16 @@
 import { z } from 'zod';
-import type { IBoolFilter } from '../filter/bool.filter.js';
-import type { IBoolFilterOperator } from '../filter/operators.js';
-import { BoolFieldValue } from './bool-field-value.js';
+
+import { BoolFieldValue } from './bool-field-value';
 import type {
   BoolFieldType,
   ICreateBoolFieldInput,
   ICreateBoolFieldValue,
-} from './bool-field.type.js';
-import { BaseField } from './field.base.js';
-import type { IBoolField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
+} from './bool-field.type';
+import { BaseField } from './field.base';
+import type { IBoolField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { IBoolFilter } from './filter/bool.filter';
+import type { IBoolFilterOperator } from './filter/operators';
 
 export class BoolField extends BaseField<IBoolField> {
   type: BoolFieldType = 'bool';

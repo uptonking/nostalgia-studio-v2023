@@ -1,8 +1,8 @@
 import * as z from 'zod';
-import { fieldDescriptionSchema } from './value-objects/field-description.js';
-import { fieldIdSchema } from './value-objects/field-id.schema.js';
-import { fieldNameSchema } from './value-objects/field-name.schema.js';
-import { valueConstraintsSchema } from './value-objects/index.js';
+import { fieldDescriptionSchema } from './value-objects/field-description';
+import { fieldIdSchema } from './value-objects/field-id.schema';
+import { fieldNameSchema } from './value-objects/field-name.schema';
+import { valueConstraintsSchema } from './value-objects/index';
 
 export const createBaseFieldSchema = z
   .object({

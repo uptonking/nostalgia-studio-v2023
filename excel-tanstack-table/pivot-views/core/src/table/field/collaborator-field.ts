@@ -1,18 +1,19 @@
 import { unzip } from 'lodash-es';
 import { z } from 'zod';
-import type { ICollaboratorFilter } from '../filter/collaborator.filter.js';
-import type { ICollaboratorFilterOperator } from '../filter/operators.js';
-import type { IRecordDisplayValues } from '../record/record.type.js';
-import { CollaboratorFieldValue } from './collaborator-field-value.js';
+
+import type { IRecordDisplayValues } from '../record/record.type';
+import { CollaboratorFieldValue } from './collaborator-field-value';
 import type {
   CollaboratorFieldType,
   ICreateCollaboratorFieldInput,
   ICreateCollaboratorFieldValue,
   IUpdateCollaboratorFieldInput,
-} from './collaborator-field.type.js';
-import { BaseField } from './field.base.js';
-import type { ICollaboratorField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
+} from './collaborator-field.type';
+import { BaseField } from './field.base';
+import type { ICollaboratorField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { ICollaboratorFilter } from './filter/collaborator.filter';
+import type { ICollaboratorFilterOperator } from './filter/operators';
 
 export class CollaboratorField extends BaseField<ICollaboratorField> {
   type: CollaboratorFieldType = 'collaborator';
@@ -21,7 +22,9 @@ export class CollaboratorField extends BaseField<ICollaboratorField> {
     return true;
   }
 
-  // https://github.com/undb-xyz/undb/issues/781
+  /**
+   * todo 支持 reference filter
+   */
   override get filterable(): boolean {
     return false;
   }

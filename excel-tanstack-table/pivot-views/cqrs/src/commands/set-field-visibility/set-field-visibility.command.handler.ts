@@ -1,7 +1,7 @@
 import type { ITableRepository } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { SetFieldVisibilityCommand } from './set-field-visibility.command.js';
+import type { SetFieldVisibilityCommand } from './set-field-visibility.command';
 
 export class SetFieldVisibilityCommandHandler
   implements ICommandHandler<SetFieldVisibilityCommand, void>

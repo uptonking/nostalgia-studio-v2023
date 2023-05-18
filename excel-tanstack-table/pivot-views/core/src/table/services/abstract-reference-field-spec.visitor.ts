@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { AverageField } from '../field/average-field.js';
-import type { CollaboratorField } from '../field/collaborator-field.js';
+import type { AverageField } from '../field/average-field';
+import type { CollaboratorField } from '../field/collaborator-field';
 import type {
   AttachmentField,
   AutoIncrementField,
@@ -38,7 +38,7 @@ import type {
   WithSymmetricReferenceField,
   WithoutField,
   WithoutOption,
-} from '../field/index.js';
+} from '../field/index';
 import type {
   ITableSpecVisitor,
   WithFilter,
@@ -47,7 +47,7 @@ import type {
   WithTableId,
   WithTableName,
   WithTableSchema,
-} from '../specifications/index.js';
+} from '../specifications/index';
 import type {
   WithCalendarField,
   WithDisplayType,
@@ -66,7 +66,7 @@ import type {
   WithViewPinnedFields,
   WithViewsOrder,
   WithoutView,
-} from '../view/index.js';
+} from '../view/index';
 
 export abstract class AbstractReferenceFieldSpecVisitor
   implements ITableSpecVisitor, IFieldVisitor

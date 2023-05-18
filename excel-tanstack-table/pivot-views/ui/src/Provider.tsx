@@ -1,1 +1,1 @@
-export { MantineProvider as EgoUIProvider } from '@mantine/core';
+export { MantineProvider as UIProvider } from '@mantine/core';

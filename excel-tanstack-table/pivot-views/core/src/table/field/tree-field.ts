@@ -3,20 +3,20 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { ITreeFilterOperator } from '../filter/operators.js';
-import type { ITreeFilter } from '../filter/tree.filter.js';
-import { AbstractLookingField, AbstractReferenceField } from './field.base.js';
-import type { ITreeField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { ParentField } from './parent-field.js';
-import { TreeFieldValue } from './tree-field-value.js';
+import { AbstractLookingField, AbstractReferenceField } from './field.base';
+import type { ITreeField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { ITreeFilterOperator } from './filter/operators';
+import type { ITreeFilter } from './filter/tree.filter';
+import { ParentField } from './parent-field';
+import { TreeFieldValue } from './tree-field-value';
 import type {
   ICreateTreeFieldSchema,
   ICreateTreeFieldValue,
   IUpdateTreeFieldInput,
   TreeFieldType,
-} from './tree-field.type.js';
-import { DisplayFields, FieldId } from './value-objects/index.js';
+} from './tree-field.type';
+import { DisplayFields, FieldId } from './value-objects/index';
 
 export class TreeField extends Mixin(
   AbstractReferenceField<ITreeField>,

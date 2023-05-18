@@ -28,12 +28,10 @@ export abstract class Command {
   }
 }
 
-
 /** execute command, return promise */
 export interface ICommandHandler<TCommand extends Command, TResult> {
   execute(command: TCommand): Promise<TResult>;
 }
-
 
 export interface ICommandBus<TCommand extends Command = Command> {
   execute<TResult>(command: TCommand): Promise<TResult>;

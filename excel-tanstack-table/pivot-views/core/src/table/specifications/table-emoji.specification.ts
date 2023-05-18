@@ -2,12 +2,12 @@ import { Ok, type Result } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import { type Table } from '../table.js';
+import { type Table } from '../table';
 import {
   DEFAULT_TABLE_EMOJI,
   TableEmoji,
-} from '../value-objects/table-emoji.vo.js';
-import type { ITableSpecVisitor } from './interface.js';
+} from '../value-objects/table-emoji.vo';
+import type { ITableSpecVisitor } from './interface';
 
 export class WithTableEmoji extends CompositeSpecification {
   constructor(public readonly emoji: TableEmoji) {

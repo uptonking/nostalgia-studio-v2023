@@ -1,7 +1,7 @@
 import type { ITableRepository } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { MoveViewCommand } from './move-view.command.js';
+import type { MoveViewCommand } from './move-view.command';
 
 type IMoveViewCommandHandler = ICommandHandler<MoveViewCommand, void>;
 

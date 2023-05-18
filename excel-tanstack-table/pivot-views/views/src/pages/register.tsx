@@ -24,9 +24,10 @@ import {
 } from '@datalking/pivot-ui';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import logo from '../assets/logo.svg';
+import logo from '../assets/watarble-logo.svg';
+import { loginIndicatorTextCss } from '../styles';
 
-export const Register: React.FC = () => {
+export const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [redirectUrl] = useQueryParam('redirectUrl', StringParam);
@@ -64,14 +65,14 @@ export const Register: React.FC = () => {
         <ThemeIcon
           w={60}
           h={60}
-          bg='white'
-          color='blue.9'
+          bg='gray.1'
+          color='teal.9'
           variant='outline'
           radius='xl'
           pos='absolute'
           left='50%'
           top={0}
-          sx={{ transform: 'translate(-50%, -50%)' }}
+          sx={{ transform: 'translate(-50%, -50%)', border: 'none' }}
         >
           <IconUser size='2.0rem' />
         </ThemeIcon>
@@ -79,22 +80,25 @@ export const Register: React.FC = () => {
         <form onSubmit={onSubmit}>
           <Stack spacing='xl'>
             <Center mb='sm'>
-              <Image mr='xs' src={logo} alt='undb' width='20px' height='20px' />
+              <Image mr='xs' src={logo} alt='watarble' width='32px' height='32px' />
 
               <Title
                 align='center'
                 order={2}
-                color='blue'
-                gradient={{ from: 'indigo', to: 'cyan' }}
+                color='teal'
+                // gradient={{ from: 'indigo', to: 'cyan' }}
               >
-                {t('register to undb', { ns: 'auth' })}
+                {t('register to watarble', { ns: 'auth' })}
               </Title>
             </Center>
 
+            <p className={loginIndicatorTextCss}>
+              {t('email', { ns: 'auth' })}
+            </p>
             <TextInput
               type='email'
               {...form.register('email')}
-              placeholder={t('email placeholder', { ns: 'auth' }) as string}
+              // placeholder={t('email placeholder', { ns: 'auth' }) as string}
               radius='xl'
               h={40}
               mb='xs'
@@ -102,6 +106,9 @@ export const Register: React.FC = () => {
               icon={<IconMail size={16} />}
               variant='filled'
             />
+            <p className={loginIndicatorTextCss}>
+              {t('password', { ns: 'auth' })}
+            </p>
             <PasswordInput
               {...form.register('password')}
               radius='xl'
@@ -109,7 +116,7 @@ export const Register: React.FC = () => {
               mb='xs'
               variant='filled'
               icon={<IconPassword size={16} />}
-              placeholder={t('password placeholder', { ns: 'auth' }) as string}
+              // placeholder={t('password placeholder', { ns: 'auth' }) as string}
             />
             <Button
               type='submit'
@@ -118,7 +125,7 @@ export const Register: React.FC = () => {
               loading={isLoading}
               radius='lg'
               variant='gradient'
-              gradient={{ from: 'indigo', to: 'cyan' }}
+              gradient={{ from: 'blue', to: 'teal' }}
               sx={(theme) => ({ boxShadow: theme.shadows.lg })}
             >
               {t('register', { ns: 'auth' })}

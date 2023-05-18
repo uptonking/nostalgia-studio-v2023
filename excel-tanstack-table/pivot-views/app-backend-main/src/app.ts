@@ -51,8 +51,8 @@ export function createBackendApp(
   const promises = [
     checks
       ? checkDatabase()
-        .then(async (ok) => (ok ? await loadSettingsAsync() : ok))
-        .then(async (ok) => (ok ? await authProviderAutoConfigure() : ok))
+          .then(async (ok) => (ok ? await loadSettingsAsync() : ok))
+          .then(async (ok) => (ok ? await authProviderAutoConfigure() : ok))
       : Promise.resolve(true),
   ];
 

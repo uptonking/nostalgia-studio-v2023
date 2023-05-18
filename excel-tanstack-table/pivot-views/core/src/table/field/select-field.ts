@@ -4,34 +4,28 @@ import { z } from 'zod';
 
 import { and } from '@datalking/pivot-entity';
 
-import type { ISelectFilterOperator } from '../filter/operators.js';
-import type {
-  ISelectFilter,
-  ISelectFilterValue,
-} from '../filter/select.filter.js';
-import type {
-  ICreateOptionSchema,
-  IUpdateOptionSchema,
-} from '../option/index.js';
-import { OptionKey } from '../option/index.js';
-import { Options } from '../option/options.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import { BaseField } from './field.base.js';
-import type { ISelectField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { SelectFieldValue } from './select-field-value.js';
+import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/index';
+import { OptionKey } from '../option/index';
+import { Options } from '../option/options';
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { BaseField } from './field.base';
+import type { ISelectField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { ISelectFilterOperator } from './filter/operators';
+import type { ISelectFilter, ISelectFilterValue } from './filter/select.filter';
+import { SelectFieldValue } from './select-field-value';
 import type {
   ICreateSelectFieldSchema,
   ICreateSelectFieldValue,
   IUpdateSelectFieldInput,
   SelectFieldType,
-} from './select-field.type.js';
+} from './select-field.type';
 import {
   WithNewOption,
   WithOption,
   WithOptions,
   WithoutOption,
-} from './specifications/select-field.specification.js';
+} from './specifications/select-field.specification';
 
 export class SelectField extends BaseField<ISelectField> {
   type: SelectFieldType = 'select';

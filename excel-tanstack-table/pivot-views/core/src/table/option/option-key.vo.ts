@@ -1,6 +1,6 @@
 import { NanoID } from '@datalking/pivot-entity';
 
-import { optionIdSchema } from './option.schema.js';
+import { optionIdSchema } from './option.schema';
 
 export class OptionKey extends NanoID {
   private static OPTION_ID_PREFIX = 'opt';

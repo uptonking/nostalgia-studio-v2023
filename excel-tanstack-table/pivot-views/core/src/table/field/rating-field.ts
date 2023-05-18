@@ -4,22 +4,22 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { BaseField } from './field.base';
+import type { IRatingField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
 import type {
   IRatingFilter,
   IRatingFilterOperator,
-} from '../filter/rating.filter.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import { BaseField } from './field.base.js';
-import type { IRatingField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { RatingFieldValue } from './rating-field-value.js';
+} from './filter/rating.filter';
+import { RatingFieldValue } from './rating-field-value';
 import type {
   ICreateRatingFieldInput,
   ICreateRatingFieldValue,
   IUpdateRatingFieldInput,
   RatingFieldType,
-} from './rating-field.type.js';
-import { WithRatingMax } from './specifications/rating-field.specification.js';
+} from './rating-field.type';
+import { WithRatingMax } from './specifications/rating-field.specification';
 
 export class RatingField extends BaseField<IRatingField> {
   type: RatingFieldType = 'rating';

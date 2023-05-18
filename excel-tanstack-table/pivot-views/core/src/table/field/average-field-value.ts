@@ -1,6 +1,6 @@
-import type { IAverageFieldValue } from './average-field.type.js';
-import { FieldValueBase } from './field-value.base.js';
-import type { IFieldValueVisitor } from './field-value.visitor.js';
+import type { IAverageFieldValue } from './average-field.type';
+import { FieldValueBase } from './field-value.base';
+import type { IFieldValueVisitor } from './field-value.visitor';
 
 export class AverageFieldValue extends FieldValueBase<IAverageFieldValue> {
   constructor(value: IAverageFieldValue) {

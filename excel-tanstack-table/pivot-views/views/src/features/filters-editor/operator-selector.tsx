@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import type { Field, IOperator } from '@datalking/pivot-core';
 import {
-  AttachmentField,
   AutoIncrementField,
   AverageField,
   BoolField,
@@ -98,23 +97,25 @@ export const OperatorSelector: React.FC<IProps> = ({
         label: t('LESS THAN OR EQUAL', { ns: 'common' }) as string,
       },
     ];
-  } else if (field instanceof AttachmentField) {
-    data = [
-      { value: '$is_empty', label: t('IS EMPTY', { ns: 'common' }) as string },
-      {
-        value: '$is_not_empty',
-        label: t('IS NOT EMPTY', { ns: 'common' }) as string,
-      },
-      {
-        value: '$has_file_type',
-        label: t('HAS FILE TYPE', { ns: 'common' }) as string,
-      },
-      {
-        value: '$has_file_extension',
-        label: t('HAS FILE EXTENSION', { ns: 'common' }) as string,
-      },
-    ];
-  } else if (
+  }
+  // else if (field instanceof AttachmentField) {
+  //   data = [
+  //     { value: '$is_empty', label: t('IS EMPTY', { ns: 'common' }) as string },
+  //     {
+  //       value: '$is_not_empty',
+  //       label: t('IS NOT EMPTY', { ns: 'common' }) as string,
+  //     },
+  //     {
+  //       value: '$has_file_type',
+  //       label: t('HAS FILE TYPE', { ns: 'common' }) as string,
+  //     },
+  //     {
+  //       value: '$has_file_extension',
+  //       label: t('HAS FILE EXTENSION', { ns: 'common' }) as string,
+  //     },
+  //   ];
+  // }
+  else if (
     field instanceof DateField ||
     field instanceof CreatedAtField ||
     field instanceof UpdatedAtField

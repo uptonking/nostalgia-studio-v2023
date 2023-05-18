@@ -1,12 +1,12 @@
-export * from './aggregate-field.specification.js';
+export * from './aggregate-field.specification';
 export {
   WithFieldDescription,
   WithFieldDisplay,
   WithFieldName,
-} from './base-field.specification.js';
-export * from './date-field.specification.js';
-export * from './field-constraints.specification.js';
-export * from './field.specification.js';
-export * from './rating-field.specification.js';
-export * from './reference-field.specification.js';
-export * from './select-field.specification.js';
+} from './base-field.specification';
+export * from './date-field.specification';
+export * from './field-constraints.specification';
+export * from './field.specification';
+export * from './rating-field.specification';
+export * from './reference-field.specification';
+export * from './select-field.specification';

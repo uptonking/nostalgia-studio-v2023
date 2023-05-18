@@ -3,9 +3,9 @@ import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
-import { StringField } from './string-field.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
+import { StringField } from './string-field';
 
 export const stringTypeSchema = z.literal('string');
 export type StringFieldType = z.infer<typeof stringTypeSchema>;

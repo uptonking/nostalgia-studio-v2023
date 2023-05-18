@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IReorderOptionsCommandInput } from './reorder-options.command.interface.js';
+import type { IReorderOptionsCommandInput } from './reorder-options.command.interface';
 
 export class ReorderOptionsCommand
   extends Command

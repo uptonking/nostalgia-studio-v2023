@@ -1,11 +1,11 @@
 import * as z from 'zod';
-import { CreatedAtField } from './created-at-field.js';
+import { CreatedAtField } from './created-at-field';
 import {
   baseFieldQuerySchema,
   createBaseFieldSchema,
   updateBaseFieldSchema,
-} from './field-base.schema.js';
-import { FIELD_TYPE_KEY } from './field.constants.js';
+} from './field-base.schema';
+import { FIELD_TYPE_KEY } from './field.constants';
 
 export const createdAtTypeSchema = z.literal('created-at');
 export type CreatedAtFieldType = z.infer<typeof createdAtTypeSchema>;

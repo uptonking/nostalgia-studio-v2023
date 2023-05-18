@@ -3,7 +3,7 @@ import { SafeParseError } from 'zod';
 import {
   dateRangeFieldValue,
   IDateRangeFieldValue,
-} from './date-range-field.type.js';
+} from './date-range-field.type';
 
 const now = new Date();
 

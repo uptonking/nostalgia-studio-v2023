@@ -3,12 +3,12 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { BaseField } from '../field.base.js';
-import type { Field } from '../field.type.js';
-import { FieldDescription } from '../value-objects/field-description.js';
-import { FieldName } from '../value-objects/field-name.vo.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { BaseField } from '../field.base';
+import type { Field } from '../field.type';
+import { FieldDescription } from '../value-objects/field-description';
+import { FieldName } from '../value-objects/field-name.vo';
 
 export abstract class BaseFieldSpecification<
   F extends Field,

@@ -3,10 +3,10 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { AbstractDateField } from '../field.base.js';
-import { DateFormat } from '../value-objects/date-format.vo.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { AbstractDateField } from '../field.base';
+import { DateFormat } from '../value-objects/date-format.vo';
 
 export class WithFormat extends CompositeSpecification<
   Table,

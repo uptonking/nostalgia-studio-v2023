@@ -1,7 +1,7 @@
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IDeleteTableInput } from './delete-table.command.input.js';
+import type { IDeleteTableInput } from './delete-table.command.input';
 
 export class DeleteTableCommand extends Command {
   readonly id: string;

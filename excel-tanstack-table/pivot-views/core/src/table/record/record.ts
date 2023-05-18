@@ -1,26 +1,26 @@
 import { DateVO } from '@datalking/pivot-entity';
 
-import type { ICollaboratorProfile } from '../field/collaborator-field.type.js';
+import type { ICollaboratorProfile } from '../field/collaborator-field.type';
 import type {
   TableId,
   TableSchema,
   TableSchemaIdMap,
-} from '../value-objects/index.js';
-import { RecordFactory } from './record.factory.js';
+} from '../value-objects/index';
+import { RecordFactory } from './record.factory';
 import type {
   IInternalRecordValues,
   IMutateRecordValueSchema,
   RecordAllValues,
-} from './record.schema.js';
-import { createRecordInputs } from './record.utils.js';
+} from './record.schema';
+import { createRecordInputs } from './record.utils';
 import {
   WithRecordId,
   WithRecordTableId,
   WithRecordValues,
-} from './specifications/index.js';
-import type { RecordCompositeSpecification } from './specifications/interface.js';
-import { RecordId, RecordValues } from './value-objects/index.js';
-import { RecordDisplayValues } from './value-objects/record-display-values.vo.js';
+} from './specifications/index';
+import type { RecordCompositeSpecification } from './specifications/interface';
+import { RecordId, RecordValues } from './value-objects/index';
+import { RecordDisplayValues } from './value-objects/record-display-values.vo';
 
 export class Record {
   public id: RecordId = RecordId.create();

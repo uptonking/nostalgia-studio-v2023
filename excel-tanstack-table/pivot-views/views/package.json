@@ -8,8 +8,10 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsc && vite build",
+    "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.cjs",
     "dev": "vite",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npm run demo"
   },
   "dependencies": {
     "@datalking/pivot-core": "^0.0.1",

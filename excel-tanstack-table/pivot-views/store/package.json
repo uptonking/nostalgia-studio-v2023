@@ -11,7 +11,9 @@
   "dependencies": {
     "@datalking/pivot-core": "^0.0.1",
     "@datalking/pivot-cqrs": "^0.0.1",
+    "@datalking/pivot-trpc": "^0.0.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "@trpc/client": "^10.26.0",
     "lodash": "^4.17.21",
     "redux": "^4.2.1",
     "redux-logger": "^3.0.6",

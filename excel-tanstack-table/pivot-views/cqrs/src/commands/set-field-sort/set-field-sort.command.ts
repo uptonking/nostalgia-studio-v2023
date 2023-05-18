@@ -2,7 +2,7 @@ import { ISortDirection } from '@datalking/pivot-core';
 import type { CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetFieldSortCommandInput } from './set-field-sort.command.interface.js';
+import type { ISetFieldSortCommandInput } from './set-field-sort.command.interface';
 
 export class SetFieldSortCommand
   extends Command

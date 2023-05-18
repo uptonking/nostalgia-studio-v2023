@@ -2,21 +2,18 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type {
-  ICountFilter,
-  ICountFilterOperator,
-} from '../filter/count.filter.js';
-import { CountFieldValue } from './count-field-value.js';
+import { CountFieldValue } from './count-field-value';
 import type {
   CountType,
   ICreateCountFieldInput,
   ICreateCountFieldValue,
   IUpdateCountFieldInput,
-} from './count-field.type.js';
-import { AbstractLookupField, BaseField } from './field.base.js';
-import type { ICountField } from './field.type.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import { FieldId } from './value-objects/field-id.vo.js';
+} from './count-field.type';
+import { AbstractLookupField, BaseField } from './field.base';
+import type { ICountField } from './field.type';
+import type { IFieldVisitor } from './field.visitor';
+import type { ICountFilter, ICountFilterOperator } from './filter/count.filter';
+import { FieldId } from './value-objects/field-id.vo';
 
 export class CountField extends AbstractLookupField<ICountField> {
   type: CountType = 'count';

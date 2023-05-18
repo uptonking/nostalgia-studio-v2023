@@ -1,7 +1,7 @@
 import { type ITableRepository } from '@datalking/pivot-core';
 import type { ICommandHandler } from '@datalking/pivot-entity';
 
-import type { DeleteOptionCommand } from './delete-option.comand.js';
+import type { DeleteOptionCommand } from './delete-option.comand';
 
 export class DeleteOptionCommandHandler
   implements ICommandHandler<DeleteOptionCommand, void>

@@ -1,6 +1,6 @@
 import { addDays, addHours, endOfDay, startOfDay } from 'date-fns';
-import { DateFieldValue } from '../../field/index.js';
-import { createTestRecord } from '../fixtures/index.js';
+import { DateFieldValue } from '../../field/index';
+import { createTestRecord } from '../fixtures/index';
 import {
   DateEqual,
   DateGreaterThan,
@@ -8,7 +8,7 @@ import {
   DateIsToday,
   DateLessThan,
   DateLessThanOrEqual,
-} from './date.specification.js';
+} from './date.specification';
 
 const date = new Date(2022, 1, 1, 10);
 const dateValue = new DateFieldValue(date);

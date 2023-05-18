@@ -26,7 +26,7 @@ interface IProps {
   onChange(items: IAttachmentItem[]): void;
 }
 
-const AttachmentItem: React.FC<{
+export const AttachmentItem: React.FC<{
   attachment: IAttachmentItem;
   onRemove?: (attachment: IAttachmentItem) => void;
 }> = ({ attachment, onRemove }) => {

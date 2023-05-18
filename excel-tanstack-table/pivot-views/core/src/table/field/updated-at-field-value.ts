@@ -1,9 +1,9 @@
-import { FieldValueBase } from './field-value.base.js';
-import type { IFieldValueVisitor } from './field-value.visitor.js';
+import { FieldValueBase } from './field-value.base';
+import type { IFieldValueVisitor } from './field-value.visitor';
 import type {
   IUpdatedAtFieldQueryValue,
   IUpdatedAtFieldValue,
-} from './updated-at-field.type.js';
+} from './updated-at-field.type';
 
 export class UpdatedAtFieldValue extends FieldValueBase<IUpdatedAtFieldValue> {
   constructor(value: IUpdatedAtFieldValue) {

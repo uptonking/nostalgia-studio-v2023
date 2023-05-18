@@ -7,20 +7,25 @@ import { QueryParamProvider } from 'use-query-params';
 import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 
 import { createStore, PersistGate } from '@datalking/pivot-store';
-import { EgoUIProvider, Notifications } from '@datalking/pivot-ui';
+import { Notifications, UIProvider } from '@datalking/pivot-ui';
 
 import { App } from './App';
 import { I18n } from './i18n/i18n';
+import { configureFakeBackend } from './utils/fake-backend';
 
 const { store, persist } = createStore();
+
+// configureFakeBackend();
 
 const AppRoot = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persist}>
         <I18n>
-          <EgoUIProvider
-            theme={{ primaryColor: 'indigo' }}
+          <UIProvider
+            theme={{ primaryColor: 'teal',
+            defaultGradient: { from: 'blue', to: 'teal', deg: 20 }
+          }}
             withGlobalStyles
             withNormalizeCSS
           >
@@ -30,7 +35,7 @@ const AppRoot = () => {
                 <App />
               </QueryParamProvider>
             </BrowserRouter>
-          </EgoUIProvider>
+          </UIProvider>
         </I18n>
       </PersistGate>
     </Provider>

@@ -5,11 +5,11 @@ import { Some } from 'oxide.ts';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { ParentField, ReferenceField, TreeField } from '../field/index.js';
-import { FieldId, WithSymmetricReferenceField } from '../field/index.js';
-import type { TableCompositeSpecificaiton } from '../specifications/index.js';
-import type { Table } from '../table.js';
-import { AbstractReferenceFieldSpecVisitor } from './abstract-reference-field-spec.visitor.js';
+import type { ParentField, ReferenceField, TreeField } from '../field/index';
+import { FieldId, WithSymmetricReferenceField } from '../field/index';
+import type { TableCompositeSpecificaiton } from '../specifications/index';
+import type { Table } from '../table';
+import { AbstractReferenceFieldSpecVisitor } from './abstract-reference-field-spec.visitor';
 
 export class ForeignTableReferenceHandler extends AbstractReferenceFieldSpecVisitor {
   constructor(

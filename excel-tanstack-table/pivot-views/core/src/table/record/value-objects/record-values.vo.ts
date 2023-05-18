@@ -6,11 +6,11 @@ import type {
   FieldValue,
   ICreateFieldsSchema_internal,
   UnpackedFieldValue,
-} from '../../field/index.js';
-import { TreeField } from '../../field/index.js';
-import type { TableSchemaIdMap } from '../../value-objects/index.js';
-import type { RecordValueJSON } from '../record.schema.js';
-import type { IQueryRecordValues } from '../record.type.js';
+} from '../../field/index';
+import { TreeField } from '../../field/index';
+import type { TableSchemaIdMap } from '../../value-objects/index';
+import type { RecordValueJSON } from '../record.schema';
+import type { IQueryRecordValues } from '../record.type';
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {

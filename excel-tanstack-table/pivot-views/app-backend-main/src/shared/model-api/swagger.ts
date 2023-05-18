@@ -219,14 +219,14 @@ export function getParameters(method: string, path: string) {
   }
   return ['post', 'put', 'patch', 'delete'].includes(method)
     ? {
-      requestBody: {
-        content: {
-          'application/json': {
-            schema: {},
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {},
+            },
           },
         },
-      },
-    }
+      }
     : {};
 }
 

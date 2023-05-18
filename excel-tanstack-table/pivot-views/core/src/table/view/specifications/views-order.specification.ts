@@ -3,9 +3,9 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import { ViewsOrder } from '../views-order.vo.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import { ViewsOrder } from '../views-order.vo';
 
 export class WithViewsOrder extends CompositeSpecification<
   Table,

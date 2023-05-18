@@ -1,20 +1,19 @@
 import { isArray, isBoolean, isEmpty, isString, unzip } from 'lodash-es';
-import fp from 'lodash/fp.js';
+import fp from 'lodash/fp';
 import type { Option } from 'oxide.ts';
 import { None, Some } from 'oxide.ts';
 import type { ZodTypeAny } from 'zod';
 
 import { and, ValueObject } from '@datalking/pivot-entity';
 
-import type { IFilter, IOperator } from '../filter/index.js';
-import type { IRecordDisplayValues } from '../record/index.js';
-import type { TableCompositeSpecificaiton } from '../specifications/interface.js';
-import type { TableSchemaIdMap } from '../value-objects/table-schema.vo.js';
+import type { IRecordDisplayValues } from '../record/index';
+import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import type { TableSchemaIdMap } from '../value-objects/table-schema.vo';
 import type {
   IBaseCreateFieldSchema,
   IBaseUpdateFieldSchema,
-} from './field-base.schema.js';
-import { DEFAULT_DATE_FORMAT } from './field.constants.js';
+} from './field-base.schema';
+import { DEFAULT_DATE_FORMAT } from './field.constants';
 import type {
   IAbstractAggregateField,
   IAbstractDateField,
@@ -31,29 +30,38 @@ import type {
   IUpdateFieldSchema,
   PrimitiveField,
   SystemField,
-} from './field.type.js';
-import { canDisplay, isControlledFieldType } from './field.util.js';
-import type { IFieldVisitor } from './field.visitor.js';
-import type { ReferenceField } from './reference-field.js';
-import { WithAggregateFieldId } from './specifications/aggregate-field.specification.js';
+} from './field.type';
+import { canDisplay, isControlledFieldType } from './field.util';
+import type { IFieldVisitor } from './field.visitor';
+import type { IFilter, IOperator } from './filter/index';
+import type { ReferenceField } from './reference-field';
+import {
+  WithAggregateFieldId,
+} from './specifications/aggregate-field.specification';
 import {
   WithFieldDescription,
   WithFieldDisplay,
   WithFieldName,
-} from './specifications/base-field.specification.js';
-import { WithFormat } from './specifications/date-field.specification.js';
-import { WithFieldRequirement } from './specifications/field-constraints.specification.js';
-import { WithReferenceFieldId } from './specifications/lookup-field.specification.js';
-import { WithDisplayFields } from './specifications/reference-field.specification.js';
-import type { TreeField } from './tree-field.js';
-import { FieldDescription } from './value-objects/field-description.js';
-import type { DateFormat, FieldIssue } from './value-objects/index.js';
+} from './specifications/base-field.specification';
+import { WithFormat } from './specifications/date-field.specification';
+import {
+  WithFieldRequirement,
+} from './specifications/field-constraints.specification';
+import {
+  WithReferenceFieldId,
+} from './specifications/lookup-field.specification';
+import {
+  WithDisplayFields,
+} from './specifications/reference-field.specification';
+import type { TreeField } from './tree-field';
+import { FieldDescription } from './value-objects/field-description';
+import type { DateFormat, FieldIssue } from './value-objects/index';
 import {
   DisplayFields,
   FieldId,
   FieldName,
   FieldValueConstraints,
-} from './value-objects/index.js';
+} from './value-objects/index';
 
 const { map, pipe } = fp;
 

@@ -13,9 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { confirmModal } from '../../hooks';
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { CreateRecordForm } from './create-record-form';
-import {
-  createRecordInitialValueAtom,
-} from './create-record-initial-value.atom';
+import { createRecordInitialValueAtom } from './create-record-initial-value.atom';
 import { createRecordFormDrawerOpened } from './drawer-opened.atom';
 
 export const CreateRecordFormDrawer: React.FC = () => {

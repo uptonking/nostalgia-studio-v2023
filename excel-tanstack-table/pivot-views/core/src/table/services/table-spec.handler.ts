@@ -1,8 +1,8 @@
-import type { TableCompositeSpecificaiton } from '../specifications/index.js';
-import type { Table } from '../table.js';
-import type { ITableRepository } from '../table.repository.js';
-import { ForeignTableReferenceHandler } from './foreign-table-reference.handler.js';
-import { ForeignTableCollector } from './foreign-table.collector.js';
+import type { TableCompositeSpecificaiton } from '../specifications/index';
+import type { Table } from '../table';
+import type { ITableRepository } from '../table.repository';
+import { ForeignTableReferenceHandler } from './foreign-table-reference.handler';
+import { ForeignTableCollector } from './foreign-table.collector';
 
 export interface ITableSpecHandler {
   handle(table: Table, spec: TableCompositeSpecificaiton): Promise<void>;

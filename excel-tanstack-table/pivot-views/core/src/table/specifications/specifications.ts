@@ -1,10 +1,10 @@
-import type { ClsStore } from '../../cls/cls.js';
-import type { ICreateTableInput_internal } from '../table.schema.js';
-import { WithTableViews } from '../view/specifications/views.specification.js';
-import { WithTableEmoji } from './table-emoji.specification.js';
-import { WithTableId } from './table-id.specification.js';
-import { WithTableName } from './table-name.specification.js';
-import { WithTableSchema } from './table-schema.specification.js';
+import type { ClsStore } from '../../cls/cls';
+import type { ICreateTableInput_internal } from '../table.schema';
+import { WithTableViews } from '../view/specifications/views.specification';
+import { WithTableEmoji } from './table-emoji.specification';
+import { WithTableId } from './table-id.specification';
+import { WithTableName } from './table-name.specification';
+import { WithTableSchema } from './table-schema.specification';
 
 export const newTableSpec = (
   input: ICreateTableInput_internal,

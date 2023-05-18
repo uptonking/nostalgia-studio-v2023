@@ -1,5 +1,5 @@
 import type { Result } from 'oxide.ts';
-import { CompositeSpecification } from './specification.js';
+import { CompositeSpecification } from './specification';
 
 describe('and', () => {
   it('should return true for matched senario', () => {

@@ -1,12 +1,12 @@
-import { StringFieldValue } from '../../field/index.js';
-import { createTestRecord } from '../fixtures/index.js';
+import { StringFieldValue } from '../../field/index';
+import { createTestRecord } from '../fixtures/index';
 import {
   StringContain,
   StringEndsWith,
   StringEqual,
   StringRegex,
   StringStartsWith,
-} from './string.specification.js';
+} from './string.specification';
 
 test.each<[StringContain, StringEqual, boolean]>([
   [

@@ -3,10 +3,10 @@ import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index.js';
-import type { Table } from '../../table.js';
-import type { IAbstractAggregateField } from '../field.type.js';
-import { FieldId } from '../value-objects/index.js';
+import type { ITableSpecVisitor } from '../../specifications/index';
+import type { Table } from '../../table';
+import type { IAbstractAggregateField } from '../field.type';
+import { FieldId } from '../value-objects/index';
 
 export class WithAggregateFieldId extends CompositeSpecification<
   Table,

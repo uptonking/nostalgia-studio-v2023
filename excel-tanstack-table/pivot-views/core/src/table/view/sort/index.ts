@@ -1,2 +1,2 @@
-export * from './sort.schema.js';
-export * from './sorts.js';
+export * from './sort.schema';
+export * from './sorts';

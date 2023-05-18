@@ -49,7 +49,6 @@ export abstract class ValueObject<T = any> {
   }
 }
 
-
 export function convertPropsToObject(props: any): any {
   const propsCopy = { ...props };
 

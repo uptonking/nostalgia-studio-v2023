@@ -1,0 +1,245 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`destroys everything on exit 1`] = `
+" INFO   Logux server is listening at 1970-01-01 00:00:00
+        PID:          21384
+        Logux server: 0.0.0
+        Environment:  test
+        Node ID:      server:FnXaqDxY
+        Subprotocol:  1.0.0
+        Supports:     1.x
+        Health check: http://127.0.0.1:2000/health
+        Listen:       ws://127.0.0.1:2000/
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+ INFO   Custom destroy task finished at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`disables colors for constructor errors 1`] = `
+" FATAL  Missed supports option in server constructor at 1970-01-01 00:00:00
+        Check server constructor and Logux Server documentation
+
+"
+`;
+
+exports[`has custom logger 1`] = `
+" INFO   Hi from custom logger at 1970-01-01 00:00:00
+        Field: 1
+
+ INFO   Logux server is listening at 1970-01-01 00:00:00
+        PID:          21384
+        Logux server: 0.0.0
+        Environment:  test
+        Node ID:      server:FnXaqDxY
+        Subprotocol:  1.0.0
+        Supports:     1.x
+        Health check: http://127.0.0.1:31337/health
+        Listen:       ws://127.0.0.1:31337/
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`shows help 1`] = `
+"Start Logux Server
+
+Options:
+--host            LOGUX_HOST            Host to bind server
+--port            LOGUX_PORT            Port to bind server
+--key             LOGUX_KEY             Path to SSL key
+--cert            LOGUX_CERT            Path to SSL certificate
+--supports        LOGUX_SUPPORTS        Range of supported client subprotocols
+--subprotocol     LOGUX_SUBPROTOCOL     Server subprotocol
+--logger          LOGUX_LOGGER          Logger type
+--backend         LOGUX_BACKEND         Backend to process actions
+--control-secret  LOGUX_CONTROL_SECRET  Secret to control Logux server
+--control-mask    LOGUX_CONTROL_MASK    CIDR masks of control servers
+--redis           LOGUX_REDIS           Redis URL for Logux Server Pro scaling
+
+Examples:
+options.js --port 31337 --host 127.0.0.1
+LOGUX_PORT=1337 LOGUX_HOST=127.0.0.1 options.js
+"
+`;
+
+exports[`shows help about missed option 1`] = `
+" FATAL  Missed supports option in server constructor at 1970-01-01 00:00:00
+        Check server constructor and Logux Server documentation
+
+"
+`;
+
+exports[`shows help about missed secret 1`] = `
+" FATAL  backend requires controlSecret option at 1970-01-01 00:00:00
+        Call npx nanoid and set result as controlSecret or LOGUX_CONTROL_SECRET
+        environment variable
+
+"
+`;
+
+exports[`shows help about port in use 1`] = `
+" FATAL  Port 2001 already in use at 1970-01-01 00:00:00
+        Another Logux server or other app already running on this port.
+        Probably you haven’t stopped server from other project or previous
+        version of this server was not killed.
+        
+        $ su - root
+        # netstat -nlp | grep 2001
+        Proto   Local Address   State    PID/Program name
+        tcp     0.0.0.0:2001    LISTEN   777/node
+        # sudo kill -9 777
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`shows help about privileged port 1`] = `
+" FATAL  You are not allowed to run server on port 1000 at 1970-01-01 00:00:00
+        Non-privileged users can't start a listening socket on ports below 1024.
+        Try to change user or take another port.
+        
+        $ su - <username>
+        $ npm start -p 1000
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`shows help about unknown option 1`] = `
+" FATAL  Missed supports option in server constructor at 1970-01-01 00:00:00
+        Check server constructor and Logux Server documentation
+
+"
+`;
+
+exports[`shows uncatch errors 1`] = `
+" FATAL  Test Error at 1970-01-01 00:00:00
+        fake stacktrace
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+ INFO   Fatal event: Test Error at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`shows uncatch rejects 1`] = `
+" FATAL  Test Error at 1970-01-01 00:00:00
+        fake stacktrace
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+ INFO   Fatal event: Test Error at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`uses .env cwd 1`] = `
+" INFO   Logux server is listening at 1970-01-01 00:00:00
+        PID:          21384
+        Logux server: 0.0.0
+        Environment:  test
+        Node ID:      server:FnXaqDxY
+        Subprotocol:  1.0.0
+        Supports:     1.x
+        Health check: http://127.0.0.1:3334/health
+        Listen:       ws://127.0.0.1:3334/
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`uses .env from root 1`] = `
+" INFO   Logux server is listening at 1970-01-01 00:00:00
+        PID:          21384
+        Logux server: 0.0.0
+        Environment:  test
+        Node ID:      server:FnXaqDxY
+        Subprotocol:  1.0.0
+        Supports:     1.x
+        Health check: http://127.0.0.1:3334/health
+        Listen:       ws://127.0.0.1:3334/
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`uses autoload modules 1`] = `
+"Root path module: 1.0.0
+Child path module: 1.0.0
+ INFO   Logux server is listening at 1970-01-01 00:00:00
+        PID:          21384
+        Logux server: 0.0.0
+        Environment:  test
+        Node ID:      server:FnXaqDxY
+        Subprotocol:  1.0.0
+        Supports:     1.x
+        Health check: http://127.0.0.1:31337/health
+        Listen:       ws://127.0.0.1:31337/
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`uses autoload wrong export 1`] = `
+" INFO   Logux server is listening at 1970-01-01 00:00:00
+        PID:          21384
+        Logux server: 0.0.0
+        Environment:  test
+        Node ID:      server:FnXaqDxY
+        Subprotocol:  1.0.0
+        Supports:     1.x
+        Health check: http://127.0.0.1:31337/health
+        Listen:       ws://127.0.0.1:31337/
+
+ FATAL  Server module should has default export with function that accepts a server at 1970-01-01 00:00:00
+        error-modules/wrond-export/index.js default export is string
+
+ INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`uses environment variables for config 1`] = `
+"{\\"level\\":30,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server\\",\\"loguxServer\\":\\"0.0.0\\",\\"environment\\":\\"test\\",\\"nodeId\\":\\"server:FnXaqDxY\\",\\"subprotocol\\":\\"1.0.0\\",\\"supports\\":\\"1.x\\",\\"listen\\":\\"ws://127.0.0.1:31337/\\",\\"healthCheck\\":\\"http://127.0.0.1:31337/health\\",\\"msg\\":\\"Logux server is listening\\"}
+{\\"level\\":30,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server\\",\\"msg\\":\\"Shutting down Logux server\\"}
+"
+`;
+
+exports[`uses logger param 1`] = `
+"{\\"level\\":30,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server\\",\\"loguxServer\\":\\"0.0.0\\",\\"environment\\":\\"test\\",\\"nodeId\\":\\"server:FnXaqDxY\\",\\"subprotocol\\":\\"1.0.0\\",\\"supports\\":\\"1.x\\",\\"listen\\":\\"ws://127.0.0.1:31337/\\",\\"healthCheck\\":\\"http://127.0.0.1:31337/health\\",\\"msg\\":\\"Logux server is listening\\"}
+{\\"level\\":30,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server\\",\\"msg\\":\\"Shutting down Logux server\\"}
+"
+`;
+
+exports[`uses logger param for constructor errors 1`] = `
+"{\\"level\\":60,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server\\",\\"note\\":\\"Check server constructor and Logux Server documentation\\",\\"msg\\":\\"Missed \`supports\` option in server constructor\\"}
+"
+`;
+
+exports[`writes about unbind 1`] = `
+" INFO   Shutting down Logux server at 1970-01-01 00:00:00
+
+"
+`;
+
+exports[`writes to custom pino log 1`] = `
+"{\\"level\\":30,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server-custom\\",\\"customProp\\":\\"42\\",\\"loguxServer\\":\\"0.0.0\\",\\"environment\\":\\"test\\",\\"nodeId\\":\\"server:FnXaqDxY\\",\\"subprotocol\\":\\"1.0.0\\",\\"supports\\":\\"1.x\\",\\"listen\\":\\"ws://127.0.0.1:2000/\\",\\"healthCheck\\":\\"http://127.0.0.1:2000/health\\",\\"msg\\":\\"Logux server is listening\\"}
+{\\"level\\":30,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server-custom\\",\\"customProp\\":\\"42\\",\\"msg\\":\\"Shutting down Logux server\\"}
+"
+`;
+
+exports[`writes to pino log 1`] = `
+"{\\"level\\":30,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server\\",\\"loguxServer\\":\\"0.0.0\\",\\"environment\\":\\"test\\",\\"nodeId\\":\\"server:FnXaqDxY\\",\\"subprotocol\\":\\"1.0.0\\",\\"supports\\":\\"1.x\\",\\"listen\\":\\"ws://127.0.0.1:2000/\\",\\"healthCheck\\":\\"http://127.0.0.1:2000/health\\",\\"msg\\":\\"Logux server is listening\\"}
+{\\"level\\":30,\\"time\\":\\"1970-01-01T00:00:00.000Z\\",\\"pid\\":21384,\\"hostname\\":\\"localhost\\",\\"name\\":\\"logux-server\\",\\"msg\\":\\"Shutting down Logux server\\"}
+"
+`;

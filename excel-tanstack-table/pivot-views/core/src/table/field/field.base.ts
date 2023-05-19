@@ -35,24 +35,16 @@ import { canDisplay, isControlledFieldType } from './field.util';
 import type { IFieldVisitor } from './field.visitor';
 import type { IFilter, IOperator } from './filter/index';
 import type { ReferenceField } from './reference-field';
-import {
-  WithAggregateFieldId,
-} from './specifications/aggregate-field.specification';
+import { WithAggregateFieldId } from './specifications/aggregate-field.specification';
 import {
   WithFieldDescription,
   WithFieldDisplay,
   WithFieldName,
 } from './specifications/base-field.specification';
 import { WithFormat } from './specifications/date-field.specification';
-import {
-  WithFieldRequirement,
-} from './specifications/field-constraints.specification';
-import {
-  WithReferenceFieldId,
-} from './specifications/lookup-field.specification';
-import {
-  WithDisplayFields,
-} from './specifications/reference-field.specification';
+import { WithFieldRequirement } from './specifications/field-constraints.specification';
+import { WithReferenceFieldId } from './specifications/lookup-field.specification';
+import { WithDisplayFields } from './specifications/reference-field.specification';
 import type { TreeField } from './tree-field';
 import { FieldDescription } from './value-objects/field-description';
 import type { DateFormat, FieldIssue } from './value-objects/index';

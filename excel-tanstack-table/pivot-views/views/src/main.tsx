@@ -23,9 +23,10 @@ const AppRoot = () => {
       <PersistGate loading={null} persistor={persist}>
         <I18n>
           <UIProvider
-            theme={{ primaryColor: 'teal',
-            defaultGradient: { from: 'blue', to: 'teal', deg: 20 }
-          }}
+            theme={{
+              primaryColor: 'teal',
+              defaultGradient: { from: 'blue', to: 'teal', deg: 20 },
+            }}
             withGlobalStyles
             withNormalizeCSS
           >

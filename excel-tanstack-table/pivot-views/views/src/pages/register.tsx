@@ -80,7 +80,13 @@ export const Register = () => {
         <form onSubmit={onSubmit}>
           <Stack spacing='xl'>
             <Center mb='sm'>
-              <Image mr='xs' src={logo} alt='watarble' width='32px' height='32px' />
+              <Image
+                mr='xs'
+                src={logo}
+                alt='watarble'
+                width='32px'
+                height='32px'
+              />
 
               <Title
                 align='center'

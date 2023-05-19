@@ -18,9 +18,7 @@ import { WithRecordTableId } from './record/index';
 import { RecordFactory } from './record/record.factory';
 import type { IMutateRecordValueSchema } from './record/record.schema';
 import { createRecordInputs } from './record/record.utils';
-import {
-  WithRecordValues,
-} from './record/specifications/record-values.specification';
+import { WithRecordValues } from './record/specifications/record-values.specification';
 import { WithTableEmoji, WithTableName } from './specifications/index';
 import type { TableCompositeSpecificaiton } from './specifications/interface';
 import type { IUpdateTableSchema } from './table.schema';

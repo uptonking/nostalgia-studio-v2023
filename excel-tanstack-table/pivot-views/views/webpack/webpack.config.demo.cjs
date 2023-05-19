@@ -37,9 +37,9 @@ module.exports = merge(devServerConfig, {
     //   react: path.resolve(__dirname, '../../node_modules/react'),
     //   'react-dom': path.resolve(__dirname, '../../node_modules/react-dom'),
     // },
-    fallback:{
-      "path": false
-    }
+    fallback: {
+      path: false,
+    },
   },
   devServer: {
     // contentBase: path.resolve(__dirname, '../dist'),

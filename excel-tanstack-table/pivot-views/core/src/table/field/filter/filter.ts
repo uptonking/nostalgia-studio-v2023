@@ -451,7 +451,9 @@ const convertDateRangeFilter = (
     case $eq.value:
       return Some(DateRangeEqual.fromString(filter.path, filter.value as any));
     case $neq.value:
-      return Some(DateRangeEqual.fromString(filter.path, filter.value as any).not());
+      return Some(
+        DateRangeEqual.fromString(filter.path, filter.value as any).not(),
+      );
 
     default:
       return None;

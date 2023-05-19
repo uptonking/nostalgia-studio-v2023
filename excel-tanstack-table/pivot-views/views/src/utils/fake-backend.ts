@@ -137,8 +137,8 @@ export function configureFakeBackend() {
         // assign user id and a few other properties then save
         user.id = users.length
           ? Math.max(
-            ...(users as UserType[]).map((user: UserType) => user.id),
-          ) + 1
+              ...(users as UserType[]).map((user: UserType) => user.id),
+            ) + 1
           : 1;
         user.roles = user.roles && user.roles.length ? user.roles : ['user'];
         user.token = `fake-jwt  -token-${user.id}`;

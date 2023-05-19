@@ -1,0 +1,36 @@
+import { defineAction } from '../define-action/index';
+
+export function defineCreatedSyncMap(plural) {
+  return defineAction(`${plural}/created`);
+}
+
+export function defineCreateSyncMap(plural) {
+  return defineAction(`${plural}/create`);
+}
+
+export function defineChangedSyncMap(plural) {
+  return defineAction(`${plural}/changed`);
+}
+
+export function defineChangeSyncMap(plural) {
+  return defineAction(`${plural}/change`);
+}
+
+export function defineDeletedSyncMap(plural) {
+  return defineAction(`${plural}/deleted`);
+}
+
+export function defineDeleteSyncMap(plural) {
+  return defineAction(`${plural}/delete`);
+}
+
+export function defineSyncMapActions(plural) {
+  return [
+    defineCreateSyncMap(plural),
+    defineChangeSyncMap(plural),
+    defineDeleteSyncMap(plural),
+    defineCreatedSyncMap(plural),
+    defineChangedSyncMap(plural),
+    defineDeletedSyncMap(plural),
+  ];
+}

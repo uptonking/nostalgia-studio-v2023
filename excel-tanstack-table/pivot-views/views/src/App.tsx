@@ -7,9 +7,7 @@ import { useRoutes } from 'react-router-dom';
 import { getIsAuthorized, useMeQuery } from '@datalking/pivot-store';
 import { useHotkeys } from '@datalking/pivot-ui';
 
-import {
-  createTableFormDrawerOpened,
-} from './features/create-table-form/drawer-opened.atom';
+import { createTableFormDrawerOpened } from './features/create-table-form/drawer-opened.atom';
 import { routes } from './router';
 
 export function App() {

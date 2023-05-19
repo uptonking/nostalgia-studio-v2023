@@ -2,10 +2,7 @@ import type { Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 import type { ITableSpecVisitor } from '../../specifications/index';
 import type { Table } from '../../table';
-import type {
-  IViewFieldOption,
-  ViewFieldOptions,
-} from '../view-field-options';
+import type { IViewFieldOption, ViewFieldOptions } from '../view-field-options';
 import type { View } from '../view';
 import { BaseViewSpecification } from './base-view-specification';
 

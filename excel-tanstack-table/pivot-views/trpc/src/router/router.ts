@@ -16,17 +16,24 @@ export const createRouter = (
       const start = Date.now();
       const result = await next();
       const durationMs = Date.now() - start;
-      result.ok
-        ? logger.log('OK request', { path, type, durationMs, rawInput })
-        : logger.error('Non-OK request', {
-            path,
-            type,
-            durationMs,
-            rawInput,
-            error: result.error,
-            msg: result.error.message,
-            stack: result.error.stack,
-          });
+
+      if (result.ok) {
+        logger.log('OK request', { path, type, durationMs, rawInput });
+      } else {
+        logger.error('Non-OK request', {
+          path,
+          type,
+          durationMs,
+          rawInput,
+          // @ts-expect-error fix-types
+          error: result.error,
+          // @ts-expect-error fix-types
+          msg: result.error.message,
+          // @ts-expect-error fix-types
+          stack: result.error.stack,
+        });
+      }
+
       return result;
     }),
   );

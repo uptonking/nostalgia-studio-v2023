@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import cn from 'classnames';
+import cx from 'classnames';
 
 import { deleteSyncMapById } from '@logux/client';
 import { useClient, useFilter } from '@logux/client/react';
@@ -33,7 +33,7 @@ export const ControlPanel = (): JSX.Element => {
         <li className={styles.filtersItem}>
           <button
             type='button'
-            className={cn(
+            className={cx(
               styles.filtersItemContent,
               filter === Filter.all && styles.filtersItemContentSelected,
             )}
@@ -47,7 +47,7 @@ export const ControlPanel = (): JSX.Element => {
         <li className={styles.filtersItem}>
           <button
             type='button'
-            className={cn(
+            className={cx(
               styles.filtersItemContent,
               filter === Filter.active && styles.filtersItemContentSelected,
             )}
@@ -61,7 +61,7 @@ export const ControlPanel = (): JSX.Element => {
         <li className={styles.filtersItem}>
           <button
             type='button'
-            className={cn(
+            className={cx(
               styles.filtersItemContent,
               filter === Filter.completed && styles.filtersItemContentSelected,
             )}

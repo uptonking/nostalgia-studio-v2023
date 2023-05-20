@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 
-import cn from 'classnames';
+import cx from 'classnames';
 
 import { changeSyncMapById, deleteSyncMapById } from '@logux/client';
 import { useClient } from '@logux/client/react';
@@ -33,12 +33,12 @@ export const TodosListItem = ({ id, completed, text }: Props): JSX.Element => {
 
   return (
     <li
-      className={cn(
+      className={cx(
         styles.listItem,
         id === editableItemId && styles.listItemEditable,
       )}
     >
-      <div className={cn(styles.note, completed && styles.noteCompleted)}>
+      <div className={cx(styles.note, completed && styles.noteCompleted)}>
         <input
           className={styles.checkbox}
           type='checkbox'

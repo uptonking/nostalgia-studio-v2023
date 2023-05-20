@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import cn from 'classnames';
+import cx from 'classnames';
 import { nanoid } from 'nanoid';
 
 import { createSyncMap } from '@logux/client';
@@ -66,7 +66,7 @@ export const TodosList = (): JSX.Element => {
       </div>
 
       {tasks.isLoading ? (
-        <div className={cn(styles.note, styles.noteTypeSkeleton)}>
+        <div className={cx(styles.note, styles.noteTypeSkeleton)}>
           <span className={styles.label} />
         </div>
       ) : (

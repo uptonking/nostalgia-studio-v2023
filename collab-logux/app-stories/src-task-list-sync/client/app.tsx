@@ -19,7 +19,7 @@ const errorPages = {
   Error: ErrorPage,
 };
 
-export const App = (): JSX.Element => {
+export const App = () => {
   let client = useStore(clientStore);
 
   return (

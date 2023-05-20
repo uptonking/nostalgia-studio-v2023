@@ -7,38 +7,33 @@ import { Client } from '@logux/client/client';
 import { subprotocol } from '../../protocol/index';
 import { authStore, logout } from './auth';
 
-const loguxServer = `${
+const LOGUX_SERVER_URL = `${
   window.location.protocol.endsWith('s') ? 'wss' : 'ws'
 }://${window.location.host}/logux`;
 
 const fakeClient = new CrossTabClient({
   subprotocol,
   userId: '',
-  server: loguxServer,
+  server: LOGUX_SERVER_URL,
   allowDangerousProtocol: true,
 });
 
-// @ts-expect-error fix-types
 export const clientStore = atom<Client>(fakeClient);
 
 onMount(clientStore, () => {
   const client = new CrossTabClient({
     subprotocol,
     userId: '',
-    server: loguxServer,
+    server: LOGUX_SERVER_URL,
     allowDangerousProtocol: true,
   });
 
-  // @ts-expect-error fix-types
   badge(client, { messages: badgeEn, styles: badgeStyles });
-  // @ts-expect-error fix-types
   log(client);
-  // @ts-expect-error fix-types
   confirm(client);
 
   let started = false;
 
-  // @ts-expect-error fix-types
   clientStore.set(client);
 
   let authUnsubscribe = authStore.subscribe(({ id }, changedKey) => {

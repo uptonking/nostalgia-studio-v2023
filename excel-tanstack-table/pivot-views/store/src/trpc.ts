@@ -1,5 +1,5 @@
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 import type { AppRouter } from '@datalking/pivot-trpc';
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 
 export const trpc: ReturnType<typeof createTRPCProxyClient<AppRouter>> =
   createTRPCProxyClient<AppRouter>({

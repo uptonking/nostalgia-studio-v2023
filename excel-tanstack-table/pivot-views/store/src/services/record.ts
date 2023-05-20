@@ -93,6 +93,7 @@ export const recordApi = api.injectEndpoints({
     deleteRecord: builder.mutation({
       query: trpc.record.delete.mutate,
       invalidatesTags: ['Record'],
+      // @ts-expect-error fix-types
       onQueryStarted({ id, tableId }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           recordApi.util.updateQueryData('getRecords', { tableId }, (draft) => {
@@ -104,6 +105,7 @@ export const recordApi = api.injectEndpoints({
     }),
     bulkDeleteRecords: builder.mutation({
       query: trpc.record.bulkDelete.mutate,
+      // @ts-expect-error fix-types
       onQueryStarted({ ids, tableId }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           recordApi.util.updateQueryData('getRecords', { tableId }, (draft) => {

@@ -28,7 +28,8 @@ export const tableApi = api.injectEndpoints({
     getTables: builder.query<QueryTableEntityState, IGetTablesQuery>({
       query: trpc.table.list.query,
       providesTags,
-      transformResponse: (result: IGetTablesOutput) =>
+      // transformResponse: (result: IGetTablesOutput) =>
+      transformResponse: (result: IQueryTable[]) =>
         tableAdapter.setAll(initialState, result),
     }),
     getTable: builder.query<IGetTableOutput, IGetTableQuery>({

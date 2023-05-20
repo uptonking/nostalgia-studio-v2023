@@ -52,7 +52,7 @@ export const authSlice = createSlice({
       })
       // todo remove mock
       .addMatcher(authApi.endpoints.login.matchRejected, (state, action) => {
-        const token = 'mockUserAuthToken';
+        const token = 'Mock_User_Auth_Token';
         localStorage.setItem('access_token', token);
         state.token = token;
       })
@@ -73,5 +73,8 @@ export const authReducer = authSlice.reducer;
 
 /** check if auth token exists */
 export const getIsAuthorized = (state: RootState) => Boolean(state.auth.token);
+
+export const getIsMockingOfflineLogin = (state: RootState) =>
+  state.auth.token === 'Mock_User_Auth_Token';
 
 export const getAuthedMe = (state: RootState) => state.auth.me;

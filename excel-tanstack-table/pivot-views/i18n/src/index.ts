@@ -19,8 +19,8 @@ export const config: InitOptions = {
         'email placeholder': 'Your email address',
         password: 'Password',
         'password placeholder': 'Password',
-        'has no account': "Has't account yet?",
-        'has account': 'Already has an account?',
+        'has no account': "Don't have an account?",
+        'has account': 'Already have an account?',
       },
       common: {
         error: 'Uncaught ERROR',

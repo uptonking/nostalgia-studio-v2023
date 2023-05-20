@@ -1,6 +1,6 @@
 import { map } from 'nanostores';
 
-import { signIn, logout as logoutRequest } from '../lib/api';
+import { logout as logoutRequest, signIn } from '../lib/api';
 
 export const authStore = map<{ id?: string }>({
   id: localStorage.getItem('id') ?? undefined,

@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from 'react';
 
-import cn from 'classnames';
+import cx from 'classnames';
 
 import styles from './TextField.module.css';
 
@@ -50,7 +50,7 @@ export const TextField = forwardRef(
 
     return (
       <div
-        className={cn(styles.field, styles[`field_theme_${theme}`], className)}
+        className={cx(styles.field, styles[`field_theme_${theme}`], className)}
       >
         {!hiddenLabel && <label className={styles.label}>{label}</label>}
         <input

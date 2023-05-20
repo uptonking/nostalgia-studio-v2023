@@ -57,7 +57,7 @@ export const Login = () => {
       await login(values).unwrap();
       navigate(redirectUrl || '/', { replace: true });
     } catch (error) {
-      console.log(';; login-error ', values, error);
+      // console.log(';; login-error ', values, error);
       if (
         error.status === 'PARSING_ERROR' &&
         values.email === 'test@example.com' &&

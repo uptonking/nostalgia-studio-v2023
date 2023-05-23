@@ -25,7 +25,7 @@ export interface Config {
 // console.log(';; process.env ', process?.env);
 
 const defaultBaseName =
-  process?.env?.NODE_ENV === 'test' ? '/' : packageJson['homepage'] || '/';
+  process.env?.NODE_ENV === 'test' ? '/' : packageJson['homepage'] || '/';
 
 export const config: Config = {
   baseName: process?.env?.BASE_NAME || defaultBaseName,

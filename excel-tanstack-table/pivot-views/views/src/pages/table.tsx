@@ -4,7 +4,7 @@ import { unstable_batchedUpdates } from 'react-dom';
 import { useSetAtom } from 'jotai';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
 
-import { TableFactory } from '@datalking/pivot-core';
+import { type IQueryTable, TableFactory } from '@datalking/pivot-core';
 import {
   resetCurrentTableId,
   resetCurrentViewId,
@@ -87,7 +87,8 @@ export const Table = () => {
     navigate('/', { replace: true });
     return null;
   }
-  const table = TableFactory.fromQuery(data as any);
+
+  const table = TableFactory.fromQuery(data as IQueryTable);
   const view = table.mustGetView(viewId);
 
   return (

@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getAuthedMe, logout } from '@datalking/pivot-store';
+import { getAuthedMe, getMe, logout } from '@datalking/pivot-store';
 import {
   ActionIcon,
   Avatar,
@@ -25,7 +25,8 @@ import logo from '../../assets/watarble-logo.svg';
 export const Header = () => {
   const { i18n, t } = useTranslation();
   const language = i18n.language;
-  const me = useSelector(getAuthedMe);
+  const me = useSelector(getMe);
+
   const dispatch = useDispatch();
 
   return (

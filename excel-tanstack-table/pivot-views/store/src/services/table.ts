@@ -25,13 +25,6 @@ const providesTags = (result: QueryTableEntityState | undefined) => [
 
 export const tableApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getTables: builder.query<QueryTableEntityState, IGetTablesQuery>({
-      query: trpc.table.list.query,
-      providesTags,
-      // transformResponse: (result: IGetTablesOutput) =>
-      transformResponse: (result: IQueryTable[]) =>
-        tableAdapter.setAll(initialState, result),
-    }),
     getTable: builder.query<IGetTableOutput, IGetTableQuery>({
       query: trpc.table.get.query,
       providesTags: (_, __, args) => [{ type: 'Table', id: args.id }],
@@ -53,7 +46,6 @@ export const tableApi = api.injectEndpoints({
 });
 
 export const {
-  useGetTablesQuery,
   useGetTableQuery,
   useLazyGetTableQuery,
   useCreateTableMutation,

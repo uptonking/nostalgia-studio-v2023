@@ -36,14 +36,14 @@ export const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(authApi.endpoints.me.matchRejected, (state, action) => {
+        state.token = undefined;
+        localStorage.removeItem('access_token');
         // todo remove mock
-        // state.token = undefined;
-        // localStorage.removeItem('access_token');
-        state.me = {
-          username: 'test',
-          email: 'test@example.com',
-          userId: 'usri0nfxc5z',
-        };
+        // state.me = {
+        //   username: 'test',
+        //   email: 'test@example.com',
+        //   userId: 'usri0nfxc5z',
+        // };
       })
       .addMatcher(authApi.endpoints.login.matchFulfilled, (state, action) => {
         const access_token = action.payload.access_token;

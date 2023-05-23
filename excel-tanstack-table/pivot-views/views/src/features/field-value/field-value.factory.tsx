@@ -168,12 +168,12 @@ export const FieldValueFactory: React.FC<{
       return (
         <Group spacing={3} noWrap sx={{ overflow: 'hidden' }} h='100%'>
           {values.filter(Boolean).map((value, index) => (
-            <>
+            <React.Fragment key={index}>
               {index === 0 ? null : (
                 <Divider orientation='vertical' mx={5} size='xs' />
               )}
-              <Text key={index}>{value.filter(Boolean).toString()}</Text>
-            </>
+              <Text>{value.filter(Boolean).toString()}</Text>
+            </React.Fragment>
           ))}
         </Group>
       );

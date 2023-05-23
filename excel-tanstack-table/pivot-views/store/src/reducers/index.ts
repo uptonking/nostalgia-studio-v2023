@@ -3,7 +3,7 @@ import storage from 'redux-persist/es/storage';
 
 import { combineReducers } from '@reduxjs/toolkit';
 
-import { api, attachment, authApi, userApi } from '../services';
+import { api, attachment, authApi, modelApi, userApi } from '../services';
 import { tableReducer, tableSlice } from '../slices';
 import { authReducer, authSlice } from '../slices/auth';
 import { recordReducer, recordSlice } from '../slices/record';
@@ -11,8 +11,9 @@ import { recordReducer, recordSlice } from '../slices/record';
 export const combinedReducers = combineReducers({
   [tableSlice.name]: tableReducer,
   [recordSlice.name]: recordReducer,
-  [authSlice.name]: authReducer,
   [api.reducerPath]: api.reducer,
+  [modelApi.reducerPath]: modelApi.reducer,
+  [authSlice.name]: authReducer,
   [userApi.reducerPath]: userApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
   // [attachment.reducerPath]: attachment.reducer,
@@ -23,7 +24,12 @@ export const rootReducer = persistReducer(
     key: 'root',
     version: 1,
     storage, // defaults to localStorage for web
-    blacklist: [api.reducerPath, recordSlice.name, userApi.reducerPath],
+    blacklist: [
+      api.reducerPath,
+      modelApi.reducer,
+      recordSlice.name,
+      userApi.reducerPath,
+    ],
   },
   combinedReducers,
 );

@@ -15,8 +15,8 @@ type QueryUserEntityState = EntityState<IQueryUser>;
 
 export const userApi = createApi({
   reducerPath: 'user-api',
-  baseQuery: (trpcResult: Promise<unknown>) =>
-    trpcResult.then((data) => ({ data })).catch((error: any) => ({ error })),
+  baseQuery: (result: Promise<unknown>) =>
+    result.then((data) => ({ data })).catch((error: any) => ({ error })),
   endpoints: (builder) => ({
     getUsers: builder.query<QueryUserEntityState, IGetUsersQuery>({
       query: trpc.user.users.query,

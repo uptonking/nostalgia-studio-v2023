@@ -150,7 +150,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   );
 
   const data = useMemo(() => records.map((r) => r.valuesJSON), [records]);
-  const rt = useReactTable({
+  const tbl = useReactTable({
     data,
     meta: {
       tableId: table.id.value,
@@ -171,7 +171,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     onColumnPinningChange,
   });
 
-  const { rows } = rt.getRowModel();
+  const { rows } = tbl.getRowModel();
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const rowVirtualizer = useVirtualizer({
@@ -200,7 +200,7 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
         highlightOnHover
         withColumnBorders
         verticalSpacing={5}
-        w={rt.getTotalSize()}
+        w={tbl.getTotalSize()}
         sx={[
           tableStyles,
           (theme) => ({
@@ -213,11 +213,16 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
         ]}
       >
         <thead>
-          {rt.getHeaderGroups().map((headerGroup) => (
+          {tbl.getHeaderGroups().map((headerGroup, index) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) =>
-                flexRender(header.column.columnDef.header, header.getContext()),
-              )}
+              {headerGroup.headers.map((header) => (
+                <React.Fragment key={header.id}>
+                  {flexRender(
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )}
+                </React.Fragment>
+              ))}
             </tr>
           ))}
         </thead>
@@ -264,12 +269,13 @@ const Record: React.FC<{
       onClick={() => {
         navigate(`r/${row.id}`);
       }}
+      key={row.id}
     >
-      {row
-        .getVisibleCells()
-        .map((cell) =>
-          flexRender(cell.column.columnDef.cell, cell.getContext()),
-        )}
+      {row.getVisibleCells().map((cell) => (
+        <React.Fragment key={cell.id}>
+          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+        </React.Fragment>
+      ))}
     </tr>
   );
 });

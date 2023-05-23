@@ -4,5 +4,6 @@ export * from './auth-api';
 export * from './field';
 export * from './record';
 export * from './table';
+export * from './sheet';
 export * from './user-api';
 export * from './view';

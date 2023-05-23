@@ -44,5 +44,12 @@ module.exports = merge(devServerConfig, {
   devServer: {
     // contentBase: path.resolve(__dirname, '../dist'),
     port: 8999,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        changeOrigin: true,
+        // pathRewrite: { '^/api': '' },
+      },
+    },
   },
 });

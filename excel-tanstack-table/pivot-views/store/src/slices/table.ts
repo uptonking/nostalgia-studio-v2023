@@ -5,7 +5,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import type { RootState } from '../reducers';
-import { tableApi } from '../services';
+import { sheetApi, tableApi } from '../services';
 
 export interface TableState {
   currentTableId: string;
@@ -37,7 +37,7 @@ export const tableSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addMatcher(
-      tableApi.endpoints.getTables.matchFulfilled,
+      sheetApi.endpoints.getTables.matchFulfilled,
       (state, action) => {
         state.totalCount = action.payload?.ids.length ?? 0;
       },

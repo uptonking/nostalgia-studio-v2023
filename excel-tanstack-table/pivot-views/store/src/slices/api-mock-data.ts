@@ -5,15 +5,15 @@ import type { RootState } from '../reducers';
 import { tableApi } from '../services';
 
 export interface ApiMockDataState {
-  config: { online: boolean }
+  config: { online: boolean };
   queries: any;
   mutations: any;
 }
 
 const initialState: ApiMockDataState = {
   config: { online: true },
-  queries:{},
-  mutations:{},
+  queries: {},
+  mutations: {},
 };
 
 export const apiMockDataSlice = createSlice({
@@ -25,16 +25,16 @@ export const apiMockDataSlice = createSlice({
     // },
   },
   extraReducers(builder) {
-    builder
-      .addMatcher(tableApi.endpoints.getTables.matchRejected, (state, action) => {
-        // todo remove mock
-        // state.token = undefined;
-        // localStorage.removeItem('access_token');
-        // state.me = {
-        //   username: 'test',
-        //   email: 'test@example.com',
-        // };
-      });
+    builder;
+    // .addMatcher(tableApi.endpoints.getTables.matchRejected, (state, action) => {
+    // todo remove mock
+    // state.token = undefined;
+    // localStorage.removeItem('access_token');
+    // state.me = {
+    //   username: 'test',
+    //   email: 'test@example.com',
+    // };
+    // });
   },
 });
 

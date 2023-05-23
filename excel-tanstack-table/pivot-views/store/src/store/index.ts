@@ -4,7 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import { rootReducer } from '../reducers';
 import { attachment, authApi, userApi } from '../services';
-import { api } from '../services/api';
+import { api, modelApi } from '../services/api';
 
 export const createStore = () => {
   const store = configureStore({
@@ -12,6 +12,7 @@ export const createStore = () => {
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({ serializableCheck: false })
         .concat(api.middleware)
+        .concat(modelApi.middleware)
         // .concat(attachment.middleware)
         .concat(authApi.middleware)
         .concat(userApi.middleware),

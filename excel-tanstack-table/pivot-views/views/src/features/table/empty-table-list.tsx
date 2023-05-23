@@ -12,9 +12,7 @@ import {
   Text,
 } from '@datalking/pivot-ui';
 
-import {
-  createTableFormDrawerOpened,
-} from '../create-table-form/drawer-opened.atom';
+import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom';
 
 export const EmptyTableList = () => {
   const { t } = useTranslation();
@@ -31,11 +29,15 @@ export const EmptyTableList = () => {
         <Center>
           <Text size='sm' color='gray'>
             <Trans
-              i18nKey="shortcut T"
+              i18nKey='shortcut T'
               t={t}
               values={{ shortcut: 'T' }}
               // components={[<Code fz='md' children={null} />]}
-              components={[<Code fz='md' key={0}>{null}</Code>]}
+              components={[
+                <Code fz='md' key={0}>
+                  {null}
+                </Code>,
+              ]}
             />
           </Text>
         </Center>

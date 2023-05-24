@@ -54,18 +54,18 @@ export const Login = () => {
 
   const onSubmit = form.handleSubmit(async (values) => {
     try {
-      await login(values).unwrap();
+      await login(values);
       navigate(redirectUrl || '/', { replace: true });
     } catch (error) {
-      // console.log(';; login-error ', values, error);
-      if (
-        error.status === 'PARSING_ERROR' &&
-        values.email === 'test@example.com' &&
-        values.password === '123456'
-      ) {
-        navigate(redirectUrl || '/', { replace: true });
-        return;
-      }
+      console.log(';; login-error ', values, error);
+      // if (
+      //   error.status === 'PARSING_ERROR' &&
+      //   values.email === 'test@example.com' &&
+      //   values.password === '123456'
+      // ) {
+      //   navigate(redirectUrl || '/', { replace: true });
+      //   return;
+      // }
       const data = (error as any).data;
       if (data) {
         const message = data.code
@@ -117,7 +117,7 @@ export const Login = () => {
                   align='center'
                   order={2}
                   color='teal'
-                  // gradient={{ from: 'indigo', to: 'cyan' }}
+                // gradient={{ from: 'indigo', to: 'cyan' }}
                 >
                   {t('login to watarble', { ns: 'auth' })}
                 </Title>
@@ -134,7 +134,7 @@ export const Login = () => {
                 size='md'
                 variant='filled'
                 icon={<IconMail size={16} />}
-                // placeholder={t('email placeholder', { ns: 'auth' }) as string}
+              // placeholder={t('email placeholder', { ns: 'auth' }) as string}
               />
               <p className={loginIndicatorTextCss}>
                 {t('password', { ns: 'auth' })}

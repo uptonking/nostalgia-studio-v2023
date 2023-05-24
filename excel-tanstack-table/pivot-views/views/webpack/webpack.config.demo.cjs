@@ -13,6 +13,7 @@ module.exports = merge(devServerConfig, {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, '../dist'),
+    publicPath: '/',
   },
   plugins: [
     // new CircularDependencyPlugin({

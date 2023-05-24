@@ -3,7 +3,7 @@ import storage from 'redux-persist/es/storage';
 
 import { combineReducers } from '@reduxjs/toolkit';
 
-import { api, attachment, authApi, modelApi, userApi } from '../services';
+import { api, attachment, authApi, mainApi, userApi } from '../services';
 import { tableReducer, tableSlice } from '../slices';
 import { authReducer, authSlice } from '../slices/auth';
 import { recordReducer, recordSlice } from '../slices/record';
@@ -12,7 +12,7 @@ export const combinedReducers = combineReducers({
   [tableSlice.name]: tableReducer,
   [recordSlice.name]: recordReducer,
   [api.reducerPath]: api.reducer,
-  [modelApi.reducerPath]: modelApi.reducer,
+  [mainApi.reducerPath]: mainApi.reducer,
   [authSlice.name]: authReducer,
   [userApi.reducerPath]: userApi.reducer,
   [authApi.reducerPath]: authApi.reducer,
@@ -26,9 +26,11 @@ export const rootReducer = persistReducer(
     storage, // defaults to localStorage for web
     blacklist: [
       api.reducerPath,
-      modelApi.reducer,
+      mainApi.reducerPath,
       recordSlice.name,
       userApi.reducerPath,
+      authApi.reducerPath,
+      // authSlice.name,
     ],
   },
   combinedReducers,

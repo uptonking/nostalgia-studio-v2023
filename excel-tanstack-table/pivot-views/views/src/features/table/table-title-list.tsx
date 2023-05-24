@@ -6,7 +6,11 @@ import { useSetAtom } from 'jotai';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { TableFactory } from '@datalking/pivot-core';
-import { getCurrentTableId, useGetTablesQuery } from '@datalking/pivot-store';
+import {
+  getCurrentTableId,
+  getIsAuthorized,
+  useGetTablesQuery,
+} from '@datalking/pivot-store';
 import {
   ActionIcon,
   Center,
@@ -21,19 +25,32 @@ import {
 import { CurrentTableContext } from '../../context/current-table';
 import { useAppSelector } from '../../hooks';
 import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers';
-import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom';
-import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-drawer';
+import {
+  createTableFormDrawerOpened,
+} from '../create-table-form/drawer-opened.atom';
+import {
+  UpdateTableFormDrawer,
+} from '../update-table-form/update-table-form-drawer';
 import { EmptyTableList } from './empty-table-list';
 import { TableMenuDropdown } from './table-menu-dropdown';
+
+const EMPTY_OBJECT = {};
 
 export const TableTitleList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { tableId } = useParams();
 
+  const isAuthorized = useAppSelector(getIsAuthorized);
+  // const authStatus = useAppSelector(getIsAuthorized);
   const currentTableId = useAppSelector(getCurrentTableId);
 
-  const { data, isLoading, isSuccess } = useGetTablesQuery({});
+  const { data, isLoading, isSuccess, isFetching } = useGetTablesQuery(EMPTY_OBJECT, {
+    // refetchOnMountOrArgChange: true,
+    skip: !isAuthorized
+  });
+
+  console.log(';; fetchTbl ', isFetching, !isAuthorized, data)
 
   useEffect(() => {
     if (!tableId && location.pathname === '/') {
@@ -43,7 +60,7 @@ export const TableTitleList = () => {
         navigate(`/t/${data.ids.at(0)}`, { replace: true });
       }
     }
-  }, [tableId, data?.ids]);
+  }, [tableId, data?.ids, location.pathname, currentTableId, navigate]);
 
   const setOpened = useSetAtom(createTableFormDrawerOpened);
   const close = useCloseAllDrawers();
@@ -75,14 +92,14 @@ export const TableTitleList = () => {
         >
           {Object.values(data?.entities ?? {})
             .filter(Boolean)
-            .map((t) => (
+            .map((tbl) => (
               <Tabs.Tab
-                key={t.id}
-                value={t.id}
+                key={tbl.id}
+                value={tbl.id}
                 p='xs'
-                icon={<Emoji size={14} unified={t.emoji} />}
+                icon={<Emoji size={14} unified={tbl.emoji} />}
                 rightSection={
-                  t.id === currentTableId && (
+                  tbl.id === currentTableId && (
                     <>
                       <Menu withinPortal width={200} shadow='xl'>
                         <Menu.Target>
@@ -92,11 +109,11 @@ export const TableTitleList = () => {
                         </Menu.Target>
 
                         <Menu.Dropdown>
-                          <TableMenuDropdown tableId={t.id} />
+                          <TableMenuDropdown tableId={tbl.id} />
                         </Menu.Dropdown>
                       </Menu>
                       <CurrentTableContext.Provider
-                        value={TableFactory.fromQuery(t)}
+                        value={TableFactory.fromQuery(tbl)}
                       >
                         <UpdateTableFormDrawer />
                       </CurrentTableContext.Provider>
@@ -104,7 +121,7 @@ export const TableTitleList = () => {
                   )
                 }
               >
-                {t.name}
+                {tbl.name}
               </Tabs.Tab>
             ))}
         </Tabs>

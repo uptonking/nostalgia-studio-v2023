@@ -10,7 +10,7 @@ import type {
 import type { EntityState } from '@reduxjs/toolkit';
 import { createEntityAdapter } from '@reduxjs/toolkit';
 
-import { modelApi } from './api';
+import { mainApi } from './api';
 
 const tableAdapter = createEntityAdapter<IQueryTable>();
 const initialState = tableAdapter.getInitialState();
@@ -22,12 +22,12 @@ const providesTags = (result: QueryTableEntityState | undefined) => [
   ...(result?.ids?.map((id) => ({ type: 'Table' as const, id })) ?? []),
 ];
 
-export const sheetApi = modelApi.injectEndpoints({
+export const sheetApi = mainApi.injectEndpoints({
   endpoints: (builder) => ({
     getTables: builder.query<QueryTableEntityState, IGetTablesQuery>({
       // query: ({ id }) => ({ url: '/table.list' + '?batch=1&input=%7B%220%22%3A%7B%7D%7D' }),
       // query: ({ id }) => ({ url: '/table.list' + '?input=%7B%220%22%3A%7B%7D%7D' }),
-      query: ({ id }) => ({ url: '/table.list' + '?input={}' }),
+      query: ({ id }) => ({ url: '/table.list', params: { input: null } }),
       providesTags,
       transformResponse: (result: IQueryTable[]) => {
         // console.log(';; result-table-list ', result);

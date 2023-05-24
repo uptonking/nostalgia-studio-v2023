@@ -9,13 +9,10 @@ import { ReactRouter6Adapter } from 'use-query-params/adapters/react-router-6';
 import { createStore, PersistGate } from '@datalking/pivot-store';
 import { Notifications, UIProvider } from '@datalking/pivot-ui';
 
-import { App } from './App';
+import { App } from './app';
 import { I18n } from './i18n/i18n';
-import { configureFakeBackend } from './utils/fake-backend';
 
 const { store, persist } = createStore();
-
-// configureFakeBackend();
 
 const AppRoot = () => {
   return (

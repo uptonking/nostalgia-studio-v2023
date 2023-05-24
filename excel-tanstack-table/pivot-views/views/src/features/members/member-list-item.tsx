@@ -3,15 +3,24 @@ import React from 'react';
 import { t } from 'i18next';
 
 import type { IQueryUser } from '@datalking/pivot-core';
-import { useMeQuery } from '@datalking/pivot-store';
+import {
+  getAuthStatus,
+  getAuthToken,
+  getIsAuthorized,
+  useMeQuery,
+} from '@datalking/pivot-store';
 import { Avatar, Badge, Box, Group, Paper, Text } from '@datalking/pivot-ui';
+
+import { useAppSelector } from '../../hooks';
 
 interface IProps {
   member: IQueryUser;
 }
 
-export const MemberListItem: React.FC<IProps> = ({ member }) => {
-  const { data } = useMeQuery();
+export const MemberListItem = ({ member }) => {
+  const authToken = useAppSelector(getAuthToken);
+
+  const { data } = useMeQuery(authToken);
   const isMe = member.userId === data?.me.userId;
 
   return (

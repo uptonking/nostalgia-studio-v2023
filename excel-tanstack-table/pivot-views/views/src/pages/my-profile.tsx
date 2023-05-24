@@ -1,13 +1,21 @@
 import React from 'react';
 
-import { useMeQuery } from '@datalking/pivot-store';
+import {
+  getAuthStatus,
+  getAuthToken,
+  getIsAuthorized,
+  useMeQuery,
+} from '@datalking/pivot-store';
 import { Box, Container } from '@datalking/pivot-ui';
 
 import { Header } from '../features/header/header';
 import { MemberProfile } from '../features/profile/member-profile';
+import { useAppSelector } from '../hooks';
 
 export const MyProfile = () => {
-  const me = useMeQuery();
+  const authToken = useAppSelector(getAuthToken);
+
+  const me = useMeQuery(authToken);
 
   if (!me.data) return null;
 

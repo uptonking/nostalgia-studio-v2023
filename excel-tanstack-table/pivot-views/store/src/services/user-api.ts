@@ -9,6 +9,7 @@ import { trpc } from '../trpc';
 const userAdapter = createEntityAdapter<IQueryUser>({
   selectId: (u) => u.userId,
 });
+
 const initialState = userAdapter.getInitialState();
 
 type QueryUserEntityState = EntityState<IQueryUser>;

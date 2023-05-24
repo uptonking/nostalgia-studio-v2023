@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getAuthedMe, getMe, logout } from '@datalking/pivot-store';
+import { getMe, getMeData, logout } from '@datalking/pivot-store';
 import {
   ActionIcon,
   Avatar,
@@ -21,13 +21,17 @@ import {
 } from '@datalking/pivot-ui';
 
 import logo from '../../assets/watarble-logo.svg';
+import { useAppSelector } from '../../hooks';
 
 export const Header = () => {
   const { i18n, t } = useTranslation();
   const language = i18n.language;
-  const me = useSelector(getMe);
-
   const dispatch = useDispatch();
+
+  // const meData = useSelector(getMe);
+  const meData = useAppSelector(getMeData);
+  const userData = useMemo(() => meData?.data?.me, [meData?.data?.me]);
+  // console.log(';; meData ', userData);
 
   return (
     <Group
@@ -89,7 +93,7 @@ export const Header = () => {
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
-        {me && (
+        {userData && 'username' in userData && (
           <Menu width={200}>
             <Menu.Target>
               <Avatar
@@ -98,7 +102,7 @@ export const Header = () => {
                 role='button'
                 sx={{ cursor: 'pointer' }}
               >
-                {me.username.slice(0, 2).toUpperCase()}
+                {userData.username.slice(0, 2).toUpperCase()}
               </Avatar>
             </Menu.Target>
 
@@ -106,10 +110,10 @@ export const Header = () => {
               <Link to='/me/profile'>
                 <Menu.Item fw={600}>
                   <Group spacing='xs'>
-                    <Avatar size='xs' src={me.avatar}>
-                      {me.username.slice(0, 2)}
+                    <Avatar size='xs' src={userData.avatar}>
+                      {userData.username.slice(0, 2)}
                     </Avatar>
-                    {me.username}
+                    {userData.username}
                   </Group>
                 </Menu.Item>
               </Link>

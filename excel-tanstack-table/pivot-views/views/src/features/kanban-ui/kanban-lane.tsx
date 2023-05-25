@@ -28,7 +28,7 @@ import type { SortableProps } from '../sortable.interface';
 import { SortableKanbanCard } from './kanban-card';
 import { KANBAN_DATE_STACKS } from './kanban-date.utils';
 import { KanbanLaneMenu } from './kanban-lane-menu';
-import { UNCATEGORIZED_OPTION_ID } from './kanban.constants';
+import { UNCLASSIFIED_OPTION_ID } from './kanban.constants';
 
 export interface IProps {
   renderMenu?: () => ReactNode;
@@ -42,7 +42,7 @@ export interface IProps {
 
 type IKanbanLaneProps = IProps & SortableProps;
 
-export const KanbanLane: React.FC<IKanbanLaneProps> = React.memo(
+export const KanbanLane = React.memo(
   ({
     id,
     field,
@@ -50,13 +50,13 @@ export const KanbanLane: React.FC<IKanbanLaneProps> = React.memo(
     setActivatorNodeRef,
     style,
     title,
-    attributes = {},
+    attributes = {} as any,
     listeners,
     records,
     disableAddRecord,
     renderMenu,
     getRecordValue,
-  }) => {
+  }: IKanbanLaneProps) => {
     const setOpened = useSetAtom(createRecordFormDrawerOpened);
     const setCreateRecordInitialValue = useSetAtom(
       createRecordInitialValueAtom,
@@ -175,7 +175,7 @@ export const SortableKanbanLane: React.FC<IProps> = (props) => {
   } = useSortable({
     id: props.id as string,
     disabled:
-      props.id === UNCATEGORIZED_OPTION_ID ||
+      props.id === UNCLASSIFIED_OPTION_ID ||
       (!!props.id && KANBAN_DATE_STACKS.includes(props.id as any)),
     data: {
       type: 'container',

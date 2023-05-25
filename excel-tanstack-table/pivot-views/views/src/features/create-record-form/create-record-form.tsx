@@ -31,7 +31,9 @@ interface IProps {
   onSuccess?: () => void;
 }
 
-export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
+export const CreateRecordForm = ({ onCancel, onSuccess }: IProps) => {
+  const { t } = useTranslation();
+
   const form = useFormContext<IMutateRecordValueSchema>();
   const table = useCurrentTable();
   const view = useCurrentView();
@@ -58,8 +60,6 @@ export const CreateRecordForm: React.FC<IProps> = ({ onCancel, onSuccess }) => {
     resetCreateRecord();
     form.reset();
   };
-
-  const { t } = useTranslation();
 
   return (
     <>

@@ -1,2 +1,2 @@
-export const UNCATEGORIZED_OPTION_ID = 'UNCATEGORIZED_OPTION_ID';
-export const NODATE_STACK_ID = 'NO_DATE';
+export const UNCLASSIFIED_OPTION_ID = 'unclassified_option_id_';
+export const NODATE_STACK_ID = 'no_date_';

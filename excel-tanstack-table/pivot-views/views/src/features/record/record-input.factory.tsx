@@ -40,30 +40,43 @@ interface IProps {
   name: string;
 }
 
-export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
-  const { copy, copied } = useClipboard({ timeout: 1500 });
+export const RecordInputFactory = ({ name, field }: IProps) => {
   const navigate = useNavigate();
+  const { copy, copied } = useClipboard({ timeout: 1500 });
   const colors = useColors();
 
   const label = <FieldInputLabel>{field.name.value}</FieldInputLabel>;
-  const desciption = field.description?.value;
+  const description = field.description?.value;
   const required = field.required;
+
   if (field.type === 'number') {
     return (
       <Controller
         name={name}
         rules={{ required: field.required }}
-        render={(form) => (
-          <NumberInput
-            {...form.field}
-            icon={<FieldIcon type={field.type} />}
-            label={label}
-            placeholder={desciption}
-            onChange={(number) => form.field.onChange(number)}
-            required={required}
-            error={form.fieldState.error?.message}
-          />
-        )}
+        render={(form) => {
+          // console.log(';; NumberInput-pps ', field.name.value, field, form);
+          // /fixme hack for 3rd components
+          if (form.field.value == null) {
+            if (field.name.value === 'year') {
+              form.field.value = 2023;
+            } else {
+              form.field.value = 0;
+            }
+          }
+
+          return (
+            <NumberInput
+              {...form.field}
+              icon={<FieldIcon type={field.type} />}
+              label={label}
+              placeholder={description}
+              onChange={(number) => form.field.onChange(number)}
+              required={required}
+              error={form.fieldState.error?.message}
+            />
+          );
+        }}
       />
     );
   }
@@ -79,7 +92,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
               {...form.field}
               count={field.max}
               onChange={(number) => form.field.onChange(number)}
-              placeholder={desciption}
+              placeholder={description}
             />
           </>
         )}
@@ -101,7 +114,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(color) => form.field.onChange(color)}
             value={form.field.value ?? ''}
             swatches={colors}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
             withinPortal
@@ -125,7 +138,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}
             clearable
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
           />
@@ -169,7 +182,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             }
             valueFormat={field.formatString.toUpperCase()}
             popoverProps={{ withinPortal: true }}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
           />
@@ -189,7 +202,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             checked={form.field.value}
             label={label}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
           />
@@ -210,7 +223,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? ''}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
             withinPortal
@@ -230,7 +243,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
             withinPortal
@@ -275,7 +288,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             {...form.field}
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
             withinPortal
@@ -298,7 +311,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? []}
             name={form.field.name}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
             withinPortal
@@ -320,7 +333,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
             onChange={(value) => form.field.onChange(value)}
             value={form.field.value ?? ''}
             name={form.field.name}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
             withinPortal
@@ -353,7 +366,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
                 />
               )
             }
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
           />
@@ -398,7 +411,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
                   ? format(new Date(form.field.value), field.formatString)
                   : ''
               }
-              placeholder={desciption}
+              placeholder={description}
               required={required}
               error={form.fieldState.error?.message}
             />
@@ -417,7 +430,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           <AutoIncrementInput
             field={field}
             defaultValue={form.field.value}
-            placeholder={desciption}
+            placeholder={description}
             required={required}
             error={form.fieldState.error?.message}
           />
@@ -442,7 +455,7 @@ export const RecordInputFactory: React.FC<IProps> = ({ name, field }) => {
           label={label}
           {...form.field}
           value={form.field.value ?? ''}
-          placeholder={desciption}
+          placeholder={description}
           required={required}
           error={form.fieldState.error?.message}
           readOnly={field.controlled}

@@ -6,9 +6,7 @@ import { useRoutes } from 'react-router-dom';
 import { getAuthToken, useMeQuery } from '@datalking/pivot-store';
 import { useHotkeys } from '@datalking/pivot-ui';
 
-import {
-  createTableFormDrawerOpened,
-} from './features/create-table-form/drawer-opened.atom';
+import { createTableFormDrawerOpened } from './features/create-table-form/drawer-opened.atom';
 import { useAppSelector } from './hooks';
 import { routes } from './router';
 

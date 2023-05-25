@@ -117,7 +117,7 @@ export const Login = () => {
                   align='center'
                   order={2}
                   color='teal'
-                // gradient={{ from: 'indigo', to: 'cyan' }}
+                  // gradient={{ from: 'indigo', to: 'cyan' }}
                 >
                   {t('login to watarble', { ns: 'auth' })}
                 </Title>
@@ -134,7 +134,7 @@ export const Login = () => {
                 size='md'
                 variant='filled'
                 icon={<IconMail size={16} />}
-              // placeholder={t('email placeholder', { ns: 'auth' }) as string}
+                // placeholder={t('email placeholder', { ns: 'auth' }) as string}
               />
               <p className={loginIndicatorTextCss}>
                 {t('password', { ns: 'auth' })}

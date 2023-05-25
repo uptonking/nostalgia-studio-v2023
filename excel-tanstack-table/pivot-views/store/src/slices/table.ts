@@ -1,6 +1,3 @@
-import 'immer';
-import 'reselect';
-
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
@@ -54,18 +51,18 @@ export const {
 
 export const tableReducer = tableSlice.reducer;
 
-const self = (state: RootState) => state;
+const rootState = (state: RootState) => state;
 
 export const getCurrentTableId = createSelector(
-  self,
+  rootState,
   (state) => state.table.currentTableId,
 );
 export const getCurrentViewId = createSelector(
-  self,
+  rootState,
   (state) => state.table.currentViewId,
 );
 
 export const getTotalCount = createSelector(
-  self,
+  rootState,
   (state) => state.table.totalCount,
 );

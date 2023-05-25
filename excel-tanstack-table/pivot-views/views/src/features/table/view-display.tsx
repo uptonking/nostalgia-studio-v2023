@@ -10,7 +10,10 @@ import { KanbanUI } from '../kanban-ui/kanban-ui';
 import { TableUI } from '../table-ui/table-ui';
 import { TreeViewUI } from '../tree-view-ui/tree-view-ui';
 
-export const ViewDisplay: React.FC = () => {
+/**
+ * container for multiple types of views
+ */
+export const ViewDisplay = () => {
   const view = useCurrentView();
   const displayType = view.displayType;
 

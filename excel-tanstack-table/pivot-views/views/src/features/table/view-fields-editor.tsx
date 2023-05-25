@@ -116,7 +116,9 @@ const FieldItem: React.FC<IFieldItemProps> = ({
   );
 };
 
-export const ViewFieldsEditor: React.FC = () => {
+export const ViewFieldsEditor = () => {
+  const { t } = useTranslation();
+
   const table = useCurrentTable();
   const view = useCurrentView();
 
@@ -132,8 +134,6 @@ export const ViewFieldsEditor: React.FC = () => {
   const hiddenCount = view.fieldOptions?.hiddenCount ?? 0;
 
   const [order, handlers] = useListState(fieldsOrder);
-
-  const { t } = useTranslation();
 
   useDeepCompareEffect(() => {
     handlers.setState(fieldsOrder);
@@ -231,7 +231,7 @@ export const ViewFieldsEditor: React.FC = () => {
                       onVisibleChange={onChange}
                       defaultChecked={
                         visibility[field.id.value] === undefined ||
-                        !!visibility[field.id.value]
+                        Boolean(visibility[field.id.value])
                       }
                       index={index}
                     />

@@ -6,12 +6,12 @@ import { LoadingOverlay, useDebouncedValue } from '@datalking/pivot-ui';
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { useFetchRecords } from '../../hooks/use-fetch-records';
 import { LoadingTable } from './loading';
-import { EGOTable } from './table';
+import { PivotableTable } from './table';
 
 // import loadable from '@loadable/component';
 // const EGOTable = loadable(() => import('./table'));
 
-export const TableUI: React.FC = () => {
+export const TableUI = () => {
   const table = useCurrentTable();
   const schema = table.schema.toIdMap();
 
@@ -21,7 +21,7 @@ export const TableUI: React.FC = () => {
     [rawRecords, schema],
   );
 
-  const [deboundedIsFetching] = useDebouncedValue(isFetching, 200);
+  const [debouncedIsFetching] = useDebouncedValue(isFetching, 200);
 
   if (isLoading) {
     return <LoadingTable />;
@@ -29,8 +29,8 @@ export const TableUI: React.FC = () => {
 
   return (
     <>
-      <LoadingOverlay visible={deboundedIsFetching} />
-      <EGOTable records={records} />
+      <LoadingOverlay visible={debouncedIsFetching} />
+      <PivotableTable records={records} />
     </>
   );
 };

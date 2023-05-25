@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-export const KanbanBoard: React.FC<IProps> = ({ field }) => {
+export const KanbanBoard = ({ field }: IProps) => {
   const table = useCurrentTable();
   const listRecords = useFetchRecords();
 

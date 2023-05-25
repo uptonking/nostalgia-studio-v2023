@@ -62,10 +62,14 @@ const action = columnHelper.display({
   cell: (props) => <ActionsCell row={props.row} table={props.table} />,
 });
 
-export const EGOTable: React.FC<IProps> = ({ records }) => {
+/**
+ * ✨ powerful table support editing/filter/sort/group/pivot
+ */
+export const PivotableTable = ({ records }: IProps) => {
+  const dispatch = useAppDispatch();
   const table = useCurrentTable();
-
   const view = useCurrentView();
+
   const schema = table.schema.toIdMap();
   const columnVisibility = useMemo(() => view.getVisibility(), [view]);
   const pinned = useMemo(
@@ -83,7 +87,6 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
     right: pinned.right,
   });
 
-  const dispatch = useAppDispatch();
   const selectedRecordIds = useAppSelector((state) =>
     getTableSelectedRecordIds(state, table.id.value),
   );
@@ -188,9 +191,9 @@ export const EGOTable: React.FC<IProps> = ({ records }) => {
   const paddingBottom =
     rowVirtualizer.getVirtualItems().length > 0
       ? rowVirtualizer.getTotalSize() -
-        (rowVirtualizer.getVirtualItems()?.[
-          rowVirtualizer.getVirtualItems().length - 1
-        ]?.end || 0)
+      (rowVirtualizer.getVirtualItems()?.[
+        rowVirtualizer.getVirtualItems().length - 1
+      ]?.end || 0)
       : 0;
 
   return (
@@ -279,5 +282,3 @@ const Record: React.FC<{
     </tr>
   );
 });
-
-export default EGOTable;

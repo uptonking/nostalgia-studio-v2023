@@ -11,7 +11,7 @@ import { SelectKanbanField } from './select-kanban-field';
 // import loadable from '@loadable/component';
 // const KanbanBoard = loadable(() => import('./kanban-board'));
 
-export const KanbanUI: React.FC = () => {
+export const KanbanUI = () => {
   const table = useCurrentTable();
   const view = useCurrentView();
   const fieldId = view.kanbanFieldId;

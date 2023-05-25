@@ -24,7 +24,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   //   authToken?.slice(0, 5),
   // );
 
-  if (authStatus === 'pending' || authStatus === 'idle') {
+  if (authToken && (authStatus === 'pending' || authStatus === 'idle')) {
     return <FullPageLoader />;
   }
 

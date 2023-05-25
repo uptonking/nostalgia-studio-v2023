@@ -25,37 +25,40 @@ import {
 import { CurrentTableContext } from '../../context/current-table';
 import { useAppSelector } from '../../hooks';
 import { useCloseAllDrawers } from '../../hooks/use-close-all-drawers';
-import {
-  createTableFormDrawerOpened,
-} from '../create-table-form/drawer-opened.atom';
-import {
-  UpdateTableFormDrawer,
-} from '../update-table-form/update-table-form-drawer';
+import { createTableFormDrawerOpened } from '../create-table-form/drawer-opened.atom';
+import { UpdateTableFormDrawer } from '../update-table-form/update-table-form-drawer';
 import { EmptyTableList } from './empty-table-list';
 import { TableMenuDropdown } from './table-menu-dropdown';
 
 const EMPTY_OBJECT = {};
 
-export const TableTitleList = () => {
+export const TableTitlesNavbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { tableId } = useParams();
 
   const currentTableId = useAppSelector(getCurrentTableId);
 
-  const { data, isLoading, isSuccess } = useGetTablesQuery(EMPTY_OBJECT);
+  const {
+    data: tablesData,
+    isLoading,
+    isSuccess,
+  } = useGetTablesQuery(EMPTY_OBJECT);
+  // console.log(';; fetchTbs ', currentTableId, isLoading, data);
 
-  // console.log(';; fetchTbs ', isLoading, isSuccess, data)
-
-  useEffect(() => {
-    if (!tableId && location.pathname === '/') {
-      if (currentTableId) {
-        navigate(`/t/${currentTableId}`, { replace: true });
-      } else if (data?.ids.length) {
-        navigate(`/t/${data.ids.at(0)}`, { replace: true });
+  useEffect(
+    /** route to the first table if currentTableId not exist */
+    () => {
+      if (!tableId && location.pathname === '/') {
+        if (currentTableId) {
+          navigate(`/t/${currentTableId}`, { replace: true });
+        } else if (tablesData?.ids.length) {
+          navigate(`/t/${tablesData.ids.at(0)}`, { replace: true });
+        }
       }
-    }
-  }, [tableId, data?.ids, location.pathname, currentTableId, navigate]);
+    },
+    [tableId, tablesData?.ids, location.pathname, currentTableId, navigate],
+  );
 
   const setOpened = useSetAtom(createTableFormDrawerOpened);
   const close = useCloseAllDrawers();
@@ -68,7 +71,7 @@ export const TableTitleList = () => {
     );
   }
 
-  if (!data?.ids.length && !currentTableId) {
+  if (!tablesData?.ids.length && !currentTableId) {
     return <EmptyTableList />;
   }
 
@@ -85,7 +88,7 @@ export const TableTitleList = () => {
             }
           }}
         >
-          {Object.values(data?.entities ?? {})
+          {Object.values(tablesData?.entities ?? {})
             .filter(Boolean)
             .map((tbl) => (
               <Tabs.Tab
@@ -120,7 +123,7 @@ export const TableTitleList = () => {
               </Tabs.Tab>
             ))}
         </Tabs>
-        {Boolean(isSuccess && data.ids.length) && (
+        {Boolean(isSuccess && tablesData.ids.length) && (
           <ActionIcon
             variant='subtle'
             onClick={(e) => {

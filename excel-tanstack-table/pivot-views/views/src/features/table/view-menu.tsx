@@ -163,7 +163,7 @@ const TreeControl: React.FC<{ tree?: ITreeView }> = ({ tree }) => {
   return <UsingTreeField fieldId={tree?.fieldId} />;
 };
 
-export const ViewMenu: React.FC = () => {
+export const ViewMenu = () => {
   const table = useCurrentTable();
   const view = useCurrentView();
   const cacheKey = useFixedCacheKey();
@@ -275,10 +275,12 @@ export const ViewMenu: React.FC = () => {
                         displayType: d.value,
                       });
                     }}
+                    component='nav'
                   >
                     <Group w='100%'>
                       <Group sx={{ flex: 1 }}>
                         <ActionIcon
+                          component='a'
                           size='xs'
                           variant='filled'
                           color={getDisplayTypeColor(d.value)}

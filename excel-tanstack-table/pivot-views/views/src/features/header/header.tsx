@@ -23,6 +23,7 @@ import {
 import logo from '../../assets/watarble-logo.svg';
 import { useAppSelector } from '../../hooks';
 
+/** app top header navbar */
 export const Header = () => {
   const navigate = useNavigate();
   const { i18n, t } = useTranslation();
@@ -92,7 +93,7 @@ export const Header = () => {
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
-        {userData && 'username' in userData && (
+        {userData && (
           <Menu width={200}>
             <Menu.Target>
               <Avatar

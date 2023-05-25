@@ -17,7 +17,7 @@ interface IProps extends Omit<SelectProps, 'data'> {
   field: SelectField;
 }
 
-export const OptionPicker: React.FC<IProps> = ({ field, ...rest }) => {
+export const OptionPicker = forwardRef(({ field, ...rest }: IProps, ref) => {
   const nextColor = field.options.lastOption
     .map((o) => o.color.next())
     .unwrap();
@@ -27,6 +27,7 @@ export const OptionPicker: React.FC<IProps> = ({ field, ...rest }) => {
 
   return (
     <Select
+      ref={ref as any}
       data={field.options.options.map((o) => ({
         value: o.key.value,
         label: o.name.value,
@@ -67,7 +68,7 @@ export const OptionPicker: React.FC<IProps> = ({ field, ...rest }) => {
       withinPortal
     />
   );
-};
+});
 
 interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
   value: string;

@@ -16,7 +16,9 @@ import { CreateRecordForm } from './create-record-form';
 import { createRecordInitialValueAtom } from './create-record-initial-value.atom';
 import { createRecordFormDrawerOpened } from './drawer-opened.atom';
 
-export const CreateRecordFormDrawer: React.FC = () => {
+export const CreateRecordFormDrawer = () => {
+  const { t } = useTranslation();
+
   const table = useCurrentTable();
   const [opened, setOpened] = useAtom(createRecordFormDrawerOpened);
   const initialCreateRecordValue = useAtomValue(createRecordInitialValueAtom);
@@ -54,8 +56,6 @@ export const CreateRecordFormDrawer: React.FC = () => {
     form.clearErrors();
   };
   const confirm = confirmModal({ onConfirm: reset });
-
-  const { t } = useTranslation();
 
   return (
     <FormProvider {...form}>

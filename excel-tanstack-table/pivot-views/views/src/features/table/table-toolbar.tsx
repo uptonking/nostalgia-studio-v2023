@@ -24,9 +24,9 @@ import { ViewFieldsEditor } from './view-fields-editor';
 import { ViewMenu } from './view-menu';
 import { ViewsButton } from './views-button';
 
-export const TableToolbar: React.FC = () => {
-  const isLoadedRecords = useAppSelector(getIsLoadedCurrentRecords);
+export const TableToolbar = () => {
   const { t } = useTranslation();
+  const isLoadedRecords = useAppSelector(getIsLoadedCurrentRecords);
   const { refetch } = useFetchRecords();
   const setUpdateTableOpened = useSetAtom(updateTableFormDrawerOpened);
 
@@ -66,6 +66,7 @@ export const TableToolbar: React.FC = () => {
           </ActionIcon>
         </Tooltip>
         <Tooltip label={t('Update Table')}>
+          {/* update table name only */}
           <ActionIcon onClick={() => setUpdateTableOpened(true)}>
             <IconSettingsFilled size={16} />
           </ActionIcon>

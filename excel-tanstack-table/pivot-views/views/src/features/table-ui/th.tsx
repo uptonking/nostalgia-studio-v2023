@@ -60,7 +60,7 @@ interface IProps {
   index: number;
 }
 
-export const Th: React.FC<IProps> = ({ header, field, column, index }) => {
+export const Th = ({ header, field, column, index }: IProps) => {
   const table = useCurrentTable();
   const view = useCurrentView();
   const direction = view.getFieldSort(field.id.value).into();

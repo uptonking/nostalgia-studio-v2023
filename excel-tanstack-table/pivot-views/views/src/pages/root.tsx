@@ -6,7 +6,7 @@ import { AppShell, Box } from '@datalking/pivot-ui';
 
 import { CreateTableFormDrawer } from '../features/create-table-form';
 import { Header } from '../features/header/header';
-import { TableTitleList } from '../features/table/table-title-list';
+import { TableTitlesNavbar } from '../features/table/table-titles-navbar';
 
 /** AppShell and layout */
 export const Root = () => {
@@ -14,7 +14,7 @@ export const Root = () => {
     <AppShell padding={0}>
       <Box h='100vh' sx={{ overflow: 'hidden' }}>
         <Header />
-        <TableTitleList />
+        <TableTitlesNavbar />
         <Outlet />
       </Box>
 
@@ -22,5 +22,3 @@ export const Root = () => {
     </AppShell>
   );
 };
-
-export default Root;

@@ -53,7 +53,7 @@ import { Option } from '../option/option';
 import type { IUpdateOptionModalProps } from '../update-option-form/update-option-modal';
 import { KanbanCard } from './kanban-card';
 import { KanbanLane, SortableKanbanLane } from './kanban-lane';
-import { UNCATEGORIZED_OPTION_ID } from './kanban.constants';
+import { UNCLASSIFIED_OPTION_ID } from './kanban.constants';
 import { useKanban } from './use-kanban';
 
 interface IProps {
@@ -61,11 +61,16 @@ interface IProps {
   records: Records;
 }
 
-export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
+/**
+ * ✨ kanban grouped by field of `select` type
+ */
+export const KanbanSelectBoard = ({ field, records }: IProps) => {
+  const { t } = useTranslation();
+
   const table = useCurrentTable();
   const [options, handlers] = useListState(field.options.options);
   const containers = [
-    UNCATEGORIZED_OPTION_ID,
+    UNCLASSIFIED_OPTION_ID,
     ...options.map((o) => o.key.value),
   ];
   const lastOption = options[options.length - 1];
@@ -76,7 +81,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
         | SelectFieldValue
         | undefined;
 
-      if (!value?.id) return UNCATEGORIZED_OPTION_ID;
+      if (!value?.id) return UNCLASSIFIED_OPTION_ID;
       return value.id;
     });
   const [optionRecords, setOptionRecords] = useState(groupOptionRecords());
@@ -161,15 +166,13 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
         id: e.active.id as string,
         values: {
           [field.id.value]:
-            overContainer === UNCATEGORIZED_OPTION_ID ? null : overContainer,
+            overContainer === UNCLASSIFIED_OPTION_ID ? null : overContainer,
         },
       });
     },
 
     getContainer: (activeId) => options.find((o) => o.key.value === activeId),
   });
-
-  const { t } = useTranslation();
 
   return (
     <Container fluid ml={0} h='100%' pt='xs' sx={{ overflow: 'scroll' }}>
@@ -187,15 +190,15 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
           >
             <SortableKanbanLane
               field={field}
-              records={optionRecords[UNCATEGORIZED_OPTION_ID] ?? []}
+              records={optionRecords[UNCLASSIFIED_OPTION_ID] ?? []}
               title={
                 <Badge radius='xs' color='gray' sx={{ textTransform: 'unset' }}>
                   {t('Uncategorized')}
                 </Badge>
               }
-              id={UNCATEGORIZED_OPTION_ID}
+              id={UNCLASSIFIED_OPTION_ID}
               getRecordValue={(id) =>
-                id === UNCATEGORIZED_OPTION_ID ? null : id
+                id === UNCLASSIFIED_OPTION_ID ? null : id
               }
             />
             {options.map((option) => (
@@ -250,7 +253,7 @@ export const KanbanSelectBoard: React.FC<IProps> = ({ field, records }) => {
                   </>
                 )}
                 getRecordValue={(id) =>
-                  id === UNCATEGORIZED_OPTION_ID ? null : id
+                  id === UNCLASSIFIED_OPTION_ID ? null : id
                 }
               />
             ))}

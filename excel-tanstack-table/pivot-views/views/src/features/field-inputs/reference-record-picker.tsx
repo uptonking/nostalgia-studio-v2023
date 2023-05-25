@@ -29,52 +29,55 @@ const ReferenceSelectItem = forwardRef<HTMLDivElement, ItemProps>(
   ),
 );
 
-export const ReferenceRecordPicker: React.FC<IProps> = ({ field, ...rest }) => {
-  const { recordId } = useParams();
-  const table = useCurrentTable();
-  const foreignTableId = field.foreignTableId.into() ?? table.id.value;
+export const ReferenceRecordPicker = forwardRef(
+  ({ field, ...rest }: IProps, ref) => {
+    const { recordId } = useParams();
+    const table = useCurrentTable();
+    const foreignTableId = field.foreignTableId.into() ?? table.id.value;
 
-  const [focused, handler] = useDisclosure(false);
+    const [focused, handler] = useDisclosure(false);
 
-  const { rawRecords: foreignRecords, isLoading } = useGetForeignRecordsQuery(
-    { tableId: table.id.value, foreignTableId, fieldId: field.id.value },
-    {
-      skip: !focused,
-      selectFromResult: (result) => ({
-        ...result,
-        rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(
-          Boolean,
-        ),
-      }),
-    },
-  );
+    const { rawRecords: foreignRecords, isLoading } = useGetForeignRecordsQuery(
+      { tableId: table.id.value, foreignTableId, fieldId: field.id.value },
+      {
+        skip: !focused,
+        selectFromResult: (result) => ({
+          ...result,
+          rawRecords: (Object.values(result.data?.entities ?? {}) ?? []).filter(
+            Boolean,
+          ),
+        }),
+      },
+    );
 
-  const data = useReferenceDisplayValues(field, recordId!, foreignRecords);
+    const data = useReferenceDisplayValues(field, recordId!, foreignRecords);
 
-  return (
-    <MultiSelect
-      {...rest}
-      multiple
-      clearable
-      searchable
-      itemComponent={ReferenceSelectItem}
-      description={
-        focused && !isLoading && !foreignRecords.length
-          ? 'no more available record to select'
-          : undefined
-      }
-      data={data}
-      onFocus={handler.open}
-      onBlur={handler.close}
-      placeholder={focused && isLoading ? 'loading records...' : undefined}
-      disabled={(focused && isLoading) || rest.disabled}
-      icon={
-        focused && isLoading ? (
-          <Loader color='gray' size={14} />
-        ) : (
-          <FieldIcon type={field.type} />
-        )
-      }
-    />
-  );
-};
+    return (
+      <MultiSelect
+        {...rest}
+        ref={ref as any}
+        multiple
+        clearable
+        searchable
+        itemComponent={ReferenceSelectItem}
+        description={
+          focused && !isLoading && !foreignRecords.length
+            ? 'no more available record to select'
+            : undefined
+        }
+        data={data}
+        onFocus={handler.open}
+        onBlur={handler.close}
+        placeholder={focused && isLoading ? 'loading records...' : undefined}
+        disabled={(focused && isLoading) || rest.disabled}
+        icon={
+          focused && isLoading ? (
+            <Loader color='gray' size={14} />
+          ) : (
+            <FieldIcon type={field.type} />
+          )
+        }
+      />
+    );
+  },
+);

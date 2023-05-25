@@ -18,9 +18,9 @@ interface IProps {
 }
 
 export const MemberListItem = ({ member }) => {
-  const authToken = useAppSelector(getAuthToken);
+  // const authToken = useAppSelector(getAuthToken);
 
-  const { data } = useMeQuery(authToken);
+  const { data } = useMeQuery();
   const isMe = member.userId === data?.me.userId;
 
   return (

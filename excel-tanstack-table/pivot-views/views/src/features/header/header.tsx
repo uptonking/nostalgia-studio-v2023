@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { getMe, getMeData, logout } from '@datalking/pivot-store';
 import {
@@ -24,13 +24,12 @@ import logo from '../../assets/watarble-logo.svg';
 import { useAppSelector } from '../../hooks';
 
 export const Header = () => {
+  const navigate = useNavigate();
   const { i18n, t } = useTranslation();
   const language = i18n.language;
-  const dispatch = useDispatch();
 
-  // const meData = useSelector(getMe);
-  const meData = useAppSelector(getMeData);
-  const userData = useMemo(() => meData?.data?.me, [meData?.data?.me]);
+  const dispatch = useDispatch();
+  const userData = useAppSelector(getMe);
   // console.log(';; meData ', userData);
 
   return (
@@ -120,7 +119,10 @@ export const Header = () => {
               <Menu.Divider />
               <Menu.Item
                 icon={<IconLogout size={16} />}
-                onClick={() => dispatch(logout())}
+                onClick={() => {
+                  dispatch(logout());
+                  navigate('/login');
+                }}
               >
                 {t('logout', { ns: 'auth' })}
               </Menu.Item>

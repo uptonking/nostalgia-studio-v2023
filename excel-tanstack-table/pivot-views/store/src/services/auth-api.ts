@@ -2,14 +2,14 @@ import type { IQueryUser } from '@datalking/pivot-core';
 import { createSelector } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import type { RootState } from '../reducers';
+import type { RootState } from '../store/reducer';
 import { fetchBase } from './api';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBase({ prefix: '/api/auth' }) as any,
   endpoints: (builder) => ({
-    me: builder.query<{ me: IQueryUser }, unknown>({
+    me: builder.query<{ me: IQueryUser }, void>({
       query: (args) => ({ url: '/me' }),
     }),
     register: builder.mutation<
@@ -77,13 +77,9 @@ const authApiBak = createApi({
 
 export const { useLoginMutation, useMeQuery, useRegisterMutation } = authApi;
 
-// const selectMe = authApi.endpoints.me.select(undefined);
-const selectMe = authApi.endpoints.me.select(
-  localStorage.getItem('access_token'),
-);
+const selectMe = authApi.endpoints.me.select(undefined);
 
-// export const getMe = createSelector(selectMe, (me) => me.data?.me);
-export const getMe = createSelector(selectMe, (me) => me);
-export const getMeData = (state: RootState) => authApi.endpoints.me.select(
-  localStorage.getItem('access_token')
-)(state)
+export const getMe = createSelector(selectMe, (me) => me.data?.me);
+// export const getMe = createSelector(selectMe, (me) => me);
+export const getMeData = (state: RootState) =>
+  authApi.endpoints.me.select()(state);

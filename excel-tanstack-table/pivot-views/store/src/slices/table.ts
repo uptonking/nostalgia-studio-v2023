@@ -4,8 +4,8 @@ import 'reselect';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
-import type { RootState } from '../reducers';
 import { sheetApi, tableApi } from '../services';
+import type { RootState } from '../store/reducer';
 
 export interface TableState {
   currentTableId: string;

@@ -14,7 +14,7 @@ import type {
 import type { EntityState } from '@reduxjs/toolkit';
 import { createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 
-import type { RootState } from '../reducers';
+import type { RootState } from '../store/reducer';
 import { trpc } from '../trpc';
 import { api } from './api';
 

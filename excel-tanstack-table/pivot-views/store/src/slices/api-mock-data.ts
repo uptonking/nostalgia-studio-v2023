@@ -1,8 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
-import type { RootState } from '../reducers';
 import { tableApi } from '../services';
+import type { RootState } from '../store/reducer';
 
 export interface ApiMockDataState {
   config: { online: boolean };

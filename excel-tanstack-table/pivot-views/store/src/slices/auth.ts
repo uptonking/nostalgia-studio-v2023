@@ -1,12 +1,15 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
-import type { RootState } from '../reducers';
 import { authApi } from '../services';
+import type { RootState } from '../store/reducer';
 
 export interface AuthState {
   token?: string;
   authStatus?: 'pending' | 'success' | 'failure' | 'idle';
+  /**
+   * todo remove; unused
+   */
   me?: {
     userId: string;
     username: string;
@@ -22,18 +25,18 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action: PayloadAction<string>) => {
-      state.token = action.payload;
       localStorage.setItem('access_token', action.payload);
+      state.token = action.payload;
     },
     resetToken: (state) => {
-      state.token = undefined;
       localStorage.removeItem('access_token');
-      state.authStatus = 'idle';
+      // state.token = undefined;
+      // state.authStatus = 'idle';
     },
     logout: (state) => {
-      state.token = undefined;
       localStorage.removeItem('access_token');
-      state.authStatus = 'idle';
+      // state.token = undefined;
+      // state.authStatus = 'idle';
     },
   },
   extraReducers: (builder) => {
@@ -43,6 +46,9 @@ export const authSlice = createSlice({
       })
       .addMatcher(authApi.endpoints.me.matchFulfilled, (state, action) => {
         state.authStatus = 'success';
+        if (!state.token) {
+          state.token = localStorage.getItem('access_token');
+        }
       })
       .addMatcher(authApi.endpoints.me.matchRejected, (state, action) => {
         state.token = undefined;
@@ -75,4 +81,5 @@ export const getIsAuthorized = (state: RootState) =>
   state.auth.token && state.auth.authStatus === 'success';
 
 export const getAuthStatus = (state: RootState) => state.auth.authStatus;
-export const getAuthToken = (state: RootState) => state.auth.token;
+export const getAuthToken = (state: RootState) =>
+  state.auth.token || localStorage.getItem('access_token');

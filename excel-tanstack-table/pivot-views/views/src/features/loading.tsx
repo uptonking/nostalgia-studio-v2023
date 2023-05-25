@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Group, Skeleton } from '@datalking/pivot-ui';
 
-export const TableLoading: React.FC = () => {
+export const TableLoading = () => {
   return (
     <Group fz='md' p='md'>
       <Skeleton h='30px' />

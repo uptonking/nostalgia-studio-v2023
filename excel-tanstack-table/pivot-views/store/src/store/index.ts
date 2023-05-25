@@ -2,9 +2,9 @@ import { persistStore } from 'redux-persist';
 
 import { configureStore } from '@reduxjs/toolkit';
 
-import { rootReducer } from '../reducers';
 import { attachment, authApi, userApi } from '../services';
 import { api, mainApi } from '../services/api';
+import { rootReducer } from './reducer';
 
 export const createStore = () => {
   const store = configureStore({

@@ -8,7 +8,7 @@ import { tableReducer, tableSlice } from '../slices';
 import { authReducer, authSlice } from '../slices/auth';
 import { recordReducer, recordSlice } from '../slices/record';
 
-export const combinedReducers = combineReducers({
+const combinedReducers = combineReducers({
   [tableSlice.name]: tableReducer,
   [recordSlice.name]: recordReducer,
   [api.reducerPath]: api.reducer,
@@ -30,7 +30,7 @@ export const rootReducer = persistReducer(
       recordSlice.name,
       userApi.reducerPath,
       authApi.reducerPath,
-      // authSlice.name,
+      authSlice.name,
     ],
   },
   combinedReducers,

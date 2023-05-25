@@ -13,9 +13,9 @@ import { MemberProfile } from '../features/profile/member-profile';
 import { useAppSelector } from '../hooks';
 
 export const MyProfile = () => {
-  const authToken = useAppSelector(getAuthToken);
+  // const authToken = useAppSelector(getAuthToken);
 
-  const me = useMeQuery(authToken);
+  const me = useMeQuery();
 
   if (!me.data) return null;
 

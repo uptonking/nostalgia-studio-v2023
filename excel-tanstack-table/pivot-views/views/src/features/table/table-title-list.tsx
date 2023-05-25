@@ -41,16 +41,11 @@ export const TableTitleList = () => {
   const location = useLocation();
   const { tableId } = useParams();
 
-  const isAuthorized = useAppSelector(getIsAuthorized);
-  // const authStatus = useAppSelector(getIsAuthorized);
   const currentTableId = useAppSelector(getCurrentTableId);
 
-  const { data, isLoading, isSuccess, isFetching } = useGetTablesQuery(EMPTY_OBJECT, {
-    // refetchOnMountOrArgChange: true,
-    skip: !isAuthorized
-  });
+  const { data, isLoading, isSuccess } = useGetTablesQuery(EMPTY_OBJECT);
 
-  console.log(';; fetchTbl ', isFetching, !isAuthorized, data)
+  // console.log(';; fetchTbs ', isLoading, isSuccess, data)
 
   useEffect(() => {
     if (!tableId && location.pathname === '/') {

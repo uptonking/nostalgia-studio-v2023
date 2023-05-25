@@ -8,8 +8,8 @@ import sessionStorage from 'redux-persist/es/storage/session';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
-import type { RootState } from '../reducers';
 import { recordApi } from '../services';
+import type { RootState } from '../store/reducer';
 
 const { filter, keys, omit, pipe, some, T, propOr } = fp;
 

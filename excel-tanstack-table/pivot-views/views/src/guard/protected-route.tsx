@@ -2,23 +2,33 @@ import React from 'react';
 
 import { createSearchParams, Navigate, useLocation } from 'react-router-dom';
 
-import { getAuthStatus, getIsAuthorized } from '@datalking/pivot-store';
+import { getAuthStatus, getAuthToken } from '@datalking/pivot-store';
 import { FullPageLoader } from '@datalking/pivot-ui';
 
 import { useAppSelector } from '../hooks';
 
-export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const isAuthorized = useAppSelector(getIsAuthorized);
-  const authStatus = useAppSelector(getAuthStatus);
+type ProtectedRouteProps = {
+  children: React.ReactElement;
+};
+
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const location = useLocation();
 
-  if (authStatus === 'pending') {
+  const authStatus = useAppSelector(getAuthStatus);
+  const authToken = useAppSelector(getAuthToken);
+
+  // console.log(
+  //   ';; routeAuth ',
+  //   location.pathname,
+  //   authStatus,
+  //   authToken?.slice(0, 5),
+  // );
+
+  if (authStatus === 'pending' || authStatus === 'idle') {
     return <FullPageLoader />;
   }
 
-  if (!isAuthorized && authStatus === 'failure') {
+  if (!authToken) {
     return (
       <Navigate
         to={{
@@ -30,5 +40,5 @@ export const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
     );
   }
 
-  return <>{children}</>;
+  return children;
 };

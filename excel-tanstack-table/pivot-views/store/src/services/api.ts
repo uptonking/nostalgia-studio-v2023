@@ -29,12 +29,16 @@ type FetchBaseArgsType = { prefix?: string };
  * - https://redux-toolkit.js.org/rtk-query/usage/customizing-queries
  */
 export function fetchBase(fetchArgs: FetchBaseArgsType = {}) {
+  let USER_AUTH_TOKEN = '';
+
   return async ({ url, method, data, params }) => {
     const prefix = fetchArgs?.prefix ?? '/api/trpc';
     let uri = prefix + (url.startsWith('/') ? '' : '/') + url;
     if (params?.input === null) uri += '?input={}';
     method = method || 'GET';
-    console.log(';; fetchArgs ', prefix, uri, data, params);
+    if (url.startsWith('/')) {
+      // console.log(';; fetchArg ', uri, data, params);
+    }
 
     const fetchOptions: RequestInit = {
       method,
@@ -44,7 +48,12 @@ export function fetchBase(fetchArgs: FetchBaseArgsType = {}) {
       },
     };
 
-    const authToken = localStorage.getItem('access_token');
+    function getLocalAuthToken() {
+      if (USER_AUTH_TOKEN) return USER_AUTH_TOKEN;
+      USER_AUTH_TOKEN = localStorage.getItem('access_token');
+      return USER_AUTH_TOKEN;
+    }
+    const authToken = getLocalAuthToken();
     if (authToken && (params === undefined || !params['noAuthToken'])) {
       fetchOptions.headers['Authorization'] = 'Bearer ' + authToken;
     }
@@ -57,7 +66,9 @@ export function fetchBase(fetchArgs: FetchBaseArgsType = {}) {
     try {
       const res = await fetch(uri, fetchOptions);
       const resJson = await res.json();
-      console.log(';; fetchBase-res ', url, resJson);
+      if (url.startsWith('/')) {
+        // console.log(';; fetchRes ', url, resJson);
+      }
 
       if (
         String(resJson['statusCode']).startsWith('40') ||

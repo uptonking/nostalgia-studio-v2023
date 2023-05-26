@@ -72,33 +72,17 @@ export const PivotableTable = ({ records }: IProps) => {
 
   const schema = table.schema.toIdMap();
   const columnVisibility = useMemo(() => view.getVisibility(), [view]);
+  const columnOrder = useMemo(() => table.getFieldsOrder(view), [table, view]);
+
   const pinned = useMemo(
     () => view.pinnedFields?.toJSON() ?? { left: [], right: [] },
     [view],
   );
-  const columnOrder = useMemo(() => table.getFieldsOrder(view), [table, view]);
-  const initialFields = useMemo(
-    () => columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean),
-    [columnOrder, schema],
-  );
-  const [fields, handlers] = useListState(initialFields);
   const [columnPinning, setColumnPinning] = useState<ColumnPinningState>({
     left: [SELECTION_ID, ...pinned.left],
     right: pinned.right,
   });
-
-  const selectedRecordIds = useAppSelector((state) =>
-    getTableSelectedRecordIds(state, table.id.value),
-  );
-  const [rowSelection, setRowSelection] = useState(selectedRecordIds);
-
   const [setPinnedFields] = useSetPinnedFieldsMutation();
-
-  useEffect(() => {
-    dispatch(
-      setTableSelectedRecordIds({ tableId: table.id.value, ids: rowSelection }),
-    );
-  }, [rowSelection]);
 
   const onColumnPinningChange: OnChangeFn<ColumnPinningState> = useCallback(
     (state) => {
@@ -118,13 +102,29 @@ export const PivotableTable = ({ records }: IProps) => {
     [columnPinning, setPinnedFields, table.id.value, view.id.value],
   );
 
-  useEffect(() => {
-    setRowSelection(selectedRecordIds);
-  }, [selectedRecordIds]);
+  const initialFields = useMemo(
+    () => columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean),
+    [columnOrder, schema],
+  );
+  const [fields, handlers] = useListState(initialFields);
 
   useLayoutEffect(() => {
     handlers.setState(initialFields);
   }, [table]);
+
+  const selectedRecordIds = useAppSelector((state) =>
+    getTableSelectedRecordIds(state, table.id.value),
+  );
+  const [rowSelection, setRowSelection] = useState(selectedRecordIds);
+  useEffect(() => {
+    dispatch(
+      setTableSelectedRecordIds({ tableId: table.id.value, ids: rowSelection }),
+    );
+  }, [rowSelection]);
+
+  useEffect(() => {
+    setRowSelection(selectedRecordIds);
+  }, [selectedRecordIds]);
 
   const columns = useMemo(
     () => [
@@ -191,9 +191,9 @@ export const PivotableTable = ({ records }: IProps) => {
   const paddingBottom =
     rowVirtualizer.getVirtualItems().length > 0
       ? rowVirtualizer.getTotalSize() -
-      (rowVirtualizer.getVirtualItems()?.[
-        rowVirtualizer.getVirtualItems().length - 1
-      ]?.end || 0)
+        (rowVirtualizer.getVirtualItems()?.[
+          rowVirtualizer.getVirtualItems().length - 1
+        ]?.end || 0)
       : 0;
 
   return (

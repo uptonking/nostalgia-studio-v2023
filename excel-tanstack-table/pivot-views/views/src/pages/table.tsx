@@ -25,10 +25,16 @@ import {
 
 import { CurrentTableContext } from '../context/current-table';
 import { CurrentViewContext } from '../context/current-view';
-import { CreateRecordFormDrawer } from '../features/create-record-form/create-record-form-drawer';
-import { createRecordFormDrawerOpened } from '../features/create-record-form/drawer-opened.atom';
+import {
+  CreateRecordFormDrawer,
+} from '../features/create-record-form/create-record-form-drawer';
+import {
+  createRecordFormDrawerOpened,
+} from '../features/create-record-form/drawer-opened.atom';
 import { TableLoading } from '../features/loading';
-import { RecordSelectionDialog } from '../features/record-selection/record-selection-dialog';
+import {
+  RecordSelectionDialog,
+} from '../features/record-selection/record-selection-dialog';
 import { TableToolbar } from '../features/table/table-toolbar';
 import { ViewDisplay } from '../features/table/view-display';
 import { ViewsListDrawer } from '../features/views/views-list-drawer';
@@ -42,7 +48,7 @@ export const Table = () => {
   const dispatch = useAppDispatch();
   const theme = useEgoUITheme();
 
-  // fetch table data, containing views data
+  // fetch a table's data, containing views
   const {
     data: tableData,
     isSuccess,

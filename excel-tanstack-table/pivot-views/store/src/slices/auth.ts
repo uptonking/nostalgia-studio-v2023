@@ -30,12 +30,12 @@ export const authSlice = createSlice({
     },
     resetToken: (state) => {
       localStorage.removeItem('access_token');
-      // state.token = undefined;
+      state.token = undefined;
       // state.authStatus = 'idle';
     },
     logout: (state) => {
       localStorage.removeItem('access_token');
-      // state.token = undefined;
+      state.token = undefined;
       // state.authStatus = 'idle';
     },
   },

@@ -28,7 +28,6 @@
     "@formkit/auto-animate": "^1.0.0-beta.6",
     "@hookform/resolvers": "^3.1.0",
     "@linaria/core": "^4.2.9",
-    "@loadable/component": "^5.15.3",
     "@tanstack/react-table": "8.7.9111",
     "@tanstack/react-virtual": "3.0.1111",
     "date-fns": "^2.30.0",

@@ -10,5 +10,6 @@ export type TColumn = Column<TData, unknown>;
 export type TRow = Row<TData>;
 
 export interface IProps {
+  /** array of table record object  */
   records: Records;
 }

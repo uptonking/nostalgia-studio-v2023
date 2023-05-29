@@ -273,6 +273,7 @@ export function getChangedRanges(oldC: Combined, newC: Combined): LineRanges {
   ];
 }
 
+/**  */
 export function renderInline(editor: Editor, delta: Delta, forHTML?: boolean) {
   const { formats, embeds } = editor.typeset;
   let inlineChildren: VChild[] = [];

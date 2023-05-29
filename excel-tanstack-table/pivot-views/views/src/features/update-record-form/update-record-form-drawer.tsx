@@ -29,10 +29,10 @@ import { UpdateRecordForm } from './update-record-form';
 export const UpdateRecordFormDrawer: React.FC<{ recordId: string }> = ({
   recordId,
 }) => {
+  const navigate = useNavigate();
   const table = useCurrentTable();
   const view = useCurrentView();
   const fields = useOrderedFields();
-  const navigate = useNavigate();
 
   const [opened, handler] = useDisclosure();
 

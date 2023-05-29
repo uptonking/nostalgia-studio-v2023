@@ -61,8 +61,10 @@ interface IProps {
 }
 
 export const Th = ({ header, field, column, index }: IProps) => {
+  const { t } = useTranslation();
   const table = useCurrentTable();
   const view = useCurrentView();
+
   const direction = view.getFieldSort(field.id.value).into();
   const [setFieldWidth] = useSetFieldWidthMutation();
   const [setFieldSort] = useSetFieldSortMutation();
@@ -84,7 +86,6 @@ export const Th = ({ header, field, column, index }: IProps) => {
 
   const left = header.getStart();
   const { classes, cx } = usePinnedStyles({ left });
-  const { t } = useTranslation();
 
   return (
     <Box

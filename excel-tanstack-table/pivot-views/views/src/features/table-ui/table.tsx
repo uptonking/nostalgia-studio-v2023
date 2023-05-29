@@ -31,9 +31,12 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 import { ACTIONS_FIELD, SELECTION_ID } from '../../constants/field.constants';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { useCurrentTable } from '../../hooks/use-current-table';
-import { useCurrentView } from '../../hooks/use-current-view';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useCurrentTable,
+  useCurrentView,
+} from '../../hooks';
 import { ActionsCell } from './actions-cell';
 import { ActionsHeader } from './actions-header';
 import { Cell } from './cell';
@@ -46,7 +49,7 @@ import { Th } from './th';
 
 const columnHelper = createColumnHelper<TData>();
 
-const selection: ColumnDef<TData> = {
+const selectionColDef: ColumnDef<TData> = {
   enableResizing: false,
   id: SELECTION_ID,
   enablePinning: true,
@@ -106,11 +109,13 @@ export const PivotableTable = ({ records }: IProps) => {
     () => columnOrder.map((fieldId) => schema.get(fieldId)).filter(Boolean),
     [columnOrder, schema],
   );
+  // todo custom impl with memo
   const [fields, handlers] = useListState(initialFields);
 
   useLayoutEffect(() => {
     handlers.setState(initialFields);
   }, [table]);
+  // }, [handlers, initialFields, table]);
 
   const selectedRecordIds = useAppSelector((state) =>
     getTableSelectedRecordIds(state, table.id.value),
@@ -120,7 +125,7 @@ export const PivotableTable = ({ records }: IProps) => {
     dispatch(
       setTableSelectedRecordIds({ tableId: table.id.value, ids: rowSelection }),
     );
-  }, [rowSelection]);
+  }, [dispatch, rowSelection, table.id.value]);
 
   useEffect(() => {
     setRowSelection(selectedRecordIds);
@@ -128,7 +133,7 @@ export const PivotableTable = ({ records }: IProps) => {
 
   const columns = useMemo(
     () => [
-      selection,
+      selectionColDef,
       ...fields.map((f) =>
         columnHelper.accessor(f.id.value, {
           id: f.id.value,
@@ -191,9 +196,9 @@ export const PivotableTable = ({ records }: IProps) => {
   const paddingBottom =
     rowVirtualizer.getVirtualItems().length > 0
       ? rowVirtualizer.getTotalSize() -
-        (rowVirtualizer.getVirtualItems()?.[
-          rowVirtualizer.getVirtualItems().length - 1
-        ]?.end || 0)
+      (rowVirtualizer.getVirtualItems()?.[
+        rowVirtualizer.getVirtualItems().length - 1
+      ]?.end || 0)
       : 0;
 
   return (

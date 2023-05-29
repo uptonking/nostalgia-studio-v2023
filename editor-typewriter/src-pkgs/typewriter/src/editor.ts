@@ -43,7 +43,7 @@ const PROXIED_EVENTS = [
   'click',
 ] as const;
 
-/** { editor, its bound event dispatch function } */
+/** { editor: its bound event dispatch function } */
 const eventProxies = new WeakMap<Editor, EventListener>();
 
 export interface EditorOptions {
@@ -118,6 +118,8 @@ export class Editor extends EventDispatcher {
       ? { ...defaultModules, ...options.modules }
       : { ...options.modules };
     // console.log(';; edit-modules ', this._modules)
+
+    // register view change event to Editor instance
     if (options.root) this.setRoot(options.root);
   }
 
@@ -158,7 +160,9 @@ export class Editor extends EventDispatcher {
     return this;
   }
 
-  /** applies a change to the current doc (creating a new one), and also dispatches change events */
+  /** applies a change to the current doc (creating a new one), and also dispatches change events
+   * - view will update due to `this.set`
+   */
   update(
     changeOrDelta: TextChange | Delta,
     source: SourceString = Source.user,
@@ -186,6 +190,7 @@ export class Editor extends EventDispatcher {
 
   /** replace the current contents and selection with what is added and dispatches change events.
    * - This is used to set the entire contents of the editor and will reset the undo history.
+   * - update view by `this.dispatchEvent`
    * */
   set(
     docOrDelta: TextDocument | Delta,
@@ -321,7 +326,7 @@ export class Editor extends EventDispatcher {
     if (inPlace)
       change.setActiveFormats(
         (insert !== '\n' && format) ||
-          getActiveFormats(this, this.doc, selection),
+        getActiveFormats(this, this.doc, selection),
       );
 
     if (insert === '\n' && type.frozen) {

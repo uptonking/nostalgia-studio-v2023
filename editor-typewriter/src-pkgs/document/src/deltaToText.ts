@@ -1,4 +1,4 @@
-import { Delta } from '@typewriter/delta';
+import type { Delta } from '@typewriter/delta';
 
 export function deltaToText(delta: Delta) {
   return delta

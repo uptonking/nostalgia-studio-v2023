@@ -12,9 +12,11 @@ import {
   Text,
 } from '@datalking/pivot-ui';
 
-import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom';
+import {
+  createRecordFormDrawerOpened,
+} from '../create-record-form/drawer-opened.atom';
 
-export const EmptyTable: React.FC = () => {
+export const EmptyTable = () => {
   const { t } = useTranslation();
   const setOpened = useSetAtom(createRecordFormDrawerOpened);
 

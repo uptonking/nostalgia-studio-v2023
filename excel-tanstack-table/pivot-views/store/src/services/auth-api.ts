@@ -37,7 +37,6 @@ export const authApi = createApi({
   }),
 });
 
-
 export const { useLoginMutation, useMeQuery, useRegisterMutation } = authApi;
 
 const selectMe = authApi.endpoints.me.select(undefined);

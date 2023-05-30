@@ -51,7 +51,7 @@ export class EventDispatcher {
         } catch (err) {
           try {
             this.dispatchEvent(new ErrorEvent('error', { error: err }));
-          } catch (err) { }
+          } catch (err) {}
         }
       } else {
         listener.call(this, event);

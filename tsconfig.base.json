@@ -111,6 +111,7 @@
         "excel-tanstack-table/src-react-tiny-virtual-list/src/"
       ],
       "react-window": ["excel-tanstack-table/src-react-window/src/"],
+      "@maxgraph/core": ["viz-mxgraph/maxgraph-core"],
       "yjs": ["collab-yjs/src-pkgs/yjs/src"],
       "lib0": ["collab-yjs/src-pkgs/yjs-lib0"],
       "y-protocols": ["collab-yjs/src-pkgs/y-protocols"],

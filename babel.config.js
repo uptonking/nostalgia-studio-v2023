@@ -40,7 +40,7 @@ module.exports = function (api) {
   // Plugins run before Presets. Plugin ordering is first to last.
   const plugins = [
     ['@babel/plugin-proposal-decorators', { legacy: true }],
-    // ['@babel/plugin-proposal-class-properties', { loose: false }],
+    ['@babel/plugin-proposal-class-properties', { loose: false }],
     // ['@babel/plugin-syntax-import-assertions'],
     isEnvReactHotReload && 'react-refresh/babel',
   ].filter(Boolean);
@@ -74,7 +74,7 @@ module.exports = function (api) {
         // later: support other jsx
         isTSX: Boolean(isEnvReact),
         allExtensions: true,
-        onlyRemoveTypeImports: true,
+        // onlyRemoveTypeImports: true,
         allowNamespaces: true,
         allowDeclareFields: true,
       },
@@ -108,15 +108,15 @@ module.exports = function (api) {
             [
               '@babel/preset-typescript',
               {
-                isTSX: true,
+                isTSX: Boolean(isEnvReact),
                 allExtensions: true,
                 onlyRemoveTypeImports: true,
                 allowNamespaces: true,
                 allowDeclareFields: true,
               },
             ],
-            '@babel/preset-react',
-          ],
+            isEnvReact && '@babel/preset-react',
+          ].filter(Boolean),
         },
       },
     ],

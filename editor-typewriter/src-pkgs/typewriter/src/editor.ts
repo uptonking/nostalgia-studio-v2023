@@ -326,7 +326,7 @@ export class Editor extends EventDispatcher {
     if (inPlace)
       change.setActiveFormats(
         (insert !== '\n' && format) ||
-        getActiveFormats(this, this.doc, selection),
+          getActiveFormats(this, this.doc, selection),
       );
 
     if (insert === '\n' && type.frozen) {

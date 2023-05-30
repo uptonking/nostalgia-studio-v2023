@@ -10,6 +10,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProd = process.env.NODE_ENV === 'production';
 
+function checkAppEnv(env) {
+  return (
+    process.env.APP_ENV && process.env.APP_ENV.toLowerCase().indexOf(env) !== -1
+  );
+}
+const isEnvReact = checkAppEnv('react');
+
 module.exports = {
   // mode: 'development',
   // devtool: 'eval-source-map',
@@ -55,15 +62,15 @@ module.exports = {
                   [
                     '@babel/preset-typescript',
                     {
-                      isTSX: true,
+                      isTSX: Boolean(isEnvReact),
                       allExtensions: true,
                       onlyRemoveTypeImports: true,
                       allowNamespaces: true,
                       allowDeclareFields: true,
                     },
                   ],
-                  '@babel/preset-react',
-                ],
+                  isEnvReact && '@babel/preset-react',
+                ].filter(Boolean),
               },
             },
           },

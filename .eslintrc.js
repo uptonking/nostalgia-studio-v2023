@@ -32,6 +32,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
   ],
   // ignorePatterns: ['src/test/*'],
   // 自定义规则，可以覆盖掉extends的配置, 0-off, 1-warn, 2-error
@@ -81,6 +83,7 @@ module.exports = {
     'accessor-pairs': 0,
     'import/order': 0,
     'import/no-duplicates': 1,
+    'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
     'node/no-unsupported-features/es-syntax': 0,
     'node/no-unpublished-import': [
       'warn',
@@ -121,6 +124,10 @@ module.exports = {
     '@typescript-eslint/prefer-optional-chain': 0,
     '@typescript-eslint/prefer-function-type': 0,
     '@typescript-eslint/consistent-type-assertions': 0,
+    '@typescript-eslint/consistent-type-imports': [
+      'error',
+      { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+    ],
     '@typescript-eslint/method-signature-style': 0,
     '@typescript-eslint/explicit-function-return-type': 0,
     '@typescript-eslint/explicit-member-accessibility': 0,

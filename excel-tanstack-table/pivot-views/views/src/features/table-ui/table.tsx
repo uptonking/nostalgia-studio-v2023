@@ -196,9 +196,9 @@ export const PivotableTable = ({ records }: IProps) => {
   const paddingBottom =
     rowVirtualizer.getVirtualItems().length > 0
       ? rowVirtualizer.getTotalSize() -
-      (rowVirtualizer.getVirtualItems()?.[
-        rowVirtualizer.getVirtualItems().length - 1
-      ]?.end || 0)
+        (rowVirtualizer.getVirtualItems()?.[
+          rowVirtualizer.getVirtualItems().length - 1
+        ]?.end || 0)
       : 0;
 
   return (

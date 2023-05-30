@@ -1,0 +1,62 @@
+/**
+ * Implements a 2-dimensional vector with double precision coordinates.
+ *
+ * Constructor: mxPoint
+ *
+ * Constructs a new point for the optional x and y coordinates. If no
+ * coordinates are given, then the default values for <x> and <y> are used.
+ */
+export class Point {
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+
+  /**
+   * Holds the x-coordinate of the point. Default is 0.
+   */
+  _x = 0;
+
+  /**
+   * Holds the y-coordinate of the point. Default is 0.
+   */
+  _y = 0;
+
+  get x() {
+    return this._x;
+  }
+
+  set x(x: number) {
+    if (Number.isNaN(x)) throw new Error('Invalid x supplied.');
+
+    this._x = x;
+  }
+
+  get y() {
+    return this._y;
+  }
+
+  set y(y: number) {
+    if (Number.isNaN(y)) throw new Error('Invalid y supplied.');
+
+    this._y = y;
+  }
+
+  /**
+   * Returns true if the given object equals this point.
+   */
+  equals(p: Point | null) {
+    if (!p) return false;
+
+    return p.x === this.x && p.y === this.y;
+  }
+
+  /**
+   * Returns a clone of this {@link Point}.
+   */
+  clone() {
+    return new Point(this.x, this.y);
+  }
+}
+
+export default Point;

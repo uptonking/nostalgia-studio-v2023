@@ -5,7 +5,7 @@ import { Point } from './Point';
 import { Rectangle } from './Rectangle';
 
 /**
- * @class Geometry
+ * @class Geometry. geometric data for vertex/edge, like x/y/width/height
  *
  * @extends {Rectangle}
  *
@@ -101,9 +101,10 @@ export class Geometry extends Rectangle {
 
   /**
    * Array of {@link Point} which specifies the control points along the edge.
-   * These points are the intermediate points on the edge, for the endpoints
+   * - These points are the intermediate points on the edge, for the endpoints
    * use {@link targetPoint} and {@link sourcePoint} or set the terminals of the edge to
-   * a non-null value. Default is null.
+   * a non-null value.
+   * - Default is null.
    */
   points: Point[] | null = null;
 
@@ -118,12 +119,13 @@ export class Geometry extends Rectangle {
 
   /**
    * Specifies if the coordinates in the geometry are to be interpreted as
-   * relative coordinates. For edges, this is used to define the location of
-   * the edge label relative to the edge as rendered on the display. For
-   * vertices, this specifies the relative location inside the bounds of the
+   * relative coordinates.
+   * - For edges, this is used to define the location of the edge label relative
+   *   to the edge as rendered on the display.
+   * - For vertices, this specifies the relative location inside the bounds of the
    * parent cell.
    *
-   * If this is false, then the coordinates are relative to the origin of the
+   * - If this is false, then the coordinates are relative to the origin of the
    * parent cell or, for edges, the edge label position is relative to the
    * center of the edge as rendered on screen.
    *

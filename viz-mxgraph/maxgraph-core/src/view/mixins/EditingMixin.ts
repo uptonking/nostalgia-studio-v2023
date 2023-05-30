@@ -81,8 +81,8 @@ const EditingMixin: PartialType = {
 
   /**
    * Fires a {@link startEditing} event and invokes {@link CellEditorHandler.startEditing}
-   * on {@link editor}. After editing was started, a {@link editingStarted} event is
-   * fired.
+   * on {@link editor}.
+   * - After editing was started, a {@link editingStarted} event is fired.
    *
    * @param cell {@link mxCell} to start the in-place editor for.
    * @param evt Optional mouse event that triggered the editing.

@@ -13,7 +13,7 @@ import {
 } from '../../../util/Constants';
 import { getChildNodes, getTextContent } from '../../../util/domUtils';
 import { getNumber } from '../../../util/StringUtils';
-import Translations from '../../../util/Translations';
+import { Translations } from '../../../util/Translations';
 import { getValue, isNotNullish } from '../../../util/Utils';
 import { type AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
 import { ConnectionConstraint } from '../../other/ConnectionConstraint';
@@ -24,6 +24,9 @@ import { StencilShapeRegistry } from './StencilShapeRegistry';
 
 /**
  * Implements a generic shape which is based on a XML node as a description.
+ * - another way to define custom shape, except extending Shape class
+ * - 自定义 mxShape 与 stencils 接口都能扩展出新的图形类别，mxShape 通过类形式定义，会有一定的开发成本，但是能够定制更多图形逻辑；
+ * - 而 stencils 可以通过外部的 xml 文件定义，开发与管理上会更方便一些。
  *
  * @class StencilShape
  */
@@ -242,8 +245,8 @@ export class StencilShape extends Shape {
       aspect,
       true,
       !shape.outline ||
-        shape.style == null ||
-        !(shape.style.backgroundOutline ?? false),
+      shape.style == null ||
+      !(shape.style.backgroundOutline ?? false),
     );
 
     // Restores stack for unequal count of save/restore calls

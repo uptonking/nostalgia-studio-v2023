@@ -1,5 +1,5 @@
 import { isNode } from '../../util/domUtils';
-import Translations from '../../util/Translations';
+import { Translations } from '../../util/Translations';
 import type Cell from '../cell/Cell';
 import { type Graph } from '../Graph';
 
@@ -7,7 +7,7 @@ import { type Graph } from '../Graph';
  * @class Multiplicity
  *
  * Defines invalid connections along with the error messages that they produce.
- * To add or remove rules on a graph, you must add/remove instances of this
+ * - To add or remove rules on a graph, you must add/remove instances of this
  * class to {@link graph.multiplicities}.
  *
  * ### Example

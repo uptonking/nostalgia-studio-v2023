@@ -64,7 +64,7 @@ import { write } from './domUtils';
  * Note that the linefeeds should only be replaced if the XML is
  * processed in Java, for example when creating an image.
  */
-class MaxXmlRequest {
+export class MaxXmlRequest {
   constructor(
     url: string,
     params: string | null = null,

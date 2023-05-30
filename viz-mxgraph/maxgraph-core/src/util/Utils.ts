@@ -38,7 +38,9 @@ export const isNullish = (v: string | object | null | undefined | number) =>
 export const isNotNullish = (v: string | object | null | undefined | number) =>
   !isNullish(v);
 
-// Merge a mixin into the destination
+/**
+ * Merge properties of mixin object into the destination object
+ */
 export const mixInto = (dest: any) => (mixin: any) => {
   const keys = Reflect.ownKeys(mixin);
   try {

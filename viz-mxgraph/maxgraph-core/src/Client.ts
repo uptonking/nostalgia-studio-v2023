@@ -1,3 +1,6 @@
+/**
+ * a static client class, as global resource config center
+ */
 export class Client {
   /**
    * Contains the current version of the maxGraph library.

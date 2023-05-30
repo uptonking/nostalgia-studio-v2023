@@ -992,9 +992,9 @@ export class GraphDataModel extends EventSource {
 
   /**
    * Decrements the {@link updateLevel} by one and fires an {@link undo}
-   * event if the {@link updateLevel} reaches 0. This function
-   * indirectly fires a {@link change} event by invoking the notify
-   * function on the {@link currentEdit} und then creates a new
+   * event if the {@link updateLevel} reaches 0.
+   * This function indirectly fires a {@link change} event by invoking the notify
+   * function on the {@link currentEdit}, then creates a new
    * {@link currentEdit} using {@link createUndoableEdit}.
    *
    * The {@link undo} event is fired only once per edit, whereas

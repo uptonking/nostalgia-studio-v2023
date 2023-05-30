@@ -101,7 +101,7 @@ const VertexMixin: PartialType = {
    *
    * @param parent <Cell> that specifies the parent of the new vertex.
    * @param id Optional string that defines the Id of the new vertex.
-   * @param value Object to be used as the user object.
+   * @param value Object to be used as the user object. useful for custom data
    * @param x Integer that defines the x coordinate of the vertex.
    * @param y Integer that defines the y coordinate of the vertex.
    * @param width Integer that defines the width of the vertex.

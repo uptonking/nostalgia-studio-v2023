@@ -1,19 +1,19 @@
 import { getClientX, getClientY } from '../../util/EventUtils';
 import { convertPoint, sortCells } from '../../util/styleUtils';
-import type Cell from '../cell/Cell';
-import EventObject from '../event/EventObject';
-import EventSource from '../event/EventSource';
-import InternalEvent from '../event/InternalEvent';
-import type Rectangle from '../geometry/Rectangle';
+import { type Cell } from '../cell/Cell';
+import { EventObject } from '../event/EventObject';
+import { EventSource } from '../event/EventSource';
+import { InternalEvent } from '../event/InternalEvent';
+import { type Rectangle } from '../geometry/Rectangle';
 import { type Graph } from '../Graph';
-import ChildChange from '../undoable_changes/ChildChange';
-import GeometryChange from '../undoable_changes/GeometryChange';
-import RootChange from '../undoable_changes/RootChange';
-import StyleChange from '../undoable_changes/StyleChange';
-import TerminalChange from '../undoable_changes/TerminalChange';
-import type UndoableEdit from '../undoable_changes/UndoableEdit';
-import VisibleChange from '../undoable_changes/VisibleChange';
-import type GraphLayout from './GraphLayout';
+import { ChildChange } from '../undoable_changes/ChildChange';
+import { GeometryChange } from '../undoable_changes/GeometryChange';
+import { RootChange } from '../undoable_changes/RootChange';
+import { StyleChange } from '../undoable_changes/StyleChange';
+import { TerminalChange } from '../undoable_changes/TerminalChange';
+import { type UndoableEdit } from '../undoable_changes/UndoableEdit';
+import { VisibleChange } from '../undoable_changes/VisibleChange';
+import { type GraphLayout } from './GraphLayout';
 
 /**
  * @class LayoutManager
@@ -174,12 +174,12 @@ export class LayoutManager extends EventSource {
    * {@link Event#BEGIN_UPDATE} or {@link Event#END_UPDATE}.
    */
   hasLayout(cell: Cell | null) {
-    return !!this.getLayout(cell, InternalEvent.LAYOUT_CELLS);
+    return Boolean(this.getLayout(cell, InternalEvent.LAYOUT_CELLS));
   }
 
   /**
-   * Returns the layout for the given cell and eventName. Possible
-   * event names are {@link InternalEvent.MOVE_CELLS} and {@link InternalEvent.RESIZE_CELLS}
+   * Returns the layout for the given cell and eventName.
+   * - Possible event names are {@link InternalEvent.MOVE_CELLS} and {@link InternalEvent.RESIZE_CELLS}
    * for callbacks on when cells are moved or resized and
    * {@link InternalEvent.BEGIN_UPDATE} and {@link InternalEvent.END_UPDATE} for the capture
    * and bubble phase of the layout after any changes of the model.

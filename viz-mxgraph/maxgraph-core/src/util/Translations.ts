@@ -1,7 +1,6 @@
-import Client from '../Client';
+import { Client } from '../Client';
 import { NONE } from './Constants';
-import type MaxXmlRequest from './MaxXmlRequest';
-import { get, load } from './MaxXmlRequest';
+import { get, load, type MaxXmlRequest } from './MaxXmlRequest';
 
 /**
  * Implements internationalization. You can provide any number of

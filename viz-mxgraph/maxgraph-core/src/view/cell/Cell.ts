@@ -17,9 +17,10 @@ import { type CellOverlay } from './CellOverlay';
 import { CellPath } from './CellPath';
 
 /**
- * Cells are the elements of the graph model. They represent the state
- * of the groups, vertices and edges in a graph.
+ * Cells are the elements of the graph model.
+ * - They represent the state of the groups, vertices and edges in a graph.
  *
+ * - Cell从GraphModel那里复制了许多的方法，它们的主要差别在于，使用GraphModel的方法会创建相关的事件通知以及撤销方法
  * ### Custom attributes
  * For custom attributes we recommend using an XML node as the value of a cell.
  * The following code can be used to create a cell with an XML node as the value:
@@ -60,6 +61,13 @@ import { CellPath } from './CellPath';
  * @class Cell
  */
 export class Cell implements IdentityObject {
+
+  /**
+   *
+   * @param value cell data, useful for custom data
+   * @param geometry cell's geometric data, like position
+   * @param style
+   */
   constructor(
     value: any = null,
     geometry: Geometry | null = null,

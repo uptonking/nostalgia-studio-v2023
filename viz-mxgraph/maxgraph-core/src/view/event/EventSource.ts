@@ -9,6 +9,9 @@ type EventListenerObject = {
  * Base class for objects that dispatch named events. To create a subclass that
  * inherits from mxEventSource, the following code is used.
  *
+ * - `eventSourceObj.fireEvent(eventObj)`;
+ *   - eventSourceObj and eventObj should have the same event name
+ *
  * ```javascript
  * function MyClass() { };
  *
@@ -24,6 +27,7 @@ type EventListenerObject = {
  * Constructor: mxEventSource
  *
  * Constructs a new event source.
+ *
  */
 export class EventSource {
   constructor(eventSource: EventTarget | null = null) {

@@ -1033,9 +1033,8 @@ export const CellsMixin: PartialType = {
   },
 
   /**
-   * Adds the cell to the parent and connects it to the given source and
-   * target terminals. This is a shortcut method. Returns the cell that was
-   * added.
+   * Adds cell to the parent and connects it to the given source and target terminals.
+   * - This is a shortcut method. Returns the cell that was added.
    *
    * @param cell {@link mxCell} to be inserted into the given parent.
    * @param parent {@link mxCell} that represents the new parent. If no parent is

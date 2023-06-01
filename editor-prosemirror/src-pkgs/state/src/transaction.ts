@@ -1,8 +1,9 @@
-import { Transform, Step } from 'prosemirror-transform';
 import { Mark, MarkType, Node, Slice } from 'prosemirror-model';
+import { Step, Transform } from 'prosemirror-transform';
 import { type EditorView } from 'prosemirror-view';
-import { Selection } from './selection';
+
 import { Plugin, PluginKey } from './plugin';
+import { Selection } from './selection';
 import { EditorState } from './state';
 
 /** Commands are functions that take a state and a an optional
@@ -27,18 +28,19 @@ const UPDATED_MARKS = 2;
 const UPDATED_SCROLL = 4;
 
 /** An editor state transaction, which can be applied to a state to
- * create an updated state. Use
- * [`EditorState.tr`](#state.EditorState.tr) to create an instance.
+ * create an updated state.
+ * - Use [`EditorState.tr`](#state.EditorState.tr) to create an instance.
  * - Transform看到的是文档的Model，Transaction在Transform的基础上，同时管理当前的编辑状态
  * - Transaction除了处理文档改动之外，还管理selection、当前使用标记集合、还有时间戳等等
  *
  * Transactions track changes to the document (they are a subclass of
  * [`Transform`](#transform.Transform)), but also other state changes,
  * like selection updates and adjustments of the set of [stored
- * marks](#state.EditorState.storedMarks). In addition, you can store
- * metadata properties in a transaction, which are extra pieces of
- * information that client code or plugins can use to describe what a
- * transaction represents, so that they can update their [own
+ * marks](#state.EditorState.storedMarks).
+ *
+ * In addition, you can store metadata properties in a transaction, which are
+ *  extra pieces of information that client code or plugins can use to describe
+ * what a transaction represents, so that they can update their [own
  * state](#state.StateField) accordingly.
  *
  * The [editor view](#view.EditorView) uses a few metadata properties:

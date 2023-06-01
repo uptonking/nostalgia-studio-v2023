@@ -407,7 +407,7 @@ export class ViewDesc {
       prev instanceof WidgetViewDesc &&
       prev.side >= 0;
       i--
-    ) {}
+    ) { }
     // Scan towards the first useable node
     if (side <= 0) {
       let prev;
@@ -637,7 +637,7 @@ export class ViewDesc {
           // there was no selection. (#1308)
           try {
             domSel.extend(headDOM.node, headDOM.offset);
-          } catch (_) {}
+          } catch (_) { }
         }
         domSelExtended = true;
       } catch (err) {
@@ -703,8 +703,8 @@ export class ViewDesc {
         } else {
           child.dirty =
             child.dom == child.contentDOM &&
-            child.dom.parentNode == this.contentDOM &&
-            !child.children.length
+              child.dom.parentNode == this.contentDOM &&
+              !child.children.length
               ? CONTENT_DIRTY
               : NODE_DIRTY;
         }
@@ -922,6 +922,7 @@ export class NodeViewDesc extends ViewDesc {
     pos: number,
   ) {
     super(parent, [], dom, contentDOM);
+    // 💡 render and update dom
     if (contentDOM) this.updateChildren(view, pos);
   }
 
@@ -1299,7 +1300,7 @@ export class NodeViewDesc extends ViewDesc {
   }
 }
 
-/** Create a view desc for the top-level document node, to be exported
+/** Create real dom and view desc for the top-level document node, to be exported
  * and used by the view class.
  */
 export function docViewDesc(
@@ -1310,6 +1311,7 @@ export function docViewDesc(
   view: EditorView,
 ): NodeViewDesc {
   applyOuterDeco(dom, outerDeco, doc);
+
   return new NodeViewDesc(
     undefined,
     doc,
@@ -1570,7 +1572,7 @@ function renderDescs(
 
 type OuterDecoLevel = { [attr: string]: string };
 
-const OuterDecoLevel: { new (nodeName?: string): OuterDecoLevel } = function (
+const OuterDecoLevel: { new(nodeName?: string): OuterDecoLevel } = function (
   this: any,
   nodeName?: string,
 ) {
@@ -1880,7 +1882,7 @@ class ViewTreeUpdater {
   }
 
   findIndexWithChild(domNode: DOMNode) {
-    for (;;) {
+    for (; ;) {
       const parent = domNode.parentNode;
       if (!parent) return -1;
 
@@ -2049,7 +2051,7 @@ function preMatch(
   const matches = [];
   outer: while (fI > 0) {
     let desc;
-    for (;;) {
+    for (; ;) {
       if (descI) {
         const next = curDesc.children[descI - 1];
         if (next instanceof MarkViewDesc) {
@@ -2113,7 +2115,7 @@ function iterDeco(
   let decoIndex = 0;
   const active = [];
   let restNode = null;
-  for (let parentIndex = 0; ; ) {
+  for (let parentIndex = 0; ;) {
     if (decoIndex < locals.length && locals[decoIndex].to == offset) {
       const widget = locals[decoIndex++];
       let widgets;
@@ -2186,7 +2188,7 @@ function iosHacks(dom: HTMLElement) {
 }
 
 function nearbyTextNode(node: DOMNode, offset: number): Text | null {
-  for (;;) {
+  for (; ;) {
     if (node.nodeType == 3) return node as Text;
     if (node.nodeType == 1 && offset > 0) {
       if (
@@ -2212,7 +2214,7 @@ function findTextInFragment(
   from: number,
   to: number,
 ) {
-  for (let i = 0, pos = 0; i < frag.childCount && pos <= to; ) {
+  for (let i = 0, pos = 0; i < frag.childCount && pos <= to;) {
     const child = frag.child(i++);
     const childStart = pos;
     pos += child.nodeSize;

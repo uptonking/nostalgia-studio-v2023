@@ -124,7 +124,7 @@ export class EditorState {
   constructor(
     /// @internal
     readonly config: Configuration,
-  ) {}
+  ) { }
 
   /** The current document. */
   doc!: Node;
@@ -190,12 +190,12 @@ export class EditorState {
 
     const trs = [rootTr];
     let newState = this.applyInner(rootTr);
-    let seen = null;
+    let seen = null as Array<{ state: EditorState, n: number }> | null;
     // This loop repeatedly gives plugins a chance to respond to
     // transactions as new transactions are added, making sure to only
     // pass the transactions the plugin did not see before.
-    // eslint-disable-next-line no-labels
-    outer: for (;;) {
+    // eslint-disable-next-line no-labels, no-unused-labels
+    outer: for (; ;) {
       let haveNew = false;
       for (let i = 0; i < this.config.plugins.length; i++) {
         const plugin = this.config.plugins[i];

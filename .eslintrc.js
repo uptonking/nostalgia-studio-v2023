@@ -38,6 +38,9 @@ module.exports = {
   // ignorePatterns: ['src/test/*'],
   // 自定义规则，可以覆盖掉extends的配置, 0-off, 1-warn, 2-error
   rules: {
+    // 'no-inline-comments':2,
+    // 'multiline-comment-style': ["error", 'starred-block'],
+    'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
     'no-param-reassign': 1,
     'no-invalid-this': 0,
     'no-unused-vars': 0,
@@ -83,7 +86,6 @@ module.exports = {
     'accessor-pairs': 0,
     'import/order': 0,
     'import/no-duplicates': 1,
-    'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
     'node/no-unsupported-features/es-syntax': 0,
     'node/no-unpublished-import': [
       'warn',

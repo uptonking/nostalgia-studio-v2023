@@ -142,6 +142,7 @@ export class EditorView {
     this.editable = getEditable(this);
     updateCursorWrapper(this);
     this.nodeViews = buildNodeViews(this);
+    // render state to dom
     this.docView = docViewDesc(
       this.state.doc,
       computeDocDeco(this),
@@ -277,8 +278,8 @@ export class EditorView {
       prev.plugins != state.plugins && !prev.doc.eq(state.doc)
         ? 'reset'
         : (state as any).scrollToSelection > (prev as any).scrollToSelection
-        ? 'to selection'
-        : 'preserve';
+          ? 'to selection'
+          : 'preserve';
     const updateDoc =
       redraw || !this.docView.matchesNode(state.doc, outerDeco, innerDeco);
     if (updateDoc || !state.selection.eq(prev.selection)) updateSel = true;
@@ -629,7 +630,7 @@ export class EditorView {
    * when given, and otherwise defaults to applying the transaction to
    * the current state and calling
    * [`updateState`](#view.EditorView.updateState) with the result.
-   * This method is bound to the view instance, so that it can be
+   * - This method is bound to the view instance, so that it can be
    * easily passed around.
    * - 若提供了dispatchTransaction则执行，否则会执行view.updateState(newState)
    */
@@ -1063,23 +1064,23 @@ export interface EditorProps<P = any> {
    * - 这种细节上的区分对待允许根据编辑器状态的不同来对文档的外层节点设置不同的属性，比如当文档失去焦点时将背景设成灰色等等。
    */
   attributes?:
-    | { [name: string]: string }
-    | ((state: EditorState) => { [name: string]: string });
+  | { [name: string]: string }
+  | ((state: EditorState) => { [name: string]: string });
 
   /** Determines the distance (in pixels) between the cursor and the
    * end of the visible viewport at which point, when scrolling the
    * cursor into view, scrolling takes place. Defaults to 0.
    */
   scrollThreshold?:
-    | number
-    | { top: number; right: number; bottom: number; left: number };
+  | number
+  | { top: number; right: number; bottom: number; left: number };
 
   /** Determines the extra space (in pixels) that is left above or
    * below the cursor when it is scrolled into view. Defaults to 5.
    */
   scrollMargin?:
-    | number
-    | { top: number; right: number; bottom: number; left: number };
+  | number
+  | { top: number; right: number; bottom: number; left: number };
 }
 
 /** The props object given directly to the editor view supports some

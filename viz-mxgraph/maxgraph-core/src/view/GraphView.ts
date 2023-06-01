@@ -848,8 +848,8 @@ export class GraphView extends EventSource {
 
           this.updateCellState(state);
 
-          // Repaint happens immediately after the cell is validated
           if (cell !== this.currentRoot && !state.invalid) {
+            // 💡 Repaint happens immediately after the cell is validated
             this.graph.cellRenderer.redraw(state, false, this.isRendering());
 
             // Handles changes to invertex paintbounds after update of rendering shape

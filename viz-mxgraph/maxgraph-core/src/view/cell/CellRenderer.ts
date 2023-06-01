@@ -1390,13 +1390,14 @@ export class CellRenderer {
     let shapeChanged = false;
     const graph = <Graph>state.view.graph;
 
-    // Forces creation of new shape if shape style has changed
-    if (
+    const isShapeToDestroy =
       state.shape != null &&
       state.shape.style != null &&
       state.style != null &&
-      state.shape.style.shape !== state.style.shape
-    ) {
+      state.shape.style.shape !== state.style.shape;
+
+    // Forces creation of new shape if shape style has changed
+    if (isShapeToDestroy) {
       state.shape.destroy();
       state.shape = null;
     }

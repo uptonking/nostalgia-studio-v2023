@@ -202,7 +202,7 @@ import { VisibleChange } from './undoable_changes/VisibleChange';
  */
 export class GraphDataModel extends EventSource {
   /**
-   * Holds the root cell, which in turn contains the cells that represent the
+   * 💡 Holds the root cell, which in turn contains the cells that represent the
    * layers of the diagram as child cells. That is, the actual elements of the
    * diagram are supposed to live in the third generation of cells and below.
    */
@@ -1023,6 +1023,7 @@ export class GraphDataModel extends EventSource {
           );
           const tmp = this.currentEdit;
           this.currentEdit = this.createUndoableEdit();
+          // fire change and notify event; change event will update view
           tmp.notify();
           this.fireEvent(new EventObject(InternalEvent.UNDO, { edit: tmp }));
         }

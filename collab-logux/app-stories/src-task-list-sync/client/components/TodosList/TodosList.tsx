@@ -20,6 +20,7 @@ export const TodosList = (): JSX.Element => {
   const client = useClient();
   const filter = useStore(filterStore);
   const { id: authorId } = useStore(authStore);
+
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   const tasks = useFilter(tasksStore, {

@@ -1,0 +1,32 @@
+{
+  "name": "@algolia/autocomplete-js",
+  "version": "1.9.2111",
+  "description": "Fast and fully-featured autocomplete JavaScript library.",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "dist/",
+    "index.d.ts",
+    "src/**/*.d.ts"
+  ],
+  "scripts": {
+    "build": "NODE_ENV=build rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest test"
+  },
+  "dependencies": {
+    "@algolia/autocomplete-core": "1.9.2111",
+    "@algolia/autocomplete-preset-algolia": "1.9.2",
+    "@algolia/autocomplete-shared": "1.9.2111",
+    "htm": "^3.1.1",
+    "preact": "^10.13.2"
+  },
+  "devDependencies": {
+    "@algolia/client-search": "^4.16.0",
+    "algoliasearch": "^4.16.0"
+  }
+}

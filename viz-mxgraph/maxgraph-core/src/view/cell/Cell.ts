@@ -61,7 +61,6 @@ import { CellPath } from './CellPath';
  * @class Cell
  */
 export class Cell implements IdentityObject {
-
   /**
    *
    * @param value cell data, useful for custom data

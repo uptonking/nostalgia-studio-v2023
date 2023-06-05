@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const devServerConfig = require('../../../webpack/webpack.server');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -11,6 +12,12 @@ module.exports = merge(devServerConfig, {
     path: path.resolve(__dirname, '../dist'),
   },
   plugins: [
+    new webpack.DefinePlugin({
+      // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      __TEST__: JSON.stringify(false),
+      __DEV__: JSON.stringify(true),
+      'process.env': JSON.stringify(process.env),
+    }),
     new CircularDependencyPlugin({
       exclude: /a\.js|node_modules/,
       failOnError: true,

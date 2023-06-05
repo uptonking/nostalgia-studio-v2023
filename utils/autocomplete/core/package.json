@@ -1,0 +1,30 @@
+{
+  "name": "@algolia/autocomplete-core",
+  "version": "1.9.2111",
+  "description": "Core primitives for building autocomplete experiences.",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "dist/",
+    "index.d.ts",
+    "src/**/*.d.ts"
+  ],
+  "scripts": {
+    "build": "NODE_ENV=build rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest test"
+  },
+  "dependencies": {
+    "@algolia/autocomplete-plugin-algolia-insights": "^1.9.2",
+    "@algolia/autocomplete-shared": "1.9.2111"
+  },
+  "devDependencies": {
+    "@algolia/autocomplete-preset-algolia": "^1.9.2",
+    "@algolia/client-search": "^4.16.0",
+    "algoliasearch": "^4.16.0"
+  }
+}

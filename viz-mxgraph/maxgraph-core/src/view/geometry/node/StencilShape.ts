@@ -245,8 +245,8 @@ export class StencilShape extends Shape {
       aspect,
       true,
       !shape.outline ||
-      shape.style == null ||
-      !(shape.style.backgroundOutline ?? false),
+        shape.style == null ||
+        !(shape.style.backgroundOutline ?? false),
     );
 
     // Restores stack for unequal count of save/restore calls

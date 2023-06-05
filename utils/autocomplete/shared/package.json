@@ -1,0 +1,25 @@
+{
+  "name": "@algolia/autocomplete-shared",
+  "version": "1.9.2111",
+  "description": "Shared utils for Autocomplete packages.",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "files": [
+    "dist/",
+    "index.d.ts",
+    "src/**/*.d.ts"
+  ],
+  "scripts": {
+    "build": "NODE_ENV=build rollup -c",
+    "dev": "rollup -c -w",
+    "test": "jest test"
+  },
+  "devDependencies": {
+    "@algolia/client-search": "^4.16.0",
+    "algoliasearch": "^4.16.0"
+  }
+}

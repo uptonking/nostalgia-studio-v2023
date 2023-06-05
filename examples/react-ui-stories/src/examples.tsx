@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import * as stories from './stories/tanstack-table';
+// import * as stories from './stories/tanstack-table';
+import * as stories from './stories/autocomplete';
 
 // import * as stories from './stories/tanstack-virtual';
 // import * as stories from './stories/dnd-kit';
@@ -11,8 +12,8 @@ import * as stories from './stories/tanstack-table';
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
-  // const [currentStory, setCurrentStory] = useState(storiesNames[0]);
-  const [currentStory, setCurrentStory] = useState('A5t1LazyList');
+  const [currentStory, setCurrentStory] = useState(storiesNames[0]);
+  // const [currentStory, setCurrentStory] = useState('A5t1LazyList');
 
   const CurrentExampleComponent = currentStory
     ? stories[currentStory]

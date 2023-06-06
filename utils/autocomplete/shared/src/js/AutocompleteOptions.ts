@@ -1,11 +1,10 @@
 import {
-  type AutocompleteScopeApi,
   type AutocompleteOptions as AutocompleteCoreOptions,
+  type AutocompleteScopeApi,
   type BaseItem,
   type GetSourcesParams,
 } from '../core';
 import { type MaybePromise } from '../MaybePromise';
-
 import { type AutocompleteClassNames } from './AutocompleteClassNames';
 import { type PublicAutocompleteComponents } from './AutocompleteComponents';
 import { type AutocompletePlugin } from './AutocompletePlugin';
@@ -37,8 +36,9 @@ export interface AutocompleteOptions<TItem extends BaseItem>
     Partial<AutocompletePropGetters<TItem>> {
   /**
    * The container for the Autocomplete search box.
-   *
-   * You can either pass a [CSS selector](https://developer.mozilla.org/docs/Web/CSS/CSS_Selectors) or an [Element](https://developer.mozilla.org/docs/Web/API/HTMLElement). If there are several containers matching the selector, Autocomplete picks up the first one.
+   * - You can either pass a CSS selector or an [Element](https://developer.mozilla.org/docs/Web/API/HTMLElement).
+   * - If there are several containers matching the selector, Autocomplete picks up the first one.
+   * - Make sure to provide a container (like a `div`), not an `input`.
    *
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-container
    */
@@ -54,12 +54,19 @@ export interface AutocompleteOptions<TItem extends BaseItem>
   panelContainer?: string | HTMLElement;
   /**
    * The Media Query to turn Autocomplete into a detached experience.
+   * - The detached mode turns the dropdown display into a full screen, modal experience.
    *
    * @default "(max-width: 680px)"
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-detachedmediaquery
    * @link https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Using_media_queries
    */
   detachedMediaQuery?: string;
+  /**
+   * Sources define where to retrieve the items to display in your autocomplete dropdown.
+   * - You define your sources in the `getSources` function by returning an array of source objects.
+   * - Each source object needs to include a `sourceId` and a `getItems` function that returns the items to display.
+   * - Sources can be static or dynamic(remove promise).
+   */
   getSources?: GetSources<TItem>;
   /**
    * The panel's horizontal position.
@@ -77,9 +84,10 @@ export interface AutocompleteOptions<TItem extends BaseItem>
    */
   classNames?: Partial<AutocompleteClassNames>;
   /**
-   * The function that renders the autocomplete panel.
-   *
-   * This is useful to customize the rendering, for example, using multi-row or multi-column layouts.
+   * The function that renders the autocomplete panel, i.e dropdown contents.
+   * - This is useful to customize the rendering, for example, using multi-row or multi-column layouts.
+   * - default implementation: render(children, root);
+   * - You can use `sections`, which holds the components tree of your autocomplete, to customize the wrapping layout.
    *
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-render
    */
@@ -95,7 +103,7 @@ export interface AutocompleteOptions<TItem extends BaseItem>
   initialState?: Partial<AutocompleteState<TItem>>;
   onStateChange?(props: OnStateChangeProps<TItem>): void;
   /**
-   * The virtual DOM implementation to plug to Autocomplete. It defaults to Preact.
+   * The virtual DOM implementation to plug to Autocomplete. It defaults to `Preact`.
    *
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-renderer
    */
@@ -111,6 +119,7 @@ export interface AutocompleteOptions<TItem extends BaseItem>
   components?: PublicAutocompleteComponents;
   /**
    * A mapping of translation strings.
+   * - A dictionary of translations to support internationalization.
    *
    * Defaults to English values.
    *

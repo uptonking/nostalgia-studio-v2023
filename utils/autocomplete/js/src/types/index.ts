@@ -15,5 +15,6 @@ export type {
 
 export interface AutocompleteOptions<TItem extends BaseItem>
   extends AutocompleteJsOptions<TItem> {
+  /** Whether to enable the Algolia Insights plugin. */
   insights?: AutocompleteCoreOptions<TItem>['insights'];
 }

@@ -2,8 +2,10 @@ type Effect = () => void;
 type EffectFn = () => Effect;
 type CleanupFn = () => void;
 type EffectWrapper = {
+  /** register effect fn, run effect immediately, then keep cleanup fn */
   runEffect(fn: EffectFn): void;
   cleanupEffects(): void;
+  /** run all effects */
   runEffects(): void;
 };
 

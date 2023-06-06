@@ -1,5 +1,8 @@
+/** value factory function */
 type ReactiveValue<TValue> = () => TValue;
+
 export type Reactive<TValue> = {
+  /** as both getter and setter */
   value: TValue;
   /**
    * @private
@@ -13,13 +16,23 @@ export type Reactive<TValue> = {
   };
 };
 
-export function createReactiveWrapper() {
+type ReactiveWrapper = {
+  /** create a reactive object for value fn, and close over it */
+  reactive: <TValue>(value: ReactiveValue<TValue>) => Reactive<TValue>;
+  /** update all reactive values */
+  runReactives: () => void;
+};
+
+/**
+ * reactive values store and update
+ */
+export function createReactiveWrapper(): ReactiveWrapper {
   const reactives: Array<Reactive<any>> = [];
 
   return {
     reactive<TValue>(value: ReactiveValue<TValue>) {
       const current = value();
-      const reactive: Reactive<TValue> = {
+      const reactiveClosure: Reactive<TValue> = {
         _fn: value,
         _ref: { current },
         get value() {
@@ -30,9 +43,9 @@ export function createReactiveWrapper() {
         },
       };
 
-      reactives.push(reactive);
+      reactives.push(reactiveClosure);
 
-      return reactive;
+      return reactiveClosure;
     },
     runReactives() {
       reactives.forEach((value) => {

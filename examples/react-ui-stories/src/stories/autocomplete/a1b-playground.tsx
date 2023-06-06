@@ -12,16 +12,24 @@ type AutocompleteItem = {
 
 export const A1b1AutoInputSimple = () => {
   React.useEffect(() => {
-    autocomplete<AutocompleteItem>({
+    const autoApi = autocomplete<AutocompleteItem>({
       container: '#autocomplete',
-      getSources() {
+      openOnFocus: true,
+      autoFocus: true,
+
+      getSources(params) {
+        const { state, setQuery, refresh, setContext } = params;
+        console.log(';; getSources-params ', params);
+
         return [
           {
             sourceId: 'links',
             getItems({ query }) {
               const items = [
-                { label: 'Twitter', url: 'https://twitter.com' },
                 { label: 'GitHub', url: 'https://github.com' },
+                { label: 'Zhihu', url: 'https://zhihu.com' },
+                { label: 'drawio', url: 'https://draw.io' },
+                { label: 'Twitter', url: 'https://twitter.com' },
               ];
 
               return items.filter(({ label }) =>
@@ -36,10 +44,15 @@ export const A1b1AutoInputSimple = () => {
                 return item.label;
               },
             },
+            onSelect: ({ item, setQuery }) => {
+              setQuery(item.label);
+            },
           },
         ];
       },
     });
+
+    console.log(';; autocomplete api ', autoApi);
   }, []);
 
   return (

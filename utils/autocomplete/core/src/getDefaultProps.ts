@@ -1,7 +1,7 @@
 import {
-  getItemsCount,
-  generateAutocompleteId,
   flatten,
+  generateAutocompleteId,
+  getItemsCount,
 } from '@algolia/autocomplete-shared';
 
 import {
@@ -21,14 +21,13 @@ export function getDefaultProps<TItem extends BaseItem>(
   const environment: AutocompleteEnvironment = (
     typeof window !== 'undefined' ? window : {}
   ) as typeof window;
-  /* eslint-enable no-restricted-globals */
   const plugins = props.plugins || [];
 
   return {
     debug: false,
     openOnFocus: false,
-    placeholder: '',
     autoFocus: false,
+    placeholder: '',
     defaultActiveItemId: null,
     stallThreshold: 300,
     insights: false,
@@ -65,6 +64,7 @@ export function getDefaultProps<TItem extends BaseItem>(
     },
     getSources(params) {
       return Promise.all(
+        // 👇🏻 plugin.getSources and props.getSources are parallel
         [...plugins.map((plugin) => plugin.getSources), props.getSources]
           .filter(Boolean)
           .map((getSources) => getNormalizedSources(getSources!, params)),

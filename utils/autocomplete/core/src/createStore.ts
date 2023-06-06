@@ -15,6 +15,7 @@ type OnStoreStateChange<TItem extends BaseItem> = ({
   state: AutocompleteState<TItem>;
 }) => void;
 
+/** redux style createStore */
 export function createStore<TItem extends BaseItem>(
   reducer: Reducer,
   props: InternalAutocompleteOptions<TItem>,

@@ -1,5 +1,3 @@
-import { createAlgoliaInsightsPlugin } from '@algolia/autocomplete-plugin-algolia-insights';
-
 import { checkOptions } from './checkOptions';
 import { createStore } from './createStore';
 import { getAutocompleteSetters } from './getAutocompleteSetters';
@@ -11,9 +9,13 @@ import { stateReducer } from './stateReducer';
 import {
   type AutocompleteApi,
   type AutocompleteOptions as AutocompleteCoreOptions,
-  type BaseItem,
   type AutocompleteSubscribers,
+  type BaseItem,
 } from './types';
+
+// import {
+//   createAlgoliaInsightsPlugin,
+// } from '@algolia/autocomplete-plugin-algolia-insights';
 
 export interface AutocompleteOptionsWithMetadata<TItem extends BaseItem>
   extends AutocompleteCoreOptions<TItem> {
@@ -23,6 +25,9 @@ export interface AutocompleteOptionsWithMetadata<TItem extends BaseItem>
   __autocomplete_metadata?: Record<string, unknown>;
 }
 
+/**
+ * this function returns methods to help you create an autocomplete experience from scratch.
+ */
 export function createAutocomplete<
   TItem extends BaseItem,
   TEvent = Event,
@@ -36,6 +41,7 @@ export function createAutocomplete<
   const subscribers: AutocompleteSubscribers<TItem> = [];
   const props = getDefaultProps(options, subscribers);
   const store = createStore(stateReducer, props, onStoreStateChange);
+  window['store'] = store;
 
   const setters = getAutocompleteSetters({ store });
   const propGetters = getPropGetters<
@@ -55,6 +61,7 @@ export function createAutocomplete<
     });
   }
 
+  /** update internal state + getSources using promise; will trigger `onStoreStateChange` */
   function refresh() {
     return onInput({
       event: new Event('input'),
@@ -74,10 +81,11 @@ export function createAutocomplete<
   ) {
     const insightsParams =
       typeof options.insights === 'boolean' ? {} : options.insights;
-    props.plugins.push(createAlgoliaInsightsPlugin(insightsParams));
+    // props.plugins.push(createAlgoliaInsightsPlugin(insightsParams));
   }
 
-  props.plugins.forEach((plugin) =>
+  props.plugins.forEach((plugin) => {
+    // subscribe to lifecycle hooks and interact with the instance’s state and context.
     plugin.subscribe?.({
       ...setters,
       navigator: props.navigator,
@@ -88,11 +96,12 @@ export function createAutocomplete<
       onActive(fn) {
         subscribers.push({ onActive: fn });
       },
+      // whenever a source resolves.
       onResolve(fn) {
         subscribers.push({ onResolve: fn });
       },
-    }),
-  );
+    });
+  });
 
   injectMetadata({
     metadata: getMetadata({ plugins: props.plugins, options }),

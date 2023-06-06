@@ -6,6 +6,7 @@ type CreateDomElementProps = Record<string, unknown> & {
   children?: Node[];
 };
 
+/** wrap `document.createElement` */
 export function getCreateDomElement(environment: AutocompleteEnvironment) {
   return function createDomElement<KParam extends keyof HTMLElementTagNameMap>(
     tagName: KParam,

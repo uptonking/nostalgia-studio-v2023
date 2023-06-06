@@ -24,6 +24,7 @@ interface GetPropGettersOptions<TItem extends BaseItem>
   props: InternalAutocompleteOptions<TItem>;
 }
 
+/** add mouse/touch events to props */
 export function getPropGetters<
   TItem extends BaseItem,
   TEvent,

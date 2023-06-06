@@ -49,6 +49,7 @@ export function createAutocompleteDom<TItem extends BaseItem>({
     ...autocompleteScopeApi,
   });
   const root = createDomElement('div', {
+    // default aa-Autocomplete
     class: classNames.root,
     ...rootProps,
   });
@@ -95,6 +96,7 @@ export function createAutocompleteDom<TItem extends BaseItem>({
   });
 
   const input = Input({
+    // default aa-Input
     class: classNames.input,
     environment,
     state,
@@ -122,7 +124,9 @@ export function createAutocompleteDom<TItem extends BaseItem>({
     props: autocomplete.getFormProps({ inputElement: input }),
     ...autocompleteScopeApi,
   });
+  /** To improve the `input` accessibility, you can wrap it in a form and apply the form props  */
   const form = createDomElement('form', {
+    // default aa-Form
     class: classNames.form,
     children: [inputWrapperPrefix, inputWrapper, inputWrapperSuffix],
     ...formProps,
@@ -132,7 +136,9 @@ export function createAutocompleteDom<TItem extends BaseItem>({
     props: autocomplete.getPanelProps({}),
     ...autocompleteScopeApi,
   });
+  /** input dropdown panel, only for export, no appendToDom here */
   const panel = createDomElement('div', {
+    // default aa-Panel
     class: classNames.panel,
     ...panelProps,
   });

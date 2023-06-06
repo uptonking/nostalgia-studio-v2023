@@ -9,3 +9,10 @@
   "@algolia/autocomplete-shared": "1.9.2111",
 }
 ```
+
+# roadmap
+- keyboard
+  - tab autocomplete
+
+- view
+  - searchbox input uses vdom

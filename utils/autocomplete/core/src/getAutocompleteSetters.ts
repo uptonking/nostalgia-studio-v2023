@@ -11,6 +11,7 @@ interface GetAutocompleteSettersOptions<TItem extends BaseItem> {
   store: AutocompleteStore<TItem>;
 }
 
+/** store.dispatch(actionName, payload) */
 export function getAutocompleteSetters<TItem extends BaseItem>({
   store,
 }: GetAutocompleteSettersOptions<TItem>) {

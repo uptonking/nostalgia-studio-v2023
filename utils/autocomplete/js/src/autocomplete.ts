@@ -31,6 +31,12 @@ import { mergeDeep, pickBy, setProperties } from './utils';
 
 let instancesCount = 0;
 
+/**
+ * This function creates an autocomplete experience and attaches it to an element of the DOM.
+ * - By default, it uses Preact to render.
+ *
+ * @returns state setters and a `refresh` method that updates the UI state with fresh sources.
+ */
 export function autocomplete<TItem extends BaseItem>(
   options: AutocompleteOptions<TItem>,
 ): AutocompleteApi<TItem> {
@@ -39,8 +45,7 @@ export function autocomplete<TItem extends BaseItem>(
 
   const hasNoResultsSourceTemplateRef = createRef(false);
   const optionsRef = createRef(options);
-  const onStateChangeRef =
-    createRef<AutocompleteOptions<TItem>['onStateChange']>(undefined);
+
   const props = reactive(() => getDefaultOptions(optionsRef.current));
   const isDetached = reactive(
     () =>
@@ -49,6 +54,10 @@ export function autocomplete<TItem extends BaseItem>(
       ).matches,
   );
 
+  const onStateChangeRef =
+    createRef<AutocompleteOptions<TItem>['onStateChange']>(undefined);
+
+  /** 👇🏻 core instance */
   const autocomplete = reactive(() =>
     createAutocomplete<TItem>({
       ...props.value.core,
@@ -58,6 +67,7 @@ export function autocomplete<TItem extends BaseItem>(
             (collection.source as AutocompleteSource<TItem>).templates
               .noResults,
         );
+        // trigger view update
         onStateChangeRef.current?.(params as any);
         props.value.core.onStateChange?.(params as any);
       },
@@ -87,6 +97,8 @@ export function autocomplete<TItem extends BaseItem>(
       },
     }),
   );
+
+  /** internal state */
   const lastStateRef = createRef<AutocompleteState<TItem>>({
     collections: [],
     completion: null,
@@ -108,6 +120,7 @@ export function autocomplete<TItem extends BaseItem>(
     getPanelProps: props.value.renderer.getPanelProps,
     getRootProps: props.value.renderer.getRootProps,
   };
+
   const autocompleteScopeApi: AutocompleteScopeApi<TItem> = {
     setActiveItemId: autocomplete.value.setActiveItemId,
     setQuery: autocomplete.value.setQuery,
@@ -123,7 +136,8 @@ export function autocomplete<TItem extends BaseItem>(
     htm.bind<VNode>(props.value.renderer.renderer.createElement),
   );
 
-  const dom = reactive(() =>
+  /** 👇🏻 create dom containers, no content for dropdown */
+  const doms = reactive(() =>
     createAutocompleteDom({
       autocomplete: autocomplete.value,
       autocompleteScopeApi,
@@ -139,18 +153,19 @@ export function autocomplete<TItem extends BaseItem>(
   );
 
   function setPanelPosition() {
-    setProperties(dom.value.panel, {
+    setProperties(doms.value.panel, {
       style: isDetached.value
         ? {}
         : getPanelPlacementStyle({
             panelPlacement: props.value.renderer.panelPlacement,
-            container: dom.value.root,
-            form: dom.value.form,
+            container: doms.value.root,
+            form: doms.value.form,
             environment: props.value.core.environment,
           }),
     });
   }
 
+  /** 👇🏻 renderSearchBox + renderPanel/dropdown */
   function scheduleRender(state: AutocompleteState<TItem>) {
     lastStateRef.current = state;
 
@@ -161,9 +176,9 @@ export function autocomplete<TItem extends BaseItem>(
       components: props.value.renderer.components,
       container: props.value.renderer.container,
       html: html.value,
-      dom: dom.value,
+      dom: doms.value,
       panelContainer: isDetached.value
-        ? dom.value.detachedContainer
+        ? doms.value.detachedContainer
         : props.value.renderer.panelContainer,
       propGetters,
       state: lastStateRef.current,
@@ -176,15 +191,17 @@ export function autocomplete<TItem extends BaseItem>(
         props.value.renderer.renderNoResults) ||
       props.value.renderer.render;
 
+    // search input dom already created, only update props here
     renderSearchBox(renderProps);
+    // append panel to dom, render vdom to panel
     renderPanel(render, renderProps);
   }
 
   runEffect(() => {
     const environmentProps = autocomplete.value.getEnvironmentProps({
-      formElement: dom.value.form,
-      panelElement: dom.value.panel,
-      inputElement: dom.value.input,
+      formElement: doms.value.form,
+      panelElement: doms.value.panel,
+      inputElement: doms.value.input,
     });
 
     setProperties(props.value.core.environment as any, environmentProps);
@@ -202,19 +219,23 @@ export function autocomplete<TItem extends BaseItem>(
     };
   });
 
+  console.log(';; init-render before ');
+
   runEffect(() => {
     const panelContainerElement = isDetached.value
       ? props.value.core.environment.document.body
       : props.value.renderer.panelContainer;
     const panelElement = isDetached.value
-      ? dom.value.detachedOverlay
-      : dom.value.panel;
+      ? doms.value.detachedOverlay
+      : doms.value.panel;
 
     if (isDetached.value && lastStateRef.current.isOpen) {
       setIsModalOpen(true);
     }
 
+    // 👇🏻 initial render
     scheduleRender(lastStateRef.current);
+    console.log(';; init-render ing ');
 
     return () => {
       if (panelContainerElement.contains(panelElement)) {
@@ -223,12 +244,15 @@ export function autocomplete<TItem extends BaseItem>(
     };
   });
 
+  console.log(';; init-render after ');
+
   runEffect(() => {
     const containerElement = props.value.renderer.container;
-    containerElement.appendChild(dom.value.root);
+    containerElement.appendChild(doms.value.root);
+    console.log(';; append-root ');
 
     return () => {
-      containerElement.removeChild(dom.value.root);
+      containerElement.removeChild(doms.value.root);
     };
   });
 
@@ -236,9 +260,11 @@ export function autocomplete<TItem extends BaseItem>(
     const debouncedRender = debounce<{
       state: AutocompleteState<TItem>;
     }>(({ state }) => {
+      console.log(';; stateChg-to-rerender ');
       scheduleRender(state);
     }, 0);
 
+    // 👇🏻 register rerender if state changes
     onStateChangeRef.current = ({ state, prevState }) => {
       if (isDetached.value && prevState.isOpen !== state.isOpen) {
         setIsModalOpen(state.isOpen);
@@ -300,7 +326,7 @@ export function autocomplete<TItem extends BaseItem>(
     }
 
     function toggleModalClassname(isActive: boolean) {
-      dom.value.detachedContainer.classList.toggle(
+      doms.value.detachedContainer.classList.toggle(
         'aa-DetachedContainer--modal',
         isActive,
       );
@@ -345,6 +371,11 @@ export function autocomplete<TItem extends BaseItem>(
     cleanupEffects();
   }
 
+  /**
+   * Updates the Autocomplete instance with new options.
+   * - runReactives + runEffects + scheduleRender
+   * - wraps refresh
+   */
   function update(updatedOptions: Partial<AutocompleteOptions<TItem>> = {}) {
     cleanupEffects();
 
@@ -379,7 +410,7 @@ export function autocomplete<TItem extends BaseItem>(
   function setIsModalOpen(value: boolean) {
     requestAnimationFrame(() => {
       const prevValue = props.value.core.environment.document.body.contains(
-        dom.value.detachedOverlay,
+        doms.value.detachedOverlay,
       );
 
       if (value === prevValue) {
@@ -388,13 +419,13 @@ export function autocomplete<TItem extends BaseItem>(
 
       if (value) {
         props.value.core.environment.document.body.appendChild(
-          dom.value.detachedOverlay,
+          doms.value.detachedOverlay,
         );
         props.value.core.environment.document.body.classList.add('aa-Detached');
-        dom.value.input.focus();
+        doms.value.input.focus();
       } else {
         props.value.core.environment.document.body.removeChild(
-          dom.value.detachedOverlay,
+          doms.value.detachedOverlay,
         );
         props.value.core.environment.document.body.classList.remove(
           'aa-Detached',
@@ -412,6 +443,8 @@ See: https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocom
 
   instancesCount++;
 
+  // returns state setters and a `refresh` method that updates the UI state with fresh sources.
+  // These setters are useful to control the autocomplete experience from external events.
   return {
     ...autocompleteScopeApi,
     update,

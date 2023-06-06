@@ -36,6 +36,8 @@ export type AutocompleteRenderer = {
   Fragment: PragmaFrag;
   /**
    * The function to render children to an element.
+   * - The function to render a tree of VNodes into a DOM container.
+   * - It uses Preact's `render` by default, but you can provide your own implementation.
    */
   render?: Render;
 };

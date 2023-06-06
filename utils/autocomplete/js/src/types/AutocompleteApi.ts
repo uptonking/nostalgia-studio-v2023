@@ -3,16 +3,16 @@ import {
   type BaseItem,
 } from '@algolia/autocomplete-core';
 
-import { type AutocompleteOptions } from './';
+import { type AutocompleteOptions } from '.';
 
 export interface AutocompleteApi<TItem extends BaseItem>
   extends AutocompleteCoreScopeApi<TItem> {
   /**
-   * Updates the Autocomplete experience.
+   * Updates the Autocomplete instance with new options.
    */
   update(updatedOptions: Partial<AutocompleteOptions<TItem>>): void;
-  /**
-   * Cleans up the DOM mutations and event listeners.
+  /** Destroys the Autocomplete instance and removes it from the DOM.
+   * - Cleans up the DOM mutations and event listeners.
    */
   destroy(): void;
 }

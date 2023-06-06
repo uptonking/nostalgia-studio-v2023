@@ -1,5 +1,4 @@
 import { type MaybePromise } from '../MaybePromise';
-
 import { type AutocompleteScopeApi, type BaseItem } from './AutocompleteApi';
 import { type AutocompleteEnvironment } from './AutocompleteEnvironment';
 import { type AutocompleteNavigator } from './AutocompleteNavigator';
@@ -21,7 +20,9 @@ export type OnResetParams<TItem extends BaseItem> = OnSubmitParams<TItem>;
 
 export interface OnInputParams<TItem extends BaseItem>
   extends AutocompleteScopeApi<TItem> {
+  /** the value typed in the search input */
   query: string;
+  /** state is an underlying set of properties that drives the autocomplete behavior */
   state: AutocompleteState<TItem>;
 }
 
@@ -69,27 +70,28 @@ export interface AutocompleteOptions<TItem extends BaseItem> {
   id?: string;
   /**
    * The function called when the internal state changes.
+   * - firstly props.onStateChange , then plugin.onStateChange
    *
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-onstatechange
    */
   onStateChange?(props: OnStateChangeProps<TItem>): void;
   /**
    * The placeholder text to show in the search input when there's no query.
+   * - the text that appears in the input before the user types anything.
    *
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-placeholder
    */
   placeholder?: string;
   /**
    * Whether to focus the search input or not when the page is loaded.
-   *
+   * - if true, focus on the search box on page load
    * @default false
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-autofocus
    */
   autoFocus?: boolean;
   /**
    * The default item index to pre-select.
-   *
-   * We recommend using `0` when the autocomplete is used to open links, instead of triggering a search in an application.
+   * - We recommend using `0` when the autocomplete is used to open links, instead of triggering a search in an application.
    *
    * @default null
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-defaultactiveitemid
@@ -97,7 +99,7 @@ export interface AutocompleteOptions<TItem extends BaseItem> {
   defaultActiveItemId?: number | null;
   /**
    * Whether to open the panel on focus when there's no query.
-   *
+   * - display items as soon as a user selects the autocomplete, even without typing.
    * @default false
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-openonfocus
    */
@@ -123,8 +125,7 @@ export interface AutocompleteOptions<TItem extends BaseItem> {
   getSources?: GetSources<TItem>;
   /**
    * The environment in which your application is running.
-   *
-   * This is useful if you're using autocomplete in a different context than `window`.
+   * - This is useful if you're using autocomplete in a different context than `window`.
    *
    * @default window
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-environment
@@ -132,7 +133,7 @@ export interface AutocompleteOptions<TItem extends BaseItem> {
   environment?: AutocompleteEnvironment;
   /**
    * An implementation of Autocomplete's Navigator API to redirect the user when opening a link.
-   *
+   * - By default, the Navigator API uses the `Location` API
    * Learn more on the [**Navigator API**](https://www.algolia.com/doc/ui-libraries/autocomplete/core-concepts/keyboard-navigation/) documentation.
    *
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-navigator
@@ -160,16 +161,17 @@ export interface AutocompleteOptions<TItem extends BaseItem> {
   onReset?(params: OnResetParams<TItem>): void;
   /**
    * The plugins that encapsulate and distribute custom Autocomplete behaviors.
+   * - a plugin is an object that implements the AutocompletePlugin interface.
+   * - It can provide sources, react to state changes, and hook into various autocomplete lifecycle steps. It has access to setters, including the Context API, allowing it to store and retrieve arbitrary data at any time.
+   * - Plugins execute sequentially, in the order you define them.
    *
    * See [**Plugins**](https://www.algolia.com/doc/ui-libraries/autocomplete/core-concepts/plugins/) for more information.
-   *
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/api-reference/autocomplete-js/autocomplete/#param-plugins
    */
   plugins?: Array<AutocompletePlugin<any, any>>;
   /**
    * The function called to reshape the sources after they're resolved.
-   *
-   * This is useful to transform sources before rendering them. You can group sources by attribute, remove duplicates, create shared limits between sources, etc.
+   * - This is useful to transform sources before rendering them. You can group sources by attribute, remove duplicates, create shared limits between sources, etc.
    *
    * See [**Reshaping sources**](https://www.algolia.com/doc/ui-libraries/autocomplete/guides/reshaping-sources/) for more information.
    *
@@ -178,7 +180,7 @@ export interface AutocompleteOptions<TItem extends BaseItem> {
   reshape?: Reshape<TItem>;
 }
 
-// Props manipulated internally with default values.
+/** Props manipulated internally with default values. */
 export interface InternalAutocompleteOptions<TItem extends BaseItem>
   extends AutocompleteOptions<TItem> {
   debug: boolean;

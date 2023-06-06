@@ -1,5 +1,5 @@
 import { reshape } from './reshape';
-import { preResolve, resolve, postResolve } from './resolve';
+import { postResolve, preResolve, resolve } from './resolve';
 import {
   type AutocompleteScopeApi,
   type AutocompleteState,
@@ -34,6 +34,9 @@ interface OnInputParams<TItem extends BaseItem>
 
 const runConcurrentSafePromise = createConcurrentSafePromise();
 
+/**
+ * update internal state + getSources using promise
+ */
 export function onInput<TItem extends BaseItem>({
   event,
   nextState = {},
@@ -132,6 +135,7 @@ export function onInput<TItem extends BaseItem>({
 
       setStatus('idle');
 
+      // 👇🏻 update core data in global store
       setCollections(collections as any);
 
       const isPanelOpen = props.shouldPanelOpen({ state: store.getState() });

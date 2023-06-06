@@ -31,6 +31,9 @@ type RenderProps<TItem extends BaseItem> = {
   renderer: Required<AutocompleteRenderer>;
 };
 
+/**
+ * update dom.root/dom.input props
+ */
 export function renderSearchBox<TItem extends BaseItem>({
   autocomplete,
   autocompleteScopeApi,
@@ -66,6 +69,10 @@ export function renderSearchBox<TItem extends BaseItem>({
   });
 }
 
+/**
+ * - append panel to dom
+ * - render vdom to panel
+ */
 export function renderPanel<TItem extends BaseItem>(
   render: AutocompleteRender<TItem>,
   {
@@ -151,6 +158,7 @@ export function renderPanel<TItem extends BaseItem>(
               });
 
               return (
+                // @ts-expect-error fix-types
                 <li
                   key={itemProps.id}
                   className={classNames.item}
@@ -160,14 +168,17 @@ export function renderPanel<TItem extends BaseItem>(
                     ...autocompleteScopeApi,
                   })}
                 >
-                  {source.templates.item({
-                    components,
-                    createElement: renderer.createElement,
-                    Fragment: renderer.Fragment,
-                    item,
-                    state,
-                    html,
-                  })}
+                  {
+                    // 👇🏻 render list item using templates
+                    source.templates.item({
+                      components,
+                      createElement: renderer.createElement,
+                      Fragment: renderer.Fragment,
+                      item,
+                      state,
+                      html,
+                    })
+                  }
                 </li>
               );
             })}

@@ -1,9 +1,8 @@
 import {
   type AutocompleteSource as AutocompleteCoreSource,
-  type InternalAutocompleteSource as InternalAutocompleteCoreSource,
   type BaseItem,
+  type InternalAutocompleteSource as InternalAutocompleteCoreSource,
 } from '../core';
-
 import { type AutocompleteComponents } from './AutocompleteComponents';
 import {
   type AutocompleteRenderer,
@@ -15,6 +14,7 @@ import { type AutocompleteState } from './AutocompleteState';
 type Template<TParams> = (
   params: TParams &
     AutocompleteRenderer & {
+      /** Autocomplete exposes `components` to all templates to share them everywhere in the instance. */
       components: AutocompleteComponents;
       html: HTMLTemplate;
     },
@@ -28,7 +28,8 @@ type Template<TParams> = (
 export type SourceTemplates<TItem extends BaseItem> = {
   /**
    * A function that returns the template for each item of the source.
-   *
+   * - You can return anything from each template as long as they’re valid virtual DOM elements (VNodes).
+   * - Native HTML elements aren’t valid VNodes, which means you can’t return a template string that contains HTML, or an HTML element.
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/core-concepts/templates/#param-item
    */
   item: Template<{
@@ -71,7 +72,7 @@ type WithTemplates<TType, TItem extends BaseItem> = TType & {
    * A set of templates to customize how sections and their items are displayed.
    *
    * See [**Displaying items with Templates**](templates) for more information.
-   *
+   * todo make it optional
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/core-concepts/sources/#param-templates
    */
   templates: SourceTemplates<TItem>;

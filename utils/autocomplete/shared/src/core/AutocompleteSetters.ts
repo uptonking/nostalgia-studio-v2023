@@ -18,6 +18,7 @@ export interface AutocompleteSetters<TItem extends BaseItem> {
   setActiveItemId: StateUpdater<AutocompleteState<TItem>['activeItemId']>;
   /**
    * Sets the query.
+   * - You can use the setQuery setter to attach an event when clicking the tap-ahead button and manually set the query.
    *
    * @link https://www.algolia.com/doc/ui-libraries/autocomplete/core-concepts/state/#param-setquery
    */
@@ -46,6 +47,7 @@ export interface AutocompleteSetters<TItem extends BaseItem> {
   setStatus: StateUpdater<AutocompleteState<TItem>['status']>;
   /**
    * Sets the context passed to lifecycle hooks.
+   * - takes an object and merges it with the existing context. You can then access the context in `state.context`.
    *
    * See more in [**Context**](https://www.algolia.com/doc/ui-libraries/autocomplete/core-concepts/context/).
    *

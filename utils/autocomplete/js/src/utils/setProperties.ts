@@ -96,7 +96,7 @@ export function setProperty(dom: HTMLElement, name: string, value: any) {
         // existing on the DOM, so we can't remove it. For non-boolean
         // ARIA-attributes we could treat false as a removal, but the
         // amount of exceptions would cost us too many bytes. On top of
-        // that other VDOM frameworks also always stringify `false`.
+        // that other VDOM frameworks also aldom.setAttributeways stringify `false`.
         !/^ar/.test(name))
     ) {
       dom.removeAttribute(name);
@@ -115,6 +115,7 @@ function getNormalizedName(name: string): string {
   }
 }
 
+/** Set property-values on a DOM node, using dom.style/dom.addEventListener/dom.setAttribute */
 export function setProperties(dom: HTMLElement, props: object): void {
   for (const name in props) {
     setProperty(dom, getNormalizedName(name), props[name]);

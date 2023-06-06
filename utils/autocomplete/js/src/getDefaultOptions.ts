@@ -1,4 +1,10 @@
 import {
+  createElement as preactCreateElement,
+  Fragment as PreactFragment,
+  render as preactRender,
+} from 'preact';
+
+import {
   type AutocompleteEnvironment,
   type BaseItem,
 } from '@algolia/autocomplete-core';
@@ -7,18 +13,7 @@ import {
   invariant,
   warn,
 } from '@algolia/autocomplete-shared';
-import {
-  createElement as preactCreateElement,
-  Fragment as PreactFragment,
-  render,
-} from 'preact';
 
-import {
-  createHighlightComponent,
-  createReverseHighlightComponent,
-  createReverseSnippetComponent,
-  createSnippetComponent,
-} from './components';
 import {
   type AutocompleteClassNames,
   type AutocompleteComponents,
@@ -28,6 +23,13 @@ import {
   type AutocompleteTranslations,
 } from './types';
 import { getHTMLElement, mergeClassNames } from './utils';
+
+// import {
+//   createHighlightComponent,
+//   createReverseHighlightComponent,
+//   createReverseSnippetComponent,
+//   createSnippetComponent,
+// } from './components';
 
 const defaultClassNames: AutocompleteClassNames = {
   clearButton: 'aa-ClearButton',
@@ -65,7 +67,7 @@ const defaultRender: AutocompleteRender<any> = ({ children, render }, root) => {
 const defaultRenderer: Required<AutocompleteRenderer> = {
   createElement: preactCreateElement,
   Fragment: PreactFragment,
-  render,
+  render: preactRender,
 };
 
 export function getDefaultOptions<TItem extends BaseItem>(
@@ -117,8 +119,8 @@ export function getDefaultOptions<TItem extends BaseItem>(
 
   warn(
     !renderer ||
-      render ||
-      (renderer.Fragment && renderer.createElement && renderer.render),
+      Boolean(render) ||
+      Boolean(renderer.Fragment && renderer.createElement && renderer.render),
     `You provided an incomplete \`renderer\` (missing: ${[
       !renderer?.createElement && '`renderer.createElement`',
       !renderer?.Fragment && '`renderer.Fragment`',
@@ -132,11 +134,11 @@ export function getDefaultOptions<TItem extends BaseItem>(
   const defaultedRenderer = { ...defaultRenderer, ...renderer };
 
   const defaultComponents: AutocompleteComponents = {
-    Highlight: createHighlightComponent(defaultedRenderer),
-    ReverseHighlight: createReverseHighlightComponent(defaultedRenderer),
-    ReverseSnippet: createReverseSnippetComponent(defaultedRenderer),
-    Snippet: createSnippetComponent(defaultedRenderer),
-  };
+    // Highlight: createHighlightComponent(defaultedRenderer),
+    // ReverseHighlight: createReverseHighlightComponent(defaultedRenderer),
+    // ReverseSnippet: createReverseSnippetComponent(defaultedRenderer),
+    // Snippet: createSnippetComponent(defaultedRenderer),
+  } as AutocompleteComponents;
 
   const defaultTranslations: AutocompleteTranslations = {
     clearButtonTitle: 'Clear',
@@ -151,6 +153,11 @@ export function getDefaultOptions<TItem extends BaseItem>(
         classNames ?? {},
       ) as AutocompleteClassNames,
       container: containerElement,
+      /** defaults to `document.body` if not provided */
+      panelContainer: panelContainer
+        ? getHTMLElement(environment, panelContainer)
+        : environment.document.body,
+      panelPlacement: panelPlacement ?? 'input-wrapper-width',
       getEnvironmentProps: getEnvironmentProps ?? (({ props }) => props),
       getFormProps: getFormProps ?? (({ props }) => props),
       getInputProps: getInputProps ?? (({ props }) => props),
@@ -159,10 +166,6 @@ export function getDefaultOptions<TItem extends BaseItem>(
       getListProps: getListProps ?? (({ props }) => props),
       getPanelProps: getPanelProps ?? (({ props }) => props),
       getRootProps: getRootProps ?? (({ props }) => props),
-      panelContainer: panelContainer
-        ? getHTMLElement(environment, panelContainer)
-        : environment.document.body,
-      panelPlacement: panelPlacement ?? 'input-wrapper-width',
       render: render ?? defaultRender,
       renderNoResults,
       renderer: defaultedRenderer,

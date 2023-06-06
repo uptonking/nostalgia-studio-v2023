@@ -1,8 +1,12 @@
 import { type AutocompleteEnvironment } from '@algolia/autocomplete-core';
 import { invariant } from '@algolia/autocomplete-shared';
 
+/**
+ * get dom by `document.querySelector(value)`
+ */
 export function getHTMLElement(
   environment: AutocompleteEnvironment,
+  /** css selector or dom */
   value: string | HTMLElement,
 ): HTMLElement {
   if (typeof value === 'string') {

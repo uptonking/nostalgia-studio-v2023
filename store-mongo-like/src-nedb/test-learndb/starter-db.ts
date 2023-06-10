@@ -1,4 +1,4 @@
-import type { REPLEval } from 'node:repl';
+import { type REPLEval } from 'node:repl';
 
 /** 定义指令的名称、参数、执行方法 */
 type CRUDCmd = {

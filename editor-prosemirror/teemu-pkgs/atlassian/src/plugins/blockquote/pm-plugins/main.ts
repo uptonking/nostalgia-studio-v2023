@@ -1,13 +1,16 @@
-import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
+import { type EditorState, Plugin, PluginKey } from 'prosemirror-state';
 
 import { blockQuoteNodeView } from '../nodeviews/BlockQuoteView';
-import { CommandDispatch } from '../../../types';
+import { type CommandDispatch } from '../../../types';
 import { findBlockQuote } from '../pm-utils/findBlockQuote';
 
-import { PortalProviderAPI } from '../../../react-portals';
-import { EventDispatcher, Dispatch } from '../../../utils/event-dispatcher';
+import { type PortalProviderAPI } from '../../../react-portals';
+import {
+  type EventDispatcher,
+  type Dispatch,
+} from '../../../utils/event-dispatcher';
 
-import { BlockQuoteOptions } from '../';
+import { type BlockQuoteOptions } from '../';
 
 export interface BlockQuoteState {
   blockQuoteActive: boolean;

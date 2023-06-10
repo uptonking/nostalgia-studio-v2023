@@ -5,18 +5,18 @@
 
 import { Node } from 'slate';
 import {
-  IModalMenu,
-  IDomEditor,
+  type IModalMenu,
+  type IDomEditor,
   DomEditor,
   genModalInputElems,
   genModalButtonElems,
   t,
 } from '@wangeditor/core';
-import $, { Dom7Array, DOMElement } from '../../../utils/dom';
+import $, { type Dom7Array, type DOMElement } from '../../../utils/dom';
 import { genRandomStr } from '../../../utils/util';
 import { PENCIL_SVG } from '../../../constants/icon-svg';
 import { updateLink } from '../helper';
-import { LinkElement } from '../custom-types';
+import { type LinkElement } from '../custom-types';
 
 /**
  * 生成唯一的 DOM ID

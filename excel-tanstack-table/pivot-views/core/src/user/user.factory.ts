@@ -1,6 +1,6 @@
 import { and } from '@datalking/pivot-entity';
 
-import type { UserSpecification } from './specifications/index';
+import { type UserSpecification } from './specifications/index';
 import {
   WithUserAvatar,
   WithUserEmail,
@@ -9,7 +9,7 @@ import {
   WithUserPassword,
 } from './specifications/index';
 import { User } from './user';
-import type { IUnsafeCreateUser } from './user.type';
+import { type IUnsafeCreateUser } from './user.type';
 
 export class UserFactory {
   static create(...specs: UserSpecification[]): User {

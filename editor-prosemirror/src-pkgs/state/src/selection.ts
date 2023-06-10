@@ -1,11 +1,16 @@
-import { Fragment, Node, ResolvedPos, Slice } from 'prosemirror-model';
 import {
-  Mappable,
+  Fragment,
+  type Node,
+  type ResolvedPos,
+  Slice,
+} from 'prosemirror-model';
+import {
+  type Mappable,
   ReplaceAroundStep,
   ReplaceStep,
 } from 'prosemirror-transform';
 
-import { Transaction } from './transaction';
+import { type Transaction } from './transaction';
 
 /** 一个空映射表 */
 const classesById = Object.create(null);

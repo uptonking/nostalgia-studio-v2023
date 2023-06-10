@@ -1,8 +1,8 @@
 import crel from 'crelt';
-import { EditorState, Plugin } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { type EditorState, Plugin } from 'prosemirror-state';
+import { type EditorView } from 'prosemirror-view';
 
-import { MenuElement, renderGrouped } from './menu';
+import { type MenuElement, renderGrouped } from './menu';
 
 const prefix = 'ProseMirror-menubar';
 

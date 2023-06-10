@@ -1,7 +1,7 @@
-import { Node as PMNode } from 'prosemirror-model';
+import { type Node as PMNode } from 'prosemirror-model';
 import { TextSelection, Selection } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import { EventDispatcher, createDispatch } from './utils/event-dispatcher';
+import { type EditorView } from 'prosemirror-view';
+import { type EventDispatcher, createDispatch } from './utils/event-dispatcher';
 
 export type ContextUpdateHandler = (
   editorView: EditorView,

@@ -6,10 +6,10 @@ import {
   defaultDropAnimation,
   DndContext,
   DragOverlay,
-  DropAnimation,
+  type DropAnimation,
   KeyboardSensor,
   MeasuringStrategy,
-  Modifier,
+  type Modifier,
   PointerSensor,
   useSensor,
   useSensors,
@@ -22,7 +22,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates';
 import { TreeItem, TreeItemDraggable } from './tree-item';
-import type { SensorConfig, TreeItems } from './types';
+import { type SensorConfig, type TreeItems } from './types';
 import { useDndTree } from './use-dnd-tree';
 import { getChildCount, getFlatChildrenOf, simpleTreeData } from './utils';
 

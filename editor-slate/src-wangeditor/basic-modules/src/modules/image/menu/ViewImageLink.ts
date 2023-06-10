@@ -3,9 +3,14 @@
  * @author wangfupeng
  */
 
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { EXTERNAL_SVG } from '../../../constants/icon-svg';
-import { ImageElement } from '../custom-types';
+import { type ImageElement } from '../custom-types';
 
 class ViewImageLink implements IButtonMenu {
   readonly title = t('image.viewLink');

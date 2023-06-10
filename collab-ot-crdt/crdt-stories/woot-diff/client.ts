@@ -2,7 +2,7 @@ import diff_match_patch from 'diff-match-patch';
 import { io, type Socket } from 'socket.io-client';
 
 import {
-  InsertTimingStats,
+  type InsertTimingStats,
   log,
   WCharId,
   WOperationType,

@@ -6,7 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
 import { config } from '../../shared/config';
-import routes, { AppRoute } from '../../shared/routes';
+import routes, { type AppRoute } from '../../shared/routes';
 import AuthCheck from '../profile/AuthCheck';
 
 export const RouteElement = ({ route }: { route: AppRoute }) => (

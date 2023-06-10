@@ -5,22 +5,26 @@
 
 import debounce from 'lodash.debounce';
 import clonedeep from 'lodash.clonedeep';
-import $, { Dom7Array, DOMElement } from '../../utils/dom';
+import $, { type Dom7Array, type DOMElement } from '../../utils/dom';
 import { MENU_ITEM_FACTORIES } from '../register';
 import { promiseResolveThen } from '../../utils/util';
 import { TOOLBAR_TO_EDITOR, BAR_ITEM_TO_EDITOR } from '../../utils/weak-maps';
-import { IDomEditor } from '../../editor/interface';
-import { IBarItem, createBarItem, createBarItemGroup } from '../bar-item/index';
+import { type IDomEditor } from '../../editor/interface';
+import {
+  type IBarItem,
+  createBarItem,
+  createBarItemGroup,
+} from '../bar-item/index';
 import { gen$barItemDivider } from '../helpers/helpers';
 import {
-  IMenuGroup,
-  IButtonMenu,
-  ISelectMenu,
-  IDropPanelMenu,
-  IModalMenu,
+  type IMenuGroup,
+  type IButtonMenu,
+  type ISelectMenu,
+  type IDropPanelMenu,
+  type IModalMenu,
 } from '../interface';
 import GroupButton from '../bar-item/GroupButton';
-import { IToolbarConfig } from '../../config/interface';
+import { type IToolbarConfig } from '../../config/interface';
 
 type MenuType = IButtonMenu | ISelectMenu | IDropPanelMenu | IModalMenu;
 

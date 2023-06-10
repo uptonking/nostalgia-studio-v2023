@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import { Editor, Node, Transforms, Range } from 'slate';
+import { Editor, type Node, Transforms, Range } from 'slate';
 import { DomEditor } from '../dom-editor';
-import { IDomEditor } from '../..';
+import { type IDomEditor } from '../..';
 
 import { isDOMText, getPlainText } from '../../utils/dom';
 

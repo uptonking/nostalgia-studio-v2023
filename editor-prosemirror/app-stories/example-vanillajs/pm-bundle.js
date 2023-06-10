@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 !(function () {
   function t(t) {
     this.content = t;

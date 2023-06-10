@@ -7,8 +7,8 @@ import {
   DndContext,
   useDraggable,
   useDroppable,
-  UniqueIdentifier,
-  DragEndEvent,
+  type UniqueIdentifier,
+  type DragEndEvent,
 } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 

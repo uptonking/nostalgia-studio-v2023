@@ -3,7 +3,12 @@ import { Fragment } from './fragment';
 import { Mark } from './mark';
 import { Slice, replace } from './replace';
 import { ResolvedPos } from './resolvedpos';
-import { Attrs, MarkType, NodeType, Schema } from './schema';
+import {
+  type Attrs,
+  type MarkType,
+  type NodeType,
+  type Schema,
+} from './schema';
 
 const emptyAttrs: Attrs = Object.create(null);
 

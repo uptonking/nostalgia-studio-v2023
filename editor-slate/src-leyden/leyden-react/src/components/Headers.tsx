@@ -1,6 +1,6 @@
-import React, { CSSProperties, FC } from 'react';
+import React, { type CSSProperties, type FC } from 'react';
 
-import { HeaderRendererProps } from '../utils/types';
+import { type HeaderRendererProps } from '../utils/types';
 
 export interface Headers {
   genStyle: (pos: number) => CSSProperties;

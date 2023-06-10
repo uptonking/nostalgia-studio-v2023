@@ -9,8 +9,8 @@ import {
   FiX,
 } from 'react-icons/fi';
 
-import { IToast, ToastLocation } from '../types/toast';
-import { Stores } from '../stores';
+import { type IToast, type ToastLocation } from '../types/toast';
+import { type Stores } from '../stores';
 
 interface IToastProps {
   className?: string;

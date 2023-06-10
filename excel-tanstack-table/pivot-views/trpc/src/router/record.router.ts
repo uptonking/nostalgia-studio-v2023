@@ -21,9 +21,9 @@ import {
   getRecordsQueryInput,
   UpdateRecordCommand,
 } from '@datalking/pivot-cqrs';
-import type { ICommandBus, IQueryBus } from '@datalking/pivot-entity';
+import { type ICommandBus, type IQueryBus } from '@datalking/pivot-entity';
 
-import type { publicProcedure } from '../trpc';
+import { type publicProcedure } from '../trpc';
 import { router } from '../trpc';
 import { createParentFieldRouter } from './parent-field.router';
 import { createTreeFieldRouter } from './tree-field.router';

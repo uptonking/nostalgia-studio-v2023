@@ -1,6 +1,11 @@
 import fs from 'fs/promises';
 
-import { IDBDocument, PMDoc, DocVisibility, uuidv4 } from '@example/types';
+import {
+  type IDBDocument,
+  type PMDoc,
+  type DocVisibility,
+  uuidv4,
+} from '@example/types';
 
 interface StoredData {
   docsMap: [string, IDBDocument][];

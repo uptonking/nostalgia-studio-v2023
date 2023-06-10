@@ -1,4 +1,4 @@
-import { Editor, Element } from 'slate';
+import { type Editor, type Element } from 'slate';
 
 import { isDividerElement } from './utils';
 

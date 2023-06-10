@@ -1,4 +1,4 @@
-import type { Middleware, Padding } from '../types';
+import { type Middleware, type Padding } from '../types';
 import { getAlignment } from '../utils/getAlignment';
 import { getLengthFromAxis } from '../utils/getLengthFromAxis';
 import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';

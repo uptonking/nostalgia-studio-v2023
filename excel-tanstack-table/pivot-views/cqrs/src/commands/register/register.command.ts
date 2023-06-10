@@ -1,7 +1,7 @@
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IRegisterCommandInput } from './register.command.interface';
+import { type IRegisterCommandInput } from './register.command.interface';
 
 export class RegisterCommand extends Command implements IRegisterCommandInput {
   readonly email: string;

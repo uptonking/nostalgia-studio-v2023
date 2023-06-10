@@ -22,7 +22,7 @@ import {
   createCommentUIPlugin,
 } from './comment';
 import { GET, POST } from './http';
-import { Reporter } from './reporter';
+import { type Reporter } from './reporter';
 export { Reporter } from './reporter';
 
 const schema = new Schema({

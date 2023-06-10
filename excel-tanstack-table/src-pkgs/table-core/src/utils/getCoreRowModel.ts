@@ -1,5 +1,5 @@
 import { createRow } from '../core/row';
-import type { Row, RowData, RowModel, Table } from '../types';
+import { type Row, type RowData, type RowModel, type Table } from '../types';
 import { memo } from '../utils';
 
 export function getCoreRowModel<TData extends RowData>(): (

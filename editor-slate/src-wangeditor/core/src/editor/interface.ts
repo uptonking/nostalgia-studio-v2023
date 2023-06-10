@@ -3,15 +3,21 @@
  * @author wangfupeng
  */
 
-import { Editor, Location, Node, Ancestor, Element } from 'slate';
-import ee from 'event-emitter';
 import {
-  IEditorConfig,
-  AlertType,
-  ISingleMenuConfig,
+  type Editor,
+  type Location,
+  type Node,
+  type Ancestor,
+  type Element,
+} from 'slate';
+import type ee from 'event-emitter';
+import {
+  type IEditorConfig,
+  type AlertType,
+  type ISingleMenuConfig,
 } from '../config/interface';
-import { IPositionStyle } from '../menus/interface';
-import { DOMElement } from '../utils/dom';
+import { type IPositionStyle } from '../menus/interface';
+import { type DOMElement } from '../utils/dom';
 
 export type ElementWithId = Element & { id: string };
 

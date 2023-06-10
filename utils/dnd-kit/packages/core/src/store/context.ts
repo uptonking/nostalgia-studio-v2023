@@ -3,9 +3,9 @@ import { createContext } from 'react';
 import { noop } from '../utilities/other';
 import { defaultMeasuringConfiguration } from '../components/DndContext/defaults';
 import { DroppableContainersMap } from './constructors';
-import type {
-  InternalContextDescriptor,
-  PublicContextDescriptor,
+import {
+  type InternalContextDescriptor,
+  type PublicContextDescriptor,
 } from './types';
 
 export const defaultPublicContext: PublicContextDescriptor = {

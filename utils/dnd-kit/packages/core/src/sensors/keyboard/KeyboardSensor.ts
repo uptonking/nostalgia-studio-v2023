@@ -6,7 +6,7 @@ import {
   subtract as getCoordinatesDelta,
 } from '@dnd-kit/utilities';
 
-import type { Coordinates } from '../../types';
+import { type Coordinates } from '../../types';
 import {
   defaultCoordinates,
   getScrollElementRect,
@@ -14,18 +14,22 @@ import {
 } from '../../utilities';
 import { scrollIntoViewIfNeeded } from '../../utilities/scroll';
 import { EventName } from '../events';
-import type {
-  Activators,
-  SensorInstance,
-  SensorOptions,
-  SensorProps,
+import {
+  type Activators,
+  type SensorInstance,
+  type SensorOptions,
+  type SensorProps,
 } from '../types';
 import { Listeners } from '../utilities';
 import {
   defaultKeyboardCodes,
   defaultKeyboardCoordinateGetter,
 } from './defaults';
-import { KeyboardCode, KeyboardCodes, KeyboardCoordinateGetter } from './types';
+import {
+  KeyboardCode,
+  type KeyboardCodes,
+  type KeyboardCoordinateGetter,
+} from './types';
 
 export interface KeyboardSensorOptions extends SensorOptions {
   keyboardCodes?: KeyboardCodes;

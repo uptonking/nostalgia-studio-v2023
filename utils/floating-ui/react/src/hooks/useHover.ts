@@ -6,11 +6,11 @@ import {
   useFloatingParentNodeId,
   useFloatingTree,
 } from '../components/FloatingTree';
-import type {
-  ElementProps,
-  FloatingContext,
-  FloatingTreeType,
-  ReferenceType,
+import {
+  type ElementProps,
+  type FloatingContext,
+  type FloatingTreeType,
+  type ReferenceType,
 } from '../types';
 import { contains } from '../utils/contains';
 import { getDocument } from '../utils/getDocument';

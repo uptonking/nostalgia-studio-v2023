@@ -1,4 +1,4 @@
-import { TypesetTypes } from './typeset';
+import { type TypesetTypes } from './typeset';
 import './lines';
 import './formats';
 import './embeds';

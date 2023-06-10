@@ -1,21 +1,21 @@
 import React from 'react';
-import { NodeView, EditorView } from 'prosemirror-view';
-import { Node as PMNode } from 'prosemirror-model';
+import { type NodeView, type EditorView } from 'prosemirror-view';
+import { type Node as PMNode } from 'prosemirror-model';
 
-import { PortalProviderAPI } from '../../../react-portals';
+import { type PortalProviderAPI } from '../../../react-portals';
 import {
-  EventDispatcher,
+  type EventDispatcher,
   createDispatch,
 } from '../../../utils/event-dispatcher';
 import {
   ReactNodeView,
-  ForwardRef,
-  getPosHandler,
+  type ForwardRef,
+  type getPosHandler,
 } from '../../../nodeviews/ReactNodeView';
 
 import { BlockQuote } from '../ui/BlockQuote';
 
-import { BlockQuoteOptions } from '../';
+import { type BlockQuoteOptions } from '../';
 
 export interface IProps {
   // providerFactory: ProviderFactory;

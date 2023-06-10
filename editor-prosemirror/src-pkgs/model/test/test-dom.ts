@@ -26,10 +26,10 @@ import {
   Slice,
   Fragment,
   Schema,
-  Node as PMNode,
-  Mark,
-  ParseOptions,
-  ParseRule,
+  type Node as PMNode,
+  type Mark,
+  type ParseOptions,
+  type ParseRule,
 } from 'prosemirror-model';
 
 // @ts-ignore

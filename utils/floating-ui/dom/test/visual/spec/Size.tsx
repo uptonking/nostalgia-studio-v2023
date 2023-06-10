@@ -1,4 +1,4 @@
-import type { Placement } from '@floating-ui/core';
+import { type Placement } from '@floating-ui/core';
 import { flip, shift, size, useFloating } from '@floating-ui/react-dom';
 import { useLayoutEffect, useState } from 'react';
 

@@ -1,9 +1,9 @@
 import { DataTypes } from 'sequelize';
 
-import type {
-  Address,
-  User,
-  UserActive,
+import {
+  type Address,
+  type User,
+  type UserActive,
 } from '@datalking/pivot-app-shared-lib';
 
 import { addModel } from '../../db';

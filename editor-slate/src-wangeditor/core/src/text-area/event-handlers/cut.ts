@@ -4,8 +4,8 @@
  */
 
 import { Editor, Range, Node, Transforms } from 'slate';
-import { IDomEditor } from '../../editor/interface';
-import TextArea from '../TextArea';
+import { type IDomEditor } from '../../editor/interface';
+import type TextArea from '../TextArea';
 import { hasEditableTarget } from '../helpers';
 
 function handleOnCut(e: Event, textarea: TextArea, editor: IDomEditor) {

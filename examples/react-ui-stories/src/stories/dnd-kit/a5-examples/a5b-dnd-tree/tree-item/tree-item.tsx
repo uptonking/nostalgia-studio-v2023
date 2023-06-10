@@ -1,8 +1,12 @@
-import React, { CSSProperties, forwardRef, HTMLAttributes } from 'react';
+import React, {
+  type CSSProperties,
+  forwardRef,
+  type HTMLAttributes,
+} from 'react';
 
 import cx from 'clsx';
 
-import type { UniqueIdentifier } from '@dnd-kit/core';
+import { type UniqueIdentifier } from '@dnd-kit/core';
 
 import { Action, Handle, Remove } from '../../../components';
 import styles from './tree-item.module.scss';

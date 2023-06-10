@@ -1,5 +1,5 @@
-import { Descendant, Editor } from 'slate';
-import { Coordinates, LeydenEditor } from 'leyden';
+import { type Descendant, type Editor } from 'slate';
+import { type Coordinates, LeydenEditor } from 'leyden';
 import { ReactEditor as SlateReactEditor } from 'slate-react';
 
 export interface ReactEditor

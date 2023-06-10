@@ -3,9 +3,9 @@ import { useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
 import { getRectDelta } from '../../../utilities/rect';
 import { getFirstScrollableAncestor } from '../../../utilities/scroll';
-import type { ClientRect } from '../../../types';
-import type { DraggableNode } from '../../../store';
-import type { MeasuringFunction } from '../types';
+import { type ClientRect } from '../../../types';
+import { type DraggableNode } from '../../../store';
+import { type MeasuringFunction } from '../types';
 
 interface Options {
   activeNode: DraggableNode | null | undefined;

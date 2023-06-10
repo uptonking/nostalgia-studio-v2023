@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { UppyFile } from '@uppy/core';
+import { type UppyFile } from '@uppy/core';
 
 type FilesType = { [key: string]: UppyFile<{}, {}> };
 

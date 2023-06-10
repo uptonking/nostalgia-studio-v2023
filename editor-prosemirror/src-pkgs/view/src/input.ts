@@ -1,18 +1,18 @@
-import { Node, Slice } from 'prosemirror-model';
+import { type Node, Slice } from 'prosemirror-model';
 import { NodeSelection, Selection, TextSelection } from 'prosemirror-state';
 import { dropPoint } from 'prosemirror-transform';
 
 import * as browser from './browser';
 import { captureKeyDown } from './capturekeys';
 import { parseFromClipboard, serializeForClipboard } from './clipboard';
-import { DOMNode, keyEvent } from './dom';
-import { EditorView } from './index';
+import { type DOMNode, keyEvent } from './dom';
+import { type EditorView } from './index';
 import {
   selectionBetween,
   selectionFromDOM,
   selectionToDOM,
 } from './selection';
-import { ViewDesc } from './viewdesc';
+import { type ViewDesc } from './viewdesc';
 
 type EventHandlerMap = {
   [event: string]: (view: EditorView, event: Event) => void;

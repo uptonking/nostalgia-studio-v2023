@@ -1,4 +1,4 @@
-import type { Modifier } from '@dnd-kit/core';
+import { type Modifier } from '@dnd-kit/core';
 import { getEventCoordinates } from '@dnd-kit/utilities';
 
 export const snapCenterToCursor: Modifier = ({

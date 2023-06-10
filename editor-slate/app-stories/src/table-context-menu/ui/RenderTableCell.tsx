@@ -1,9 +1,9 @@
 import React from 'react';
 
 import cx from 'classnames';
-import { RenderElementProps } from 'slate-react';
+import { type RenderElementProps } from 'slate-react';
 
-import { TableCellElement } from '../customTypes';
+import { type TableCellElement } from '../customTypes';
 
 export function CustomTableCell(props: RenderElementProps) {
   const { attributes, children, element } = props;

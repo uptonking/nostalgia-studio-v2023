@@ -1,18 +1,18 @@
 import { CSS, useEvent, getWindow } from '@dnd-kit/utilities';
-import type { DeepRequired, Transform } from '@dnd-kit/utilities';
+import { type DeepRequired, type Transform } from '@dnd-kit/utilities';
 
-import type {
-  Active,
-  DraggableNode,
-  DraggableNodes,
-  DroppableContainers,
+import {
+  type Active,
+  type DraggableNode,
+  type DraggableNodes,
+  type DroppableContainers,
 } from '../../../store';
-import type { ClientRect, UniqueIdentifier } from '../../../types';
+import { type ClientRect, type UniqueIdentifier } from '../../../types';
 import { getMeasurableNode } from '../../../utilities/nodes';
 import { scrollIntoViewIfNeeded } from '../../../utilities/scroll';
 import { parseTransform } from '../../../utilities/transform';
-import type { MeasuringConfiguration } from '../../DndContext';
-import type { Animation } from '../components';
+import { type MeasuringConfiguration } from '../../DndContext';
+import { type Animation } from '../components';
 
 interface SharedParameters {
   active: {

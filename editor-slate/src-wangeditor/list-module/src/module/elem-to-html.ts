@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import { Element, Path, Editor } from 'slate';
+import { type Element, Path, Editor } from 'slate';
 import { DomEditor } from '@wangeditor/core';
-import { ListItemElement } from './custom-types';
+import { type ListItemElement } from './custom-types';
 import { ELEM_TO_EDITOR } from '../utils/maps';
 
 /**

@@ -1,7 +1,7 @@
 import { useLazyMemo } from '@dnd-kit/utilities';
 
-import type { DraggableNode, DraggableNodes } from '../../store';
-import type { UniqueIdentifier } from '../../types';
+import { type DraggableNode, type DraggableNodes } from '../../store';
+import { type UniqueIdentifier } from '../../types';
 
 export function useCachedNode(
   draggableNodes: DraggableNodes,

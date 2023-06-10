@@ -1,7 +1,7 @@
-import { type AttributeMapType, Delta } from '@typewriter/document';
+import { type AttributeMapType, type Delta } from '@typewriter/document';
 
-import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-event';
+import { type Editor } from '../editor';
+import { type EditorChangeEvent } from '../editor-event';
 
 export type Replacement = [
   RegExp,

@@ -1,10 +1,10 @@
 import React from 'react';
 
-import type {
-  IOptionColorName,
-  IOptionColorShade,
+import {
+  type IOptionColorName,
+  type IOptionColorShade,
 } from '@datalking/pivot-core';
-import type { BadgeProps } from '@datalking/pivot-ui';
+import { type BadgeProps } from '@datalking/pivot-ui';
 import { Badge } from '@datalking/pivot-ui';
 
 interface IProps {

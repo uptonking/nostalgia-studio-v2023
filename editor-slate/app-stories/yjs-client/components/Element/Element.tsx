@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { RenderElementProps } from 'slate-react';
+import { type RenderElementProps } from 'slate-react';
 
 export function Element({ element, attributes, children }: RenderElementProps) {
   switch (element.type) {

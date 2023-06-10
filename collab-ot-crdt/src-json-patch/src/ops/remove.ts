@@ -1,4 +1,4 @@
-import type { JSONPatchOp, JSONPatchOpHandler } from '../types';
+import { type JSONPatchOp, type JSONPatchOpHandler } from '../types';
 import {
   getPrefixAndProp,
   isArrayPath,

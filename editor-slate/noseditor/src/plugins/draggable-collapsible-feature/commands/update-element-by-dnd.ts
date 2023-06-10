@@ -1,9 +1,9 @@
-import { Editor, Element, Node, Transforms } from 'slate';
+import { Editor, Element, type Node, Transforms } from 'slate';
 
-import type { Active, Over } from '@dnd-kit/core';
+import { type Active, type Over } from '@dnd-kit/core';
 
 import { DraggableCollapsibleEditor } from '../collapsible-editor';
-import type { NestableElement } from '../types';
+import { type NestableElement } from '../types';
 
 export const updateElementByDnd = (
   editor: DraggableCollapsibleEditor,

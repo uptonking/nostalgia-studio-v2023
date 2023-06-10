@@ -8,7 +8,7 @@ import {
   Box,
   Button,
   Container,
-  ContainerProps,
+  type ContainerProps,
   Grid,
   Link as MuiLink,
   TextField,

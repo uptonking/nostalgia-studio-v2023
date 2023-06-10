@@ -1,4 +1,4 @@
-import { SocketHandler } from '..';
+import { type SocketHandler } from '..';
 
 export const userHandler: SocketHandler = (io, socket) => {
   socket.on('user:message', (data) => {

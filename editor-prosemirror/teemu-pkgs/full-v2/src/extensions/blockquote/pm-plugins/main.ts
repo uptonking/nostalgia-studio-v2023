@@ -1,10 +1,10 @@
 import { Plugin } from 'prosemirror-state';
 
-import { EditorContext } from '../../../context';
+import { type EditorContext } from '../../../context';
 import { blockQuoteNodeView } from '../nodeviews/BlockQuoteView';
 import { findBlockQuote } from '../pm-utils/findBlockQuote';
-import { BlockQuoteState, blockquotePluginKey } from './state';
-import { BlockQuoteExtensionProps } from '..';
+import { type BlockQuoteState, blockquotePluginKey } from './state';
+import { type BlockQuoteExtensionProps } from '..';
 
 export function blockQuotePluginFactory(
   ctx: EditorContext,

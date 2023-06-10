@@ -14,11 +14,11 @@ import {
   Editor,
   Element,
   Node,
-  NodeEntry,
+  type NodeEntry,
   Path,
   Range,
   RangeRef,
-  Text,
+  type Text,
   Transforms,
 } from 'slate';
 
@@ -30,10 +30,10 @@ import { ReadOnlyContext } from '../hooks/use-read-only';
 import { useSlate } from '../hooks/use-slate';
 import { TRIPLE_CLICK } from '../utils/constants';
 import {
-  DOMElement,
-  DOMNode,
-  DOMRange,
-  DOMText,
+  type DOMElement,
+  type DOMNode,
+  type DOMRange,
+  type DOMText,
   getDefaultView,
   isDOMElement,
   isDOMNode,

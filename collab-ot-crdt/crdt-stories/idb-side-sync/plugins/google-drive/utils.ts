@@ -1,4 +1,4 @@
-import type { OpLogEntry } from '../../types/main';
+import { type OpLogEntry } from '../../types/main';
 
 export const LIB_NAME = 'IDBSideSync.plugins.googledrive';
 export const logPrefix = '[' + LIB_NAME + ']';

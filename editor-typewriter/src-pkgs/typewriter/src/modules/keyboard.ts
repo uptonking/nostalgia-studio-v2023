@@ -1,11 +1,11 @@
-import { Line, normalizeRange } from '@typewriter/document';
+import { type Line, normalizeRange } from '@typewriter/document';
 
-import type { Editor } from '../editor';
+import { type Editor } from '../editor';
 import { Source } from '../Source';
-import { LineType, Types } from '../typesetting';
+import { type LineType, type Types } from '../typesetting';
 import {
   addShortcutsToEvent,
-  KeyboardEventWithShortcut,
+  type KeyboardEventWithShortcut,
   ShortcutEvent,
 } from './shortcutFromEvent';
 

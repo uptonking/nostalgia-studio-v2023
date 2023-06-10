@@ -1,5 +1,5 @@
 import { isPlainObject } from 'is-plain-object';
-import { createEditor as makeEditor, Element } from 'slate';
+import { createEditor as makeEditor, type Element } from 'slate';
 
 import {
   createAnchor,

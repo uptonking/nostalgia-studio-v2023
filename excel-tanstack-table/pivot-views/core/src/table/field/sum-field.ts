@@ -8,15 +8,15 @@ import {
   AbstractLookupField,
   BaseField,
 } from './field.base';
-import type { ISumField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { ISumFilter, ISumFilterOperator } from './filter/sum.filter';
+import { type ISumField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type ISumFilter, type ISumFilterOperator } from './filter/sum.filter';
 import { SumFieldValue } from './sum-field-value';
-import type {
-  ICreateSumFieldInput,
-  ICreateSumFieldValue,
-  IUpdateSumFieldInput,
-  SumType,
+import {
+  type ICreateSumFieldInput,
+  type ICreateSumFieldValue,
+  type IUpdateSumFieldInput,
+  type SumType,
 } from './sum-field.type';
 import { FieldId } from './value-objects/field-id.vo';
 

@@ -1,4 +1,4 @@
-import type { OpLogEntry } from '../types/main';
+import { type OpLogEntry } from '../types/main';
 import { HLClock } from './HLClock';
 import { proxyPutRequest } from './IDBUpsertRequestProxy';
 import { STORE_NAME } from './db';

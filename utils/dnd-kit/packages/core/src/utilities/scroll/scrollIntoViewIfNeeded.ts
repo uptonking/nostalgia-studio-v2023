@@ -1,4 +1,4 @@
-import type { ClientRect } from '../../types';
+import { type ClientRect } from '../../types';
 import { getClientRect } from '../rect/getRect';
 import { getFirstScrollableAncestor } from './getScrollableAncestors';
 

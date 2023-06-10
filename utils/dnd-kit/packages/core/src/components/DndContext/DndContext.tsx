@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
-import type { Transform } from '@dnd-kit/utilities';
+import { type Transform } from '@dnd-kit/utilities';
 import {
   add,
   getEventCoordinates,
@@ -20,9 +20,9 @@ import {
   useUniqueId,
 } from '@dnd-kit/utilities';
 
-import type {
-  AutoScrollOptions,
-  SyntheticListener,
+import {
+  type AutoScrollOptions,
+  type SyntheticListener,
 } from '../../hooks/utilities';
 import {
   useAutoScroller,
@@ -40,35 +40,35 @@ import {
   useSensorSetup,
   useWindowRect,
 } from '../../hooks/utilities';
-import { applyModifiers, Modifiers } from '../../modifiers';
-import type {
-  Sensor,
-  SensorActivatorFunction,
-  SensorContext,
-  SensorDescriptor,
-  SensorInstance,
+import { applyModifiers, type Modifiers } from '../../modifiers';
+import {
+  type Sensor,
+  type SensorActivatorFunction,
+  type SensorContext,
+  type SensorDescriptor,
+  type SensorInstance,
 } from '../../sensors';
 import {
   Action,
   getInitialState,
   InternalContext,
-  InternalContextDescriptor,
+  type InternalContextDescriptor,
   PublicContext,
-  PublicContextDescriptor,
+  type PublicContextDescriptor,
   reducer,
 } from '../../store';
-import type { Active, Over } from '../../store/types';
-import type {
-  DragCancelEvent,
-  DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
-  DragStartEvent,
-  UniqueIdentifier,
+import { type Active, type Over } from '../../store/types';
+import {
+  type DragCancelEvent,
+  type DragEndEvent,
+  type DragMoveEvent,
+  type DragOverEvent,
+  type DragStartEvent,
+  type UniqueIdentifier,
 } from '../../types';
 import {
   adjustScale,
-  CollisionDetection,
+  type CollisionDetection,
   defaultCoordinates,
   getAdjustedRect,
   getFirstCollision,
@@ -76,9 +76,9 @@ import {
 } from '../../utilities';
 import {
   Accessibility,
-  Announcements,
+  type Announcements,
   RestoreFocus,
-  ScreenReaderInstructions,
+  type ScreenReaderInstructions,
 } from '../Accessibility';
 import {
   DndMonitorContext,
@@ -89,7 +89,7 @@ import {
   useLayoutShiftScrollCompensation,
   useMeasuringConfiguration,
 } from './hooks';
-import type { MeasuringConfiguration } from './types';
+import { type MeasuringConfiguration } from './types';
 
 export interface Props {
   id?: string;

@@ -1,8 +1,8 @@
-import { ICreateViewSchema } from '@datalking/pivot-core';
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type ICreateViewSchema } from '@datalking/pivot-core';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ICreateViewCommandInput } from './create-view.command.interface';
+import { type ICreateViewCommandInput } from './create-view.command.interface';
 
 export class CreateViewCommand
   extends Command

@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
 import { BaseField } from './field.base';
-import type { IStringField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type {
-  IStringFilter,
-  IStringFilterOperator,
+import { type IStringField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import {
+  type IStringFilter,
+  type IStringFilterOperator,
 } from './filter/string.filter';
 import { StringFieldValue } from './string-field-value';
-import type {
-  ICreateStringFieldInput,
-  ICreateStringFieldValue,
-  StringFieldType,
+import {
+  type ICreateStringFieldInput,
+  type ICreateStringFieldValue,
+  type StringFieldType,
 } from './string-field.type';
 
 export class StringField extends BaseField<IStringField> {

@@ -1,4 +1,4 @@
-import type { AsyncFunction } from './types/common';
+import { type AsyncFunction } from './types/common';
 
 /**
  * Responsible for sequentially executing actions on the database

@@ -2,7 +2,7 @@ import { isPlainObject } from 'is-plain-object';
 
 import { Range } from '../../src';
 import { isDeepEqual } from '../utils/deep-equal';
-import { ExtendedType } from './custom-types';
+import { type ExtendedType } from './custom-types';
 
 /**
  * `Text` objects represent the nodes that contain the actual text content of a

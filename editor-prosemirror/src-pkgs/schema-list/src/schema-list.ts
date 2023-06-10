@@ -1,19 +1,19 @@
-import OrderedMap from 'orderedmap';
+import type OrderedMap from 'orderedmap';
 import {
-  Attrs,
-  DOMOutputSpec,
+  type Attrs,
+  type DOMOutputSpec,
   Fragment,
   NodeRange,
-  NodeSpec,
-  NodeType,
+  type NodeSpec,
+  type NodeType,
   Slice,
 } from 'prosemirror-model';
 import {
-  Command,
-  EditorState,
-  NodeSelection,
+  type Command,
+  type EditorState,
+  type NodeSelection,
   Selection,
-  Transaction,
+  type Transaction,
 } from 'prosemirror-state';
 import {
   ReplaceAroundStep,

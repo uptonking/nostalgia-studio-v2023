@@ -1,6 +1,6 @@
-import { Descendant, Element } from 'slate';
+import { type Descendant, Element } from 'slate';
 
-import type { LinkElementType, LinkType } from './types';
+import { type LinkElementType, type LinkType } from './types';
 
 export const LinkSpec: LinkType = 'link';
 

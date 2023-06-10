@@ -2,18 +2,18 @@ import React from 'react';
 
 import { css } from '@linaria/core';
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  Row,
-  SortingState,
+  type Row,
+  type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person, tableColumns } from '../utils/makeData';
+import { makeData, type Person, tableColumns } from '../utils/makeData';
 
 const MOCK_DATA_LEN = 20;
 

@@ -7,11 +7,11 @@ import { ReactEditor } from 'slate-react';
 import {
   AutoScrollActivator,
   DndContext,
-  DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
+  type DragEndEvent,
+  type DragMoveEvent,
+  type DragOverEvent,
   DragOverlay,
-  DragStartEvent,
+  type DragStartEvent,
   MeasuringStrategy,
   MouseSensor,
   TouchSensor,
@@ -27,7 +27,7 @@ import {
 import { ListItemDefaultIndentWidth } from '../../../utils/constants';
 import { DraggableCollapsibleEditor } from '../collapsible-editor';
 import { updateElementByDnd } from '../commands/update-element-by-dnd';
-import type { DraggableCollapsibleElement } from '../types';
+import { type DraggableCollapsibleElement } from '../types';
 import { sortableCollisionDetection } from './sortable-collision-detection';
 import { DndContextProvider } from './use-dnd-context';
 import { getDepth } from './utils';

@@ -1,15 +1,15 @@
 import { Transforms } from 'leyden';
-import React, { FC, KeyboardEventHandler, useCallback } from 'react';
+import React, { type FC, type KeyboardEventHandler, useCallback } from 'react';
 import { Editable as SlateReactEditable, useSlateStatic } from 'slate-react';
 
 import { useRender } from '../hooks/useRender';
 import { cellNavigationKeys } from '../utils/keys';
 import {
-  CellRenderersOption,
-  ElementRenderersOption,
-  HeaderRenderers,
-  TableOptions,
-  TextRenderersOption,
+  type CellRenderersOption,
+  type ElementRenderersOption,
+  type HeaderRenderers,
+  type TableOptions,
+  type TextRenderersOption,
 } from '../utils/types';
 
 export type Editable = Omit<

@@ -4,8 +4,8 @@
  */
 
 import { Editor } from 'slate';
-import { DOMRange, DOMNode, isDOMNode } from '../utils/dom';
-import { IDomEditor } from '../editor/interface';
+import { type DOMRange, type DOMNode, isDOMNode } from '../utils/dom';
+import { type IDomEditor } from '../editor/interface';
 import { DomEditor } from '../editor/dom-editor';
 
 /**

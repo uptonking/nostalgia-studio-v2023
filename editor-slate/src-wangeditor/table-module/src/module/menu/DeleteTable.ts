@@ -4,7 +4,12 @@
  */
 
 import { Transforms } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { TRASH_SVG } from '../../constants/svg';
 
 class DeleteTable implements IButtonMenu {

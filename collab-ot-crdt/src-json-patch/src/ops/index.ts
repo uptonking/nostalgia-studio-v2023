@@ -5,7 +5,7 @@ import { replace } from './replace';
 import { copy } from './copy';
 import { move } from './move';
 import { increment } from './increment';
-import { JSONPatchOpHandlerMap } from '../types';
+import { type JSONPatchOpHandlerMap } from '../types';
 
 export { test, add, remove, replace, copy, move, increment };
 

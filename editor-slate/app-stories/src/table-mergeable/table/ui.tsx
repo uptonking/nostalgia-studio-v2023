@@ -1,7 +1,7 @@
 import './ui.css';
 
 import React, {
-  HTMLAttributes,
+  type HTMLAttributes,
   useCallback,
   useEffect,
   useMemo,
@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 
 import cx from 'classnames';
-import { Editor, NodeEntry, Transforms } from 'slate';
+import { Editor, type NodeEntry, Transforms } from 'slate';
 import { useSlate, useSlateStatic } from 'slate-react';
 
 import { preventDefault } from '../../../../../utils/dnd-kit/packages/core/src/sensors/events';

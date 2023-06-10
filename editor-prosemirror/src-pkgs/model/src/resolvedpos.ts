@@ -1,5 +1,5 @@
 import { Mark } from './mark';
-import { Node } from './node';
+import { type Node } from './node';
 
 /** You can [_resolve_](#model.Node.resolve) a position to get more
  * information about it. Objects of this class represent such a

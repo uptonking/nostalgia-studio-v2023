@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { BaseEditor, Editor, Element, Node } from 'slate';
+import { BaseEditor, type Editor, Element, type Node } from 'slate';
 
 import { isDefined } from '../../utils';
 

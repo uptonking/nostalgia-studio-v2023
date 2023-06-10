@@ -4,7 +4,12 @@
  */
 
 import { Editor } from 'slate';
-import { ISelectMenu, IDomEditor, DomEditor, IOption } from '@wangeditor/core';
+import {
+  type ISelectMenu,
+  type IDomEditor,
+  DomEditor,
+  type IOption,
+} from '@wangeditor/core';
 
 abstract class BaseMenu implements ISelectMenu {
   abstract readonly title: string;

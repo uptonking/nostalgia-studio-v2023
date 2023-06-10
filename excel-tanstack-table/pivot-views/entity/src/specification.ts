@@ -1,4 +1,4 @@
-import type { Option, Result } from 'oxide.ts';
+import { type Option, type Result } from 'oxide.ts';
 import { None, Some } from 'oxide.ts';
 
 export interface ISpecVisitor {

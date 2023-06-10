@@ -6,12 +6,12 @@
 import { Element } from 'slate';
 
 import { DomEditor } from '../../editor/dom-editor';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 import { isDOMElement, isDOMNode } from '../../utils/dom';
 import { IS_SAFARI } from '../../utils/ua';
 import { IS_FOCUSED } from '../../utils/weak-maps';
 import { hasEditableTarget } from '../helpers';
-import TextArea from '../TextArea';
+import type TextArea from '../TextArea';
 
 function handleOnBlur(e: Event, textarea: TextArea, editor: IDomEditor) {
   const event = e as FocusEvent;

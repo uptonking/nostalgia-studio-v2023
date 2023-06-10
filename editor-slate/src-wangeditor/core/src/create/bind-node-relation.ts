@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { Element, Editor, Node, Ancestor } from 'slate';
-import { IDomEditor } from '../editor/interface';
+import { Element, Editor, Node, type Ancestor } from 'slate';
+import { type IDomEditor } from '../editor/interface';
 import { NODE_TO_INDEX, NODE_TO_PARENT } from '../utils/weak-maps';
 
 /**

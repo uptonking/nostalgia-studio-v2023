@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { Editor, Text, Transforms } from 'slate';
 import { useSlate } from 'slate-react';
 
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { type IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function isFormatActive(editor: Editor, format: string) {

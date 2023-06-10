@@ -1,10 +1,10 @@
-import type {
-  Boundary,
-  ElementContext,
-  MiddlewareState,
-  Padding,
-  RootBoundary,
-  SideObject,
+import {
+  type Boundary,
+  type ElementContext,
+  type MiddlewareState,
+  type Padding,
+  type RootBoundary,
+  type SideObject,
 } from './types';
 import { getSideObjectFromPadding } from './utils/getPaddingObject';
 import { rectToClientRect } from './utils/rectToClientRect';

@@ -5,7 +5,11 @@ import {
   useFloatingParentNodeId,
   useFloatingTree,
 } from '../components/FloatingTree';
-import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import {
+  type ElementProps,
+  type FloatingContext,
+  type ReferenceType,
+} from '../types';
 import { activeElement } from '../utils/activeElement';
 import { contains } from '../utils/contains';
 import { enqueueFocus } from '../utils/enqueueFocus';

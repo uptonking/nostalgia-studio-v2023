@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import { Editor } from 'slate';
+import { type Editor } from 'slate';
 
-import { NosPlugin } from '../plugins/types';
+import { type NosPlugin } from '../plugins/types';
 import { composePlugins } from '../utils/plugins-config-compose';
 
 /** reversely compose plugins with `withOverrides`-not-undefined

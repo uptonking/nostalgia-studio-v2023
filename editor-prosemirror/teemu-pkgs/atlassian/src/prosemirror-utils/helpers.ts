@@ -3,7 +3,7 @@ import {
   Node as PMNode,
   Fragment,
   NodeType,
-  ResolvedPos,
+  type ResolvedPos,
 } from 'prosemirror-model';
 
 export const canInsert = ($pos: ResolvedPos, content: PMNode | Fragment) => {

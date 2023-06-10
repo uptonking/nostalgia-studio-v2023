@@ -1,7 +1,7 @@
-import type { MutableRefObject } from 'react';
+import { type MutableRefObject } from 'react';
 
-import type { RecordAllValues } from '@datalking/pivot-core';
-import type { UniqueIdentifier } from '@dnd-kit/core';
+import { type RecordAllValues } from '@datalking/pivot-core';
+import { type UniqueIdentifier } from '@dnd-kit/core';
 
 export type SensorContext = MutableRefObject<{
   items: FlattenedSortableRecord[];

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 
 import {
   createEditor,
-  Descendant,
+  type Descendant,
   Editor,
   Element as SlateElement,
   Point,

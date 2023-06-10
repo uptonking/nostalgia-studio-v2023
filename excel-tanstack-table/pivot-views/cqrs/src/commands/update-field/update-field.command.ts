@@ -1,8 +1,8 @@
-import { IUpdateFieldSchema } from '@datalking/pivot-core';
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type IUpdateFieldSchema } from '@datalking/pivot-core';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IUpdateFieldCommandInput } from './update-field.command.interface';
+import { type IUpdateFieldCommandInput } from './update-field.command.interface';
 
 export class UpdateFieldCommand
   extends Command

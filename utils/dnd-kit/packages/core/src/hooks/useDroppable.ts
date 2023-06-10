@@ -6,8 +6,8 @@ import {
   useUniqueId,
 } from '@dnd-kit/utilities';
 
-import { InternalContext, Action, Data } from '../store';
-import type { ClientRect, UniqueIdentifier } from '../types';
+import { InternalContext, Action, type Data } from '../store';
+import { type ClientRect, type UniqueIdentifier } from '../types';
 
 import { useResizeObserver } from './utilities';
 

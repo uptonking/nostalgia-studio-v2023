@@ -3,7 +3,7 @@ import {
   Selection,
   TextSelection,
   NodeSelection,
-  Command,
+  type Command,
 } from 'prosemirror-state';
 import {
   schema,
@@ -22,7 +22,7 @@ import {
   liftListItem,
   sinkListItem,
 } from 'prosemirror-schema-list';
-import { Node } from 'prosemirror-model';
+import { type Node } from 'prosemirror-model';
 
 function selFor(doc: Node) {
   const a = (doc as any).tag.a;

@@ -1,8 +1,8 @@
-import { IUserQueryModel } from '@datalking/pivot-core';
-import type { IQueryHandler } from '@datalking/pivot-entity';
+import { type IUserQueryModel } from '@datalking/pivot-core';
+import { type IQueryHandler } from '@datalking/pivot-entity';
 
-import type { IGetMeOutput } from './get-me.query.interface';
-import type { GetMeQuery } from './get-me.query';
+import { type IGetMeOutput } from './get-me.query.interface';
+import { type GetMeQuery } from './get-me.query';
 
 export class GetMeQueryHandler
   implements IQueryHandler<GetMeQuery, IGetMeOutput>

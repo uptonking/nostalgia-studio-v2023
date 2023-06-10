@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { IMenuConfig, ISingleMenuConfig } from '../config/interface';
+import { type IMenuConfig, type ISingleMenuConfig } from '../config/interface';
 
 // 全局的菜单配置
 export const GLOBAL_MENU_CONF: IMenuConfig = {};

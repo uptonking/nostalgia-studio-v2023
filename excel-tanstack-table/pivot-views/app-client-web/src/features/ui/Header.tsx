@@ -31,7 +31,7 @@ import Typography from '@mui/material/Typography';
 
 import { hasRole } from '../../shared/auth';
 import { config } from '../../shared/config';
-import { AppRoute, routes } from '../../shared/routes';
+import { type AppRoute, routes } from '../../shared/routes';
 import { useAppDispatch, useAppSelector } from '../../shared/store';
 import { patch } from '../app/slice';
 import { logoutAsync } from '../app/thunks';

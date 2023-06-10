@@ -1,6 +1,6 @@
-import type { TreeField } from '../field/index';
-import type { IQueryTreeRecords } from './record.type';
-import type { IRecordSpec } from './specifications/index';
+import { type TreeField } from '../field/index';
+import { type IQueryTreeRecords } from './record.type';
+import { type IRecordSpec } from './specifications/index';
 
 export interface IRecordTreeQueryModel {
   findTrees(

@@ -1,4 +1,4 @@
-import { Node as PMNode, Fragment } from 'prosemirror-model';
+import { type Node as PMNode, type Fragment } from 'prosemirror-model';
 
 export type SimplifiedNode = {
   type: string;

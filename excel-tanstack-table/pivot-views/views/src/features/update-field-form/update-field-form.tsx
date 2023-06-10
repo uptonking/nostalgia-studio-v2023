@@ -3,15 +3,15 @@ import React from 'react';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import type {
-  CountField,
-  DateFieldTypes,
-  IUpdateFieldSchema,
-  LookupField,
-  RatingField,
-  ReferenceFieldTypes,
-  SelectField,
-  SumField,
+import {
+  type CountField,
+  type DateFieldTypes,
+  type IUpdateFieldSchema,
+  type LookupField,
+  type RatingField,
+  type ReferenceFieldTypes,
+  type SelectField,
+  type SumField,
 } from '@datalking/pivot-core';
 import { canDisplay, createUpdateFieldSchema } from '@datalking/pivot-core';
 import { useUpdateFieldMutation } from '@datalking/pivot-store';
@@ -35,7 +35,7 @@ import { FieldIcon } from '../field-inputs/field-Icon';
 import { FieldInputLabel } from '../field-inputs/field-input-label';
 import { DisplayFields } from '../field/display-fields';
 import { FieldVariantControl } from '../field/field-variant-control';
-import type { IUpdateFieldProps } from './update-field.props';
+import { type IUpdateFieldProps } from './update-field.props';
 
 export const UpdateFieldForm: React.FC<IUpdateFieldProps> = ({
   field,

@@ -4,10 +4,10 @@ import {
   TreeField,
   WithRecordTableId,
 } from '@datalking/pivot-core';
-import type { IQueryHandler } from '@datalking/pivot-entity';
+import { type IQueryHandler } from '@datalking/pivot-entity';
 
-import type { IGetRecordsTreeOutput } from './get-records-tree.query.interface';
-import type { GetRecordsTreeQuery } from './get-records-tree.query';
+import { type IGetRecordsTreeOutput } from './get-records-tree.query.interface';
+import { type GetRecordsTreeQuery } from './get-records-tree.query';
 
 export class GetRecordsTreeQueryHandler
   implements IQueryHandler<GetRecordsTreeQuery, IGetRecordsTreeOutput>

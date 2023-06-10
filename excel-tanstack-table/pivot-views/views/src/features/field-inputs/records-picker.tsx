@@ -4,7 +4,7 @@ import { uniq } from 'lodash-es';
 
 import { RecordFactory } from '@datalking/pivot-core';
 import { useGetRecordsQuery } from '@datalking/pivot-store';
-import type { MultiSelectProps, SelectItem } from '@datalking/pivot-ui';
+import { type MultiSelectProps, type SelectItem } from '@datalking/pivot-ui';
 import { MultiSelect, useDisclosure } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';

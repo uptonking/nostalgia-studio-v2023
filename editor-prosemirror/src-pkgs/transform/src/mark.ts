@@ -1,7 +1,13 @@
-import { Mark, MarkType, Slice, Fragment, NodeType } from 'prosemirror-model';
+import {
+  type Mark,
+  MarkType,
+  Slice,
+  Fragment,
+  type NodeType,
+} from 'prosemirror-model';
 
-import { Step } from './step';
-import { Transform } from './transform';
+import { type Step } from './step';
+import { type Transform } from './transform';
 import { AddMarkStep, RemoveMarkStep } from './mark_step';
 import { ReplaceStep } from './replace_step';
 

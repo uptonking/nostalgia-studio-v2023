@@ -1,8 +1,8 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { authApi } from '../services';
-import type { RootState } from '../store/reducer';
+import { type RootState } from '../store/reducer';
 
 export interface AuthState {
   token?: string;

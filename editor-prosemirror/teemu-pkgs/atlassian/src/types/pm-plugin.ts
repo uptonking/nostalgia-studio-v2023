@@ -1,12 +1,12 @@
-import { Plugin } from 'prosemirror-state';
-import { Schema } from 'prosemirror-model';
+import { type Plugin } from 'prosemirror-state';
+import { type Schema } from 'prosemirror-model';
 
 // TODO: Check if this circular dependency is still needed or is just legacy
 // eslint-disable-next-line import/no-cycle
-import { EditorConfig } from './editor-config';
-import { Dispatch, EventDispatcher } from '../utils/event-dispatcher';
-import { PortalProviderAPI } from '../react-portals/PortalProviderAPI';
-import { ProviderFactory } from '../provider-factory';
+import { type EditorConfig } from './editor-config';
+import { type Dispatch, type EventDispatcher } from '../utils/event-dispatcher';
+import { type PortalProviderAPI } from '../react-portals/PortalProviderAPI';
+import { type ProviderFactory } from '../provider-factory';
 
 export type PMPluginFactoryParams = {
   schema: Schema;

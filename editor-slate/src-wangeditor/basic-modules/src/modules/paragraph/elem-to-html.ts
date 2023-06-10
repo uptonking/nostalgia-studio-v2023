@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { Element } from 'slate';
+import { type Element } from 'slate';
 
 function pToHtml(elem: Element, childrenHtml: string): string {
   if (childrenHtml === '') {

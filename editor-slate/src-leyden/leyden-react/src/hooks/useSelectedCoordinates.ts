@@ -1,4 +1,4 @@
-import { Coordinates, LeydenEditor } from 'leyden';
+import { type Coordinates, LeydenEditor } from 'leyden';
 import { useEffect, useState } from 'react';
 
 import { useLeydenStatic } from './useLeydenStatic';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import cx from 'clsx';
 
-import type { DraggableSyntheticListeners } from '@dnd-kit/core';
+import { type DraggableSyntheticListeners } from '@dnd-kit/core';
 
 import { DragIcon } from '../../../icons';
 

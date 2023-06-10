@@ -1,7 +1,7 @@
-import type { ICommandBus, IQueryBus } from '@datalking/pivot-entity';
+import { type ICommandBus, type IQueryBus } from '@datalking/pivot-entity';
 
 import { middleware, publicProcedure, router } from '../trpc';
-import type { ILogger } from '../type';
+import { type ILogger } from '../type';
 import { createRecordRouter } from './record.router';
 import { createTableRouter } from './table.router';
 import { createUserRouter } from './user.router';

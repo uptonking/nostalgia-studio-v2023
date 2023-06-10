@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
+import {
+  type IDomEditor,
+  type IEditorConfig,
+  type IToolbarConfig,
+} from '@wangeditor/editor';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 
 import { StyledContainer } from '../wangeditor.styles';

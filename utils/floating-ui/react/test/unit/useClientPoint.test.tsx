@@ -1,4 +1,4 @@
-import type { Coords } from '@floating-ui/react-dom';
+import { type Coords } from '@floating-ui/react-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { useState } from 'react';
 

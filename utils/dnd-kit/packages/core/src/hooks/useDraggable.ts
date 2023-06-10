@@ -1,16 +1,16 @@
 import { createContext, useContext, useMemo } from 'react';
 import {
-  Transform,
+  type Transform,
   useNodeRef,
   useIsomorphicLayoutEffect,
   useLatestValue,
   useUniqueId,
 } from '@dnd-kit/utilities';
 
-import { InternalContext, Data } from '../store';
-import type { UniqueIdentifier } from '../types';
+import { InternalContext, type Data } from '../store';
+import { type UniqueIdentifier } from '../types';
 import { ActiveDraggableContext } from '../components/DndContext';
-import { useSyntheticListeners, SyntheticListenerMap } from './utilities';
+import { useSyntheticListeners, type SyntheticListenerMap } from './utilities';
 
 export interface UseDraggableArguments {
   id: UniqueIdentifier;

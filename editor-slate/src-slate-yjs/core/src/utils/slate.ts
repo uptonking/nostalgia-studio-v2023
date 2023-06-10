@@ -1,4 +1,4 @@
-import { BaseText, Descendant, Text } from 'slate';
+import { type BaseText, type Descendant, Text } from 'slate';
 
 import { omit } from './object';
 

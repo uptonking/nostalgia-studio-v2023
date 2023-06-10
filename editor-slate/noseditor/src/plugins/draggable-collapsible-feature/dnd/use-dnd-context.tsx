@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import type { Element } from 'slate';
+import { type Element } from 'slate';
 
 type DndContextValueType = {
   activeId: string | null;

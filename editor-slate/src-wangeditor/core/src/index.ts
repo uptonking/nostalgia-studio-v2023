@@ -5,15 +5,15 @@
 
 import './assets/index.less';
 
-import type { IDomEditor } from './editor/interface';
-import { IRegisterMenuConf } from './menus/index';
+import { type IDomEditor } from './editor/interface';
+import { type IRegisterMenuConf } from './menus/index';
 import {
-  IParseElemHtmlConf,
-  IPreParseHtmlConf,
-  ParseStyleHtmlFnType,
+  type IParseElemHtmlConf,
+  type IPreParseHtmlConf,
+  type ParseStyleHtmlFnType,
 } from './parse-html/index';
-import { IRenderElemConf, RenderStyleFnType } from './render/index';
-import { IElemToHtmlConf, styleToHtmlFnType } from './to-html/index';
+import { type IRenderElemConf, type RenderStyleFnType } from './render/index';
+import { type IElemToHtmlConf, type styleToHtmlFnType } from './to-html/index';
 
 // 创建
 export * from './create/index';

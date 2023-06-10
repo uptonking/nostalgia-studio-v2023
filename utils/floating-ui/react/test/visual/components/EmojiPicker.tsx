@@ -6,7 +6,7 @@ import {
   FloatingFocusManager,
   FloatingPortal,
   offset,
-  Placement,
+  type Placement,
   useClick,
   useDismiss,
   useFloating,

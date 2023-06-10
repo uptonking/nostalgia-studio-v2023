@@ -1,4 +1,4 @@
-import type { IOptionColor, SelectField } from '@datalking/pivot-core';
+import { type IOptionColor, type SelectField } from '@datalking/pivot-core';
 
 export type ICreateOptionFormProps = {
   field: SelectField;

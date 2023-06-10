@@ -1,25 +1,29 @@
 import {
-  DOMParser,
-  DOMSerializer,
-  Mark,
-  Node,
-  ResolvedPos,
-  Slice,
+  type DOMParser,
+  type DOMSerializer,
+  type Mark,
+  type Node,
+  type ResolvedPos,
+  type Slice,
 } from 'prosemirror-model';
 import {
-  EditorState,
+  type EditorState,
   NodeSelection,
-  Plugin,
-  PluginView,
-  Selection,
-  Transaction,
+  type Plugin,
+  type PluginView,
+  type Selection,
+  type Transaction,
 } from 'prosemirror-state';
 
 import * as browser from './browser';
 // Exported for testing
 import { parseFromClipboard, serializeForClipboard } from './clipboard';
-import { Decoration, DecorationSource, viewDecorations } from './decoration';
-import { DOMNode, DOMSelection } from './dom';
+import {
+  Decoration,
+  type DecorationSource,
+  viewDecorations,
+} from './decoration';
+import { type DOMNode, type DOMSelection } from './dom';
 import { readDOMChange } from './domchange';
 import {
   coordsAtPos,
@@ -45,7 +49,12 @@ import {
   selectionToDOM,
   syncNodeSelection,
 } from './selection';
-import { docViewDesc, NodeView, NodeViewDesc, ViewDesc } from './viewdesc';
+import {
+  docViewDesc,
+  type NodeView,
+  type NodeViewDesc,
+  type ViewDesc,
+} from './viewdesc';
 
 export {
   Decoration,

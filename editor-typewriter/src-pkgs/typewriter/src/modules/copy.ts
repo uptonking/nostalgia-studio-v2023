@@ -1,10 +1,10 @@
 import {
-  EditorRange,
+  type EditorRange,
   normalizeRange,
   TextDocument,
 } from '@typewriter/document';
 
-import type { Editor } from '../editor';
+import { type Editor } from '../editor';
 import { docToHTML, inlineToHTML } from '../rendering/html';
 
 const defaultOptions: CopyOptions = {

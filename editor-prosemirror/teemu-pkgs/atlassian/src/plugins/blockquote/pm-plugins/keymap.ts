@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap';
-import { Plugin } from 'prosemirror-state';
+import { type Plugin } from 'prosemirror-state';
 import { bindKeymapWithCommand, toggleBlockQuote } from '../../../keymaps';
 import { createNewBlockQuote } from '../commands';
 

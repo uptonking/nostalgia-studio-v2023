@@ -1,6 +1,12 @@
-import { Fragment, Mark, Node, Schema, Slice } from 'prosemirror-model';
+import {
+  Fragment,
+  type Mark,
+  type Node,
+  type Schema,
+  Slice,
+} from 'prosemirror-model';
 
-import { Mappable } from './map';
+import { type Mappable } from './map';
 import { Step, StepResult } from './step';
 
 function mapFragment(

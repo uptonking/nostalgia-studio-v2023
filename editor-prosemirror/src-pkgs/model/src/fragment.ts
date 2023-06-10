@@ -1,6 +1,6 @@
 import { findDiffEnd, findDiffStart } from './diff';
-import { Node, TextNode } from './node';
-import { Schema } from './schema';
+import { type Node, type TextNode } from './node';
+import { type Schema } from './schema';
 
 /** A fragment represents a node's collection of child nodes.
  *

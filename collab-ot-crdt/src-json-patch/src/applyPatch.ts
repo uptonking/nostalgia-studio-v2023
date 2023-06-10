@@ -1,7 +1,7 @@
-import type {
-  ApplyJSONPatchOptions,
-  JSONPatchOpHandlerMap,
-  JSONPatchOp,
+import {
+  type ApplyJSONPatchOptions,
+  type JSONPatchOpHandlerMap,
+  type JSONPatchOp,
 } from './types';
 import { exit } from './utils/exit';
 import { runWithObject } from './state';

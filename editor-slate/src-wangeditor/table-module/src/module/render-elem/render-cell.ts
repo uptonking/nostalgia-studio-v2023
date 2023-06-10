@@ -4,13 +4,13 @@
  */
 
 import throttle from 'lodash.throttle';
-import { Element as SlateElement, Location, Transforms } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import { type Element as SlateElement, type Location, Transforms } from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
-import { DomEditor, IDomEditor } from '@wangeditor/core';
+import { DomEditor, type IDomEditor } from '@wangeditor/core';
 
 import $ from '../../utils/dom';
-import { TableCellElement } from '../custom-types';
+import { type TableCellElement } from '../custom-types';
 import { isCellInFirstRow } from '../helpers';
 
 // 拖拽列宽相关信息

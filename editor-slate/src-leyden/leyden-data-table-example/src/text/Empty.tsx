@@ -1,4 +1,4 @@
-import { TextRenderer } from 'leyden-react';
+import { type TextRenderer } from 'leyden-react';
 import React from 'react';
 
 export const Empty: TextRenderer<'Empty'> = ({ attributes, children }) => {

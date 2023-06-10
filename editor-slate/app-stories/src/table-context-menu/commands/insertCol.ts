@@ -1,6 +1,6 @@
 import { Editor, Path, Transforms } from 'slate';
 
-import { TableCellElement, TableElement } from '../customTypes';
+import { type TableCellElement, type TableElement } from '../customTypes';
 import {
   createEmptyCellNode,
   createRowNode,

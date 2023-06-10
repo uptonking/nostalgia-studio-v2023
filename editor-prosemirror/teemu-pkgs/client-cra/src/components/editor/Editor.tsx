@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import debounce from 'lodash.debounce';
 import { inject, observer } from 'mobx-react';
-import { EditorState } from 'prosemirror-state';
+import { type EditorState } from 'prosemirror-state';
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 
 import {
@@ -11,15 +11,15 @@ import {
   Collab,
   ReactEditorContext,
   PortalRenderer,
-  EditorContext,
-  APIProvider,
+  type EditorContext,
+  type APIProvider,
   createDefaultProviders,
 } from '@example/full-v2';
 
 import { DesktopLayout } from './DesktopLayout';
 
-import { Stores } from '../../stores';
-import { DocumentStore } from '../../stores/DocumentStore';
+import { type Stores } from '../../stores';
+import { type DocumentStore } from '../../stores/DocumentStore';
 
 interface IProps {
   className?: string;

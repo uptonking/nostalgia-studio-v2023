@@ -1,7 +1,7 @@
 import { produce } from 'immer';
 
-import { Operation } from '../../src';
-import { TextDirection } from './types';
+import { type Operation } from '../../src';
+import { type TextDirection } from './types';
 
 /**
  * - Paths are the lowest-level way to refer to a location.

@@ -2,10 +2,10 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { arrayMove } from '../utilities';
 
-import type {
-  AnimateLayoutChanges,
-  NewIndexGetter,
-  SortableTransition,
+import {
+  type AnimateLayoutChanges,
+  type NewIndexGetter,
+  type SortableTransition,
 } from './types';
 
 export const defaultNewIndexGetter: NewIndexGetter = ({

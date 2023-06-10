@@ -1,10 +1,10 @@
 import {
   type ITableRepository,
-  ITableSpecHandler,
+  type ITableSpecHandler,
 } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { CreateFieldCommand } from './create-field.command';
+import { type CreateFieldCommand } from './create-field.command';
 
 type ICreateFieldCommandHandler = ICommandHandler<CreateFieldCommand, void>;
 

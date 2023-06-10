@@ -1,4 +1,8 @@
-import { MenuItemRenderProps, MenuItemType, UseMenuItemProps } from './types';
+import {
+  type MenuItemRenderProps,
+  MenuItemType,
+  type UseMenuItemProps,
+} from './types';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { useMenuContext } from './useMenuContext';

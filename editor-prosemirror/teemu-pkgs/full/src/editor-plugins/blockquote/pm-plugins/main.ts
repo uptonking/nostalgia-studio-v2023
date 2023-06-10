@@ -1,13 +1,13 @@
-import { EditorState, Plugin } from 'prosemirror-state';
+import { type EditorState, Plugin } from 'prosemirror-state';
 import { PluginKey } from '../../../core/pm';
 
-import { CommandDispatch } from '../../../core/types';
+import { type CommandDispatch } from '../../../core/types';
 
 import { blockQuoteNodeView } from '../nodeviews/BlockQuoteView';
 import { findBlockQuote } from '../pm-utils/findBlockQuote';
 
-import { BlockQuoteOptions } from '../';
-import { EditorContext } from '../../../core/EditorContext';
+import { type BlockQuoteOptions } from '../';
+import { type EditorContext } from '../../../core/EditorContext';
 
 export interface BlockQuoteState {
   blockQuoteActive: boolean;

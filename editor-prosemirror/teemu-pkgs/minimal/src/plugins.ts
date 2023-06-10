@@ -1,4 +1,4 @@
-import { Plugin } from 'prosemirror-state';
+import { type Plugin } from 'prosemirror-state';
 
 import { history } from 'editor-prosemirror/src-pkgs/history/src';
 import { keymap } from 'prosemirror-keymap';

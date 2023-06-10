@@ -1,4 +1,4 @@
-import type { AppMainStateType } from './types';
+import { type AppMainStateType } from './types';
 
 export const qs = document.querySelector.bind(document);
 export const qsa = document.querySelectorAll.bind(document);

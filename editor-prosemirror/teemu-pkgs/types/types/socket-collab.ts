@@ -1,4 +1,4 @@
-import { ECollabAction } from '../src';
+import { type ECollabAction } from '../src';
 
 export { ECollabAction } from '../src';
 

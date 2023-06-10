@@ -1,15 +1,19 @@
-import { Node as PMNode } from 'prosemirror-model';
+import { type Node as PMNode } from 'prosemirror-model';
 import {
-  Decoration,
-  DecorationSource,
-  EditorView,
-  NodeView,
+  type Decoration,
+  type DecorationSource,
+  type EditorView,
+  type NodeView,
 } from 'prosemirror-view';
 
-import { EditorContext } from '../../../context';
+import { type EditorContext } from '../../../context';
 import { ReactNodeView } from '../../../react';
 import { BlockQuote } from '../ui/BlockQuote';
-import { BlockQuoteOptions, IBlockQuoteAttrs, IViewProps } from '..';
+import {
+  type BlockQuoteOptions,
+  type IBlockQuoteAttrs,
+  type IViewProps,
+} from '..';
 
 export class BlockQuoteView extends ReactNodeView<
   IViewProps,

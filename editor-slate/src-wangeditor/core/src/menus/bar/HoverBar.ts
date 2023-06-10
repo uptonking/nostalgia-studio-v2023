@@ -4,15 +4,15 @@
  */
 
 import debounce from 'lodash.debounce';
-import { Editor, Element, Node, Path, Range, Text } from 'slate';
+import { Editor, Element, type Node, Path, Range, Text } from 'slate';
 
-import type { CustomElement } from '../../../../custom-types';
+import { type CustomElement } from '../../../../custom-types';
 import { DomEditor } from '../../editor/dom-editor';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 import $ from '../../utils/dom';
 import { promiseResolveThen } from '../../utils/util';
 import { BAR_ITEM_TO_EDITOR, HOVER_BAR_TO_EDITOR } from '../../utils/weak-maps';
-import { createBarItem, IBarItem } from '../bar-item/index';
+import { createBarItem, type IBarItem } from '../bar-item/index';
 import { gen$barItemDivider } from '../helpers/helpers';
 import {
   correctPosition,
@@ -20,10 +20,10 @@ import {
   getPositionBySelection,
 } from '../helpers/position';
 import {
-  IButtonMenu,
-  IDropPanelMenu,
-  IModalMenu,
-  ISelectMenu,
+  type IButtonMenu,
+  type IDropPanelMenu,
+  type IModalMenu,
+  type ISelectMenu,
 } from '../interface';
 import { MENU_ITEM_FACTORIES } from '../register';
 

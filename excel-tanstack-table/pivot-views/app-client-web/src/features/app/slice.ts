@@ -1,4 +1,4 @@
-import type { ClientSettings } from '@datalking/pivot-app-shared-lib';
+import { type ClientSettings } from '@datalking/pivot-app-shared-lib';
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { type AppUser, getPersistedAuthFromStorage } from '../../shared/auth';

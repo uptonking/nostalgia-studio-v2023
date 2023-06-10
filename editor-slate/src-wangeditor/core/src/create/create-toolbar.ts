@@ -4,10 +4,10 @@
  */
 
 import { genToolbarConfig } from '../config/index';
-import { IToolbarConfig } from '../config/interface';
-import { IDomEditor } from '../editor/interface';
+import { type IToolbarConfig } from '../config/interface';
+import { type IDomEditor } from '../editor/interface';
 import Toolbar from '../menus/bar/Toolbar';
-import { DOMElement } from '../utils/dom';
+import { type DOMElement } from '../utils/dom';
 import { EDITOR_TO_TOOLBAR, TOOLBAR_TO_EDITOR } from '../utils/weak-maps';
 import { isRepeatedCreateToolbar } from './helper';
 

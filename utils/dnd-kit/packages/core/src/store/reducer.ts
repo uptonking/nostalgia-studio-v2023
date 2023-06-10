@@ -1,6 +1,6 @@
 import { Action, type Actions } from './actions';
 import { DroppableContainersMap } from './constructors';
-import type { State } from './types';
+import { type State } from './types';
 
 export function getInitialState(): State {
   return {

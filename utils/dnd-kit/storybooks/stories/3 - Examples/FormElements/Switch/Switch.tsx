@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {
   DndContext,
-  DragEndEvent,
-  DragOverEvent,
+  type DragEndEvent,
+  type DragOverEvent,
   getClientRect,
-  MeasuringConfiguration,
+  type MeasuringConfiguration,
   PointerSensor,
   useSensor,
   useSensors,

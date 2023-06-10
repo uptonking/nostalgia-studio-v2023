@@ -1,4 +1,4 @@
-import { FloatingContext } from '../../src/types';
+import { type FloatingContext } from '../../src/types';
 import { getChildren } from '../../src/utils/getChildren';
 
 const contextOpen = { open: true } as FloatingContext;

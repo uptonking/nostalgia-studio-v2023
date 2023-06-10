@@ -1,4 +1,4 @@
-import type { BoxProps } from '@mantine/core';
+import { type BoxProps } from '@mantine/core';
 import { Box } from '@mantine/core';
 
 export const Square: React.FC<BoxProps> = (props) => {

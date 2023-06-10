@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { IDropPanelMenu } from '../interface';
+import { type IDropPanelMenu } from '../interface';
 import BaseButton from './BaseButton';
 import DropPanel from '../panel-and-modal/DropPanel';
 import { gen$downArrow } from '../helpers/helpers';

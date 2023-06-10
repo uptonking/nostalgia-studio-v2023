@@ -2,18 +2,18 @@ import React, { useMemo, useState } from 'react';
 
 import cx from 'clsx';
 
-import type {
-  DragEndEvent,
-  DragStartEvent,
-  MeasuringConfiguration,
-  UniqueIdentifier,
+import {
+  type DragEndEvent,
+  type DragStartEvent,
+  type MeasuringConfiguration,
+  type UniqueIdentifier,
 } from '@dnd-kit/core';
 import {
   closestCenter,
   defaultDropAnimationSideEffects,
   DndContext,
   DragOverlay,
-  DropAnimation,
+  type DropAnimation,
   KeyboardSensor,
   MeasuringStrategy,
   PointerSensor,
@@ -30,7 +30,7 @@ import {
 import { CSS, isKeyboardEvent } from '@dnd-kit/utilities';
 
 import { createRange } from '../../utils';
-import { Layout, Page, type PageProps, Position } from './page';
+import { type Layout, Page, type PageProps, Position } from './page';
 import pageStyles from './page.module.scss';
 import styles from './pages.module.scss';
 

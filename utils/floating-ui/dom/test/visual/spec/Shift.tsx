@@ -1,5 +1,5 @@
-import type { Placement } from '@floating-ui/core';
-import type { LimitShiftOptions } from '@floating-ui/core';
+import { type Placement } from '@floating-ui/core';
+import { type LimitShiftOptions } from '@floating-ui/core';
 import {
   limitShift as limitShiftFn,
   offset,

@@ -3,11 +3,11 @@
  * @author wangfupeng
  */
 
-import { Element as SlateElement } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import { type Element as SlateElement } from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
-import { IDomEditor } from '../../editor/interface';
-import { RENDER_ELEM_CONF, RenderElemFnType } from '../index';
+import { type IDomEditor } from '../../editor/interface';
+import { RENDER_ELEM_CONF, type RenderElemFnType } from '../index';
 
 /**
  * 默认的 render elem

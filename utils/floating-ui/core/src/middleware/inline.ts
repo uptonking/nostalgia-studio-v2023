@@ -1,4 +1,4 @@
-import type { ClientRectObject, Middleware, Padding } from '../types';
+import { type ClientRectObject, type Middleware, type Padding } from '../types';
 import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
 import { getSideObjectFromPadding } from '../utils/getPaddingObject';
 import { getSide } from '../utils/getSide';

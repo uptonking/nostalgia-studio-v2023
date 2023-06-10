@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { IDomEditor } from '../../editor/interface';
-import { Dom7Array, DOMElement } from '../../utils/dom';
+import { type IDomEditor } from '../../editor/interface';
+import { type Dom7Array, type DOMElement } from '../../utils/dom';
 import {
   EDITOR_TO_PANEL_AND_MODAL,
   PANEL_OR_MODAL_TO_EDITOR,

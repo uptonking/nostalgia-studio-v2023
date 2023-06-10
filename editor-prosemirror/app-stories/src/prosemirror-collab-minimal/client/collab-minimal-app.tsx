@@ -11,7 +11,7 @@ import { DOMParser, type Node, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
 import { EditorState } from 'prosemirror-state';
-import type { Step } from 'prosemirror-transform';
+import { type Step } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
 import { io, type Socket } from 'socket.io-client';
 

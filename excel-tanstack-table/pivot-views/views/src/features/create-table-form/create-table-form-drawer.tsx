@@ -6,7 +6,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { DEFAULT_TABLE_EMOJI } from '@datalking/pivot-core';
-import type { ICreateTableInput } from '@datalking/pivot-cqrs';
+import { type ICreateTableInput } from '@datalking/pivot-cqrs';
 import { createTableCommandInput } from '@datalking/pivot-cqrs';
 import { Drawer } from '@datalking/pivot-ui';
 import { DevTool } from '@hookform/devtools';

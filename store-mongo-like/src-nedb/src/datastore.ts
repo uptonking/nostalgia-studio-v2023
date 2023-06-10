@@ -6,11 +6,11 @@ import { Executor } from './executor';
 import { Index } from './indexes';
 import * as model from './model';
 import { Persistence } from './persistence';
-import type {
-  DataStoreOptionsProps,
-  EnsureIndexOptions,
+import {
+  type DataStoreOptionsProps,
+  type EnsureIndexOptions,
 } from './types/datastore';
-import { PersistenceOptionsProps } from './types/datastore';
+import { type PersistenceOptionsProps } from './types/datastore';
 import { isDate } from './utils';
 import { uid } from './utils-polyfillable';
 

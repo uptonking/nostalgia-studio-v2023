@@ -1,6 +1,6 @@
 import './ContextMenu.scss';
 
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { type FC, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import { Editor, Path } from 'slate';
@@ -11,7 +11,7 @@ import { insertColLeft, insertColRight } from '../commands/insertCol';
 import { insertRowAbove, insertRowBelow } from '../commands/insertRow';
 import { mergeCells } from '../commands/mergeCells';
 import { splitCells } from '../commands/splitCells';
-import { TableCellElement } from '../customTypes';
+import { type TableCellElement } from '../customTypes';
 import { getCellBySelectOrFocus, setTableNodeOrigin } from '../utils/common';
 
 interface Props {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import type { User } from '@datalking/pivot-app-shared-lib';
+import { type User } from '@datalking/pivot-app-shared-lib';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
   Alert,

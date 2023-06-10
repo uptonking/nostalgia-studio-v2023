@@ -1,4 +1,4 @@
-import { Editor, NodeEntry, Transforms } from 'slate';
+import { type Editor, type NodeEntry, Transforms } from 'slate';
 
 export function removeTable(table: NodeEntry, editor: Editor) {
   if (editor && table) {

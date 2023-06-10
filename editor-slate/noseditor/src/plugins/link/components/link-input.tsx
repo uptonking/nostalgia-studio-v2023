@@ -15,7 +15,7 @@ import {
 } from '../../../components';
 import { themed } from '../../../styles/theme-vars';
 import { removeLink, updateLink } from '../commands';
-import type { LinkElementType } from '../types';
+import { type LinkElementType } from '../types';
 
 type LinkInputProps = {
   linkElement: LinkElementType;

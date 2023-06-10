@@ -1,11 +1,11 @@
 import { Editor, Element } from 'slate';
 
-import type {
-  BulletedListItemElement,
-  CheckboxListItemElement,
-  ListItemElement,
-  ListItemType,
-  NumberedListItemElement,
+import {
+  type BulletedListItemElement,
+  type CheckboxListItemElement,
+  type ListItemElement,
+  type ListItemType,
+  type NumberedListItemElement,
 } from './types';
 
 export const ListItemSpec: ListItemType = 'listItem';

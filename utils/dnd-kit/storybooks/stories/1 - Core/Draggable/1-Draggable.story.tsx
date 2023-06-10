@@ -3,9 +3,9 @@ import React, {useMemo, useState} from 'react';
 import {
   DndContext,
   KeyboardSensor,
-  Modifiers,
+  type Modifiers,
   MouseSensor,
-  PointerActivationConstraint,
+  type PointerActivationConstraint,
   TouchSensor,
   useDraggable,
   useSensor,
@@ -18,7 +18,7 @@ import {
   restrictToWindowEdges,
   snapCenterToCursor,
 } from '@dnd-kit/modifiers';
-import type {Coordinates} from '@dnd-kit/utilities';
+import {type Coordinates} from '@dnd-kit/utilities';
 
 import {
   Axis,

@@ -7,9 +7,9 @@ import {
   useAnnouncement,
 } from '@dnd-kit/accessibility';
 
-import { DndMonitorListener, useDndMonitor } from '../DndMonitor';
+import { type DndMonitorListener, useDndMonitor } from '../DndMonitor';
 
-import type { Announcements, ScreenReaderInstructions } from './types';
+import { type Announcements, type ScreenReaderInstructions } from './types';
 import {
   defaultAnnouncements,
   defaultScreenReaderInstructions,

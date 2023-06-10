@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { Editor } from 'slate';
+import { type Editor } from 'slate';
 import { jsx } from '../../../../../support/jsx';
 
 export const input = (

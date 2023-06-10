@@ -2,21 +2,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Stripe from 'stripe';
 import {
-  Cart,
-  CheckoutRequest,
+  type Cart,
+  type CheckoutRequest,
   OrderStatus,
-  Price,
-  Product,
-  User,
+  type Price,
+  type Product,
+  type User,
 } from '@datalking/pivot-app-shared-lib';
-import express from 'express';
+import type express from 'express';
 import logger from 'src/shared/logger';
-import { CartModel, EnrichedRequest, UserModel } from '../../shared/types';
+import { CartModel, type EnrichedRequest, UserModel } from '../../shared/types';
 import { OrderModel } from '../../shared/types/models/order';
 import config from 'src/shared/config';
 import { ProductModel } from 'src/shared/types/models/product';
 import Connection from 'src/shared/db';
-import { Model } from 'sequelize';
+import { type Model } from 'sequelize';
 
 async function getTotalCharge(userId: string) {
   const items = (await CartModel.findAll({

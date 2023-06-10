@@ -1,4 +1,4 @@
-import type { Field } from '@datalking/pivot-core';
+import { type Field } from '@datalking/pivot-core';
 
 export type IUpdateFieldProps = {
   field: Field;

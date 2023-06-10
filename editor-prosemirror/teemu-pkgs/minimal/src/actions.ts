@@ -1,4 +1,4 @@
-import { EditorState, Transaction } from 'prosemirror-state';
+import { type EditorState, type Transaction } from 'prosemirror-state';
 
 export function createNewBlockQuote(
   state: EditorState,

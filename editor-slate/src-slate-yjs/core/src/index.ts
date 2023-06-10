@@ -1,4 +1,4 @@
-import type { RelativeRange } from './model/types';
+import { type RelativeRange } from './model/types';
 import {
   CursorEditor,
   type CursorState,

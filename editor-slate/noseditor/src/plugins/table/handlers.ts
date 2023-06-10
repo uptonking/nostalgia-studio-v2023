@@ -1,7 +1,7 @@
-import React from 'react';
+import type React from 'react';
 
 import isHotkey from 'is-hotkey';
-import { Editor, Path, Range, Transforms } from 'slate';
+import { type Editor, Path, Range, Transforms } from 'slate';
 
 export const onKeyDown = (editor: Editor) => (e: React.KeyboardEvent) => {
   editor.emit('keydown', e);

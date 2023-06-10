@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { MenuItemProps } from './types';
+import { type MenuItemProps } from './types';
 import { useMenuItem } from './useMenuItem';
 
 export function MenuItem<

@@ -2,9 +2,9 @@ import React, { forwardRef } from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import type { TreeField } from '@datalking/pivot-core';
+import { type TreeField } from '@datalking/pivot-core';
 import { useTreeAvailableQuery } from '@datalking/pivot-store';
-import type { MultiSelectProps } from '@datalking/pivot-ui';
+import { type MultiSelectProps } from '@datalking/pivot-ui';
 import { Group, Loader, MultiSelect, useDisclosure } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';

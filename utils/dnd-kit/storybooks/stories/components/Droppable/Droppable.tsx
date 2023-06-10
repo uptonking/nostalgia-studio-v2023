@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import React from 'react';
 
-import {UniqueIdentifier, useDroppable} from '@dnd-kit/core';
+import {type UniqueIdentifier, useDroppable} from '@dnd-kit/core';
 
 import styles from './Droppable.module.css';
 import {droppable} from './droppable-svg';

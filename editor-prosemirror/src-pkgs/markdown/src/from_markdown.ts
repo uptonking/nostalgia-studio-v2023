@@ -1,12 +1,12 @@
 // @ts-ignore
 import markdownit from 'markdown-it';
 import {
-  Attrs,
+  type Attrs,
   Mark,
-  MarkType,
-  Node,
-  NodeType,
-  Schema,
+  type MarkType,
+  type Node,
+  type NodeType,
+  type Schema,
 } from 'prosemirror-model';
 
 import { schema } from './schema';

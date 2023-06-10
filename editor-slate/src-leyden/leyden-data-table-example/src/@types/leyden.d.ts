@@ -1,6 +1,6 @@
-import { Element, Text } from 'leyden';
+import { type Element, type Text } from 'leyden';
 
-import { CSI, UOM } from '../types';
+import { type CSI, type UOM } from '../types';
 
 declare module 'leyden' {
   interface CustomTypes {

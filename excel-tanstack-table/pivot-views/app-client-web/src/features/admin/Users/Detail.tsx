@@ -15,7 +15,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import { Drawing, User } from '@datalking/pivot-app-shared-lib';
+import { type Drawing, type User } from '@datalking/pivot-app-shared-lib';
 import React from 'react';
 import { useGet } from '../../app';
 import { BlurBackdrop } from '../../ui/BlurBackdrop';

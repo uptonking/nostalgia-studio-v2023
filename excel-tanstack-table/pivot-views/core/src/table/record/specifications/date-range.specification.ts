@@ -1,9 +1,9 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 import { DateRangeFieldValue } from '../../field/date-range-field-value';
-import type { IDateRangeFieldValue } from '../../field/index';
-import type { Record } from '../record';
-import type { IRecordVisitor } from './interface';
+import { type IDateRangeFieldValue } from '../../field/index';
+import { type Record } from '../record';
+import { type IRecordVisitor } from './interface';
 import { BaseRecordSpecification } from './record-specification.base';
 
 export class DateRangeEqual extends BaseRecordSpecification<DateRangeFieldValue> {

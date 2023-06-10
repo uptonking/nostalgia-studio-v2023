@@ -19,7 +19,7 @@ import { useIsomorphicLayoutEffect } from '../../hooks/use-isomorphic-layout-eff
 import { ReadOnlyContext } from '../../hooks/use-read-only';
 import { useSlate } from '../../hooks/use-slate';
 import {
-  DOMElement,
+  type DOMElement,
   getClipboardData,
   getDefaultView,
   isDOMElement,
@@ -39,7 +39,7 @@ import {
 } from '../../utils/weak-maps';
 import {
   defaultDecorate,
-  EditableProps,
+  type EditableProps,
   hasEditableTarget,
   hasTarget,
   isDOMEventHandled,

@@ -1,4 +1,4 @@
-import type { Table } from '../table';
+import { type Table } from '../table';
 import { createFieldSchema, updateFieldSchema } from './field.type';
 
 export const createCreateFieldSchema = (table: Table) => {

@@ -16,7 +16,7 @@ import {
   ListItemText,
   ListItemButton,
 } from '@mui/material';
-import { User } from '@datalking/pivot-app-shared-lib';
+import { type User } from '@datalking/pivot-app-shared-lib';
 
 export function UserEdit({ user }: { user?: User }): JSX.Element {
   const submitHandler = function (e: React.FormEvent<HTMLFormElement>) {

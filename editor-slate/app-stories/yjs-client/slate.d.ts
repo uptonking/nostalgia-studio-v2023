@@ -1,6 +1,6 @@
-import { RemoteCursorDecoratedRange } from '@slate-yjs/react';
-import { BaseRange } from 'slate';
-import { CursorData } from './types';
+import { type RemoteCursorDecoratedRange } from '@slate-yjs/react';
+import { type BaseRange } from 'slate';
+import { type CursorData } from './types';
 
 declare module 'slate' {
   interface CustomTypes {

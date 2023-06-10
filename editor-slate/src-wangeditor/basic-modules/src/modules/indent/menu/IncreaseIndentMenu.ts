@@ -4,11 +4,11 @@
  */
 
 import { Transforms, Element, Editor, Text } from 'slate';
-import { IDomEditor, t, DomEditor } from '@wangeditor/core';
+import { type IDomEditor, t, DomEditor } from '@wangeditor/core';
 import BaseMenu from './BaseMenu';
 import { INDENT_RIGHT_SVG } from '../../../constants/icon-svg';
-import { IndentElement } from '../custom-types';
-import type { FontSizeAndFamilyText } from '../../font-size-family/custom-types';
+import { type IndentElement } from '../custom-types';
+import { type FontSizeAndFamilyText } from '../../font-size-family/custom-types';
 
 class IncreaseIndentMenu extends BaseMenu {
   readonly title = t('indent.increase');

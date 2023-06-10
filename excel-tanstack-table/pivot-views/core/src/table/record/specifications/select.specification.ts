@@ -1,8 +1,8 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 import { SelectFieldValue } from '../../field/select-field-value';
-import type { Record } from '../record';
-import type { IRecordVisitor } from './interface';
+import { type Record } from '../record';
+import { type IRecordVisitor } from './interface';
 import {
   BaseRecordQuerySpecification,
   BaseRecordSpecification,

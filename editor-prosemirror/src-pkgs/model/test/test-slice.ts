@@ -1,5 +1,5 @@
 import { doc, p, li, ul, em, a, blockquote } from 'prosemirror-test-builder';
-import { Node } from 'prosemirror-model';
+import { type Node } from 'prosemirror-model';
 import ist from 'ist';
 
 describe('Node', () => {

@@ -1,11 +1,11 @@
 import { Element } from 'slate';
 
-import { Keys } from '../utils/types';
+import { type Keys } from '../utils/types';
 import {
-  ExtendableTypeIsExtended,
-  ExtendedCellArgsType,
-  ExtendedCellType,
-  ExtendedType,
+  type ExtendableTypeIsExtended,
+  type ExtendedCellArgsType,
+  type ExtendedCellType,
+  type ExtendedType,
   extendableComponentDefaultKey,
 } from './CustomTypes';
 import { Text } from './Text';

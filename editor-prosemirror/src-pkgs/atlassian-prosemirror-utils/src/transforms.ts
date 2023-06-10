@@ -1,14 +1,15 @@
-import { NodeSelection, Selection } from 'prosemirror-state';
 import { Fragment } from 'prosemirror-model';
-import { findParentNodeOfType, findPositionOfNodeBefore } from './selection';
+import { NodeSelection, Selection } from 'prosemirror-state';
+
 import {
-  cloneTr,
-  isNodeSelection,
-  replaceNodeAtPos,
-  removeNodeAtPos,
   canInsert,
+  cloneTr,
   isEmptyParagraph,
+  isNodeSelection,
+  removeNodeAtPos,
+  replaceNodeAtPos,
 } from './helpers';
+import { findParentNodeOfType, findPositionOfNodeBefore } from './selection';
 
 // :: (nodeType: union<NodeType, [NodeType]>) → (tr: Transaction) → Transaction
 // Returns a new transaction that removes a node of a given `nodeType`. It will return an original transaction if parent node hasn't been found.
@@ -229,7 +230,7 @@ export const setParentNodeMarkup = (nodeType, type, attrs, marks) => (tr) => {
 };
 
 // :: (nodeType: union<NodeType, [NodeType]>) → (tr: Transaction) → Transaction
-// Returns a new transaction that sets a `NodeSelection` on a parent node of a `given nodeType`.
+// Returns a new transaction that sets a `NodeSelection` on a parent node of a `given nodeType`.
 //
 // ```javascript
 // dispatch(

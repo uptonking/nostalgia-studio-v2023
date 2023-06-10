@@ -1,5 +1,5 @@
 import { Editor } from 'slate';
-import { ReactEditor } from 'slate-react';
+import { type ReactEditor } from 'slate-react';
 
 import { getClipboardPlainText } from './get-clipboard-plain-text';
 import { patchCopiedClipboardHtml } from './patch-copied-clipboard-html';

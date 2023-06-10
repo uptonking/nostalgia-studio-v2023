@@ -1,4 +1,4 @@
-import { NodeViewProps } from '../../react';
+import { type NodeViewProps } from '../../react';
 
 export interface BlockQuoteOptions {}
 export interface IViewProps {

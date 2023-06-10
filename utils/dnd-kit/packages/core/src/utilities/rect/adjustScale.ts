@@ -1,5 +1,5 @@
-import type { Transform } from '@dnd-kit/utilities';
-import type { ClientRect } from '../../types';
+import { type Transform } from '@dnd-kit/utilities';
+import { type ClientRect } from '../../types';
 
 export function adjustScale(
   transform: Transform,

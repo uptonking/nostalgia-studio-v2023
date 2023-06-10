@@ -9,8 +9,8 @@ import {
 import { keymapPlugin } from './pm-plugins/keymap';
 import * as keymaps from '../../core/keymaps';
 
-import { NodeViewProps } from '../../react/ReactNodeView';
-import { EditorPlugin, PMPluginFactory } from '../../core/types';
+import { type NodeViewProps } from '../../react/ReactNodeView';
+import { type EditorPlugin, type PMPluginFactory } from '../../core/types';
 
 export interface BlockQuoteOptions {}
 export interface IViewProps {

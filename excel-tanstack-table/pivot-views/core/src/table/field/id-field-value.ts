@@ -1,6 +1,6 @@
 import { FieldValueBase } from './field-value.base';
-import type { IFieldValueVisitor } from './field-value.visitor';
-import type { IIdFieldValue } from './id-field.type';
+import { type IFieldValueVisitor } from './field-value.visitor';
+import { type IIdFieldValue } from './id-field.type';
 
 export class IdFieldValue extends FieldValueBase<IIdFieldValue> {
   constructor(value: IIdFieldValue) {

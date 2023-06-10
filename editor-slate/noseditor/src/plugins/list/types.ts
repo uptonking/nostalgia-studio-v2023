@@ -1,10 +1,10 @@
-import { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
-import type {
-  CollapsibleElement,
-  NestableElement,
+import {
+  type CollapsibleElement,
+  type NestableElement,
 } from '../draggable-collapsible-feature/types';
-import type { ListVariants } from './utils';
+import { type ListVariants } from './utils';
 
 export type ListItemType = 'listItem';
 

@@ -4,7 +4,7 @@ import { Element } from 'slate';
 import { ReactEditor, useSlate } from 'slate-react';
 
 import { getClientRect } from '@dnd-kit/core';
-import { Transform } from '@dnd-kit/utilities';
+import { type Transform } from '@dnd-kit/utilities';
 
 import {
   DraggableCollapsibleEditor,

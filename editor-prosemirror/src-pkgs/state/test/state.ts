@@ -3,10 +3,10 @@ import {
   Selection,
   TextSelection,
   NodeSelection,
-  Command,
-  Transaction,
+  type Command,
+  type Transaction,
 } from 'prosemirror-state';
-import { Node, Schema } from 'prosemirror-model';
+import { type Node, type Schema } from 'prosemirror-model';
 
 // Wrapper object to make writing state tests easier.
 

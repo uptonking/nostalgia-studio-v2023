@@ -5,9 +5,9 @@ export * from './models/cart';
 export * from './models/order';
 export * from './models/subscription';
 
-import express from 'express';
-import { JwtPayload } from 'jsonwebtoken';
-import { EntityConfig } from '../db';
+import type express from 'express';
+import { type JwtPayload } from 'jsonwebtoken';
+import { type EntityConfig } from '../db';
 
 export interface AppAccessToken extends JwtPayload {
   userId: string;

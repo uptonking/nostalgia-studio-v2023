@@ -1,5 +1,5 @@
-import type { Drawing } from './drawing';
-import type { Price, Product } from './product';
+import { type Drawing } from './drawing';
+import { type Price, type Product } from './product';
 
 export const CartType = {
   PRODUCT: 'product',

@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { Text, Descendant } from 'slate';
-import { StyledText } from './custom-types';
+import { Text, type Descendant } from 'slate';
+import { type StyledText } from './custom-types';
 import $, { getOuterHTML, getTagName, isPlainText } from '../../utils/dom';
 
 //【注意】color bgColor fontSize fontFamily 在另外的菜单

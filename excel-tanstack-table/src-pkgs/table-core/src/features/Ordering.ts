@@ -1,5 +1,11 @@
-import type { TableFeature } from '../core/table';
-import type { Column, OnChangeFn, RowData, Table, Updater } from '../types';
+import { type TableFeature } from '../core/table';
+import {
+  type Column,
+  type OnChangeFn,
+  type RowData,
+  type Table,
+  type Updater,
+} from '../types';
 import { makeStateUpdater, memo } from '../utils';
 import { orderColumns } from './Grouping';
 

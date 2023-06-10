@@ -1,4 +1,4 @@
-import type { JSONPatchOpHandlerMap, Root } from './types';
+import { type JSONPatchOpHandlerMap, type Root } from './types';
 
 export let root: Root | null;
 export let cache: Set<any> | null;

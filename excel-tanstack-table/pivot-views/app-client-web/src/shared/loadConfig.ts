@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import type { ClientConfig } from '@datalking/pivot-app-shared-lib';
+import { type ClientConfig } from '@datalking/pivot-app-shared-lib';
 
 import { patch } from '../features/app';
 import config from './config';

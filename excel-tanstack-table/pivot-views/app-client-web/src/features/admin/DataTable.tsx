@@ -4,17 +4,20 @@ import React from 'react';
 
 import _ from 'lodash';
 
-import { GridPatchProps, PagedResult } from '@datalking/pivot-app-shared-lib';
+import {
+  type GridPatchProps,
+  type PagedResult,
+} from '@datalking/pivot-app-shared-lib';
 import { Box, useTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import {
   DataGrid,
-  GridColDef,
-  GridEventListener,
+  type GridColDef,
+  type GridEventListener,
   GridSelectionModel,
 } from '@mui/x-data-grid';
 
-import type { PagingProps } from './Data';
+import { type PagingProps } from './Data';
 
 const excluded = ['history'];
 

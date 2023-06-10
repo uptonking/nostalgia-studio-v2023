@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Translation } from 'react-i18next';
 
-import type { OpenConfirmModal } from '@datalking/pivot-ui';
+import { type OpenConfirmModal } from '@datalking/pivot-ui';
 import { modalStyles, openConfirmModal, Text } from '@datalking/pivot-ui';
 
 export const confirmModal = (props: OpenConfirmModal) => {

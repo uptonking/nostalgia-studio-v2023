@@ -1,7 +1,7 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 
-import type { UserSpecification } from './specifications/interface';
-import type { User } from './user';
+import { type UserSpecification } from './specifications/interface';
+import { type User } from './user';
 
 export interface IUserRepository {
   insert(user: User): Promise<void>;

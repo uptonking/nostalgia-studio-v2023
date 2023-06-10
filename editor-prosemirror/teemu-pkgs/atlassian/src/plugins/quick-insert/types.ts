@@ -1,4 +1,7 @@
-import { QuickInsertItem, QuickInsertProvider } from '../../provider-factory';
+import {
+  type QuickInsertItem,
+  type QuickInsertProvider,
+} from '../../provider-factory';
 
 export type QuickInsertOptions =
   | boolean

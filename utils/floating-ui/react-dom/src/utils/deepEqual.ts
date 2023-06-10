@@ -13,7 +13,9 @@ export function deepEqual(a: any, b: any) {
     return true;
   }
 
-  let length, i, keys;
+  let length;
+  let i;
+  let keys;
 
   if (a && b && typeof a == 'object') {
     if (Array.isArray(a)) {

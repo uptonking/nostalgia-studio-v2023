@@ -1,4 +1,4 @@
-import { Table, RowModel, Row, RowData } from '../types';
+import { type Table, type RowModel, type Row, type RowData } from '../types';
 import { memo } from '../utils';
 import { filterRows } from './filterRowsUtils';
 

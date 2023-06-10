@@ -1,11 +1,11 @@
 import { createReactExtension } from './createReactExtension';
 
 import { BaseExtension, baseSchema } from './base';
-import type { BaseExtensionProps } from './base';
+import { type BaseExtensionProps } from './base';
 import { BlockQuoteExtension, blockQuoteSchema } from './blockquote';
-import type { BlockQuoteExtensionProps } from './blockquote';
+import { type BlockQuoteExtensionProps } from './blockquote';
 import { CollabExtension } from './collab';
-import type { CollabExtensionProps } from './collab';
+import { type CollabExtensionProps } from './collab';
 
 export const Base = createReactExtension<BaseExtensionProps>(BaseExtension);
 export const BlockQuote =

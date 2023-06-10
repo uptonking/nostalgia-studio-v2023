@@ -1,4 +1,4 @@
-import { EditorState } from 'prosemirror-state';
+import { type EditorState } from 'prosemirror-state';
 
 import { Extension, IExtensionSchema } from '../Extension';
 import { blockquote, blockQuoteSchema } from './nodes/blockquote';

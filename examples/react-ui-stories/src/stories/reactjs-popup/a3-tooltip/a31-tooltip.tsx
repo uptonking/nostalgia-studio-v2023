@@ -1,5 +1,5 @@
 import React from 'react';
-import { Popup, PopupActions, PopupProps } from 'reactjs-popup';
+import { Popup, PopupActions, type PopupProps } from 'reactjs-popup';
 
 import { Button, Center, Content } from '../components';
 

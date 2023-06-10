@@ -1,7 +1,10 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
-import { GridPatchProps, PagedResult } from '@datalking/pivot-app-shared-lib';
+import {
+  GridPatchProps,
+  type PagedResult,
+} from '@datalking/pivot-app-shared-lib';
 import { get } from '../app';
 import { patch } from './slice';
 

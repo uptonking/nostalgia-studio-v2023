@@ -11,7 +11,7 @@ import { createNewPmBlockQuote, splitBlock } from './commands/general';
 
 import { basePluginFactory, basePluginKey } from './pm-plugins/main';
 
-import { EditorPlugin, PMPluginFactory } from '../../core/types';
+import { type EditorPlugin, type PMPluginFactory } from '../../core/types';
 // import { keymap } from '../../utils/keymap';
 
 export { basePluginKey } from './pm-plugins/main';

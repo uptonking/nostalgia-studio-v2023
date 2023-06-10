@@ -4,7 +4,7 @@ import memoizeOne from 'memoize-one';
 import { $Shape } from 'utility-types';
 
 import { getRTLOffsetType } from './domHelpers';
-import { cancelTimeout, requestTimeout, TimeoutID } from './timer';
+import { cancelTimeout, requestTimeout, type TimeoutID } from './timer';
 
 export type ScrollToAlign = 'auto' | 'smart' | 'center' | 'start' | 'end';
 

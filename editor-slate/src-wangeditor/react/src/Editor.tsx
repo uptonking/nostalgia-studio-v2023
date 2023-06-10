@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import {
   createEditor,
-  IDomEditor,
-  IEditorConfig,
-  SlateDescendant,
+  type IDomEditor,
+  type IEditorConfig,
+  type SlateDescendant,
 } from '@wangeditor/editor';
 
 interface IProps {

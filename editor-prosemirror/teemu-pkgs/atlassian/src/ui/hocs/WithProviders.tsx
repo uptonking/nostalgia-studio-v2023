@@ -1,9 +1,9 @@
-import { PureComponent, ReactNode } from 'react';
+import { PureComponent, type ReactNode } from 'react';
 
 import {
-  ProviderFactory,
-  ProviderName,
-  Providers,
+  type ProviderFactory,
+  type ProviderName,
+  type Providers,
 } from '../../provider-factory';
 
 export interface Props {

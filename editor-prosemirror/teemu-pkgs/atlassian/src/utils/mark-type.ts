@@ -1,8 +1,8 @@
 import { toggleMark } from 'prosemirror-commands';
 import {
   Fragment,
-  Mark as PMMark,
-  MarkType,
+  type Mark as PMMark,
+  type MarkType,
   Node,
   NodeRange,
   NodeType,
@@ -12,10 +12,10 @@ import {
 } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import {
-  EditorState,
+  type EditorState,
   NodeSelection,
   Selection,
-  TextSelection,
+  type TextSelection,
   Transaction,
 } from 'prosemirror-state';
 

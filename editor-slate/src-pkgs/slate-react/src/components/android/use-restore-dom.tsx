@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { Node as SlateNode, Path } from 'slate';
+import type React from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { type Node as SlateNode, Path } from 'slate';
 import { ReactEditor, useSlateStatic } from '../..';
-import { DOMNode, isDOMElement } from '../../utils/dom';
+import { type DOMNode, isDOMElement } from '../../utils/dom';
 import { ELEMENT_TO_NODE, NODE_TO_RESTORE_DOM } from '../../utils/weak-maps';
 import { useMutationObserver } from './use-mutation-observer';
 

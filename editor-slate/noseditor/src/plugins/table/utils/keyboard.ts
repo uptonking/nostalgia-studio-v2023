@@ -1,12 +1,12 @@
 import { Editor, Path, type Point, Transforms } from 'slate';
 
 import { isCursorOnFirstLine, isCursorOnLastLine } from '../queries';
-import type {
-  TableCellElement,
-  TableElement,
-  WithTableEditor as CustomEditor,
+import {
+  type TableCellElement,
+  type TableElement,
+  type WithTableEditor as CustomEditor,
 } from '../types';
-import { Direction } from '../types';
+import { type Direction } from '../types';
 import {
   createEmptyCellNode,
   createRowNode,

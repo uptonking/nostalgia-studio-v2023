@@ -4,8 +4,8 @@ import { css } from '@linaria/core';
 
 import { ParagraphBase } from '../../../components';
 import { type TextAlignValueType } from '../../../utils';
-import type { ElementProps } from '../../types';
-import type { ParagraphElement } from '../types';
+import { type ElementProps } from '../../types';
+import { type ParagraphElement } from '../types';
 
 type TextAlignCssValue = 'start' | 'center' | 'end' | 'justify';
 

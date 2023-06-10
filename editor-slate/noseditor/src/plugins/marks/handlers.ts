@@ -1,7 +1,7 @@
-import React from 'react';
+import type React from 'react';
 
 import { isKeyHotkey } from 'is-hotkey';
-import { Editor, Range, Transforms } from 'slate';
+import { type Editor, Range, Transforms } from 'slate';
 
 /**
  * when keyboard key is left/right

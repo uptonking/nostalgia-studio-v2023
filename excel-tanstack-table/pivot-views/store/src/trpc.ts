@@ -1,4 +1,4 @@
-import type { AppRouter } from '@datalking/pivot-trpc';
+import { type AppRouter } from '@datalking/pivot-trpc';
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
 
 // const BACKEND_URL = "http://localhost:4000";

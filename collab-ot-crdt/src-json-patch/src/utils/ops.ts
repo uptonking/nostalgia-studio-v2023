@@ -1,4 +1,4 @@
-import type { JSONPatchOp } from '../types';
+import { type JSONPatchOp } from '../types';
 import { getTypeLike } from './getType';
 import { log } from './log';
 import { isArrayPath } from './paths';

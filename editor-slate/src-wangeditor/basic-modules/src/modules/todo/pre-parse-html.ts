@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import $, { DOMElement } from '../../utils/dom';
+import $, { type DOMElement } from '../../utils/dom';
 
 /**
  * pre-prase todo ，兼容 V4

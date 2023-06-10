@@ -1,7 +1,7 @@
 import React, {
-  ChangeEvent,
+  type ChangeEvent,
   Fragment,
-  MouseEvent,
+  type MouseEvent,
   useEffect,
   useState,
 } from 'react';
@@ -17,7 +17,7 @@ import {
   toggleList,
 } from '../../../src/plugins/list/commands';
 import { ListVariants } from '../../../src/plugins/list/utils';
-import type { TextFormats } from '../../../src/plugins/marks/types';
+import { type TextFormats } from '../../../src/plugins/marks/types';
 import { themed } from '../../../src/styles';
 import {
   addMarkData,

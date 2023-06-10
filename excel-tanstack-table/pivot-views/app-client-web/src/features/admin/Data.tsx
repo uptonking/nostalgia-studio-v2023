@@ -3,7 +3,10 @@ import React from 'react';
 import _ from 'lodash';
 import { useSearchParams } from 'react-router-dom';
 
-import { GridPatchProps, PagedResult } from '@datalking/pivot-app-shared-lib';
+import {
+  type GridPatchProps,
+  type PagedResult,
+} from '@datalking/pivot-app-shared-lib';
 import { DeleteForever } from '@mui/icons-material';
 import SearchIcon from '@mui/icons-material/Search';
 import {
@@ -24,7 +27,7 @@ import Box from '@mui/material/Box';
 import { useAppDispatch } from '../../shared/store';
 import { notify, request, useGet } from '../app';
 import { Method } from '../app/thunks';
-import AlertDialog, { ShowDialogProps } from '../ui/AlertDialog';
+import AlertDialog, { type ShowDialogProps } from '../ui/AlertDialog';
 import Spacer from '../ui/Spacer';
 import { DataTable } from './DataTable';
 

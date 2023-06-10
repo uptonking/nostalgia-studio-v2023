@@ -4,7 +4,11 @@ import { isEqual, isToday } from 'date-fns';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
-import type { ICalendarField, Record, Records } from '@datalking/pivot-core';
+import {
+  type ICalendarField,
+  type Record,
+  type Records,
+} from '@datalking/pivot-core';
 import { DateEqual, DateFieldValue } from '@datalking/pivot-core';
 import {
   ActionIcon,

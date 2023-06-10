@@ -6,7 +6,7 @@ import {
   BUILT_IN_DATE_FORMATS,
   DEFAULT_DATE_FORMAT,
 } from '@datalking/pivot-core';
-import type { SelectItem, SelectProps } from '@datalking/pivot-ui';
+import { type SelectItem, type SelectProps } from '@datalking/pivot-ui';
 import { Select } from '@datalking/pivot-ui';
 
 import { FieldInputLabel } from '../field-inputs/field-input-label';

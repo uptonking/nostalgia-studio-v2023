@@ -1,10 +1,10 @@
-import type {
-  AccessorFn,
-  Column,
-  ColumnDef,
-  ColumnDefResolved,
-  RowData,
-  Table,
+import {
+  type AccessorFn,
+  type Column,
+  type ColumnDef,
+  type ColumnDefResolved,
+  type RowData,
+  type Table,
 } from '../types';
 import { memo } from '../utils';
 

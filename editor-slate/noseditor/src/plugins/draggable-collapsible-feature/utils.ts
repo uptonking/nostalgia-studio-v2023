@@ -1,4 +1,4 @@
-import { Editor, Element, Node } from 'slate';
+import { type Editor, type Element, Node } from 'slate';
 import crawl from 'tree-crawl';
 
 import {

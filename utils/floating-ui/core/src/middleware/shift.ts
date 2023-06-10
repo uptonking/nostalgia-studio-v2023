@@ -1,8 +1,8 @@
 import {
   detectOverflow,
-  Options as DetectOverflowOptions,
+  type Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import type { Coords, Middleware, MiddlewareState } from '../types';
+import { type Coords, type Middleware, type MiddlewareState } from '../types';
 import { getCrossAxis } from '../utils/getCrossAxis';
 import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
 import { getSide } from '../utils/getSide';

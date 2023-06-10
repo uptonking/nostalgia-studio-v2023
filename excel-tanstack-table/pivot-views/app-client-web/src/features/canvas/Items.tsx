@@ -1,14 +1,14 @@
 import { Delete, Edit, Settings as SettingsIcon } from '@mui/icons-material';
 import {
   Container,
-  ContainerProps,
+  type ContainerProps,
   Grid,
   IconButton,
   ImageList,
   Paper,
   Typography,
 } from '@mui/material';
-import { Drawing } from '@datalking/pivot-app-shared-lib';
+import { type Drawing } from '@datalking/pivot-app-shared-lib';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Paths } from '../../shared/routes';

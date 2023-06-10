@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-import { EditorContext, createDefaultProviders } from './Providers';
+import { type EditorContext, createDefaultProviders } from './Providers';
 
 export type { EditorContext } from './Providers';
 

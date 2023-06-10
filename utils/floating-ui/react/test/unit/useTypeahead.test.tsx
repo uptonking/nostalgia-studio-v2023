@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { useRef, useState } from 'react';
 
 import { useFloating, useInteractions, useTypeahead } from '../../src';
-import type { Props } from '../../src/hooks/useTypeahead';
+import { type Props } from '../../src/hooks/useTypeahead';
 import { Main } from '../visual/components/Menu';
 
 jest.useFakeTimers();

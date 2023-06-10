@@ -1,4 +1,4 @@
-import { Cell, CellType, Element, Table, Text } from 'leyden';
+import { Cell, type CellType, Element, Table, Text } from 'leyden';
 
 import { CSI, UOM } from '../types';
 

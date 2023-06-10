@@ -4,20 +4,20 @@ import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { type TableCompositeSpecificaiton } from '../specifications/interface';
 import { BaseField } from './field.base';
-import type { IRatingField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type {
-  IRatingFilter,
-  IRatingFilterOperator,
+import { type IRatingField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import {
+  type IRatingFilter,
+  type IRatingFilterOperator,
 } from './filter/rating.filter';
 import { RatingFieldValue } from './rating-field-value';
-import type {
-  ICreateRatingFieldInput,
-  ICreateRatingFieldValue,
-  IUpdateRatingFieldInput,
-  RatingFieldType,
+import {
+  type ICreateRatingFieldInput,
+  type ICreateRatingFieldValue,
+  type IUpdateRatingFieldInput,
+  type RatingFieldType,
 } from './rating-field.type';
 import { WithRatingMax } from './specifications/rating-field.specification';
 

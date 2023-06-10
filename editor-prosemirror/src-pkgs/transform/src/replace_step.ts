@@ -1,6 +1,6 @@
-import { Node, Schema, Slice } from 'prosemirror-model';
+import { type Node, type Schema, Slice } from 'prosemirror-model';
 
-import { Mappable, StepMap } from './map';
+import { type Mappable, StepMap } from './map';
 import { Step, StepResult } from './step';
 
 /** Replace a part of the document with a slice of new content.

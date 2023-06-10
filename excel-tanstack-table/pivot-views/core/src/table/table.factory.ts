@@ -1,21 +1,21 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { and } from '@datalking/pivot-entity';
 
-import type { ClsStore } from '../cls/cls';
+import { type ClsStore } from '../cls/cls';
 import {
   WithTableEmoji,
   WithTableId,
   WithTableName,
   WithTableSchema,
 } from './specifications/index';
-import type { TableCompositeSpecificaiton } from './specifications/interface';
+import { type TableCompositeSpecificaiton } from './specifications/interface';
 import { newTableSpec } from './specifications/specifications';
-import type { IQueryTable } from './table';
+import { type IQueryTable } from './table';
 import { Table } from './table';
-import type { ICreateTableInput_internal } from './table.schema';
-import type { ICreateTableSchemaInput } from './value-objects/index';
+import { type ICreateTableInput_internal } from './table.schema';
+import { type ICreateTableSchemaInput } from './value-objects/index';
 import { WithTableViews, WithViewsOrder } from './view/index';
 
 export class TableFactory {

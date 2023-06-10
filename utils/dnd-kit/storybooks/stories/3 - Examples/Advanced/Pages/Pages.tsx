@@ -3,15 +3,15 @@ import {
   closestCenter,
   DndContext,
   DragOverlay,
-  DragStartEvent,
+  type DragStartEvent,
   useSensor,
   useSensors,
   PointerSensor,
   KeyboardSensor,
   useDndContext,
-  MeasuringConfiguration,
+  type MeasuringConfiguration,
   MeasuringStrategy,
-  DragEndEvent,
+  type DragEndEvent,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -24,8 +24,8 @@ import cx from 'classnames';
 
 import {createRange} from '../../../utilities';
 
-import {Page, Layout, Position} from './Page';
-import type {Props as PageProps} from './Page';
+import {Page, type Layout, Position} from './Page';
+import {type Props as PageProps} from './Page';
 import styles from './Pages.module.css';
 
 interface Props {

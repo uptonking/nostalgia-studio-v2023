@@ -1,16 +1,16 @@
-import type { RowModel } from '..';
+import { type RowModel } from '..';
 import { aggregationFns, type BuiltInAggregationFn } from '../aggregationFns';
-import type { TableFeature } from '../core/table';
-import type {
-  AggregationFns,
-  Cell,
-  Column,
-  ColumnDefTemplate,
-  OnChangeFn,
-  Row,
-  RowData,
-  Table,
-  Updater,
+import { type TableFeature } from '../core/table';
+import {
+  type AggregationFns,
+  type Cell,
+  type Column,
+  type ColumnDefTemplate,
+  type OnChangeFn,
+  type Row,
+  type RowData,
+  type Table,
+  type Updater,
 } from '../types';
 import { isFunction, makeStateUpdater } from '../utils';
 

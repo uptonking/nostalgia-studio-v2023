@@ -1,7 +1,7 @@
 import { docDb } from '../../db/doc.db';
 import { collabDb } from '../../db/collab.db';
 
-import { IDBDocument, ICreateDocumentParams } from '@example/types';
+import { type IDBDocument, type ICreateDocumentParams } from '@example/types';
 
 export const docService = {
   addDocument(params: ICreateDocumentParams, userId: string) {

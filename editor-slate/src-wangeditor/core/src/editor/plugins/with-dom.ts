@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import { Node, Editor, Transforms } from 'slate';
+import { type Node, Editor, Transforms } from 'slate';
 import { DomEditor } from '../dom-editor';
-import { IDomEditor } from '../..';
-import $, { Dom7Array } from '../../utils/dom';
+import { type IDomEditor } from '../..';
+import $, { type Dom7Array } from '../../utils/dom';
 import {
   IS_FOCUSED,
   EDITOR_TO_PANEL_AND_MODAL,

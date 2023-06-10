@@ -1,10 +1,14 @@
 import React, { useCallback } from 'react';
 
 import { Editor } from 'slate';
-import { DefaultElement, ReactEditor, RenderElementProps } from 'slate-react';
+import {
+  DefaultElement,
+  ReactEditor,
+  type RenderElementProps,
+} from 'slate-react';
 
 import { DraggableContainer } from '../components';
-import { ElementProps, NosPlugin } from '../plugins/types';
+import { type ElementProps, type NosPlugin } from '../plugins/types';
 
 /**
  * may wrap element in dragSort container

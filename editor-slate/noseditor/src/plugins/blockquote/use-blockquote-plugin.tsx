@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { CreateNosPluginType } from '../types';
+import { type CreateNosPluginType } from '../types';
 import { Blockquote } from './components/blockquote';
 import { isBlockquoteElement } from './utils';
 

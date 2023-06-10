@@ -1,7 +1,7 @@
-import { Editor, Transforms } from 'slate';
+import { type Editor, Transforms } from 'slate';
 import * as Y from 'yjs';
 
-import { HistoryStackItem, RelativeRange } from '../model/types';
+import { type HistoryStackItem, type RelativeRange } from '../model/types';
 import {
   relativeRangeToSlateRange,
   slateRangeToRelativeRange,

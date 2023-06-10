@@ -1,20 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import {
-  Column,
-  ColumnDef,
+  type Column,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   OnChangeFn,
   PaginationState,
-  Table as ReactTable,
+  type Table as ReactTable,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { makeData, type Person } from '../utils/makeData';
 
 /**
  * ✨ pagination, state controlled by tanstack-table

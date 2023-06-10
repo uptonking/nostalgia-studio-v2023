@@ -2,7 +2,7 @@ import { eq } from 'prosemirror-test-builder';
 import ist from 'ist';
 // @ts-ignore
 import markdownit from 'markdown-it';
-import { Node } from 'prosemirror-model';
+import { type Node } from 'prosemirror-model';
 import { schema, MarkdownParser } from 'prosemirror-markdown';
 
 import { doc, p, br } from './build.js';

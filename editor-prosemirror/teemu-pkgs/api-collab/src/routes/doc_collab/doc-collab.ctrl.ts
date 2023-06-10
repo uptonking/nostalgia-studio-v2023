@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, type Response, type NextFunction } from 'express';
 
 import { docCollabService } from '../../pm/collab.svc';
 import { docCollabIO } from './doc-collab.io';
@@ -6,8 +6,8 @@ import { socketIO } from '../../socket-io/socketIO';
 import { collabDb } from '../../db/collab.db';
 import { CustomError } from '../../common/error';
 
-import type { IRequest } from '../../types/request';
-import { ISaveCollabStepsParams } from '@example/types';
+import { type IRequest } from '../../types/request';
+import { type ISaveCollabStepsParams } from '@example/types';
 
 // function parseQueryParam(param: undefined | string | string[] | ParsedQs | ParsedQs[]) : string {
 //   if (typeof param === 'object') {

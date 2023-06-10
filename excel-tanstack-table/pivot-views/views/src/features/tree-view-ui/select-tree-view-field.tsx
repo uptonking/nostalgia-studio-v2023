@@ -6,7 +6,7 @@ import { Box } from '@datalking/pivot-ui';
 
 import { CreateTreeField } from './create-tree-field';
 import { SelectExistingField } from './select-existing-tree-view-field';
-import type { ISelectTreeViewFieldProps } from './select-tree-view-field.props';
+import { type ISelectTreeViewFieldProps } from './select-tree-view-field.props';
 import { treeStepAtom } from './tree-step.atom';
 
 export const SelectTreeViewField: React.FC<ISelectTreeViewFieldProps> = ({

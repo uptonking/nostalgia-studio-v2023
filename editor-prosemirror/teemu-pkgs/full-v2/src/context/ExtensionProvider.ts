@@ -1,4 +1,4 @@
-import { Extension, createSchema, createPlugins } from '../extensions';
+import { type Extension, createSchema, createPlugins } from '../extensions';
 
 export class ExtensionProvider {
   extensions: Set<Extension<any>> = new Set();

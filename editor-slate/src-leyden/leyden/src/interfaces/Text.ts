@@ -1,19 +1,19 @@
 import {
-  InsertTextOperation,
-  RemoveTextOperation,
-  BaseText,
+  type InsertTextOperation,
+  type RemoveTextOperation,
+  type BaseText,
   Text as SlateText,
 } from 'slate';
 
 import {
   extendableComponentDefaultKey,
-  ExtendableTypeIsExtended,
-  ExtendedTextArgsType,
-  ExtendedTextType,
-  ExtendedType,
+  type ExtendableTypeIsExtended,
+  type ExtendedTextArgsType,
+  type ExtendedTextType,
+  type ExtendedType,
 } from './CustomTypes';
-import { Keys } from '../utils/types';
-import { ValidationFunc } from '..';
+import { type Keys } from '../utils/types';
+import { type ValidationFunc } from '..';
 
 export type TextIsExtended = ExtendableTypeIsExtended<'Text'>;
 export type Texts = ExtendedType<'Text'>;

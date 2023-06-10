@@ -2,9 +2,9 @@ import {
   type IRecordRepository,
   type ITableRepository,
 } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { DuplicateRecordCommand } from './duplicate-record.comand';
+import { type DuplicateRecordCommand } from './duplicate-record.comand';
 
 export class DuplicateRecordCommandHandler
   implements ICommandHandler<DuplicateRecordCommand, void>

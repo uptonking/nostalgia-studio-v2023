@@ -9,7 +9,7 @@ import {
 import { FIELD_TYPE_KEY } from './field.constants';
 import { ReferenceField } from './reference-field';
 import { fieldIdSchema } from './value-objects/field-id.schema';
-import type { FieldIssue } from './value-objects/field-issue.vo';
+import { type FieldIssue } from './value-objects/field-issue.vo';
 
 export const referenceTypeSchema = z.literal('reference');
 export type ReferenceFieldType = z.infer<typeof referenceTypeSchema>;

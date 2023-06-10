@@ -1,16 +1,27 @@
-import { Editor, Element, Node, Path, Range, Transforms } from 'slate';
+import {
+  Editor,
+  type Element,
+  type Node,
+  type Path,
+  Range,
+  Transforms,
+} from 'slate';
 import { ReactEditor } from 'slate-react';
 
 import { findSelectionAnchorElement } from '../../utils/queries';
-import type {
-  CollapsibleElement,
-  DraggableCollapsibleEditor,
-  NestableElement,
+import {
+  type CollapsibleElement,
+  type DraggableCollapsibleEditor,
+  type NestableElement,
 } from '../draggable-collapsible-feature';
-import { ParagraphElement } from '../paragraph/types';
+import { type ParagraphElement } from '../paragraph/types';
 import { isParagraphElement, ParagraphSpec } from '../paragraph/utils';
-import type { ListItemElement } from './types';
-import { isListItemElement, ListItemSpec, ListVariantsType } from './utils';
+import { type ListItemElement } from './types';
+import {
+  isListItemElement,
+  ListItemSpec,
+  type ListVariantsType,
+} from './utils';
 
 export const moveItemsForward = (
   editor: DraggableCollapsibleEditor,

@@ -1,5 +1,5 @@
 import { useSlate } from 'slate-react';
 
-import { ReactEditor } from '../plugin/ReactEditor';
+import { type ReactEditor } from '../plugin/ReactEditor';
 
 export const useLeyden = (): ReactEditor => useSlate();

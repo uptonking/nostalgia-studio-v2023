@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
 import { BaseField } from './field.base';
-import type { INumberField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type {
-  INumberFilter,
-  INumberFilterOperator,
+import { type INumberField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import {
+  type INumberFilter,
+  type INumberFilterOperator,
 } from './filter/number.filter';
 import { NumberFieldValue } from './number-field-value';
-import type {
-  ICreateNumberFieldInput,
-  ICreateNumberFieldValue,
-  NumberType,
+import {
+  type ICreateNumberFieldInput,
+  type ICreateNumberFieldValue,
+  type NumberType,
 } from './number-field.type';
 
 export class NumberField extends BaseField<INumberField> {

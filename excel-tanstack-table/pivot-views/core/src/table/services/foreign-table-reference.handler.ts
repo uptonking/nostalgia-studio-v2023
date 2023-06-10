@@ -1,14 +1,18 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { Some } from 'oxide.ts';
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { ParentField, ReferenceField, TreeField } from '../field/index';
+import {
+  type ParentField,
+  type ReferenceField,
+  type TreeField,
+} from '../field/index';
 import { FieldId, WithSymmetricReferenceField } from '../field/index';
-import type { TableCompositeSpecificaiton } from '../specifications/index';
-import type { Table } from '../table';
+import { type TableCompositeSpecificaiton } from '../specifications/index';
+import { type Table } from '../table';
 import { AbstractReferenceFieldSpecVisitor } from './abstract-reference-field-spec.visitor';
 
 export class ForeignTableReferenceHandler extends AbstractReferenceFieldSpecVisitor {

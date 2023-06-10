@@ -1,7 +1,7 @@
 import { Editor, Element, Transforms } from 'slate';
 
-import type { FormattedText } from '../../plugins/marks/types';
-import type { ParagraphElement } from '../../plugins/paragraph/types';
+import { type FormattedText } from '../../plugins/marks/types';
+import { type ParagraphElement } from '../../plugins/paragraph/types';
 import { TextAlignValues, type TextAlignValuesType } from '../constants';
 
 export const isMarkActive = (

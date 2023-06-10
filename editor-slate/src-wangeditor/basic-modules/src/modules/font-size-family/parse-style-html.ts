@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import { Descendant, Text } from 'slate';
-import { IDomEditor } from '@wangeditor/core';
-import { FontSizeAndFamilyText } from './custom-types';
-import $, { DOMElement, getStyleValue } from '../../utils/dom';
+import { type Descendant, Text } from 'slate';
+import { type IDomEditor } from '@wangeditor/core';
+import { type FontSizeAndFamilyText } from './custom-types';
+import $, { type DOMElement, getStyleValue } from '../../utils/dom';
 
 export function parseStyleHtml(
   text: DOMElement,

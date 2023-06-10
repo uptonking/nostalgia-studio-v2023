@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import { Descendant, Element } from 'slate';
-import { IDomEditor } from '@wangeditor/core';
-import { LineHeightElement } from './custom-types';
-import $, { DOMElement, getStyleValue } from '../../utils/dom';
+import { type Descendant, Element } from 'slate';
+import { type IDomEditor } from '@wangeditor/core';
+import { type LineHeightElement } from './custom-types';
+import $, { type DOMElement, getStyleValue } from '../../utils/dom';
 
 export function parseStyleHtml(
   elem: DOMElement,

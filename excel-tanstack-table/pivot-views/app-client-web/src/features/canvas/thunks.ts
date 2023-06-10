@@ -1,6 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { Drawing, PagedResult } from '@datalking/pivot-app-shared-lib';
-import { RootState } from '../../shared/store';
+import {
+  type Drawing,
+  type PagedResult,
+} from '@datalking/pivot-app-shared-lib';
+import { type RootState } from '../../shared/store';
 import { notify, notifyError } from '../app';
 import { get, Method, request } from '../app/thunks';
 import { getCopy, getDraft } from './helpers';

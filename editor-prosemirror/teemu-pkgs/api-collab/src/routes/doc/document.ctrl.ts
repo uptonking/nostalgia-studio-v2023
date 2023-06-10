@@ -1,15 +1,15 @@
-import { Response, NextFunction } from 'express';
+import { type Response, type NextFunction } from 'express';
 
 import { docService } from './document.svc';
 import { docCollabService } from '../../pm/collab.svc';
 import { documentIO } from './document.io';
 import { CustomError } from '../../common/error';
 
-import type { IRequest } from '../../types/request';
+import { type IRequest } from '../../types/request';
 import {
-  ICreateDocumentParams,
-  IGetDocumentsResponse,
-  IDBDocument,
+  type ICreateDocumentParams,
+  type IGetDocumentsResponse,
+  type IDBDocument,
 } from '@example/types';
 
 export const getDocuments = async (

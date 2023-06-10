@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 
 import { ReactEditorView } from './ReactEditorView';
 import { EditorActions } from './EditorActions';
 import { EditorContext } from './EditorContext';
 import { PortalProvider, PortalRenderer } from './react-portals';
 import { ProviderFactory } from './provider-factory/ProviderFactory';
-import { EventDispatcher } from './utils/event-dispatcher';
+import { type EventDispatcher } from './utils/event-dispatcher';
 
 import { FullPage } from './editor-appearance/FullPage/FullPage';
 import { quickInsertProviderFactory } from './provider-factory/quick-insert-provider';
 
-import { QuickInsertOptions } from './plugins/quick-insert/types';
+import { type QuickInsertOptions } from './plugins/quick-insert/types';
 
-import { EditorAppearance } from './types/editor-ui';
+import { type EditorAppearance } from './types/editor-ui';
 
 export interface EditorProps {
   /*

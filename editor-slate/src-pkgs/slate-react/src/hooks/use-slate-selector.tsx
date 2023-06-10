@@ -6,7 +6,7 @@ import {
   useReducer,
   useRef,
 } from 'react';
-import { Editor } from 'slate';
+import { type Editor } from 'slate';
 
 import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
 

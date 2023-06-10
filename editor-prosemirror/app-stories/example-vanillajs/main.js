@@ -4,6 +4,7 @@
  */
 function require(name) {
   const id = /^prosemirror-(.*)/.exec(name);
+  // eslint-disable-next-line no-undef
   const mod = id && PM[id[1].replace(/-/g, '_')];
   if (!mod) throw new Error(`Library basic isn't loaded`);
   return mod;

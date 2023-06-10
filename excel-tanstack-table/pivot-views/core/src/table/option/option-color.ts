@@ -1,10 +1,10 @@
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type {
-  ICreateOptionColorSchema,
-  IOptionColor,
-  IOptionColorName,
-  IOptionColorShade,
+import {
+  type ICreateOptionColorSchema,
+  type IOptionColor,
+  type IOptionColorName,
+  type IOptionColorShade,
 } from './option.schema';
 import { optionColorOrder } from './option.schema';
 

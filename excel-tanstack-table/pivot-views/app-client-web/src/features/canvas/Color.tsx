@@ -1,6 +1,6 @@
 import React from 'react';
 import { Backspace, Check } from '@mui/icons-material';
-import { Box, BoxProps, Fab, Stack } from '@mui/material';
+import { Box, type BoxProps, Fab, Stack } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../shared/store';
 import { actions } from './slice';
 

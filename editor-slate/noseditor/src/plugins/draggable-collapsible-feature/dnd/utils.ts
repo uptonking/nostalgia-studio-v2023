@@ -1,7 +1,7 @@
 import { Editor, Element } from 'slate';
 
 import { DraggableCollapsibleEditor } from '../collapsible-editor';
-import type { DraggableCollapsibleElement } from '../types';
+import { type DraggableCollapsibleElement } from '../types';
 
 export function getDepth(
   editor: DraggableCollapsibleEditor,

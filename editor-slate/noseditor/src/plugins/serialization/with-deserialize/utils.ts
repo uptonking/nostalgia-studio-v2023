@@ -1,4 +1,4 @@
-import { Descendant, Editor, Element, Text } from 'slate';
+import { type Descendant, type Editor, Element, Text } from 'slate';
 
 import { ParagraphSpec } from '../../paragraph/utils';
 

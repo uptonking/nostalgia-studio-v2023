@@ -1,6 +1,6 @@
-import { EditorState, Plugin } from 'prosemirror-state';
+import { type EditorState, Plugin } from 'prosemirror-state';
 import { dropPoint } from 'prosemirror-transform';
-import { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 
 interface DropCursorOptions {
   /** The color of the cursor. Defaults to `black`. */

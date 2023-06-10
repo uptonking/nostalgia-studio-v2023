@@ -7,7 +7,7 @@ import {
   getScrollCoordinates,
   getScrollOffsets,
 } from '../../utilities';
-import type { Coordinates } from '../../types';
+import { type Coordinates } from '../../types';
 
 type ScrollCoordinates = Map<HTMLElement | Window, Coordinates>;
 

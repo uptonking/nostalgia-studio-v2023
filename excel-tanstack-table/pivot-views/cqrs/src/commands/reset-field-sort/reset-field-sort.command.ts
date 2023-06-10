@@ -1,7 +1,7 @@
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IResetFieldSortCommandInput } from './reset-field-sort.command.interface';
+import { type IResetFieldSortCommandInput } from './reset-field-sort.command.interface';
 
 export class ResetFieldSortCommand
   extends Command

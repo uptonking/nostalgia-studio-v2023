@@ -1,4 +1,4 @@
-import { Element, Node } from 'slate';
+import { type Element, type Node } from 'slate';
 import { v4 as uuid } from 'uuid';
 
 // @ts-expect-error fix-types

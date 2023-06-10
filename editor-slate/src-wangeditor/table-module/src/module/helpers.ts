@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { DomEditor, IDomEditor } from '@wangeditor/core';
-import { TableElement, TableCellElement } from './custom-types';
+import { DomEditor, type IDomEditor } from '@wangeditor/core';
+import { type TableElement, type TableCellElement } from './custom-types';
 
 /**
  * 获取第一行所有 cells

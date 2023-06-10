@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
-import { DirectEditorProps, EditorView } from 'prosemirror-view';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { type DirectEditorProps, EditorView } from 'prosemirror-view';
+import { EditorState, type Transaction } from 'prosemirror-state';
 
 import { useEditorContext } from '../context';
 import { useSsrLayoutEffect } from '../react';
 
-import { EditorProps } from './types/editor';
+import { type EditorProps } from './types/editor';
 
 export function Editor(props: EditorProps) {
   const ctx = useEditorContext();

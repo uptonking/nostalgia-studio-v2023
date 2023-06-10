@@ -10,7 +10,7 @@ import { CreatedByField } from './created-by-field';
 import { DateField } from './date-field';
 import { DateRangeField } from './date-range-field';
 import { EmailField } from './email-field';
-import type { Field, ICreateFieldSchema } from './field.type';
+import { type Field, type ICreateFieldSchema } from './field.type';
 import { IdField } from './id-field';
 import { LookupField } from './lookup-field';
 import { NumberField } from './number-field';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import type { ElementProps } from '../../types';
-import type { ImageElement } from '../types';
+import { type ElementProps } from '../../types';
+import { type ImageElement } from '../types';
 
 export const Image = (props: ElementProps & { element: ImageElement }) => {
   const { children, attributes, element } = props;

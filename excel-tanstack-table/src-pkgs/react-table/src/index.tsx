@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import {
   createTable,
-  RowData,
-  TableOptions,
-  TableOptionsResolved,
+  type RowData,
+  type TableOptions,
+  type TableOptionsResolved,
 } from '@tanstack/table-core';
 
 export * from '@tanstack/table-core';

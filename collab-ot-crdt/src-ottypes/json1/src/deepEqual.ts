@@ -1,4 +1,4 @@
-import { Doc } from './types';
+import { type Doc } from './types';
 
 function eqObj(a: { [k: string]: Doc }, b: Doc[] | { [k: string]: Doc }) {
   if (Array.isArray(b)) return false;

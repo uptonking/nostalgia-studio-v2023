@@ -1,4 +1,4 @@
-import type { Coordinates, ClientRect } from '../../types';
+import { type Coordinates, type ClientRect } from '../../types';
 import { defaultCoordinates } from '../coordinates';
 
 export function getRectDelta(

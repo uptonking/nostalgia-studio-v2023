@@ -1,10 +1,10 @@
 import {
   CursorEditor,
-  CursorState,
-  RemoteCursorChangeEventListener,
+  type CursorState,
+  type RemoteCursorChangeEventListener,
 } from '@slate-yjs/core';
-import { BaseEditor } from 'slate';
-import { Store } from '../types';
+import { type BaseEditor } from 'slate';
+import { type Store } from '../types';
 import { useRemoteCursorEditor } from './useRemoteCursorEditor';
 
 export type CursorStore<

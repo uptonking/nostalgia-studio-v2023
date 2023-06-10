@@ -1,18 +1,18 @@
 import {
-  Cell,
-  CellIsExtended,
-  CellType,
-  Element,
-  ElementIsExtended,
-  ExternalElementType,
-  Text,
-  TextIsExtended,
-  TextType,
+  type Cell,
+  type CellIsExtended,
+  type CellType,
+  type Element,
+  type ElementIsExtended,
+  type ExternalElementType,
+  type Text,
+  type TextIsExtended,
+  type TextType,
 } from 'leyden';
-import { FC } from 'react';
+import { type FC } from 'react';
 import {
-  RenderLeafProps,
-  RenderElementProps as RenderSlateElementProps,
+  type RenderLeafProps,
+  type RenderElementProps as RenderSlateElementProps,
 } from 'slate-react';
 
 export type RenderElementAttributes = RenderSlateElementProps['attributes'] & {

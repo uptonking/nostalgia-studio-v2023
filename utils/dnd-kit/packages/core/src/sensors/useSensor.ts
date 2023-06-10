@@ -1,6 +1,10 @@
 import { useMemo } from 'react';
 
-import type { Sensor, SensorDescriptor, SensorOptions } from './types';
+import {
+  type Sensor,
+  type SensorDescriptor,
+  type SensorOptions,
+} from './types';
 
 export function useSensor<T extends SensorOptions>(
   sensor: Sensor<T>,

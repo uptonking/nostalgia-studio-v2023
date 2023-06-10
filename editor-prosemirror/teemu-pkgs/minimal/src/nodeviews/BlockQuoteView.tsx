@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { Node } from 'prosemirror-model';
-import { EditorView, NodeView, Decoration } from 'prosemirror-view';
+import { type Node } from 'prosemirror-model';
+import { type EditorView, type NodeView, Decoration } from 'prosemirror-view';
 
 import { BlockQuote } from './BlockQuote';
 

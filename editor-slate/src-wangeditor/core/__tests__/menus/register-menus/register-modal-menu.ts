@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { registerMenu, IModalMenu } from '../../../src/menus/index';
-import { IDomEditor } from '../../../src/editor/interface';
+import { registerMenu, type IModalMenu } from '../../../src/menus/index';
+import { type IDomEditor } from '../../../src/editor/interface';
 
 class MyModalMenu implements IModalMenu {
   readonly title = 'My Modal Menu';

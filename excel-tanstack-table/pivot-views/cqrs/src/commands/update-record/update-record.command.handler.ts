@@ -1,9 +1,9 @@
 import {
   createMutateRecordValuesSchema,
-  IRecordRepository,
-  ITableRepository,
+  type IRecordRepository,
+  type ITableRepository,
 } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
 import type * as updateRecordCommandJs from './update-record.command';
 

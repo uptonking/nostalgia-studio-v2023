@@ -2,7 +2,7 @@ import randomColor from 'randomcolor';
 
 import { faker } from '@faker-js/faker';
 
-import { CursorData } from './types';
+import { type CursorData } from './types';
 
 const {
   name: { firstName, lastName },

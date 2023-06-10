@@ -3,12 +3,12 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { type Editor, type Selection, Transforms } from 'slate';
 import { useSlateStatic } from 'slate-react';
 
-import type { Icon } from '@icon-park/react/lib/runtime';
+import { type Icon } from '@icon-park/react/lib/runtime';
 import { css } from '@linaria/core';
 
 import { Menu, MenuItem } from '../../../../src/components';
 import { insertImage } from '../../../../src/plugins/image/commands';
-import type { ActionButtonType } from '../toolbar-config';
+import { type ActionButtonType } from '../toolbar-config';
 
 type InsertImageApproachesProps = ActionButtonType & {
   setShowFloatingPanel?: React.Dispatch<React.SetStateAction<boolean>>;

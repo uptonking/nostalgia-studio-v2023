@@ -4,10 +4,15 @@
  */
 
 import isEqual from 'lodash.isequal';
-import { Editor, Element, Transforms, Range, Node } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import { Editor, Element, Transforms, Range, type Node } from 'slate';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { ADD_COL_SVG } from '../../constants/svg';
-import { TableCellElement, TableElement } from '../custom-types';
+import { type TableCellElement, type TableElement } from '../custom-types';
 import { isTableWithHeader } from '../helpers';
 
 class InsertCol implements IButtonMenu {

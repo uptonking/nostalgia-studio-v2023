@@ -3,8 +3,8 @@ import { useMemo, useState } from 'react';
 
 import {
   DndContext,
-  DragEndEvent,
-  UniqueIdentifier,
+  type DragEndEvent,
+  type UniqueIdentifier,
   useDraggable,
   useDroppable,
 } from '@dnd-kit/core';

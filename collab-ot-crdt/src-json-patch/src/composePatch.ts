@@ -1,5 +1,5 @@
 import { runWithObject } from './state';
-import type { JSONPatchOp, JSONPatchOpHandlerMap } from './types';
+import { type JSONPatchOp, type JSONPatchOpHandlerMap } from './types';
 import { getType, getValue, mapAndFilterOps } from './utils';
 import { getTypes } from './ops';
 

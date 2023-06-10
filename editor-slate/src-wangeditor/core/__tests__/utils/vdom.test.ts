@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { h, VNode } from 'snabbdom';
+import { h, type VNode } from 'snabbdom';
 import {
   normalizeVnodeData,
   addVnodeProp,

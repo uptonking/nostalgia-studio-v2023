@@ -3,7 +3,7 @@ import bs from 'binary-search';
 import Map2 from 'map2';
 import { uniCount, uniToStrPos } from 'unicount';
 
-import type { DocTreeItem, Id, InsertOp, Op, Txn } from './automerge-rga-types';
+import  { type DocTreeItem, type Id, type InsertOp, type Op, type Txn } from './automerge-rga-types';
 
 export { Id, InsertOp, Op, Txn } from './automerge-rga-types';
 

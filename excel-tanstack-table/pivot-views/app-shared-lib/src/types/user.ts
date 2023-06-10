@@ -1,4 +1,4 @@
-import type { Entity } from '.';
+import { type Entity } from '.';
 
 export interface UserPreferences {
   [key: string]: unknown;

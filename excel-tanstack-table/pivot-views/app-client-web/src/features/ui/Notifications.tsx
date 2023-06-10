@@ -3,7 +3,7 @@ import React from 'react';
 import { Alert, Snackbar } from '@mui/material';
 
 import { useAppDispatch, useAppSelector } from '../../shared/store';
-import { AppNotification, patch } from '../app';
+import { type AppNotification, patch } from '../app';
 
 export function Notifications() {
   const notifications = useAppSelector((store) => store.app.notifications);

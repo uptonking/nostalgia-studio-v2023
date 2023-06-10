@@ -1,4 +1,4 @@
-import type { Editor, Element, Node } from 'slate';
+import { type Editor, type Element, type Node } from 'slate';
 import type Y from 'yjs';
 
 export type DeltaAttributes = {

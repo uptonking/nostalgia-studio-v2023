@@ -8,7 +8,7 @@ import { LinkSpec } from '../../link/utils';
 import { ListItemSpec } from '../../list/utils';
 import { ParagraphSpec } from '../../paragraph/utils';
 import { getListItemPropertiesFromDom } from '../utils';
-import type { DeserializeHtml } from './types';
+import { type DeserializeHtml } from './types';
 import { createPluginFactory } from './utils';
 
 const rules: DeserializeHtml[] = [

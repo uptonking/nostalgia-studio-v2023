@@ -1,11 +1,11 @@
 import {
-  EditorState,
+  type EditorState,
   Plugin,
   PluginKey,
   TextSelection,
-  Transaction,
+  type Transaction,
 } from 'prosemirror-state';
-import { Step, Transform } from 'prosemirror-transform';
+import { type Step, type Transform } from 'prosemirror-transform';
 
 class Rebaseable {
   constructor(

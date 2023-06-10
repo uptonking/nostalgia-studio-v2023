@@ -3,8 +3,8 @@ import { dropCursor } from 'prosemirror-dropcursor';
 import { gapCursor } from 'prosemirror-gapcursor';
 import { history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
-import { MenuItem, menuBar } from 'prosemirror-menu';
-import { Schema } from 'prosemirror-model';
+import { type MenuItem, menuBar } from 'prosemirror-menu';
+import { type Schema } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 
 import { buildInputRules } from './inputrules';

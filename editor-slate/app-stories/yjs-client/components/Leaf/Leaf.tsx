@@ -1,5 +1,5 @@
 import React from 'react';
-import { RenderLeafProps } from 'slate-react';
+import { type RenderLeafProps } from 'slate-react';
 
 export function Leaf({ attributes, children, leaf }: RenderLeafProps) {
   if (leaf.bold) {

@@ -1,6 +1,10 @@
 import * as React from 'react';
 
-import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import {
+  type ElementProps,
+  type FloatingContext,
+  type ReferenceType,
+} from '../types';
 import { isHTMLElement, isMouseLikePointerType } from '../utils/is';
 import { isTypeableElement } from '../utils/isTypeableElement';
 

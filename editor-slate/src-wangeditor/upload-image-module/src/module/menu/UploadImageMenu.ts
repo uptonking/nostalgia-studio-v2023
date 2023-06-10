@@ -3,14 +3,14 @@
  * @author wangfupeng
  */
 
-import { IButtonMenu, IDomEditor, t } from '@wangeditor/core';
+import { type IButtonMenu, type IDomEditor, t } from '@wangeditor/core';
 import {
   insertImageNode,
   isInsertImageMenuDisabled,
 } from '@wangeditor/basic-modules';
 import { UPLOAD_IMAGE_SVG } from '../../constants/svg';
 import $ from '../../utils/dom';
-import { IUploadConfigForImage } from './config';
+import { type IUploadConfigForImage } from './config';
 import uploadImages from '../upload-images';
 
 class UploadImage implements IButtonMenu {

@@ -1,12 +1,15 @@
 import React from 'react';
-import { PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { type PluginKey } from 'prosemirror-state';
+import { type EditorView } from 'prosemirror-view';
 import PropTypes from 'prop-types';
 
-import { createDispatch, EventDispatcher } from '../../utils/event-dispatcher';
-import { EditorActions } from '../../EditorActions';
+import {
+  createDispatch,
+  type EventDispatcher,
+} from '../../utils/event-dispatcher';
+import { type EditorActions } from '../../EditorActions';
 
-import { EditorConfig } from '../../types';
+import { type EditorConfig } from '../../types';
 
 export interface State {
   [name: string]: any;

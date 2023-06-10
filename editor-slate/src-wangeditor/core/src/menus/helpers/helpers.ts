@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import $, { Dom7Array } from '../../utils/dom';
+import $, { type Dom7Array } from '../../utils/dom';
 import { SVG_DOWN_ARROW } from '../../constants/svg';
 
 /**

@@ -1,12 +1,12 @@
 import { Step } from 'prosemirror-transform';
-import { Node as PMNode } from 'prosemirror-model';
+import { type Node as PMNode } from 'prosemirror-model';
 
 import { createDefaultSchema } from './createDefaultSchema';
 
 import { CollaborativeInstance } from './CollaborativeInstance';
 import { docDb } from '../db/doc.db';
 import { historyDb } from '../db/history.db';
-import { PatchedStep } from '@example/types';
+import { type PatchedStep } from '@example/types';
 
 const instancesMap = new Map<string, CollaborativeInstance>();
 const schema = createDefaultSchema();

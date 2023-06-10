@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ElementProps } from '../../types';
-import { DividerElement } from '../types';
+import { type ElementProps } from '../../types';
+import { type DividerElement } from '../types';
 
 export const Divider = (props: ElementProps & { element: DividerElement }) => {
   const { children, attributes, element } = props;

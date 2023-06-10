@@ -6,10 +6,10 @@ import {
   rankItem,
 } from '@tanstack/match-sorter-utils';
 import {
-  Column,
-  ColumnDef,
-  ColumnFiltersState,
-  FilterFn,
+  type Column,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type FilterFn,
   FilterFns,
   flexRender,
   getCoreRowModel,
@@ -19,14 +19,14 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingFn,
+  type SortingFn,
   sortingFns,
-  Table,
+  type Table,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { makeData, type Person } from '../utils/makeData';
 
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item

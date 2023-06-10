@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { IMutateOptionSchema } from '@datalking/pivot-core';
+import { type IMutateOptionSchema } from '@datalking/pivot-core';
 import { OptionColor, optionColorOrder } from '@datalking/pivot-core';
 import {
   ActionIcon,
@@ -12,7 +12,7 @@ import {
 } from '@datalking/pivot-ui';
 
 import { Option } from '../option/option';
-import type { OnColorChange } from './type';
+import { type OnColorChange } from './type';
 
 export interface IOptionColorPickerProps {
   option: IMutateOptionSchema;

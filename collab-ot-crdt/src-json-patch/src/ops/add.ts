@@ -1,4 +1,4 @@
-import type { JSONPatchOpHandler } from '../types';
+import { type JSONPatchOpHandler } from '../types';
 import {
   isArrayPath,
   isEmptyObject,

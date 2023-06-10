@@ -3,19 +3,19 @@
  * @author wangfupeng
  */
 
-import { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
 import {
   coreCreateEditor,
   coreCreateToolbar,
-  IDomEditor,
-  IEditorConfig,
-  IToolbarConfig,
-  Toolbar,
+  type IDomEditor,
+  type IEditorConfig,
+  type IToolbarConfig,
+  type Toolbar,
 } from '@wangeditor/core';
 
 import Boot from './Boot';
-import { DOMElement } from './utils/dom';
+import { type DOMElement } from './utils/dom';
 
 export interface ICreateEditorOption {
   selector: string | DOMElement;

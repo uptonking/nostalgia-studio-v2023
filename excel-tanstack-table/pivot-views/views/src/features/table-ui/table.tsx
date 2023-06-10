@@ -9,18 +9,18 @@ import React, {
 
 import { useNavigate } from 'react-router-dom';
 
-import type { ISetPinnedFieldsCommandInput } from '@datalking/pivot-cqrs';
+import { type ISetPinnedFieldsCommandInput } from '@datalking/pivot-cqrs';
 import {
   getTableSelectedRecordIds,
   setTableSelectedRecordIds,
   useSetPinnedFieldsMutation,
 } from '@datalking/pivot-store';
 import { Box, Table, useListState } from '@datalking/pivot-ui';
-import type {
-  ColumnDef,
-  ColumnPinningState,
-  OnChangeFn,
-  Row,
+import {
+  type ColumnDef,
+  type ColumnPinningState,
+  type OnChangeFn,
+  type Row,
 } from '@tanstack/react-table';
 import {
   createColumnHelper,
@@ -41,7 +41,7 @@ import { ActionsCell } from './actions-cell';
 import { ActionsHeader } from './actions-header';
 import { Cell } from './cell';
 import { EmptyTable } from './empty-table';
-import type { IProps, TData } from './interface';
+import { type IProps, type TData } from './interface';
 import { SelectionCell } from './selection-cell';
 import { SelectionHeader } from './selection-header';
 import { tableStyles } from './styles';

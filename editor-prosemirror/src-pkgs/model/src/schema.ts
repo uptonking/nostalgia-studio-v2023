@@ -2,10 +2,10 @@ import OrderedMap from 'orderedmap';
 
 import { ContentMatch } from './content';
 import { Fragment } from './fragment';
-import { ParseRule } from './from_dom';
+import { type ParseRule } from './from_dom';
 import { Mark } from './mark';
 import { Node, TextNode } from './node';
-import { DOMOutputSpec } from './to_dom';
+import { type DOMOutputSpec } from './to_dom';
 
 /** An object holding the attributes of a node. */
 export type Attrs = { readonly [attr: string]: any };

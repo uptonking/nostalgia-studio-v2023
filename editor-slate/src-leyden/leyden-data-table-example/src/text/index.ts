@@ -1,4 +1,4 @@
-import { TextRenderers } from 'leyden-react';
+import { type TextRenderers } from 'leyden-react';
 
 import { Decimal } from './Decimal';
 import { Empty } from './Empty';

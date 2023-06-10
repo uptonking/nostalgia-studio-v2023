@@ -1,4 +1,4 @@
-import type { JSONPatchOp, JSONPatchOpHandler } from '../types';
+import { type JSONPatchOp, type JSONPatchOpHandler } from '../types';
 import { add } from './add';
 import { getValue, pluckWithShallowCopy } from '../utils/pluck';
 import { toArrayIndex } from '../utils/toArrayIndex';

@@ -4,7 +4,7 @@ import React, { StrictMode } from 'react';
 
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import type { YHistoryEditor, YjsEditor } from '@slate-yjs/core';
+import { type YHistoryEditor, type YjsEditor } from '@slate-yjs/core';
 
 import { NosEditor } from '../src';
 import { ErrorBoundary } from './components/common/error-boundary';

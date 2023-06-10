@@ -1,4 +1,4 @@
-import type { Coords, Middleware, MiddlewareState } from '../types';
+import { type Coords, type Middleware, type MiddlewareState } from '../types';
 import { getAlignment } from '../utils/getAlignment';
 import { getMainAxisFromPlacement } from '../utils/getMainAxisFromPlacement';
 import { getSide } from '../utils/getSide';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MenuImperativeHandle, MenuProps } from './types';
+import { type MenuImperativeHandle, type MenuProps } from './types';
 import { forwardRef, useImperativeHandle, useMemo } from 'react';
 import { useMenu } from './useMenu';
 

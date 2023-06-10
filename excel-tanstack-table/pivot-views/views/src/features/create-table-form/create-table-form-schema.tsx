@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { useResetAtom } from 'jotai/utils';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import type { ICreateTableInput } from '@datalking/pivot-cqrs';
+import { type ICreateTableInput } from '@datalking/pivot-cqrs';
 import { Accordion, usePrevious } from '@datalking/pivot-ui';
 import { closestCenter, DndContext } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';

@@ -4,10 +4,10 @@ import { unstable_batchedUpdates } from 'react-dom';
 import { useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 
-import type {
-  ParentField,
-  ReferenceField,
-  TreeField,
+import {
+  type ParentField,
+  type ReferenceField,
+  type TreeField,
 } from '@datalking/pivot-core';
 import {
   Group,

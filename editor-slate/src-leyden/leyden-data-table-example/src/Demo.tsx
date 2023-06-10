@@ -1,6 +1,6 @@
-import { Table, Transforms, withLeyden } from 'leyden';
+import { type Table, Transforms, withLeyden } from 'leyden';
 import { Editable, Leyden, withReact } from 'leyden-react';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { type FC, useEffect, useMemo, useState } from 'react';
 import { createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 

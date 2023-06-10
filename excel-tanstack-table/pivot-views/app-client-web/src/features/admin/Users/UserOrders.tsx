@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Order, PagedResult } from '@datalking/pivot-app-shared-lib';
+import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+import { type Order, type PagedResult } from '@datalking/pivot-app-shared-lib';
 import { useGet } from '../../app';
 
 export function UserOrders() {

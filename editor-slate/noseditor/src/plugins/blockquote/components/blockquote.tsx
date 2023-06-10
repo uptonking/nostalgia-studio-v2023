@@ -5,8 +5,8 @@ import cx from 'clsx';
 import { css } from '@linaria/core';
 
 import { themed } from '../../../../src/styles';
-import type { ElementProps } from '../../types';
-import type { BlockquoteElement } from '../types';
+import { type ElementProps } from '../../types';
+import { type BlockquoteElement } from '../types';
 
 export const Blockquote = (
   props: ElementProps & { element: BlockquoteElement },

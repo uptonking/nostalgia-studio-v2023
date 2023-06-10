@@ -3,11 +3,11 @@ import {createPortal} from 'react-dom';
 import {
   DndContext,
   DragOverlay,
-  DropAnimation,
+  type DropAnimation,
   defaultDropAnimation,
-  Modifiers,
+  type Modifiers,
   useDraggable,
-  Translate,
+  type Translate,
 } from '@dnd-kit/core';
 import {
   restrictToHorizontalAxis,

@@ -1,5 +1,5 @@
-import { ResolvedColumnFilter } from '../features/Filters';
-import { Table, RowModel, Row, RowData } from '../types';
+import { type ResolvedColumnFilter } from '../features/Filters';
+import { type Table, type RowModel, type Row, type RowData } from '../types';
 import { memo } from '../utils';
 import { filterRows } from './filterRowsUtils';
 

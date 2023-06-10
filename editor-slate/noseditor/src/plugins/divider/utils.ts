@@ -1,6 +1,6 @@
 import { Element } from 'slate';
 
-import type { DividerElement, DividerType } from './types';
+import { type DividerElement, type DividerType } from './types';
 
 export const DividerSpec: DividerType = 'hr';
 

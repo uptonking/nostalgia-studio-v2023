@@ -4,7 +4,7 @@
  */
 
 import { Editor, Text } from 'slate';
-import { IButtonMenu, IDomEditor, t } from '@wangeditor/core';
+import { type IButtonMenu, type IDomEditor, t } from '@wangeditor/core';
 import { ERASER_SVG } from '../../../constants/icon-svg';
 import { isMenuDisabled, removeMarks } from '../helper';
 

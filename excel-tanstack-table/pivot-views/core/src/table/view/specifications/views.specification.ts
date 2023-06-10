@@ -1,13 +1,13 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index';
-import type { Table } from '../../table';
-import type { ICreateViewsSchema } from '../../table.schema';
-import type { ViewName } from '../view-name.vo';
-import type { View } from '../view';
+import { type ITableSpecVisitor } from '../../specifications/index';
+import { type Table } from '../../table';
+import { type ICreateViewsSchema } from '../../table.schema';
+import { type ViewName } from '../view-name.vo';
+import { type View } from '../view';
 import { Views } from '../views';
 import { BaseViewSpecification } from './base-view-specification';
 

@@ -1,7 +1,7 @@
 import React, { forwardRef, useState } from 'react';
 import styled from 'styled-components';
 
-import { UIProps } from '../';
+import { type UIProps } from '../';
 
 interface IProps {
   className?: string;

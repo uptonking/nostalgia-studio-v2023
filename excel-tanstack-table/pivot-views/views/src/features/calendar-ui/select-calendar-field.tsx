@@ -7,7 +7,7 @@ import { Box } from '@datalking/pivot-ui';
 import { calendarStep } from './calendar-step.atom';
 import { CreateCalendarDateField } from './create-calendar-date-field';
 import { CreateCalendarDateRangeField } from './create-calendar-date-range-field';
-import type { ISelectCalendarFieldProps } from './select-calendar-field.props';
+import { type ISelectCalendarFieldProps } from './select-calendar-field.props';
 import { SelectExistingCalendarField } from './select-existing-calendar-field';
 
 export const SelectCalendarField: React.FC<ISelectCalendarFieldProps> = ({

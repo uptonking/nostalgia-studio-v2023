@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CreateNosPluginType } from '../types';
+import { type CreateNosPluginType } from '../types';
 import { ListItem } from './components/list-item';
 import * as handlers from './handlers';
 import { isListItemElement } from './utils';

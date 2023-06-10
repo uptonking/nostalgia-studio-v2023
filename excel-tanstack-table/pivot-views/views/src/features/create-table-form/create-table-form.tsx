@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { DEFAULT_TABLE_EMOJI } from '@datalking/pivot-core';
-import type { ICreateTableInput } from '@datalking/pivot-cqrs';
+import { type ICreateTableInput } from '@datalking/pivot-cqrs';
 import { useCreateTableMutation } from '@datalking/pivot-store';
 import {
   ActionIcon,

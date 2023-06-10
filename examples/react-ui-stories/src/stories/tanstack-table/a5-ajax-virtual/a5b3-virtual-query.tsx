@@ -7,20 +7,20 @@ import {
   useInfiniteQuery,
 } from '@tanstack/react-query';
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  Row,
-  SortingState,
+  type Row,
+  type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
 import {
   fetchVirtualPagesData,
-  Person,
-  PersonApiResponse,
+  type Person,
+  type PersonApiResponse,
 } from '../utils/makeData';
 
 const fetchSize = 10;

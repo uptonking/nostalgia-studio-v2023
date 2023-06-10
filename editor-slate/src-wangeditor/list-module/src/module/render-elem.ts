@@ -3,13 +3,13 @@
  * @author wangfupeng
  */
 
-import { Editor, Element as SlateElement, Path, Text } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import { Editor, type Element as SlateElement, Path, Text } from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
-import { DomEditor, IDomEditor } from '@wangeditor/core';
+import { DomEditor, type IDomEditor } from '@wangeditor/core';
 
 import { ELEM_TO_EDITOR } from '../utils/maps';
-import { ListItemElement } from './custom-types';
+import { type ListItemElement } from './custom-types';
 
 /**
  * 无序列表：根据 level 获取的前置符号

@@ -2,7 +2,13 @@
 //
 // The cursor interface supports both reading and writing (appending).
 
-import { Key, JSONOp, JSONOpComponent, JSONOpList, Path } from './types.js';
+import {
+  type Key,
+  type JSONOp,
+  type JSONOpComponent,
+  type JSONOpList,
+  type Path,
+} from './types.js';
 
 // const log = require('./log')
 const log = (...args: any) => {};

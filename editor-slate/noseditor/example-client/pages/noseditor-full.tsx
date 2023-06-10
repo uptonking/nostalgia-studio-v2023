@@ -1,10 +1,14 @@
 import React, { useCallback, useReducer, useRef, useState } from 'react';
 
 import cx from 'clsx';
-import { createEditor, Descendant, Editor } from 'slate';
+import { createEditor, type Descendant, Editor } from 'slate';
 import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
-import type { CustomEditor, CustomElement, CustomText } from '../../src';
+import {
+  type CustomEditor,
+  type CustomElement,
+  type CustomText,
+} from '../../src';
 import {
   DndFeatureProvider,
   DragOverlayContent,

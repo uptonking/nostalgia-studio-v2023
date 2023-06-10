@@ -7,19 +7,19 @@ import {
 } from '@tanstack/react-query';
 import {
   Column,
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   OnChangeFn,
-  PaginationState,
+  type PaginationState,
   Table as ReactTable,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { fetchPagingData, makeData, Person } from '../utils/makeData';
+import { fetchPagingData, makeData, type Person } from '../utils/makeData';
 
 const queryClient = new QueryClient();
 

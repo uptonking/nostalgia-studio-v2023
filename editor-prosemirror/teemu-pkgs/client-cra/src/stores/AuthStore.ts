@@ -1,6 +1,6 @@
 import { action, observable } from 'mobx';
 
-import { IUser, uuidv4 } from '@example/types';
+import { type IUser, uuidv4 } from '@example/types';
 
 export class AuthStore {
   @observable user?: IUser = undefined;

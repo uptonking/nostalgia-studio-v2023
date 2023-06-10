@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { IKanbanField } from '@datalking/pivot-core';
+import { type IKanbanField } from '@datalking/pivot-core';
 import { RecordFactory } from '@datalking/pivot-core';
 import styled from '@emotion/styled';
 

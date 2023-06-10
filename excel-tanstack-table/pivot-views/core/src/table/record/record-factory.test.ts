@@ -1,5 +1,5 @@
 import {
-  Field,
+  type Field,
   FieldId,
   FieldName,
   FieldValueConstraints,
@@ -13,11 +13,11 @@ import {
   OptionName,
   Options,
 } from '../option/index';
-import { TableSchemaIdMap } from '../value-objects/index';
+import { type TableSchemaIdMap } from '../value-objects/index';
 import { RecordFactory } from './record.factory';
-import { IQueryRecordSchema } from './record.type';
+import { type IQueryRecordSchema } from './record.type';
 import { WithRecordId, WithRecordTableId } from './specifications/index';
-import { RecordCompositeSpecification } from './specifications/interface';
+import { type RecordCompositeSpecification } from './specifications/interface';
 
 beforeAll(() => {
   vi.setSystemTime(new Date(2022, 1, 1));

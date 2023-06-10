@@ -12,7 +12,7 @@ import {
   createEditor,
   type Descendant,
   Editor,
-  Node as SlateNode,
+  type Node as SlateNode,
   Range,
   Transforms,
 } from 'slate';

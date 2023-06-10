@@ -1,12 +1,12 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index';
-import type { Table } from '../../table';
-import type { BaseField } from '../field.base';
-import type { Field } from '../field.type';
+import { type ITableSpecVisitor } from '../../specifications/index';
+import { type Table } from '../../table';
+import { type BaseField } from '../field.base';
+import { type Field } from '../field.type';
 import { FieldDescription } from '../value-objects/field-description';
 import { FieldName } from '../value-objects/field-name.vo';
 

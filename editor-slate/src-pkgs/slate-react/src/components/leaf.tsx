@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
-import { Element, Text } from 'slate';
+import { type Element, Text } from 'slate';
 
 import { PLACEHOLDER_SYMBOL } from '../utils/weak-maps';
-import { RenderLeafProps, RenderPlaceholderProps } from './editable';
+import { type RenderLeafProps, type RenderPlaceholderProps } from './editable';
 import String from './string';
 
 export const DefaultLeaf = (props: RenderLeafProps) => {

@@ -1,7 +1,7 @@
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IMoveViewCommandInput } from './move-view.command.interface';
+import { type IMoveViewCommandInput } from './move-view.command.interface';
 
 export class MoveViewCommand extends Command implements IMoveViewCommandInput {
   readonly tableId: string;

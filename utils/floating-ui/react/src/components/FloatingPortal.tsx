@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
 import { useId } from '../hooks/useId';
-import type { FloatingContext } from '../types';
+import { type FloatingContext } from '../types';
 import {
   disableFocusInside,
   enableFocusInside,

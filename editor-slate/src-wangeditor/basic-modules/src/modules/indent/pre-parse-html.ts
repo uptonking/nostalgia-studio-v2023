@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import $, { DOMElement, getStyleValue } from '../../utils/dom';
+import $, { type DOMElement, getStyleValue } from '../../utils/dom';
 
 /**
  * pre-prase text-indent 兼容 V4 和 V5 早期格式（都使用 padding-left）

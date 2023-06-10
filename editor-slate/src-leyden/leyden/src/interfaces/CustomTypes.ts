@@ -4,9 +4,9 @@
  * Adapted from Slate's custom types:
  * https://github.com/ianstormtaylor/slate/blob/f5c0cbd7ecc016c970d4448f29111340fc235e7b/packages/slate/src/interfaces/custom-types.ts
  */
-import { Text } from 'slate';
+import { type Text } from 'slate';
 
-import { Validator } from './Validator';
+import { type Validator } from './Validator';
 
 type ExtendableComponentTypes = 'Cells' | 'Elements' | 'Text';
 

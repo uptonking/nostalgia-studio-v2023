@@ -1,4 +1,8 @@
-import { builders, NodeBuilder, MarkBuilder } from 'prosemirror-test-builder';
+import {
+  builders,
+  type NodeBuilder,
+  type MarkBuilder,
+} from 'prosemirror-test-builder';
 import { schema } from 'prosemirror-markdown';
 
 const b = builders(schema, {

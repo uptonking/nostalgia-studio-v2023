@@ -1,7 +1,7 @@
-import { Ancestor, Editor, Node, RangeRef } from 'slate';
+import { type Ancestor, type Editor, type Node, type RangeRef } from 'slate';
 
-import { TextInsertion } from '../components/android/diff-text';
-import { Key } from './key';
+import { type TextInsertion } from '../components/android/diff-text';
+import { type Key } from './key';
 
 /**
  * - Two weak maps that allow us rebuild a path given a node.

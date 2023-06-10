@@ -1,17 +1,17 @@
 import {
   type AttributeMapType,
-  Delta,
+  type Delta,
   type EditorRange,
   isEqual,
   type Line,
   type Op,
-  TextDocument,
+  type TextDocument,
 } from '@typewriter/document';
 
-import type { Editor } from '../editor';
+import { type Editor } from '../editor';
 import { applyDecorations } from '../modules/decorations';
-import type { LineType } from '../typesetting/typeset';
-import { h, patch, VChild, VNode } from './vdom';
+import { type LineType } from '../typesetting/typeset';
+import { h, patch, type VChild, type VNode } from './vdom';
 
 const EMPTY_ARR = [];
 const BR = h('br', {});

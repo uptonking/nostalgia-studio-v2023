@@ -3,11 +3,11 @@
  * @author wangfupeng
  */
 
-import { Element } from 'slate';
+import { type Element } from 'slate';
 import {
-  TableCellElement,
+  type TableCellElement,
   TableRowElement,
-  TableElement,
+  type TableElement,
 } from './custom-types';
 
 function tableToHtml(elemNode: Element, childrenHtml: string): string {

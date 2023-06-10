@@ -5,7 +5,7 @@ import { useFocused } from 'slate-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
-import { UnitItem, UnitItemProps } from './unit-item';
+import { UnitItem, type UnitItemProps } from './unit-item';
 
 export const UnitSortable = ({
   id,

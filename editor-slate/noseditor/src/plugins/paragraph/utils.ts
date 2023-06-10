@@ -1,6 +1,6 @@
 import { Element } from 'slate';
 
-import type { ParagraphElement, ParagraphType } from './types';
+import { type ParagraphElement, type ParagraphType } from './types';
 
 export const ParagraphSpec: ParagraphType = 'p';
 

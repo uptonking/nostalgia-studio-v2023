@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { text } from '../src/custom/delta';
-import { JSONPatch, JSONPatchOp } from '../src';
-import { Delta, Op } from '@typewriter/delta';
+import { JSONPatch, type JSONPatchOp } from '../src';
+import { Delta, type Op } from '@typewriter/delta';
 
 class MyJSONPatch extends JSONPatch {
   constructor(ops?: JSONPatchOp[]) {

@@ -1,7 +1,11 @@
 import React, { useMemo } from 'react';
 import debounce from 'lodash.debounce';
 
-import { Editor, EditorViewProvider, JSONEditorState } from '@example/full';
+import {
+  Editor,
+  type EditorViewProvider,
+  type JSONEditorState,
+} from '@example/full';
 
 import { PageHeader } from '../components/PageHeader';
 

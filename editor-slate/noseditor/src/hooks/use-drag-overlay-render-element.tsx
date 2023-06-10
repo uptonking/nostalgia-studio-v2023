@@ -5,7 +5,7 @@ import { DefaultElement } from 'slate-react';
 
 import { DragOverlayContainer } from '../components';
 import { DraggableCollapsibleEditor } from '../plugins/draggable-collapsible-feature';
-import type { ElementProps, NosPlugin } from '../plugins/types';
+import { type ElementProps, type NosPlugin } from '../plugins/types';
 
 export const useDragOverlayRenderElement = (
   editor: DraggableCollapsibleEditor,

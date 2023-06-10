@@ -18,7 +18,7 @@ import { strPosToUni } from 'unicount';
 // A user can define:
 // - onInsert(pos, text): Called when text is inserted.
 // - onRemove(pos, length): Called when text is removed.
-import { TextOp, dlen, eachOp } from './type';
+import { type TextOp, dlen, eachOp } from './type';
 
 export default function api(
   getSnapshot: () => string,

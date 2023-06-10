@@ -1,4 +1,4 @@
-import { NodeSpec, Schema, MarkSpec } from 'prosemirror-model';
+import { type NodeSpec, Schema, type MarkSpec } from 'prosemirror-model';
 import { doc, paragraph, text } from './nodes';
 import { em, strong } from './marks';
 

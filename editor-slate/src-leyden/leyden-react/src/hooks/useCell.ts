@@ -1,4 +1,10 @@
-import { Cell, CellType, Coordinates, Table, LeydenEditor } from 'leyden';
+import {
+  type Cell,
+  type CellType,
+  type Coordinates,
+  Table,
+  LeydenEditor,
+} from 'leyden';
 import { useEffect, useState } from 'react';
 
 import { useLeydenStatic } from './useLeydenStatic';

@@ -4,16 +4,16 @@ import {
   sendableSteps,
 } from 'prosemirror-collab';
 import { Step } from 'prosemirror-transform';
-import { EditorState } from 'prosemirror-state';
+import { type EditorState } from 'prosemirror-state';
 
-import { APIProvider } from '../APIProvider';
-import { EditorViewProvider } from '../EditorViewProvider';
+import { type APIProvider } from '../APIProvider';
+import { type EditorViewProvider } from '../EditorViewProvider';
 
-import type {
-  ISaveCollabStepsParams,
-  ECollabAction,
-  ICollabUsersChangedAction,
-  ICollabEditAction,
+import { ECollabAction } from '@example/types';
+import {
+  type ISaveCollabStepsParams,
+  type ICollabUsersChangedAction,
+  type ICollabEditAction,
 } from '@example/types';
 
 import { replaceDocument, setCollab } from './replaceDocument';

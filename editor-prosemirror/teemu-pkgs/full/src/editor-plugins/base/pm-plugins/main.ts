@@ -1,12 +1,12 @@
-import { EditorState, Plugin } from 'prosemirror-state';
+import { type EditorState, Plugin } from 'prosemirror-state';
 import { PluginKey } from '../../../core/pm';
 
 import { PortalProvider } from '../../../react/portals';
 import { PluginsProvider } from '../../../core';
-import { CommandDispatch } from '../../../core/types';
+import { type CommandDispatch } from '../../../core/types';
 
 import { getActiveMarks } from '../pm-utils/getActive';
-import { EditorContext } from '../../../core/EditorContext';
+import { type EditorContext } from '../../../core/EditorContext';
 
 export interface BaseState {
   activeNodes: string[];

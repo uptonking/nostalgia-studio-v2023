@@ -1,4 +1,4 @@
-import type { Editor } from 'codemirror';
+import { type Editor } from 'codemirror';
 
 import { Range, Selection } from './selection';
 import { TextOperation } from './text-operation';

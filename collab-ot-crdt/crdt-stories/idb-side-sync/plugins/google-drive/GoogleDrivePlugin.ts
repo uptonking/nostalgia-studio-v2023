@@ -1,12 +1,12 @@
-import type {
-  ClientRecord,
-  OpLogEntry,
-  SignInChangeHandler,
-  SyncPlugin,
-  SyncProfileSettings,
-  UserProfile,
+import {
+  type ClientRecord,
+  type OpLogEntry,
+  type SignInChangeHandler,
+  type SyncPlugin,
+  type SyncProfileSettings,
+  type UserProfile,
 } from '../../types/main';
-import type { GoogleFile } from './types';
+import { type GoogleFile } from './types';
 import {
   FILENAME_PART,
   FileDownloadError,

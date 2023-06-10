@@ -3,12 +3,12 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import type {
-  ComputePositionConfig,
-  ReferenceType,
-  UseFloatingData,
-  UseFloatingOptions,
-  UseFloatingReturn,
+import {
+  type ComputePositionConfig,
+  type ReferenceType,
+  type UseFloatingData,
+  type UseFloatingOptions,
+  type UseFloatingReturn,
 } from './types';
 import { deepEqual } from './utils/deepEqual';
 import { getDPR } from './utils/getDPR';

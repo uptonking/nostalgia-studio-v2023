@@ -1,9 +1,9 @@
-import type {
-  DragStartEvent,
-  DragCancelEvent,
-  DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
+import {
+  type DragStartEvent,
+  type DragCancelEvent,
+  type DragEndEvent,
+  type DragMoveEvent,
+  type DragOverEvent,
 } from '../../types';
 
 export interface DndMonitorListener {

@@ -1,4 +1,4 @@
-import { CellRenderers } from 'leyden-react';
+import { type CellRenderers } from 'leyden-react';
 
 import { CSI } from './CSI';
 import { Name } from './Name';

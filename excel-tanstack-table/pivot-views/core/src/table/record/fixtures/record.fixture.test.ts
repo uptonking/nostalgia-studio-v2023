@@ -1,6 +1,6 @@
 import { NumberFieldValue, StringFieldValue } from '../../field/index';
 import { NumberEqual, StringEqual } from '../specifications/index';
-import { RecordCompositeSpecification } from '../specifications/interface';
+import { type RecordCompositeSpecification } from '../specifications/interface';
 import { createTestRecord } from './record.fixture';
 
 beforeAll(() => {

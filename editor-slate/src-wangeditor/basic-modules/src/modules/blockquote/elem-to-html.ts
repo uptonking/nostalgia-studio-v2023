@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { Element } from 'slate';
+import { type Element } from 'slate';
 
 function quoteToHtml(elem: Element, childrenHtml: string): string {
   return `<blockquote>${childrenHtml}</blockquote>`;

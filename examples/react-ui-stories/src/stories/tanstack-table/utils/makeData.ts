@@ -1,5 +1,9 @@
 import { faker } from '@faker-js/faker';
-import type { ColumnDef, ColumnSort, SortingState } from '@tanstack/table-core';
+import {
+  type ColumnDef,
+  type ColumnSort,
+  type SortingState,
+} from '@tanstack/table-core';
 
 export type Person = {
   id?: number;

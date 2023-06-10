@@ -1,7 +1,7 @@
-import { Editor, NodeEntry, Transforms } from 'slate';
+import { Editor, type NodeEntry, Transforms } from 'slate';
 
 import { createRow } from '../table/creator';
-import { Col, splitTable } from '../table/selection';
+import { type Col, splitTable } from '../table/selection';
 
 export function insertAbove(table: NodeEntry, editor: Editor) {
   console.log('insertAbove-ing');

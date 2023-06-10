@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import cx from 'clsx';
 
-import type { IIconProps } from '@icon-park/react/lib/runtime';
+import { type IIconProps } from '@icon-park/react/lib/runtime';
 import { css } from '@linaria/core';
 
 import { themed } from '../../styles';

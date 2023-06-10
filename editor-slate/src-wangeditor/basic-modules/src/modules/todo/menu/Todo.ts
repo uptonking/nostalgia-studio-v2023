@@ -3,8 +3,13 @@
  * @author wangfupeng
  */
 
-import { Editor, Element, Transforms } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import { Editor, type Element, Transforms } from 'slate';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { CHECK_BOX_SVG } from '../../../constants/icon-svg';
 
 class TodoMenu implements IButtonMenu {

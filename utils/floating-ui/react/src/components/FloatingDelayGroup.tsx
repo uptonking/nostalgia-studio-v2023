@@ -2,7 +2,7 @@ import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
 import { getDelay } from '../hooks/useHover';
-import type { FloatingContext } from '../types';
+import { type FloatingContext } from '../types';
 
 type Delay = number | Partial<{ open: number; close: number }>;
 

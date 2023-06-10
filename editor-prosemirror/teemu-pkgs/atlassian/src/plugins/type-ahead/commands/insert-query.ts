@@ -2,7 +2,7 @@ import { TextSelection } from 'prosemirror-state';
 
 import { safeInsert } from '@example/prosemirror-utils';
 
-import { Command } from '../../../types';
+import { type Command } from '../../../types';
 
 export function insertTypeAheadQuery(
   trigger: string,

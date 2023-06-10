@@ -1,8 +1,9 @@
-import React, { DOMAttributes, SyntheticEvent } from 'react';
+import { type DOMAttributes, type SyntheticEvent } from 'react';
+import type React from 'react';
 
-import { Editor } from 'slate';
+import { type Editor } from 'slate';
 
-import type { EnhanceEditorFnOrWithArgs } from '../plugins/types';
+import { type EnhanceEditorFnOrWithArgs } from '../plugins/types';
 
 /** apply plugin in reverse order */
 export const composePlugins = (

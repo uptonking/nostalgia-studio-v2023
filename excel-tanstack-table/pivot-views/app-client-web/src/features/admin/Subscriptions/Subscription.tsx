@@ -11,7 +11,7 @@ import {
   FormGroup,
   Paper,
 } from '@mui/material';
-import { Subscription } from '@datalking/pivot-app-shared-lib';
+import { type Subscription } from '@datalking/pivot-app-shared-lib';
 
 export default function SubscriptionEdit({
   item,

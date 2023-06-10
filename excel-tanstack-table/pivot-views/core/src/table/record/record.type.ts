@@ -7,7 +7,7 @@ import {
 } from '../field/index';
 import { fieldIdSchema } from '../field/value-objects/field-id.schema';
 import { TableId, tableIdSchema } from '../value-objects/index';
-import type { Record } from './record';
+import { type Record } from './record';
 import { recordIdSchema } from './value-objects/record-id.schema';
 
 export type Records = Record[];

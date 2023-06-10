@@ -1,4 +1,4 @@
-import { ContextType, useContext } from 'react';
+import { type ContextType, useContext } from 'react';
 
 import { PublicContext } from '../store';
 

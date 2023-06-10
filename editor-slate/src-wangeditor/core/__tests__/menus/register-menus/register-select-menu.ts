@@ -3,8 +3,12 @@
  * @author wangfupeng
  */
 
-import { registerMenu, ISelectMenu, IOption } from '../../../src/menus/index';
-import { IDomEditor } from '../../../src/editor/interface';
+import {
+  registerMenu,
+  type ISelectMenu,
+  type IOption,
+} from '../../../src/menus/index';
+import { type IDomEditor } from '../../../src/editor/interface';
 
 class MySelectMenu implements ISelectMenu {
   readonly title = 'My Select Menu';

@@ -1,19 +1,19 @@
 import React from 'react';
 
 import {
-  Column,
-  ColumnDef,
+  type Column,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  RowData,
-  Table,
+  type RowData,
+  type Table,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { makeData, type Person } from '../utils/makeData';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {

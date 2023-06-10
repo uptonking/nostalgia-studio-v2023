@@ -5,7 +5,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { canDisplay, isControlledFieldType } from '@datalking/pivot-core';
-import type { ICreateTableInput } from '@datalking/pivot-cqrs';
+import { type ICreateTableInput } from '@datalking/pivot-cqrs';
 import {
   ActionIcon,
   Button,

@@ -1,8 +1,8 @@
-import { IViewDisplayType } from '@datalking/pivot-core';
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type IViewDisplayType } from '@datalking/pivot-core';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISwitchDisplayTypeCommandInput } from './switch-display-type.command.interface';
+import { type ISwitchDisplayTypeCommandInput } from './switch-display-type.command.interface';
 
 export class SwitchDisplayTypeCommand
   extends Command

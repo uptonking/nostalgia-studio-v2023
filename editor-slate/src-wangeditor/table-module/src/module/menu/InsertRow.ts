@@ -4,9 +4,14 @@
  */
 
 import { Editor, Transforms, Range, Path } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { ADD_ROW_SVG } from '../../constants/svg';
-import { TableRowElement, TableCellElement } from '../custom-types';
+import { type TableRowElement, type TableCellElement } from '../custom-types';
 
 class InsertRow implements IButtonMenu {
   readonly title = t('tableModule.insertRow');

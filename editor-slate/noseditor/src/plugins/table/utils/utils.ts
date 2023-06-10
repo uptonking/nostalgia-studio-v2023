@@ -1,7 +1,11 @@
 import { Element } from 'slate';
 
 import { createParagraphElement } from '../../paragraph/utils';
-import type { TableCellElement, TableElement, TableRowElement } from '../types';
+import {
+  type TableCellElement,
+  type TableElement,
+  type TableRowElement,
+} from '../types';
 
 export const TableSpec = 'table';
 export const TableRowSpec = 'tableRow';

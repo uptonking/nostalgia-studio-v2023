@@ -4,9 +4,9 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import type {
-  IFieldQueryValue,
-  IMutateRecordValueSchema,
+import {
+  type IFieldQueryValue,
+  type IMutateRecordValueSchema,
 } from '@datalking/pivot-core';
 import { createMutateRecordValuesSchema } from '@datalking/pivot-core';
 import { useGetRecordQuery } from '@datalking/pivot-store';

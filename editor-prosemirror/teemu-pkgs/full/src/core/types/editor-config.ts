@@ -1,7 +1,7 @@
-import { NodeView } from 'prosemirror-view';
-import { MarkSpec, NodeSpec } from 'prosemirror-model';
+import { type NodeView } from 'prosemirror-view';
+import { type MarkSpec, type NodeSpec } from 'prosemirror-model';
 
-import { PMPlugin } from './pm-plugin';
+import { type PMPlugin } from './pm-plugin';
 
 export interface EditorConfig {
   nodes: NodeConfig[];

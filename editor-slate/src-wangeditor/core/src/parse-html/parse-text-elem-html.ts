@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import { Dom7Array } from 'dom7';
-import { Text } from 'slate';
-import { IDomEditor } from '../editor/interface';
+import { type Dom7Array } from 'dom7';
+import { type Text } from 'slate';
+import { type IDomEditor } from '../editor/interface';
 import { PARSE_STYLE_HTML_FN_LIST } from './index';
 import { deReplaceHtmlSpecialSymbols } from '../utils/util';
 import { replaceSpace160 } from './helper';

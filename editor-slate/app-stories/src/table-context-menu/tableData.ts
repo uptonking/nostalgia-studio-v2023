@@ -1,4 +1,4 @@
-import { TableElement } from './customTypes';
+import { type TableElement } from './customTypes';
 
 export const tableData: TableElement = {
   type: 'table',

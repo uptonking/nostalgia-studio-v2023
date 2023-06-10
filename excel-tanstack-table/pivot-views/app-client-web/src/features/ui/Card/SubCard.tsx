@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import type { CardProps } from '.';
+import { type CardProps } from '.';
 
 export function SubCard(
   {

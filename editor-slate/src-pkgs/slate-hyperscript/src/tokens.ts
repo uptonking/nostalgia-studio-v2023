@@ -1,4 +1,4 @@
-import { Node, Path, Text } from 'slate';
+import { type Node, type Path, type Text } from 'slate';
 
 /**
  * A weak map to hold anchor tokens.

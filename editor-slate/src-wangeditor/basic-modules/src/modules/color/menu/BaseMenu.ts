@@ -4,8 +4,13 @@
  */
 
 import { Editor, Range } from 'slate';
-import { IDropPanelMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
-import $, { Dom7Array, DOMElement } from '../../../utils/dom';
+import {
+  type IDropPanelMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
+import $, { type Dom7Array, type DOMElement } from '../../../utils/dom';
 import { CLEAN_SVG } from '../../../constants/icon-svg';
 
 abstract class BaseMenu implements IDropPanelMenu {

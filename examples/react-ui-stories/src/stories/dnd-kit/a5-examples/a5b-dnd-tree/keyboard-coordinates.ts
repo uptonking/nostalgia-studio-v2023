@@ -1,13 +1,13 @@
 import {
   closestCorners,
-  DroppableContainer,
+  type DroppableContainer,
   getClientRect,
   getFirstCollision,
   KeyboardCode,
-  KeyboardCoordinateGetter,
+  type KeyboardCoordinateGetter,
 } from '@dnd-kit/core';
 
-import type { SensorConfig } from './types';
+import { type SensorConfig } from './types';
 import { getDepthCandidate } from './utils';
 
 const directions: string[] = [

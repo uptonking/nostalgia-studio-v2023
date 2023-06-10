@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import React from 'react';
 
-import { io, Socket } from 'socket.io-client';
+import { io, type Socket } from 'socket.io-client';
 
-import { ClientConfig } from '@datalking/pivot-app-shared-lib';
+import { type ClientConfig } from '@datalking/pivot-app-shared-lib';
 
-import { AppNotification, AppState, patch } from '.';
+import { type AppNotification, type AppState, patch } from '.';
 import { config } from '../../shared/config';
 import loadConfig, { setConfig } from '../../shared/loadConfig';
 import { useAppDispatch, useAppSelector } from '../../shared/store';

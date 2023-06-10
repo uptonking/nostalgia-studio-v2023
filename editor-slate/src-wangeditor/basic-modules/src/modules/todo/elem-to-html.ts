@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { Element } from 'slate';
-import { TodoElement } from './custom-types';
+import { type Element } from 'slate';
+import { type TodoElement } from './custom-types';
 
 function todoToHtml(elem: Element, childrenHtml: string): string {
   const { checked } = elem as TodoElement;

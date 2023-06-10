@@ -3,11 +3,11 @@ import React, { useCallback } from 'react';
 import { Element } from '../components/Element';
 import { Text } from '../components/Text';
 import {
-  CellRenderers,
-  ElementRenderers,
-  HeaderRenderers,
-  TableOptions,
-  TextRenderers,
+  type CellRenderers,
+  type ElementRenderers,
+  type HeaderRenderers,
+  type TableOptions,
+  type TextRenderers,
 } from '../utils/types';
 
 type ElementNoRenderers = Omit<Element, 'cellRenderers' | 'elementRenderers'>;

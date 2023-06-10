@@ -4,7 +4,7 @@
  */
 
 import { Editor } from 'slate';
-import { IButtonMenu, IDomEditor } from '@wangeditor/core';
+import { type IButtonMenu, type IDomEditor } from '@wangeditor/core';
 import { isMenuDisabled } from '../helper';
 
 abstract class BaseMenu implements IButtonMenu {

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 import isHotkey from 'is-hotkey';
 import { Editor, Path } from 'slate';

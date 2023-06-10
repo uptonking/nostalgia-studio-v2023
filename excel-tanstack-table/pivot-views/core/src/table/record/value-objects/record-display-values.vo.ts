@@ -1,6 +1,6 @@
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { IRecordDisplayValues } from '../record.type';
+import { type IRecordDisplayValues } from '../record.type';
 
 export class RecordDisplayValues extends ValueObject<IRecordDisplayValues> {
   public get values() {

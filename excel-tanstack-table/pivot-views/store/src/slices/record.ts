@@ -5,11 +5,11 @@ import fp from 'lodash/fp';
 import { persistReducer } from 'redux-persist';
 import sessionStorage from 'redux-persist/es/storage/session';
 
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction } from '@reduxjs/toolkit';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { recordApi } from '../services';
-import type { RootState } from '../store/reducer';
+import { type RootState } from '../store/reducer';
 
 const { filter, keys, omit, pipe, some, T, propOr } = fp;
 

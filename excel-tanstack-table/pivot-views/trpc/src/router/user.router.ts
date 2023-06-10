@@ -3,9 +3,9 @@ import {
   getUsersQueryOutput,
   getUsersQuerySchema,
 } from '@datalking/pivot-cqrs';
-import type { ICommandBus, IQueryBus } from '@datalking/pivot-entity';
+import { type ICommandBus, type IQueryBus } from '@datalking/pivot-entity';
 
-import type { publicProcedure } from '../trpc';
+import { type publicProcedure } from '../trpc';
 import { router } from '../trpc';
 
 export const createUserRouter =

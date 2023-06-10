@@ -1,11 +1,11 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { FieldValue } from '../../field/index';
-import type { Record } from '../record';
-import type { IRecordVisitor } from './interface';
+import { type FieldValue } from '../../field/index';
+import { type Record } from '../record';
+import { type IRecordVisitor } from './interface';
 
 export abstract class BaseRecordSpecification<
   V extends FieldValue,

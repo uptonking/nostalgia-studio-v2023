@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import $, { DOMElement, getTagName } from '../../utils/dom';
+import $, { type DOMElement, getTagName } from '../../utils/dom';
 
 // V4 font-size 对应关系（V4 使用 <font size="1">xxx</font> 格式）
 const FONT_SIZE_MAP_FOR_V4 = {

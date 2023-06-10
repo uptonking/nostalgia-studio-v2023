@@ -1,11 +1,8 @@
-import { Fragment, Node } from 'prosemirror-model';
+import { type Fragment, type Node } from 'prosemirror-model';
 
-// AFP-2532 TODO: Fix automatic suppressions below
-// eslint-disable-next-line @atlassian/tangerine/import/entry-points
-import { QuickInsertItem } from '../../provider-factory';
-
+import { type QuickInsertItem } from '../../provider-factory';
+import { type Command } from '../../types';
 import { insertSelectedItem } from '../../utils/insert';
-import { Command } from '../../types';
 import { pluginKey } from './plugin-key';
 
 export const openElementBrowserModal = (): Command => (state, dispatch) => {

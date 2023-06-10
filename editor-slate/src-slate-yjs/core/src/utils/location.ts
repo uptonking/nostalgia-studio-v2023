@@ -1,7 +1,7 @@
-import { Element, Node, Path, Text } from 'slate';
+import { type Element, type Node, type Path, Text } from 'slate';
 import * as Y from 'yjs';
 
-import { YTarget } from '../model/types';
+import { type YTarget } from '../model/types';
 import { sliceInsertDelta, yTextToInsertDelta } from './delta';
 
 export function getSlateNodeYLength(node: Node | undefined): number {

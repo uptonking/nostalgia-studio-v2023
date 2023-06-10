@@ -1,5 +1,5 @@
 import { JSONPatch } from './jsonPatch';
-import { syncable, SyncableClient } from './syncable';
+import { syncable, type SyncableClient } from './syncable';
 
 test();
 

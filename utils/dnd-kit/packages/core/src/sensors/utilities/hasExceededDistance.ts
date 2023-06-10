@@ -1,4 +1,4 @@
-import type { Coordinates, DistanceMeasurement } from '../../types';
+import { type Coordinates, type DistanceMeasurement } from '../../types';
 
 export function hasExceededDistance(
   delta: Coordinates,

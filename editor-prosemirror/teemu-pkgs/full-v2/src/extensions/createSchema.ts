@@ -1,5 +1,5 @@
-import { Schema, NodeSpec, MarkSpec } from 'prosemirror-model';
-import { IExtension, IExtensionSchema } from './Extension';
+import { Schema, type NodeSpec, type MarkSpec } from 'prosemirror-model';
+import { type IExtension, type IExtensionSchema } from './Extension';
 
 export function createSchema(extensions: IExtension<any>[]) {
   const nodes = extensions.reduce(

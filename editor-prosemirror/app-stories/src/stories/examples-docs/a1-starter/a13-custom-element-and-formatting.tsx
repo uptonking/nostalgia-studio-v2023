@@ -2,9 +2,9 @@
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
 import { MenuItem } from 'prosemirror-menu';
-import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
+import { DOMParser, type NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
-import { Command, EditorState } from 'prosemirror-state';
+import { type Command, EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
 

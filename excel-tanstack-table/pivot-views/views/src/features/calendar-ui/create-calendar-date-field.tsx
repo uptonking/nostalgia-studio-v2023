@@ -4,7 +4,7 @@ import { useSetAtom } from 'jotai';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import type { ICreateDateFieldSchema } from '@datalking/pivot-core';
+import { type ICreateDateFieldSchema } from '@datalking/pivot-core';
 import { createDateFieldSchema, FieldId } from '@datalking/pivot-core';
 import {
   useCreateFieldMutation,

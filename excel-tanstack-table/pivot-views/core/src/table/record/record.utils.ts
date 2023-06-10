@@ -1,11 +1,11 @@
 import fp from 'lodash/fp';
-import type {
-  ICreateFieldsSchema_internal,
-  ICreateFieldValueSchema_internal,
+import {
+  type ICreateFieldsSchema_internal,
+  type ICreateFieldValueSchema_internal,
 } from '../field/index';
 import { createFieldValueSchema_internal } from '../field/index';
-import type { TableSchema } from '../value-objects/index';
-import type { IMutateRecordValueSchema } from './record.schema';
+import { type TableSchema } from '../value-objects/index';
+import { type IMutateRecordValueSchema } from './record.schema';
 
 const { filter, map, pipe, toPairs } = fp;
 

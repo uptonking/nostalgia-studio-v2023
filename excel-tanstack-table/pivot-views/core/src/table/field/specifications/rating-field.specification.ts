@@ -1,11 +1,11 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index';
-import type { Table } from '../../table';
-import type { RatingField } from '../rating-field';
+import { type ITableSpecVisitor } from '../../specifications/index';
+import { type Table } from '../../table';
+import { type RatingField } from '../rating-field';
 
 export class WithRatingMax extends CompositeSpecification<
   Table,

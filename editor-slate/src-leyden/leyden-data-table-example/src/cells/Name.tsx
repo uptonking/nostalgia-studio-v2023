@@ -1,5 +1,9 @@
 import { Transforms } from 'leyden';
-import { CellRenderer, useCellIsSelected, useLeydenStatic } from 'leyden-react';
+import {
+  type CellRenderer,
+  useCellIsSelected,
+  useLeydenStatic,
+} from 'leyden-react';
 import React, { useEffect } from 'react';
 
 export const Name: CellRenderer<'Name'> = ({

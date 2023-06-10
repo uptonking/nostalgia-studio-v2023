@@ -1,16 +1,16 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import type {
-  DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
-  DragStartEvent,
-  UniqueIdentifier,
+import {
+  type DragEndEvent,
+  type DragMoveEvent,
+  type DragOverEvent,
+  type DragStartEvent,
+  type UniqueIdentifier,
 } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
 
-import type { DndTreeProps } from './dnd-tree';
-import type { FlattenedItem, TreeItems } from './types';
+import { type DndTreeProps } from './dnd-tree';
+import { type FlattenedItem, type TreeItems } from './types';
 import {
   buildTree,
   flattenTree,

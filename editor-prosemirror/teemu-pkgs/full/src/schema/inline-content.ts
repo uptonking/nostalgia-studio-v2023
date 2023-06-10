@@ -1,6 +1,6 @@
-import { TextDefinition as Text } from './nodes/text';
-import { MarksObject } from './marks-obj';
-import { UnderlineDefinition as Underline } from './marks';
+import { type TextDefinition as Text } from './nodes/text';
+import { type MarksObject } from './marks-obj';
+import { type UnderlineDefinition as Underline } from './marks';
 
 /**
  * @name formatted_text_inline_node

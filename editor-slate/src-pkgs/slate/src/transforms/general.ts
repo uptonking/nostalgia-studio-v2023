@@ -1,17 +1,17 @@
 import { createDraft, finishDraft, isDraft } from 'immer';
 
 import {
-  Ancestor,
-  Descendant,
-  Editor,
-  Element,
+  type Ancestor,
+  type Descendant,
+  type Editor,
+  type Element,
   Node,
-  NodeEntry,
-  Operation,
+  type NodeEntry,
+  type Operation,
   Path,
   Point,
   Range,
-  Selection,
+  type Selection,
   Text,
 } from '../../src';
 

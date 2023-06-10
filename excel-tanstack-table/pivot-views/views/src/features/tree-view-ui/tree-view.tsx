@@ -1,24 +1,24 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import type {
-  IQueryTreeRecord,
-  IQueryTreeRecords,
-  TableSchemaIdMap,
-  TreeField,
+import {
+  type IQueryTreeRecord,
+  type IQueryTreeRecords,
+  type TableSchemaIdMap,
+  type TreeField,
 } from '@datalking/pivot-core';
 import { RecordFactory } from '@datalking/pivot-core';
 import { useUpdateRecordMutation } from '@datalking/pivot-store';
 import { Box } from '@datalking/pivot-ui';
-import type {
-  Announcements,
-  DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
-  DragStartEvent,
-  DropAnimation,
-  Modifier,
-  UniqueIdentifier,
+import {
+  type Announcements,
+  type DragEndEvent,
+  type DragMoveEvent,
+  type DragOverEvent,
+  type DragStartEvent,
+  type DropAnimation,
+  type Modifier,
+  type UniqueIdentifier,
 } from '@dnd-kit/core';
 import {
   closestCenter,
@@ -43,11 +43,11 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { sortableTreeKeyboardCoordinates } from './keyboard-coordinates';
 import { SortableTreeItem } from './sortable-tree-view-item';
-import type {
-  FlattenedSortableRecord,
-  SensorContext,
-  SortableRecordItem,
-  SortableRecordItems,
+import {
+  type FlattenedSortableRecord,
+  type SensorContext,
+  type SortableRecordItem,
+  type SortableRecordItems,
 } from './tree-view-ui.types';
 import {
   buildTree,

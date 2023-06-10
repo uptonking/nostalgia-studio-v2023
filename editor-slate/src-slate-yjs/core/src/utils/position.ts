@@ -1,7 +1,11 @@
-import { BasePoint, BaseRange, Node, Text } from 'slate';
+import { type BasePoint, type BaseRange, Node, Text } from 'slate';
 import * as Y from 'yjs';
 
-import { InsertDelta, RelativeRange, TextRange } from '../model/types';
+import {
+  type InsertDelta,
+  type RelativeRange,
+  type TextRange,
+} from '../model/types';
 import { getInsertDeltaLength, yTextToInsertDelta } from './delta';
 import { getSlatePath, getYTarget, yOffsetToSlateOffsets } from './location';
 import { assertDocumentAttachment } from './yjs';

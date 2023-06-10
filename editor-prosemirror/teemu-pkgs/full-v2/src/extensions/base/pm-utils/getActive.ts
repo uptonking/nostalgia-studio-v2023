@@ -1,4 +1,4 @@
-import { EditorState, Selection } from 'prosemirror-state';
+import { type EditorState, Selection } from 'prosemirror-state';
 
 // From https://github.com/PierBover/prosemirror-cookbook
 export function getActiveMarks(state: EditorState): string[] {

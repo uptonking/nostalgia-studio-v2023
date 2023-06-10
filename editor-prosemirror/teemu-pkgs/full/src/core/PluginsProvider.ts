@@ -1,4 +1,4 @@
-import { PluginKey } from './pm';
+import { type PluginKey } from './pm';
 
 import { EventDispatcher } from './utils/EventDispatcher';
 

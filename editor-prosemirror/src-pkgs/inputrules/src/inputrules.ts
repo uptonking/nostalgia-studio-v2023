@@ -1,11 +1,11 @@
 import {
   Plugin,
-  Transaction,
-  EditorState,
-  TextSelection,
-  Command,
+  type Transaction,
+  type EditorState,
+  type TextSelection,
+  type Command,
 } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 
 /** Input rules are regular expressions describing a piece of text
  * that, when typed, causes something to happen. This might be

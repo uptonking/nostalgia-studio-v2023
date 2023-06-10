@@ -13,9 +13,9 @@ import {
   UpdateTableCommand,
   updateTableCommandInput,
 } from '@datalking/pivot-cqrs';
-import type { ICommandBus, IQueryBus } from '@datalking/pivot-entity';
+import { type ICommandBus, type IQueryBus } from '@datalking/pivot-entity';
 
-import type { publicProcedure } from '../trpc';
+import { type publicProcedure } from '../trpc';
 import { router } from '../trpc';
 import { createFieldRouter } from './field.router';
 import { createViewRouter } from './view.router';

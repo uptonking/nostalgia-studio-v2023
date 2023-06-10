@@ -1,6 +1,9 @@
-import type { IQueryUser } from '@datalking/pivot-core';
-import type { IGetUsersOutput, IGetUsersQuery } from '@datalking/pivot-cqrs';
-import type { EntityState } from '@reduxjs/toolkit';
+import { type IQueryUser } from '@datalking/pivot-core';
+import {
+  type IGetUsersOutput,
+  type IGetUsersQuery,
+} from '@datalking/pivot-cqrs';
+import { type EntityState } from '@reduxjs/toolkit';
 import { createEntityAdapter } from '@reduxjs/toolkit';
 import { createApi } from '@reduxjs/toolkit/query/react';
 

@@ -1,16 +1,16 @@
-import * as React from 'react';
+import type * as React from 'react';
 
-import type {
-  ComputePositionReturn,
-  Middleware,
-  Placement,
-  Platform,
-  Strategy,
-  UseFloatingReturn as UsePositionFloatingReturn,
-  VirtualElement,
+import {
+  type ComputePositionReturn,
+  type Middleware,
+  type Placement,
+  type Platform,
+  type Strategy,
+  type UseFloatingReturn as UsePositionFloatingReturn,
+  type VirtualElement,
 } from '@floating-ui/react-dom';
 
-import type { DismissPayload } from './hooks/useDismiss';
+import { type DismissPayload } from './hooks/useDismiss';
 
 export * from '.';
 export { type Props as FloatingArrowProps } from './components/FloatingArrow';

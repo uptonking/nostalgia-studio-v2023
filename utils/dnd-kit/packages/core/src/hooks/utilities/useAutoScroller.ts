@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { useInterval, useLazyMemo, usePrevious } from '@dnd-kit/utilities';
 
-import type { ClientRect, Coordinates } from '../../types';
+import { type ClientRect, type Coordinates } from '../../types';
 import { Direction } from '../../types';
 import { getScrollDirectionAndSpeed } from '../../utilities';
 

@@ -1,10 +1,14 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { useQuery, UseQueryOptions } from 'react-query';
+import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
+import { useQuery, type UseQueryOptions } from 'react-query';
 
-import { AnyAction, createAsyncThunk, ThunkDispatch } from '@reduxjs/toolkit';
+import {
+  type AnyAction,
+  createAsyncThunk,
+  type ThunkDispatch,
+} from '@reduxjs/toolkit';
 
-import { AppUser, getAuthProvider, onLogin } from '../../shared/auth';
-import { RootState, store } from '../../shared/store';
+import { type AppUser, getAuthProvider, onLogin } from '../../shared/auth';
+import { type RootState, store } from '../../shared/store';
 import { notify, notifyError, patch } from './slice';
 
 export const Method = {

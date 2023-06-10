@@ -1,6 +1,6 @@
 import React from 'react';
 import { toggleMark, setBlockType, wrapIn } from 'prosemirror-commands';
-import { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
 
 // import {
@@ -8,10 +8,13 @@ import styled from 'styled-components';
 //   MdFormatListNumbered, MdTextFormat, MdSpaceBar
 // } from 'react-icons/md'
 
-import { EditorActions } from '../../EditorActions';
-import { EventDispatcher } from '../../utils/event-dispatcher';
+import { type EditorActions } from '../../EditorActions';
+import { type EventDispatcher } from '../../utils/event-dispatcher';
 
-import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
+import {
+  type EditorAppearance,
+  type ToolbarUIComponentFactory,
+} from '../../types';
 
 interface IProps {
   className?: string;

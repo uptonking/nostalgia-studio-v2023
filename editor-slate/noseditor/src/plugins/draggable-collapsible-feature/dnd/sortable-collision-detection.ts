@@ -1,9 +1,9 @@
-import type { MutableRefObject } from 'react';
+import { type MutableRefObject } from 'react';
 
-import type {
-  CollisionDescriptor,
-  CollisionDetection,
-  DroppableContainer,
+import {
+  type CollisionDescriptor,
+  type CollisionDetection,
+  type DroppableContainer,
 } from '@dnd-kit/core';
 
 declare type DataRef = MutableRefObject<Record<string, any> | undefined>;

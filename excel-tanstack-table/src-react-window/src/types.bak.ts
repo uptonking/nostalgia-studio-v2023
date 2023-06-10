@@ -12,12 +12,12 @@
 
 import {
   Component,
-  ComponentClass,
-  ComponentType,
-  CSSProperties,
-  FunctionComponent,
-  Key,
-  Ref,
+  type ComponentClass,
+  type ComponentType,
+  type CSSProperties,
+  type FunctionComponent,
+  type Key,
+  type Ref,
 } from 'react';
 
 export type CSSDirection = 'ltr' | 'rtl';

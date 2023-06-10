@@ -1,4 +1,4 @@
-import { Command } from '../../../types';
+import { type Command } from '../../../types';
 import { ACTIONS, pluginKey } from '../pm-plugins/main';
 
 export const setCurrentIndex =

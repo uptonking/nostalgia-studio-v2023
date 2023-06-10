@@ -8,21 +8,21 @@ import {
   Node,
   Text,
   Path,
-  Operation,
+  type Operation,
   Range,
   Transforms,
   Element,
   Descendant,
 } from 'slate';
 import { DomEditor } from '../dom-editor';
-import { IDomEditor } from '../..';
+import { type IDomEditor } from '../..';
 import { EDITOR_TO_SELECTION, NODE_TO_KEY } from '../../utils/weak-maps';
 import node2html from '../../to-html/node2html';
 import { genElemId } from '../../render/helper';
-import { Key } from '../../utils/key';
-import $, { DOMElement, NodeType } from '../../utils/dom';
+import { type Key } from '../../utils/key';
+import $, { type DOMElement, NodeType } from '../../utils/dom';
 import { findCurrentLineRange } from '../../utils/line';
-import { ElementWithId } from '../interface';
+import { type ElementWithId } from '../interface';
 import { PARSE_ELEM_HTML_CONF, TEXT_TAGS } from '../../parse-html/index';
 import parseElemHtml from '../../parse-html/parse-elem-html';
 import { htmlToContent } from '../../create/helper';

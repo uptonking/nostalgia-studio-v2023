@@ -6,10 +6,10 @@ import {
   NONE,
 } from '../../../util/Constants';
 import { relativeCcw } from '../../../util/mathUtils';
-import type { AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
-import type { CellState } from '../../cell/CellState';
-import type { Point } from '../Point';
-import type { Rectangle } from '../Rectangle';
+import { type AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
+import { type CellState } from '../../cell/CellState';
+import { type Point } from '../Point';
+import { type Rectangle } from '../Rectangle';
 import { Shape } from '../Shape';
 
 /**

@@ -1,14 +1,14 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ICreateFieldsSchema_internal } from '../../field/index';
-import type { TableSchemaIdMap } from '../../value-objects/index';
-import type { Record } from '../record';
-import type { IQueryRecordValues } from '../record.type';
+import { type ICreateFieldsSchema_internal } from '../../field/index';
+import { type TableSchemaIdMap } from '../../value-objects/index';
+import { type Record } from '../record';
+import { type IQueryRecordValues } from '../record.type';
 import { RecordValues } from '../value-objects/index';
-import type { IRecordVisitor } from './interface';
+import { type IRecordVisitor } from './interface';
 
 export class WithRecordValues extends CompositeSpecification<
   Record,

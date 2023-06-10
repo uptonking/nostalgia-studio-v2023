@@ -1,4 +1,4 @@
-import { Command } from '../../../types';
+import { type Command } from '../../../types';
 import { ACTIONS } from '../pm-plugins/actions';
 import { pluginKey } from '../pm-plugins/plugin-key';
 import { findTypeAheadQuery } from '../utils/find-query-mark';

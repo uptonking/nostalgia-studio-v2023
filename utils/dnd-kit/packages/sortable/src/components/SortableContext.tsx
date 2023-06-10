@@ -1,10 +1,14 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import { ClientRect, UniqueIdentifier, useDndContext } from '@dnd-kit/core';
+import {
+  type ClientRect,
+  type UniqueIdentifier,
+  useDndContext,
+} from '@dnd-kit/core';
 import { useIsomorphicLayoutEffect, useUniqueId } from '@dnd-kit/utilities';
 
 import { rectSortingStrategy } from '../strategies';
-import type { Disabled, SortingStrategy } from '../types';
+import { type Disabled, type SortingStrategy } from '../types';
 import { getSortedRects, itemsEqual, normalizeDisabled } from '../utilities';
 
 export interface Props {

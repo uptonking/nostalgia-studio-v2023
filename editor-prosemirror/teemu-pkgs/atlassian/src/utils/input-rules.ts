@@ -1,8 +1,12 @@
 import { inputRules, InputRule } from 'prosemirror-inputrules';
-import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
-import { Mark as PMMark } from 'prosemirror-model';
+import {
+  type EditorState,
+  type Transaction,
+  TextSelection,
+} from 'prosemirror-state';
+import { type Mark as PMMark } from 'prosemirror-model';
 import { startMeasure, stopMeasure } from '../performance/measure';
-import { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 
 export type InputRuleWithHandler = InputRule & { handler: InputRuleHandler };
 

@@ -3,10 +3,10 @@ import {
   type IRecordRepository,
   type ITableRepository,
 } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { ICreateTableOutput } from '../create-table/index';
-import type { CreateRecordCommand } from './create-record.comand';
+import { type ICreateTableOutput } from '../create-table/index';
+import { type CreateRecordCommand } from './create-record.comand';
 
 export class CreateRecordCommandHandler
   implements ICommandHandler<CreateRecordCommand, ICreateTableOutput>

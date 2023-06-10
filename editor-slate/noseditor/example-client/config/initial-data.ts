@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { Descendant, Element, Node } from 'slate';
+import { type Descendant, Element, type Node } from 'slate';
 
 import { ListVariants } from '../../src/plugins/list/utils';
 

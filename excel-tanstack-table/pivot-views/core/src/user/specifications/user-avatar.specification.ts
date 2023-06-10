@@ -1,10 +1,10 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { User } from '../user';
-import type { IUserSpecVisitor } from './interface';
+import { type User } from '../user';
+import { type IUserSpecVisitor } from './interface';
 
 export class WithUserAvatar extends CompositeSpecification<
   User,

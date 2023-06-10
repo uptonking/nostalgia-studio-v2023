@@ -1,4 +1,4 @@
-import { IDomEditor } from '../../../packages/editor/src';
+import { type IDomEditor } from '../../../packages/editor/src';
 import UploadImageMenu from '../src/module/menu/UploadImageMenu';
 import createEditor from '../../../tests/utils/create-editor';
 

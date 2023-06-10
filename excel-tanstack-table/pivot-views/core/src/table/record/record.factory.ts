@@ -1,10 +1,10 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 
 import { and } from '@datalking/pivot-entity';
 
-import type { TableSchemaIdMap } from '../value-objects/index';
+import { type TableSchemaIdMap } from '../value-objects/index';
 import { Record } from './record';
-import type { IQueryRecordSchema, Records } from './record.type';
+import { type IQueryRecordSchema, type Records } from './record.type';
 import {
   WithDisplayValues,
   WithRecordCreatedAt,
@@ -15,7 +15,7 @@ import {
   WithRecordUpdatedAt,
   WithRecordValues,
 } from './specifications/index';
-import type { RecordCompositeSpecification } from './specifications/interface';
+import { type RecordCompositeSpecification } from './specifications/interface';
 import { WithRecordAutoIncrement } from './specifications/record-auto-increment.specification';
 import {
   WithRecordUpdatedBy,

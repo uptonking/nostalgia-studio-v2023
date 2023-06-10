@@ -1,4 +1,4 @@
-import type { Socket } from 'socket.io';
+import { type Socket } from 'socket.io';
 
 import { Selection } from '../src/selection';
 import { TextOperation } from '../src/text-operation';

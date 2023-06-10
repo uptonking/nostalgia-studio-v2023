@@ -1,21 +1,21 @@
-import type { MutableRefObject } from 'react';
+import { type MutableRefObject } from 'react';
 
-import type {
-  Active,
-  DraggableNode,
-  DraggableNodes,
-  DroppableContainers,
-  Over,
-  RectMap,
+import {
+  type Active,
+  type DraggableNode,
+  type DraggableNodes,
+  type DroppableContainers,
+  type Over,
+  type RectMap,
 } from '../store';
-import type {
-  ClientRect,
-  Coordinates,
-  SyntheticEventName,
-  Translate,
-  UniqueIdentifier,
+import {
+  type ClientRect,
+  type Coordinates,
+  type SyntheticEventName,
+  type Translate,
+  type UniqueIdentifier,
 } from '../types';
-import type { Collision } from '../utilities/algorithms';
+import { type Collision } from '../utilities/algorithms';
 
 export enum Response {
   Start = 'start',

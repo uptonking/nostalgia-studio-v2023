@@ -1,10 +1,10 @@
 import { computePosition as computePositionCore } from '@floating-ui/core';
 
 import { platform } from './platform';
-import type {
-  ComputePositionConfig,
-  FloatingElement,
-  ReferenceElement,
+import {
+  type ComputePositionConfig,
+  type FloatingElement,
+  type ReferenceElement,
 } from './types';
 
 /**

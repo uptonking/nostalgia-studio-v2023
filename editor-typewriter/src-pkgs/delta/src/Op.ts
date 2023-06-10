@@ -1,4 +1,4 @@
-import type { AttributeMapType } from './AttributeMap';
+import { type AttributeMapType } from './AttributeMap';
 
 /** only one property out of {insert, delete, retain} will be present */
 interface Op {

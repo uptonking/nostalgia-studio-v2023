@@ -1,4 +1,4 @@
-import type { Cell, Row, RowData, Table } from '../types';
+import { type Cell, type Row, type RowData, type Table } from '../types';
 import { flattenBy, memo } from '../utils';
 import { createCell } from './cell';
 

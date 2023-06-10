@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import { getWindow, useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
-import type { ClientRect } from '../../types';
+import { type ClientRect } from '../../types';
 import { Rect, getClientRect } from '../../utilities/rect';
 import { isDocumentScrollingElement } from '../../utilities';
 

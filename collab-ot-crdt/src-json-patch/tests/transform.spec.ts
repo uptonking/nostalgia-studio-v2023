@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { transformPatch as originalTransformPatch } from '../src/transformPatch';
 import { text } from '../src/custom/delta';
-import { JSONPatchOp } from '../src/types';
+import { type JSONPatchOp } from '../src/types';
 
 const matrix = [[], [], [], [], [], [], []];
 const arr = [{}, {}, {}, {}, {}, {}, {}];

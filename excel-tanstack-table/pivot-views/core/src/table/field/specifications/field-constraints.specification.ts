@@ -1,11 +1,11 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications';
-import type { Table } from '../../table';
-import type { BaseField } from '../field.base';
+import { type ITableSpecVisitor } from '../../specifications';
+import { type Table } from '../../table';
+import { type BaseField } from '../field.base';
 
 export class WithFieldRequirement extends CompositeSpecification<
   Table,

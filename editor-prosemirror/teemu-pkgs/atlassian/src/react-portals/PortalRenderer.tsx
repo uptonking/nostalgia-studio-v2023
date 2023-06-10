@@ -1,6 +1,6 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { PortalProviderAPI } from './PortalProviderAPI';
+import { type PortalProviderAPI } from './PortalProviderAPI';
 
 export type Portals = Map<HTMLElement, React.ReactChild>;
 

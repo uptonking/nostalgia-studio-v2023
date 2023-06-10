@@ -3,9 +3,13 @@
  * @author wangfupeng
  */
 
-import { IButtonMenu, IDropPanelMenu, IModalMenu } from '../interface';
-import $, { Dom7Array } from '../../utils/dom';
-import { IBarItem, getEditorInstance } from './index';
+import {
+  type IButtonMenu,
+  type IDropPanelMenu,
+  type IModalMenu,
+} from '../interface';
+import $, { type Dom7Array } from '../../utils/dom';
+import { type IBarItem, getEditorInstance } from './index';
 import { clearSvgStyle } from '../helpers/helpers';
 import { promiseResolveThen } from '../../utils/util';
 import { addTooltip } from './tooltip';

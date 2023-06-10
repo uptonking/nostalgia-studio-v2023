@@ -1,4 +1,4 @@
-import { ElementRenderers } from 'leyden-react';
+import { type ElementRenderers } from 'leyden-react';
 
 import { Name } from './Name';
 

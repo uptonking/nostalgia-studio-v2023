@@ -3,12 +3,12 @@
  * @author wangfupeng
  */
 
-import { Range } from 'slate';
+import { type Range } from 'slate';
 import throttle from 'lodash.throttle';
 import forEach from 'lodash.foreach';
-import $, { Dom7Array, DOMElement } from '../utils/dom';
+import $, { type Dom7Array, type DOMElement } from '../utils/dom';
 import { TEXTAREA_TO_EDITOR } from '../utils/weak-maps';
-import { IDomEditor } from '../editor/interface';
+import { type IDomEditor } from '../editor/interface';
 import { DomEditor } from '../editor/dom-editor';
 import updateView from './update-view';
 import { handlePlaceholder } from './place-holder';

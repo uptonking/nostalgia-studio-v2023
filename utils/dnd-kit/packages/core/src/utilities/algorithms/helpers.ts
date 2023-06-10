@@ -1,6 +1,6 @@
 /* eslint-disable no-redeclare */
-import type { ClientRect } from '../../types';
-import type { Collision, CollisionDescriptor } from './types';
+import { type ClientRect } from '../../types';
+import { type Collision, type CollisionDescriptor } from './types';
 
 /**
  * Sort collisions from smallest to greatest value

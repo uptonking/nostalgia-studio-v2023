@@ -8,13 +8,13 @@ import {
   RATING_MAX,
   RATING_MAX_DEFAULT,
 } from '@datalking/pivot-core';
-import type { ICreateTableInput } from '@datalking/pivot-cqrs';
+import { type ICreateTableInput } from '@datalking/pivot-cqrs';
 import { NumberInput, Switch, TextInput } from '@datalking/pivot-ui';
 
 import { CustomDisplayFieldsPicker } from '../../field-inputs/custom-display-fields-picker';
 import { FieldInputLabel } from '../../field-inputs/field-input-label';
 import { FieldPicker } from '../../field-inputs/field-picker';
-import type { FieldBase } from '../../field-inputs/field-picker.type';
+import { type FieldBase } from '../../field-inputs/field-picker.type';
 import { ForeignFieldsPicker } from '../../field-inputs/foreign-fields-picker';
 import { SelectFieldControl } from '../../field-inputs/select-field-control';
 import { DateFormatPicker } from '../../field/date-format-picker';

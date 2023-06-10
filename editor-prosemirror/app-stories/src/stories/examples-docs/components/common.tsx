@@ -1,7 +1,7 @@
 import './styles.css';
 
 import cx from 'classnames';
-import React, { PropsWithChildren, Ref, forwardRef } from 'react';
+import React, { type PropsWithChildren, type Ref, forwardRef } from 'react';
 import { createPortal } from 'react-dom';
 
 export const Portal = ({ children }) => {

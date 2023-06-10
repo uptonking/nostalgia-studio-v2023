@@ -1,7 +1,7 @@
 import { Editor, Element, Location, Path, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import type { LinkElementType } from './types';
+import { type LinkElementType } from './types';
 import { createLinkElement, isLinkElement, LinkSpec } from './utils';
 
 export const removeLink = (editor: Editor, linkElement?: LinkElementType) => {

@@ -1,5 +1,5 @@
 import {
-  RefObject,
+  type RefObject,
   useCallback,
   useLayoutEffect,
   useMemo,
@@ -7,16 +7,16 @@ import {
   useState,
 } from 'react';
 
-import { BaseRange, NodeMatch, Text } from 'slate';
+import { type BaseRange, type NodeMatch, type Text } from 'slate';
 
-import { CursorState } from '@slate-yjs/core';
+import { type CursorState } from '@slate-yjs/core';
 
 import { getCursorRange } from '../utils/getCursorRange';
 import {
-  CaretPosition,
+  type CaretPosition,
   getOverlayPosition,
-  OverlayPosition,
-  SelectionRect,
+  type OverlayPosition,
+  type SelectionRect,
 } from '../utils/getOverlayPosition';
 import { useRemoteCursorEditor } from './useRemoteCursorEditor';
 import { useRemoteCursorStates } from './useRemoteCursorStates';

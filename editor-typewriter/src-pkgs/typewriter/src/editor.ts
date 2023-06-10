@@ -2,10 +2,10 @@ import {
   AttributeMap,
   type AttributeMapType,
   Delta,
-  EditorRange,
+  type EditorRange,
   hasFormat,
   isEqual,
-  Line,
+  type Line,
   normalizeRange,
   TextChange,
   TextDocument,
@@ -24,9 +24,18 @@ import {
   getIndexFromPoint,
 } from './rendering/position';
 import { Source, type SourceString } from './Source';
-import { ModuleInitializers, Modules, Shortcuts } from './types/common';
+import {
+  type ModuleInitializers,
+  type Modules,
+  type Shortcuts,
+} from './types/common';
 import { defaultTypes } from './typesetting/defaults';
-import { Commands, Types, Typeset, TypesetTypes } from './typesetting/typeset';
+import {
+  type Commands,
+  type Types,
+  Typeset,
+  type TypesetTypes,
+} from './typesetting/typeset';
 import { EventDispatcher } from './utils/EventDispatcher';
 
 const EMPTY_OBJ = {};

@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
 import * as React from 'react';
 
-import type { RenderLeafProps } from 'slate-react';
+import { type RenderLeafProps } from 'slate-react';
 
 import { css } from '@linaria/core';
 
-import type { FormattedText } from './types';
+import { type FormattedText } from './types';
 
 export const renderLeaf = ({
   attributes,

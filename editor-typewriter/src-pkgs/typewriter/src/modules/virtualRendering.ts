@@ -1,7 +1,11 @@
-import { EditorRange, isEqual, TextDocument } from '@typewriter/document';
+import {
+  type EditorRange,
+  isEqual,
+  type TextDocument,
+} from '@typewriter/document';
 
-import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-event';
+import { type Editor } from '../editor';
+import { type EditorChangeEvent } from '../editor-event';
 import {
   type Combined,
   combineLines,

@@ -1,12 +1,12 @@
 import {
   createTheme,
-  Palette,
-  PaletteColorOptions,
-  Theme,
-  ThemeOptions,
+  type Palette,
+  type PaletteColorOptions,
+  type Theme,
+  type ThemeOptions,
 } from '@mui/material/styles';
-import { Typography } from '@mui/material/styles/createTypography';
-import { CSSProperties } from '@mui/styled-engine';
+import { type Typography } from '@mui/material/styles/createTypography';
+import { type CSSProperties } from '@mui/styled-engine';
 import colors from './colors.module.scss';
 
 declare module '@mui/material/styles' {

@@ -1,6 +1,6 @@
-import { CursorState } from '@slate-yjs/core';
+import { type CursorState } from '@slate-yjs/core';
 import { useCallback, useRef } from 'react';
-import { BaseRange, BaseText, NodeEntry, Range } from 'slate';
+import { type BaseRange, type BaseText, type NodeEntry, Range } from 'slate';
 import { getCursorRange } from '../utils/getCursorRange';
 import { useRemoteCursorEditor } from './useRemoteCursorEditor';
 import { useRemoteCursorStates } from './useRemoteCursorStates';

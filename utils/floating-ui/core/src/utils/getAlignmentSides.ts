@@ -1,4 +1,4 @@
-import type { ElementRects, Placement, Side } from '../types';
+import { type ElementRects, type Placement, type Side } from '../types';
 import { getAlignment } from './getAlignment';
 import { getLengthFromAxis } from './getLengthFromAxis';
 import { getMainAxisFromPlacement } from './getMainAxisFromPlacement';

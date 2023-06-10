@@ -2,14 +2,14 @@ import {
   DOMParser,
   DOMSerializer,
   Fragment,
-  Node,
-  NodeType,
-  ResolvedPos,
+  type Node,
+  type NodeType,
+  type ResolvedPos,
   Slice,
 } from 'prosemirror-model';
 
 import * as browser from './browser';
-import { EditorView } from './index';
+import { type EditorView } from './index';
 
 /**  */
 export function serializeForClipboard(view: EditorView, slice: Slice) {

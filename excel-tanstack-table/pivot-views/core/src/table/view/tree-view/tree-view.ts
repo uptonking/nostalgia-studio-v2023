@@ -1,12 +1,12 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { None, Some } from 'oxide.ts';
 
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { Field } from '../../field/index';
+import { type Field } from '../../field/index';
 import { FieldId } from '../../field/index';
-import type { ITreeViewSchema } from './tree-view.schema';
-import type { ITreeView } from './tree-view.type';
+import { type ITreeViewSchema } from './tree-view.schema';
+import { type ITreeView } from './tree-view.type';
 
 export class TreeView extends ValueObject<ITreeView> {
   static from(input: ITreeViewSchema) {

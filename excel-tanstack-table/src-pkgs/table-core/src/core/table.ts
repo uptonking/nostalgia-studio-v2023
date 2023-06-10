@@ -8,21 +8,21 @@ import { Pinning } from '../features/Pinning';
 import { RowSelection } from '../features/RowSelection';
 import { Sorting } from '../features/Sorting';
 import { Visibility } from '../features/Visibility';
-import type {
-  Column,
-  ColumnDef,
-  ColumnDefResolved,
-  GroupColumnDef,
-  InitialTableState,
-  Row,
-  RowData,
-  RowModel,
-  Table,
-  TableMeta,
-  TableOptions,
-  TableOptionsResolved,
-  TableState,
-  Updater,
+import {
+  type Column,
+  type ColumnDef,
+  type ColumnDefResolved,
+  type GroupColumnDef,
+  type InitialTableState,
+  type Row,
+  type RowData,
+  type RowModel,
+  type Table,
+  type TableMeta,
+  type TableOptions,
+  type TableOptionsResolved,
+  type TableState,
+  type Updater,
 } from '../types';
 import { functionalUpdate, memo, type RequiredKeys } from '../utils';
 //

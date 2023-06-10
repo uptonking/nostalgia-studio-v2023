@@ -4,9 +4,9 @@ import {
   GetParentAvailableRecordsQuery,
   getParentAvailableRecordsQueryInput,
 } from '@datalking/pivot-cqrs';
-import type { IQueryBus } from '@datalking/pivot-entity';
+import { type IQueryBus } from '@datalking/pivot-entity';
 
-import type { publicProcedure } from '../trpc';
+import { type publicProcedure } from '../trpc';
 import { router } from '../trpc';
 
 export const createParentFieldRouter =

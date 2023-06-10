@@ -1,8 +1,8 @@
 import React from 'react';
 
-import type {
-  DroppableContainer,
-  KeyboardCoordinateGetter,
+import {
+  type DroppableContainer,
+  type KeyboardCoordinateGetter,
 } from '@dnd-kit/core';
 import { closestCorners, getFirstCollision, KeyboardCode } from '@dnd-kit/core';
 

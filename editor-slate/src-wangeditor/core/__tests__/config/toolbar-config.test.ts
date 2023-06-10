@@ -4,7 +4,7 @@
  */
 
 import createCoreEditor from '../create-core-editor';
-import { IDomEditor } from '../../src/editor/interface';
+import { type IDomEditor } from '../../src/editor/interface';
 import createToolbarForSrc from '../../src/create/create-toolbar';
 
 // 注册几个菜单，测试用

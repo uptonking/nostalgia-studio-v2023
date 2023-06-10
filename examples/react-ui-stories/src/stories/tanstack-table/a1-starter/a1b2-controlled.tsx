@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
@@ -9,7 +9,7 @@ import {
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { makeData, type Person } from '../utils/makeData';
 
 const defaultColumns: ColumnDef<Person>[] = [
   {

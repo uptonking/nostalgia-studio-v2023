@@ -1,5 +1,5 @@
-import { Operation, Point } from '../../src';
-import { TextDirection } from './types';
+import { type Operation, Point } from '../../src';
+import { type TextDirection } from './types';
 
 /**
  * `PointRef` objects keep a specific point in a document synced over time as new

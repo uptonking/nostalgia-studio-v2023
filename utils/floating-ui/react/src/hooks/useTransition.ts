@@ -1,7 +1,12 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import type { FloatingContext, Placement, ReferenceType, Side } from '../types';
+import {
+  type FloatingContext,
+  type Placement,
+  type ReferenceType,
+  type Side,
+} from '../types';
 import { useLatestRef } from './utils/useLatestRef';
 
 // Converts a JS style key like `backgroundColor` to a CSS transition-property

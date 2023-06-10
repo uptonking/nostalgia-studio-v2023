@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Ancestor, Descendant, Editor, Element, Range } from 'slate';
+import { type Ancestor, type Descendant, Editor, Element, Range } from 'slate';
 
 import { ReactEditor } from '..';
 import {
-  RenderElementProps,
-  RenderLeafProps,
-  RenderPlaceholderProps,
+  type RenderElementProps,
+  type RenderLeafProps,
+  type RenderPlaceholderProps,
 } from '../components/editable';
 import ElementComponent from '../components/element';
 import TextComponent from '../components/text';

@@ -1,5 +1,5 @@
-import { Cell, CellType } from 'leyden';
-import { Descendant } from 'slate';
+import { type Cell, type CellType } from 'leyden';
+import { type Descendant } from 'slate';
 
 import { useCell } from './useCell';
 import { useCoordinates } from './useCoordinates';

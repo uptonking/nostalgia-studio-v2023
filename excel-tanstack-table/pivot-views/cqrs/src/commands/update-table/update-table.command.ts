@@ -1,7 +1,7 @@
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IUpdateTableCommandInput } from './update-table.command.interface';
+import { type IUpdateTableCommandInput } from './update-table.command.interface';
 
 export class UpdateTableCommand
   extends Command

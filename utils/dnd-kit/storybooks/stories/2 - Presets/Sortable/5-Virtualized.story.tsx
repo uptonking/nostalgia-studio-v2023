@@ -20,7 +20,7 @@ import {
 
 import {Item, Wrapper} from '../../components';
 import {createRange} from '../../utilities';
-import {SortableItem, SortableProps} from './Sortable';
+import {SortableItem, type SortableProps} from './Sortable';
 import styles from './Virtualized.module.css';
 
 export default {

@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useRef, startTransition } from 'react';
 import {
-  DrawAction,
-  ActionType,
-  Drawing,
+  type DrawAction,
+  type ActionType,
+  type Drawing,
 } from '@datalking/pivot-app-shared-lib';
 import { useAppDispatch, useAppSelector } from '../../shared/store';
 import { getAsync, saveAsync } from './thunks';

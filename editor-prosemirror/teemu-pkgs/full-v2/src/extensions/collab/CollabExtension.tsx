@@ -1,4 +1,4 @@
-import { EditorState } from 'prosemirror-state';
+import { type EditorState } from 'prosemirror-state';
 import { collab } from 'prosemirror-collab';
 
 import { Extension } from '../Extension';

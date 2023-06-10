@@ -1,4 +1,4 @@
-import type { Platform } from './types';
+import { type Platform } from './types';
 import { convertOffsetParentRelativeRectToViewportRelativeRect } from './utils/convertOffsetParentRelativeRectToViewportRelativeRect';
 import { getClippingRect } from './utils/getClippingRect';
 import { getComputedStyle } from './utils/getComputedStyle';

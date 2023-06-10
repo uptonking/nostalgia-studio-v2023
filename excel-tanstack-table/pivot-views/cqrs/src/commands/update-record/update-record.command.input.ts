@@ -2,7 +2,7 @@ import * as z from 'zod';
 
 import {
   createMutateRecordValuesSchema,
-  Field,
+  type Field,
   recordIdSchema,
   tableIdSchema,
 } from '@datalking/pivot-core';

@@ -1,4 +1,4 @@
-import * as Y from 'yjs';
+import type * as Y from 'yjs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function assertDocumentAttachment<T extends Y.AbstractType<any>>(

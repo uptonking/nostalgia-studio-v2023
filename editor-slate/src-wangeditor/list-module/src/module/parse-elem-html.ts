@@ -3,11 +3,11 @@
  * @author wangfupeng
  */
 
-import { Dom7Array } from 'dom7';
-import { Descendant, Text } from 'slate';
-import $, { DOMElement, getTagName } from '../utils/dom';
-import { IDomEditor } from '@wangeditor/core';
-import { ListItemElement } from './custom-types';
+import { type Dom7Array } from 'dom7';
+import { type Descendant, Text } from 'slate';
+import $, { type DOMElement, getTagName } from '../utils/dom';
+import { type IDomEditor } from '@wangeditor/core';
+import { type ListItemElement } from './custom-types';
 
 /**
  * 获取 ordered

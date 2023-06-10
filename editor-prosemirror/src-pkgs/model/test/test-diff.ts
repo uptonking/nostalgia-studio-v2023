@@ -7,7 +7,7 @@ import {
   em,
   strong,
 } from 'prosemirror-test-builder';
-import { Node } from 'prosemirror-model';
+import { type Node } from 'prosemirror-model';
 import ist from 'ist';
 
 describe('Fragment', () => {

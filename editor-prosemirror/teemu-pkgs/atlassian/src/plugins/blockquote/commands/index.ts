@@ -1,4 +1,4 @@
-import { Command } from '../../../types';
+import { type Command } from '../../../types';
 
 export const createNewBlockQuote =
   (): Command =>

@@ -1,8 +1,8 @@
-import type { IQueryUser } from '@datalking/pivot-core';
+import { type IQueryUser } from '@datalking/pivot-core';
 import { createSelector } from '@reduxjs/toolkit';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import type { RootState } from '../store/reducer';
+import { type RootState } from '../store/reducer';
 import { fetchBase } from './api';
 
 export const authApi = createApi({

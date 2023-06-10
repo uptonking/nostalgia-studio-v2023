@@ -1,7 +1,11 @@
-import type { Merge, ValueOf } from 'type-fest';
+import { type Merge, type ValueOf } from 'type-fest';
 import { z } from 'zod';
 import { userIdSchema } from '../../user/value-objects/user-id.vo';
-import type { Field, FieldValue, ICollaboratorProfile } from '../field/index';
+import {
+  type Field,
+  type FieldValue,
+  type ICollaboratorProfile,
+} from '../field/index';
 import {
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,

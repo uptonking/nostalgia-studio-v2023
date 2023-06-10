@@ -8,9 +8,9 @@ import {
   UpdateFieldCommand,
   updateFieldCommandInput,
 } from '@datalking/pivot-cqrs';
-import type { ICommandBus } from '@datalking/pivot-entity';
+import { type ICommandBus } from '@datalking/pivot-entity';
 
-import type { publicProcedure } from '../trpc';
+import { type publicProcedure } from '../trpc';
 import { router } from '../trpc';
 import { createSelectFieldRouter } from './select-field.router';
 

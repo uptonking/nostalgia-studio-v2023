@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import type { UniqueIdentifier } from '../../../types';
+import { type UniqueIdentifier } from '../../../types';
 
 let key = 0;
 

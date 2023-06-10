@@ -3,17 +3,17 @@ import {AnimateSharedLayout} from 'framer-motion';
 import {
   DndContext,
   useDraggable,
-  DragEndEvent,
-  DragStartEvent,
+  type DragEndEvent,
+  type DragStartEvent,
   DragOverlay,
 } from '@dnd-kit/core';
 import {
   Board,
   Cell,
-  CellProps,
+  type CellProps,
   Endgame,
   Piece,
-  PieceProps,
+  type PieceProps,
   Score,
 } from './components';
 import styles from './Checkers.module.css';

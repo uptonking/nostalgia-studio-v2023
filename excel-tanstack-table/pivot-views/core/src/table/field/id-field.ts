@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
 import { BaseField } from './field.base';
-import type { IIdField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { IIdFilter } from './filter/id.filter';
-import type { IIdFilterOperator } from './filter/operators';
+import { type IIdField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type IIdFilter } from './filter/id.filter';
+import { type IIdFilterOperator } from './filter/operators';
 import { IdFieldValue } from './id-field-value';
-import type {
-  ICreateIdFieldInput,
-  ICreateIdFieldValue,
-  IdFieldType,
+import {
+  type ICreateIdFieldInput,
+  type ICreateIdFieldValue,
+  type IdFieldType,
 } from './id-field.type';
 
 export class IdField extends BaseField<IIdField> {

@@ -1,12 +1,12 @@
-import express from 'express';
+import type express from 'express';
 // import { decode } from 'jsonwebtoken';
 import * as jwt from 'jsonwebtoken';
 import { v4 as uuid } from 'uuid';
 
 import {
-  AppAccessToken,
+  type AppAccessToken,
   getPictureMock,
-  IdentityToken,
+  type IdentityToken,
 } from '@datalking/pivot-app-shared-lib';
 
 import {
@@ -21,7 +21,7 @@ import {
 import { config } from '../../shared/config';
 import { logger } from '../../shared/logger';
 import { createOrUpdate } from '../../shared/model-api/controller';
-import { EnrichedRequest } from '../../shared/types';
+import { type EnrichedRequest } from '../../shared/types';
 import { UserModel } from '../../shared/types/models/user';
 
 const decode = jwt.decode;

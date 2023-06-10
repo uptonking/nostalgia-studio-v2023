@@ -3,10 +3,10 @@ import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
 import { useId } from '../hooks/useId';
-import type {
-  FloatingNodeType,
-  FloatingTreeType,
-  ReferenceType,
+import {
+  type FloatingNodeType,
+  type FloatingTreeType,
+  type ReferenceType,
 } from '../types';
 import { createPubSub } from '../utils/createPubSub';
 

@@ -1,17 +1,20 @@
 import { isEmpty, sortBy } from 'lodash-es';
 import { None, Option } from 'oxide.ts';
 
-import type { CompositeSpecification } from '@datalking/pivot-entity';
+import { type CompositeSpecification } from '@datalking/pivot-entity';
 import { and, ValueObject } from '@datalking/pivot-entity';
 
-import type { IFilterOrGroupList, IRootFilter } from '../field/filter/index';
+import {
+  type IFilterOrGroupList,
+  type IRootFilter,
+} from '../field/filter/index';
 import { RootFilter } from '../field/filter/index';
-import type { Field, FieldId } from '../field/index';
+import { type Field, type FieldId } from '../field/index';
 import { WithFilter } from '../specifications/index';
-import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { type TableCompositeSpecificaiton } from '../specifications/interface';
 import { Calendar } from './calendar/index';
 import { Kanban } from './kanban/index';
-import type { ISortDirection } from './sort/sort.schema';
+import { type ISortDirection } from './sort/sort.schema';
 import { Sorts } from './sort/sorts';
 import { WithDisplayType } from './specifications/display-type.specification';
 import {
@@ -28,18 +31,18 @@ import {
   WithFieldWidth,
 } from './specifications/view-field-option.specification';
 import { TreeView } from './tree-view/index';
-import type { IViewFieldOption } from './view-field-options';
+import { type IViewFieldOption } from './view-field-options';
 import { ViewFieldOptions } from './view-field-options';
 import { ViewFieldsOrder } from './view-fields-order.vo';
 import { ViewId } from './view-id.vo';
 import { ViewName } from './view-name.vo';
-import type { IViewPinnedFields } from './view-pinned-fields';
+import { type IViewPinnedFields } from './view-pinned-fields';
 import { ViewPinnedFields } from './view-pinned-fields';
 import { createViewInput_internal } from './view.schema';
-import type {
-  ICreateViewInput_internal,
-  IView,
-  IViewDisplayType,
+import {
+  type ICreateViewInput_internal,
+  type IView,
+  type IViewDisplayType,
 } from './view.type';
 
 export const defaultViewDiaplyType: IViewDisplayType = 'grid';

@@ -4,7 +4,7 @@ import { getHeaderIds, getRowValues } from '../../test-utils';
 import { useTable } from '../../core/useTable';
 import { noop } from '../../utils';
 import { withSorting } from '../withSorting';
-import type { Column, TableState } from '../../types';
+import { type Column, type TableState } from '../../types';
 
 const data = [
   {

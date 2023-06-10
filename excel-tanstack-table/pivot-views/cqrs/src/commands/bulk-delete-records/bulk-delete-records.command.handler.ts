@@ -2,9 +2,9 @@ import {
   type IRecordRepository,
   type ITableRepository,
 } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { BulkDeleteRecordsCommand } from './bulk-delete-records.comand';
+import { type BulkDeleteRecordsCommand } from './bulk-delete-records.comand';
 
 export class BulkDeleteRecordsCommandHandler
   implements ICommandHandler<BulkDeleteRecordsCommand, void>

@@ -2,15 +2,15 @@ import { Option } from 'oxide.ts';
 
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type {
-  FieldValue,
-  ICreateFieldsSchema_internal,
-  UnpackedFieldValue,
+import {
+  type FieldValue,
+  type ICreateFieldsSchema_internal,
+  type UnpackedFieldValue,
 } from '../../field/index';
 import { TreeField } from '../../field/index';
-import type { TableSchemaIdMap } from '../../value-objects/index';
-import type { RecordValueJSON } from '../record.schema';
-import type { IQueryRecordValues } from '../record.type';
+import { type TableSchemaIdMap } from '../../value-objects/index';
+import { type RecordValueJSON } from '../record.schema';
+import { type IQueryRecordValues } from '../record.type';
 
 export class RecordValues extends ValueObject<Map<string, FieldValue>> {
   static fromArray(inputs: ICreateFieldsSchema_internal): RecordValues {

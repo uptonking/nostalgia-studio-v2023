@@ -1,18 +1,18 @@
 import { isPlainObject } from 'is-plain-object';
 
 import {
-  Ancestor,
-  ExtendedType,
-  Location,
+  type Ancestor,
+  type ExtendedType,
+  type Location,
   Node,
-  NodeEntry,
+  type NodeEntry,
   Operation,
   Path,
-  PathRef,
+  type PathRef,
   Point,
-  PointRef,
+  type PointRef,
   Range,
-  RangeRef,
+  type RangeRef,
   Span,
   Text,
 } from '../../src';
@@ -30,15 +30,15 @@ import {
   RANGE_REFS,
 } from '../utils/weak-maps';
 import { Element } from './element';
-import { Descendant } from './node';
+import { type Descendant } from './node';
 import {
-  LeafEdge,
-  MaximizeMode,
-  RangeDirection,
-  SelectionMode,
-  TextDirection,
-  TextUnit,
-  TextUnitAdjustment,
+  type LeafEdge,
+  type MaximizeMode,
+  type RangeDirection,
+  type SelectionMode,
+  type TextDirection,
+  type TextUnit,
+  type TextUnitAdjustment,
 } from './types';
 
 export type BaseSelection = Range | null;

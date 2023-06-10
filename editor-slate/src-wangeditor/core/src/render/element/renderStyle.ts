@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { Element as SlateElement } from 'slate';
-import { VNode } from 'snabbdom';
+import { type Element as SlateElement } from 'slate';
+import { type VNode } from 'snabbdom';
 import { RENDER_STYLE_HANDLER_LIST } from '../index';
 
 /**

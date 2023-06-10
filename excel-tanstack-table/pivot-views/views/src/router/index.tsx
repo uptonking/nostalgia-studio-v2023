@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { RouteObject } from 'react-router-dom';
+import { type RouteObject } from 'react-router-dom';
 
 import { ProtectedRoute } from '../guard/protected-route';
 import { Login } from '../pages/login';

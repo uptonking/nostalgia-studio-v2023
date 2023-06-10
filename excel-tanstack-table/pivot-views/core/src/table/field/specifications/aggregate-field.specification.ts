@@ -1,11 +1,11 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index';
-import type { Table } from '../../table';
-import type { IAbstractAggregateField } from '../field.type';
+import { type ITableSpecVisitor } from '../../specifications/index';
+import { type Table } from '../../table';
+import { type IAbstractAggregateField } from '../field.type';
 import { FieldId } from '../value-objects/index';
 
 export class WithAggregateFieldId extends CompositeSpecification<

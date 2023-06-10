@@ -4,7 +4,7 @@
  */
 
 import { Transforms, Element } from 'slate';
-import { IDomEditor, t } from '@wangeditor/core';
+import { type IDomEditor, t } from '@wangeditor/core';
 import BaseMenu from './BaseMenu';
 import { JUSTIFY_CENTER_SVG } from '../../../constants/icon-svg';
 

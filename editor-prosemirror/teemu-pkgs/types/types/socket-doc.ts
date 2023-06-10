@@ -1,5 +1,5 @@
-import { EDocAction } from '../src';
-import { DocVisibility, IDBDocument } from './document';
+import { type EDocAction } from '../src';
+import { type DocVisibility, type IDBDocument } from './document';
 
 // export { EDocAction } from '../src'
 

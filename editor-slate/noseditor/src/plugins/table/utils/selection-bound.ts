@@ -1,12 +1,12 @@
 import { Editor, Path } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import type { TableElement } from '../types';
+import { type TableElement } from '../types';
 import {
   getOriginTable,
   getRange,
   getRealPathByPath,
-  rangeType,
+  type rangeType,
 } from './common';
 
 export function selectionBound(editor: Editor, selectPath: Path[]) {

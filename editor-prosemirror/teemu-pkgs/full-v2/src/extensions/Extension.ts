@@ -1,7 +1,7 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { NodeSpec, MarkSpec } from 'prosemirror-model';
+import { type Plugin, type PluginKey } from 'prosemirror-state';
+import { type NodeSpec, type MarkSpec } from 'prosemirror-model';
 
-import { EditorContext } from '../context';
+import { type EditorContext } from '../context';
 
 export interface IExtensionSchema {
   nodes?: { [key: string]: NodeSpec };

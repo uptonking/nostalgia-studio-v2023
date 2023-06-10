@@ -1,47 +1,50 @@
 import { difference, isString } from 'lodash-es';
-import type { Option, Result } from 'oxide.ts';
+import { type Option, type Result } from 'oxide.ts';
 import { None, Ok, Some } from 'oxide.ts';
 
 import { and, andOptions } from '@datalking/pivot-entity';
 
-import type { IRootFilter } from './field/filter/index';
-import type {
-  ICreateFieldSchema,
-  IQuerySchemaSchema,
-  IReorderOptionsSchema,
-  IUpdateFieldSchema,
+import { type IRootFilter } from './field/filter/index';
+import {
+  type ICreateFieldSchema,
+  type IQuerySchemaSchema,
+  type IReorderOptionsSchema,
+  type IUpdateFieldSchema,
 } from './field/index';
 import { SelectField } from './field/index';
-import type { ICreateOptionSchema, IUpdateOptionSchema } from './option/index';
-import type { Record } from './record/index';
+import {
+  type ICreateOptionSchema,
+  type IUpdateOptionSchema,
+} from './option/index';
+import { type Record } from './record/index';
 import { WithRecordTableId } from './record/index';
 import { RecordFactory } from './record/record.factory';
-import type { IMutateRecordValueSchema } from './record/record.schema';
+import { type IMutateRecordValueSchema } from './record/record.schema';
 import { createRecordInputs } from './record/record.utils';
 import { WithRecordValues } from './record/specifications/record-values.specification';
 import { WithTableEmoji, WithTableName } from './specifications/index';
-import type { TableCompositeSpecificaiton } from './specifications/interface';
-import type { IUpdateTableSchema } from './table.schema';
-import type { TableId } from './value-objects/index';
+import { type TableCompositeSpecificaiton } from './specifications/interface';
+import { type IUpdateTableSchema } from './table.schema';
+import { type TableId } from './value-objects/index';
 import { TableSchema } from './value-objects/index';
-import type { TableEmoji } from './value-objects/table-emoji.vo';
-import type { TableName } from './value-objects/table-name.vo';
-import type {
-  ICreateViewSchema,
-  IMoveFieldSchema,
-  IMoveViewSchema,
-  IQueryView,
-  ISetCalendarFieldSchema,
-  ISetFieldVisibilitySchema,
-  ISetFieldWidthSchema,
-  ISetKanbanFieldSchema,
-  ISetPinnedFieldsSchema,
-  ISetTreeViewFieldSchema,
-  ISortDirection,
-  ISorts,
-  ISwitchDisplayTypeSchema,
-  IUpdateViewNameSchema,
-  ViewFieldsOrder,
+import { type TableEmoji } from './value-objects/table-emoji.vo';
+import { type TableName } from './value-objects/table-name.vo';
+import {
+  type ICreateViewSchema,
+  type IMoveFieldSchema,
+  type IMoveViewSchema,
+  type IQueryView,
+  type ISetCalendarFieldSchema,
+  type ISetFieldVisibilitySchema,
+  type ISetFieldWidthSchema,
+  type ISetKanbanFieldSchema,
+  type ISetPinnedFieldsSchema,
+  type ISetTreeViewFieldSchema,
+  type ISortDirection,
+  type ISorts,
+  type ISwitchDisplayTypeSchema,
+  type IUpdateViewNameSchema,
+  type ViewFieldsOrder,
 } from './view/index';
 import {
   defaultViewDiaplyType,

@@ -1,6 +1,12 @@
-import type { Column, Header, HeaderGroup, RowData, Table } from '../types';
+import {
+  type Column,
+  type Header,
+  type HeaderGroup,
+  type RowData,
+  type Table,
+} from '../types';
 import { memo } from '../utils';
-import type { TableFeature } from './table';
+import { type TableFeature } from './table';
 
 export interface CoreHeaderGroup<TData extends RowData> {
   /** unique identifier for the header group */

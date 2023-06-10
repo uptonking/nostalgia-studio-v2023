@@ -1,12 +1,16 @@
 import * as React from 'react';
 
-import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import {
+  type ElementProps,
+  type FloatingContext,
+  type ReferenceType,
+} from '../types';
 import { activeElement } from '../utils/activeElement';
 import { contains } from '../utils/contains';
 import { getDocument } from '../utils/getDocument';
 import { isElement, isHTMLElement } from '../utils/is';
 import { isEventTargetWithin } from '../utils/isEventTargetWithin';
-import { DismissPayload } from './useDismiss';
+import { type DismissPayload } from './useDismiss';
 
 export interface Props {
   enabled?: boolean;

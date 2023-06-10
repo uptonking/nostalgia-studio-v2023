@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {
   DndContext,
-  DragEndEvent,
+  type DragEndEvent,
   PointerSensor,
   useSensor,
   useSensors,

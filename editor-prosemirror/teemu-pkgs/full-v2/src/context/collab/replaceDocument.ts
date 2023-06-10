@@ -1,7 +1,7 @@
-import { Node as PMNode } from 'prosemirror-model';
+import { type Node as PMNode } from 'prosemirror-model';
 import { EditorState, Selection } from 'prosemirror-state';
 
-import { Command } from '../../core';
+import { type Command } from '../../core';
 
 export const replaceDocument =
   (doc: any, version: number): Command =>

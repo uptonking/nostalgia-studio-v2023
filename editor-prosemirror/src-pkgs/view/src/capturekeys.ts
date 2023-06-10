@@ -1,14 +1,14 @@
 import {
   AllSelection,
-  EditorState,
+  type EditorState,
   NodeSelection,
   Selection,
   TextSelection,
 } from 'prosemirror-state';
 
 import * as browser from './browser';
-import { DOMSelection, domIndex, selectionCollapsed } from './dom';
-import { EditorView } from './index';
+import { type DOMSelection, domIndex, selectionCollapsed } from './dom';
+import { type EditorView } from './index';
 import { selectionToDOM } from './selection';
 
 function moveSelectionBlock(state: EditorState, dir: number) {

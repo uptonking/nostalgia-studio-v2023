@@ -5,7 +5,7 @@
 
 import { jsx } from 'snabbdom';
 import { renderStyle } from '../../src/modules/text-style/render-style';
-import { StyledText } from '../../src/modules/text-style/custom-types';
+import { type StyledText } from '../../src/modules/text-style/custom-types';
 
 describe('text style - render text style', () => {
   it('render text style', () => {

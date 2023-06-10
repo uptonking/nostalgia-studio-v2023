@@ -1,6 +1,6 @@
-import { LeydenEditor } from '../interfaces/LeydenEditor';
-import { LeydenElement } from '../interfaces/Element';
-import { LeydenText } from '../interfaces/Text';
+import { type LeydenEditor } from '../interfaces/LeydenEditor';
+import { type LeydenElement } from '../interfaces/Element';
+import { type LeydenText } from '../interfaces/Text';
 
 declare module 'slate' {
   interface CustomTypes {

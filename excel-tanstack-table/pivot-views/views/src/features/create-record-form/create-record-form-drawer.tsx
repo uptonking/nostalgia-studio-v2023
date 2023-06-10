@@ -5,7 +5,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import type { IMutateRecordValueSchema } from '@datalking/pivot-core';
+import { type IMutateRecordValueSchema } from '@datalking/pivot-core';
 import { createMutateRecordValuesSchema } from '@datalking/pivot-core';
 import { Drawer } from '@datalking/pivot-ui';
 import { zodResolver } from '@hookform/resolvers/zod';

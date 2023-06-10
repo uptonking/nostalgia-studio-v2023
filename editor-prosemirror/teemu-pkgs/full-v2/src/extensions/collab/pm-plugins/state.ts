@@ -1,8 +1,8 @@
-import { EditorState } from 'prosemirror-state';
-import { Decoration, DecorationSet } from 'prosemirror-view';
+import { type EditorState } from 'prosemirror-state';
+import { Decoration, type DecorationSet } from 'prosemirror-view';
 
-import { CommandDispatch, PluginKey } from '../../../core';
-import { CollabParticipant } from '../types';
+import { type CommandDispatch, PluginKey } from '../../../core';
+import { type CollabParticipant } from '../types';
 
 export interface CollabState {
   decorations: DecorationSet;

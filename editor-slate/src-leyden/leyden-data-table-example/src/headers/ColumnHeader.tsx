@@ -1,6 +1,6 @@
 import { LeydenEditor } from 'leyden';
-import { HeaderRenderer, useLeyden } from 'leyden-react';
-import React, { CSSProperties, useMemo } from 'react';
+import { type HeaderRenderer, useLeyden } from 'leyden-react';
+import React, { type CSSProperties, useMemo } from 'react';
 
 export const ColumnHeader: HeaderRenderer = ({ position }) => {
   const editor = useLeyden();

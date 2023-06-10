@@ -1,4 +1,4 @@
-import { ElementRenderer, useRelativeCell } from 'leyden-react';
+import { type ElementRenderer, useRelativeCell } from 'leyden-react';
 import React from 'react';
 
 export const Name: ElementRenderer<'Name'> = ({

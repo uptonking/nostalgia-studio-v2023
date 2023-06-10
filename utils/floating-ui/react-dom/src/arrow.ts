@@ -1,6 +1,6 @@
-import type { Middleware, SideObject } from '@floating-ui/core';
+import { type Middleware, type SideObject } from '@floating-ui/core';
 import { arrow as arrowCore } from '@floating-ui/dom';
-import * as React from 'react';
+import type * as React from 'react';
 
 export interface Options {
   element: React.MutableRefObject<Element | null> | Element | null;

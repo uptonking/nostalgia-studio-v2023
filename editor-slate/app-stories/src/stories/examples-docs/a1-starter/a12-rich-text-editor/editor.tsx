@@ -1,6 +1,6 @@
 import isHotkey from 'is-hotkey';
 import React, { useCallback, useMemo } from 'react';
-import { Descendant, createEditor } from 'slate';
+import { type Descendant, createEditor } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, Slate, useSlate, withReact } from 'slate-react';
 

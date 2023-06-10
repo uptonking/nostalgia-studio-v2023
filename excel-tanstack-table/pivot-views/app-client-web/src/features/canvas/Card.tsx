@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import { Grid, Paper, PaperProps, Typography } from '@mui/material';
-import { Drawing } from '@datalking/pivot-app-shared-lib';
+import { Grid, Paper, type PaperProps, Typography } from '@mui/material';
+import { type Drawing } from '@datalking/pivot-app-shared-lib';
 import { config } from '../../shared/config';
 import Moment from 'react-moment';
 import { BlurBackdrop } from '../ui/BlurBackdrop';

@@ -1,4 +1,4 @@
-import type {MutableRefObject} from 'react';
+import {type MutableRefObject} from 'react';
 
 export interface TreeItem {
   id: string;

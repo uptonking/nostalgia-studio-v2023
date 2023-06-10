@@ -1,9 +1,9 @@
 import {
   type AttributeMapType,
-  Delta,
-  Line,
-  TextChange,
-  TextDocument,
+  type Delta,
+  type Line,
+  type TextChange,
+  type TextDocument,
 } from '@typewriter/document';
 
 import { type SourceString } from './Source';

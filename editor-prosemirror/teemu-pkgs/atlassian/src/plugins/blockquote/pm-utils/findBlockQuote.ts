@@ -1,5 +1,9 @@
 import { Node as PMNode, NodeType } from 'prosemirror-model';
-import { EditorState, NodeSelection, Selection } from 'prosemirror-state';
+import {
+  type EditorState,
+  NodeSelection,
+  type Selection,
+} from 'prosemirror-state';
 import {
   findSelectedNodeOfType,
   findParentNodeOfType,

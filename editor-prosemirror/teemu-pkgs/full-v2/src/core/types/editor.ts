@@ -1,7 +1,7 @@
-import { EditorState } from 'prosemirror-state';
-import React from 'react';
+import { type EditorState } from 'prosemirror-state';
+import type React from 'react';
 
-import { EditorContext } from '../../context';
+import { type EditorContext } from '../../context';
 
 export type EditorAppearance = 'full-page';
 

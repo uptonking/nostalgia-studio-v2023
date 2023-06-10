@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ICalendarField } from '@datalking/pivot-core';
+import { type ICalendarField } from '@datalking/pivot-core';
 import { Box, Overlay } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';

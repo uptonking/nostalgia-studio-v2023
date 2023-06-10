@@ -1,4 +1,4 @@
-import React, {ComponentProps, useState} from 'react';
+import React, {type ComponentProps, useState} from 'react';
 
 import {Switch} from './Switch';
 

@@ -1,6 +1,6 @@
-import { NodeSpec, DOMOutputSpec } from 'prosemirror-model';
-import { MarksObject, NoMark } from '../marks-obj';
-import { Inline } from '../inline-content';
+import { type NodeSpec, DOMOutputSpec } from 'prosemirror-model';
+import { MarksObject, type NoMark } from '../marks-obj';
+import { type Inline } from '../inline-content';
 
 /**
  * @name paragraph_node

@@ -13,10 +13,10 @@ import { endOfDay } from 'date-fns/esm';
 import { groupBy } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 
-import type {
-  DateField,
-  DateFieldValue,
-  Record as CoreRecord,
+import {
+  type DateField,
+  type DateFieldValue,
+  type Record as CoreRecord,
 } from '@datalking/pivot-core';
 import { RecordFactory } from '@datalking/pivot-core';
 import { useUpdateRecordMutation } from '@datalking/pivot-store';
@@ -45,7 +45,7 @@ import {
   KANBAN_DATE_STACKS,
   RElAVANT_DATES,
 } from './kanban-date.utils';
-import type { IProps as KanbanLaneProps } from './kanban-lane';
+import { type IProps as KanbanLaneProps } from './kanban-lane';
 import { KanbanLane, SortableKanbanLane } from './kanban-lane';
 import { useKanban } from './use-kanban';
 

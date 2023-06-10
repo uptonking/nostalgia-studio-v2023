@@ -1,4 +1,4 @@
-import type { InitOptions } from 'i18next';
+import { type InitOptions } from 'i18next';
 import zodEn from 'zod-i18n-map/locales/en/zod.json' assert { type: 'json' };
 import zodZh from 'zod-i18n-map/locales/zh-CN/zod.json' assert { type: 'json' };
 

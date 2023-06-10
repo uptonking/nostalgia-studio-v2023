@@ -2,7 +2,7 @@ import React from 'react';
 
 import cx from 'clsx';
 
-import { UniqueIdentifier, useDroppable } from '@dnd-kit/core';
+import { type UniqueIdentifier, useDroppable } from '@dnd-kit/core';
 
 import styles from './droppable-container.module.scss';
 import { droppable } from './droppable-svg';

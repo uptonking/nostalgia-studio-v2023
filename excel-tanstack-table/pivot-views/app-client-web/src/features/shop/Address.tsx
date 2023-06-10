@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { v4 as uuid } from 'uuid';
 
-import type { Address } from '@datalking/pivot-app-shared-lib';
+import { type Address } from '@datalking/pivot-app-shared-lib';
 import { DeleteOutline } from '@mui/icons-material';
 import Favorite from '@mui/icons-material/Favorite';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';

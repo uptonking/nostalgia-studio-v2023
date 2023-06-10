@@ -6,7 +6,7 @@ import { BaseServer } from '../base-server/index';
 import { createReporter } from '../create-reporter/index';
 import { loadOptions, number, oneOf } from '../options-loader/index';
 
-let cliOptionsSpec = {
+const cliOptionsSpec = {
   options: {
     host: {
       alias: 'h',
@@ -56,7 +56,7 @@ let cliOptionsSpec = {
 
 export class Server extends BaseServer {
   static loadOptions(process, defaults) {
-    let [help, options] = loadOptions(
+    const [help, options] = loadOptions(
       cliOptionsSpec,
       process,
       defaults.root ? { path: join(defaults.root, '.env') } : undefined,
@@ -80,10 +80,10 @@ export class Server extends BaseServer {
       opts.logger = 'human';
     }
 
-    let reporter = createReporter(opts);
+    const reporter = createReporter(opts);
 
     let initialized = false;
-    let onError = (err) => {
+    const onError = (err) => {
       if (initialized) {
         this.emitter.emit('fatal', err);
       } else {
@@ -111,7 +111,7 @@ export class Server extends BaseServer {
 
     initialized = true;
 
-    let onExit = async () => {
+    const onExit = async () => {
       await this.destroy();
       process.exit(0);
     };
@@ -134,7 +134,7 @@ export class Server extends BaseServer {
   async autoloadModules(
     files = ['modules/*/index.js', 'modules/*.js', '!**/*.{test,spec}.js'],
   ) {
-    let matches = await glob(files, {
+    const matches = await glob(files, {
       cwd: this.options.root,
       absolute: true,
       onlyFiles: true,
@@ -142,12 +142,12 @@ export class Server extends BaseServer {
 
     await Promise.all(
       matches.map(async (file) => {
-        let serverModule = (await import(file)).default;
+        const serverModule = (await import(file)).default;
         if (typeof serverModule === 'function') {
           await serverModule(this);
         } else {
-          let name = relative(this.options.root, file);
-          let error = new Error(
+          const name = relative(this.options.root, file);
+          const error = new Error(
             'Server module should has default export with function ' +
               'that accepts a server',
           );

@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { MenuFactoryType, IRegisterMenuConf } from './interface';
+import { type MenuFactoryType, type IRegisterMenuConf } from './interface';
 import { registerGlobalMenuConf } from '../config/register';
 
 // menu item 的工厂函数 - 集合

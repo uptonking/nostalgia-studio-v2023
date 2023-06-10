@@ -1,7 +1,7 @@
 import React, { Fragment, useRef } from 'react';
 
 import getDirection from 'direction';
-import { Editor, Element as SlateElement, Node, Range } from 'slate';
+import { Editor, type Element as SlateElement, Node, Range } from 'slate';
 
 import { ReactEditor, useReadOnly, useSlateStatic } from '..';
 import useChildren from '../hooks/use-children';
@@ -17,9 +17,9 @@ import {
   NODE_TO_PARENT,
 } from '../utils/weak-maps';
 import {
-  RenderElementProps,
-  RenderLeafProps,
-  RenderPlaceholderProps,
+  type RenderElementProps,
+  type RenderLeafProps,
+  type RenderPlaceholderProps,
 } from './editable';
 import Text from './text';
 

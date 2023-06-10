@@ -1,7 +1,11 @@
 import { Editor, Element, Path, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import type { TableCellElement, TableElement, TableRowElement } from '../types';
+import {
+  type TableCellElement,
+  type TableElement,
+  type TableRowElement,
+} from '../types';
 import { TableCellSpec, TableRowSpec } from './utils';
 
 export type rangeType = [xStart: number, xEnd: number];

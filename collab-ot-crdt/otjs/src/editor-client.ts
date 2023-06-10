@@ -1,7 +1,7 @@
 import { AwaitingWithBuffer, OperationClient } from './client';
-import { CodeMirror5Adapter } from './codemirror5-adapter';
+import { type CodeMirror5Adapter } from './codemirror5-adapter';
 import { Selection } from './selection';
-import { SocketIOAdapter } from './socketio-adapter';
+import { type SocketIOAdapter } from './socketio-adapter';
 import { TextOperation } from './text-operation';
 import { UndoManager } from './undo-manager';
 import { WrappedOperation } from './wrapped-operation';

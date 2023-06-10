@@ -1,24 +1,24 @@
 import React from 'react';
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 
-import { EditorState, Selection, Transaction } from 'prosemirror-state';
-import { DirectEditorProps, EditorView } from 'prosemirror-view';
-import { Node as PMNode } from 'prosemirror-model';
+import { EditorState, Selection, type Transaction } from 'prosemirror-state';
+import { type DirectEditorProps, EditorView } from 'prosemirror-view';
+import { type Node as PMNode } from 'prosemirror-model';
 
-import { PortalProviderAPI } from './react-portals';
+import { type PortalProviderAPI } from './react-portals';
 import {
   EventDispatcher,
   createDispatch,
-  Dispatch,
+  type Dispatch,
 } from './utils/event-dispatcher';
-import { ProviderFactory } from './provider-factory/ProviderFactory';
+import { type ProviderFactory } from './provider-factory/ProviderFactory';
 import { startMeasure, stopMeasure } from './performance/measure';
 import {
   findChangedNodesFromTransaction,
   validateNodes,
   validNode,
 } from './utils/nodes';
-import { getDocStructure, SimplifiedNode } from './utils/document-logger';
+import { getDocStructure, type SimplifiedNode } from './utils/document-logger';
 
 import {
   createPMPlugins,
@@ -28,8 +28,8 @@ import { createPluginsList } from './create-editor/create-plugins-list';
 import { createSchema } from './create-editor/create-schema';
 import { getUAPrefix } from './utils/browser';
 
-import { EditorProps } from './Editor';
-import { EditorConfig, EditorPlugin } from './types';
+import { type EditorProps } from './Editor';
+import { type EditorConfig, type EditorPlugin } from './types';
 
 export interface EditorViewProps {
   editorProps: EditorProps;

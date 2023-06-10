@@ -1,9 +1,9 @@
-import * as React from 'react';
+import type * as React from 'react';
 
-import type {
-  ComputePositionConfig,
-  ComputePositionReturn,
-  VirtualElement,
+import {
+  type ComputePositionConfig,
+  type ComputePositionReturn,
+  type VirtualElement,
 } from '@floating-ui/dom';
 
 export { arrow, type Options as ArrowOptions } from './arrow';

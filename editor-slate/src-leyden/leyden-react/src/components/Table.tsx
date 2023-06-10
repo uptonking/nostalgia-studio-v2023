@@ -1,6 +1,6 @@
 import { Table as LeydenTable } from 'leyden';
-import React, { FC, useMemo } from 'react';
-import { RenderElementProps } from 'slate-react';
+import React, { type FC, useMemo } from 'react';
+import { type RenderElementProps } from 'slate-react';
 
 import { Headers } from './Headers';
 import { Origin } from './Origin';
@@ -9,7 +9,7 @@ import {
   makeSheetGridTemplateStyle,
   stickyHeaderStyle,
 } from './style';
-import { HeaderRenderers, TableOptions } from '../utils/types';
+import { type HeaderRenderers, type TableOptions } from '../utils/types';
 
 export interface Table extends Omit<RenderElementProps, 'element'> {
   element: LeydenTable;

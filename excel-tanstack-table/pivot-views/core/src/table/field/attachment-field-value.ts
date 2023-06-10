@@ -1,7 +1,7 @@
 import { getExtension, getMimeType } from './attachment-field-value.util';
-import type { IAttachmentFieldValue } from './attachment-field.type';
+import { type IAttachmentFieldValue } from './attachment-field.type';
 import { FieldValueBase } from './field-value.base';
-import type { IFieldValueVisitor } from './field-value.visitor';
+import { type IFieldValueVisitor } from './field-value.visitor';
 
 export class AttachmentFieldValue extends FieldValueBase<IAttachmentFieldValue> {
   constructor(value: IAttachmentFieldValue) {

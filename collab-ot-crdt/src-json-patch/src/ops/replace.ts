@@ -1,4 +1,4 @@
-import type { JSONPatchOpHandler } from '../types';
+import { type JSONPatchOpHandler } from '../types';
 import { log, updateRemovedOps } from '../utils';
 import { deepEqual } from '../utils/deepEqual';
 import { getOpData } from '../utils/getOpData';

@@ -1,6 +1,6 @@
 import { FieldValueBase } from './field-value.base';
-import type { IFieldValueVisitor } from './field-value.visitor';
-import type { IReferenceFieldValue } from './reference-field.type';
+import { type IFieldValueVisitor } from './field-value.visitor';
+import { type IReferenceFieldValue } from './reference-field.type';
 
 export class ReferenceFieldValue extends FieldValueBase<IReferenceFieldValue> {
   constructor(value: IReferenceFieldValue) {

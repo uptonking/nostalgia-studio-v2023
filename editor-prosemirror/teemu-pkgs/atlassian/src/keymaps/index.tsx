@@ -1,6 +1,6 @@
 import React from 'react';
 import { browser } from '../utils/browser';
-import { Command } from '../types/command';
+import { type Command } from '../types/command';
 import styled from 'styled-components';
 
 export const toggleBold = makeKeyMapWithCommon('Bold', 'Mod-b');

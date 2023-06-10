@@ -1,4 +1,4 @@
-import type { CSSObject, MantineTheme } from '@datalking/pivot-ui';
+import { type CSSObject, type MantineTheme } from '@datalking/pivot-ui';
 import { createStyles } from '@datalking/pivot-ui';
 
 interface PinnedTDProps {

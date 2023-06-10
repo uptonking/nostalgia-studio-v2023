@@ -1,4 +1,4 @@
-import { BaseEditor, Editor, Transforms } from 'slate';
+import { type BaseEditor, Editor, Transforms } from 'slate';
 
 import { isEmptyNode } from '../../../utils/queries';
 import { ParagraphSpec } from '../../paragraph/utils';

@@ -1,12 +1,17 @@
 import RopeSequence from 'rope-sequence';
-import { Mapping, Step, StepMap, Transform } from 'prosemirror-transform';
+import {
+  Mapping,
+  type Step,
+  type StepMap,
+  type Transform,
+} from 'prosemirror-transform';
 import {
   Plugin,
-  Command,
+  type Command,
   PluginKey,
-  EditorState,
-  Transaction,
-  SelectionBookmark,
+  type EditorState,
+  type Transaction,
+  type SelectionBookmark,
 } from 'prosemirror-state';
 
 // ProseMirror's history isn't simply a way to roll back to a previous

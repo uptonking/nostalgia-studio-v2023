@@ -1,4 +1,4 @@
-import { TableState, Updater } from './types';
+import { type TableState, type Updater } from './types';
 
 export type PartialKeys<T, K extends keyof T> = Omit<T, K> &
   Partial<Pick<T, K>>;

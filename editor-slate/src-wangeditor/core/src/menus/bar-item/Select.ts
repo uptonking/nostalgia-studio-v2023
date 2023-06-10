@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import $, { Dom7Array } from '../../utils/dom';
-import { IBarItem, getEditorInstance } from './index';
-import { IOption, ISelectMenu } from '../interface';
+import $, { type Dom7Array } from '../../utils/dom';
+import { type IBarItem, getEditorInstance } from './index';
+import { type IOption, type ISelectMenu } from '../interface';
 import SelectList from '../panel-and-modal/SelectList';
 import { gen$downArrow } from '../helpers/helpers';
 import { promiseResolveThen } from '../../utils/util';

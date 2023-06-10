@@ -1,10 +1,10 @@
 import {
-  BaseEditor,
-  BaseSelection,
-  BasePoint,
-  BaseRange,
-  Descendant,
-  Operation,
+  type BaseEditor,
+  type BaseSelection,
+  type BasePoint,
+  type BaseRange,
+  type Descendant,
+  type Operation,
 } from 'slate';
 
 export type HeadingElement = {

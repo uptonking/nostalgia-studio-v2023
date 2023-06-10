@@ -8,7 +8,7 @@ import {
 import { useState } from 'react';
 
 import { useFloating, useHover, useInteractions } from '../../src';
-import type { Props } from '../../src/hooks/useHover';
+import { type Props } from '../../src/hooks/useHover';
 
 jest.useFakeTimers();
 

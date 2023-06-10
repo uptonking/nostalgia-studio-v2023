@@ -1,10 +1,10 @@
-import express from 'express';
+import type express from 'express';
 import fs from 'fs';
-import { Model, ModelStatic } from 'sequelize';
-import swaggerJsdoc, { OAS3Definition, Schema } from 'swagger-jsdoc';
+import { type Model, type ModelStatic } from 'sequelize';
+import swaggerJsdoc, { type OAS3Definition, type Schema } from 'swagger-jsdoc';
 
 import { config } from '../config';
-import { Connection, EntityConfig } from '../db';
+import { Connection, type EntityConfig } from '../db';
 import { logger } from '../logger';
 import { getRoutesFromApp } from '../server';
 

@@ -4,7 +4,11 @@ import styled from 'styled-components';
 
 import { MdFormatBold, MdFormatItalic } from 'react-icons/md';
 
-import { BaseExtension, BaseState, useEditorContext } from '@example/full-v2';
+import {
+  BaseExtension,
+  type BaseState,
+  useEditorContext,
+} from '@example/full-v2';
 
 import { MarkButton } from './MarkButton';
 

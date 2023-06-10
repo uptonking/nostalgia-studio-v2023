@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import React, {HTMLAttributes} from 'react';
+import React, {type HTMLAttributes} from 'react';
 
 import styles from './Button.module.css';
 

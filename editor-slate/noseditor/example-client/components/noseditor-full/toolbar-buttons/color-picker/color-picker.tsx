@@ -3,7 +3,7 @@ import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { type Editor, type Selection, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import type { Icon } from '@icon-park/react/lib/runtime';
+import { type Icon } from '@icon-park/react/lib/runtime';
 import { css } from '@linaria/core';
 
 import { IconButton } from '../../../../../src/components';

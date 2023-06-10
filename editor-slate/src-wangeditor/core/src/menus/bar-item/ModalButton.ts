@@ -4,7 +4,7 @@
  */
 
 import { Element } from 'slate';
-import { IModalMenu, IPositionStyle } from '../interface';
+import { type IModalMenu, type IPositionStyle } from '../interface';
 import BaseButton from './BaseButton';
 import Modal from '../panel-and-modal/Modal';
 import { getEditorInstance } from './index';

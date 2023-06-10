@@ -1,11 +1,11 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import type {
-  ContextData,
-  ElementProps,
-  FloatingContext,
-  ReferenceType,
+import {
+  type ContextData,
+  type ElementProps,
+  type FloatingContext,
+  type ReferenceType,
 } from '../types';
 import { contains } from '../utils/contains';
 import { getTarget } from '../utils/getTarget';

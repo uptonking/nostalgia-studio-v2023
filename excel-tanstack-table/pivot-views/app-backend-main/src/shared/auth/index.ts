@@ -1,11 +1,11 @@
-import axios, { AxiosResponse } from 'axios';
-import express from 'express';
+import axios, { type AxiosResponse } from 'axios';
+import type express from 'express';
 import { expressjwt } from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
 import jwt from 'jsonwebtoken';
 import { config } from '../config';
-import { AppAccessToken, EnrichedRequest } from '../types';
-import { Connection, EntityConfig } from '../db';
+import { type AppAccessToken, type EnrichedRequest } from '../types';
+import { Connection, type EntityConfig } from '../db';
 import logger from '../logger';
 import { HttpUnauthorizedError } from '../errorHandler';
 

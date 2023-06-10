@@ -1,4 +1,4 @@
-import type { ClientRect } from '../../types/rect';
+import { type ClientRect } from '../../types/rect';
 import {
   getScrollableAncestors,
   getScrollOffsets,

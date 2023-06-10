@@ -1,4 +1,11 @@
-import { Element, Descendant, Node, Range, Text, Editor } from 'slate';
+import {
+  Element,
+  type Descendant,
+  Node,
+  Range,
+  Text,
+  type Editor,
+} from 'slate';
 import {
   AnchorToken,
   FocusToken,

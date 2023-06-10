@@ -3,17 +3,17 @@ import React, { useMemo, useState } from 'react';
 import {
   createEditor,
   Editor,
-  NodeEntry,
+  type NodeEntry,
   Path,
-  Point,
+  type Point,
   Transforms,
 } from 'slate';
 import { withHistory } from 'slate-history';
 import {
   DefaultEditable as Editable,
   ReactEditor,
-  RenderElementProps,
-  RenderLeafProps,
+  type RenderElementProps,
+  type RenderLeafProps,
   Slate,
   withReact,
 } from 'slate-react';

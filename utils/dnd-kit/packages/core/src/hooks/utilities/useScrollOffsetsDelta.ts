@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Coordinates, subtract } from '@dnd-kit/utilities';
+import { type Coordinates, subtract } from '@dnd-kit/utilities';
 
 import { defaultCoordinates } from '../../utilities';
 

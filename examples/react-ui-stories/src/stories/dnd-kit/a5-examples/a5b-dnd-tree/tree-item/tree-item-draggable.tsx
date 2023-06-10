@@ -1,11 +1,11 @@
-import React, { CSSProperties } from 'react';
+import React, { type CSSProperties } from 'react';
 
-import type { UniqueIdentifier } from '@dnd-kit/core';
-import { AnimateLayoutChanges, useSortable } from '@dnd-kit/sortable';
+import { type UniqueIdentifier } from '@dnd-kit/core';
+import { type AnimateLayoutChanges, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { iOS } from '../utils';
-import { TreeItem, TreeItemProps } from './tree-item';
+import { TreeItem, type TreeItemProps } from './tree-item';
 
 type TreeItemDraggableProps = TreeItemProps;
 

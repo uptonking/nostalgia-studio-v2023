@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { Editor, Transforms, Operation } from 'slate';
+import { type Editor, Transforms, Operation } from 'slate';
 import { jsx } from '../../..';
 
 export const run = (editor: Editor) => {

@@ -1,5 +1,5 @@
-import { Plugin } from 'prosemirror-state';
-import { IExtension, ExtensionPlugin } from './Extension';
+import { type Plugin } from 'prosemirror-state';
+import { type IExtension, type ExtensionPlugin } from './Extension';
 
 export function createPlugins(extensions: IExtension<any>[]) {
   const plugins = extensions.reduce(

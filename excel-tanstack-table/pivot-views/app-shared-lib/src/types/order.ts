@@ -1,6 +1,6 @@
-import type { Entity } from '.';
-import type { Drawing } from './drawing';
-import type { User } from './user';
+import { type Entity } from '.';
+import { type Drawing } from './drawing';
+import { type User } from './user';
 
 export const OrderStatus = {
   Pending: 'pending',

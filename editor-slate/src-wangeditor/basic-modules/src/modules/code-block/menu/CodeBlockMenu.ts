@@ -3,10 +3,15 @@
  * @author wangfupeng
  */
 
-import { Editor, Element, Transforms, Node, Range } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import { Editor, type Element, Transforms, Node, Range } from 'slate';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { CODE_BLOCK_SVG } from '../../../constants/icon-svg';
-import { CodeElement } from '../custom-types';
+import { type CodeElement } from '../custom-types';
 
 class CodeBlockMenu implements IButtonMenu {
   readonly title = t('codeBlock.title');

@@ -1,5 +1,5 @@
-import type { IQueryUser } from './user.type';
-import type { UserId } from './value-objects/index';
+import { type IQueryUser } from './user.type';
+import { type UserId } from './value-objects/index';
 
 export class User {
   public userId!: UserId;

@@ -1,8 +1,8 @@
 import cx from 'classnames';
 import React, {useEffect} from 'react';
 
-import type {DraggableSyntheticListeners} from '@dnd-kit/core';
-import type {Transform} from '@dnd-kit/utilities';
+import {type DraggableSyntheticListeners} from '@dnd-kit/core';
+import {type Transform} from '@dnd-kit/utilities';
 
 import styles from './Item.module.css';
 import {Handle, Remove} from './components';

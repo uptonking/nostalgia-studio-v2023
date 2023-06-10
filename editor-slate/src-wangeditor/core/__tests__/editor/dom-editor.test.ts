@@ -3,9 +3,9 @@
  * @author luochao
  */
 
-import { Editor, Range as SlateRange } from 'slate';
+import { Editor, type Range as SlateRange } from 'slate';
 import { DomEditor } from '../../src/editor/dom-editor';
-import { IDomEditor } from '../../src/editor/interface';
+import { type IDomEditor } from '../../src/editor/interface';
 import createCoreEditor from '../create-core-editor'; // packages/core 不依赖 packages/editor ，不能使用后者的 createEditor
 import { Key } from '../../src/utils/key';
 import { NODE_TO_KEY } from '../../src/utils/weak-maps';

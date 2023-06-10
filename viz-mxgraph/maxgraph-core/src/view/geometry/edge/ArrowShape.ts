@@ -4,9 +4,9 @@ import {
   ARROW_SPACING,
   ARROW_WIDTH,
 } from '../../../util/Constants';
-import type { AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
-import type { Point } from '../Point';
-import type { Rectangle } from '../Rectangle';
+import { type AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
+import { type Point } from '../Point';
+import { type Rectangle } from '../Rectangle';
 import { Shape } from '../Shape';
 
 /**

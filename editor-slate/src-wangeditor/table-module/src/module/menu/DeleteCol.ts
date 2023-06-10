@@ -4,8 +4,13 @@
  */
 
 import isEqual from 'lodash.isequal';
-import { Editor, Element, Transforms, Range, Node } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import { Editor, Element, Transforms, Range, type Node } from 'slate';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { DEL_COL_SVG } from '../../constants/svg';
 
 class DeleteCol implements IButtonMenu {

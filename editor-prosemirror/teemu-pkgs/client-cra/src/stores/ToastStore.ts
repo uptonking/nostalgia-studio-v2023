@@ -1,6 +1,10 @@
 import { action, observable, makeObservable } from 'mobx';
 
-import { IToast, ToastLocation, ToastType } from '../types/toast';
+import {
+  type IToast,
+  type ToastLocation,
+  type ToastType,
+} from '../types/toast';
 
 export class ToastStore {
   @observable toasts: IToast[] = [];

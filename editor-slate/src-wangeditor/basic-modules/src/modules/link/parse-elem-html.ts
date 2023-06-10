@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import { Descendant, Text } from 'slate';
-import { IDomEditor } from '@wangeditor/core';
-import { LinkElement } from './custom-types';
-import $, { DOMElement } from '../../utils/dom';
+import { type Descendant, Text } from 'slate';
+import { type IDomEditor } from '@wangeditor/core';
+import { type LinkElement } from './custom-types';
+import $, { type DOMElement } from '../../utils/dom';
 
 function parseHtml(
   elem: DOMElement,

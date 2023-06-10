@@ -1,8 +1,8 @@
 import {
-  EditorState,
+  type EditorState,
   NodeSelection,
   TextSelection,
-  Transaction,
+  type Transaction,
 } from 'prosemirror-state';
 import { canSplit } from 'prosemirror-transform';
 import { Fragment } from 'prosemirror-model';

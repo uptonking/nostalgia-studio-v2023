@@ -7,13 +7,13 @@ import { useFloating as usePosition } from '@floating-ui/react-dom';
 import { useFloatingTree } from './components/FloatingTree';
 import { useId } from './hooks/useId';
 import { useEvent } from './hooks/utils/useEvent';
-import type {
-  ContextData,
-  FloatingContext,
-  NarrowedElement,
-  ReferenceType,
-  UseFloatingProps,
-  UseFloatingReturn,
+import {
+  type ContextData,
+  type FloatingContext,
+  type NarrowedElement,
+  type ReferenceType,
+  type UseFloatingProps,
+  type UseFloatingReturn,
 } from './types';
 import { createPubSub } from './utils/createPubSub';
 import { isElement } from './utils/is';

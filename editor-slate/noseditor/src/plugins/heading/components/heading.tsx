@@ -5,11 +5,11 @@ import cx from 'clsx';
 import { css } from '@linaria/core';
 
 import { themed } from '../../../../src/styles';
-import type { ElementProps } from '../../types';
-import type {
-  Heading1Element,
-  Heading2Element,
-  Heading3Element,
+import { type ElementProps } from '../../types';
+import {
+  type Heading1Element,
+  type Heading2Element,
+  type Heading3Element,
 } from '../types';
 
 export const Heading1 = (

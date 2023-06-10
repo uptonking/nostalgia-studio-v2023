@@ -3,11 +3,11 @@
  * @author wangfupeng
  */
 
-import { Editor, Element as SlateElement, Node } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import { Editor, type Element as SlateElement, Node } from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
 import { DomEditor } from '../../editor/dom-editor';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 import { getElementById } from '../../utils/dom';
 import { promiseResolveThen } from '../../utils/util';
 import {

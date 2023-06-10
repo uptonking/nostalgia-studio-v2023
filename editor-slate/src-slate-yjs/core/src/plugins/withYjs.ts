@@ -1,4 +1,10 @@
-import { BaseEditor, Descendant, Editor, Operation, Point } from 'slate';
+import {
+  type BaseEditor,
+  type Descendant,
+  Editor,
+  type Operation,
+  type Point,
+} from 'slate';
 import * as Y from 'yjs';
 
 import { applyYjsEvents } from '../applyToSlate';

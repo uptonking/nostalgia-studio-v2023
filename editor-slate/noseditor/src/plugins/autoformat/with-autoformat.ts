@@ -1,7 +1,7 @@
-import { Editor, Node, Range, Transforms } from 'slate';
+import { Editor, type Node, Range, Transforms } from 'slate';
 
 import { isNullOrUndefined } from '../../utils';
-import type { AutoformatRule } from './types';
+import { type AutoformatRule } from './types';
 import { getMatchRange, getRangeFromBlockStart, getText } from './utils';
 
 /**

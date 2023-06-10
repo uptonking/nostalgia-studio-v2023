@@ -1,6 +1,6 @@
 import { Query } from '@datalking/pivot-entity';
 
-import type { IGetTreeAvailableRecordsQuery } from './get-tree-available-records.query.interface';
+import { type IGetTreeAvailableRecordsQuery } from './get-tree-available-records.query.interface';
 
 export class GetTreeAvailableRecordsQuery
   extends Query

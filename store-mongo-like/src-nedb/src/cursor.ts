@@ -1,6 +1,6 @@
 import { callbackify } from 'util';
 
-import type { Datastore } from './datastore';
+import { type Datastore } from './datastore';
 import * as model from './model';
 
 /**

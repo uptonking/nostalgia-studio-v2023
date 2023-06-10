@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { ImageElement } from '../custom-types';
+import { type ImageElement } from '../custom-types';
 
 export function genImageMenuConfig() {
   return {

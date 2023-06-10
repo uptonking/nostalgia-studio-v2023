@@ -2,7 +2,7 @@ import React, { forwardRef, type HTMLAttributes } from 'react';
 
 import cx from 'clsx';
 
-import type { UniqueIdentifier } from '@dnd-kit/core';
+import { type UniqueIdentifier } from '@dnd-kit/core';
 
 import { Remove } from '../../components';
 import styles from './page.module.scss';

@@ -1,8 +1,8 @@
-import { Plugin } from 'prosemirror-state';
-import { Schema } from 'prosemirror-model';
+import { type Plugin } from 'prosemirror-state';
+import { type Schema } from 'prosemirror-model';
 
-import { EditorConfig } from './editor-config';
-import { EditorContext } from '../EditorContext';
+import { type EditorConfig } from './editor-config';
+import { type EditorContext } from '../EditorContext';
 
 export type PMPluginFactoryParams = {
   schema: Schema;

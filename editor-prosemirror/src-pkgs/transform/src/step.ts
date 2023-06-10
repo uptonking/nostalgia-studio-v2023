@@ -1,6 +1,11 @@
-import { Node, ReplaceError, Schema, Slice } from 'prosemirror-model';
+import {
+  type Node,
+  ReplaceError,
+  type Schema,
+  type Slice,
+} from 'prosemirror-model';
 
-import { Mappable, StepMap } from './map';
+import { type Mappable, StepMap } from './map';
 
 const stepsByID: {
   [id: string]: { fromJSON(schema: Schema, json: any): Step };

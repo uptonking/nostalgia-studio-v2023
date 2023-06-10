@@ -1,4 +1,4 @@
-import type { Rect } from '@floating-ui/core';
+import { type Rect } from '@floating-ui/core';
 
 import { getComputedStyle } from './getComputedStyle';
 import { getDocumentElement } from './getDocumentElement';

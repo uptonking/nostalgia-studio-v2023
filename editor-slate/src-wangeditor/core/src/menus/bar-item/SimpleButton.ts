@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { IButtonMenu } from '../interface';
+import { type IButtonMenu } from '../interface';
 import BaseButton from './BaseButton';
 
 class SimpleButton extends BaseButton {

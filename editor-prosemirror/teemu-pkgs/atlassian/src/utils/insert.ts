@@ -1,7 +1,7 @@
 import { Node as PMNode, Fragment } from 'prosemirror-model';
 import {
-  Transaction,
-  EditorState,
+  type Transaction,
+  type EditorState,
   NodeSelection,
   Selection,
 } from 'prosemirror-state';

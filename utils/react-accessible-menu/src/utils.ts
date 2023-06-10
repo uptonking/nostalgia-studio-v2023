@@ -2,7 +2,7 @@
  * Sort an array of DOM nodes according to the HTML tree order
  * @see http://www.w3.org/TR/html5/infrastructure.html#tree-order
  */
-import { RegisteredItem } from './types';
+import { type RegisteredItem } from './types';
 
 export function sortItems(items: RegisteredItem[]) {
   return items.sort((a, b) => {

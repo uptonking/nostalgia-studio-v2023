@@ -1,5 +1,5 @@
 import { createRow } from '../core/row';
-import { Row, RowModel, Table, RowData } from '../types';
+import { type Row, type RowModel, type Table, type RowData } from '../types';
 
 export function filterRows<TData extends RowData>(
   rows: Row<TData>[],

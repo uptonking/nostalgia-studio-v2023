@@ -6,18 +6,18 @@ import { andOptions } from '@datalking/pivot-entity';
 
 import { TableId } from '../value-objects/table-id.vo';
 import { AbstractLookingField, AbstractReferenceField } from './field.base';
-import type { IReferenceField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { IReferenceFilterOperator } from './filter/operators';
-import type { IReferenceFilter } from './filter/reference.filter';
+import { type IReferenceField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type IReferenceFilterOperator } from './filter/operators';
+import { type IReferenceFilter } from './filter/reference.filter';
 import { ReferenceFieldValue } from './reference-field-value';
-import type {
-  ICreateReferenceFieldInput,
-  ICreateReferenceFieldValue,
-  IReferenceFieldIssues,
-  IUpdateReferenceFieldInput,
-  ReferenceFieldIssue,
-  ReferenceFieldType,
+import {
+  type ICreateReferenceFieldInput,
+  type ICreateReferenceFieldValue,
+  type IReferenceFieldIssues,
+  type IUpdateReferenceFieldInput,
+  type ReferenceFieldIssue,
+  type ReferenceFieldType,
 } from './reference-field.type';
 import { DisplayFields } from './value-objects/display-fields.vo';
 import { FieldId } from './value-objects/field-id.vo';

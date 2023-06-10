@@ -1,18 +1,18 @@
 import eventemitter from 'event-emitter';
 import {
-  BaseOperation,
+  type BaseOperation,
   Editor,
   Element,
   Path,
   Point,
   Range,
-  SetNodeOperation,
+  type SetNodeOperation,
   Transforms,
 } from 'slate';
 
 import { createParagraphElement } from '../paragraph/utils';
 import { isSelectionInTable } from './queries';
-import type { WithTableEditor } from './types';
+import { type WithTableEditor } from './types';
 import { isEditableInTable } from './utils/common';
 
 const HeaderList = new Set(['h1', 'h2', 'h3', 'h4']);

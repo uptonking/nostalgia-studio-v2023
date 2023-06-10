@@ -3,7 +3,7 @@
  */
 
 import { Range, Editor } from 'slate';
-import { IDomEditor } from '../editor/interface';
+import { type IDomEditor } from '../editor/interface';
 import { DomEditor } from '../editor/dom-editor';
 
 const doRectsIntersect = (rect: DOMRect, compareRect: DOMRect) => {

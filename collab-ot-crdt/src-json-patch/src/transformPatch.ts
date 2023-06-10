@@ -11,7 +11,7 @@
  * all situaions. Please avoid using this syntax when using Operational Transformations.
  */
 
-import type { JSONPatchOpHandlerMap, JSONPatchOp } from './types';
+import { type JSONPatchOpHandlerMap, type JSONPatchOp } from './types';
 import { log } from './utils/log';
 import { runWithObject } from './state';
 import { getType } from './utils';

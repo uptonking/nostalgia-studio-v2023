@@ -1,12 +1,12 @@
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
-  TableOptions,
+  type TableOptions,
   useReactTable,
 } from '@tanstack/react-table';
 import { fireEvent, render, screen } from '@testing-library/react';
-import React, { FC } from 'react';
+import React, { type FC } from 'react';
 
 type Person = {
   firstName: string;

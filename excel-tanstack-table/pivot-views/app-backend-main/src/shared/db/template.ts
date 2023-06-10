@@ -1,4 +1,4 @@
-import { Sequelize } from 'sequelize';
+import { type Sequelize } from 'sequelize';
 
 // Sync() will create any new objects but will not alter existing ones
 // Migrations used for changes to existing objects to prevent data loss

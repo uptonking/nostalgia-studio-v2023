@@ -3,16 +3,16 @@
  * @author wangfupeng
  */
 
-import { Editor, Node, Element, Transforms } from 'slate';
+import { Editor, type Node, Element, Transforms } from 'slate';
 import {
-  ISelectMenu,
-  IDomEditor,
+  type ISelectMenu,
+  type IDomEditor,
   DomEditor,
-  IOption,
+  type IOption,
   t,
 } from '@wangeditor/core';
 import { LINE_HEIGHT_SVG } from '../../../constants/icon-svg';
-import { LineHeightElement } from '../custom-types';
+import { type LineHeightElement } from '../custom-types';
 
 class LineHeightMenu implements ISelectMenu {
   readonly title = t('lineHeight.title');

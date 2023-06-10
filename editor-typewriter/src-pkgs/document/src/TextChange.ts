@@ -7,8 +7,8 @@ import {
 } from '@typewriter/delta';
 
 import { deltaToText } from './deltaToText';
-import { EditorRange, normalizeRange } from './editorRange';
-import type { TextDocument } from './TextDocument';
+import { type EditorRange, normalizeRange } from './editorRange';
+import { type TextDocument } from './TextDocument';
 
 /**
  * a TextChange interface to roll up multiple change operations into one atomic change

@@ -3,11 +3,11 @@
  * @author wangfupeng
  */
 
-import { Ancestor, Text as SlateText } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import { type Ancestor, Text as SlateText } from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
 import { DomEditor } from '../../editor/dom-editor';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 import { getElementById } from '../../utils/dom';
 import { promiseResolveThen } from '../../utils/util';
 import {

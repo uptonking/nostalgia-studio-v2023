@@ -2,9 +2,9 @@ import { Editor, Element, Path, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
 import {
-  TableCellElement,
-  TableElement,
-  TableRowElement,
+  type TableCellElement,
+  type TableElement,
+  type TableRowElement,
 } from '../customTypes';
 
 export type rangeType = [xStart: number, xEnd: number];

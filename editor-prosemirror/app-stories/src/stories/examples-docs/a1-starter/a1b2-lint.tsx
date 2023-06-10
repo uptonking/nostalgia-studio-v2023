@@ -1,6 +1,6 @@
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
-import { DOMParser, NodeSpec, NodeType, Node } from 'prosemirror-model';
+import { DOMParser, NodeSpec, NodeType, type Node } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import {
   EditorState,

@@ -8,8 +8,8 @@ import {
   createToolbar,
 } from '../../../packages/editor/src/index';
 import {
-  ICreateEditorOption,
-  ICreateToolbarOption,
+  type ICreateEditorOption,
+  type ICreateToolbarOption,
 } from '../../../packages/editor/src/create';
 
 function customCreateEditor(config: Partial<ICreateEditorOption> = {}) {

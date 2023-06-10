@@ -8,8 +8,8 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  RowData,
-  SortingState,
+  type RowData,
+  type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 

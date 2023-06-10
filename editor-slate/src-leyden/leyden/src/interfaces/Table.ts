@@ -1,6 +1,6 @@
 import { Element } from 'slate';
 
-import { Cell, CellType } from './Cell';
+import { Cell, type CellType } from './Cell';
 import { Coordinates } from './Coordinates';
 
 export interface Table {

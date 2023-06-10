@@ -2,7 +2,7 @@ import React, { type CSSProperties } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import type { Record } from '@datalking/pivot-core';
+import { type Record } from '@datalking/pivot-core';
 import { Card, Flex, Group, Stack, useEgoUITheme } from '@datalking/pivot-ui';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -10,7 +10,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { FieldIcon } from '../field-inputs/field-Icon';
 import { FieldValueFactory } from '../field-value/field-value.factory';
-import type { SortableProps } from '../sortable.interface';
+import { type SortableProps } from '../sortable.interface';
 
 interface IProps {
   record: Record;

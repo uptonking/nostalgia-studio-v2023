@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { IDomEditor } from '../editor/interface';
-import TextArea from './TextArea';
+import { type IDomEditor } from '../editor/interface';
+import type TextArea from './TextArea';
 import $ from '../utils/dom';
 
 /**

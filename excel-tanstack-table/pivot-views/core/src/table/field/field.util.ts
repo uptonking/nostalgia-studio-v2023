@@ -1,4 +1,4 @@
-import type { IFieldType } from './field.type';
+import { type IFieldType } from './field.type';
 
 const controlledFieldTypes: Set<IFieldType> = new Set([
   'id',

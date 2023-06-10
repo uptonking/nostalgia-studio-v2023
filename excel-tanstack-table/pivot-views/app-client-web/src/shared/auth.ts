@@ -1,6 +1,10 @@
 import decode from 'jwt-decode';
 import axios from 'axios';
-import { AppAccessToken, Jwt, User } from '@datalking/pivot-app-shared-lib';
+import {
+  type AppAccessToken,
+  type Jwt,
+  type User,
+} from '@datalking/pivot-app-shared-lib';
 import { Paths } from './routes';
 import { config } from './config';
 import authProvider from 'auth0-js';

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import type { FieldPath } from 'react-hook-form';
+import { type FieldPath } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
-import type { IMutateRecordValueSchema } from '@datalking/pivot-core';
+import { type IMutateRecordValueSchema } from '@datalking/pivot-core';
 import { useUpdateRecordMutation } from '@datalking/pivot-store';
 import {
   Alert,

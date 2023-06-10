@@ -1,4 +1,4 @@
-import type { ClientSettings } from '@datalking/pivot-app-shared-lib';
+import { type ClientSettings } from '@datalking/pivot-app-shared-lib';
 
 import packageJson from '../../package.json';
 

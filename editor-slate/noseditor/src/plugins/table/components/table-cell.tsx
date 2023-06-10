@@ -6,8 +6,12 @@ import { RenderElementProps } from 'slate-react';
 import { css } from '@linaria/core';
 
 import { themed } from '../../../styles';
-import type { ElementProps } from '../../types';
-import type { TableCellElement, TableElement, TableRowElement } from '../types';
+import { type ElementProps } from '../../types';
+import {
+  type TableCellElement,
+  type TableElement,
+  type TableRowElement,
+} from '../types';
 
 export function CustomTableCell(props: ElementProps) {
   const { attributes, children } = props;

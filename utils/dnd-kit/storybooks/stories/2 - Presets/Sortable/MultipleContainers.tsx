@@ -1,41 +1,41 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {createPortal, unstable_batchedUpdates} from 'react-dom';
 import {
-  CancelDrop,
+  type CancelDrop,
   closestCenter,
   pointerWithin,
   rectIntersection,
-  CollisionDetection,
+  type CollisionDetection,
   DndContext,
   DragOverlay,
-  DropAnimation,
+  type DropAnimation,
   defaultDropAnimation,
   getFirstCollision,
   KeyboardSensor,
   MouseSensor,
   TouchSensor,
-  Modifiers,
+  type Modifiers,
   useDroppable,
-  UniqueIdentifier,
+  type UniqueIdentifier,
   useSensors,
   useSensor,
   MeasuringStrategy,
-  KeyboardCoordinateGetter,
+  type KeyboardCoordinateGetter,
 } from '@dnd-kit/core';
 import {
-  AnimateLayoutChanges,
+  type AnimateLayoutChanges,
   SortableContext,
   useSortable,
   arrayMove,
   defaultAnimateLayoutChanges,
   verticalListSortingStrategy,
-  SortingStrategy,
+  type SortingStrategy,
   horizontalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import {coordinateGetter as multipleContainersCoordinateGetter} from './multipleContainersKeyboardCoordinates';
 
-import {Item, Container, ContainerProps} from '../../components';
+import {Item, Container, type ContainerProps} from '../../components';
 
 import {createRange} from '../../utilities';
 

@@ -4,22 +4,22 @@ import { z } from 'zod';
 import { andOptions } from '@datalking/pivot-entity';
 
 import { AverageFieldValue } from './average-field-value';
-import type {
-  AverageType,
-  ICreateAverageFieldInput,
-  ICreateAverageFieldValue,
-  IUpdateAverageFieldInput,
+import {
+  type AverageType,
+  type ICreateAverageFieldInput,
+  type ICreateAverageFieldValue,
+  type IUpdateAverageFieldInput,
 } from './average-field.type';
 import {
   AbstractAggregateField,
   AbstractLookupField,
   BaseField,
 } from './field.base';
-import type { IAverageField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type {
-  IAverageFilter,
-  IAverageFilterOperator,
+import { type IAverageField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import {
+  type IAverageFilter,
+  type IAverageFilterOperator,
 } from './filter/average.filter';
 import { FieldId } from './value-objects/field-id.vo';
 

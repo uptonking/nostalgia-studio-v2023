@@ -2,9 +2,9 @@ import { socketIO } from '../../socket-io/socketIO';
 
 import {
   ECollabAction,
-  ICollabUsersChangedAction,
-  ICollabEditAction,
-  ICollabEditPayload,
+  type ICollabUsersChangedAction,
+  type ICollabEditAction,
+  type ICollabEditPayload,
 } from '@example/types';
 
 export const docCollabIO = {

@@ -1,8 +1,8 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
+import { type PayloadAction } from '@reduxjs/toolkit';
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 import { sheetApi, tableApi } from '../services';
-import type { RootState } from '../store/reducer';
+import { type RootState } from '../store/reducer';
 
 export interface TableState {
   currentTableId: string;

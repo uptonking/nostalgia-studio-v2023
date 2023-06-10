@@ -1,17 +1,17 @@
 import React from 'react';
 
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  Row,
-  SortingState,
+  type Row,
+  type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 
-import { Person } from '../../utils/makeData';
+import { type Person } from '../../utils/makeData';
 
 type FixedHeightTableProps = {
   // The data to render

@@ -6,9 +6,9 @@ import {
   runInAction,
 } from 'mobx';
 
-import { AuthStore } from './AuthStore';
-import { EditorStore } from './EditorStore';
-import { ToastStore } from './ToastStore';
+import { type AuthStore } from './AuthStore';
+import { type EditorStore } from './EditorStore';
+import { type ToastStore } from './ToastStore';
 import {
   getDocuments,
   createDocument,
@@ -18,11 +18,11 @@ import {
 
 import {
   EDocAction,
-  DocAction,
-  IDBDocument,
-  PMDoc,
+  type DocAction,
+  type IDBDocument,
+  type PMDoc,
   uuidv4,
-  ICreateDocumentParams,
+  type ICreateDocumentParams,
 } from '@example/types';
 
 interface IProps {

@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import React, {CSSProperties} from 'react';
+import React, {type CSSProperties} from 'react';
 
 import styles from './Action.module.css';
 

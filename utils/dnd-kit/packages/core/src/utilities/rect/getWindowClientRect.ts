@@ -1,4 +1,4 @@
-import type { ClientRect } from '../../types';
+import { type ClientRect } from '../../types';
 
 export function getWindowClientRect(element: typeof window): ClientRect {
   const width = element.innerWidth;

@@ -1,8 +1,8 @@
 import { type ColorValue } from '../../../types';
 import { DEFAULT_MARKERSIZE, NONE } from '../../../util/Constants';
-import type { AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
-import type { Point } from '../Point';
-import type { Rectangle } from '../Rectangle';
+import { type AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
+import { type Point } from '../Point';
+import { type Rectangle } from '../Rectangle';
 import { MarkerShape } from './MarkerShape';
 import { PolylineShape } from './PolylineShape';
 

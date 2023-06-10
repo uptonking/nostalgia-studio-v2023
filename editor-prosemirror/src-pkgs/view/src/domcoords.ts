@@ -1,9 +1,9 @@
-import { EditorState } from 'prosemirror-state';
+import { type EditorState } from 'prosemirror-state';
 
 import * as browser from './browser';
 import { nodeSize, parentNode, textRange } from './dom';
-import { EditorView } from './index';
-import { NodeViewDesc } from './viewdesc';
+import { type EditorView } from './index';
+import { type NodeViewDesc } from './viewdesc';
 
 export type Rect = { left: number; right: number; top: number; bottom: number };
 

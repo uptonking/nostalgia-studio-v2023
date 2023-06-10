@@ -1,5 +1,5 @@
-import { NodeOperation } from 'slate';
-import { OpMapper } from '../types';
+import { type NodeOperation } from 'slate';
+import { type OpMapper } from '../types';
 import { insertNode } from './insertNode';
 import { mergeNode } from './mergeNode';
 import { moveNode } from './moveNode';

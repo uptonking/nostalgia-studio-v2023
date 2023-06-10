@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import { Element, Text, Node, Ancestor } from 'slate';
-import { VNode } from 'snabbdom';
-import { IDomEditor } from '../editor/interface';
+import { Element, type Text, type Node, type Ancestor } from 'slate';
+import { type VNode } from 'snabbdom';
+import { type IDomEditor } from '../editor/interface';
 import renderElement from './element/renderElement';
 import renderText from './text/renderText';
 import { NODE_TO_INDEX, NODE_TO_PARENT } from '../utils/weak-maps';

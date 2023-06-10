@@ -1,4 +1,4 @@
-import { Coords, Placement } from '@floating-ui/core';
+import { type Coords, type Placement } from '@floating-ui/core';
 import {
   autoUpdate,
   flip,

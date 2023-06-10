@@ -1,4 +1,4 @@
-import { Operation } from 'slate';
+import { type Operation } from 'slate';
 import { isCustomOperation } from './type-guards';
 
 export const input: Operation = {

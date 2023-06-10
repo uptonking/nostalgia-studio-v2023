@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { FormProvider, useForm } from 'react-hook-form';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import type { IUpdateTableSchema } from '@datalking/pivot-core';
+import { type IUpdateTableSchema } from '@datalking/pivot-core';
 import { DEFAULT_TABLE_EMOJI, updateTableSchema } from '@datalking/pivot-core';
 import { Drawer } from '@datalking/pivot-ui';
 import { zodResolver } from '@hookform/resolvers/zod';

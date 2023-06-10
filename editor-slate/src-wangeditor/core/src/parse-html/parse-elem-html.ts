@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import $, { Dom7Array } from 'dom7';
-import { Descendant } from 'slate';
-import { IDomEditor } from '../editor/interface';
+import $, { type Dom7Array } from 'dom7';
+import { type Descendant } from 'slate';
+import { type IDomEditor } from '../editor/interface';
 import parseCommonElemHtml from './parse-common-elem-html';
 import parseTextElemHtml from './parse-text-elem-html';
 import { getTagName } from '../utils/dom';

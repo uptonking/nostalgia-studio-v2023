@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { IModuleConf } from '@wangeditor/core';
+import { type IModuleConf } from '@wangeditor/core';
 import withTable from './plugin';
 import {
   renderTableConf,

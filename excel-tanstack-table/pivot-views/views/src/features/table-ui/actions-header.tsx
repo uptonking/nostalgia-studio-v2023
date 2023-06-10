@@ -9,11 +9,11 @@ import {
   openContextModal,
   Tooltip,
 } from '@datalking/pivot-ui';
-import type { Table } from '@tanstack/react-table';
+import { type Table } from '@tanstack/react-table';
 
 import { ACTIONS_FIELD } from '../../constants/field.constants';
 import { CREATE_FIELD_MODAL_ID } from '../../modals';
-import type { TData } from './interface';
+import { type TData } from './interface';
 
 export const ActionsHeader: React.FC<{ table: Table<TData> }> = () => {
   const { t } = useTranslation();

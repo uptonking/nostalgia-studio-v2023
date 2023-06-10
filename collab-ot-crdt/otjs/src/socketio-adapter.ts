@@ -1,6 +1,6 @@
-import type { Socket } from 'socket.io-client';
+import { type Socket } from 'socket.io-client';
 
-import type { Selection } from './selection';
+import { type Selection } from './selection';
 
 /**
  * 在客户端监听服务端发来的socket事件，然后执行已注册的对应函数

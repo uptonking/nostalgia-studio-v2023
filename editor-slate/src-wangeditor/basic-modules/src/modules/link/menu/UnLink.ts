@@ -4,7 +4,12 @@
  */
 
 import { Transforms } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { UN_LINK_SVG } from '../../../constants/icon-svg';
 
 class UnLink implements IButtonMenu {

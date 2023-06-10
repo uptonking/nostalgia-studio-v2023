@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import ee, { Emitter } from 'event-emitter';
-import { Editor } from 'slate';
-import { IDomEditor } from '../interface';
+import ee, { type Emitter } from 'event-emitter';
+import { type Editor } from 'slate';
+import { type IDomEditor } from '../interface';
 import { EDITOR_TO_EMITTER } from '../../utils/weak-maps';
 
 /**

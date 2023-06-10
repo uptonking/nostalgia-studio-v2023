@@ -3,15 +3,15 @@
  * @author wangfupeng
  */
 
-import { Editor, Range, Node } from 'slate';
+import { Editor, Range, type Node } from 'slate';
 import {
-  IModalMenu,
-  IDomEditor,
+  type IModalMenu,
+  type IDomEditor,
   genModalInputElems,
   genModalButtonElems,
   t,
 } from '@wangeditor/core';
-import $, { Dom7Array, DOMElement } from '../../../utils/dom';
+import $, { type Dom7Array, type DOMElement } from '../../../utils/dom';
 import { genRandomStr } from '../../../utils/util';
 import { LINK_SVG } from '../../../constants/icon-svg';
 import { isMenuDisabled, insertLink } from '../helper';

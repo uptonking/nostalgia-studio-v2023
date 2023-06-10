@@ -1,5 +1,9 @@
-import { ResolvedPos } from 'prosemirror-model';
-import { NodeSelection, Selection, TextSelection } from 'prosemirror-state';
+import { type ResolvedPos } from 'prosemirror-model';
+import {
+  NodeSelection,
+  type Selection,
+  TextSelection,
+} from 'prosemirror-state';
 
 import * as browser from './browser';
 import {
@@ -8,8 +12,8 @@ import {
   isOnEdge,
   selectionCollapsed,
 } from './dom';
-import { EditorView } from './index';
-import { NodeViewDesc } from './viewdesc';
+import { type EditorView } from './index';
+import { type NodeViewDesc } from './viewdesc';
 
 /**
  * 根据浏览器默认选区对象，计算并返回prosemirror对应的Selection对象

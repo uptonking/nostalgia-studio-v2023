@@ -19,14 +19,14 @@ import {
   InputLabel,
   FormControl,
   OutlinedInput,
-  SelectChangeEvent,
+  type SelectChangeEvent,
   useTheme,
-  Theme,
+  type Theme,
 } from '@mui/material';
 import {
-  PaymentSource,
+  type PaymentSource,
   PaymentSources,
-  SubscriptionPlan,
+  type SubscriptionPlan,
   User,
 } from '@datalking/pivot-app-shared-lib';
 import { Delete } from '@mui/icons-material';

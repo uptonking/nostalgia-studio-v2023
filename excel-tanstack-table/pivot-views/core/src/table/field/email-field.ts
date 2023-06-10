@@ -1,15 +1,18 @@
 import { z } from 'zod';
 
 import { EmailFieldValue } from './email-field-value';
-import type {
-  EmailFieldType,
-  ICreateEmailFieldInput,
-  ICreateEmailFieldValue,
+import {
+  type EmailFieldType,
+  type ICreateEmailFieldInput,
+  type ICreateEmailFieldValue,
 } from './email-field.type';
 import { BaseField } from './field.base';
-import type { IEmailField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { IEmailFilter, IEmailFilterOperator } from './filter/email.filter';
+import { type IEmailField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import {
+  type IEmailFilter,
+  type IEmailFilterOperator,
+} from './filter/email.filter';
 
 export class EmailField extends BaseField<IEmailField> {
   type: EmailFieldType = 'email';

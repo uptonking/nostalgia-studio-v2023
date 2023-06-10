@@ -2,7 +2,7 @@ import React from 'react';
 
 import { typeAheadQuery } from '../../schema/marks';
 
-import { EditorPlugin } from '../../types';
+import { type EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/hocs/WithPluginState';
 
 import { inputRulePlugin } from './pm-plugins/input-rules';
@@ -11,9 +11,9 @@ import {
   createInitialPluginState,
   createPlugin,
   pluginKey as typeAheadPluginKey,
-  PluginState as TypeAheadPluginState,
+  type PluginState as TypeAheadPluginState,
 } from './pm-plugins/main';
-import { TypeAheadHandler } from './types';
+import { type TypeAheadHandler } from './types';
 import { TypeAhead } from './ui/TypeAhead';
 
 export const typeAheadPlugin = (): EditorPlugin => ({

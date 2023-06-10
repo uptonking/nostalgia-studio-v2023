@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import type { SyntheticEventName, UniqueIdentifier } from '../../types';
+import { type SyntheticEventName, type UniqueIdentifier } from '../../types';
 
 export type SyntheticListener = {
   eventName: SyntheticEventName;

@@ -5,7 +5,11 @@ import {
   useRef,
   useState,
 } from 'react';
-import { ItemId, MenuContextProps, RegisteredItem } from './types';
+import {
+  type ItemId,
+  type MenuContextProps,
+  type RegisteredItem,
+} from './types';
 import { sortItems } from './utils';
 import { useRefCopy } from './useRefCopy';
 

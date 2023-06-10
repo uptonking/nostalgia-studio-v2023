@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { EditorView } from 'prosemirror-view';
-import { ProviderFactory } from '../provider-factory';
+import { type EditorView } from 'prosemirror-view';
+import { type ProviderFactory } from '../provider-factory';
 
-import { EditorAppearance, UIComponentFactory } from '../types';
-import { EventDispatcher } from '../utils/event-dispatcher';
-import { EditorActions } from '../EditorActions';
+import { type EditorAppearance, type UIComponentFactory } from '../types';
+import { type EventDispatcher } from '../utils/event-dispatcher';
+import { type EditorActions } from '../EditorActions';
 
 import { whichTransitionEvent } from '../utils/magic-box';
 

@@ -3,18 +3,24 @@
  * @author wangfupeng
  */
 
-import { Emitter } from 'event-emitter';
-import { VNode } from 'snabbdom';
-import { Node, Ancestor, Editor, Path, Range } from 'slate';
-import { IDomEditor } from '../editor/interface';
-import TextArea from '../text-area/TextArea';
-import Toolbar from '../menus/bar/Toolbar';
-import HoverBar from '../menus/bar/HoverBar';
-import { IBarItem } from '../menus/bar-item/index';
-import { Key } from './key';
-import { PatchFn } from '../utils/vdom';
-import { IEditorConfig } from '../config/interface';
-import PanelAndModal from '../menus/panel-and-modal/BaseClass';
+import { type Emitter } from 'event-emitter';
+import { type VNode } from 'snabbdom';
+import {
+  type Node,
+  type Ancestor,
+  type Editor,
+  type Path,
+  type Range,
+} from 'slate';
+import { type IDomEditor } from '../editor/interface';
+import type TextArea from '../text-area/TextArea';
+import type Toolbar from '../menus/bar/Toolbar';
+import type HoverBar from '../menus/bar/HoverBar';
+import { type IBarItem } from '../menus/bar-item/index';
+import { type Key } from './key';
+import { type PatchFn } from '../utils/vdom';
+import { type IEditorConfig } from '../config/interface';
+import type PanelAndModal from '../menus/panel-and-modal/BaseClass';
 
 // textarea - editor
 export const EDITOR_TO_TEXTAREA = new WeakMap<IDomEditor, TextArea>();

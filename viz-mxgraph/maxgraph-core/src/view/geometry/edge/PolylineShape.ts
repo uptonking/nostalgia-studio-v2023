@@ -1,7 +1,7 @@
 import { type ColorValue } from '../../../types';
 import { LINE_ARCSIZE } from '../../../util/Constants';
-import type { AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
-import type { Point } from '../Point';
+import { type AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
+import { type Point } from '../Point';
 import { Shape } from '../Shape';
 
 /**

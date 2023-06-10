@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo } from 'react';
-import { Extension } from './Extension';
+import { type Extension } from './Extension';
 
-import { useEditorContext, EditorContext } from '../context';
+import { useEditorContext, type EditorContext } from '../context';
 
 export const createReactExtension =
   <T>(Ext: new (ctx: EditorContext, props: T) => Extension<T>) =>

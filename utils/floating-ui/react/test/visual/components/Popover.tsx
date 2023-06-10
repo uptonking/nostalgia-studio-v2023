@@ -6,7 +6,7 @@ import {
   FloatingPortal,
   FloatingTree,
   offset,
-  Placement,
+  type Placement,
   shift,
   useClick,
   useDismiss,

@@ -1,40 +1,40 @@
 import { isArray, isBoolean, isEmpty, isString, unzip } from 'lodash-es';
 import fp from 'lodash/fp';
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { None, Some } from 'oxide.ts';
-import type { ZodTypeAny } from 'zod';
+import { type ZodTypeAny } from 'zod';
 
 import { and, ValueObject } from '@datalking/pivot-entity';
 
-import type { IRecordDisplayValues } from '../record/index';
-import type { TableCompositeSpecificaiton } from '../specifications/interface';
-import type { TableSchemaIdMap } from '../value-objects/table-schema.vo';
-import type {
-  IBaseCreateFieldSchema,
-  IBaseUpdateFieldSchema,
+import { type IRecordDisplayValues } from '../record/index';
+import { type TableCompositeSpecificaiton } from '../specifications/interface';
+import { type TableSchemaIdMap } from '../value-objects/table-schema.vo';
+import {
+  type IBaseCreateFieldSchema,
+  type IBaseUpdateFieldSchema,
 } from './field-base.schema';
 import { DEFAULT_DATE_FORMAT } from './field.constants';
-import type {
-  IAbstractAggregateField,
-  IAbstractDateField,
-  IAbstractLookingField,
-  IAbstractLookupField,
-  IAbstractReferenceField,
-  IBaseField,
-  IDateFieldTypes,
-  IFieldType,
-  ILookingFieldTypes,
-  ILookupFieldTypes,
-  INumberAggregateFieldType,
-  IReferenceFieldTypes,
-  IUpdateFieldSchema,
-  PrimitiveField,
-  SystemField,
+import {
+  type IAbstractAggregateField,
+  type IAbstractDateField,
+  type IAbstractLookingField,
+  type IAbstractLookupField,
+  type IAbstractReferenceField,
+  type IBaseField,
+  type IDateFieldTypes,
+  type IFieldType,
+  type ILookingFieldTypes,
+  type ILookupFieldTypes,
+  type INumberAggregateFieldType,
+  type IReferenceFieldTypes,
+  type IUpdateFieldSchema,
+  type PrimitiveField,
+  type SystemField,
 } from './field.type';
 import { canDisplay, isControlledFieldType } from './field.util';
-import type { IFieldVisitor } from './field.visitor';
-import type { IFilter, IOperator } from './filter/index';
-import type { ReferenceField } from './reference-field';
+import { type IFieldVisitor } from './field.visitor';
+import { type IFilter, type IOperator } from './filter/index';
+import { type ReferenceField } from './reference-field';
 import { WithAggregateFieldId } from './specifications/aggregate-field.specification';
 import {
   WithFieldDescription,
@@ -45,9 +45,9 @@ import { WithFormat } from './specifications/date-field.specification';
 import { WithFieldRequirement } from './specifications/field-constraints.specification';
 import { WithReferenceFieldId } from './specifications/lookup-field.specification';
 import { WithDisplayFields } from './specifications/reference-field.specification';
-import type { TreeField } from './tree-field';
+import { type TreeField } from './tree-field';
 import { FieldDescription } from './value-objects/field-description';
-import type { DateFormat, FieldIssue } from './value-objects/index';
+import { type DateFormat, type FieldIssue } from './value-objects/index';
 import {
   DisplayFields,
   FieldId,

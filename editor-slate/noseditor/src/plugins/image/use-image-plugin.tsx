@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { CreateNosPluginType } from '../types';
+import { type CreateNosPluginType } from '../types';
 import { Image } from './components/image';
 import { isImageElement } from './utils';
 import { withImage } from './with-image';

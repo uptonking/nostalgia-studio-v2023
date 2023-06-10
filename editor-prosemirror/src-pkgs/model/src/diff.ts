@@ -1,4 +1,4 @@
-import { Fragment } from './fragment';
+import { type Fragment } from './fragment';
 
 export function findDiffStart(
   a: Fragment,

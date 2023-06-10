@@ -1,4 +1,4 @@
-import type { ClientRect } from '../../types';
+import { type ClientRect } from '../../types';
 import { getRectDelta } from '../../utilities';
 
 import { useInitialValue } from './useInitialValue';

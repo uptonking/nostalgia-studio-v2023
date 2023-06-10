@@ -1,5 +1,5 @@
-import { EditorState } from 'prosemirror-state';
-import { MarkType, Node, ResolvedPos } from 'prosemirror-model';
+import { type EditorState } from 'prosemirror-state';
+import { type MarkType, type Node, ResolvedPos } from 'prosemirror-model';
 import { browser } from './browser';
 
 export const normaliseNestedLayout = (state: EditorState, node: Node) => {

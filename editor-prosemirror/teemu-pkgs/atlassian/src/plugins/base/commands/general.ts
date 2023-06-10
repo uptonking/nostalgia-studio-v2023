@@ -1,11 +1,11 @@
+import { Fragment } from 'prosemirror-model';
 import {
-  EditorState,
+  type EditorState,
   NodeSelection,
   TextSelection,
-  Transaction,
+  type Transaction,
 } from 'prosemirror-state';
 import { canSplit } from 'prosemirror-transform';
-import { Fragment } from 'prosemirror-model';
 
 export function splitBlock(
   state: EditorState,
@@ -71,7 +71,7 @@ export function createParagraphNear(
   const type = $from.parent.contentMatchAt($to.indexAfter()).defaultType;
   if (!type || !type.isTextblock) return false;
   const empty = type.createAndFill();
-  debugger;
+  // debugger;
   if (dispatch && empty) {
     const side = (
       !$from.parentOffset && $to.index() < $to.parent.childCount ? $from : $to

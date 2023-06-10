@@ -1,5 +1,5 @@
 import React, {
-  KeyboardEvent,
+  type KeyboardEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -15,13 +15,13 @@ import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
 import { css } from '@linaria/core';
 
 import { themed } from '../../../styles/theme-vars';
-import type { ElementProps } from '../../types';
+import { type ElementProps } from '../../types';
 import { isSelectionInTable } from '../queries';
-import type {
-  TableCellElement,
-  TableElement,
-  TableRowElement,
-  WithTableEditor,
+import {
+  type TableCellElement,
+  type TableElement,
+  type TableRowElement,
+  type WithTableEditor,
 } from '../types';
 import {
   getTableCellNode,

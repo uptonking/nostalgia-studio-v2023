@@ -1,4 +1,4 @@
-import { Operation, Range } from '../../src';
+import { type Operation, Range } from '../../src';
 
 /**
  * `RangeRef` objects keep a specific range in a document synced over time as new

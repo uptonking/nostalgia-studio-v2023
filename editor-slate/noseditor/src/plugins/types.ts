@@ -1,8 +1,8 @@
-import type { Editor } from 'slate';
-import type {
-  Editable,
-  RenderElementProps,
-  RenderLeafProps,
+import { type Editor } from 'slate';
+import {
+  type Editable,
+  type RenderElementProps,
+  type RenderLeafProps,
 } from 'slate-react';
 
 export type EditableProps = Parameters<typeof Editable>[0];

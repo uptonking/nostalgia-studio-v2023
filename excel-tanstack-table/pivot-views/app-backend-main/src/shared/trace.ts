@@ -1,5 +1,5 @@
 import axios from 'axios';
-import express from 'express';
+import type express from 'express';
 
 import { decodeToken } from './auth';
 import { config } from './config';

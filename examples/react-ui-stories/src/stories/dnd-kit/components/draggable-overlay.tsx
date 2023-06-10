@@ -1,7 +1,7 @@
-import React, { ComponentProps } from 'react';
+import React, { type ComponentProps } from 'react';
 import { createPortal } from 'react-dom';
 
-import type { DropAnimation } from '@dnd-kit/core';
+import { type DropAnimation } from '@dnd-kit/core';
 import { DragOverlay, useDndContext } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 

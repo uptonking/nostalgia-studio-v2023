@@ -2,7 +2,7 @@ import { platform } from '@floating-ui/react-dom';
 import * as React from 'react';
 
 import { useId } from '../hooks/useId';
-import type { Alignment, FloatingContext, Side } from '../types';
+import { type Alignment, type FloatingContext, type Side } from '../types';
 
 export interface Props extends React.SVGAttributes<SVGSVGElement> {
   context: FloatingContext;

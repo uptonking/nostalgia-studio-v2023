@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import type { UseBoundStore } from 'zustand';
-import { State, StateSelector, StoreApi } from 'zustand/vanilla';
+import { type UseBoundStore } from 'zustand';
+import { type State, type StateSelector, type StoreApi } from 'zustand/vanilla';
 
 export const useZustandStoreSelector = <TState extends State, U>(
   create: () => UseBoundStore<TState, StoreApi<TState>>,

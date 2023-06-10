@@ -1,15 +1,19 @@
-import { EditorState } from 'prosemirror-state';
+import { type EditorState } from 'prosemirror-state';
 import { history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 
-import { Extension, IExtensionSchema } from '../Extension';
+import { Extension, type IExtensionSchema } from '../Extension';
 
 import { doc, paragraph, text } from './nodes';
 import { em, strong } from './marks';
 
 import { basePluginFactory } from './pm-plugins/main';
-import { basePluginKey, getPluginState, BaseState } from './pm-plugins/state';
+import {
+  basePluginKey,
+  getPluginState,
+  type BaseState,
+} from './pm-plugins/state';
 
 export interface BaseExtensionProps {}
 export const baseSchema: IExtensionSchema = {

@@ -1,16 +1,16 @@
 import {
   Editor,
   Element,
-  Location,
+  type Location,
   Node,
-  NodeEntry,
+  type NodeEntry,
   Path,
   Point,
   Range,
   Text,
   Transforms,
 } from '../../src';
-import { TextUnit } from '../interfaces/types';
+import { type TextUnit } from '../interfaces/types';
 
 export interface TextDeleteOptions {
   at?: Location;

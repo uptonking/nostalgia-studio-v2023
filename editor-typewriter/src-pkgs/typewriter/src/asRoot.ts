@@ -1,4 +1,4 @@
-import type { Editor } from './editor';
+import { type Editor } from './editor';
 import { docFromDom } from './rendering/html';
 
 // A svelte action to set the root for your Editor to an element. E.g.

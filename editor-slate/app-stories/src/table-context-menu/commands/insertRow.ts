@@ -3,8 +3,8 @@
  */
 import { Editor, Path, Transforms } from 'slate';
 
-import { TableCellElement, TableElement } from '../customTypes';
-import type { Direction } from '../types';
+import { type TableCellElement, TableElement } from '../customTypes';
+import { type Direction } from '../types';
 import {
   createEmptyCellNode,
   createRowNode,

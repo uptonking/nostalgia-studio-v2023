@@ -9,7 +9,7 @@ import {
 } from './field-base.schema';
 import { FIELD_TYPE_KEY } from './field.constants';
 import { fieldIdSchema } from './value-objects/field-id.schema';
-import type { FieldIssue } from './value-objects/field-issue.vo';
+import { type FieldIssue } from './value-objects/field-issue.vo';
 
 export const collaboratorTypeSchema = z.literal('collaborator');
 export type CollaboratorFieldType = z.infer<typeof collaboratorTypeSchema>;

@@ -5,12 +5,12 @@ import {
   EDITOR_ON_COMPOSITION_TEXT,
 } from '../../utils/weak-maps';
 
-import { DOMNode } from '../../utils/dom';
+import { type DOMNode } from '../../utils/dom';
 
 import {
   normalizeTextInsertionRange,
   combineInsertedText,
-  TextInsertion,
+  type TextInsertion,
 } from './diff-text';
 import {
   gatherMutationData,

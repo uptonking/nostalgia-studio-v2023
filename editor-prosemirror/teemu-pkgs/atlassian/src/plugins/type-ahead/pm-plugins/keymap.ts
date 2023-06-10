@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap';
-import { EditorState, Plugin } from 'prosemirror-state';
+import { type EditorState, type Plugin } from 'prosemirror-state';
 
 import * as keymaps from '../../../keymaps';
 import { dismissCommand } from '../commands/dismiss';

@@ -13,8 +13,8 @@ import {
   blockquote,
 } from 'prosemirror-test-builder';
 import { EditorState, TextSelection } from 'prosemirror-state';
-import { Step } from 'prosemirror-transform';
-import { EditorView } from 'prosemirror-view';
+import { type Step } from 'prosemirror-transform';
+import { type EditorView } from 'prosemirror-view';
 import { tempEditor, findTextNode } from './view';
 
 const img = img_({

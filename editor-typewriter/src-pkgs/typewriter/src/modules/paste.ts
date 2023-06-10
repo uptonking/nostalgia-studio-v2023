@@ -1,13 +1,13 @@
 import {
   Delta,
-  EditorRange,
+  type EditorRange,
   isEqual,
   type Line,
   lineUtils,
   normalizeRange,
 } from '@typewriter/document';
 
-import type { Editor } from '../editor';
+import { type Editor } from '../editor';
 import { deltaFromHTML } from '../rendering/html';
 import { Source } from '../Source';
 

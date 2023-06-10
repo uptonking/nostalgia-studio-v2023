@@ -1,4 +1,4 @@
-import type { JSONPatchOp, JSONPatchOpHandlerMap } from './types';
+import { type JSONPatchOp, type JSONPatchOpHandlerMap } from './types';
 import { getType } from './utils';
 import { getTypes } from './ops';
 import { runWithObject } from './state';

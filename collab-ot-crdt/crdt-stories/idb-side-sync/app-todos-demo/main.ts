@@ -22,7 +22,7 @@ import {
   updateFontSizeSetting,
   updateTodo,
 } from './db';
-import type { AppMainStateType } from './types';
+import { type AppMainStateType } from './types';
 import {
   append,
   classes,

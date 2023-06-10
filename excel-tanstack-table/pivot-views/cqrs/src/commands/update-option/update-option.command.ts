@@ -1,8 +1,8 @@
-import { IUpdateOptionSchema } from '@datalking/pivot-core';
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type IUpdateOptionSchema } from '@datalking/pivot-core';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IUpdateOptionCommandInput } from './update-option.command.interface';
+import { type IUpdateOptionCommandInput } from './update-option.command.interface';
 
 export class UpdateOptionCommand
   extends Command

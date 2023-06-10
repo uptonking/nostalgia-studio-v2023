@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { PortalProvider } from '../portals';
+import { type PortalProvider } from '../portals';
 
 export function createListenProps<A>(
   container: HTMLElement,

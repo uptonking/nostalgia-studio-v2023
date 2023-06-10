@@ -3,7 +3,11 @@
  */
 import { Editor, Path, Transforms } from 'slate';
 
-import type { Direction, TableCellElement, TableElement } from '../types';
+import {
+  type Direction,
+  type TableCellElement,
+  type TableElement,
+} from '../types';
 import {
   getCellBySelectOrFocus,
   getColNumber,

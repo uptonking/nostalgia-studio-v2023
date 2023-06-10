@@ -3,13 +3,18 @@ import React, { useCallback, useRef, useState } from 'react';
 import {
   AutoSizer,
   List as VirtualizedList,
-  ListRowRenderer,
+  type ListRowRenderer,
 } from 'react-virtualized';
 
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta } from '@storybook/react';
+import { type ComponentMeta } from '@storybook/react';
 
-import { Menu, MenuImperativeHandle, MenuOrientation, MenuProps } from '.';
+import {
+  Menu,
+  type MenuImperativeHandle,
+  MenuOrientation,
+  type MenuProps,
+} from '.';
 import { MenuItem } from './MenuItem';
 import { useMenu } from './useMenu';
 import { useMenuItem } from './useMenuItem';

@@ -1,5 +1,5 @@
-import { NodeSpec } from 'prosemirror-model';
-import { ParagraphDefinition as Paragraph } from './paragraph';
+import { type NodeSpec } from 'prosemirror-model';
+import { type ParagraphDefinition as Paragraph } from './paragraph';
 
 /**
  * @name blockquote_node

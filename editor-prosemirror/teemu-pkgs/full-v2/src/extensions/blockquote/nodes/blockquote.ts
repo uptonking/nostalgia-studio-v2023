@@ -1,5 +1,5 @@
-import { NodeSpec } from 'prosemirror-model';
-import type { IExtensionSchema } from '../../Extension';
+import { type NodeSpec } from 'prosemirror-model';
+import { type IExtensionSchema } from '../../Extension';
 
 export const blockquote: NodeSpec = {
   content: 'paragraph+',

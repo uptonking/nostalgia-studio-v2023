@@ -1,4 +1,4 @@
-import type { Axis, Placement } from '../types';
+import { type Axis, type Placement } from '../types';
 import { getSide } from './getSide';
 
 export function getMainAxisFromPlacement(placement: Placement): Axis {

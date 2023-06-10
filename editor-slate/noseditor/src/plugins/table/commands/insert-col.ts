@@ -1,6 +1,6 @@
 import { Editor, Path, Transforms } from 'slate';
 
-import type { TableCellElement, TableElement } from '../types';
+import { type TableCellElement, type TableElement } from '../types';
 import {
   getCellBySelectOrFocus,
   getNextInsertRowPosition,

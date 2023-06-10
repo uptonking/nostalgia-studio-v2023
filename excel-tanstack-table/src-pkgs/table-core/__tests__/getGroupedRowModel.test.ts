@@ -1,8 +1,8 @@
-import { ColumnDef, getCoreRowModel } from '../src';
+import { type ColumnDef, getCoreRowModel } from '../src';
 import { createColumnHelper } from '../src/columnHelper';
 import { createTable } from '../src/core/table';
 import { getGroupedRowModel } from '../src/utils/getGroupedRowModel';
-import { makeData, Person } from './makeTestData';
+import { makeData, type Person } from './makeTestData';
 
 type personKeys = keyof Person;
 type PersonColumn = ColumnDef<Person, string | number | Person[] | undefined>;

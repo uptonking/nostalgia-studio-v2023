@@ -1,20 +1,20 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { TableCompositeSpecificaiton } from '../specifications/index';
+import { type TableCompositeSpecificaiton } from '../specifications/index';
 import { AbstractDateField } from './field.base';
-import type { IUpdatedAtField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { IUpdatedAtFilterOperator } from './filter/operators';
-import type { IUpdatedAtFilter } from './filter/updated-at.filter';
+import { type IUpdatedAtField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type IUpdatedAtFilterOperator } from './filter/operators';
+import { type IUpdatedAtFilter } from './filter/updated-at.filter';
 import { UpdatedAtFieldValue } from './updated-at-field-value';
-import type {
-  ICreateUpdatedAtFieldInput,
-  IUpdatedAtFieldQueryValue,
-  IUpdateUpdatedAtFieldInput,
-  UpdatedAtFieldType,
+import {
+  type ICreateUpdatedAtFieldInput,
+  type IUpdatedAtFieldQueryValue,
+  type IUpdateUpdatedAtFieldInput,
+  type UpdatedAtFieldType,
 } from './updated-at-field.type';
 import { DateFormat } from './value-objects/date-format.vo';
 

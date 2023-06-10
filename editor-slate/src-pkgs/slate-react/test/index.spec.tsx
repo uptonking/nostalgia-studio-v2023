@@ -1,19 +1,19 @@
 import React from 'react';
 import {
   createEditor,
-  NodeEntry,
+  type NodeEntry,
   Node,
-  Range,
-  Element,
+  type Range,
+  type Element,
   Transforms,
 } from 'slate';
-import { create, act, ReactTestRenderer } from 'react-test-renderer';
+import { create, act, type ReactTestRenderer } from 'react-test-renderer';
 import {
   Slate,
   withReact,
   DefaultEditable,
-  RenderElementProps,
-  RenderLeafProps,
+  type RenderElementProps,
+  type RenderLeafProps,
   DefaultElement,
   DefaultLeaf,
 } from '../src';

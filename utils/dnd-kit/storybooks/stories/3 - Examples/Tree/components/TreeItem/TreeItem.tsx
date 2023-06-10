@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import React, {HTMLAttributes, forwardRef} from 'react';
+import React, {type HTMLAttributes, forwardRef} from 'react';
 
 import {Action, Handle, Remove} from '../../../../components';
 import styles from './TreeItem.module.css';

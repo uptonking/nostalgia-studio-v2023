@@ -1,7 +1,7 @@
-import { AttributeMap, Delta } from '@typewriter/delta';
+import { type AttributeMap, Delta } from '@typewriter/delta';
 
 import { deltaToText } from '../src/deltaToText';
-import type { Line } from '../src/lineUtils';
+import { type Line } from '../src/lineUtils';
 import { TextDocument } from '../src/TextDocument';
 
 interface LineMatch {

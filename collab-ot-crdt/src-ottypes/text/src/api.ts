@@ -1,4 +1,4 @@
-import type { TextOp } from './text';
+import { type TextOp } from './text';
 
 /**
  * - Text document API for the 'text' type. This implements some standard API

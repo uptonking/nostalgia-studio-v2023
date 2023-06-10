@@ -1,5 +1,5 @@
 import React, {
-  KeyboardEvent,
+  type KeyboardEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -9,9 +9,9 @@ import React, {
 
 import { isHotkey } from 'is-hotkey';
 import { type Location, Path, Transforms } from 'slate';
-import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
+import { ReactEditor, type RenderElementProps, useSlate } from 'slate-react';
 
-import { TableElement } from '../customTypes';
+import { type TableElement } from '../customTypes';
 import { ContextMenu } from '../menu/ContextMenu';
 import {
   getTableCellNode,

@@ -1,8 +1,8 @@
-import { Editor, Element, Node, Range, Transforms } from 'slate';
+import { Editor, type Element, type Node, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
 import { DraggableCollapsibleEditor } from '../collapsible-editor';
-import type { CollapsibleElement, SemanticNode } from '../types';
+import { type CollapsibleElement, type SemanticNode } from '../types';
 import { updateHash } from './update-hash';
 
 /**

@@ -2,16 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { css } from '@linaria/core';
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  SortingState,
+  type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { makeData, type Person } from '../utils/makeData';
 
 const SORT_DIRECTION_ICONS = {
   asc: ' 🔼',

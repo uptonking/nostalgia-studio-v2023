@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { css } from '@linaria/core';
-import type { ColumnDef } from '@tanstack/react-table';
+import { type ColumnDef } from '@tanstack/react-table';
 
 import { FixedHeightTable } from '../components/fixed-height-table';
 import { WindowHeightTable } from '../components/window-height-table';
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person, tableColumns } from '../utils/makeData';
+import { makeData, type Person, tableColumns } from '../utils/makeData';
 
 const MOCK_DATA_LEN = 20;
 

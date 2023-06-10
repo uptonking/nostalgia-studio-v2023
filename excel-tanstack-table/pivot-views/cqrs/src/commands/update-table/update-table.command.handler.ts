@@ -1,7 +1,7 @@
 import { type ITableRepository } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { UpdateTableCommand } from './update-table.command';
+import { type UpdateTableCommand } from './update-table.command';
 
 type IUpdateTableCommandHandler = ICommandHandler<UpdateTableCommand, void>;
 

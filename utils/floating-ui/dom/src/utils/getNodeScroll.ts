@@ -1,4 +1,4 @@
-import type { NodeScroll } from '../types';
+import { type NodeScroll } from '../types';
 import { isElement } from './is';
 
 export function getNodeScroll(element: Element | Window): NodeScroll {

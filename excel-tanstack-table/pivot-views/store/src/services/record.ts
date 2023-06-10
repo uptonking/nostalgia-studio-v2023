@@ -1,20 +1,20 @@
-import type { IQueryRecordSchema } from '@datalking/pivot-core';
-import type {
-  IGetForeignRecordsQuery,
-  IGetParentAvailableRecordQuery,
-  IGetRecordOutput,
-  IGetRecordQuery,
-  IGetRecordsOutput,
-  IGetRecordsQuery,
-  IGetRecordsTreeOutput,
-  IGetRecordsTreeQuery,
-  IGetTreeAvailableRecordsQuery,
-  IUpdateRecordCommandInput,
+import { type IQueryRecordSchema } from '@datalking/pivot-core';
+import {
+  type IGetForeignRecordsQuery,
+  type IGetParentAvailableRecordQuery,
+  type IGetRecordOutput,
+  type IGetRecordQuery,
+  type IGetRecordsOutput,
+  type IGetRecordsQuery,
+  type IGetRecordsTreeOutput,
+  type IGetRecordsTreeQuery,
+  type IGetTreeAvailableRecordsQuery,
+  type IUpdateRecordCommandInput,
 } from '@datalking/pivot-cqrs';
-import type { EntityState } from '@reduxjs/toolkit';
+import { type EntityState } from '@reduxjs/toolkit';
 import { createEntityAdapter, createSelector } from '@reduxjs/toolkit';
 
-import type { RootState } from '../store/reducer';
+import { type RootState } from '../store/reducer';
 import { trpc } from '../trpc';
 import { api } from './api';
 

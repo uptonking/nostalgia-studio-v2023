@@ -16,20 +16,27 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListIcon from '@mui/icons-material/List';
 import StorageIcon from '@mui/icons-material/Storage';
 import { Button } from '@mui/material';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import MuiAppBar, {
+  type AppBarProps as MuiAppBarProps,
+} from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
-import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
+import {
+  type CSSObject,
+  styled,
+  type Theme,
+  useTheme,
+} from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { config } from '../../shared/config';
 import { useAppDispatch, useAppSelector } from '../../shared/store';
-import MenuItem, { MenuModel } from './MenuItem';
+import MenuItem, { type MenuModel } from './MenuItem';
 import { patch } from './slice';
 
 const drawerWidth = 250;

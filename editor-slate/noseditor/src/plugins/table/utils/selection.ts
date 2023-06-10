@@ -1,14 +1,14 @@
-import { Editor, Path } from 'slate';
+import { type Editor, Path } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import type { TableElement } from '../types';
+import { type TableElement } from '../types';
 import {
   getOriginTable,
   getRange,
   getRangeByOrigin,
   getRealPathByPath,
-  rangeType,
-  tableRange,
+  type rangeType,
+  type tableRange,
 } from './common';
 
 /**

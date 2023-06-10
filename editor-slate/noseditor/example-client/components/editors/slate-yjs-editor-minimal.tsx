@@ -10,7 +10,7 @@ import {
   createEditor,
   type Descendant,
   Editor,
-  Node as SlateNode,
+  type Node as SlateNode,
   Transforms,
 } from 'slate';
 import { DefaultEditable as Editable, Slate, withReact } from 'slate-react';

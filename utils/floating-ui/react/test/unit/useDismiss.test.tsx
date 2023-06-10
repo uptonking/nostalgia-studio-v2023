@@ -6,7 +6,7 @@ import {
   screen,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ReactNode, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import {
   FloatingFocusManager,
@@ -20,7 +20,7 @@ import {
   useFocus,
   useInteractions,
 } from '../../src';
-import { normalizeBubblesProp, Props } from '../../src/hooks/useDismiss';
+import { normalizeBubblesProp, type Props } from '../../src/hooks/useDismiss';
 
 function App(props: Props) {
   const [open, setOpen] = useState(true);

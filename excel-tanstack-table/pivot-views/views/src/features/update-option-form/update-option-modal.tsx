@@ -1,7 +1,10 @@
 import React from 'react';
 
-import type { IMutateOptionSchema, SelectField } from '@datalking/pivot-core';
-import type { ContextModalProps } from '@datalking/pivot-ui';
+import {
+  type IMutateOptionSchema,
+  type SelectField,
+} from '@datalking/pivot-core';
+import { type ContextModalProps } from '@datalking/pivot-ui';
 
 import { UpdateOptionForm } from './update-option-form';
 

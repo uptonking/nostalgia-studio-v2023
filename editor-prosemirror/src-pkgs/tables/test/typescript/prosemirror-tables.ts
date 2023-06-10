@@ -1,7 +1,7 @@
 import {
   TableMap,
   toggleHeader,
-  TableRect,
+  type TableRect,
   tableEditing,
   CellSelection,
 } from '../../';

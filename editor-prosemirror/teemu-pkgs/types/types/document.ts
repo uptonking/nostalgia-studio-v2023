@@ -1,4 +1,4 @@
-import { Step } from 'prosemirror-transform';
+import { type Step } from 'prosemirror-transform';
 
 export interface EditorStateJSON {
   doc: { [key: string]: any };

@@ -1,20 +1,20 @@
-import type { Option } from 'oxide.ts';
-import type { ZodTypeAny } from 'zod';
+import { type Option } from 'oxide.ts';
+import { type ZodTypeAny } from 'zod';
 import { z } from 'zod';
 
-import type { TableCompositeSpecificaiton } from '../specifications/index';
+import { type TableCompositeSpecificaiton } from '../specifications/index';
 import { CreatedByFieldValue } from './created-by-field-value';
-import type {
-  CreatedByFieldType,
-  ICreateCreatedByFieldInput,
-  ICreatedByFieldQueryValue,
-  IUpdateCreatedByFieldInput,
+import {
+  type CreatedByFieldType,
+  type ICreateCreatedByFieldInput,
+  type ICreatedByFieldQueryValue,
+  type IUpdateCreatedByFieldInput,
 } from './created-by-field.type';
 import { BaseField } from './field.base';
-import type { ICreatedByField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { ICreatedByFilter } from './filter/created-by.filter';
-import type { ICreatedByFilterOperator } from './filter/operators';
+import { type ICreatedByField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type ICreatedByFilter } from './filter/created-by.filter';
+import { type ICreatedByFilterOperator } from './filter/operators';
 
 export class CreatedByField extends BaseField<ICreatedByField> {
   type: CreatedByFieldType = 'created-by';

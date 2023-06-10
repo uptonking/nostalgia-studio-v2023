@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import { Descendant } from 'slate';
-import { jsx, VNode } from 'snabbdom';
+import { type Descendant } from 'slate';
+import { jsx, type VNode } from 'snabbdom';
 import { addVnodeStyle } from '../../utils/vdom';
-import { FontSizeAndFamilyText } from './custom-types';
+import { type FontSizeAndFamilyText } from './custom-types';
 
 /**
  * 添加样式

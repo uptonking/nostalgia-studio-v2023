@@ -1,13 +1,13 @@
-import { Socket } from 'socket.io';
+import { type Socket } from 'socket.io';
 import {
-  ECollabAction,
-  ICollabUsersChangedAction,
-  ICollabEditAction,
-  EDocAction,
-  IDocCreateAction,
-  IDocDeleteAction,
-  IDocVisibilityAction,
-  ICollabServerUpdateAction,
+  type ECollabAction,
+  type ICollabUsersChangedAction,
+  type ICollabEditAction,
+  type EDocAction,
+  type IDocCreateAction,
+  type IDocDeleteAction,
+  type IDocVisibilityAction,
+  type ICollabServerUpdateAction,
 } from '@example/types';
 
 export type ExampleAppSocket = Socket<ISocketListenEvents, ISocketEmitEvents>;

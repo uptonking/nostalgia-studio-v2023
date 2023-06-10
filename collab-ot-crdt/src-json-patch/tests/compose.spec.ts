@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { text } from '../src/custom/delta';
 import { composePatch as originalComposePatch } from '../src/composePatch';
-import { JSONPatchOp } from '../src/types';
+import { type JSONPatchOp } from '../src/types';
 
 const matrix = [[], [], [], [], [], [], []];
 const arr = [{}, {}, {}, {}, {}, {}, {}];

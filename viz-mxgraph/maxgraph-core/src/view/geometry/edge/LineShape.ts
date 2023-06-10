@@ -1,6 +1,6 @@
 import { Shape } from '../Shape';
-import type { AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
-import type { Rectangle } from '../Rectangle';
+import { type AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
+import { type Rectangle } from '../Rectangle';
 import { type ColorValue } from '../../../types';
 
 /**

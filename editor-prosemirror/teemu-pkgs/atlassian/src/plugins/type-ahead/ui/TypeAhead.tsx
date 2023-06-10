@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
 
 import { Popup } from '../../../elements/Popup';
@@ -12,7 +12,7 @@ import { divide } from '../../../theme/math';
 
 import { selectByIndex } from '../commands/select-item';
 import { setCurrentIndex } from '../commands/set-current-index';
-import { TypeAheadItem } from '../types';
+import { type TypeAheadItem } from '../types';
 
 import { TypeAheadItemsList } from './TypeAheadItemsList';
 

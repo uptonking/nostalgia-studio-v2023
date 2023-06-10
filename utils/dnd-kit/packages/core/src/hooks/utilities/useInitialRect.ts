@@ -1,4 +1,4 @@
-import type { ClientRect } from '../../types';
+import { type ClientRect } from '../../types';
 import { useInitialValue } from './useInitialValue';
 
 export function useInitialRect(

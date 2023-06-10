@@ -4,35 +4,35 @@
  */
 
 import {
-  IDomEditor,
+  type IDomEditor,
 
   // 配置
-  IEditorConfig,
-  IToolbarConfig,
-  IModuleConf,
+  type IEditorConfig,
+  type IToolbarConfig,
+  type IModuleConf,
 
   // 注册菜单
-  IRegisterMenuConf,
+  type IRegisterMenuConf,
   registerMenu,
 
   // 渲染 modal -> view
-  IRenderElemConf,
-  RenderStyleFnType,
+  type IRenderElemConf,
+  type RenderStyleFnType,
   registerStyleHandler,
   registerRenderElemConf,
 
   // to html
-  IElemToHtmlConf,
-  styleToHtmlFnType,
+  type IElemToHtmlConf,
+  type styleToHtmlFnType,
   registerStyleToHtmlHandler,
   registerElemToHtmlConf,
 
   // parseHtml
   PreParseHtmlFnType,
-  IPreParseHtmlConf,
+  type IPreParseHtmlConf,
   registerPreParseHtmlConf,
-  ParseStyleHtmlFnType,
-  IParseElemHtmlConf,
+  type ParseStyleHtmlFnType,
+  type IParseElemHtmlConf,
   registerParseElemHtmlConf,
   registerParseStyleHtmlHandler,
 } from '@wangeditor/core';

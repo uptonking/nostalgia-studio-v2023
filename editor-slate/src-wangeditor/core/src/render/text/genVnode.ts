@@ -3,11 +3,17 @@
  * @author wangfupeng
  */
 
-import { Ancestor, Editor, Node, Path, Text as SlateText } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import {
+  type Ancestor,
+  Editor,
+  Node,
+  Path,
+  type Text as SlateText,
+} from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
 import { DomEditor } from '../../editor/dom-editor';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 
 function str(text: string, isTrailing = false): VNode {
   // return <span data-slate-string>{isTrailing ? text + '\n' : text}</span>;

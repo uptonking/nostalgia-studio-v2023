@@ -4,7 +4,7 @@
  */
 
 import createUploader from './createUploader';
-import { IUploadConfig } from './interface';
+import { type IUploadConfig } from './interface';
 
 export { createUploader, type IUploadConfig };
 

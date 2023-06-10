@@ -1,13 +1,13 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ClsStore } from '../../cls/cls';
-import type { Table } from '../table';
-import type { ICreateTableSchemaInput } from '../value-objects/index';
+import { type ClsStore } from '../../cls/cls';
+import { type Table } from '../table';
+import { type ICreateTableSchemaInput } from '../value-objects/index';
 import { TableSchema } from '../value-objects/index';
-import type { ITableSpecVisitor } from './interface';
+import { type ITableSpecVisitor } from './interface';
 
 export class WithTableSchema extends CompositeSpecification<
   Table,

@@ -1,11 +1,15 @@
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import {
+  type TypedUseSelectorHook,
+  useDispatch,
+  useSelector,
+} from 'react-redux';
 import { load } from 'redux-localstorage-simple';
 
 import {
-  Action,
+  type Action,
   configureStore,
-  Middleware,
-  ThunkAction,
+  type Middleware,
+  type ThunkAction,
 } from '@reduxjs/toolkit';
 
 import { adminReducer } from '../features/admin/slice';

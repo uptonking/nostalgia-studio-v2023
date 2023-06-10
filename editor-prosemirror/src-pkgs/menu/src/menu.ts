@@ -7,9 +7,13 @@ import {
   wrapIn,
 } from 'prosemirror-commands';
 import { redo, undo } from 'prosemirror-history';
-import { Attrs, NodeType } from 'prosemirror-model';
-import { EditorState, NodeSelection, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { type Attrs, type NodeType } from 'prosemirror-model';
+import {
+  type EditorState,
+  type NodeSelection,
+  type Transaction,
+} from 'prosemirror-state';
+import { type EditorView } from 'prosemirror-view';
 
 import { getIcon } from './icons';
 

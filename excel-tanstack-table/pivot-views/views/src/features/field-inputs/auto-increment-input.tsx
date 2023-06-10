@@ -2,9 +2,9 @@ import React from 'react';
 
 import { isNumber } from 'lodash-es';
 
-import type { AutoIncrementField } from '@datalking/pivot-core';
+import { type AutoIncrementField } from '@datalking/pivot-core';
 import { getCurrentTableRecordsTotal } from '@datalking/pivot-store';
-import type { NumberInputProps } from '@datalking/pivot-ui';
+import { type NumberInputProps } from '@datalking/pivot-ui';
 import { NumberInput } from '@datalking/pivot-ui';
 
 import { useAppSelector } from '../../hooks';

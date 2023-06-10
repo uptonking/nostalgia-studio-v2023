@@ -1,5 +1,5 @@
 import ist from 'ist';
-import { Fragment, Schema, Node } from 'prosemirror-model';
+import { Fragment, Schema, type Node } from 'prosemirror-model';
 import {
   schema,
   eq,

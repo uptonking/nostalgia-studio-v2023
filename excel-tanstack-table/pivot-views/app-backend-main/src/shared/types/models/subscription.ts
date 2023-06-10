@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 
-import type { Subscription } from '@datalking/pivot-app-shared-lib';
+import { type Subscription } from '@datalking/pivot-app-shared-lib';
 
 import { addModel } from '../../db';
 

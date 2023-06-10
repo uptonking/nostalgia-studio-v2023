@@ -1,8 +1,8 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { None, Some } from 'oxide.ts';
 import { z } from 'zod';
 
-import type { CompositeSpecification } from '@datalking/pivot-entity';
+import { type CompositeSpecification } from '@datalking/pivot-entity';
 
 import {
   BoolIsFalse,
@@ -39,44 +39,44 @@ import {
   SelectFieldValue,
   StringFieldValue,
 } from '../index';
-import type { ISelectFieldValue } from '../select-field.type';
-import type {
-  IAttachmentFilter,
-  IAttachmentFilterTypeValue,
+import { type ISelectFieldValue } from '../select-field.type';
+import {
+  type IAttachmentFilter,
+  type IAttachmentFilterTypeValue,
 } from './attachment.filter';
 import { attachmentFilter, attachmentFilterValue } from './attachment.filter';
-import type { IAutoIncrementFilter } from './auto-increment.filter';
+import { type IAutoIncrementFilter } from './auto-increment.filter';
 import {
   autoIncrementFilter,
   autoIncrementFilterValue,
 } from './auto-increment.filter';
-import type { IAverageFilter } from './average.filter';
+import { type IAverageFilter } from './average.filter';
 import { averageFilter, averageFilterValue } from './average.filter';
-import type { IBoolFilter } from './bool.filter';
+import { type IBoolFilter } from './bool.filter';
 import { boolFilter, boolFilterValue } from './bool.filter';
 import {
   collaboratorFilter,
   collaboratorFilterValue,
 } from './collaborator.filter';
-import type { IColorFilter } from './color.filter';
+import { type IColorFilter } from './color.filter';
 import { colorFilter } from './color.filter';
-import type { IConjunction } from './conjunction';
+import { type IConjunction } from './conjunction';
 import { conjunctions } from './conjunction';
-import type { ICountFilter } from './count.filter';
+import { type ICountFilter } from './count.filter';
 import { countFilter, countFilterValue } from './count.filter';
-import type { ICreatedAtFilter } from './created-at.filter';
+import { type ICreatedAtFilter } from './created-at.filter';
 import { createdAtFilter, createdAtFilterValue } from './created-at.filter';
 import { createdByFilter, createdByFilterValue } from './created-by.filter';
-import type { IDateRangeFilter } from './date-range.filter';
+import { type IDateRangeFilter } from './date-range.filter';
 import { dateRangeFilter, dateRangeFilterValue } from './date-range.filter';
-import type { IDateFilter } from './date.filter';
+import { type IDateFilter } from './date.filter';
 import { dateFilter, dateFilterValue } from './date.filter';
-import type { IEmailFilter } from './email.filter';
+import { type IEmailFilter } from './email.filter';
 import { emailFilter, emailFilterValue } from './email.filter';
-import type { IIdFilter } from './id.filter';
+import { type IIdFilter } from './id.filter';
 import { idFilter, idFilterValue } from './id.filter';
 import { lookupFilter, lookupFilterValue } from './lookup.filter';
-import type { INumberFilter } from './number.filter';
+import { type INumberFilter } from './number.filter';
 import { numberFilter, numberFilterValue } from './number.filter';
 import {
   $eq,
@@ -111,18 +111,18 @@ import {
   updatedByFilterOperators,
 } from './operators';
 import { parentFilter, parentFilterValue } from './parent.filter';
-import type { IRatingFilter } from './rating.filter';
+import { type IRatingFilter } from './rating.filter';
 import { ratingFilter, ratingFilterValue } from './rating.filter';
 import { referenceFilter, referenceFilterValue } from './reference.filter';
-import type { ISelectFilter } from './select.filter';
+import { type ISelectFilter } from './select.filter';
 import { selectFilter, selectFilterValue } from './select.filter';
-import type { IStringFilter } from './string.filter';
+import { type IStringFilter } from './string.filter';
 import { stringFilter, stringFilterValue } from './string.filter';
-import type { ISumFilter } from './sum.filter';
+import { type ISumFilter } from './sum.filter';
 import { sumFilter, sumFilterValue } from './sum.filter';
-import type { ITreeFilter } from './tree.filter';
+import { type ITreeFilter } from './tree.filter';
 import { treeFilter, treeFilterValue } from './tree.filter';
-import type { IUpdatedAtFilter } from './updated-at.filter';
+import { type IUpdatedAtFilter } from './updated-at.filter';
 import { updatedAtFilter, updatedAtFilterValue } from './updated-at.filter';
 import { updatedByFilter, updatedByFilterValue } from './updated-by.filter';
 

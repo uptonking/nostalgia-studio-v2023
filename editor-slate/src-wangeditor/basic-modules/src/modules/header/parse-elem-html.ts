@@ -3,15 +3,15 @@
  * @author wangfupeng
  */
 
-import { Descendant, Text } from 'slate';
-import $, { DOMElement } from '../../utils/dom';
-import { IDomEditor } from '@wangeditor/core';
+import { type Descendant, Text } from 'slate';
+import $, { type DOMElement } from '../../utils/dom';
+import { type IDomEditor } from '@wangeditor/core';
 import {
-  Header1Element,
-  Header2Element,
-  Header3Element,
-  Header4Element,
-  Header5Element,
+  type Header1Element,
+  type Header2Element,
+  type Header3Element,
+  type Header4Element,
+  type Header5Element,
 } from './custom-types';
 
 function genParser<T>(level: number) {

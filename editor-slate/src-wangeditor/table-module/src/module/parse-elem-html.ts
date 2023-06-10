@@ -3,14 +3,14 @@
  * @author wangfupeng
  */
 
-import { Descendant, Text } from 'slate';
-import { IDomEditor, DomEditor } from '@wangeditor/core';
+import { type Descendant, Text } from 'slate';
+import { type IDomEditor, DomEditor } from '@wangeditor/core';
 import {
-  TableCellElement,
-  TableRowElement,
-  TableElement,
+  type TableCellElement,
+  type TableRowElement,
+  type TableElement,
 } from './custom-types';
-import $, { getTagName, getStyleValue, DOMElement } from '../utils/dom';
+import $, { getTagName, getStyleValue, type DOMElement } from '../utils/dom';
 
 function parseCellHtml(
   elem: DOMElement,

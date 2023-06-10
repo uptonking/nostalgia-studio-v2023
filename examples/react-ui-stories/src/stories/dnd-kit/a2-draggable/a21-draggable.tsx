@@ -3,17 +3,17 @@ import React, { useMemo, useState } from 'react';
 import {
   DndContext,
   KeyboardSensor,
-  Modifiers,
+  type Modifiers,
   MouseSensor,
-  PointerActivationConstraint,
+  type PointerActivationConstraint,
   TouchSensor,
   useDraggable,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import type { Coordinates } from '@dnd-kit/utilities';
+import { type Coordinates } from '@dnd-kit/utilities';
 
-import { Axis, Draggable, Wrapper } from '../components';
+import { type Axis, Draggable, Wrapper } from '../components';
 
 interface DraggableStoryProps {
   activationConstraint?: PointerActivationConstraint;

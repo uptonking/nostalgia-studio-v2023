@@ -6,16 +6,16 @@
 import {
   Editor,
   Transforms,
-  Location,
+  type Location,
   Point,
-  Element as SlateElement,
-  Descendant,
-  NodeEntry,
+  type Element as SlateElement,
+  type Descendant,
+  type NodeEntry,
   Node,
-  BaseText,
+  type BaseText,
   Path,
 } from 'slate';
-import { IDomEditor, DomEditor } from '@wangeditor/core';
+import { type IDomEditor, DomEditor } from '@wangeditor/core';
 
 // table cell 内部的删除处理
 function deleteHandler(newEditor: IDomEditor): boolean {

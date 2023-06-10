@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { createViewSchema, ViewId } from '@datalking/pivot-core';
-import type { ICreateViewCommandInput } from '@datalking/pivot-cqrs';
+import { type ICreateViewCommandInput } from '@datalking/pivot-cqrs';
 import { useCreateViewMutation } from '@datalking/pivot-store';
 import {
   Button,

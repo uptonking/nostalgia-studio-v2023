@@ -1,7 +1,7 @@
-import { Socket } from 'socket.io-client';
-import type {
-  EditorSocketAction,
-  EditorSocketActionType,
+import { type Socket } from 'socket.io-client';
+import {
+  type EditorSocketAction,
+  type EditorSocketActionType,
 } from '@example/types';
 
 interface APIProps {

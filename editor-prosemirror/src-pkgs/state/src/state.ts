@@ -1,7 +1,7 @@
-import { Mark, Node, Schema } from 'prosemirror-model';
+import { type Mark, Node, type Schema } from 'prosemirror-model';
 
-import { Plugin, StateField } from './plugin';
-import { Selection, TextSelection } from './selection';
+import { type Plugin, type StateField } from './plugin';
+import { Selection, type TextSelection } from './selection';
 import { Transaction } from './transaction';
 
 function bind<T extends Function>(f: T, self: any): T {

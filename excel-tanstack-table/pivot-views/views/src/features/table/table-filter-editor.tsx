@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import type { IFilter } from '@datalking/pivot-core';
+import { type IFilter } from '@datalking/pivot-core';
 import { useSetFilterMutation } from '@datalking/pivot-store';
 import {
   Badge,

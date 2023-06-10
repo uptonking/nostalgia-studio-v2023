@@ -1,4 +1,4 @@
-import { ValidationFunc, ValidationFuncs } from 'leyden';
+import { type ValidationFunc, type ValidationFuncs } from 'leyden';
 
 const onlyTwos: ValidationFunc = (newVal) => {
   for (let i = 0; i < newVal.length; i++) {

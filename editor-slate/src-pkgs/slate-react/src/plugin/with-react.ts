@@ -1,13 +1,20 @@
 import ReactDOM from 'react-dom';
 
-import { Editor, Node, Operation, Path, Range, Transforms } from 'slate';
+import {
+  Editor,
+  type Node,
+  type Operation,
+  Path,
+  Range,
+  Transforms,
+} from 'slate';
 
 import {
   getPlainText,
   getSlateFragmentAttribute,
   isDOMText,
 } from '../utils/dom';
-import { Key } from '../utils/key';
+import { type Key } from '../utils/key';
 import { findCurrentLineRange } from '../utils/lines';
 import {
   EDITOR_TO_KEY_TO_ELEMENT,

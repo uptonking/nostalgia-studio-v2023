@@ -1,17 +1,17 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { Socket, io } from 'socket.io-client';
+import { type Socket, io } from 'socket.io-client';
 
-import { APIProvider } from '@example/full-v2';
+import { type APIProvider } from '@example/full-v2';
 import {
   EDocAction,
-  IDocCreateAction,
-  IDocDeleteAction,
-  IDocVisibilityAction,
+  type IDocCreateAction,
+  type IDocDeleteAction,
+  type IDocVisibilityAction,
 } from '@example/types';
 
-import { AuthStore } from './AuthStore';
-import { DocumentStore } from './DocumentStore';
-import { ToastStore } from './ToastStore';
+import { type AuthStore } from './AuthStore';
+import { type DocumentStore } from './DocumentStore';
+import { type ToastStore } from './ToastStore';
 
 // const { REACT_APP_API_URL = 'http://localhost:3400' } = process.env
 const REACT_APP_API_URL = 'http://localhost:3400';

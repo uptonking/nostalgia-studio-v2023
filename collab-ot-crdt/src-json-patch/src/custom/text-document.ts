@@ -1,5 +1,5 @@
-import type { Op } from '@typewriter/document';
-import type { JSONPatchOpHandler } from '../types';
+import { type Op } from '@typewriter/document';
+import { type JSONPatchOpHandler } from '../types';
 import { Delta, TextDocument } from '@typewriter/document';
 import { log, updateRemovedOps, get } from '../utils';
 import { replace } from '../ops';

@@ -2,17 +2,17 @@ import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 
 import {
-  Announcements,
+  type Announcements,
   DndContext,
-  DragEndEvent,
-  DragMoveEvent,
-  DragOverEvent,
+  type DragEndEvent,
+  type DragMoveEvent,
+  type DragOverEvent,
   DragOverlay,
-  DragStartEvent,
-  DropAnimation,
+  type DragStartEvent,
+  type DropAnimation,
   KeyboardSensor,
   MeasuringStrategy,
-  Modifier,
+  type Modifier,
   PointerSensor,
   closestCenter,
   defaultDropAnimation,
@@ -27,7 +27,7 @@ import {
 
 import {SortableTreeItem} from './components';
 import {sortableTreeKeyboardCoordinates} from './keyboardCoordinates';
-import type {FlattenedItem, SensorContext, TreeItems} from './types';
+import {type FlattenedItem, type SensorContext, type TreeItems} from './types';
 import {
   buildTree,
   flattenTree,

@@ -1,7 +1,7 @@
 import {
-  IDBDocument,
-  IGetDocumentsResponse,
-  ICreateDocumentParams,
+  type IDBDocument,
+  type IGetDocumentsResponse,
+  type ICreateDocumentParams,
 } from '@example/types';
 
 import { get, post, put, del } from './api';

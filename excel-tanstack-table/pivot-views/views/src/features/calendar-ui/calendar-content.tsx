@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import type { ICalendarField, IQueryRecords } from '@datalking/pivot-core';
+import { type ICalendarField, type IQueryRecords } from '@datalking/pivot-core';
 import { RecordFactory } from '@datalking/pivot-core';
 import { Calendar } from '@datalking/pivot-ui';
 

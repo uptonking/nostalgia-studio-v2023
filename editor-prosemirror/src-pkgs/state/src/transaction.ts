@@ -1,10 +1,10 @@
-import { Mark, MarkType, Node, Slice } from 'prosemirror-model';
-import { Step, Transform } from 'prosemirror-transform';
+import { Mark, type MarkType, type Node, type Slice } from 'prosemirror-model';
+import { type Step, Transform } from 'prosemirror-transform';
 import { type EditorView } from 'prosemirror-view';
 
-import { Plugin, PluginKey } from './plugin';
+import { type Plugin, type PluginKey } from './plugin';
 import { Selection } from './selection';
-import { EditorState } from './state';
+import { type EditorState } from './state';
 
 /** Commands are functions that take a state and a an optional
  * transaction dispatch function and...

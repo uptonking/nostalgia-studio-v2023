@@ -1,16 +1,16 @@
 import {
-  Attrs,
-  ContentMatch,
+  type Attrs,
+  type ContentMatch,
   Fragment,
-  Mark,
-  Node,
-  NodeRange,
-  NodeType,
+  type Mark,
+  type Node,
+  type NodeRange,
+  type NodeType,
   Slice,
 } from 'prosemirror-model';
 
 import { ReplaceAroundStep, ReplaceStep } from './replace_step';
-import { Transform } from './transform';
+import { type Transform } from './transform';
 
 function canCut(node: Node, start: number, end: number) {
   return (

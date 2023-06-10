@@ -1,12 +1,16 @@
-import { Fragment, Node } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
+import { Fragment, type Node } from 'prosemirror-model';
+import { type EditorState } from 'prosemirror-state';
 
-import { Command } from '../../../types';
+import { type Command } from '../../../types';
 
 import { insertSelectedItem } from '../../../utils/insert';
 import { ACTIONS } from '../pm-plugins/actions';
 import { pluginKey } from '../pm-plugins/plugin-key';
-import { SelectItemMode, TypeAheadHandler, TypeAheadItem } from '../types';
+import {
+  type SelectItemMode,
+  type TypeAheadHandler,
+  type TypeAheadItem,
+} from '../types';
 import { findTypeAheadQuery } from '../utils/find-query-mark';
 // import { isInviteItem } from '../../mentions/utils';
 

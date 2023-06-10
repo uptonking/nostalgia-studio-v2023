@@ -1,7 +1,7 @@
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetShowSystemFieldsCommandInput } from './set-show-system-fields.command.interface';
+import { type ISetShowSystemFieldsCommandInput } from './set-show-system-fields.command.interface';
 
 export class SetShowSystemFieldsCommand
   extends Command

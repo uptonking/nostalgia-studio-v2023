@@ -1,19 +1,19 @@
 import { unzip } from 'lodash-es';
 import { z } from 'zod';
 
-import type { IRecordDisplayValues } from '../record/record.type';
+import { type IRecordDisplayValues } from '../record/record.type';
 import { CollaboratorFieldValue } from './collaborator-field-value';
-import type {
-  CollaboratorFieldType,
-  ICreateCollaboratorFieldInput,
-  ICreateCollaboratorFieldValue,
-  IUpdateCollaboratorFieldInput,
+import {
+  type CollaboratorFieldType,
+  type ICreateCollaboratorFieldInput,
+  type ICreateCollaboratorFieldValue,
+  type IUpdateCollaboratorFieldInput,
 } from './collaborator-field.type';
 import { BaseField } from './field.base';
-import type { ICollaboratorField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { ICollaboratorFilter } from './filter/collaborator.filter';
-import type { ICollaboratorFilterOperator } from './filter/operators';
+import { type ICollaboratorField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type ICollaboratorFilter } from './filter/collaborator.filter';
+import { type ICollaboratorFilterOperator } from './filter/operators';
 
 export class CollaboratorField extends BaseField<ICollaboratorField> {
   type: CollaboratorFieldType = 'collaborator';

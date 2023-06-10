@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { Elements } from '@stripe/react-stripe-js';
-import { Stripe, PaymentIntentResult } from '@stripe/stripe-js';
+import { type Stripe, type PaymentIntentResult } from '@stripe/stripe-js';
 import { useAppSelector } from '../../shared/store';
 import StripePay from './StripePay';
 import { CircularProgress, Stack, Typography } from '@mui/material';

@@ -1,6 +1,11 @@
 import { eq, schema, doc, p } from 'prosemirror-test-builder';
-import { Slice, Fragment, Node } from 'prosemirror-model';
-import { EditorState, Plugin, TextSelection, Command } from 'prosemirror-state';
+import { Slice, Fragment, type Node } from 'prosemirror-model';
+import {
+  EditorState,
+  Plugin,
+  TextSelection,
+  type Command,
+} from 'prosemirror-state';
 import { ReplaceStep } from 'prosemirror-transform';
 import ist from 'ist';
 import {

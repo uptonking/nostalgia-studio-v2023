@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { IDomEditor } from '../../editor/interface';
-import $, { Dom7Array } from '../../utils/dom';
+import { type IDomEditor } from '../../editor/interface';
+import $, { type Dom7Array } from '../../utils/dom';
 import PanelAndModal from './BaseClass';
 
 class DropPanel extends PanelAndModal {

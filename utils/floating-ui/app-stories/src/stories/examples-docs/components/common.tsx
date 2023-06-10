@@ -1,6 +1,6 @@
 import './styles.css';
 
-import React, { forwardRef, PropsWithChildren, Ref } from 'react';
+import React, { forwardRef, type PropsWithChildren, type Ref } from 'react';
 import { createPortal } from 'react-dom';
 
 import cx from 'clsx';

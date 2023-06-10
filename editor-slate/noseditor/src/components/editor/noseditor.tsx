@@ -1,6 +1,6 @@
 import React, { useCallback, useReducer, useState } from 'react';
 
-import { createEditor, Descendant, Editor } from 'slate';
+import { createEditor, type Descendant, Editor } from 'slate';
 import { DefaultEditable as Editable, ReactEditor, Slate } from 'slate-react';
 
 import { NosIconProvider } from '../../components';
@@ -13,7 +13,7 @@ import {
 } from '../../hooks';
 import { usePersistedState } from '../../hooks/utils';
 import { DndFeatureProvider } from '../../plugins';
-import type { CustomEditor } from '../../types/slate';
+import { type CustomEditor } from '../../types/slate';
 import { DragOverlayContent } from './draggable-element';
 import { EditorToolbar } from './editor-toolbar';
 

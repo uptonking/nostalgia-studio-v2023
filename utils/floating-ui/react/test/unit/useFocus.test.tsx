@@ -17,7 +17,7 @@ import {
   useHover,
   useInteractions,
 } from '../../src';
-import type { Props } from '../../src/hooks/useFocus';
+import { type Props } from '../../src/hooks/useFocus';
 
 jest.useFakeTimers();
 

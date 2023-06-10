@@ -1,8 +1,11 @@
-import { Editor, Operation } from 'slate';
+import { type Editor, type Operation } from 'slate';
 
-import { Coordinates } from '../interfaces/Coordinates';
-import { Cell, CellType } from '../interfaces/Cell';
-import { ValidationFuncs, ValidatorIsExtended } from '../interfaces/Validator';
+import { type Coordinates } from '../interfaces/Coordinates';
+import { type Cell, type CellType } from '../interfaces/Cell';
+import {
+  type ValidationFuncs,
+  type ValidatorIsExtended,
+} from '../interfaces/Validator';
 
 /**
  * Distribute a type over its union.

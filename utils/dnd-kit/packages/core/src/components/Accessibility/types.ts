@@ -1,4 +1,4 @@
-import type { Active, Over } from '../../store';
+import { type Active, type Over } from '../../store';
 
 export interface Arguments {
   active: Active;

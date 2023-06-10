@@ -1,36 +1,36 @@
-import { BlockQuoteElement } from './basic-modules/src/modules/blockquote/custom-types';
+import { type BlockQuoteElement } from './basic-modules/src/modules/blockquote/custom-types';
 import {
-  CodeElement,
-  PreElement,
+  type CodeElement,
+  type PreElement,
 } from './basic-modules/src/modules/code-block/custom-types';
-import { ColorText } from './basic-modules/src/modules/color/custom-types';
-import { DividerElement } from './basic-modules/src/modules/divider/custom-types';
-import { FontSizeAndFamilyText } from './basic-modules/src/modules/font-size-family/custom-types';
+import { type ColorText } from './basic-modules/src/modules/color/custom-types';
+import { type DividerElement } from './basic-modules/src/modules/divider/custom-types';
+import { type FontSizeAndFamilyText } from './basic-modules/src/modules/font-size-family/custom-types';
 import {
-  Header1Element,
-  Header2Element,
-  Header3Element,
-  Header4Element,
-  Header5Element,
+  type Header1Element,
+  type Header2Element,
+  type Header3Element,
+  type Header4Element,
+  type Header5Element,
 } from './basic-modules/src/modules/header/custom-types';
-import { ImageElement } from './basic-modules/src/modules/image/custom-types';
-import { IndentElement } from './basic-modules/src/modules/indent/custom-types';
-import { JustifyElement } from './basic-modules/src/modules/justify/custom-types';
-import { LineHeightElement } from './basic-modules/src/modules/line-height/custom-types';
-import { LinkElement } from './basic-modules/src/modules/link/custom-types';
-import { ParagraphElement } from './basic-modules/src/modules/paragraph/custom-types';
+import { type ImageElement } from './basic-modules/src/modules/image/custom-types';
+import { type IndentElement } from './basic-modules/src/modules/indent/custom-types';
+import { type JustifyElement } from './basic-modules/src/modules/justify/custom-types';
+import { type LineHeightElement } from './basic-modules/src/modules/line-height/custom-types';
+import { type LinkElement } from './basic-modules/src/modules/link/custom-types';
+import { type ParagraphElement } from './basic-modules/src/modules/paragraph/custom-types';
 /**
  * @description 自定义扩展 slate 接口属性
  * @author wangfupeng
  */
-import { StyledText } from './basic-modules/src/modules/text-style/custom-types';
-import { TodoElement } from './basic-modules/src/modules/todo/custom-types';
-import { ListItemElement } from './list-module/src/module/custom-types';
+import { type StyledText } from './basic-modules/src/modules/text-style/custom-types';
+import { type TodoElement } from './basic-modules/src/modules/todo/custom-types';
+import { type ListItemElement } from './list-module/src/module/custom-types';
 // import { VideoElement } from './video-module/src/module/custom-types'
 import {
-  TableCellElement,
-  TableElement,
-  TableRowElement,
+  type TableCellElement,
+  type TableElement,
+  type TableRowElement,
 } from './table-module/src/module/custom-types';
 
 type PureText = {

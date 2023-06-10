@@ -1,11 +1,11 @@
 import {
   autoUpdate,
   computePosition,
-  Placement,
+  type Placement,
   platform,
-  Strategy,
+  type Strategy,
 } from '@floating-ui/dom';
-import { HTMLAttributes } from 'react';
+import { type HTMLAttributes } from 'react';
 
 interface FloatingUICustomElement {
   reference: HTMLElement;

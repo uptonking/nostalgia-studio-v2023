@@ -1,4 +1,4 @@
-import type { ZodArray, ZodString } from 'zod';
+import { type ZodArray, type ZodString } from 'zod';
 import { z } from 'zod';
 
 import { ValueObject } from '@datalking/pivot-entity';

@@ -1,7 +1,7 @@
 import { type ITableRepository } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { DeleteFieldCommand } from './delete-field.comand';
+import { type DeleteFieldCommand } from './delete-field.comand';
 
 export class DeleteFieldCommandHandler
   implements ICommandHandler<DeleteFieldCommand, void>

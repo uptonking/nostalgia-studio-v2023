@@ -7,13 +7,13 @@ import {
   restrictToVerticalAxis,
 } from '@dnd-kit/modifiers';
 import {
-  AnimateLayoutChanges,
+  type AnimateLayoutChanges,
   defaultAnimateLayoutChanges,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
 import {createRange} from '../../utilities';
-import {Sortable, SortableProps} from './Sortable';
+import {Sortable, type SortableProps} from './Sortable';
 
 export default {
   title: 'Presets/Sortable/Vertical',

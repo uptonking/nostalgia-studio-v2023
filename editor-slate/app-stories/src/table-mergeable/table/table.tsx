@@ -10,9 +10,9 @@ import React, {
 import { createPortal } from 'react-dom';
 
 import cx from 'classnames';
-import { Editor, NodeEntry, Path, Range, Transforms } from 'slate';
+import { Editor, type NodeEntry, Path, Range, Transforms } from 'slate';
 import {
-  RenderElementProps,
+  type RenderElementProps,
   useEditor,
   useSelected,
   useSlate,

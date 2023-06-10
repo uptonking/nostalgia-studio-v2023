@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import { Range, NodeEntry, Node } from 'slate';
-import { IDomEditor } from '../editor/interface';
-import { IMenuGroup } from '../menus/interface';
+import { type Range, type NodeEntry, type Node } from 'slate';
+import { type IDomEditor } from '../editor/interface';
+import { type IMenuGroup } from '../menus/interface';
 
 interface IHoverbarConf {
   // key 即 element type

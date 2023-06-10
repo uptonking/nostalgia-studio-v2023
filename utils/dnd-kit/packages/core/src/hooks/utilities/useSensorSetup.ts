@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { canUseDOM } from '@dnd-kit/utilities';
 
-import type { SensorDescriptor } from '../../sensors';
+import { type SensorDescriptor } from '../../sensors';
 
 /**
  * call sensor.setup(), only valid for TouchSensor

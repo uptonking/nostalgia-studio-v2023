@@ -30,10 +30,10 @@ import {
   Unlink as UnlinkIcon,
   Upload as UploadIcon,
 } from '@icon-park/react';
-import type { Icon } from '@icon-park/react/lib/runtime';
+import { type Icon } from '@icon-park/react/lib/runtime';
 
 import { ListVariants } from '../../../src/plugins/list/utils';
-import type { TextFormats } from '../../../src/plugins/marks/types';
+import { type TextFormats } from '../../../src/plugins/marks/types';
 
 export type ActionButtonType = {
   type: 'button';

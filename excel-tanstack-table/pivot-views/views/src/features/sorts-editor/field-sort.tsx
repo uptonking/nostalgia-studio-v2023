@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import type { Field, ISortDirection, ISortSchema } from '@datalking/pivot-core';
+import {
+  type Field,
+  type ISortDirection,
+  type ISortSchema,
+} from '@datalking/pivot-core';
 import {
   ActionIcon,
   Group,

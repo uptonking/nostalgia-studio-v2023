@@ -1,7 +1,7 @@
-import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-event';
+import { type Editor } from '../editor';
+import { type EditorChangeEvent } from '../editor-event';
 import { h } from '../rendering/vdom';
-import { LineData, LineType } from '../typesetting';
+import { type LineData, type LineType } from '../typesetting';
 
 const TableType: LineType = {
   name: 'table',

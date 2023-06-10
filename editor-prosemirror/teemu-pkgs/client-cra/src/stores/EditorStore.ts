@@ -1,6 +1,6 @@
-import { EditorContext } from '@example/full-v2';
-import { EditorStateJSON } from '@example/types';
-import { PMDoc } from '../types/document';
+import { type EditorContext } from '@example/full-v2';
+import { type EditorStateJSON } from '@example/types';
+import { type PMDoc } from '../types/document';
 
 export class EditorStore {
   editorCtx?: EditorContext;

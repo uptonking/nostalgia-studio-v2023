@@ -1,18 +1,18 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 
-import { EditorActions } from '../../EditorActions';
-import { EventDispatcher } from '../../utils/event-dispatcher';
-import { ProviderFactory } from '../../provider-factory';
+import { type EditorActions } from '../../EditorActions';
+import { type EventDispatcher } from '../../utils/event-dispatcher';
+import { type ProviderFactory } from '../../provider-factory';
 
 import PluginSlot from '../PluginSlot';
 import { Toolbar } from './Toolbar';
 
 import {
-  EditorAppearance,
-  ToolbarUIComponentFactory,
-  UIComponentFactory,
+  type EditorAppearance,
+  type ToolbarUIComponentFactory,
+  type UIComponentFactory,
 } from '../../types';
 
 interface IProps {

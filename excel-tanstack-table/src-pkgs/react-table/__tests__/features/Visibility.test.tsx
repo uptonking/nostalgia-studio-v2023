@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 import {
   useReactTable,
   getCoreRowModel,
-  ColumnDef,
+  type ColumnDef,
   flexRender,
 } from '@tanstack/react-table';
 

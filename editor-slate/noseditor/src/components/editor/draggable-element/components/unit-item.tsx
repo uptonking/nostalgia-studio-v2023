@@ -2,12 +2,12 @@ import React, { Fragment, memo } from 'react';
 
 import cx from 'clsx';
 import { isIOS } from 'react-device-detect';
-import { Element, Node } from 'slate';
+import { type Element, Node } from 'slate';
 import { useSlateStatic } from 'slate-react';
 
-import type { DraggableSyntheticListeners } from '@dnd-kit/core';
-import { useSortable } from '@dnd-kit/sortable';
-import { Transform } from '@dnd-kit/utilities';
+import { type DraggableSyntheticListeners } from '@dnd-kit/core';
+import { type useSortable } from '@dnd-kit/sortable';
+import { type Transform } from '@dnd-kit/utilities';
 
 import { DraggableCollapsibleEditor } from '../../../../plugins';
 import { isHeadingElement } from '../../../../plugins/heading/utils';

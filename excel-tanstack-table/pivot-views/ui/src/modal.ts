@@ -1,4 +1,4 @@
-import type { MantineTheme } from '@mantine/core';
+import { type MantineTheme } from '@mantine/core';
 
 export { Modal } from '@mantine/core';
 export {

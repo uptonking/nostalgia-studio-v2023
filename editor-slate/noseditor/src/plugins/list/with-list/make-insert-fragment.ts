@@ -1,4 +1,4 @@
-import { Editor, Node } from 'slate';
+import { Editor, type Node } from 'slate';
 
 import {
   DraggableCollapsibleEditor,

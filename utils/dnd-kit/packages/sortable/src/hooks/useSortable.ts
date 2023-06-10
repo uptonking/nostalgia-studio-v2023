@@ -1,16 +1,20 @@
 import { useContext, useEffect, useMemo, useRef } from 'react';
 
-import type { Data } from '@dnd-kit/core';
+import { type Data } from '@dnd-kit/core';
 import {
   useDraggable,
-  UseDraggableArguments,
+  type UseDraggableArguments,
   useDroppable,
-  UseDroppableArguments,
+  type UseDroppableArguments,
 } from '@dnd-kit/core';
 import { CSS, isKeyboardEvent, useCombinedRefs } from '@dnd-kit/utilities';
 
 import { Context } from '../components';
-import type { Disabled, SortableData, SortingStrategy } from '../types';
+import {
+  type Disabled,
+  type SortableData,
+  type SortingStrategy,
+} from '../types';
 import { isValidIndex } from '../utilities';
 import {
   defaultAnimateLayoutChanges,
@@ -20,10 +24,10 @@ import {
   disabledTransition,
   transitionProperty,
 } from './defaults';
-import type {
-  AnimateLayoutChanges,
-  NewIndexGetter,
-  SortableTransition,
+import {
+  type AnimateLayoutChanges,
+  type NewIndexGetter,
+  type SortableTransition,
 } from './types';
 import { useDerivedTransform } from './utilities';
 

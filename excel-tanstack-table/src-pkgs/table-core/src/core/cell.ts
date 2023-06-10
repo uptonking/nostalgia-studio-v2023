@@ -1,4 +1,10 @@
-import type { Cell, Column, Row, RowData, Table } from '../types';
+import {
+  type Cell,
+  type Column,
+  type Row,
+  type RowData,
+  type Table,
+} from '../types';
 import { type Getter, memo } from '../utils';
 
 export interface CellContext<TData extends RowData, TValue> {

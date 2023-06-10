@@ -1,7 +1,7 @@
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetFieldVisibilityCommandInput } from './set-field-visibility.command.interface';
+import { type ISetFieldVisibilityCommandInput } from './set-field-visibility.command.interface';
 
 export class SetFieldVisibilityCommand
   extends Command

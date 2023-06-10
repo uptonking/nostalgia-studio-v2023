@@ -2,8 +2,8 @@ import React from 'react';
 
 import { t } from 'i18next';
 
-import type { Field } from '@datalking/pivot-core';
-import type { ActionIconProps } from '@datalking/pivot-ui';
+import { type Field } from '@datalking/pivot-core';
+import { type ActionIconProps } from '@datalking/pivot-ui';
 import {
   ActionIcon,
   IconExclamationCircle,

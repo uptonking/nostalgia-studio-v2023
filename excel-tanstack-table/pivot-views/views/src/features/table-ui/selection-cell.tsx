@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Box, Center, Checkbox, Text, useHover } from '@datalking/pivot-ui';
-import type { Row } from '@tanstack/react-table';
+import { type Row } from '@tanstack/react-table';
 
-import type { TData } from './interface';
+import { type TData } from './interface';
 import { usePinnedStyles } from './styles';
 
 export const SelectionCell: React.FC<{ row: Row<TData> }> = ({ row }) => {

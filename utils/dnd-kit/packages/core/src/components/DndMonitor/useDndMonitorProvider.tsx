@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import type { DndMonitorEvent, DndMonitorListener } from './types';
+import { type DndMonitorEvent, type DndMonitorListener } from './types';
 
 /** simple event-emitter */
 export function useDndMonitorProvider() {

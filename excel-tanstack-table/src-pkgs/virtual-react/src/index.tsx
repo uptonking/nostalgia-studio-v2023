@@ -6,9 +6,9 @@ import {
   observeElementRect,
   observeWindowOffset,
   observeWindowRect,
-  PartialKeys,
+  type PartialKeys,
   Virtualizer,
-  VirtualizerOptions,
+  type VirtualizerOptions,
   windowScroll,
 } from '@tanstack/virtual-core';
 

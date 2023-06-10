@@ -1,14 +1,14 @@
 import {
   convertFilterSpec,
-  IRecordQueryModel,
-  ITableRepository,
+  type IRecordQueryModel,
+  type ITableRepository,
   ViewId,
   WithRecordTableId,
 } from '@datalking/pivot-core';
-import type { IQueryHandler } from '@datalking/pivot-entity';
+import { type IQueryHandler } from '@datalking/pivot-entity';
 
-import type { GetRecordsQuery } from './get-records.query';
-import type { IGetRecordsOutput } from './get-records.query.interface';
+import { type GetRecordsQuery } from './get-records.query';
+import { type IGetRecordsOutput } from './get-records.query.interface';
 
 export class GetRecordsQueryHandler
   implements IQueryHandler<GetRecordsQuery, IGetRecordsOutput>

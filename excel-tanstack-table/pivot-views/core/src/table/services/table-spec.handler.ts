@@ -1,6 +1,6 @@
-import type { TableCompositeSpecificaiton } from '../specifications/index';
-import type { Table } from '../table';
-import type { ITableRepository } from '../table.repository';
+import { type TableCompositeSpecificaiton } from '../specifications/index';
+import { type Table } from '../table';
+import { type ITableRepository } from '../table.repository';
 import { ForeignTableReferenceHandler } from './foreign-table-reference.handler';
 import { ForeignTableCollector } from './foreign-table.collector';
 

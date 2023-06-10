@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 
-import type { DocVisibility } from '@example/types';
+import { type DocVisibility } from '@example/types';
 
 interface StoredData {
   editedDocs: [string, EditedDoc][];

@@ -1,12 +1,12 @@
-import type { TouchEvent } from 'react';
+import { type TouchEvent } from 'react';
 
 import {
   AbstractPointerSensor,
-  PointerSensorProps,
-  PointerEventHandlers,
-  PointerSensorOptions,
+  type PointerSensorProps,
+  type PointerEventHandlers,
+  type PointerSensorOptions,
 } from '../pointer';
-import type { SensorProps } from '../types';
+import { type SensorProps } from '../types';
 
 const events: PointerEventHandlers = {
   move: { name: 'touchmove' },

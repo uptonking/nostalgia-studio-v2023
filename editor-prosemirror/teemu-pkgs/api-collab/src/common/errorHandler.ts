@@ -1,7 +1,7 @@
 import { log } from './logger';
-import { Request, Response, NextFunction } from 'express';
+import { type Request, type Response, type NextFunction } from 'express';
 
-import { IError } from './error';
+import { type IError } from './error';
 
 import { config } from './config';
 

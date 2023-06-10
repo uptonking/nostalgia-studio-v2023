@@ -1,6 +1,6 @@
 import Moment from 'react-moment';
 
-import type { Drawing } from '@datalking/pivot-app-shared-lib';
+import { type Drawing } from '@datalking/pivot-app-shared-lib';
 import {
   AttachMoney,
   MonetizationOn,

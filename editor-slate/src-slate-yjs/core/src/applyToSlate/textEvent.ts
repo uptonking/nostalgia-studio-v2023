@@ -1,7 +1,14 @@
-import { Editor, Element, Node, Operation, Path, Text } from 'slate';
+import {
+  type Editor,
+  type Element,
+  Node,
+  type Operation,
+  Path,
+  Text,
+} from 'slate';
 import * as Y from 'yjs';
 
-import { Delta } from '../model/types';
+import { type Delta } from '../model/types';
 import { deltaInsertToSlateNode } from '../utils/convert';
 import {
   getSlateNodeYLength,

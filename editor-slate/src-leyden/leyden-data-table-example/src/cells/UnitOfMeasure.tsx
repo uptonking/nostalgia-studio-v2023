@@ -1,4 +1,4 @@
-import { CellRenderer } from 'leyden-react';
+import { type CellRenderer } from 'leyden-react';
 import React from 'react';
 
 import { UOMString } from '../types';

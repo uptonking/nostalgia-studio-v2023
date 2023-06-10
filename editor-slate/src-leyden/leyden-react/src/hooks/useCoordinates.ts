@@ -1,6 +1,6 @@
 import { Coordinates, LeydenEditor } from 'leyden';
 import { useEffect, useState } from 'react';
-import { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
 import { useLeydenStatic } from './useLeydenStatic';
 import { ReactEditor } from '../plugin/ReactEditor';

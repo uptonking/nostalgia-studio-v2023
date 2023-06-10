@@ -1,6 +1,11 @@
-import ee from 'event-emitter';
-import { BaseEditor, Descendant, Element, Path } from 'slate';
-import { ReactEditor } from 'slate-react';
+import type ee from 'event-emitter';
+import {
+  type BaseEditor,
+  type Descendant,
+  type Element,
+  type Path,
+} from 'slate';
+import { type ReactEditor } from 'slate-react';
 
 export type TableCellElement = {
   type: 'tableCell';

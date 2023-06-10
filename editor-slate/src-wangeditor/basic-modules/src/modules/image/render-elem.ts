@@ -4,13 +4,13 @@
  */
 
 import throttle from 'lodash.throttle';
-import { Element as SlateElement, Transforms } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import { type Element as SlateElement, Transforms } from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
-import { DomEditor, IDomEditor } from '@wangeditor/core';
+import { DomEditor, type IDomEditor } from '@wangeditor/core';
 
-import $, { Dom7Array } from '../../utils/dom';
-import { ImageElement } from './custom-types';
+import $, { type Dom7Array } from '../../utils/dom';
+import { type ImageElement } from './custom-types';
 
 interface IImageSize {
   width?: string;

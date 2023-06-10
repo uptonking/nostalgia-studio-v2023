@@ -9,7 +9,7 @@ import {
   size,
   arrow,
   detectOverflow,
-  Middleware,
+  type Middleware,
 } from '.';
 
 // @ts-expect-error

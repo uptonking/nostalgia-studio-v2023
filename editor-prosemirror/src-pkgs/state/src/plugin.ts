@@ -1,6 +1,6 @@
 import { type EditorView, type EditorProps } from 'prosemirror-view';
-import { EditorState, EditorStateConfig } from './state';
-import { Transaction } from './transaction';
+import { type EditorState, type EditorStateConfig } from './state';
+import { type Transaction } from './transaction';
 
 /** This is the type passed to the [`Plugin`](#state.Plugin)
  * constructor. It provides a definition for a plugin.

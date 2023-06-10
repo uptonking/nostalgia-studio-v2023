@@ -1,7 +1,7 @@
-import { Editor, Element, Location, Path, Range, Transforms } from 'slate';
+import { type Editor, Element, Location, Path, Range, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import type { ImageElement } from './types';
+import { type ImageElement } from './types';
 import { createImageNode } from './utils';
 
 export const insertImage = (editor: Editor, url: string) => {

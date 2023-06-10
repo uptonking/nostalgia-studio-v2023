@@ -1,5 +1,5 @@
 import { readFileSync, writeFile } from 'node:fs';
-import { Mapping, Step } from 'prosemirror-transform';
+import { Mapping, type Step } from 'prosemirror-transform';
 import { type Node } from 'prosemirror-model';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
@@ -7,7 +7,7 @@ import { dirname } from 'node:path';
 import { Comment, Comments } from './comments';
 import { populateDefaultInstances } from './defaultinstances';
 import { schema } from './schema';
-import type { Waiting } from './server';
+import { type Waiting } from './server';
 
 /** max steps/operations on server */
 const MAX_STEP_HISTORY = 10000;

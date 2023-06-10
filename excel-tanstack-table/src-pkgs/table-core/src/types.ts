@@ -1,85 +1,89 @@
-import type { CellContext, CoreCell } from './core/cell';
-import type { CoreColumn } from './core/column';
-import type {
-  CoreHeader,
-  CoreHeaderGroup,
-  HeaderContext,
-  HeadersInstance,
+import { type CellContext, type CoreCell } from './core/cell';
+import { type CoreColumn } from './core/column';
+import {
+  type CoreHeader,
+  type CoreHeaderGroup,
+  type HeaderContext,
+  type HeadersInstance,
 } from './core/headers';
-import type { CoreRow } from './core/row';
-import type { CoreInstance, CoreOptions, CoreTableState } from './core/table';
-import type {
-  ColumnSizingColumn,
-  ColumnSizingColumnDef,
-  ColumnSizingHeader,
-  ColumnSizingInstance,
-  ColumnSizingOptions,
-  ColumnSizingTableState,
+import { type CoreRow } from './core/row';
+import {
+  type CoreInstance,
+  type CoreOptions,
+  type CoreTableState,
+} from './core/table';
+import {
+  type ColumnSizingColumn,
+  type ColumnSizingColumnDef,
+  type ColumnSizingHeader,
+  type ColumnSizingInstance,
+  type ColumnSizingOptions,
+  type ColumnSizingTableState,
 } from './features/ColumnSizing';
-import type {
-  ExpandedInstance,
-  ExpandedOptions,
-  ExpandedRow,
-  ExpandedTableState,
+import {
+  type ExpandedInstance,
+  type ExpandedOptions,
+  type ExpandedRow,
+  type ExpandedTableState,
 } from './features/Expanding';
-import type {
-  FiltersColumn,
-  FiltersColumnDef,
-  FiltersInstance,
-  FiltersOptions,
-  FiltersRow,
-  FiltersTableState,
+import {
+  type FiltersColumn,
+  type FiltersColumnDef,
+  type FiltersInstance,
+  type FiltersOptions,
+  type FiltersRow,
+  type FiltersTableState,
 } from './features/Filters';
-import type {
-  GroupingCell,
-  GroupingColumn,
-  GroupingColumnDef,
-  GroupingInstance,
-  GroupingOptions,
-  GroupingRow,
-  GroupingTableState,
+import {
+  type GroupingCell,
+  type GroupingColumn,
+  type GroupingColumnDef,
+  type GroupingInstance,
+  type GroupingOptions,
+  type GroupingRow,
+  type GroupingTableState,
 } from './features/Grouping';
-import type {
-  ColumnOrderInstance,
-  ColumnOrderOptions,
-  ColumnOrderTableState,
+import {
+  type ColumnOrderInstance,
+  type ColumnOrderOptions,
+  type ColumnOrderTableState,
 } from './features/Ordering';
-import type {
-  PaginationInitialTableState,
-  PaginationInstance,
-  PaginationOptions,
-  PaginationTableState,
+import {
+  type PaginationInitialTableState,
+  type PaginationInstance,
+  type PaginationOptions,
+  type PaginationTableState,
 } from './features/Pagination';
-import type {
-  ColumnPinningColumn,
-  ColumnPinningColumnDef,
-  ColumnPinningInstance,
-  ColumnPinningOptions,
-  ColumnPinningRow,
-  ColumnPinningTableState,
+import {
+  type ColumnPinningColumn,
+  type ColumnPinningColumnDef,
+  type ColumnPinningInstance,
+  type ColumnPinningOptions,
+  type ColumnPinningRow,
+  type ColumnPinningTableState,
 } from './features/Pinning';
-import type {
-  RowSelectionInstance,
-  RowSelectionOptions,
-  RowSelectionRow,
-  RowSelectionTableState,
+import {
+  type RowSelectionInstance,
+  type RowSelectionOptions,
+  type RowSelectionRow,
+  type RowSelectionTableState,
 } from './features/RowSelection';
-import type {
-  SortingColumn,
-  SortingColumnDef,
-  SortingInstance,
-  SortingOptions,
-  SortingTableState,
+import {
+  type SortingColumn,
+  type SortingColumnDef,
+  type SortingInstance,
+  type SortingOptions,
+  type SortingTableState,
 } from './features/Sorting';
-import type {
-  VisibilityColumn as ColumnVisibilityColumn,
-  VisibilityColumnDef,
-  VisibilityInstance,
-  VisibilityOptions,
-  VisibilityRow,
-  VisibilityTableState,
+import {
+  type VisibilityColumn as ColumnVisibilityColumn,
+  type VisibilityColumnDef,
+  type VisibilityInstance,
+  type VisibilityOptions,
+  type VisibilityRow,
+  type VisibilityTableState,
 } from './features/Visibility';
-import type { PartialKeys, UnionToIntersection } from './utils';
+import { type PartialKeys, type UnionToIntersection } from './utils';
 
 export interface TableMeta<TData extends RowData> {}
 

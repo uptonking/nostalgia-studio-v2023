@@ -1,16 +1,16 @@
-import { Schema } from 'prosemirror-model';
-import { Plugin } from 'prosemirror-state';
+import { type Schema } from 'prosemirror-model';
+import { type Plugin } from 'prosemirror-state';
 
 import {
   createInputRule,
   instrumentedInputRule,
   leafNodeReplacementCharacter,
 } from '../../../utils/input-rules';
-import { TypeAheadHandler } from '../types';
+import { type TypeAheadHandler } from '../types';
 
 import {
   pluginKey as typeAheadPluginKey,
-  PluginState as TypeAheadPluginState,
+  type PluginState as TypeAheadPluginState,
 } from './main';
 
 // We cannot set a proper plugin key on input rule plugins, so instead, once

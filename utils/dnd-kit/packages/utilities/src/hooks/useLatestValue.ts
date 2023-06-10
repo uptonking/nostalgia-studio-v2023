@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import type { DependencyList } from 'react';
+import { type DependencyList } from 'react';
 
 import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect';
 

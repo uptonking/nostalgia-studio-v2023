@@ -1,6 +1,6 @@
 import createGridComponent, {
-  Props,
-  ScrollToAlign,
+  type Props,
+  type ScrollToAlign,
 } from './createGridComponent';
 
 const DEFAULT_ESTIMATED_ITEM_SIZE = 50;

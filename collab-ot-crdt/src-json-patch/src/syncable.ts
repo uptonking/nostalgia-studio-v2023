@@ -1,8 +1,8 @@
 import { inc } from 'alphacounter';
 
 import { applyPatch } from './applyPatch';
-import { JSONPatch } from './jsonPatch';
-import { JSONPatchOp } from './types';
+import { type JSONPatch } from './jsonPatch';
+import { type JSONPatchOp } from './types';
 import { isArrayPath, toKeys } from './utils';
 
 export type Subscriber<T> = (

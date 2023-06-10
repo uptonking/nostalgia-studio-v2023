@@ -3,11 +3,15 @@
  * @author wangfupeng
  */
 
-import { h, VNode } from 'snabbdom';
-import { IDomEditor } from '../editor/interface';
-import TextArea from './TextArea';
+import { h, type VNode } from 'snabbdom';
+import { type IDomEditor } from '../editor/interface';
+import type TextArea from './TextArea';
 import { genPatchFn, normalizeVnodeData } from '../utils/vdom';
-import $, { Dom7Array, getDefaultView, getElementById } from '../utils/dom';
+import $, {
+  type Dom7Array,
+  getDefaultView,
+  getElementById,
+} from '../utils/dom';
 import { node2Vnode } from '../render/node2Vnode';
 import {
   IS_FIRST_PATCH,

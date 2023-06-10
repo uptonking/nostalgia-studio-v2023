@@ -14,8 +14,8 @@ import {
 } from 'prosemirror-test-builder';
 import ist from 'ist';
 import { Selection, NodeSelection } from 'prosemirror-state';
-import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-import { Node as PMNode } from 'prosemirror-model';
+import { Decoration, DecorationSet, type EditorView } from 'prosemirror-view';
+import { type Node as PMNode } from 'prosemirror-model';
 import { tempEditor, findTextNode } from './view';
 
 const img = img_({

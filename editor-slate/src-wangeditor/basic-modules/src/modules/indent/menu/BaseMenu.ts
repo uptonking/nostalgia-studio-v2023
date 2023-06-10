@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { Editor, Node } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor } from '@wangeditor/core';
+import { Editor, type Node } from 'slate';
+import { type IButtonMenu, type IDomEditor, DomEditor } from '@wangeditor/core';
 
 abstract class BaseMenu implements IButtonMenu {
   abstract readonly title: string;

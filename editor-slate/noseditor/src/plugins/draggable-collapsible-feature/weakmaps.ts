@@ -1,6 +1,6 @@
-import type { Element } from 'slate';
+import { type Element } from 'slate';
 
-import type { SemanticNode } from './types';
+import { type SemanticNode } from './types';
 
 /**
  * { slateElement: draggableNode }

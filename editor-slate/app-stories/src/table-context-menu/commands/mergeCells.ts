@@ -1,6 +1,6 @@
 import { Descendant, Editor, Element, Path, Transforms } from 'slate';
 
-import { TableCellElement, TableRowElement } from '../customTypes';
+import { type TableCellElement, type TableRowElement } from '../customTypes';
 import { getCellsSpan, getTableByCellPath, isEmptyCell } from '../utils/common';
 
 /**

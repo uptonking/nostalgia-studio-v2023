@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Editor, Text, Transforms, createEditor } from 'slate';
-import type { BaseEditor, Descendant } from 'slate';
+import { type BaseEditor, type Descendant } from 'slate';
 import { DefaultEditable as Editable, Slate, withReact } from 'slate-react';
-import type { ReactEditor } from 'slate-react';
+import { type ReactEditor } from 'slate-react';
 
 const saveContent = (content: string, key: string = 'editorContent') => {
   localStorage.setItem(key, content);

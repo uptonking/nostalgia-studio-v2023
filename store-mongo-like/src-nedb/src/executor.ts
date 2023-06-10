@@ -1,4 +1,4 @@
-import type { AsyncFunction } from './types/common';
+import { type AsyncFunction } from './types/common';
 import { Waterfall } from './waterfall';
 
 /**

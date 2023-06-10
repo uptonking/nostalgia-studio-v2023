@@ -1,7 +1,7 @@
 import {
   createListComponent,
-  Props,
-  ScrollToAlign,
+  type Props,
+  type ScrollToAlign,
 } from './createListComponent';
 
 const DEFAULT_ESTIMATED_ITEM_SIZE = 50;

@@ -1,6 +1,6 @@
 import { add } from '@dnd-kit/utilities';
 
-import type { Coordinates } from '../../types';
+import { type Coordinates } from '../../types';
 import {
   getScrollCoordinates,
   getScrollXCoordinate,

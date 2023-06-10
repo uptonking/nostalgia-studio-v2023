@@ -3,13 +3,13 @@ import * as React from 'react';
 import { flushSync } from 'react-dom';
 
 import { useEvent } from './hooks/utils/useEvent';
-import type {
-  DetectOverflowOptions,
-  ElementProps,
-  FloatingContext,
-  Middleware,
-  MiddlewareState,
-  SideObject,
+import {
+  type DetectOverflowOptions,
+  type ElementProps,
+  type FloatingContext,
+  type Middleware,
+  type MiddlewareState,
+  type SideObject,
 } from './types';
 import { getUserAgent } from './utils/getPlatform';
 

@@ -1,12 +1,12 @@
 import { Delta, diff, normalizeRange, TextChange } from '@typewriter/document';
 
-import type { Editor } from '../editor';
+import { type Editor } from '../editor';
 import { cleanText, deltaFromDom } from '../rendering/html';
 import { getIndexFromNode } from '../rendering/position';
 import {
   getLineNodeEnd,
   getLineNodeStart,
-  HTMLLineElement,
+  type HTMLLineElement,
 } from '../rendering/rendering';
 import { getEditorSelectionFromHost } from '../rendering/selection';
 import { Source } from '../Source';

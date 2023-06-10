@@ -1,12 +1,16 @@
 import { Editor, Path, Transforms } from 'slate';
 
-import type { TableCellElement, TableElement, TableRowElement } from '../types';
+import {
+  type TableCellElement,
+  type TableElement,
+  type TableRowElement,
+} from '../types';
 import {
   getCellBySelectOrFocus,
   getRange,
   getRealPathByPath,
   getTableByCellPath,
-  rangeType,
+  type rangeType,
 } from '../utils/common';
 
 export function deleteCol(editor: Editor, cellPaths: Path[]) {

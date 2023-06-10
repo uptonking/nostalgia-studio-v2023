@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 
-import { Descendant, Editor, Element, Node } from 'slate';
+import { type Descendant, Editor, Element, Node } from 'slate';
 
 import { FocusedContext } from '../hooks/use-focused';
 import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';

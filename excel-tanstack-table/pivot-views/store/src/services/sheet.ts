@@ -1,13 +1,13 @@
-import type { IQueryTable } from '@datalking/pivot-core';
-import type {
-  ICreateTableInput,
-  ICreateTableOutput,
-  IGetTableOutput,
-  IGetTableQuery,
-  IGetTablesOutput,
-  IGetTablesQuery,
+import { type IQueryTable } from '@datalking/pivot-core';
+import {
+  type ICreateTableInput,
+  type ICreateTableOutput,
+  type IGetTableOutput,
+  type IGetTableQuery,
+  type IGetTablesOutput,
+  type IGetTablesQuery,
 } from '@datalking/pivot-cqrs';
-import type { EntityState } from '@reduxjs/toolkit';
+import { type EntityState } from '@reduxjs/toolkit';
 import { createEntityAdapter } from '@reduxjs/toolkit';
 
 import { mainApi } from './api';

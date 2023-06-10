@@ -1,11 +1,11 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { Table } from '../table';
+import { type Table } from '../table';
 import { TableId } from '../value-objects/index';
-import type { ITableSpecVisitor } from './interface';
+import { type ITableSpecVisitor } from './interface';
 
 export class WithTableId extends CompositeSpecification {
   constructor(public readonly id: TableId) {

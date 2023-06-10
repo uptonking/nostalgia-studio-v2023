@@ -1,7 +1,7 @@
 import { type ITableRepository } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { DeleteViewCommand } from './delete-view.comand';
+import { type DeleteViewCommand } from './delete-view.comand';
 
 export class DeleteViewCommandHandler
   implements ICommandHandler<DeleteViewCommand, void>

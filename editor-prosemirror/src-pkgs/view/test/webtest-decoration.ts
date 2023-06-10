@@ -16,7 +16,13 @@ import {
   StepMap,
   liftTarget,
 } from 'prosemirror-transform';
-import { Schema, Slice, NodeRange, Node, Fragment } from 'prosemirror-model';
+import {
+  Schema,
+  Slice,
+  NodeRange,
+  type Node,
+  Fragment,
+} from 'prosemirror-model';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 
 const widget = document.createElement('button');

@@ -1,8 +1,8 @@
 import { identity } from 'lodash';
 import { mockDeep } from 'vitest-mock-extended';
-import { ClsStore } from '../cls/cls';
+import { type ClsStore } from '../cls/cls';
 import { TableFactory } from './table.factory';
-import { ICreateTableInput_internal } from './table.schema';
+import { type ICreateTableInput_internal } from './table.schema';
 
 describe('TableFactory', () => {
   const ctx = mockDeep<ClsStore>({ t: identity });

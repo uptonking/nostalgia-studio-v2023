@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-  NodeView,
-  EditorView,
-  Decoration,
-  DecorationSource,
+  type NodeView,
+  type EditorView,
+  type Decoration,
+  type DecorationSource,
 } from 'prosemirror-view';
-import { Node as PMNode } from 'prosemirror-model';
+import { type Node as PMNode } from 'prosemirror-model';
 
 import { createListenProps } from './hooks/createListenProps';
 
-import type { EditorContext } from '../core/EditorContext';
+import { type EditorContext } from '../core/EditorContext';
 
 export interface Attrs {
   [key: string]: any;

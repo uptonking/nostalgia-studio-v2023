@@ -4,11 +4,11 @@ import { Option as O } from 'oxide.ts';
 import { ValueObject } from '@datalking/pivot-entity';
 
 import { OptionColor } from './option-color';
-import type { OptionKey } from './option-key.vo';
+import { type OptionKey } from './option-key.vo';
 import { Option } from './option';
-import type {
-  ICreateOptionSchema,
-  ICreateOptionsSchema,
+import {
+  type ICreateOptionSchema,
+  type ICreateOptionsSchema,
 } from './option.schema';
 import { createOptionsSchema } from './option.schema';
 

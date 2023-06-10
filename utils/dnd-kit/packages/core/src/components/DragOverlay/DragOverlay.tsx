@@ -2,16 +2,16 @@ import React, { useContext, useMemo } from 'react';
 
 import { useDndContext } from '../../hooks';
 import { useInitialValue } from '../../hooks/utilities';
-import { applyModifiers, Modifiers } from '../../modifiers';
-import type { ClientRect } from '../../types';
+import { applyModifiers, type Modifiers } from '../../modifiers';
+import { type ClientRect } from '../../types';
 import { ActiveDraggableContext } from '../DndContext';
-import type { PositionedOverlayProps } from './components';
+import { type PositionedOverlayProps } from './components';
 import {
   AnimationManager,
   NullifiedContextProvider,
   PositionedOverlay,
 } from './components';
-import type { DropAnimation } from './hooks';
+import { type DropAnimation } from './hooks';
 import { useDropAnimation, useKey } from './hooks';
 
 export interface Props

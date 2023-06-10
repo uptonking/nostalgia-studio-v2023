@@ -1,7 +1,7 @@
-import type { ITableRepository } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ITableRepository } from '@datalking/pivot-core';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { SetKanbanFieldCommand } from './set-kanban-field.command';
+import { type SetKanbanFieldCommand } from './set-kanban-field.command';
 
 type ISetKanbanFieldCommandHandler = ICommandHandler<
   SetKanbanFieldCommand,

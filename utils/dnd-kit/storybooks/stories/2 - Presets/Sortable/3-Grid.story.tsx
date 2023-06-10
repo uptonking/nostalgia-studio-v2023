@@ -2,7 +2,7 @@ import React from 'react';
 
 import {MeasuringStrategy} from '@dnd-kit/core';
 import {
-  AnimateLayoutChanges,
+  type AnimateLayoutChanges,
   arraySwap,
   defaultAnimateLayoutChanges,
   rectSortingStrategy,
@@ -10,7 +10,7 @@ import {
 } from '@dnd-kit/sortable';
 
 import {GridContainer} from '../../components';
-import {Sortable, SortableProps} from './Sortable';
+import {Sortable, type SortableProps} from './Sortable';
 
 export default {
   title: 'Presets/Sortable/Grid',

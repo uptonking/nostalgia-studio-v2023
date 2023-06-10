@@ -1,8 +1,11 @@
 import dotenv from 'dotenv';
 import os from 'os';
-import { OAS3Definition } from 'swagger-jsdoc';
+import { type OAS3Definition } from 'swagger-jsdoc';
 
-import type { SettingData, SettingType } from '@datalking/pivot-app-shared-lib';
+import {
+  type SettingData,
+  type SettingType,
+} from '@datalking/pivot-app-shared-lib';
 
 import appConfig from '../../config/app.json' assert { type: 'json' };
 import packageJson from '../../package.json' assert { type: 'json' };

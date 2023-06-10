@@ -1,21 +1,21 @@
 import { castArray } from 'lodash-es';
 import { Option } from 'oxide.ts';
-import type { Class } from 'type-fest';
+import { type Class } from 'type-fest';
 import * as z from 'zod';
 
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { ClsStore } from '../../cls/cls';
+import { type ClsStore } from '../../cls/cls';
 import { CreatedAtField } from '../field/created-at-field';
 import { FieldFactory } from '../field/field.factory';
 import { IdField } from '../field/id-field';
-import type {
-  AggregateFieldType,
-  Field,
-  ICreateFieldSchema,
-  IFieldType,
-  LookingFieldTypes,
-  NoneSystemField,
+import {
+  type AggregateFieldType,
+  type Field,
+  type ICreateFieldSchema,
+  type IFieldType,
+  type LookingFieldTypes,
+  type NoneSystemField,
 } from '../field/index';
 import {
   CreatedByField,
@@ -31,8 +31,8 @@ import {
 import { UpdatedAtField } from '../field/updated-at-field';
 import { fieldNameSchema } from '../field/value-objects/field-name.schema';
 import { WithNewField } from '../specifications/table-field.specification';
-import type { ICalendarField } from '../view/calendar/index';
-import type { IKanbanField, ITreeViewField } from '../view/index';
+import { type ICalendarField } from '../view/calendar/index';
+import { type IKanbanField, type ITreeViewField } from '../view/index';
 import { ViewFieldsOrder } from '../view/view-fields-order.vo';
 
 function hasDuplicates(names: string[]): boolean {

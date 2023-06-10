@@ -1,4 +1,4 @@
-import { Drawing } from '@datalking/pivot-app-shared-lib';
+import { type Drawing } from '@datalking/pivot-app-shared-lib';
 import { config } from '../../shared/config';
 
 export function setBrushDefaults(

@@ -1,4 +1,4 @@
-import { HeaderRenderers } from 'leyden-react';
+import { type HeaderRenderers } from 'leyden-react';
 
 import { ColumnHeader } from './ColumnHeader';
 

@@ -1,15 +1,18 @@
 import { z } from 'zod';
 
 import { ColorFieldValue } from './color-field-value';
-import type {
-  ColorFieldType,
-  ICreateColorFieldInput,
-  ICreateColorFieldValue,
+import {
+  type ColorFieldType,
+  type ICreateColorFieldInput,
+  type ICreateColorFieldValue,
 } from './color-field.type';
 import { BaseField } from './field.base';
-import type { IColorField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { IColorFilter, IColorFilterOperator } from './filter/color.filter';
+import { type IColorField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import {
+  type IColorFilter,
+  type IColorFilterOperator,
+} from './filter/color.filter';
 
 export class ColorField extends BaseField<IColorField> {
   type: ColorFieldType = 'color';

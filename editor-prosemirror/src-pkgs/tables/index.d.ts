@@ -6,23 +6,23 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.3
 import {
-  EditorState,
-  Plugin,
-  SelectionRange,
-  Transaction,
-  PluginKey,
+  type EditorState,
+  type Plugin,
+  type SelectionRange,
+  type Transaction,
+  type PluginKey,
   Selection,
 } from 'prosemirror-state';
 import {
-  Node as ProsemirrorNode,
-  NodeSpec,
-  Slice,
-  ResolvedPos,
-  Schema,
-  NodeType,
+  type Node as ProsemirrorNode,
+  type NodeSpec,
+  type Slice,
+  type ResolvedPos,
+  type Schema,
+  type NodeType,
 } from 'prosemirror-model';
-import { Mappable } from 'prosemirror-transform';
-import { EditorView, NodeView } from 'prosemirror-view';
+import { type Mappable } from 'prosemirror-transform';
+import { type EditorView, type NodeView } from 'prosemirror-view';
 
 export interface TableEditingOptions {
   allowTableNodeSelection?: boolean;

@@ -4,7 +4,7 @@ import { CompositeSpecification } from '@datalking/pivot-entity';
 
 import { type Table } from '../table';
 import { TableName } from '../value-objects/index';
-import type { ITableSpecVisitor } from './interface';
+import { type ITableSpecVisitor } from './interface';
 
 export class WithTableName extends CompositeSpecification {
   constructor(public readonly name: TableName) {

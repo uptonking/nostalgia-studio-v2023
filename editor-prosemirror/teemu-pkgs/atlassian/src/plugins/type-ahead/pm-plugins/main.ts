@@ -1,11 +1,11 @@
 import {
-  EditorState,
+  type EditorState,
   Plugin,
   TextSelection,
-  Transaction,
+  type Transaction,
 } from 'prosemirror-state';
 
-import { Dispatch } from '../../../utils/event-dispatcher';
+import { type Dispatch } from '../../../utils/event-dispatcher';
 import { isMarkTypeAllowedInCurrentSelection } from '../../../utils/mark-type';
 import { dismissCommand } from '../commands/dismiss';
 import { insertTypeAheadQuery } from '../commands/insert-query';
@@ -13,13 +13,12 @@ import { itemsListUpdated } from '../commands/items-list-updated';
 import { selectCurrentItem } from '../commands/select-item';
 import { updateQueryCommand } from '../commands/update-query';
 import {
-  TypeAheadHandler,
-  TypeAheadItem,
-  TypeAheadItemsLoader,
+  type TypeAheadHandler,
+  type TypeAheadItem,
+  type TypeAheadItemsLoader,
 } from '../types';
 import { findTypeAheadQuery } from '../utils/find-query-mark';
 import { isQueryActive } from '../utils/is-query-active';
-
 import { ACTIONS } from './actions';
 import { pluginKey } from './plugin-key';
 
@@ -330,6 +329,7 @@ export function defaultActionHandler({
 
   const textContent = nodeBefore.textContent || '';
   const trigger = typeAheadMark.attrs.trigger.replace(
+    // eslint-disable-next-line no-control-regex
     /([^\x00-\xFF]|[\s\n])+/g,
     '',
   );
@@ -342,6 +342,7 @@ export function defaultActionHandler({
   }
 
   const query = textContent
+    // eslint-disable-next-line no-control-regex
     .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
     .replace(trigger, '');
 

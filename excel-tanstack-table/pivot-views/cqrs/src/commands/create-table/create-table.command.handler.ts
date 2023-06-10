@@ -1,14 +1,14 @@
 import {
-  IClsService,
-  ITableRepository,
-  ITableSpecHandler,
+  type IClsService,
+  type ITableRepository,
+  type ITableSpecHandler,
   TableFactory,
   WithTableSchema,
 } from '@datalking/pivot-core';
 import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { CreateTableCommand } from './create-table.command';
-import type { ICreateTableOutput } from './create-table.command.interface';
+import { type CreateTableCommand } from './create-table.command';
+import { type ICreateTableOutput } from './create-table.command.interface';
 
 type ICreateTableCommandHandler = ICommandHandler<
   CreateTableCommand,

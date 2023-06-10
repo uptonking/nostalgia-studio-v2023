@@ -5,9 +5,9 @@ import {
   PaymentElement,
 } from '@stripe/react-stripe-js';
 import {
-  PaymentIntent,
-  PaymentIntentResult,
-  StripePaymentElementOptions,
+  type PaymentIntent,
+  type PaymentIntentResult,
+  type StripePaymentElementOptions,
 } from '@stripe/stripe-js';
 import { useAppDispatch, useAppSelector } from '../../shared/store';
 import {

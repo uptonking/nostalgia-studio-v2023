@@ -1,5 +1,5 @@
-import { TextOperation } from 'slate';
-import { OpMapper } from '../types';
+import { type TextOperation } from 'slate';
+import { type OpMapper } from '../types';
 import { insertText } from './insertText';
 import { removeText } from './removeText';
 

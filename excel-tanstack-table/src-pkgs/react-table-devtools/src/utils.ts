@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Theme, useTheme } from './theme';
+import { type Theme, useTheme } from './theme';
 import useMediaQuery from './useMediaQuery';
 
 export const isServer = typeof window === 'undefined';

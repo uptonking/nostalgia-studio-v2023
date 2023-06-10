@@ -5,10 +5,10 @@
 
 import { Editor, Transforms, Range } from 'slate';
 import { DomEditor } from '../../editor/dom-editor';
-import { IDomEditor } from '../../editor/interface';
-import TextArea from '../TextArea';
+import { type IDomEditor } from '../../editor/interface';
+import type TextArea from '../TextArea';
 import { hasEditableTarget } from '../helpers';
-import { DOMStaticRange } from '../../utils/dom';
+import { type DOMStaticRange } from '../../utils/dom';
 import { HAS_BEFORE_INPUT_SUPPORT } from '../../utils/ua';
 import { EDITOR_TO_CAN_PASTE } from '../../utils/weak-maps';
 

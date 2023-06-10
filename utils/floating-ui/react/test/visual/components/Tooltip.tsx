@@ -4,7 +4,7 @@ import {
   FloatingDelayGroup,
   FloatingPortal,
   offset,
-  Placement,
+  type Placement,
   shift,
   useDelayGroup,
   useDelayGroupContext,

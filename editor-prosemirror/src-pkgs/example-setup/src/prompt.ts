@@ -1,4 +1,4 @@
-import { Attrs } from 'prosemirror-model';
+import { type Attrs } from 'prosemirror-model';
 
 const prefix = 'ProseMirror-prompt';
 

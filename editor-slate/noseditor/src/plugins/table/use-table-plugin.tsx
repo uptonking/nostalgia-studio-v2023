@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { CreateNosPluginType } from '../types';
+import { type CreateNosPluginType } from '../types';
 import { CustomTable, CustomTableCell, CustomTableRow } from './components';
 import * as handlers from './handlers';
 import {

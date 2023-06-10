@@ -1,5 +1,8 @@
-import { ExtendableTypeIsExtended, ExtendedType } from './CustomTypes';
-import { Distribute } from '../utils/types';
+import {
+  type ExtendableTypeIsExtended,
+  type ExtendedType,
+} from './CustomTypes';
+import { type Distribute } from '../utils/types';
 
 export type ExtraValidators = ExtendedType<'Validator'>;
 export type ValidatorIsExtended = ExtendableTypeIsExtended<'Validator'>;

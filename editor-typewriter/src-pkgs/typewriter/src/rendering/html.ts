@@ -1,15 +1,15 @@
 import {
   Delta,
-  EditorRange,
+  type EditorRange,
   lineUtils,
   TextDocument,
 } from '@typewriter/document';
 
-import type { Editor } from '../editor';
-import { HTMLLineElement, renderInline } from '../rendering/rendering';
+import { type Editor } from '../editor';
+import { type HTMLLineElement, renderInline } from '../rendering/rendering';
 import { escapeHtml } from './escape-html';
 import { renderDoc } from './rendering';
-import { VChild } from './vdom';
+import { type VChild } from './vdom';
 import { createTreeWalker } from './walker';
 
 // A list of bad characters that we don't want coming in from pasted content (e.g. "\f" aka line feed)

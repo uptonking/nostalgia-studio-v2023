@@ -18,12 +18,12 @@ import {
   Menu,
   useClipboard,
 } from '@datalking/pivot-ui';
-import type { Table } from '@tanstack/react-table';
+import { type Table } from '@tanstack/react-table';
 
 import { ACTIONS_FIELD } from '../../constants/field.constants';
 import { confirmModal } from '../../hooks';
 import { useCurrentTable } from '../../hooks/use-current-table';
-import type { TData, TRow } from './interface';
+import { type TData, type TRow } from './interface';
 
 export const ActionsCell: React.FC<{ row: TRow; table: Table<TData> }> = ({
   row,

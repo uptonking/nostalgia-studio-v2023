@@ -1,4 +1,4 @@
-import { CreateNosPluginType } from '../types';
+import { type CreateNosPluginType } from '../types';
 import { withTrailingLine } from './with-trailing-line';
 
 export const useTrailingLinePlugin: CreateNosPluginType = () => {

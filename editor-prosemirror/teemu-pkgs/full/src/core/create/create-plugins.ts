@@ -1,10 +1,10 @@
-import { MarkSpec } from 'prosemirror-model';
-import { Plugin } from 'prosemirror-state';
+import { type MarkSpec } from 'prosemirror-model';
+import { type Plugin } from 'prosemirror-state';
 import {
-  EditorConfig,
-  EditorPlugin,
-  PluginsOptions,
-  PMPluginCreateConfig,
+  type EditorConfig,
+  type EditorPlugin,
+  type PluginsOptions,
+  type PMPluginCreateConfig,
 } from '../types';
 import { sortByOrder } from './ranks';
 

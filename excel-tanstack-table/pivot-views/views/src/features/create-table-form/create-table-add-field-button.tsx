@@ -4,7 +4,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { FieldId } from '@datalking/pivot-core';
-import type { ICreateTableInput } from '@datalking/pivot-cqrs';
+import { type ICreateTableInput } from '@datalking/pivot-cqrs';
 import { Button, IconPlus } from '@datalking/pivot-ui';
 
 export const CreateTableAddFieldButton: React.FC = () => {

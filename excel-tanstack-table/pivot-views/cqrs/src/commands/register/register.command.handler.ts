@@ -1,15 +1,15 @@
 import {
-  IUserRepository,
+  type IUserRepository,
   UserFactory,
   WithUserEmail,
   WithUserId,
   WithUsername,
   WithUserPassword,
 } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import { IRegisterCommandOutput } from './register.command.interface';
-import type { RegisterCommand } from './register.command';
+import { type IRegisterCommandOutput } from './register.command.interface';
+import { type RegisterCommand } from './register.command';
 
 type IRegisterCommandHandler = ICommandHandler<
   RegisterCommand,

@@ -1,4 +1,4 @@
-import type { TextAtom } from './type';
+import { type TextAtom } from './type';
 import {
   compareItems,
   genRandomIntExclusive,

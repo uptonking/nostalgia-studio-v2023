@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { Connection, sortEntities } from 'src/shared/db';
-import { ModelStatic, Model } from 'sequelize';
+import { type ModelStatic, type Model } from 'sequelize';
 import { v4 as uuid } from 'uuid';
 import createBackendApp from 'src/app';
 import {

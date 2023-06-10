@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import type { OpLogEntry, Settings } from '../types/main';
+import { type OpLogEntry, type Settings } from '../types/main';
 import { HLTime } from './HLTime';
 
 export { v4 as uuid } from 'uuid';

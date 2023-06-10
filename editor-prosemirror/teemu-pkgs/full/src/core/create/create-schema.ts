@@ -1,8 +1,8 @@
-import { MarkSpec, NodeSpec, Schema } from 'prosemirror-model';
+import { type MarkSpec, type NodeSpec, Schema } from 'prosemirror-model';
 
 import { sortByOrder } from './ranks';
 import { fixExcludes } from './create-plugins';
-import { MarkConfig, NodeConfig } from '../types';
+import { type MarkConfig, type NodeConfig } from '../types';
 
 export function createSchema(editorConfig: {
   marks: MarkConfig[];

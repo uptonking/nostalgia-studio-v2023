@@ -1,6 +1,12 @@
-import type { RowModel } from '..';
-import type { TableFeature } from '../core/table';
-import type { OnChangeFn, Row, RowData, Table, Updater } from '../types';
+import { type RowModel } from '..';
+import { type TableFeature } from '../core/table';
+import {
+  type OnChangeFn,
+  type Row,
+  type RowData,
+  type Table,
+  type Updater,
+} from '../types';
 import { makeStateUpdater } from '../utils';
 
 export type ExpandedStateList = Record<string, boolean>;

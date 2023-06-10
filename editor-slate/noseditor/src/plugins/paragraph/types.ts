@@ -1,6 +1,6 @@
-import { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
-import type { TextAlignValueType } from '../../utils';
+import { type TextAlignValueType } from '../../utils';
 
 export type ParagraphType = 'p';
 

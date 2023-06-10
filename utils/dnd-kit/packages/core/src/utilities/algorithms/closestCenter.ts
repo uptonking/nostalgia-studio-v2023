@@ -1,7 +1,7 @@
 import { distanceBetween } from '../coordinates';
-import type { Coordinates, ClientRect } from '../../types';
+import { type Coordinates, type ClientRect } from '../../types';
 
-import type { CollisionDescriptor, CollisionDetection } from './types';
+import { type CollisionDescriptor, type CollisionDetection } from './types';
 import { sortCollisionsAsc } from './helpers';
 
 /**

@@ -6,7 +6,7 @@ import {
   inner,
   offset,
   shift,
-  SideObject,
+  type SideObject,
   size,
   useClick,
   useDismiss,

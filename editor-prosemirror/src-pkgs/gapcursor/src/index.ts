@@ -1,13 +1,13 @@
 import { keydownHandler } from 'prosemirror-keymap';
 import { Fragment, Slice } from 'prosemirror-model';
 import {
-  Command,
-  EditorState,
+  type Command,
+  type EditorState,
   NodeSelection,
   Plugin,
   TextSelection,
 } from 'prosemirror-state';
-import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+import { Decoration, DecorationSet, type EditorView } from 'prosemirror-view';
 
 import { GapCursor } from './gapcursor';
 

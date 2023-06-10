@@ -1,10 +1,10 @@
-import { BaseEditor, Descendant, Editor, Element } from 'slate';
+import { type BaseEditor, type Descendant, Editor, Element } from 'slate';
 
 import { isDefined, isNullOrUndefined } from '../../utils';
-import type {
-  CollapsibleElement,
-  NestableElement,
-  SemanticNode,
+import {
+  type CollapsibleElement,
+  type NestableElement,
+  type SemanticNode,
 } from './types';
 import { crawlChildren } from './utils';
 import { ELEMENT_TO_SEMANTIC_PATH } from './weakmaps';

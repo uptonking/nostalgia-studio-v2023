@@ -1,4 +1,4 @@
-import express from 'express';
+import type express from 'express';
 
 const { CLIENT_ID, APP_SECRET } = process['env'];
 const base = 'https://api-m.sandbox.paypal.com';

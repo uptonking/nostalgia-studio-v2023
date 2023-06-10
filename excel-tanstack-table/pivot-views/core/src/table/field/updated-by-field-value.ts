@@ -1,8 +1,8 @@
 import { FieldValueBase } from './field-value.base';
-import type { IFieldValueVisitor } from './field-value.visitor';
-import type {
-  IUpdatedByFieldQueryValue,
-  IUpdatedByFieldValue,
+import { type IFieldValueVisitor } from './field-value.visitor';
+import {
+  type IUpdatedByFieldQueryValue,
+  type IUpdatedByFieldValue,
 } from './updated-by-field.type';
 
 export class UpdatedByFieldValue extends FieldValueBase<IUpdatedByFieldValue> {

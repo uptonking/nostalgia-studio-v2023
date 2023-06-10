@@ -1,10 +1,10 @@
 import {
-  Descendant,
+  type Descendant,
   Editor,
   Element,
   Node,
-  NodeEntry,
-  Operation,
+  type NodeEntry,
+  type Operation,
   Path,
   PathRef,
   PointRef,
@@ -13,7 +13,7 @@ import {
   Text,
   Transforms,
 } from '.';
-import { TextUnit } from './interfaces/types';
+import { type TextUnit } from './interfaces/types';
 import { DIRTY_PATH_KEYS, DIRTY_PATHS, FLUSHING } from './utils/weak-maps';
 
 /**

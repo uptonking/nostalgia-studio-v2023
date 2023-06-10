@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { pickBy } from 'lodash-es';
-import type { FieldPath } from 'react-hook-form';
+import { type FieldPath } from 'react-hook-form';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import type { IMutateRecordValueSchema } from '@datalking/pivot-core';
-import type { ICreateRecordInput } from '@datalking/pivot-cqrs';
+import { type IMutateRecordValueSchema } from '@datalking/pivot-core';
+import { type ICreateRecordInput } from '@datalking/pivot-cqrs';
 import { useCreateRecordMutation } from '@datalking/pivot-store';
 import {
   Alert,

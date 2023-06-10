@@ -4,9 +4,14 @@
  */
 
 import { Transforms } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
+import {
+  type IButtonMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
 import { DIVIDER_SVG } from '../../../constants/icon-svg';
-import { DividerElement } from '../custom-types';
+import { type DividerElement } from '../custom-types';
 
 class InsertDividerMenu implements IButtonMenu {
   readonly title = t('divider.title');

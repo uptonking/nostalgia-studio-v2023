@@ -3,8 +3,8 @@ import {
   getScrollableAncestors,
   getFirstCollision,
   KeyboardCode,
-  DroppableContainer,
-  KeyboardCoordinateGetter,
+  type DroppableContainer,
+  type KeyboardCoordinateGetter,
 } from '@dnd-kit/core';
 import { subtract } from '@dnd-kit/utilities';
 

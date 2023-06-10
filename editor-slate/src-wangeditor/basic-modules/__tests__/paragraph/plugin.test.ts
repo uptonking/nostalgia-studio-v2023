@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { Editor, Transforms, Point } from 'slate';
-import { DomEditor, IDomEditor } from '@wangeditor/core';
+import { Editor, Transforms, type Point } from 'slate';
+import { DomEditor, type IDomEditor } from '@wangeditor/core';
 import createEditor from '../../../../tests/utils/create-editor';
 import withParagraph from '../../src/modules/paragraph/plugin';
 

@@ -1,4 +1,4 @@
-import { ContentMatch, Node } from 'prosemirror-model';
+import { ContentMatch, type Node } from 'prosemirror-model';
 import {
   schema,
   eq,

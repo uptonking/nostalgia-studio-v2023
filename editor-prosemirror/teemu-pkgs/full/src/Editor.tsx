@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 
 import { ReactEditorView } from './ReactEditorView';
 import {
@@ -12,8 +12,8 @@ import { PortalProvider, PortalRenderer } from './react/portals';
 
 import { FullPage } from './ui/FullPage';
 
-import { AnalyticsProps } from './core/AnalyticsProvider';
-import { EditorAppearance } from './types/editor-ui';
+import { type AnalyticsProps } from './core/AnalyticsProvider';
+import { type EditorAppearance } from './types/editor-ui';
 
 export interface EditorProps {
   disabled?: boolean;

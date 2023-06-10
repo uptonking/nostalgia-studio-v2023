@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Order, PagedResult } from '@datalking/pivot-app-shared-lib';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { type Order, type PagedResult } from '@datalking/pivot-app-shared-lib';
+import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 
 import { useGet } from '../../features/app';
 

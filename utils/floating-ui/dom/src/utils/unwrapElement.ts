@@ -1,4 +1,4 @@
-import type { VirtualElement } from '../types';
+import { type VirtualElement } from '../types';
 import { isElement } from './is';
 
 export function unwrapElement(element: Element | VirtualElement) {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { RecordAllValues } from '@datalking/pivot-core';
+import { type RecordAllValues } from '@datalking/pivot-core';
 import { Group, Text, Tooltip } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';

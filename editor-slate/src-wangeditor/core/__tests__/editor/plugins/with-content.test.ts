@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import { Editor, Transforms, Node, Selection } from 'slate';
+import { Editor, Transforms, Node, type Selection } from 'slate';
 import createCoreEditor from '../../create-core-editor'; // packages/core 不依赖 packages/editor ，不能使用后者的 createEditor
 import { withContent } from '../../../src/editor/plugins/with-content';
-import { IDomEditor } from '../../../src/editor/interface';
+import { type IDomEditor } from '../../../src/editor/interface';
 
 function createEditor(...args) {
   return withContent(createCoreEditor(...args));

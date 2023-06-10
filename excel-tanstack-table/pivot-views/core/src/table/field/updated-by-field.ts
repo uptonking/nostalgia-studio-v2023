@@ -1,19 +1,19 @@
-import type { Option } from 'oxide.ts';
-import type { ZodTypeAny } from 'zod';
+import { type Option } from 'oxide.ts';
+import { type ZodTypeAny } from 'zod';
 import { z } from 'zod';
 
-import type { TableCompositeSpecificaiton } from '../specifications/index';
+import { type TableCompositeSpecificaiton } from '../specifications/index';
 import { BaseField } from './field.base';
-import type { IUpdatedByField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { IUpdatedByFilterOperator } from './filter/operators';
-import type { IUpdatedByFilter } from './filter/updated-by.filter';
+import { type IUpdatedByField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type IUpdatedByFilterOperator } from './filter/operators';
+import { type IUpdatedByFilter } from './filter/updated-by.filter';
 import { UpdatedByFieldValue } from './updated-by-field-value';
-import type {
-  ICreateUpdatedByFieldInput,
-  IUpdatedByFieldQueryValue,
-  IUpdateUpdatedByFieldInput,
-  UpdatedByFieldType,
+import {
+  type ICreateUpdatedByFieldInput,
+  type IUpdatedByFieldQueryValue,
+  type IUpdateUpdatedByFieldInput,
+  type UpdatedByFieldType,
 } from './updated-by-field.type';
 
 export class UpdatedByField extends BaseField<IUpdatedByField> {

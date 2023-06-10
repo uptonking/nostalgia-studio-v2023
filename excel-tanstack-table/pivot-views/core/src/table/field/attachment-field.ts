@@ -1,17 +1,17 @@
 import { z } from 'zod';
 
 import { AttachmentFieldValue } from './attachment-field-value';
-import type {
-  AttachmentFieldType,
-  ICreateAttachmentFieldInput,
-  ICreateAttachmentFieldValue,
+import {
+  type AttachmentFieldType,
+  type ICreateAttachmentFieldInput,
+  type ICreateAttachmentFieldValue,
 } from './attachment-field.type';
 import { BaseField } from './field.base';
-import type { IAttachmentField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type {
-  IAttachmentFilter,
-  IAttachmentFilterOperator,
+import { type IAttachmentField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import {
+  type IAttachmentFilter,
+  type IAttachmentFilterOperator,
 } from './filter/attachment.filter';
 
 export class AttachmentField extends BaseField<IAttachmentField> {

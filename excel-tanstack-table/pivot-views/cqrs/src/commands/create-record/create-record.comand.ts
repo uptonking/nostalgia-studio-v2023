@@ -1,8 +1,8 @@
-import { IMutateRecordValueSchema } from '@datalking/pivot-core';
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type IMutateRecordValueSchema } from '@datalking/pivot-core';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ICreateRecordInput } from './create-record.command.input';
+import { type ICreateRecordInput } from './create-record.command.input';
 
 export class CreateRecordCommand extends Command {
   readonly id?: string;

@@ -1,16 +1,16 @@
 import {
   DOMParser,
   Fragment,
-  Mark,
-  Node,
-  ParseRule,
-  ResolvedPos,
+  type Mark,
+  type Node,
+  type ParseRule,
+  type ResolvedPos,
 } from 'prosemirror-model';
-import { Selection, TextSelection, Transaction } from 'prosemirror-state';
+import { Selection, TextSelection, type Transaction } from 'prosemirror-state';
 
 import * as browser from './browser';
-import { DOMNode, keyEvent, selectionCollapsed } from './dom';
-import { EditorView } from './index';
+import { type DOMNode, keyEvent, selectionCollapsed } from './dom';
+import { type EditorView } from './index';
 import {
   selectionBetween,
   selectionFromDOM,

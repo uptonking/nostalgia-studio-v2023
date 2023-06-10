@@ -1,7 +1,7 @@
-import type { ITableRepository } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ITableRepository } from '@datalking/pivot-core';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { SwitchDisplayTypeCommand } from './switch-display-type.command';
+import { type SwitchDisplayTypeCommand } from './switch-display-type.command';
 
 export class SwitchDisplayTypeCommandHandler
   implements ICommandHandler<SwitchDisplayTypeCommand, void>

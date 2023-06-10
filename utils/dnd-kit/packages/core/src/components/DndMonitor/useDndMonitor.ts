@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 
 import { DndMonitorContext } from './context';
-import type { DndMonitorListener } from './types';
+import { type DndMonitorListener } from './types';
 
 export function useDndMonitor(listener: DndMonitorListener) {
   const registerListener = useContext(DndMonitorContext);

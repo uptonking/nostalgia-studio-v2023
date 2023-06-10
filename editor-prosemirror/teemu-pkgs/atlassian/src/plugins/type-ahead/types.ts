@@ -1,10 +1,10 @@
-import { Node } from 'prosemirror-model';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { type Node } from 'prosemirror-model';
+import { type EditorState, type Transaction } from 'prosemirror-state';
 // import { InjectedIntl } from 'react-intl';
 
-import { TypeAheadItem } from '../../provider-factory';
+import { type TypeAheadItem } from '../../provider-factory';
 
-import { Dispatch } from '../../utils/event-dispatcher';
+import { type Dispatch } from '../../utils/event-dispatcher';
 
 // Re-export typeahead types
 export type {

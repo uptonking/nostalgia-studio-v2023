@@ -1,11 +1,11 @@
-import { Server } from 'http';
+import { type Server } from 'http';
 
 import * as io from 'socket.io';
 
-import { CollabAction, DocAction, IUser } from '@example/types';
+import { type CollabAction, type DocAction, type IUser } from '@example/types';
 
 import { collabDb } from '../db/collab.db';
-import { ISocketEmitEvents, ISocketListenEvents } from './types';
+import { type ISocketEmitEvents, type ISocketListenEvents } from './types';
 
 const usersMap: Map<string, IUser> = new Map();
 let ioServer: io.Server<ISocketListenEvents, ISocketEmitEvents> | null = null;

@@ -3,7 +3,7 @@ import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import type { IFilter, IFilterOrGroupList } from '@datalking/pivot-core';
+import { type IFilter, type IFilterOrGroupList } from '@datalking/pivot-core';
 import {
   Box,
   Button,

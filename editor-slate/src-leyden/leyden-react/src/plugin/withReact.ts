@@ -1,7 +1,7 @@
-import { BaseEditor, Editor } from 'slate';
+import { type BaseEditor, type Editor } from 'slate';
 import { withReact as withSlateReact } from 'slate-react';
 
-import { ReactEditor } from './ReactEditor';
+import { type ReactEditor } from './ReactEditor';
 
 export const withReact = <T extends BaseEditor>(
   editor: T,

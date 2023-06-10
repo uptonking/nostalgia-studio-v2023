@@ -13,11 +13,11 @@ import {
   type ItemSizeGetter,
   SizeAndPositionManager,
 } from './size-position-manager';
-import type {
-  ItemPosition,
-  ItemStyle,
-  VirtualListProps,
-  VirtualListState,
+import {
+  type ItemPosition,
+  type ItemStyle,
+  type VirtualListProps,
+  type VirtualListState,
 } from './types';
 
 interface StyleCache {

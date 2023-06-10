@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import { useVirtualizer, Range } from '../src/index';
+import { useVirtualizer, type Range } from '../src/index';
 
 beforeEach(() => {
   Object.defineProperties(HTMLElement.prototype, {

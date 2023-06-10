@@ -4,17 +4,17 @@ import { z } from 'zod';
 import { andOptions } from '@datalking/pivot-entity';
 
 import { AbstractLookingField, AbstractReferenceField } from './field.base';
-import type { ITreeField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { ITreeFilterOperator } from './filter/operators';
-import type { ITreeFilter } from './filter/tree.filter';
+import { type ITreeField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type ITreeFilterOperator } from './filter/operators';
+import { type ITreeFilter } from './filter/tree.filter';
 import { ParentField } from './parent-field';
 import { TreeFieldValue } from './tree-field-value';
-import type {
-  ICreateTreeFieldSchema,
-  ICreateTreeFieldValue,
-  IUpdateTreeFieldInput,
-  TreeFieldType,
+import {
+  type ICreateTreeFieldSchema,
+  type ICreateTreeFieldValue,
+  type IUpdateTreeFieldInput,
+  type TreeFieldType,
 } from './tree-field.type';
 import { DisplayFields, FieldId } from './value-objects/index';
 

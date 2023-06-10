@@ -1,14 +1,14 @@
 import {
-  BaseEditor,
-  Descendant,
+  type BaseEditor,
+  type Descendant,
   Editor,
   Element,
   Node,
   Text,
   createEditor,
 } from 'slate';
-import { HistoryEditor } from 'slate-history';
-import { ReactEditor } from 'slate-react';
+import { type HistoryEditor } from 'slate-history';
+import { type ReactEditor } from 'slate-react';
 
 export type BlockQuoteElement = {
   type: 'block-quote';

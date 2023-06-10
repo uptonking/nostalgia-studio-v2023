@@ -1,9 +1,13 @@
-import { EditorRange, Line } from '@typewriter/document';
+import { type EditorRange, type Line } from '@typewriter/document';
 
-import type { Editor } from '../editor';
-import { Types } from '../typesetting';
+import { type Editor } from '../editor';
+import { type Types } from '../typesetting';
 import { isBRPlaceholder } from './html';
-import { getLineNodeEnd, getLineNodeStart, HTMLLineElement } from './rendering';
+import {
+  getLineNodeEnd,
+  getLineNodeStart,
+  type HTMLLineElement,
+} from './rendering';
 import { createTreeWalker } from './walker';
 
 type NodeAndOffset = [Node | null, number];

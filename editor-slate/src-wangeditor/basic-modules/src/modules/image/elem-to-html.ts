@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { Element } from 'slate';
-import { ImageElement } from './custom-types';
+import { type Element } from 'slate';
+import { type ImageElement } from './custom-types';
 
 function imageToHtml(elemNode: Element, childrenHtml: string): string {
   const { src, alt = '', href = '', style = {} } = elemNode as ImageElement;

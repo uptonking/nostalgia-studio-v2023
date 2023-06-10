@@ -1,11 +1,17 @@
-import { ContentMatch } from './content';
-import { DOMNode } from './dom';
+/* eslint-disable no-control-regex */
+import { type ContentMatch } from './content';
+import { type DOMNode } from './dom';
 import { Fragment } from './fragment';
 import { Mark } from './mark';
-import { Node, TextNode } from './node';
+import { type Node, type TextNode } from './node';
 import { Slice } from './replace';
-import { ResolvedPos } from './resolvedpos';
-import { Attrs, MarkType, NodeType, Schema } from './schema';
+import { type ResolvedPos } from './resolvedpos';
+import {
+  type Attrs,
+  type MarkType,
+  type NodeType,
+  type Schema,
+} from './schema';
 
 /** These are the options recognized by the
  * [`parse`](#model.DOMParser.parse) and

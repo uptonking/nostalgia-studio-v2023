@@ -5,8 +5,8 @@
 
 //【注意】拼音输入时 maxLength 限制在 CompositionEnd 事件中处理
 
-import { Editor, Node } from 'slate';
-import { IDomEditor, DomEditor } from '../..';
+import { type Editor, Node } from 'slate';
+import { type IDomEditor, DomEditor } from '../..';
 import { IGNORE_TAGS } from '../../constants';
 import { NodeType } from '../../utils/dom';
 

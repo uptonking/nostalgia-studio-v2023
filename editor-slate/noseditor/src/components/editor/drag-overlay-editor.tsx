@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { createEditor, Descendant } from 'slate';
+import { createEditor, type Descendant } from 'slate';
 import { DefaultEditable as Editable, Slate } from 'slate-react';
 
 import { useDragOverlayRenderElement } from '../../hooks/use-drag-overlay-render-element';
@@ -8,7 +8,7 @@ import { useEditor } from '../../hooks/use-editor';
 import { usePlugins } from '../../hooks/use-plugins';
 import { useRenderLeaf } from '../../hooks/use-render-leaf';
 import { DndFeatureProvider, DraggableFeatureInitializer } from '../../plugins';
-import type { CustomEditor } from '../../types/slate';
+import { type CustomEditor } from '../../types/slate';
 
 type DragOverlayEditorProps = {
   initialValue: Descendant[];

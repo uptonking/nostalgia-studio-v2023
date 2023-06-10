@@ -10,7 +10,7 @@ import {
   calculatePlacement,
   calculatePosition,
   findOverflowScrollParent,
-  Position,
+  type Position,
   validatePosition,
 } from './utils';
 

@@ -1,4 +1,4 @@
-import type { JSONPatchOp } from '../types';
+import { type JSONPatchOp } from '../types';
 import { mapAndFilterOps, transformRemove } from './ops';
 import { log } from './log';
 import { getPrefixAndProp } from './paths';

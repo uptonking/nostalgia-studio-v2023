@@ -2,7 +2,7 @@ import React, { type ReactNode, useMemo, useRef } from 'react';
 
 import { useSetAtom } from 'jotai';
 
-import type { IKanbanField, Records } from '@datalking/pivot-core';
+import { type IKanbanField, type Records } from '@datalking/pivot-core';
 import {
   ActionIcon,
   Badge,
@@ -24,7 +24,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { createRecordInitialValueAtom } from '../create-record-form/create-record-initial-value.atom';
 import { createRecordFormDrawerOpened } from '../create-record-form/drawer-opened.atom';
-import type { SortableProps } from '../sortable.interface';
+import { type SortableProps } from '../sortable.interface';
 import { SortableKanbanCard } from './kanban-card';
 import { KANBAN_DATE_STACKS } from './kanban-date.utils';
 import { KanbanLaneMenu } from './kanban-lane-menu';

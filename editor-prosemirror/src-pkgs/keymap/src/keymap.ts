@@ -1,5 +1,5 @@
-import { Command, Plugin } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { type Command, Plugin } from 'prosemirror-state';
+import { type EditorView } from 'prosemirror-view';
 import { base, keyName } from 'w3c-keyname';
 
 const mac =

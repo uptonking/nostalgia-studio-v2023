@@ -1,7 +1,11 @@
-import { FindOptions, Model, ModelStatic } from 'sequelize/types';
-import { MakeNullishOptional } from 'sequelize/types/utils';
-import { PagedResult } from '@datalking/pivot-app-shared-lib';
-import { GridPatchProps } from '@datalking/pivot-app-shared-lib';
+import {
+  type FindOptions,
+  type Model,
+  type ModelStatic,
+} from 'sequelize/types';
+import { type MakeNullishOptional } from 'sequelize/types/utils';
+import { type PagedResult } from '@datalking/pivot-app-shared-lib';
+import { type GridPatchProps } from '@datalking/pivot-app-shared-lib';
 import { HttpNotFoundError } from '../errorHandler';
 import logger from '../logger';
 import sequelize from 'sequelize';

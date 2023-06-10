@@ -1,10 +1,10 @@
 import {
-  Attributes,
+  type Attributes,
   Model,
-  ModelAttributeColumnOptions,
-  ModelAttributes,
-  ModelOptions,
-  ModelStatic,
+  type ModelAttributeColumnOptions,
+  type ModelAttributes,
+  type ModelOptions,
+  type ModelStatic,
   Sequelize,
 } from 'sequelize';
 

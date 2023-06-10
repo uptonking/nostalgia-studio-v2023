@@ -2,7 +2,7 @@ import { schema as bSchema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
 import { Schema } from 'prosemirror-model';
 
-import { builders, NodeBuilder, MarkBuilder } from './build';
+import { builders, type NodeBuilder, type MarkBuilder } from './build';
 export { builders, NodeBuilder, MarkBuilder } from './build';
 
 export const schema = new Schema({

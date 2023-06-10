@@ -1,4 +1,8 @@
-import { KeyboardCode, KeyboardCodes, KeyboardCoordinateGetter } from './types';
+import {
+  KeyboardCode,
+  type KeyboardCodes,
+  type KeyboardCoordinateGetter,
+} from './types';
 
 export const defaultKeyboardCodes: KeyboardCodes = {
   start: [KeyboardCode.Space, KeyboardCode.Enter],

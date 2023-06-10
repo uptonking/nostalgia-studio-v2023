@@ -1,4 +1,4 @@
-import { PluginKey, EventDispatcher } from '../core';
+import { type PluginKey, EventDispatcher } from '../core';
 
 interface PluginState {
   [key: string]: any;

@@ -1,4 +1,4 @@
-import { ActionType, DrawAction } from '@datalking/pivot-app-shared-lib';
+import { ActionType, type DrawAction } from '@datalking/pivot-app-shared-lib';
 import { createOffscreen } from './helpers';
 
 export type WorkMessage = {

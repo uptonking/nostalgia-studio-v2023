@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { createEditor, Descendant } from 'slate';
+import { createEditor, type Descendant } from 'slate';
 import {
   DefaultEditable as Editable,
   type RenderElementProps,

@@ -1,13 +1,17 @@
-import React, { CSSProperties, PropsWithChildren, useRef } from 'react';
+import React, {
+  type CSSProperties,
+  type PropsWithChildren,
+  useRef,
+} from 'react';
 
 import clsx from 'clsx';
 
 import {
-  CursorOverlayData,
+  type CursorOverlayData,
   useRemoteCursorOverlayPositions,
 } from '@slate-yjs/react';
 
-import { CursorData } from '../../types';
+import { type CursorData } from '../../types';
 import { addAlpha } from '../../utils';
 
 type CaretProps = Pick<CursorOverlayData<CursorData>, 'caretPosition' | 'data'>;

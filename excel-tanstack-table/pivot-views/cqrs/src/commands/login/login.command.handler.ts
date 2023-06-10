@@ -1,7 +1,7 @@
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import { ILoginCommandOutput } from './login.command.interface';
-import type { LoginCommand } from './login.command';
+import { type ILoginCommandOutput } from './login.command.interface';
+import { type LoginCommand } from './login.command';
 
 type ILoginCommandHandler = ICommandHandler<LoginCommand, ILoginCommandOutput>;
 

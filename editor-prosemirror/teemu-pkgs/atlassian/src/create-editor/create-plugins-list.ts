@@ -1,5 +1,5 @@
-import { EditorProps } from '../Editor';
-import { EditorPlugin } from '../types';
+import { type EditorProps } from '../Editor';
+import { type EditorPlugin } from '../types';
 import {
   basePlugin,
   blockQuotePlugin,

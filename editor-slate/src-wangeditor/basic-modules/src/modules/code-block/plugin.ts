@@ -7,9 +7,9 @@ import {
   Editor,
   Transforms,
   Node as SlateNode,
-  Element as SlateElement,
+  type Element as SlateElement,
 } from 'slate';
-import { IDomEditor, DomEditor } from '@wangeditor/core';
+import { type IDomEditor, DomEditor } from '@wangeditor/core';
 
 function getLastTextLineBeforeSelection(
   codeNode: SlateNode,

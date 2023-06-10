@@ -1,32 +1,32 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type {
-  AttachmentField,
-  AutoIncrementField,
-  BoolField,
-  ColorField,
-  CountField,
-  CreatedAtField,
-  CreatedByField,
-  DateField,
-  DateRangeField,
-  EmailField,
-  IFieldVisitor,
-  IdField,
-  LookupField,
-  NumberField,
-  ParentField,
-  RatingField,
-  ReferenceField,
-  SelectField,
-  StringField,
-  SumField,
-  TreeField,
-  UpdatedAtField,
-  UpdatedByField,
+import {
+  type AttachmentField,
+  type AutoIncrementField,
+  type BoolField,
+  type ColorField,
+  type CountField,
+  type CreatedAtField,
+  type CreatedByField,
+  type DateField,
+  type DateRangeField,
+  type EmailField,
+  type IFieldVisitor,
+  type IdField,
+  type LookupField,
+  type NumberField,
+  type ParentField,
+  type RatingField,
+  type ReferenceField,
+  type SelectField,
+  type StringField,
+  type SumField,
+  type TreeField,
+  type UpdatedAtField,
+  type UpdatedByField,
 } from '../field';
-import type { AverageField } from '../field/average-field';
-import type { CollaboratorField } from '../field/collaborator-field';
+import { type AverageField } from '../field/average-field';
+import { type CollaboratorField } from '../field/collaborator-field';
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   id(field: IdField): void {}

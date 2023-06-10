@@ -1,11 +1,11 @@
-import { EditorView } from 'prosemirror-view';
-import { MarkType, NodeType } from 'prosemirror-model';
+import { type EditorView } from 'prosemirror-view';
+import { type MarkType, type NodeType } from 'prosemirror-model';
 import { EditorState, Selection } from 'prosemirror-state';
 
 import { parseRawValue } from '../utils/document';
 
-import { Command } from './types';
-import { JSONEditorState } from './types/editor-view';
+import { type Command } from './types';
+import { type JSONEditorState } from './types/editor-view';
 
 export class EditorViewProvider {
   _editorView?: EditorView;

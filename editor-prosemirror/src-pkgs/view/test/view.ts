@@ -1,13 +1,13 @@
-import { EditorView, DirectEditorProps } from 'prosemirror-view';
+import { EditorView, type DirectEditorProps } from 'prosemirror-view';
 import {
   EditorState,
   Selection,
   TextSelection,
   NodeSelection,
-  Plugin,
+  type Plugin,
 } from 'prosemirror-state';
 import { schema } from 'prosemirror-test-builder';
-import { Node as PMNode } from 'prosemirror-model';
+import { type Node as PMNode } from 'prosemirror-model';
 
 function selFor(doc: PMNode) {
   const { tag } = doc as any;

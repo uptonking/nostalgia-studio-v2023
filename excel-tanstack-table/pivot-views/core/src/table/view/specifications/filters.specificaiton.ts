@@ -1,12 +1,12 @@
 import { isEmpty } from 'lodash-es';
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
-import type { IRootFilter } from '../../field/filter/index';
+import { type IRootFilter } from '../../field/filter/index';
 import { RootFilter } from '../../field/filter/index';
-import type { ITableSpecVisitor } from '../../specifications/interface';
-import type { Table } from '../../table';
-import type { View } from '../view';
+import { type ITableSpecVisitor } from '../../specifications/interface';
+import { type Table } from '../../table';
+import { type View } from '../view';
 import { BaseViewSpecification } from './base-view-specification';
 
 export class WithFilter extends BaseViewSpecification {

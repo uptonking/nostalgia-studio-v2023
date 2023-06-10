@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import {
   closestCenter,
   closestCorners,
-  CollisionDetection as CollisionDetectionType,
+  type CollisionDetection as CollisionDetectionType,
   DndContext,
-  Modifiers,
+  type Modifiers,
   pointerWithin,
   rectIntersection,
-  UniqueIdentifier,
+  type UniqueIdentifier,
   useDraggable,
 } from '@dnd-kit/core';
 

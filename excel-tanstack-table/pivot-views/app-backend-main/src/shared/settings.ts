@@ -1,7 +1,7 @@
 import {
-  ClientConfig,
-  Setting,
-  SettingDataType,
+  type ClientConfig,
+  type Setting,
+  type SettingDataType,
 } from '@datalking/pivot-app-shared-lib';
 
 import { config } from './config';

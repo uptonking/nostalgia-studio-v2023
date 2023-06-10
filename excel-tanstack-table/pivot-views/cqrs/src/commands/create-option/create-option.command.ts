@@ -1,8 +1,8 @@
-import { ICreateOptionSchema } from '@datalking/pivot-core';
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type ICreateOptionSchema } from '@datalking/pivot-core';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ICreateOptionCommandInput } from './create-option.command.interface';
+import { type ICreateOptionCommandInput } from './create-option.command.interface';
 
 export class CreateOptionCommand
   extends Command

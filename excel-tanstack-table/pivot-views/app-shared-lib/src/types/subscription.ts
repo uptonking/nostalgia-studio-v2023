@@ -1,4 +1,4 @@
-import type { Entity, Order, PaymentSource } from '.';
+import { type Entity, type Order, type PaymentSource } from '.';
 
 export const PlanIntervals = {
   Day: 'day',

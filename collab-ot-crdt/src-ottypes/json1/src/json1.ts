@@ -30,14 +30,14 @@ import deepClone from './deepClone.js';
 // import log from './log'
 import deepEqual from './deepEqual.js';
 import {
-  Conflict,
+  type Conflict,
   ConflictType,
-  Doc,
-  JSONOp,
-  JSONOpComponent,
-  JSONOpList,
-  Key,
-  Path,
+  type Doc,
+  type JSONOp,
+  type JSONOpComponent,
+  type JSONOpList,
+  type Key,
+  type Path,
 } from './types.js';
 
 const RELEASE_MODE = process.env.JSON1_RELEASE_MODE;

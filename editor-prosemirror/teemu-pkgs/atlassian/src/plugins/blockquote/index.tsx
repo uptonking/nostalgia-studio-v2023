@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditorState } from 'prosemirror-state';
+import { type EditorState } from 'prosemirror-state';
 
 import { blockquote } from '../../schema/nodes';
 import {
@@ -10,11 +10,11 @@ import {
 import { keymapPlugin } from './pm-plugins/keymap';
 import * as keymaps from '../../keymaps';
 
-import { QuickInsertActionInsert } from '../../provider-factory/quick-insert-provider';
+import { type QuickInsertActionInsert } from '../../provider-factory/quick-insert-provider';
 import IconQuote from '../quick-insert/assets/code';
 import WithPluginState from '../../ui/hocs/WithPluginState';
 
-import { EditorPlugin, PMPluginFactory } from '../../types';
+import { type EditorPlugin, type PMPluginFactory } from '../../types';
 
 export interface BlockQuoteOptions {}
 

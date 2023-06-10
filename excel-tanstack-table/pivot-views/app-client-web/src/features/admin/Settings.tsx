@@ -2,11 +2,11 @@ import * as React from 'react';
 
 import _ from 'lodash';
 
-import type {
-  PagedResult,
-  Setting,
-  SettingData,
-  SettingType,
+import {
+  type PagedResult,
+  type Setting,
+  type SettingData,
+  type SettingType,
 } from '@datalking/pivot-app-shared-lib';
 import {
   Card,

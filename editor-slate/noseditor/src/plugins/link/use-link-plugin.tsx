@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { CreateNosPluginType } from '../types';
+import { type CreateNosPluginType } from '../types';
 import { Link } from './components/link';
 import { isLinkElement } from './utils';
 import { withLink } from './with-link';

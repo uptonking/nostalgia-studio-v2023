@@ -1,11 +1,11 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { None } from 'oxide.ts';
 
-import type { CompositeSpecification } from '@datalking/pivot-entity';
+import { type CompositeSpecification } from '@datalking/pivot-entity';
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { Field } from '..';
-import type { IRootFilter } from './filter';
+import { type Field } from '..';
+import { type IRootFilter } from './filter';
 import { convertFilterSpec } from './filter';
 
 export class RootFilter extends ValueObject<IRootFilter> {

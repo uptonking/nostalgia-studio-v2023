@@ -4,7 +4,7 @@
  */
 
 import { Range, Transforms, Editor } from 'slate';
-import { IButtonMenu, IDomEditor, t } from '@wangeditor/core';
+import { type IButtonMenu, type IDomEditor, t } from '@wangeditor/core';
 import { ENTER_SVG } from '../../../constants/icon-svg';
 
 class EnterMenu implements IButtonMenu {

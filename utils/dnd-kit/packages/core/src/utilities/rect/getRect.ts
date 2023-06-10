@@ -1,6 +1,6 @@
 import { getWindow } from '@dnd-kit/utilities';
 
-import type { ClientRect } from '../../types';
+import { type ClientRect } from '../../types';
 import { inverseTransform } from '../transform';
 
 interface Options {

@@ -3,12 +3,18 @@
  * @author wangfupeng
  */
 
-import { Editor, Element as SlateElement, Path, Point, Range } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import {
+  Editor,
+  type Element as SlateElement,
+  Path,
+  Point,
+  Range,
+} from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
-import { DomEditor, IDomEditor } from '@wangeditor/core';
+import { DomEditor, type IDomEditor } from '@wangeditor/core';
 
-import { TableElement } from '../custom-types';
+import { type TableElement } from '../custom-types';
 import { getFirstRowCells } from '../helpers';
 
 /**

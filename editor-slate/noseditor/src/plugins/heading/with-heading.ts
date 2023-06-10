@@ -1,6 +1,6 @@
 import { Editor } from 'slate';
 
-import { DraggableCollapsibleEditor } from '../draggable-collapsible-feature';
+import { type DraggableCollapsibleEditor } from '../draggable-collapsible-feature';
 import { isHeadingElement } from './utils';
 
 export const withHeading = (editor: DraggableCollapsibleEditor) => {

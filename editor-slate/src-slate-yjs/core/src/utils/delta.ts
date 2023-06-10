@@ -1,6 +1,6 @@
-import * as Y from 'yjs';
+import type * as Y from 'yjs';
 
-import { DeltaInsert, InsertDelta } from '../model/types';
+import { type DeltaInsert, type InsertDelta } from '../model/types';
 import { deepEquals } from './object';
 
 /** merge multi insert into one */

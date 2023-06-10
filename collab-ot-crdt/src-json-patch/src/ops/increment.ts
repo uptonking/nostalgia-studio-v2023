@@ -1,5 +1,5 @@
 import { replace } from './replace';
-import type { JSONPatchOpHandler } from '../types';
+import { type JSONPatchOpHandler } from '../types';
 import { get, updateRemovedOps } from '../utils';
 
 /**

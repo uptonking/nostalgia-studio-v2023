@@ -1,4 +1,4 @@
-import type { JSONPatchOp, JSONPatchOpHandlerMap } from '../types';
+import { type JSONPatchOp, type JSONPatchOpHandlerMap } from '../types';
 import { types } from '../state';
 
 export function getType(patch: JSONPatchOp) {

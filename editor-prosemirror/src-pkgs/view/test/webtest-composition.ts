@@ -4,9 +4,9 @@ import {
   Decoration,
   DecorationSet,
   __endComposition,
-  EditorView,
+  type EditorView,
 } from 'prosemirror-view';
-import { EditorState, Plugin } from 'prosemirror-state';
+import { type EditorState, Plugin } from 'prosemirror-state';
 import { tempEditor, requireFocus, findTextNode } from './view';
 
 function event(pm: EditorView, type: string) {

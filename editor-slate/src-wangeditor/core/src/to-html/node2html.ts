@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { Element, Descendant } from 'slate';
-import { IDomEditor } from '../editor/interface';
+import { Element, type Descendant } from 'slate';
+import { type IDomEditor } from '../editor/interface';
 import elemToHtml from './elem2html';
 import textToHtml from './text2html';
 

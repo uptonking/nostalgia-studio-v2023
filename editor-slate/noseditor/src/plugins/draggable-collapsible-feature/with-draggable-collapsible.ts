@@ -1,10 +1,17 @@
 import { nanoid } from 'nanoid';
-import { Editor, Element, Node, Path, Range, Transforms } from 'slate';
+import {
+  Editor,
+  type Element,
+  type Node,
+  Path,
+  Range,
+  Transforms,
+} from 'slate';
 
 import { createListItemElement } from '../list/utils';
 import { createParagraphElement } from '../paragraph/utils';
 import { DraggableCollapsibleEditor } from './collapsible-editor';
-import type { CollapsibleElement, HashedElement } from './types';
+import { type CollapsibleElement, type HashedElement } from './types';
 
 type WithCollapsibleOptions = {
   compareLevels: (

@@ -1,4 +1,4 @@
-import type { Alignment, Placement, Side } from '../types';
+import { type Alignment, type Placement, type Side } from '../types';
 import { getAlignment } from './getAlignment';
 import { getOppositeAlignmentPlacement } from './getOppositeAlignmentPlacement';
 import { getSide } from './getSide';

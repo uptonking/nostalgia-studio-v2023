@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { DirectEditorProps, EditorView } from 'prosemirror-view';
-import { EditorState, Transaction } from 'prosemirror-state';
-import { Node as PMNode } from 'prosemirror-model';
+import { type DirectEditorProps, EditorView } from 'prosemirror-view';
+import { EditorState, type Transaction } from 'prosemirror-state';
+import { type Node as PMNode } from 'prosemirror-model';
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import {
   collab,
@@ -11,7 +11,7 @@ import {
 } from 'prosemirror-collab';
 import { Step } from 'prosemirror-transform';
 
-import { INewStepsResponse } from '@example/types';
+import { type INewStepsResponse } from '@example/types';
 
 import { useEditorContext } from './core/EditorContext';
 
@@ -26,12 +26,12 @@ import {
   validateNodes,
   validNode,
 } from './utils/nodes';
-import { getDocStructure, SimplifiedNode } from './utils/document-logger';
+import { getDocStructure, type SimplifiedNode } from './utils/document-logger';
 import { sendSteps, getDocument, fetchEvents } from './collab-api';
 
 import useSsrLayoutEffect from './react/hooks/useSsrLayoutEffect';
 
-import { EditorProps } from './Editor';
+import { type EditorProps } from './Editor';
 
 interface IProps {
   editorProps: EditorProps;

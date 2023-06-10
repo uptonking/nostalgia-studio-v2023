@@ -1,7 +1,7 @@
-import type { ITableRepository } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ITableRepository } from '@datalking/pivot-core';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { SetTreeViewFieldCommand } from './set-tree-view-field.command';
+import { type SetTreeViewFieldCommand } from './set-tree-view-field.command';
 
 type ISetTreeViewFieldCommandHandler = ICommandHandler<
   SetTreeViewFieldCommand,

@@ -1,4 +1,4 @@
-import type { Doc } from './doc';
+import { type Doc } from './doc';
 
 /** avoid 0 */
 const CLOCK_INITIAL = 1;

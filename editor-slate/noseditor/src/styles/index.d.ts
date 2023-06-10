@@ -5,14 +5,14 @@
  */
 
 import {
-  ColorToken,
-  DimensionToken,
-  FontToken,
-  ParsedColorToken,
-  ParsedDimensionToken,
-  ParsedFontToken,
-  ParsedShadowToken,
-  ShadowToken,
+  type ColorToken,
+  type DimensionToken,
+  type FontToken,
+  type ParsedColorToken,
+  type ParsedDimensionToken,
+  type ParsedFontToken,
+  type ParsedShadowToken,
+  type ShadowToken,
 } from '@cobalt-ui/core';
 
 export declare const tokens: {

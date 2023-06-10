@@ -1,6 +1,6 @@
 import { distanceBetween } from '../coordinates';
 
-import type { CollisionDescriptor, CollisionDetection } from './types';
+import { type CollisionDescriptor, type CollisionDetection } from './types';
 import { cornersOfRectangle, sortCollisionsAsc } from './helpers';
 
 /**

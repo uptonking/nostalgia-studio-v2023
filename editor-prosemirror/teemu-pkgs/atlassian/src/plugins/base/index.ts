@@ -8,7 +8,7 @@ import { doc, paragraph, text } from '../../schema/nodes';
 
 import { createParagraphNear, splitBlock } from './commands/general';
 
-import { EditorPlugin, PMPluginFactory } from '../../types';
+import { type EditorPlugin, type PMPluginFactory } from '../../types';
 // import { keymap } from '../../utils/keymap';
 
 export interface BasePluginOptions {}

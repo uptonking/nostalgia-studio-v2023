@@ -1,14 +1,14 @@
-import type { TableFeature } from '../core/table';
-import type {
-  Column,
-  Header,
-  OnChangeFn,
-  RowData,
-  Table,
-  Updater,
+import { type TableFeature } from '../core/table';
+import {
+  type Column,
+  type Header,
+  type OnChangeFn,
+  type RowData,
+  type Table,
+  type Updater,
 } from '../types';
 import { makeStateUpdater } from '../utils';
-import { ColumnPinningPosition } from './Pinning';
+import { type ColumnPinningPosition } from './Pinning';
 
 //
 

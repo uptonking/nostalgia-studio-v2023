@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTranslation } from 'react-i18next';
 
-import type { Field } from '@datalking/pivot-core';
+import { type Field } from '@datalking/pivot-core';
 import {
   useSetFieldSortMutation,
   useSetFieldWidthMutation,
@@ -23,7 +23,7 @@ import { useCurrentView } from '../../hooks/use-current-view';
 import { FieldIcon } from '../field-inputs/field-Icon';
 import { FieldIssue } from '../field/field-issue';
 import { TableUIFieldMenu } from '../table/table-ui-field-menu';
-import type { TColumn, THeader } from './interface';
+import { type TColumn, type THeader } from './interface';
 import { usePinnedStyles } from './styles';
 
 const ResizerLine = styled.div<{ isResizing: boolean }>`

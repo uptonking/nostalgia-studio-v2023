@@ -1,12 +1,12 @@
-import type {
-  Active,
-  Data,
-  DroppableContainer,
-  DraggableNode,
-  Over,
+import {
+  type Active,
+  type Data,
+  type DroppableContainer,
+  type DraggableNode,
+  type Over,
 } from '@dnd-kit/core';
 
-import type { SortableData } from './data';
+import { type SortableData } from './data';
 
 export function hasSortableData<
   T extends Active | Over | DraggableNode | DroppableContainer,

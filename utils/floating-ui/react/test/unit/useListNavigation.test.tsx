@@ -15,7 +15,7 @@ import {
   useInteractions,
   useListNavigation,
 } from '../../src';
-import type { Props } from '../../src/hooks/useListNavigation';
+import { type Props } from '../../src/hooks/useListNavigation';
 import { Main as Grid } from '../visual/components/Grid';
 
 function App(props: Omit<Partial<Props>, 'listRef'>) {

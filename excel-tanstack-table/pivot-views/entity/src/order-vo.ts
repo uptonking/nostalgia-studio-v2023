@@ -1,5 +1,5 @@
 import { arrayMoveImmutable } from 'array-move';
-import { None, Option, Some } from 'oxide.ts';
+import { None, type Option, Some } from 'oxide.ts';
 
 import { ValueObject } from './value-object';
 

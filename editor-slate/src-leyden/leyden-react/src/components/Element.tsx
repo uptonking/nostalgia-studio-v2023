@@ -1,14 +1,14 @@
 import { Cell, Table as LeydenTable, Element as LeydenElement } from 'leyden';
-import React, { FC } from 'react';
-import { Element as SlateElement } from 'slate';
-import { DefaultElement, RenderElementProps } from 'slate-react';
+import React, { type FC } from 'react';
+import { type Element as SlateElement } from 'slate';
+import { DefaultElement, type RenderElementProps } from 'slate-react';
 
 import { Table } from './Table';
 import {
-  CellRenderers,
-  ElementRenderers,
-  HeaderRenderers,
-  TableOptions,
+  type CellRenderers,
+  type ElementRenderers,
+  type HeaderRenderers,
+  type TableOptions,
 } from '../utils/types';
 
 export interface Element extends Omit<RenderElementProps, 'element'> {

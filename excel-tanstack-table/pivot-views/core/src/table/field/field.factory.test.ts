@@ -2,7 +2,7 @@ import { BoolField } from './bool-field';
 import { DateField } from './date-field';
 import { DateRangeField } from './date-range-field';
 import { FieldFactory } from './field.factory';
-import { Field } from './field.type';
+import { type Field } from './field.type';
 import { NumberField } from './number-field';
 import { ParentField } from './parent-field';
 import { SelectField } from './select-field';

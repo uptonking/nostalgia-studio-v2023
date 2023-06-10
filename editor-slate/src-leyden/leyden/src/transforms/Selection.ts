@@ -1,4 +1,4 @@
-import { Editor, Transforms } from 'slate';
+import { type Editor, Transforms } from 'slate';
 
 import { Coordinates } from '../interfaces/Coordinates';
 import { LeydenEditor } from '../interfaces/LeydenEditor';

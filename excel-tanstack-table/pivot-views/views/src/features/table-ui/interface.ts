@@ -1,5 +1,10 @@
-import type { RecordAllValues, Records } from '@datalking/pivot-core';
-import type { Column, Header, HeaderGroup, Row } from '@tanstack/react-table';
+import { type RecordAllValues, type Records } from '@datalking/pivot-core';
+import {
+  type Column,
+  type Header,
+  type HeaderGroup,
+  type Row,
+} from '@tanstack/react-table';
 
 export type TData = RecordAllValues;
 

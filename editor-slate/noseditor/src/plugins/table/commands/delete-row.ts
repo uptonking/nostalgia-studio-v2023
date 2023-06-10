@@ -1,6 +1,6 @@
 import { Editor, Path, Transforms } from 'slate';
 
-import type { TableCellElement, TableElement } from '../types';
+import { type TableCellElement, type TableElement } from '../types';
 import {
   getCellBySelectOrFocus,
   getNextInsertRowPosition,
@@ -9,7 +9,7 @@ import {
   getRealPathByPath,
   getTableByCellPath,
   isContainPath,
-  rangeType,
+  type rangeType,
 } from '../utils/common';
 
 type IRangePath = [path: Path, rowNum: number, needMove: boolean][];

@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import $, { Dom7Array } from '../../utils/dom';
-import { IOption } from '../interface';
+import $, { type Dom7Array } from '../../utils/dom';
+import { type IOption } from '../interface';
 import PanelAndModal from './BaseClass';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 import { SVG_CHECK_MARK } from '../../constants/svg';
 
 // “对号”icon

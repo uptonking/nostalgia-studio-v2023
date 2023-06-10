@@ -1,13 +1,13 @@
 import { isEqual } from 'lodash-es';
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index';
-import type { Table } from '../../table';
-import type { IAbstractLookingField } from '../field.type';
-import type { ReferenceField } from '../reference-field';
+import { type ITableSpecVisitor } from '../../specifications/index';
+import { type Table } from '../../table';
+import { type IAbstractLookingField } from '../field.type';
+import { type ReferenceField } from '../reference-field';
 import { FieldId } from '../value-objects/field-id.vo';
 
 export class WithDisplayFields extends CompositeSpecification<

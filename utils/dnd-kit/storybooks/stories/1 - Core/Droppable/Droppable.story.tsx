@@ -7,9 +7,9 @@ import {
   DndContext,
   DragOverlay,
   useDraggable,
-  UniqueIdentifier,
-  CollisionDetection as CollisionDetectionType,
-  Modifiers,
+  type UniqueIdentifier,
+  type CollisionDetection as CollisionDetectionType,
+  type Modifiers,
 } from '@dnd-kit/core';
 
 import {Draggable, Droppable, GridContainer, Wrapper} from '../../components';

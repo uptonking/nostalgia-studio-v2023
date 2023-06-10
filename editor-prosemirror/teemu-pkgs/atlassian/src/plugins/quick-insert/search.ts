@@ -1,8 +1,10 @@
 import Fuse from 'fuse.js';
-// AFP-2532 TODO: Fix automatic suppressions below
-// eslint-disable-next-line @atlassian/tangerine/import/entry-points
-import { QuickInsertItem } from '../../provider-factory';
-import { QuickInsertPluginState, QuickInsertPluginOptions } from './types';
+
+import { type QuickInsertItem } from '../../provider-factory';
+import {
+  type QuickInsertPluginOptions,
+  type QuickInsertPluginState,
+} from './types';
 
 const options = {
   threshold: 0.3,

@@ -2,11 +2,11 @@ import { socketIO } from '../../socket-io/socketIO';
 
 import {
   EDocAction,
-  IDBDocument,
-  DocVisibility,
-  IDocCreateAction,
-  IDocDeleteAction,
-  IDocVisibilityAction,
+  type IDBDocument,
+  type DocVisibility,
+  type IDocCreateAction,
+  type IDocDeleteAction,
+  type IDocVisibilityAction,
 } from '@example/types';
 
 export const documentIO = {

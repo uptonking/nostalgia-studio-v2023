@@ -3,13 +3,13 @@
  * @author wangfupeng
  */
 
-import { Editor } from 'slate';
-import { IDomEditor } from '../..';
+import { type Editor } from 'slate';
+import { type IDomEditor } from '../..';
 import { EDITOR_TO_CONFIG } from '../../utils/weak-maps';
 import {
-  IEditorConfig,
-  AlertType,
-  ISingleMenuConfig,
+  type IEditorConfig,
+  type AlertType,
+  type ISingleMenuConfig,
 } from '../../config/interface';
 import { MENU_ITEM_FACTORIES } from '../../menus/register';
 

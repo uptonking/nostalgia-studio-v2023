@@ -1,4 +1,4 @@
-import { Editor, Operation } from 'slate';
+import { Editor, type Operation } from 'slate';
 import * as Y from 'yjs';
 
 import { translateYTextEvent } from './textEvent';

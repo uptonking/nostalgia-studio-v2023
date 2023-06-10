@@ -1,10 +1,10 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { z } from 'zod';
 
 import { OrderVO } from '@datalking/pivot-entity';
 
 import { WithViewsOrder } from './specifications/index';
-import type { View } from './view';
+import { type View } from './view';
 
 export const viewsOrderSchema = z.string().array();
 

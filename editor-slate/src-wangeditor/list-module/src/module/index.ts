@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { IModuleConf } from '@wangeditor/core';
+import { type IModuleConf } from '@wangeditor/core';
 import renderListItemConf from './render-elem';
 import withList from './plugin';
 import { bulletedListMenuConf, numberedListMenuConf } from './menu/index';

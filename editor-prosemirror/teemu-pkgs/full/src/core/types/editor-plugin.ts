@@ -1,5 +1,5 @@
-import { PMPlugin } from './pm-plugin';
-import { MarkConfig, NodeConfig } from './editor-config';
+import { type PMPlugin } from './pm-plugin';
+import { type MarkConfig, type NodeConfig } from './editor-config';
 
 export interface PluginsOptions {
   [pluginName: string]: any;

@@ -3,12 +3,12 @@
  * @author wangfupeng
  */
 
-import { Node, Element } from 'slate';
-import { Dom7Array, getFirstVoidChild } from '../../utils/dom';
-import { IDomEditor } from '../../editor/interface';
+import { type Node, Element } from 'slate';
+import { type Dom7Array, getFirstVoidChild } from '../../utils/dom';
+import { type IDomEditor } from '../../editor/interface';
 import { DomEditor } from '../../editor/dom-editor';
 import { NODE_TO_ELEMENT } from '../../utils/weak-maps';
-import { IPositionStyle } from '../interface';
+import { type IPositionStyle } from '../interface';
 import { promiseResolveThen } from '../../utils/util';
 
 /**

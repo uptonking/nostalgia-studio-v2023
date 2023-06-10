@@ -1,25 +1,25 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { Mixin } from 'ts-mixer';
 import { z } from 'zod';
 
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { TableCompositeSpecificaiton } from '../specifications/index';
+import { type TableCompositeSpecificaiton } from '../specifications/index';
 import {
   AbstractLookingField,
   AbstractLookupField,
   BaseField,
 } from './field.base';
-import type { ILookupField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { ILookupFilter } from './filter/lookup.filter';
-import type { ILookupFilterOperator } from './filter/operators';
+import { type ILookupField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type ILookupFilter } from './filter/lookup.filter';
+import { type ILookupFilterOperator } from './filter/operators';
 import { LookupFieldValue } from './lookup-field-value';
-import type {
-  ICreateLookupFieldInput,
-  ICreateLookupFieldValue,
-  IUpdateLookupFieldInput,
-  LookupType,
+import {
+  type ICreateLookupFieldInput,
+  type ICreateLookupFieldValue,
+  type IUpdateLookupFieldInput,
+  type LookupType,
 } from './lookup-field.type';
 import { DisplayFields } from './value-objects/display-fields.vo';
 import { FieldId } from './value-objects/field-id.vo';

@@ -1,6 +1,6 @@
-import type { ICountFieldValue } from './count-field.type';
+import { type ICountFieldValue } from './count-field.type';
 import { FieldValueBase } from './field-value.base';
-import type { IFieldValueVisitor } from './field-value.visitor';
+import { type IFieldValueVisitor } from './field-value.visitor';
 
 export class CountFieldValue extends FieldValueBase<ICountFieldValue> {
   constructor(value: ICountFieldValue) {

@@ -3,8 +3,8 @@
  * @author wangfupeng
  */
 
-import { registerMenu, IButtonMenu } from '../../../src/menus/index';
-import { IDomEditor } from '../../../src/editor/interface';
+import { registerMenu, type IButtonMenu } from '../../../src/menus/index';
+import { type IDomEditor } from '../../../src/editor/interface';
 
 class MyButtonMenu implements IButtonMenu {
   readonly title = 'My Button Menu';

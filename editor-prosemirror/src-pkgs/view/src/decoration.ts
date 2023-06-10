@@ -1,8 +1,8 @@
-import { Mark, Node } from 'prosemirror-model';
-import { Mappable, Mapping } from 'prosemirror-transform';
+import { type Mark, type Node } from 'prosemirror-model';
+import { type Mappable, type Mapping } from 'prosemirror-transform';
 
-import { DOMNode } from './dom';
-import { EditorView } from './index';
+import { type DOMNode } from './dom';
+import { type EditorView } from './index';
 
 function compareObjs(a: { [prop: string]: any }, b: { [prop: string]: any }) {
   if (a == b) return true;

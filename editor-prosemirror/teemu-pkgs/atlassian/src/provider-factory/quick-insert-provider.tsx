@@ -1,10 +1,10 @@
 import React from 'react';
-import { Node } from 'prosemirror-model';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { type Node } from 'prosemirror-model';
+import { type EditorState, type Transaction } from 'prosemirror-state';
 
 import DevIcon from '@atlaskit/icon/glyph/editor/code.js';
 
-import { TypeAheadItem } from './typeAhead';
+import { type TypeAheadItem } from './typeAhead';
 
 export type QuickInsertActionInsert = (
   node?: Node | Record<string, any> | string,

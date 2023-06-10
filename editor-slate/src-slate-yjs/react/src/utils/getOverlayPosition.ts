@@ -1,4 +1,4 @@
-import { BaseRange, Editor, Path, Range, Text } from 'slate';
+import { type BaseRange, Editor, Path, Range, Text } from 'slate';
 import { ReactEditor } from 'slate-react';
 
 export type SelectionRect = {

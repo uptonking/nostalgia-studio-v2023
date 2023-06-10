@@ -1,17 +1,17 @@
 import { Option } from 'oxide.ts';
 
 import {
-  IRecordQueryModel,
-  ITableRepository,
+  type IRecordQueryModel,
+  type ITableRepository,
   TreeAvailableSpec,
   ViewId,
   WithRecordTableId,
 } from '@datalking/pivot-core';
-import type { IQueryHandler } from '@datalking/pivot-entity';
+import { type IQueryHandler } from '@datalking/pivot-entity';
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { IGetTreeAvailableRecordsOutput } from './get-tree-available-records.query.interface';
-import type { GetTreeAvailableRecordsQuery } from './get-tree-available-records.query';
+import { type IGetTreeAvailableRecordsOutput } from './get-tree-available-records.query.interface';
+import { type GetTreeAvailableRecordsQuery } from './get-tree-available-records.query';
 
 export class GetTreeAvailableRecordsQueryHandler
   implements

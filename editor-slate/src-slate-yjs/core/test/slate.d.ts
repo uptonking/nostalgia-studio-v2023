@@ -1,4 +1,4 @@
-import { BaseElement, BaseText } from 'slate';
+import { type BaseElement, type BaseText } from 'slate';
 
 declare module 'slate' {
   interface CustomTypes {

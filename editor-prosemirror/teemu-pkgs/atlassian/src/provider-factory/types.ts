@@ -1,4 +1,4 @@
-import { QuickInsertProvider } from './quick-insert-provider';
+import { type QuickInsertProvider } from './quick-insert-provider';
 
 export interface Providers {
   quickInsertProvider?: Promise<QuickInsertProvider>;

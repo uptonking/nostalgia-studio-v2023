@@ -1,7 +1,7 @@
 import eventemitter from 'event-emitter';
-import { Editor } from 'slate';
+import { type Editor } from 'slate';
 
-import type { ExtendedEditor } from './customTypes';
+import { type ExtendedEditor } from './customTypes';
 
 /**
  * editor plugin with event-emitter

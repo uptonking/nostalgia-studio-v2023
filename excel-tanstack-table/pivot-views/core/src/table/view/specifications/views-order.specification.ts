@@ -1,10 +1,10 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 
 import { CompositeSpecification } from '@datalking/pivot-entity';
 
-import type { ITableSpecVisitor } from '../../specifications/index';
-import type { Table } from '../../table';
+import { type ITableSpecVisitor } from '../../specifications/index';
+import { type Table } from '../../table';
 import { ViewsOrder } from '../views-order.vo';
 
 export class WithViewsOrder extends CompositeSpecification<

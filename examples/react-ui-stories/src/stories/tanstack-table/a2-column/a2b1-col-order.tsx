@@ -2,15 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { faker } from '@faker-js/faker';
 import {
-  ColumnDef,
-  ColumnOrderState,
+  type ColumnDef,
+  type ColumnOrderState,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { makeData, type Person } from '../utils/makeData';
 
 const defaultColumns: ColumnDef<Person>[] = [
   {

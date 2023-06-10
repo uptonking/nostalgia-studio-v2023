@@ -1,8 +1,8 @@
 import {
   detectOverflow,
-  Options as DetectOverflowOptions,
+  type Options as DetectOverflowOptions,
 } from '../detectOverflow';
-import type { Middleware, Placement } from '../types';
+import { type Middleware, type Placement } from '../types';
 import { getAlignmentSides } from '../utils/getAlignmentSides';
 import { getExpandedPlacements } from '../utils/getExpandedPlacements';
 import { getOppositeAxisPlacements } from '../utils/getOppositeAxisPlacements';

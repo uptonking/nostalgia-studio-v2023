@@ -1,5 +1,5 @@
 import { root } from '../state';
-import type { ApplyJSONPatchOptions, JSONPatchOp } from '../types';
+import { type ApplyJSONPatchOptions, type JSONPatchOp } from '../types';
 
 export function exit(
   object: any,

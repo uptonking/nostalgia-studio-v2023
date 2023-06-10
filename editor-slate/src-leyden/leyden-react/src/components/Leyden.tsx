@@ -1,9 +1,9 @@
 import { Table } from 'leyden';
-import React, { FC, ReactNode, useCallback } from 'react';
-import { Descendant, Element } from 'slate';
+import React, { type FC, type ReactNode, useCallback } from 'react';
+import { type Descendant, Element } from 'slate';
 import { Slate } from 'slate-react';
 
-import { ReactEditor } from '../plugin/ReactEditor';
+import { type ReactEditor } from '../plugin/ReactEditor';
 
 export interface Leyden {
   children: ReactNode;

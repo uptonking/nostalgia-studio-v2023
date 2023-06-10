@@ -7,7 +7,7 @@ import {
   DEFAULT_TABLE_EMOJI,
   TableEmoji,
 } from '../value-objects/table-emoji.vo';
-import type { ITableSpecVisitor } from './interface';
+import { type ITableSpecVisitor } from './interface';
 
 export class WithTableEmoji extends CompositeSpecification {
   constructor(public readonly emoji: TableEmoji) {

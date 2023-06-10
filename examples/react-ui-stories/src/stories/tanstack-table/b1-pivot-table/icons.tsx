@@ -1,4 +1,4 @@
-import type { Icon } from '@icon-park/react/lib/runtime';
+import { type Icon } from '@icon-park/react/lib/runtime';
 
 export {
   DownOne as TriangleDownIcon,

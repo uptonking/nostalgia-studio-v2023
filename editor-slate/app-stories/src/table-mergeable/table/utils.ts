@@ -1,4 +1,4 @@
-import { Editor, NodeEntry, Path, Transforms } from 'slate';
+import { Editor, type NodeEntry, Path, Transforms } from 'slate';
 
 import { createContent } from './creator';
 

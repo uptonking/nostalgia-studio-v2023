@@ -13,8 +13,12 @@ import {
 } from '../utilities';
 import { EventName, preventDefault, stopPropagation } from '../events';
 import { KeyboardCode } from '../keyboard';
-import type { SensorInstance, SensorProps, SensorOptions } from '../types';
-import type { Coordinates, DistanceMeasurement } from '../../types';
+import {
+  type SensorInstance,
+  type SensorProps,
+  type SensorOptions,
+} from '../types';
+import { type Coordinates, type DistanceMeasurement } from '../../types';
 
 interface DistanceConstraint {
   distance: DistanceMeasurement;

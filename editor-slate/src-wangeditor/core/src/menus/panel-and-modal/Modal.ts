@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import $, { Dom7Array, DOMElement } from '../../utils/dom';
-import { IPositionStyle } from '../interface';
+import $, { type Dom7Array, type DOMElement } from '../../utils/dom';
+import { type IPositionStyle } from '../interface';
 import PanelAndModal from './BaseClass';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 // import { DomEditor } from '../../editor/dom-editor'
 import { SVG_CLOSE } from '../../constants/svg';
 import { PANEL_OR_MODAL_TO_EDITOR } from '../../utils/weak-maps';

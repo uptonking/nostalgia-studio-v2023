@@ -1,4 +1,4 @@
-import type { Alignment } from '../types';
+import { type Alignment } from '../types';
 
 const oppositeAlignmentMap = {
   start: 'end',

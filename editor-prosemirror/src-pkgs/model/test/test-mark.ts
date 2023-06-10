@@ -1,4 +1,4 @@
-import { Mark, Schema, Node } from 'prosemirror-model';
+import { Mark, Schema, type Node } from 'prosemirror-model';
 import { schema, doc, p, em, a } from 'prosemirror-test-builder';
 import ist from 'ist';
 

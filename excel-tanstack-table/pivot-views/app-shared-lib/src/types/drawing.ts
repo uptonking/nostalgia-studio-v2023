@@ -1,5 +1,5 @@
-import type { Entity } from '.';
-import type { User } from './user';
+import { type Entity } from '.';
+import { type User } from './user';
 
 export enum ActionType {
   Open = 0,

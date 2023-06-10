@@ -1,8 +1,8 @@
-import { Node, Operation } from 'slate';
-import * as Y from 'yjs';
+import { type Node, type Operation } from 'slate';
+import type * as Y from 'yjs';
 import { NODE_MAPPER } from './node';
 import { TEXT_MAPPER } from './text';
-import { ApplyFunc, OpMapper } from './types';
+import { type ApplyFunc, type OpMapper } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const NOOP = () => {};

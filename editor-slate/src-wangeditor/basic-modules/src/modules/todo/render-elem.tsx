@@ -3,12 +3,12 @@
  * @author wangfupeng
  */
 
-import { Element as SlateElement, Transforms } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import { type Element as SlateElement, Transforms } from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
-import { DomEditor, IDomEditor } from '@wangeditor/core';
+import { DomEditor, type IDomEditor } from '@wangeditor/core';
 
-import { TodoElement } from './custom-types';
+import { type TodoElement } from './custom-types';
 
 /**
  * render todo elem

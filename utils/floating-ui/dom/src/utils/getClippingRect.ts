@@ -1,13 +1,13 @@
-import type {
-  Boundary,
-  ClientRectObject,
-  Rect,
-  RootBoundary,
-  Strategy,
+import {
+  type Boundary,
+  type ClientRectObject,
+  type Rect,
+  type RootBoundary,
+  type Strategy,
 } from '@floating-ui/core';
 import { rectToClientRect } from '@floating-ui/core';
 
-import type { Platform, ReferenceElement } from '../types';
+import { type Platform, type ReferenceElement } from '../types';
 import { getBoundingClientRect } from './getBoundingClientRect';
 import { getComputedStyle } from './getComputedStyle';
 import { getDocumentElement } from './getDocumentElement';

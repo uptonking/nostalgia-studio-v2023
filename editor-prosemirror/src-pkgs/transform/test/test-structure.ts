@@ -1,4 +1,4 @@
-import { Schema, Slice, Node } from 'prosemirror-model';
+import { Schema, Slice, type Node } from 'prosemirror-model';
 import {
   canSplit,
   liftTarget,

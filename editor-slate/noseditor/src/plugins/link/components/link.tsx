@@ -8,8 +8,8 @@ import {
   PopoverTrigger,
 } from '../../../components/common/popover';
 import { themed } from '../../../styles/theme-vars';
-import type { ElementProps } from '../../types';
-import type { LinkElementType } from '../types';
+import { type ElementProps } from '../../types';
+import { type LinkElementType } from '../types';
 import { LinkInput } from './link-input';
 
 export const Link = (props: ElementProps & { element: LinkElementType }) => {

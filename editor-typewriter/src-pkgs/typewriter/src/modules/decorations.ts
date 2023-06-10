@@ -1,17 +1,17 @@
 import {
   type AttributeMapType,
   Delta,
-  EditorRange,
+  type EditorRange,
   isEqual,
-  Line,
+  type Line,
   TextChange,
-  TextDocument,
+  type TextDocument,
 } from '@typewriter/document';
 
-import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-event';
-import { h, Props, VNode } from '../rendering/vdom';
-import type { EmbedType, FormatType } from '../typesetting';
+import { type Editor } from '../editor';
+import { type EditorChangeEvent } from '../editor-event';
+import { h, type Props, type VNode } from '../rendering/vdom';
+import { type EmbedType, type FormatType } from '../typesetting';
 
 const endInSemicolon = /;\s*$/;
 

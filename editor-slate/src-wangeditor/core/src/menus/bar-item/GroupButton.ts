@@ -4,10 +4,10 @@
  */
 
 import { gen$downArrow } from '../helpers/helpers';
-import $, { Dom7Array } from '../../utils/dom';
-import { IMenuGroup } from '../interface';
+import $, { type Dom7Array } from '../../utils/dom';
+import { type IMenuGroup } from '../interface';
 import { clearSvgStyle } from '../helpers/helpers';
-import { IBarItem } from './index';
+import { type IBarItem } from './index';
 class GroupButton {
   readonly $elem: Dom7Array = $(
     `<div class="w-e-bar-item w-e-bar-item-group"></div>`,

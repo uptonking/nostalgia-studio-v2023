@@ -1,8 +1,8 @@
 import { Plugin } from 'prosemirror-state';
 
-import { EditorContext } from '../../../context';
+import { type EditorContext } from '../../../context';
 import { getActiveMarks } from '../pm-utils/getActive';
-import { BaseState, basePluginKey } from './state';
+import { type BaseState, basePluginKey } from './state';
 
 export function basePluginFactory(ctx: EditorContext, options?: {}) {
   const { pluginsProvider } = ctx;

@@ -1,8 +1,8 @@
 import { addMilliseconds } from 'date-fns';
-import { SafeParseError } from 'zod';
+import { type SafeParseError } from 'zod';
 import {
   dateRangeFieldValue,
-  IDateRangeFieldValue,
+  type IDateRangeFieldValue,
 } from './date-range-field.type';
 
 const now = new Date();

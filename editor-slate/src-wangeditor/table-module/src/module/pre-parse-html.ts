@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import $, { getTagName, DOMElement } from '../utils/dom';
+import $, { getTagName, type DOMElement } from '../utils/dom';
 
 /**
  * pre-prase table ，去掉 <tbody>

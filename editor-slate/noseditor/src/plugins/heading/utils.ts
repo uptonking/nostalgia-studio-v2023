@@ -1,12 +1,12 @@
 import { Element } from 'slate';
 
-import type {
-  Heading1Element,
-  Heading1Type,
-  Heading2Element,
-  Heading2Type,
-  Heading3Element,
-  Heading3Type,
+import {
+  type Heading1Element,
+  type Heading1Type,
+  type Heading2Element,
+  type Heading2Type,
+  type Heading3Element,
+  type Heading3Type,
 } from './types';
 
 export const Heading1Spec: Heading1Type = 'h1';

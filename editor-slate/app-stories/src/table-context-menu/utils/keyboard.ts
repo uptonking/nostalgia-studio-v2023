@@ -1,7 +1,11 @@
 import { Editor, Path, type Point, Transforms } from 'slate';
 
-import { CustomEditor, TableCellElement, TableElement } from '../customTypes';
-import { Direction } from '../types';
+import {
+  type CustomEditor,
+  TableCellElement,
+  TableElement,
+} from '../customTypes';
+import { type Direction } from '../types';
 import {
   createEmptyCellNode,
   createRowNode,

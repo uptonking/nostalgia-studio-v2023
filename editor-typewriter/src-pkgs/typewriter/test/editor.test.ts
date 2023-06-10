@@ -2,7 +2,7 @@ import { expect } from 'chai';
 
 import { Delta } from '@typewriter/document';
 
-import { Editor, EditorChangeEvent } from '../src/editor';
+import { Editor, type EditorChangeEvent } from '../src/editor';
 
 describe('======== Editor ========', () => {
   let editor: Editor;

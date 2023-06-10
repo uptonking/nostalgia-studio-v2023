@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { Box, Checkbox } from '@datalking/pivot-ui';
-import type { Table } from '@tanstack/react-table';
+import { type Table } from '@tanstack/react-table';
 
-import type { TData } from './interface';
+import { type TData } from './interface';
 import { usePinnedStyles } from './styles';
 
 export const SelectionHeader: React.FC<{ table: Table<TData> }> = ({

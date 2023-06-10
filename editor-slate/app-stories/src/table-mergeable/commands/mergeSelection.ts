@@ -1,7 +1,7 @@
-import { Editor, Node, NodeEntry, Transforms } from 'slate';
+import { Editor, type Node, type NodeEntry, Transforms } from 'slate';
 
-import { Cell } from '../table/creator';
-import { Col, splitTable } from '../table/selection';
+import { type Cell } from '../table/creator';
+import { type Col, splitTable } from '../table/selection';
 
 export function mergeSelection(table: NodeEntry, editor: Editor) {
   if (!table || !editor.selection) return;

@@ -1,13 +1,13 @@
-import { derived, get, readable, Readable, writable } from 'svelte/store';
+import { derived, get, readable, type Readable, writable } from 'svelte/store';
 
 import {
-  AttributeMap,
-  EditorRange,
+  type AttributeMap,
+  type EditorRange,
   isEqual,
   TextDocument,
 } from '@typewriter/document';
 
-import type { Editor } from './editor';
+import { type Editor } from './editor';
 
 const EMPTY_NOPTIFIER = () => {};
 const EMPTY_ACTIVE = readable({} as AttributeMap, EMPTY_NOPTIFIER);

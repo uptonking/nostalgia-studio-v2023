@@ -9,7 +9,7 @@ import {
   tableRowToHtmlConf,
 } from '../src/module/elem-to-html';
 import * as core from '@wangeditor/core';
-import { Ancestor } from 'slate';
+import { type Ancestor } from 'slate';
 
 describe('TableModule module', () => {
   describe('module elem-to-html', () => {

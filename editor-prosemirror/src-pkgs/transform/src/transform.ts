@@ -1,12 +1,12 @@
 import {
-  Attrs,
-  ContentMatch,
+  type Attrs,
+  type ContentMatch,
   Fragment,
   Mark,
-  MarkType,
-  Node,
-  NodeRange,
-  NodeType,
+  type MarkType,
+  type Node,
+  type NodeRange,
+  type NodeType,
   Slice,
 } from 'prosemirror-model';
 
@@ -20,7 +20,7 @@ import {
   replaceRangeWith,
   replaceStep,
 } from './replace';
-import { Step } from './step';
+import { type Step } from './step';
 import {
   join,
   lift,

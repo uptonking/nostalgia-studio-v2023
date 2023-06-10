@@ -1,9 +1,12 @@
 import { useMemo } from 'react';
 
-import type { SensorActivatorFunction, SensorDescriptor } from '../../sensors';
-import type {
-  SyntheticListener,
-  SyntheticListeners,
+import {
+  type SensorActivatorFunction,
+  type SensorDescriptor,
+} from '../../sensors';
+import {
+  type SyntheticListener,
+  type SyntheticListeners,
 } from './useSyntheticListeners';
 
 /** collect sensors.activators */

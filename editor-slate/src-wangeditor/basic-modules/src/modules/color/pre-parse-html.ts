@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import $, { DOMElement, getTagName } from '../../utils/dom';
+import $, { type DOMElement, getTagName } from '../../utils/dom';
 
 /**
  * pre-prase font ，兼容 V4

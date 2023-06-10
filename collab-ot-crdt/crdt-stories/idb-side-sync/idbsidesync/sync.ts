@@ -1,4 +1,8 @@
-import type { SyncPlugin, SyncProfile, UserProfile } from '../types/main';
+import {
+  type SyncPlugin,
+  type SyncProfile,
+  type UserProfile,
+} from '../types/main';
 import * as db from './db';
 import { HLTime } from './HLTime';
 import { debug, LIB_NAME, log } from './utils';

@@ -1,9 +1,9 @@
-import { NodeSelection, Selection, Transaction } from 'prosemirror-state';
+import { NodeSelection, Selection, type Transaction } from 'prosemirror-state';
 import {
   Node as PMNode,
   Fragment,
-  NodeType,
-  ResolvedPos,
+  type NodeType,
+  type ResolvedPos,
 } from 'prosemirror-model';
 import { findParentNodeOfType } from '@example/prosemirror-utils';
 

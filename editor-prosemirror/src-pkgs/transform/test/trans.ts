@@ -1,4 +1,4 @@
-import { Node } from 'prosemirror-model';
+import { type Node } from 'prosemirror-model';
 import { Transform, Mapping, Step } from 'prosemirror-transform';
 import { eq } from 'prosemirror-test-builder';
 import ist from 'ist';

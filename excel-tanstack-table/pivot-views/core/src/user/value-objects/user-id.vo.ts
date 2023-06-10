@@ -1,4 +1,4 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Err, Ok } from 'oxide.ts';
 import { z } from 'zod';
 

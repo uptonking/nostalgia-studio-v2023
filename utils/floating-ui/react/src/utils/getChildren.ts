@@ -1,4 +1,4 @@
-import type { FloatingNodeType, ReferenceType } from '../types';
+import { type FloatingNodeType, type ReferenceType } from '../types';
 
 export function getChildren<RT extends ReferenceType = ReferenceType>(
   nodes: Array<FloatingNodeType<RT>>,

@@ -2,8 +2,8 @@ import React, { forwardRef, useEffect } from 'react';
 
 import cx from 'clsx';
 
-import type { DraggableSyntheticListeners } from '@dnd-kit/core';
-import type { Transform } from '@dnd-kit/utilities';
+import { type DraggableSyntheticListeners } from '@dnd-kit/core';
+import { type Transform } from '@dnd-kit/utilities';
 
 import { Handle, Remove } from './action-handle';
 import styles from './ui.module.scss';

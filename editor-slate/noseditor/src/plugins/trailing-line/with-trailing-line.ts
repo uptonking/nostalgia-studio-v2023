@@ -1,8 +1,8 @@
 import {
   Editor,
-  Location,
+  type Location,
   Node,
-  NodeEntry,
+  type NodeEntry,
   Path,
   Range,
   Transforms,

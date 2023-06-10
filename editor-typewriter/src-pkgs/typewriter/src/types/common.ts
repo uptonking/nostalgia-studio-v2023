@@ -1,7 +1,7 @@
-import type { AttributeMapType, EditorRange } from '@typewriter/document';
+import { type AttributeMapType, type EditorRange } from '@typewriter/document';
 
-import type { Editor } from '../editor';
-import type { Commands } from '../typesetting';
+import { type Editor } from '../editor';
+import { type Commands } from '../typesetting';
 
 export interface Shortcuts {
   [shortcut: string]: string;

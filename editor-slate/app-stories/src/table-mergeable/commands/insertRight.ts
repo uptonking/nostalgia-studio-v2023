@@ -1,7 +1,7 @@
-import { Editor, NodeEntry, Path, Transforms } from 'slate';
+import { Editor, type NodeEntry, Path, Transforms } from 'slate';
 
 import { createCell } from '../table/creator';
-import { Col, splitTable } from '../table/selection';
+import { type Col, splitTable } from '../table/selection';
 
 export function insertRight(table: NodeEntry, editor: Editor) {
   console.log('insertRight-ing');

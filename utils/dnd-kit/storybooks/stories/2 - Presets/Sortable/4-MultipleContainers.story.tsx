@@ -1,5 +1,5 @@
 import React from 'react';
-import type {CancelDrop} from '@dnd-kit/core';
+import {type CancelDrop} from '@dnd-kit/core';
 import {rectSortingStrategy} from '@dnd-kit/sortable';
 
 import {MultipleContainers, TRASH_ID} from './MultipleContainers';

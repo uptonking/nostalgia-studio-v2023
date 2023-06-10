@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import { Descendant } from 'slate';
-import { IDomEditor } from '../editor/interface';
+import { type Descendant } from 'slate';
+import { type IDomEditor } from '../editor/interface';
 import parseElemHtml from '../parse-html/parse-elem-html';
-import $, { DOMElement } from '../utils/dom';
+import $, { type DOMElement } from '../utils/dom';
 
 function isRepeatedCreate(
   editor: IDomEditor,

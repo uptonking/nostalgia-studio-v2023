@@ -2,13 +2,13 @@ import { Option } from 'oxide.ts';
 
 import { andOptions, ValueObject } from '@datalking/pivot-entity';
 
-import type { Field } from '../field/index';
-import type { TableCompositeSpecificaiton } from '../specifications/interface';
-import type { WithTableView } from './specifications/views.specification';
+import { type Field } from '../field/index';
+import { type TableCompositeSpecificaiton } from '../specifications/interface';
+import { type WithTableView } from './specifications/views.specification';
 import { WithNewView, WithoutView } from './specifications/views.specification';
 import { View } from './view';
-import type { ICreateViewSchema } from './view.schema';
-import type { ICreateViewInput_internal } from './view.type';
+import { type ICreateViewSchema } from './view.schema';
+import { type ICreateViewInput_internal } from './view.type';
 
 /** manager of multi views */
 export class Views extends ValueObject<View[]> {

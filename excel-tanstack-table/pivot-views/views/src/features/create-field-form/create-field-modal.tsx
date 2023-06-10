@@ -1,9 +1,9 @@
 import React from 'react';
 
-import type { ContextModalProps } from '@datalking/pivot-ui';
+import { type ContextModalProps } from '@datalking/pivot-ui';
 
 import { CreateFieldForm } from './create-field-form';
-import type { ICreateFieldProps } from './create-field.props';
+import { type ICreateFieldProps } from './create-field.props';
 
 export const CreateFieldModal = ({
   innerProps,

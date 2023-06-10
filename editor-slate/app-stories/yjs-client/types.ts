@@ -1,7 +1,11 @@
-import { Descendant } from 'slate';
-import { ReactEditor } from 'slate-react';
+import { type Descendant } from 'slate';
+import { type ReactEditor } from 'slate-react';
 
-import { CursorEditor, YHistoryEditor, YjsEditor } from '@slate-yjs/core';
+import {
+  type CursorEditor,
+  type YHistoryEditor,
+  type YjsEditor,
+} from '@slate-yjs/core';
 
 export type CursorData = {
   name: string;

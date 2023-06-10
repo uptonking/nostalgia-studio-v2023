@@ -1,4 +1,4 @@
-import { RGAIdentifier } from './RGAIdentifier';
+import { type RGAIdentifier } from './RGAIdentifier';
 
 /**
  * Represents an insert operations into the RGA

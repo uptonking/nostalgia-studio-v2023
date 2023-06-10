@@ -8,7 +8,7 @@ import { CreateDateField } from './create-date-field';
 import { CreateSelectField } from './create-select-field';
 import { kanbanStepAtom } from './kanban-step.atom';
 import { SelectExistingField } from './select-existing-kanban-field';
-import type { ISelectKanbanFieldProps } from './select-kanban-field.props';
+import { type ISelectKanbanFieldProps } from './select-kanban-field.props';
 
 export const SelectKanbanField: React.FC<ISelectKanbanFieldProps> = ({
   onSuccess,

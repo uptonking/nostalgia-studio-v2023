@@ -1,8 +1,8 @@
-import express from 'express';
+import type express from 'express';
 import sequelize from 'sequelize';
 import { v4 as uuid } from 'uuid';
 
-import { SystemSettings } from '@datalking/pivot-app-shared-lib';
+import { type SystemSettings } from '@datalking/pivot-app-shared-lib';
 
 import { createToken } from '../../shared/auth';
 import { config } from '../../shared/config';
@@ -11,7 +11,7 @@ import { list } from '../../shared/model-api/controller';
 import { getClientConfigSettings } from '../../shared/settings';
 import {
   DrawingModel,
-  EnrichedRequest,
+  type EnrichedRequest,
   SettingModel,
   UserModel,
 } from '../../shared/types';

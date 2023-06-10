@@ -1,4 +1,4 @@
-import { Doc } from './types';
+import { type Doc } from './types';
 
 export default function deepClone(old: Doc): Doc {
   if (old === null) return null;

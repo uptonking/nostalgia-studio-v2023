@@ -1,5 +1,5 @@
 import { keymap } from 'prosemirror-keymap';
-import { Command, Plugin } from 'prosemirror-state';
+import { type Command, type Plugin } from 'prosemirror-state';
 import ist from 'ist';
 
 const fakeView = { state: {}, dispatch: () => {} };

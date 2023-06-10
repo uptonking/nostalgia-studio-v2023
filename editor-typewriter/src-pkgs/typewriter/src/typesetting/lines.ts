@@ -5,7 +5,7 @@ import {
 } from '@typewriter/document';
 
 import { applyDecorations } from '../modules/decorations';
-import { h, Props, VChild, VNode } from '../rendering/vdom';
+import { h, type Props, type VChild, type VNode } from '../rendering/vdom';
 import { registerLineType } from './typeset';
 
 export const paragraph = registerLineType({

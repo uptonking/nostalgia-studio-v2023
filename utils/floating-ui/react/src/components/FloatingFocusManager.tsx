@@ -3,9 +3,9 @@ import * as React from 'react';
 import { hideOthers } from 'aria-hidden';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import type { DismissPayload } from '../hooks/useDismiss';
+import { type DismissPayload } from '../hooks/useDismiss';
 import { useLatestRef } from '../hooks/utils/useLatestRef';
-import type { FloatingContext, ReferenceType } from '../types';
+import { type FloatingContext, type ReferenceType } from '../types';
 import { activeElement } from '../utils/activeElement';
 import { contains } from '../utils/contains';
 import { enqueueFocus } from '../utils/enqueueFocus';

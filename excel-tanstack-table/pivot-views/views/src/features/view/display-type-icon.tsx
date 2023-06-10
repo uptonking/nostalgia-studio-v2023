@@ -1,9 +1,9 @@
 import React from 'react';
 
-import type { IViewDisplayType } from '@datalking/pivot-core';
-import type {
-  DefaultMantineColor,
-  TablerIconsProps,
+import { type IViewDisplayType } from '@datalking/pivot-core';
+import {
+  type DefaultMantineColor,
+  type TablerIconsProps,
 } from '@datalking/pivot-ui';
 import {
   IconCalendar,

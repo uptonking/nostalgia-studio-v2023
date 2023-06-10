@@ -1,4 +1,4 @@
-import { BaseEditor, Editor, Node, Path, Range, Transforms } from 'slate';
+import { type BaseEditor, Editor, Node, Path, Range, Transforms } from 'slate';
 
 import { ParagraphSpec } from '../../paragraph/utils';
 import { moveItemsBack } from '../commands';

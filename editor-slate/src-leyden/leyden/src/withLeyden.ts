@@ -1,10 +1,10 @@
-import { Editor, Node } from 'slate';
+import { type Editor, Node } from 'slate';
 
-import { LeydenEditor } from './interfaces/LeydenEditor';
+import { type LeydenEditor } from './interfaces/LeydenEditor';
 import { Element } from './interfaces/Element';
 import { Text } from './interfaces/Text';
 import { Validator } from './interfaces/Validator';
-import { WithLeydenOptions } from './utils/types';
+import { type WithLeydenOptions } from './utils/types';
 import { OPERATION_SUBSCRIBERS } from './utils/weakMaps';
 
 export const withLeyden = <T extends Editor>({

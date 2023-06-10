@@ -1,17 +1,17 @@
 import {
-  Attrs,
-  ContentMatch,
+  type Attrs,
+  type ContentMatch,
   Fragment,
-  Node,
-  NodeType,
-  ResolvedPos,
+  type Node,
+  type NodeType,
+  type ResolvedPos,
   Slice,
 } from 'prosemirror-model';
 
 import { ReplaceAroundStep, ReplaceStep } from './replace_step';
-import { Step } from './step';
+import { type Step } from './step';
 import { insertPoint } from './structure';
-import { Transform } from './transform';
+import { type Transform } from './transform';
 
 /** ‘Fit’ a slice into a given position in the document, producing a
  * [step](#transform.Step) that inserts it. Will return null if

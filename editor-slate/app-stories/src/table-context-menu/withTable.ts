@@ -1,11 +1,11 @@
 import {
-  BaseOperation,
+  type BaseOperation,
   Editor,
   Element,
   Path,
   Point,
   Range,
-  SetNodeOperation,
+  type SetNodeOperation,
   Transforms,
 } from 'slate';
 

@@ -3,9 +3,9 @@ import React from 'react';
 import _ from 'lodash';
 
 import {
-  PagedResult,
-  Subscription,
-  SubscriptionPlan,
+  type PagedResult,
+  type Subscription,
+  type SubscriptionPlan,
 } from '@datalking/pivot-app-shared-lib';
 import { Delete, Edit, Search as SearchIcon } from '@mui/icons-material';
 /* eslint-disable no-console */
@@ -29,11 +29,15 @@ import {
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  type GridColDef,
+  type GridEventListener,
+} from '@mui/x-data-grid';
 
 import { useGet } from '../../app';
-import AlertDialog, { ShowDialogProps } from '../../ui/AlertDialog';
-import { PagingProps } from '../Data';
+import AlertDialog, { type ShowDialogProps } from '../../ui/AlertDialog';
+import { type PagingProps } from '../Data';
 import PlanEdit from './PlanEdit';
 import SubscriptionEdit from './Subscription';
 

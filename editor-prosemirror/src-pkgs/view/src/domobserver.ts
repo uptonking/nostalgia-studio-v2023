@@ -2,12 +2,12 @@ import { Selection } from 'prosemirror-state';
 
 import * as browser from './browser';
 import {
-  DOMSelection,
+  type DOMSelection,
   domIndex,
   isEquivalentPosition,
   selectionCollapsed,
 } from './dom';
-import { EditorView } from './index';
+import { type EditorView } from './index';
 import {
   hasFocusAndSelection,
   selectionFromDOM,

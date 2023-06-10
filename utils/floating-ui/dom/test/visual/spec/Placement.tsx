@@ -1,4 +1,4 @@
-import type { Placement as PlacementType } from '@floating-ui/core';
+import { type Placement as PlacementType } from '@floating-ui/core';
 import { useFloating } from '@floating-ui/react-dom';
 import { useLayoutEffect, useState } from 'react';
 

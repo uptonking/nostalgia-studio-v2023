@@ -8,7 +8,7 @@ import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { schema } from 'prosemirror-schema-basic';
 import {
-  Command,
+  type Command,
   EditorState,
   Plugin,
   type PluginView,

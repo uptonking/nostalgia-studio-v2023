@@ -25,11 +25,11 @@ import {
   Slice,
   Fragment,
   Schema,
-  Node,
-  Mark,
-  MarkType,
-  NodeType,
-  Attrs,
+  type Node,
+  type Mark,
+  type MarkType,
+  type NodeType,
+  type Attrs,
 } from 'prosemirror-model';
 import ist from 'ist';
 

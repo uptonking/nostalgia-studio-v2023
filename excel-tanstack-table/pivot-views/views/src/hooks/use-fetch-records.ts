@@ -1,4 +1,4 @@
-import type { IGetRecordsQuery } from '@datalking/pivot-cqrs';
+import { type IGetRecordsQuery } from '@datalking/pivot-cqrs';
 import { useGetRecordsQuery } from '@datalking/pivot-store';
 
 import { useCurrentTable } from './use-current-table';

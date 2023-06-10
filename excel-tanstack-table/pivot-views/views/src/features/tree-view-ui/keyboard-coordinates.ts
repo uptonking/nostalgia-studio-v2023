@@ -1,10 +1,10 @@
-import type {
-  DroppableContainer,
-  KeyboardCoordinateGetter,
+import {
+  type DroppableContainer,
+  type KeyboardCoordinateGetter,
 } from '@dnd-kit/core';
 import { closestCorners, getFirstCollision, KeyboardCode } from '@dnd-kit/core';
 
-import type { SensorContext } from './tree-view-ui.types';
+import { type SensorContext } from './tree-view-ui.types';
 import { getProjection } from './tree-view-ui.util';
 
 const directions: string[] = [

@@ -1,4 +1,4 @@
-import { EditorState, Selection } from 'prosemirror-state';
+import { type EditorState, type Selection } from 'prosemirror-state';
 
 import {
   findParentNodeOfType,

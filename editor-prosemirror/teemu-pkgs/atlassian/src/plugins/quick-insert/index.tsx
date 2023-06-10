@@ -1,20 +1,20 @@
 import React from 'react';
 import { Plugin } from 'prosemirror-state';
 import {
-  QuickInsertItem,
-  QuickInsertProvider,
-  ProviderFactory,
+  type QuickInsertItem,
+  type QuickInsertProvider,
+  type ProviderFactory,
 } from '../../provider-factory';
 
-import { Dispatch } from '../../utils/event-dispatcher';
-import { EditorPlugin, Command } from '../../types';
+import { type Dispatch } from '../../utils/event-dispatcher';
+import { type EditorPlugin, type Command } from '../../types';
 
 import { pluginKey } from './plugin-key';
 import { searchQuickInsertItems } from './search';
 import {
-  QuickInsertHandler,
-  QuickInsertPluginOptions,
-  QuickInsertPluginState,
+  type QuickInsertHandler,
+  type QuickInsertPluginOptions,
+  type QuickInsertPluginState,
 } from './types';
 
 // import ModalElementBrowser from './ui/ModalElementBrowser';

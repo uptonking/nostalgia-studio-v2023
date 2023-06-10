@@ -4,13 +4,13 @@ import { useAtomValue } from 'jotai';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import type { ICreateFieldSchema } from '@datalking/pivot-core';
+import { type ICreateFieldSchema } from '@datalking/pivot-core';
 import {
   canDisplay,
   createCreateFieldSchema,
   isControlledFieldType,
 } from '@datalking/pivot-core';
-import type { ICreateFieldCommandInput } from '@datalking/pivot-cqrs';
+import { type ICreateFieldCommandInput } from '@datalking/pivot-cqrs';
 import { useCreateFieldMutation } from '@datalking/pivot-store';
 import {
   Box,
@@ -37,7 +37,7 @@ import { FieldItem } from '../field-inputs/field-item';
 import { DisplayFields } from '../field/display-fields';
 import { FieldVariantControl } from '../field/field-variant-control';
 import { createFieldInitialValueAtom } from './create-field-initial-value.atom';
-import type { ICreateFieldProps } from './create-field.props';
+import { type ICreateFieldProps } from './create-field.props';
 
 export const CreateFieldForm: React.FC<ICreateFieldProps> = ({
   onCancel,

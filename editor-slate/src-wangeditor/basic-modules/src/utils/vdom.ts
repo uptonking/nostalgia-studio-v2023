@@ -3,7 +3,7 @@
  * @author wangfupeng
  */
 
-import { VNode, VNodeStyle, Dataset } from 'snabbdom';
+import { type VNode, type VNodeStyle, Dataset } from 'snabbdom';
 
 // /**
 //  * 给 vnode 添加 dataset

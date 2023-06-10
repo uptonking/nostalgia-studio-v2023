@@ -1,5 +1,5 @@
-import { Node } from 'prosemirror-model';
-import { EditorView, Decoration } from 'prosemirror-view';
+import { type Node } from 'prosemirror-model';
+import { type EditorView, Decoration } from 'prosemirror-view';
 
 import { BlockQuoteView } from './BlockQuoteView';
 

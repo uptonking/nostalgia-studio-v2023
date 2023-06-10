@@ -1,18 +1,27 @@
-import type { z } from 'zod';
+import { type z } from 'zod';
 
-import type { IRootFilter } from '../field/filter/index';
-import type { RootFilter } from '../field/filter/root-filter';
-import type { Calendar, ICalendarSchema } from './calendar/index';
-import type { IKanbanSchema, Kanban } from './kanban/index';
-import type { ISorts } from './sort/sort.schema';
-import type { Sorts } from './sort/sorts';
-import type { ITreeViewSchema, TreeView } from './tree-view/index';
-import type { IViewFieldOption, ViewFieldOptions } from './view-field-options';
-import type { ViewFieldsOrder } from './view-fields-order.vo';
-import type { ViewId } from './view-id.vo';
-import type { ViewName } from './view-name.vo';
-import type { IViewPinnedFields, ViewPinnedFields } from './view-pinned-fields';
-import type { createViewInput_internal, viewDisplayType } from './view.schema';
+import { type IRootFilter } from '../field/filter/index';
+import { type RootFilter } from '../field/filter/root-filter';
+import { type Calendar, type ICalendarSchema } from './calendar/index';
+import { type IKanbanSchema, type Kanban } from './kanban/index';
+import { type ISorts } from './sort/sort.schema';
+import { type Sorts } from './sort/sorts';
+import { type ITreeViewSchema, type TreeView } from './tree-view/index';
+import {
+  type IViewFieldOption,
+  type ViewFieldOptions,
+} from './view-field-options';
+import { type ViewFieldsOrder } from './view-fields-order.vo';
+import { type ViewId } from './view-id.vo';
+import { type ViewName } from './view-name.vo';
+import {
+  type IViewPinnedFields,
+  type ViewPinnedFields,
+} from './view-pinned-fields';
+import {
+  type createViewInput_internal,
+  type viewDisplayType,
+} from './view.schema';
 
 export interface IView {
   id: ViewId;

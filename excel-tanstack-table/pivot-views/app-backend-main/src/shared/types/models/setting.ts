@@ -1,6 +1,6 @@
 import { DataTypes } from 'sequelize';
 
-import type { Setting } from '@datalking/pivot-app-shared-lib';
+import { type Setting } from '@datalking/pivot-app-shared-lib';
 
 import { sendConfig } from '../../../shared/socket';
 import { addModel } from '../../db';

@@ -1,10 +1,10 @@
 import { Plugin } from 'prosemirror-state';
 import { DecorationSet } from 'prosemirror-view';
 
-import { EditorContext } from '../../../context';
-import { CollabParticipant } from '../types';
-import { CollabState, collabEditPluginKey, getPluginState } from './state';
-import { CollabExtensionProps } from '..';
+import { type EditorContext } from '../../../context';
+import { type CollabParticipant } from '../types';
+import { type CollabState, collabEditPluginKey, getPluginState } from './state';
+import { type CollabExtensionProps } from '..';
 
 export const collabEditPluginFactory = (
   ctx: EditorContext,

@@ -1,9 +1,9 @@
-import express from 'express';
-import { Model, ModelStatic, Order } from 'sequelize/types';
+import type express from 'express';
+import { type Model, type ModelStatic, type Order } from 'sequelize/types';
 
-import Connection, { EntityConfig } from '../db';
+import Connection, { type EntityConfig } from '../db';
 import logger from '../logger';
-import { EnrichedRequest } from '../types';
+import { type EnrichedRequest } from '../types';
 import {
   createOrUpdate,
   getIfExists,

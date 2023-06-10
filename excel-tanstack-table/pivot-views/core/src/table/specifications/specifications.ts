@@ -1,5 +1,5 @@
-import type { ClsStore } from '../../cls/cls';
-import type { ICreateTableInput_internal } from '../table.schema';
+import { type ClsStore } from '../../cls/cls';
+import { type ICreateTableInput_internal } from '../table.schema';
 import { WithTableViews } from '../view/specifications/views.specification';
 import { WithTableEmoji } from './table-emoji.specification';
 import { WithTableId } from './table-id.specification';

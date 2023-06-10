@@ -1,15 +1,15 @@
-import type { RowModel } from '..';
-import type { TableFeature } from '../core/table';
+import { type RowModel } from '..';
+import { type TableFeature } from '../core/table';
 import { type BuiltInFilterFn, filterFns } from '../filterFns';
-import type {
-  Column,
-  FilterFns,
-  FilterMeta,
-  OnChangeFn,
-  Row,
-  RowData,
-  Table,
-  Updater,
+import {
+  type Column,
+  type FilterFns,
+  type FilterMeta,
+  type OnChangeFn,
+  type Row,
+  type RowData,
+  type Table,
+  type Updater,
 } from '../types';
 import { functionalUpdate, isFunction, makeStateUpdater } from '../utils';
 
@@ -198,7 +198,10 @@ export const Filters: TableFeature = {
         const value = table
           .getCoreRowModel()
           .flatRows[0]?._getAllCellsByColumnId()
-          [column.id]?.getValue();
+          [
+            // eslint-disable-next-line no-unexpected-multiline
+            column.id
+          ]?.getValue();
 
         return typeof value === 'string' || typeof value === 'number';
       },

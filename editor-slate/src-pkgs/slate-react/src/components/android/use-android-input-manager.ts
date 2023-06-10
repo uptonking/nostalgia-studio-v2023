@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useMemo, useRef, useState } from 'react';
+import { type RefObject, useCallback, useMemo, useRef, useState } from 'react';
 
 import { useSlateStatic } from '../../hooks/use-slate-static';
 

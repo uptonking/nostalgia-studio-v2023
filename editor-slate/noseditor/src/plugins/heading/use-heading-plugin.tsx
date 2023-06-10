@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CreateNosPluginType } from '../types';
+import { type CreateNosPluginType } from '../types';
 import { Heading1, Heading2, Heading3 } from './components/heading';
 import {
   isHeading1Element,

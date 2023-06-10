@@ -1,8 +1,8 @@
-import { DOMNode } from './dom';
-import { Fragment } from './fragment';
-import { Mark } from './mark';
-import { Node } from './node';
-import { MarkType, NodeType, Schema } from './schema';
+import { type DOMNode } from './dom';
+import { type Fragment } from './fragment';
+import { type Mark } from './mark';
+import { type Node } from './node';
+import { type MarkType, type NodeType, type Schema } from './schema';
 
 /// A description of a DOM structure. Can be either a string, which is
 /// interpreted as a text node, a DOM node, which is interpreted as

@@ -21,7 +21,7 @@ import {
   useFloatingParentNodeId,
   useInteractions,
 } from '../../src';
-import { Props } from '../../src/components/FloatingFocusManager';
+import { type Props } from '../../src/components/FloatingFocusManager';
 import { Main as Drawer } from '../visual/components/Drawer';
 import { Main as Navigation } from '../visual/components/Navigation';
 

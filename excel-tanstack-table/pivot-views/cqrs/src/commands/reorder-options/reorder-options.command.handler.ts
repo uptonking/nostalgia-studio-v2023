@@ -1,7 +1,7 @@
-import type { ITableRepository } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ITableRepository } from '@datalking/pivot-core';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { ReorderOptionsCommand } from './reorder-options.command';
+import { type ReorderOptionsCommand } from './reorder-options.command';
 
 export class ReorderOptionsCommandHandler
   implements ICommandHandler<ReorderOptionsCommand, void>

@@ -1,11 +1,11 @@
-import { VirtualElement } from '@floating-ui/core';
+import { type VirtualElement } from '@floating-ui/core';
 import {
   getOverflowAncestors,
   shift,
   useFloating,
 } from '@floating-ui/react-dom';
 import {
-  MutableRefObject,
+  type MutableRefObject,
   useEffect,
   useLayoutEffect,
   useRef,

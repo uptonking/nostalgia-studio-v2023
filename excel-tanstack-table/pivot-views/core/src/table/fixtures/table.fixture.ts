@@ -1,6 +1,6 @@
-import type {
-  ICreateSelectFieldSchema,
-  ICreateStringFieldInput,
+import {
+  type ICreateSelectFieldSchema,
+  type ICreateStringFieldInput,
 } from '../field/index';
 import { FieldFactory, SelectField, StringField } from '../field/index';
 import {
@@ -9,9 +9,9 @@ import {
   WithTableId,
   WithTableName,
 } from '../specifications/index';
-import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { type TableCompositeSpecificaiton } from '../specifications/interface';
 import { TableFactory } from '../table.factory';
-import type { ICreateViewInput_internal } from '../view/index';
+import { type ICreateViewInput_internal } from '../view/index';
 import { View, Views } from '../view/index';
 import { WithTableViews } from '../view/specifications/views.specification';
 

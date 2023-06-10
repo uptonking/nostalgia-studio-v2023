@@ -1,6 +1,6 @@
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { ISortDirection, ISorts } from './sort.schema';
+import { type ISortDirection, type ISorts } from './sort.schema';
 
 export class Sorts extends ValueObject<ISorts> {
   public get sorts() {

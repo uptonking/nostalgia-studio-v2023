@@ -3,9 +3,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import type {
-  ICreateOptionSchema,
-  IMutateOptionSchema,
+import {
+  type ICreateOptionSchema,
+  type IMutateOptionSchema,
 } from '@datalking/pivot-core';
 import { OptionColor, OptionKey } from '@datalking/pivot-core';
 import {
@@ -28,7 +28,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 import { OptionColorPicker } from './option-color-picker';
-import type { OnColorChange } from './type';
+import { type OnColorChange } from './type';
 
 interface IOptionControlProps {
   option: ICreateOptionSchema;

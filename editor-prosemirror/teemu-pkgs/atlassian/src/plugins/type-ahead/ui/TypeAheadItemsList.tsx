@@ -8,7 +8,7 @@ import * as colors from '../../../theme/colors';
 
 import { Shortcut } from '../../../ui/styles';
 import IconFallback from '../../quick-insert/assets/fallback';
-import { TypeAheadItem } from '../types';
+import { type TypeAheadItem } from '../types';
 
 const hidden = { overflow: 'hidden' };
 

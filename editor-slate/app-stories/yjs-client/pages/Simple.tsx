@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { createEditor, Descendant } from 'slate';
+import { createEditor, type Descendant } from 'slate';
 import { Slate, withReact } from 'slate-react';
 import * as Y from 'yjs';
 
@@ -13,7 +13,7 @@ import { FormatToolbar } from '../components/FormatToolbar/FormatToolbar';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../config';
 import { withMarkdown } from '../plugins/withMarkdown';
 import { withNormalize } from '../plugins/withNormalize';
-import type { SyncableEditor } from '../types';
+import { type SyncableEditor } from '../types';
 
 export function SimplePage() {
   const [value, setValue] = useState<Descendant[]>([]);

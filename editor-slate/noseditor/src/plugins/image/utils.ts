@@ -1,6 +1,6 @@
 import { Element } from 'slate';
 
-import type { ImageElement, ImageType } from './types';
+import { type ImageElement, type ImageType } from './types';
 
 export const ImageSpec: ImageType = 'image';
 

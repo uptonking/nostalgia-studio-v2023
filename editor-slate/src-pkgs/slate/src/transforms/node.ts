@@ -1,19 +1,23 @@
 import {
-  Ancestor,
+  type Ancestor,
   Editor,
   Element,
-  Location,
+  type Location,
   Node,
-  NodeEntry,
+  type NodeEntry,
   Path,
   Point,
   Range,
   Text,
   Transforms,
 } from '../../src';
-import { NodeMatch, PropsCompare, PropsMerge } from '../interfaces/editor';
-import { PointRef } from '../interfaces/point-ref';
-import { MaximizeMode, RangeMode } from '../interfaces/types';
+import {
+  type NodeMatch,
+  type PropsCompare,
+  type PropsMerge,
+} from '../interfaces/editor';
+import { type PointRef } from '../interfaces/point-ref';
+import { type MaximizeMode, type RangeMode } from '../interfaces/types';
 
 export interface NodeTransforms {
   /**

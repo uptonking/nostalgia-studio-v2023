@@ -1,5 +1,5 @@
 import { browser } from '../utils/browser';
-import { Command } from '../types/command';
+import { type Command } from '../types/command';
 
 export const toggleBold = makeKeyMapWithCommon('Bold', 'Mod-b');
 export const toggleItalic = makeKeyMapWithCommon('Italic', 'Mod-i');

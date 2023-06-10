@@ -1,5 +1,5 @@
-import { Node, SetNodeOperation } from 'slate';
-import * as Y from 'yjs';
+import { type Node, type SetNodeOperation } from 'slate';
+import type * as Y from 'yjs';
 import { getYTarget } from '../../utils/location';
 
 export function setNode(

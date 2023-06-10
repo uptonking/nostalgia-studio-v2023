@@ -1,7 +1,7 @@
 import React from 'react';
 
 import clsx from 'clsx';
-import { Link, LinkProps } from 'react-router-dom';
+import { Link, type LinkProps } from 'react-router-dom';
 
 import MenuIcon from '../../assets/menu.svg';
 

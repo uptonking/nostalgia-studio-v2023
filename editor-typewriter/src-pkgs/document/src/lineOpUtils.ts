@@ -1,7 +1,7 @@
 import { Op } from '@typewriter/delta';
 
 import { LineOpIterator } from './LineOp';
-import type { Line, LineIds } from './lineUtils';
+import { type Line, type LineIds } from './lineUtils';
 
 export function iterator(lines: Line[], lineIds?: LineIds) {
   return new LineOpIterator(lines, lineIds);

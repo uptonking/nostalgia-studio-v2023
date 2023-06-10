@@ -1,6 +1,6 @@
-import { Editor, NodeEntry, Path, Transforms } from 'slate';
+import { Editor, type NodeEntry, Path, Transforms } from 'slate';
 
-import { Cell } from './creator';
+import { type Cell } from './creator';
 
 /**
  * 将slate-table节点转换成二维数组并返回

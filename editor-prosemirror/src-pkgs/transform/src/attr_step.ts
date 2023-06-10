@@ -1,6 +1,6 @@
-import { Fragment, Node, Schema, Slice } from 'prosemirror-model';
+import { Fragment, type Node, type Schema, Slice } from 'prosemirror-model';
 
-import { Mappable, StepMap } from './map';
+import { type Mappable, StepMap } from './map';
 import { Step, StepResult } from './step';
 
 /** Update an attribute in a specific node. */

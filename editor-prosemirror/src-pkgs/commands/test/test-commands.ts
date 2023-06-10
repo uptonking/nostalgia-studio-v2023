@@ -1,10 +1,10 @@
-import { Schema, Node } from 'prosemirror-model';
+import { Schema, type Node } from 'prosemirror-model';
 import {
   EditorState,
   Selection,
   TextSelection,
   NodeSelection,
-  Command,
+  type Command,
 } from 'prosemirror-state';
 import {
   schema,

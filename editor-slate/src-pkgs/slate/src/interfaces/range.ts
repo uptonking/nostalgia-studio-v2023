@@ -1,8 +1,14 @@
 import { produce } from 'immer';
 import { isPlainObject } from 'is-plain-object';
 
-import { ExtendedType, Operation, Path, Point, PointEntry } from '../../src';
-import { RangeDirection } from './types';
+import {
+  type ExtendedType,
+  type Operation,
+  Path,
+  Point,
+  type PointEntry,
+} from '../../src';
+import { type RangeDirection } from './types';
 
 export interface BaseRange {
   anchor: Point;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ReactEditor, RenderElementProps, useSlate } from 'slate-react';
+import { ReactEditor, type RenderElementProps, useSlate } from 'slate-react';
 
 import { getNextRowSpan } from '../utils/common';
 

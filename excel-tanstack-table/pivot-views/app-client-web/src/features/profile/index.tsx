@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Drawing, User } from '@datalking/pivot-app-shared-lib';
+import { type Drawing, User } from '@datalking/pivot-app-shared-lib';
 import {
   GifBoxTwoTone,
   Image,

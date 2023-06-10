@@ -4,7 +4,7 @@ import { useSetAtom } from 'jotai';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
-import type { View } from '@datalking/pivot-core';
+import { type View } from '@datalking/pivot-core';
 import {
   useDeleteViewMutation,
   useDuplicateViewMutation,

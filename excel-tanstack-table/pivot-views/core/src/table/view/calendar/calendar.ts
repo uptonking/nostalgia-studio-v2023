@@ -1,12 +1,12 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { None, Some } from 'oxide.ts';
 
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { Field } from '../../field/index';
+import { type Field } from '../../field/index';
 import { FieldId } from '../../field/index';
-import type { ICalendarSchema } from './calendar.schema';
-import type { ICalendar } from './calendar.type';
+import { type ICalendarSchema } from './calendar.schema';
+import { type ICalendar } from './calendar.type';
 
 export class Calendar extends ValueObject<ICalendar> {
   static from(input: ICalendarSchema) {

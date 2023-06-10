@@ -1,4 +1,4 @@
-import type { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
 import { assignIdRecursively } from '../../src/plugins/node-id/with-node-id';
 

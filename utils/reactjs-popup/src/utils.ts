@@ -16,7 +16,7 @@
 
   4. check if calculated position is going out of bounds of wrapper box or not. If yes repeat 1-3 for next position enum. By default wrapper box is window element
 */
-import { PopupPosition } from './types';
+import { type PopupPosition } from './types';
 
 export const POSITION_TYPES: PopupPosition[] = [
   'top left',

@@ -1,4 +1,4 @@
-import type { ClientRectObject, VirtualElement } from '@floating-ui/core';
+import { type ClientRectObject, type VirtualElement } from '@floating-ui/core';
 import { rectToClientRect } from '@floating-ui/core';
 
 import { FALLBACK_SCALE, getScale } from './getScale';

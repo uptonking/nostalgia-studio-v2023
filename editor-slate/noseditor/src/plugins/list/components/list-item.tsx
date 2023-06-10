@@ -8,13 +8,13 @@ import { css } from '@linaria/core';
 import { themed } from '../../../styles';
 import { DraggableCollapsibleEditor } from '../../draggable-collapsible-feature/collapsible-editor';
 import { toggleCollapsibleElement } from '../../draggable-collapsible-feature/commands/toggle-collapsible-element';
-import { ElementProps } from '../../types';
+import { type ElementProps } from '../../types';
 import { checkItem } from '../commands';
 import {
   getBulletedPointerContent,
   getNumberedPointerContent,
 } from '../get-pointer-content';
-import type { ListItemElement } from '../types';
+import { type ListItemElement } from '../types';
 import {
   isBulletedListItemElement,
   isCheckboxListItemElement,

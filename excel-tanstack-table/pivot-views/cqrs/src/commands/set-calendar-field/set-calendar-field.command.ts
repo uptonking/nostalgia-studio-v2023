@@ -1,7 +1,7 @@
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { ISetCalendarFieldCommandInput } from './set-calendar-field.command.interface';
+import { type ISetCalendarFieldCommandInput } from './set-calendar-field.command.interface';
 
 export class SetCalendarFieldCommand
   extends Command

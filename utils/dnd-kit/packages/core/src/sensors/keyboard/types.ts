@@ -1,5 +1,5 @@
-import type { Coordinates, UniqueIdentifier } from '../../types';
-import type { SensorContext } from '../types';
+import { type Coordinates, type UniqueIdentifier } from '../../types';
+import { type SensorContext } from '../types';
 
 export enum KeyboardCode {
   Space = 'Space',

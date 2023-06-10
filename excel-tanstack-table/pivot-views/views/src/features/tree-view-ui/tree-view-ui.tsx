@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ITreeViewField } from '@datalking/pivot-core';
+import { type ITreeViewField } from '@datalking/pivot-core';
 import { Box, Overlay } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';

@@ -1,7 +1,7 @@
 import React, { cloneElement, useState } from 'react';
 import { useIsomorphicLayoutEffect, usePrevious } from '@dnd-kit/utilities';
 
-import type { UniqueIdentifier } from '../../../../types';
+import { type UniqueIdentifier } from '../../../../types';
 
 export type Animation = (
   key: UniqueIdentifier,

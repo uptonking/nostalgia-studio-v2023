@@ -5,7 +5,7 @@ import {
   DndContext,
   type DragEndEvent,
   DragOverlay,
-  DragStartEvent,
+  type DragStartEvent,
   PointerSensor,
   useDraggable,
   useDroppable,
@@ -13,17 +13,17 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import {
-  ColumnDef,
-  ColumnOrderState,
+  type ColumnDef,
+  type ColumnOrderState,
   flexRender,
   getCoreRowModel,
-  Header,
-  Table,
+  type Header,
+  type Table,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { makeData, type Person } from '../utils/makeData';
 
 const defaultColumns: ColumnDef<Person>[] = [
   {

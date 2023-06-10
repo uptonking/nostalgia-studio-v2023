@@ -1,4 +1,4 @@
-import { TextOp } from 'ot-text-unicode';
+import { type TextOp } from 'ot-text-unicode';
 
 /** The text op component from text-unicode */
 export { TextOp, TextOpComponent } from 'ot-text-unicode';

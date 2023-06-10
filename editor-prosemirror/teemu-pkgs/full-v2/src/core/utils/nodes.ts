@@ -1,6 +1,10 @@
-import { Transaction, EditorState } from 'prosemirror-state';
-import { Node as PMNode, Slice, Fragment } from 'prosemirror-model';
-import { Step } from 'prosemirror-transform';
+import { type Transaction, type EditorState } from 'prosemirror-state';
+import {
+  type Node as PMNode,
+  type Slice,
+  type Fragment,
+} from 'prosemirror-model';
+import { type Step } from 'prosemirror-transform';
 
 /**
  * Finds all top level nodes affected by the transaction

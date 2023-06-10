@@ -1,13 +1,13 @@
 import { isEqual } from '@typewriter/document';
 
-import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-event';
+import { type Editor } from '../editor';
+import { type EditorChangeEvent } from '../editor-event';
 import { getLineNodeStart } from '../rendering/rendering';
 import {
   getEditorSelectionFromHost,
   setSelection,
 } from '../rendering/selection';
-import { DecorationsModule } from './decorations';
+import { type DecorationsModule } from './decorations';
 
 /**
  *

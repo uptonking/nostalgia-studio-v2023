@@ -1,11 +1,10 @@
-import { $Shape } from 'utility-types';
+import { createElement, PureComponent } from 'react';
 
 import memoizeOne from 'memoize-one';
-import { createElement, PureComponent } from 'react';
-import { cancelTimeout, requestTimeout } from './timer';
-import { getScrollbarSize, getRTLOffsetType } from './domHelpers';
+import { type $Shape } from 'utility-types';
 
-import { TimeoutID } from './timer';
+import { getRTLOffsetType, getScrollbarSize } from './domHelpers';
+import { cancelTimeout, requestTimeout, type TimeoutID } from './timer';
 
 type Direction = 'ltr' | 'rtl';
 export type ScrollToAlign = 'auto' | 'smart' | 'center' | 'start' | 'end';
@@ -576,6 +575,7 @@ export default function createGridComponent({
             ...style,
           },
         },
+        // eslint-disable-next-line react/no-children-prop
         createElement('div', {
           children: items,
           ref: innerRef,

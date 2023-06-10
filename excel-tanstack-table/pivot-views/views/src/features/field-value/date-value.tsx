@@ -2,7 +2,7 @@ import React from 'react';
 
 import { format } from 'date-fns';
 
-import type { DateFieldTypes } from '@datalking/pivot-core';
+import { type DateFieldTypes } from '@datalking/pivot-core';
 import { Text } from '@datalking/pivot-ui';
 
 interface IProps {

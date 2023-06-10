@@ -1,9 +1,9 @@
 import {
-  HTMLAttributes,
+  type HTMLAttributes,
   HTMLProps,
-  ReactElement,
+  type ReactElement,
   ReactNode,
-  RefObject,
+  type RefObject,
 } from 'react';
 
 export type ItemId = string | number;

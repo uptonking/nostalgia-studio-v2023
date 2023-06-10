@@ -17,7 +17,7 @@ import {
   mergeCells,
   splitCells,
 } from '../commands';
-import type { TableCellElement } from '../types';
+import { type TableCellElement } from '../types';
 import { getCellBySelectOrFocus, setTableNodeOrigin } from '../utils/common';
 
 interface ContextMenuProps {

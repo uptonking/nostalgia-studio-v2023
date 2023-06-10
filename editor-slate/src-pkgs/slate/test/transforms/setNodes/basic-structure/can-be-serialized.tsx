@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import assert from 'assert';
-import { Editor, Transforms, Operation } from 'slate';
+import { type Editor, Transforms, type Operation } from 'slate';
 import { jsx } from '../../..';
 
 export const run = (editor: Editor) => {

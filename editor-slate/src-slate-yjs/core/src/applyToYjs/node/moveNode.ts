@@ -1,6 +1,6 @@
-import { MoveNodeOperation, Node, Path, Text } from 'slate';
-import * as Y from 'yjs';
-import { Delta } from '../../model/types';
+import { type MoveNodeOperation, Node, Path, Text } from 'slate';
+import type * as Y from 'yjs';
+import { type Delta } from '../../model/types';
 import { cloneInsertDeltaDeep } from '../../utils/clone';
 import { getInsertDeltaLength, yTextToInsertDelta } from '../../utils/delta';
 import { getYTarget } from '../../utils/location';

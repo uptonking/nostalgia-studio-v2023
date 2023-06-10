@@ -1,13 +1,17 @@
-import type { MutableRefObject } from 'react';
+import { type MutableRefObject } from 'react';
 
-import type { DeepRequired } from '@dnd-kit/utilities';
+import { type DeepRequired } from '@dnd-kit/utilities';
 
-import type { MeasuringConfiguration } from '../components';
-import type { SyntheticListeners } from '../hooks/utilities';
-import type { ClientRect, Coordinates, UniqueIdentifier } from '../types';
-import type { Collision } from '../utilities/algorithms';
-import type { Actions } from './actions';
-import type { DroppableContainersMap } from './constructors';
+import { type MeasuringConfiguration } from '../components';
+import { type SyntheticListeners } from '../hooks/utilities';
+import {
+  type ClientRect,
+  type Coordinates,
+  type UniqueIdentifier,
+} from '../types';
+import { type Collision } from '../utilities/algorithms';
+import { type Actions } from './actions';
+import { type DroppableContainersMap } from './constructors';
 
 type AnyData = Record<string, any>;
 

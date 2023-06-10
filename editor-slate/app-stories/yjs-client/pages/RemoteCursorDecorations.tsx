@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { createEditor, Descendant, Text } from 'slate';
-import { RenderLeafProps, Slate, withReact } from 'slate-react';
+import { createEditor, type Descendant, type Text } from 'slate';
+import { type RenderLeafProps, Slate, withReact } from 'slate-react';
 import * as Y from 'yjs';
 
 import { HocuspocusProvider } from '@hocuspocus/provider';
@@ -19,8 +19,8 @@ import { Leaf } from '../components/Leaf/Leaf';
 import { HOCUSPOCUS_ENDPOINT_URL } from '../config';
 import { withMarkdown } from '../plugins/withMarkdown';
 import { withNormalize } from '../plugins/withNormalize';
-import type { SyncableEditor } from '../types';
-import { CursorData } from '../types';
+import { type SyncableEditor } from '../types';
+import { type CursorData } from '../types';
 import { addAlpha, randomCursorData } from '../utils';
 
 function renderDecoratedLeaf(props: RenderLeafProps) {

@@ -1,6 +1,6 @@
 import { Delta } from '@typewriter/delta';
 
-import type { Line, LineIds } from './lineUtils';
+import { type Line, type LineIds } from './lineUtils';
 import * as lineUtils from './lineUtils';
 
 const INFINITY = {

@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 
-import { Editor } from 'slate';
+import { type Editor } from 'slate';
 
-import { NosPlugin } from '../plugins/types';
+import { type NosPlugin } from '../plugins/types';
 import { composeHandlers } from '../utils/plugins-config-compose';
 
 /** compose plugins with `handlers`-not-undefined

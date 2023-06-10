@@ -1,13 +1,13 @@
 import React, { forwardRef } from 'react';
 
-import type {
-  IOptionColorName,
-  IOptionColorShade,
-  SelectField,
+import {
+  type IOptionColorName,
+  type IOptionColorShade,
+  type SelectField,
 } from '@datalking/pivot-core';
 import { OptionKey } from '@datalking/pivot-core';
 import { useCreateOptionMutation } from '@datalking/pivot-store';
-import type { SelectProps } from '@datalking/pivot-ui';
+import { type SelectProps } from '@datalking/pivot-ui';
 import { Group, Select } from '@datalking/pivot-ui';
 
 import { useCurrentTable } from '../../hooks/use-current-table';

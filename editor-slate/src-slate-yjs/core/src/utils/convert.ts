@@ -1,7 +1,7 @@
-import { Element, Node, Text } from 'slate';
+import { type Element, type Node, Text } from 'slate';
 import * as Y from 'yjs';
 
-import { DeltaInsert, InsertDelta } from '../model/types';
+import { type DeltaInsert, type InsertDelta } from '../model/types';
 import { yTextToInsertDelta } from './delta';
 import { getProperties } from './slate';
 

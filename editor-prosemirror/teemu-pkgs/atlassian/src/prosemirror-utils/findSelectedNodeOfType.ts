@@ -1,5 +1,5 @@
-import { Node as PMNode, NodeType } from 'prosemirror-model';
-import { NodeSelection, Selection } from 'prosemirror-state';
+import { type Node as PMNode, type NodeType } from 'prosemirror-model';
+import { NodeSelection, type Selection } from 'prosemirror-state';
 
 export const equalNodeType = (nodeType: NodeType, node: PMNode) => {
   return (

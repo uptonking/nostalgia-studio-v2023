@@ -1,4 +1,10 @@
-import { Editor, Path, PathRef, PointRef, RangeRef } from '../../src';
+import {
+  type Editor,
+  type Path,
+  type PathRef,
+  type PointRef,
+  type RangeRef,
+} from '../../src';
 
 export const DIRTY_PATHS: WeakMap<Editor, Path[]> = new WeakMap();
 export const DIRTY_PATH_KEYS: WeakMap<Editor, Set<string>> = new WeakMap();

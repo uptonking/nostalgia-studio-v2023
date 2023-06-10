@@ -11,7 +11,7 @@ import {
 } from 'prosemirror-test-builder';
 import { Plugin, TextSelection } from 'prosemirror-state';
 import { Schema } from 'prosemirror-model';
-import { DecorationSet, Decoration, EditorView } from 'prosemirror-view';
+import { DecorationSet, Decoration, type EditorView } from 'prosemirror-view';
 import { tempEditor } from './view';
 import ist from 'ist';
 

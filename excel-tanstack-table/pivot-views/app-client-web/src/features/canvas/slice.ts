@@ -1,5 +1,5 @@
-import { Drawing } from '@datalking/pivot-app-shared-lib';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type Drawing } from '@datalking/pivot-app-shared-lib';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 import { getDraft } from './helpers';
 

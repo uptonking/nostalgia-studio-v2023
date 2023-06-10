@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
-import { Editor, Node, Transforms } from 'slate';
+import { type Editor, type Node, Transforms } from 'slate';
 
-import type { HashedElement, SemanticNode } from '../types';
+import { type HashedElement, type SemanticNode } from '../types';
 
 export const updateHash = (editor: Editor, semanticNode: SemanticNode) => {
   const { element, index } = semanticNode;

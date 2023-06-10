@@ -5,12 +5,17 @@ import { schema } from 'prosemirror-schema-basic';
 import {
   EditorState,
   Plugin,
-  Transaction,
+  type Transaction,
   type Command,
 } from 'prosemirror-state';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
-import { Mapping, Step, StepMap, Transform } from 'prosemirror-transform';
+import {
+  Mapping,
+  type Step,
+  type StepMap,
+  type Transform,
+} from 'prosemirror-transform';
 
 import styled from '@emotion/styled';
 

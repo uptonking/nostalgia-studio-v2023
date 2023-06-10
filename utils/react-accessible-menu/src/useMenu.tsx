@@ -3,12 +3,12 @@ import { useRefCopy } from './useRefCopy';
 import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   ItemId,
-  MenuContextProps,
+  type MenuContextProps,
   MenuOrientation,
   MenuProps,
-  MenuRenderProps,
+  type MenuRenderProps,
   MenuItemType,
-  UseMenuProps,
+  type UseMenuProps,
 } from './types';
 import { useMenuHotkeys } from './useMenuHotkeys';
 import { MenuContext } from './MenuContext';

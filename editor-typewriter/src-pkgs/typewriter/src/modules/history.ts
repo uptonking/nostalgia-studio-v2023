@@ -1,7 +1,11 @@
-import { Delta, TextChange, TextDocument } from '@typewriter/document';
+import {
+  type Delta,
+  TextChange,
+  type TextDocument,
+} from '@typewriter/document';
 
-import type { Editor } from '../editor';
-import { EditorChangeEvent } from '../editor-event';
+import { type Editor } from '../editor';
+import { type EditorChangeEvent } from '../editor-event';
 import { Source } from '../Source';
 
 export interface StackEntry {

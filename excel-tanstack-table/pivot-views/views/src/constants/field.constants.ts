@@ -1,4 +1,4 @@
-import type { SelectItem } from '@datalking/pivot-ui';
+import { type SelectItem } from '@datalking/pivot-ui';
 
 export const FIELD_SELECT_ITEMS: SelectItem[] = [
   { value: 'string', label: 'String', group: 'Base' },

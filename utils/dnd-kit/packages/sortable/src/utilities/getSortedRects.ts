@@ -1,7 +1,7 @@
-import type {
-  ClientRect,
-  UniqueIdentifier,
-  UseDndContextReturnValue,
+import {
+  type ClientRect,
+  type UniqueIdentifier,
+  type UseDndContextReturnValue,
 } from '@dnd-kit/core';
 
 export function getSortedRects(

@@ -1,5 +1,5 @@
 import { useSlateStatic } from 'slate-react';
 
-import { ReactEditor } from '../plugin/ReactEditor';
+import { type ReactEditor } from '../plugin/ReactEditor';
 
 export const useLeydenStatic = (): ReactEditor => useSlateStatic();

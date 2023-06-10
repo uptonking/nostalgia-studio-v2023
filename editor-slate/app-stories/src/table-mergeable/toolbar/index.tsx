@@ -1,6 +1,6 @@
 import './index.css';
 
-import React, { HTMLAttributes } from 'react';
+import React, { type HTMLAttributes } from 'react';
 
 import cx from 'classnames';
 

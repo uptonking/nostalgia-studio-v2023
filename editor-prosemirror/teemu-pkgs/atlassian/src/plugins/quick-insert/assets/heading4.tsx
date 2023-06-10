@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from '../types';
+import { type IconProps } from '../types';
 
 export default function IconHeading4({ label = '' }: IconProps) {
   return (

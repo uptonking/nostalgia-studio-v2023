@@ -2,23 +2,23 @@ import React from 'react';
 
 import { isNumber } from 'lodash-es';
 
-import type {
-  AttachmentFieldValue,
-  BoolFieldValue,
-  CollaboratorFieldValue,
-  ColorFieldValue,
-  DateFieldValue,
-  DateRangeFieldValue,
-  Field,
-  FieldValue,
-  ICollaboratorProfile,
-  IRecordDisplayValues,
-  ParentFieldValue,
-  RatingFieldValue,
-  RecordAllValueType,
-  ReferenceFieldValue,
-  SelectFieldValue,
-  TreeFieldValue,
+import {
+  type AttachmentFieldValue,
+  type BoolFieldValue,
+  type CollaboratorFieldValue,
+  type ColorFieldValue,
+  type DateFieldValue,
+  type DateRangeFieldValue,
+  type Field,
+  type FieldValue,
+  type ICollaboratorProfile,
+  type IRecordDisplayValues,
+  type ParentFieldValue,
+  type RatingFieldValue,
+  type RecordAllValueType,
+  type ReferenceFieldValue,
+  type SelectFieldValue,
+  type TreeFieldValue,
 } from '@datalking/pivot-core';
 import { AspectRatio, Divider, Group, Rating, Text } from '@datalking/pivot-ui';
 

@@ -1,24 +1,30 @@
 import { isArray } from 'lodash-es';
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { z } from 'zod';
 
 import { and } from '@datalking/pivot-entity';
 
-import type { ICreateOptionSchema, IUpdateOptionSchema } from '../option/index';
+import {
+  type ICreateOptionSchema,
+  type IUpdateOptionSchema,
+} from '../option/index';
 import { OptionKey } from '../option/index';
 import { Options } from '../option/options';
-import type { TableCompositeSpecificaiton } from '../specifications/interface';
+import { type TableCompositeSpecificaiton } from '../specifications/interface';
 import { BaseField } from './field.base';
-import type { ISelectField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { ISelectFilterOperator } from './filter/operators';
-import type { ISelectFilter, ISelectFilterValue } from './filter/select.filter';
+import { type ISelectField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type ISelectFilterOperator } from './filter/operators';
+import {
+  type ISelectFilter,
+  type ISelectFilterValue,
+} from './filter/select.filter';
 import { SelectFieldValue } from './select-field-value';
-import type {
-  ICreateSelectFieldSchema,
-  ICreateSelectFieldValue,
-  IUpdateSelectFieldInput,
-  SelectFieldType,
+import {
+  type ICreateSelectFieldSchema,
+  type ICreateSelectFieldValue,
+  type IUpdateSelectFieldInput,
+  type SelectFieldType,
 } from './select-field.type';
 import {
   WithNewOption,

@@ -1,8 +1,17 @@
-import ee from 'event-emitter';
-import type { BaseEditor, Descendant, Element, Path } from 'slate';
+import type ee from 'event-emitter';
+import {
+  type BaseEditor,
+  type Descendant,
+  type Element,
+  type Path,
+} from 'slate';
 import { ReactEditor } from 'slate-react';
 
-import { TableCellSpec, TableRowSpec, TableSpec } from './utils/utils';
+import {
+  type TableCellSpec,
+  type TableRowSpec,
+  type TableSpec,
+} from './utils/utils';
 
 export type Direction = 'above' | 'below';
 

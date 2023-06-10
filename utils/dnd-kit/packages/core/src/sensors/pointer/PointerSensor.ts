@@ -1,11 +1,11 @@
-import type { PointerEvent } from 'react';
+import { type PointerEvent } from 'react';
 import { getOwnerDocument } from '@dnd-kit/utilities';
 
-import type { SensorProps } from '../types';
+import { type SensorProps } from '../types';
 import {
   AbstractPointerSensor,
-  AbstractPointerSensorOptions,
-  PointerEventHandlers,
+  type AbstractPointerSensorOptions,
+  type PointerEventHandlers,
 } from './AbstractPointerSensor';
 
 const events: PointerEventHandlers = {

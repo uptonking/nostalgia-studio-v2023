@@ -2,13 +2,13 @@ import path from 'path';
 import { deprecate } from 'util';
 
 import { createLineStream as byline } from './byline';
-import type { Datastore } from './datastore';
+import { type Datastore } from './datastore';
 import { Index } from './indexes';
 import * as model from './model';
 import * as storage from './storage';
-import type {
-  DataStoreOptionsProps,
-  PersistenceOptionsProps,
+import {
+  type DataStoreOptionsProps,
+  type PersistenceOptionsProps,
 } from './types/datastore';
 import { uid } from './utils-polyfillable';
 

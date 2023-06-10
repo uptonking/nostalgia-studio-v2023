@@ -1,7 +1,12 @@
-import { EditorState, Selection, Plugin, Transaction } from 'prosemirror-state';
+import {
+  EditorState,
+  Selection,
+  type Plugin,
+  type Transaction,
+} from 'prosemirror-state';
 import { history, undo, redo, closeHistory } from 'prosemirror-history';
-import { Node } from 'prosemirror-model';
-import { Step } from 'prosemirror-transform';
+import { type Node } from 'prosemirror-model';
+import { type Step } from 'prosemirror-transform';
 import { schema, eq, doc, p } from 'prosemirror-test-builder';
 import ist from 'ist';
 

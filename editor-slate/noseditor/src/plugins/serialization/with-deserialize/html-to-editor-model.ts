@@ -1,8 +1,15 @@
-import { Descendant, Editor, Element, Node, NodeEntry, Text } from 'slate';
+import {
+  type Descendant,
+  type Editor,
+  Element,
+  type Node,
+  type NodeEntry,
+  Text,
+} from 'slate';
 import { jsx } from 'slate-hyperscript';
 
 import { isHtmlElement, isHtmlText } from '../utils';
-import type { DeserializeHtml } from './types';
+import { type DeserializeHtml } from './types';
 import { normalizeDescendantsToDocumentFragment } from './utils';
 
 type DeserializeHtmlOptions = {

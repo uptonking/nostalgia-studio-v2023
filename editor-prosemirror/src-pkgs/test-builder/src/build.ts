@@ -1,4 +1,10 @@
-import { Node, NodeType, MarkType, Schema, Attrs } from 'prosemirror-model';
+import {
+  Node,
+  type NodeType,
+  type MarkType,
+  type Schema,
+  type Attrs,
+} from 'prosemirror-model';
 
 type Tags = { [tag: string]: number };
 

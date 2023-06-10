@@ -1,4 +1,4 @@
-import type { Rect, Strategy } from '@floating-ui/core';
+import { type Rect, type Strategy } from '@floating-ui/core';
 
 import { getBoundingClientRect } from './getBoundingClientRect';
 import { getDocumentElement } from './getDocumentElement';

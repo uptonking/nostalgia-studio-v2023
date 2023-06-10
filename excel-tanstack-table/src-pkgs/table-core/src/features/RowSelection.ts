@@ -1,11 +1,11 @@
-import type { TableFeature } from '../core/table';
-import type {
-  OnChangeFn,
-  Row,
-  RowData,
-  RowModel,
-  Table,
-  Updater,
+import { type TableFeature } from '../core/table';
+import {
+  type OnChangeFn,
+  type Row,
+  type RowData,
+  type RowModel,
+  type Table,
+  type Updater,
 } from '../types';
 import { makeStateUpdater, memo } from '../utils';
 

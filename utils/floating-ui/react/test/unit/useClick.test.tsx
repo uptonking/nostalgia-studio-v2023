@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { useState } from 'react';
 
 import { useClick, useFloating, useInteractions } from '../../src';
-import type { Props } from '../../src/hooks/useClick';
+import { type Props } from '../../src/hooks/useClick';
 
 function App({
   button = true,

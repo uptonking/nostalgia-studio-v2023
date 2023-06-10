@@ -12,7 +12,7 @@ import $, {
   html,
   parent,
   hasClass,
-  Dom7Array,
+  type Dom7Array,
   empty,
 } from 'dom7';
 

@@ -1,9 +1,9 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
-import type { FieldId } from '../../field/index';
-import type { ITableSpecVisitor } from '../../specifications/index';
-import type { Table } from '../../table';
-import type { View } from '../view';
+import { type FieldId } from '../../field/index';
+import { type ITableSpecVisitor } from '../../specifications/index';
+import { type Table } from '../../table';
+import { type View } from '../view';
 import { BaseViewSpecification } from './base-view-specification';
 
 export class WithCalendarField extends BaseViewSpecification {

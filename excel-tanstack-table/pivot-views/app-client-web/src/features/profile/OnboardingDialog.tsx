@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import { TransitionProps } from '@mui/material/transitions';
+import { type TransitionProps } from '@mui/material/transitions';
 
 import { useAppDispatch, useAppSelector } from '../../shared/store';
 import { patch } from '../app';

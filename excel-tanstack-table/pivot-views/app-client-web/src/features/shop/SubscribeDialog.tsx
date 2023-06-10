@@ -13,7 +13,7 @@ import {
   Stepper,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import type { TransitionProps } from '@mui/material/transitions';
+import { type TransitionProps } from '@mui/material/transitions';
 import { useAppDispatch, useAppSelector } from '../../shared/store';
 import { patch } from './slice';
 import { patch as patchApp, useGet } from '../app';

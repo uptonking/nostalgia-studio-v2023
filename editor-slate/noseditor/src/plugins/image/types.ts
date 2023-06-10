@@ -1,4 +1,4 @@
-import type { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
 export type ImageType = 'image';
 

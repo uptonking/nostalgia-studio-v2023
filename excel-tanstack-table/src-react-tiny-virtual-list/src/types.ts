@@ -1,5 +1,9 @@
-import type { ALIGNMENT, DIRECTION, SCROLL_CHANGE_REASON } from './constants';
-import type { ItemSize } from './size-position-manager';
+import {
+  type ALIGNMENT,
+  type DIRECTION,
+  type SCROLL_CHANGE_REASON,
+} from './constants';
+import { type ItemSize } from './size-position-manager';
 
 export type ItemPosition = 'absolute' | 'sticky';
 

@@ -1,7 +1,7 @@
-import { Editor, NodeEntry, Transforms } from 'slate';
+import { Editor, type NodeEntry, Transforms } from 'slate';
 
-import { Cell } from '../table/creator';
-import { Col, splitTable } from '../table/selection';
+import { type Cell } from '../table/creator';
+import { type Col, splitTable } from '../table/selection';
 import { splitCell } from './splitCell';
 
 export function removeColumn(table: NodeEntry, editor: Editor) {

@@ -1,4 +1,4 @@
-import { Node as PMNode, Schema } from 'prosemirror-model';
+import { Node as PMNode, type Schema } from 'prosemirror-model';
 
 export function parseRawValue(value: Object | string, schema: Schema) {
   let parsedNode;

@@ -17,7 +17,7 @@ import {
 } from 'slate-react';
 
 import { Portal } from '../components';
-import { MentionElement } from '../types';
+import { type MentionElement } from '../types';
 import { MENTION_CHARACTERS } from '../utils';
 
 /** mention plugin */

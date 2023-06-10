@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { JSONPatch } from '../src/jsonPatch';
-import { Delta, Op } from '@typewriter/delta';
-import { JSONPatchOp } from '../src/types';
+import { Delta, type Op } from '@typewriter/delta';
+import { type JSONPatchOp } from '../src/types';
 import { text } from '../src/custom/delta';
 
 class JSONLikeObject {

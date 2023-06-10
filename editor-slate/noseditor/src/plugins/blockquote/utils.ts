@@ -1,6 +1,6 @@
 import { Element } from 'slate';
 
-import type { BlockquoteElement, BlockquoteType } from './types';
+import { type BlockquoteElement, type BlockquoteType } from './types';
 
 export const BlockquoteSpec: BlockquoteType = 'blockquote';
 

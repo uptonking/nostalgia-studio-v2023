@@ -1,6 +1,6 @@
-import { Server } from 'http';
-import { Server as ServerHttps } from 'https';
-import { Server as SocketService, Socket } from 'socket.io';
+import { type Server } from 'http';
+import { type Server as ServerHttps } from 'https';
+import { Server as SocketService, type Socket } from 'socket.io';
 import { decodeToken } from '../auth';
 import logger from '../logger';
 import { createOrUpdate } from '../model-api/controller';

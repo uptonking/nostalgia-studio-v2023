@@ -4,8 +4,8 @@
  */
 
 import { Editor } from 'slate';
-import { IDomEditor } from '../../editor/interface';
-import TextArea from '../TextArea';
+import { type IDomEditor } from '../../editor/interface';
+import type TextArea from '../TextArea';
 import { HAS_BEFORE_INPUT_SUPPORT } from '../../utils/ua';
 import { hasEditableTarget } from '../helpers';
 

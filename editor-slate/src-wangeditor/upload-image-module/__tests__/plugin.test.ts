@@ -1,4 +1,4 @@
-import { IDomEditor } from '@wangeditor/core';
+import { type IDomEditor } from '@wangeditor/core';
 import * as basicModule from '@wangeditor/basic-modules';
 import createEditor from '../../../tests/utils/create-editor';
 import withUploadImage from '../src/module/plugin';

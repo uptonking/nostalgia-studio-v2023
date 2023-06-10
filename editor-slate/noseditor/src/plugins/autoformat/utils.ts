@@ -2,14 +2,14 @@ import {
   type Ancestor,
   Editor,
   type EditorAboveOptions,
-  Location,
+  type Location,
   type Node,
   Path,
   Point,
   Range,
 } from 'slate';
 
-import type { AutoformatRule, MatchRange } from './types';
+import { type AutoformatRule, type MatchRange } from './types';
 
 type GetMatchRangeOptions = {
   match: string | MatchRange;

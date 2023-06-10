@@ -5,7 +5,7 @@
 
 import Uppy from '@uppy/core';
 import XHRUpload from '@uppy/xhr-upload';
-import { IUploadConfig } from './interface';
+import { type IUploadConfig } from './interface';
 import { addQueryToUrl } from '../utils/util';
 
 function createUploader(config: IUploadConfig): Uppy {

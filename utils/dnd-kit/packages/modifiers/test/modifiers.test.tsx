@@ -1,5 +1,5 @@
-import type { Modifier, ClientRect } from '@dnd-kit/core';
-import type { FirstArgument, Transform } from '@dnd-kit/utilities';
+import { type Modifier, type ClientRect } from '@dnd-kit/core';
+import { type FirstArgument, type Transform } from '@dnd-kit/utilities';
 
 import { restrictToHorizontalAxis, restrictToVerticalAxis } from '../src';
 

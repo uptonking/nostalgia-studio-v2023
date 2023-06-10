@@ -1,13 +1,13 @@
 import {
-  Cell,
-  CellType,
+  type Cell,
+  type CellType,
   Coordinates,
-  CoordinateTranslation,
+  type CoordinateTranslation,
   Table,
   LeydenEditor,
 } from 'leyden';
 import { useEffect, useMemo, useState } from 'react';
-import { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
 import { useCoordinates } from './useCoordinates';
 import { useLeydenStatic } from './useLeydenStatic';

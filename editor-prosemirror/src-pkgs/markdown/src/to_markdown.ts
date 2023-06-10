@@ -1,4 +1,4 @@
-import { Node, Mark } from 'prosemirror-model';
+import { type Node, type Mark } from 'prosemirror-model';
 
 type MarkSerializerSpec = {
   /** The string that should appear before a piece of content marked

@@ -19,7 +19,7 @@ import {
   PointerSensor,
   ScreenReaderInstructions,
   TouchSensor,
-  UniqueIdentifier,
+  type UniqueIdentifier,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
@@ -35,15 +35,15 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import {
-  ColumnDef,
+  type ColumnDef,
   flexRender,
   getCoreRowModel,
-  Row,
+  type Row,
   useReactTable,
 } from '@tanstack/react-table';
 
 import { tableBaseCss } from '../examples.styles';
-import { makeData, Person } from '../utils/makeData';
+import { makeData, type Person } from '../utils/makeData';
 
 const reorderData = (data, draggedRowIndex: number, targetRowIndex: number) => {
   data.splice(targetRowIndex, 0, data.splice(draggedRowIndex, 1)[0] as Person);

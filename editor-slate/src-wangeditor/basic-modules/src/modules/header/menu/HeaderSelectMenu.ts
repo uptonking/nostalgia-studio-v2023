@@ -3,7 +3,12 @@
  * @author wangfupeng
  */
 
-import { ISelectMenu, IDomEditor, IOption, t } from '@wangeditor/core';
+import {
+  type ISelectMenu,
+  type IDomEditor,
+  type IOption,
+  t,
+} from '@wangeditor/core';
 import { HEADER_SVG } from '../../../constants/icon-svg';
 import { getHeaderType, isMenuDisabled, setHeaderType } from '../helper';
 

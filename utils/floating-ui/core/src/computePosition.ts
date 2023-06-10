@@ -1,9 +1,9 @@
 import { computeCoordsFromPlacement } from './computeCoordsFromPlacement';
-import type {
-  ComputePosition,
-  ComputePositionReturn,
-  Middleware,
-  MiddlewareData,
+import {
+  type ComputePosition,
+  type ComputePositionReturn,
+  type Middleware,
+  type MiddlewareData,
 } from './types';
 
 /**

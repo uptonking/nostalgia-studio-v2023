@@ -1,5 +1,5 @@
-import { Node, Operation } from 'slate';
-import * as Y from 'yjs';
+import { type Node, type Operation } from 'slate';
+import type * as Y from 'yjs';
 
 export type ApplyFunc<O extends Operation = Operation> = (
   sharedRoot: Y.XmlText,

@@ -1,6 +1,6 @@
-import { Node, ResolvedPos, Slice } from 'prosemirror-model';
+import { type Node, type ResolvedPos, Slice } from 'prosemirror-model';
 import { NodeSelection, Selection } from 'prosemirror-state';
-import { Mappable } from 'prosemirror-transform';
+import { type Mappable } from 'prosemirror-transform';
 
 /** Gap cursor selections are represented using this class. Its
  * `$anchor` and `$head` properties both point at the cursor position.

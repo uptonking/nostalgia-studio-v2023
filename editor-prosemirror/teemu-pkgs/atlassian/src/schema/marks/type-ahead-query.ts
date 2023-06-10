@@ -1,4 +1,4 @@
-import { MarkSpec } from 'prosemirror-model';
+import { type MarkSpec } from 'prosemirror-model';
 import { SEARCH_QUERY } from './groups';
 import { B400 } from '../../theme/colors';
 

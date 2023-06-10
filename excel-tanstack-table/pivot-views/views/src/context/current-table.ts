@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { Table } from '@datalking/pivot-core';
+import { type Table } from '@datalking/pivot-core';
 
 /**
  * todo refactor out of react

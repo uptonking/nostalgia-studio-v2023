@@ -1,11 +1,11 @@
-import type { HTMLAttributes } from 'react';
+import { type HTMLAttributes } from 'react';
 import React, { forwardRef } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
 import { useSetAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
-import type { RecordAllValues, TreeField } from '@datalking/pivot-core';
+import { type RecordAllValues, type TreeField } from '@datalking/pivot-core';
 import { useDeleteRecordMutation } from '@datalking/pivot-store';
 import {
   ActionIcon,
@@ -18,7 +18,7 @@ import {
   IconTrashX,
   useEgoUITheme,
 } from '@datalking/pivot-ui';
-import type { UniqueIdentifier } from '@dnd-kit/core';
+import { type UniqueIdentifier } from '@dnd-kit/core';
 
 import { confirmModal } from '../../hooks';
 import { useCurrentTable } from '../../hooks/use-current-table';

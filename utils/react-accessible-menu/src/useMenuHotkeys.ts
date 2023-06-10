@@ -1,7 +1,7 @@
 import { useDocumentEvent } from './useDocumentEvent';
-import { useOrderedItems } from './useOrderedItems';
-import { ItemId, MenuContextProps } from './types';
-import { MutableRefObject } from 'react';
+import { type useOrderedItems } from './useOrderedItems';
+import { type ItemId, type MenuContextProps } from './types';
+import { type MutableRefObject } from 'react';
 
 const interactiveElements = ['textarea', 'input'];
 

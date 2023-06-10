@@ -2,9 +2,9 @@ import {
   type IRecordRepository,
   type ITableRepository,
 } from '@datalking/pivot-core';
-import type { ICommandHandler } from '@datalking/pivot-entity';
+import { type ICommandHandler } from '@datalking/pivot-entity';
 
-import type { DeleteRecordCommand } from './delete-record.comand';
+import { type DeleteRecordCommand } from './delete-record.comand';
 
 export class DeleteRecordCommandHandler
   implements ICommandHandler<DeleteRecordCommand, void>

@@ -1,4 +1,4 @@
-import { Text } from 'slate';
+import { type Text } from 'slate';
 import { isCustomText } from './type-guards';
 
 export const input: Text = {

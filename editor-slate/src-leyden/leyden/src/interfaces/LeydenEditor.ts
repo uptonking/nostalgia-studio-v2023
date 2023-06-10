@@ -1,14 +1,20 @@
-import { BaseEditor, Editor, Operation, Path, Range } from 'slate';
-
-import { Cell, CellType } from './Cell';
-import { Coordinates } from './Coordinates';
-import { Table } from './Table';
-import { ValidationFunc, Validator } from './Validator';
 import {
-  CellSubscriber,
-  OperationSubscriber,
-  SelectedCoordinatesSubscriber,
-  Unsubscriber,
+  type BaseEditor,
+  type Editor,
+  Operation,
+  Path,
+  type Range,
+} from 'slate';
+
+import { type Cell, type CellType } from './Cell';
+import { type Coordinates } from './Coordinates';
+import { Table } from './Table';
+import { type ValidationFunc, type Validator } from './Validator';
+import {
+  type CellSubscriber,
+  type OperationSubscriber,
+  type SelectedCoordinatesSubscriber,
+  type Unsubscriber,
 } from '../utils/types';
 import { OPERATION_SUBSCRIBERS } from '../utils/weakMaps';
 

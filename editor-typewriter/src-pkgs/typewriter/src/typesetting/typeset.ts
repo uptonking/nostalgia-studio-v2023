@@ -1,7 +1,7 @@
 import { type AttributeMapType } from '@typewriter/document';
 
-import type { Editor, Shortcuts } from '../editor';
-import { VChild, VNode } from '../rendering/vdom';
+import { type Editor, type Shortcuts } from '../editor';
+import { type VChild, type VNode } from '../rendering/vdom';
 
 const EMPTY_ARR = [];
 

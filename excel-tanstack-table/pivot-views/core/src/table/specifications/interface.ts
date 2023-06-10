@@ -1,54 +1,54 @@
-import type {
-  CompositeSpecification,
-  ISpecVisitor,
+import {
+  type CompositeSpecification,
+  type ISpecVisitor,
 } from '@datalking/pivot-entity';
 import { type ISpecification } from '@datalking/pivot-entity';
 
-import type {
-  WithFieldDescription,
-  WithFieldDisplay,
-  WithFieldName,
+import {
+  type WithFieldDescription,
+  type WithFieldDisplay,
+  type WithFieldName,
 } from '../field/specifications/base-field.specification';
-import type { WithFormat } from '../field/specifications/date-field.specification';
-import type { WithFieldRequirement } from '../field/specifications/field-constraints.specification';
-import type { WithoutField } from '../field/specifications/field.specification';
-import type { WithRatingMax } from '../field/specifications/rating-field.specification';
-import type {
-  WithDisplayFields,
-  WithSymmetricReferenceField,
+import { type WithFormat } from '../field/specifications/date-field.specification';
+import { type WithFieldRequirement } from '../field/specifications/field-constraints.specification';
+import { type WithoutField } from '../field/specifications/field.specification';
+import { type WithRatingMax } from '../field/specifications/rating-field.specification';
+import {
+  type WithDisplayFields,
+  type WithSymmetricReferenceField,
 } from '../field/specifications/reference-field.specification';
-import type {
-  WithNewOption,
-  WithOptions,
-  WithoutOption,
+import {
+  type WithNewOption,
+  type WithOptions,
+  type WithoutOption,
 } from '../field/specifications/select-field.specification';
 import { type Table } from '../table';
-import type { WithKanbanField, WithViewsOrder } from '../view/index';
-import type { WithCalendarField } from '../view/specifications/calendar.specification';
-import type { WithDisplayType } from '../view/specifications/display-type.specification';
-import type { WithFilter } from '../view/specifications/filters.specificaiton';
-import type { WithShowSystemFieldsSpec } from '../view/specifications/show-system-fields.specification';
-import type { WithSorts } from '../view/specifications/sorts.specification';
-import type { WithTreeViewField } from '../view/specifications/tree-view.specification';
-import type {
-  WithFieldOption,
-  WithFieldVisibility,
-  WithFieldWidth,
+import { type WithKanbanField, type WithViewsOrder } from '../view/index';
+import { type WithCalendarField } from '../view/specifications/calendar.specification';
+import { type WithDisplayType } from '../view/specifications/display-type.specification';
+import { type WithFilter } from '../view/specifications/filters.specificaiton';
+import { type WithShowSystemFieldsSpec } from '../view/specifications/show-system-fields.specification';
+import { type WithSorts } from '../view/specifications/sorts.specification';
+import { type WithTreeViewField } from '../view/specifications/tree-view.specification';
+import {
+  type WithFieldOption,
+  type WithFieldVisibility,
+  type WithFieldWidth,
 } from '../view/specifications/view-field-option.specification';
-import type { WithViewFieldsOrder } from '../view/specifications/view-fields-order.specification';
-import type { WithViewPinnedFields } from '../view/specifications/view-pinned-fields.specification';
-import type {
-  WithNewView,
-  WithoutView,
-  WithTableView,
-  WithTableViews,
-  WithViewName,
+import { type WithViewFieldsOrder } from '../view/specifications/view-fields-order.specification';
+import { type WithViewPinnedFields } from '../view/specifications/view-pinned-fields.specification';
+import {
+  type WithNewView,
+  type WithoutView,
+  type WithTableView,
+  type WithTableViews,
+  type WithViewName,
 } from '../view/specifications/views.specification';
-import type { WithTableEmoji } from './table-emoji.specification';
-import type { WithNewField } from './table-field.specification';
-import type { WithTableId } from './table-id.specification';
-import type { WithTableName } from './table-name.specification';
-import type { WithTableSchema } from './table-schema.specification';
+import { type WithTableEmoji } from './table-emoji.specification';
+import { type WithNewField } from './table-field.specification';
+import { type WithTableId } from './table-id.specification';
+import { type WithTableName } from './table-name.specification';
+import { type WithTableSchema } from './table-schema.specification';
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   idEqual(s: WithTableId): void;

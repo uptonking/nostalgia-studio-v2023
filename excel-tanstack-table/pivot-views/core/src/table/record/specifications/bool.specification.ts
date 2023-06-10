@@ -1,8 +1,8 @@
-import type { Result } from 'oxide.ts';
+import { type Result } from 'oxide.ts';
 import { Ok } from 'oxide.ts';
 import { BoolFieldValue } from '../../field/bool-field-value';
-import type { Record } from '../record';
-import type { IRecordVisitor } from './interface';
+import { type Record } from '../record';
+import { type IRecordVisitor } from './interface';
 import { BaseRecordSpecification } from './record-specification.base';
 
 export class BoolIsTrue extends BaseRecordSpecification<BoolFieldValue> {

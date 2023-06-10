@@ -1,5 +1,5 @@
 import { Fragment } from './fragment';
-import { NodeType } from './schema';
+import { type NodeType } from './schema';
 
 type MatchEdge = { type: NodeType; next: ContentMatch };
 

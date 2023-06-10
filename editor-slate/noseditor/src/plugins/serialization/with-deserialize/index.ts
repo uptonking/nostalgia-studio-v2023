@@ -1,5 +1,5 @@
-import { Editor } from 'slate';
-import { ReactEditor } from 'slate-react';
+import { type Editor } from 'slate';
+import { type ReactEditor } from 'slate-react';
 
 import { deserializePlugins } from './deserialize-plugins';
 import { deserializeHtml } from './html-to-editor-model';

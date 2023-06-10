@@ -7,10 +7,10 @@ import {
 } from '@typewriter/delta';
 
 import { deltaToText } from './deltaToText';
-import { EditorRange, normalizeRange } from './editorRange';
+import { type EditorRange, normalizeRange } from './editorRange';
 import { iterator as lineIterator } from './Line';
 import * as lineOpUtils from './lineOpUtils';
-import type { Line, LineIds, LineRanges } from './lineUtils';
+import { type Line, type LineIds, type LineRanges } from './lineUtils';
 import * as lineUtils from './lineUtils';
 import { TextChange } from './TextChange';
 

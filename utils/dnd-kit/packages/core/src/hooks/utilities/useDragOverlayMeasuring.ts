@@ -3,8 +3,8 @@ import { isHTMLElement, useNodeRef } from '@dnd-kit/utilities';
 
 import { useResizeObserver } from './useResizeObserver';
 import { getMeasurableNode } from '../../utilities/nodes';
-import type { PublicContextDescriptor } from '../../store';
-import type { ClientRect } from '../../types';
+import { type PublicContextDescriptor } from '../../store';
+import { type ClientRect } from '../../types';
 
 interface Arguments {
   measure(element: HTMLElement): ClientRect;

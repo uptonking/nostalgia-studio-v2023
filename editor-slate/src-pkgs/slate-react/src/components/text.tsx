@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Element, Range, Text as SlateText } from 'slate';
+import { type Element, type Range, Text as SlateText } from 'slate';
 
 import { useContentKey } from '../hooks/use-content-key';
 import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
@@ -10,7 +10,7 @@ import {
   ELEMENT_TO_NODE,
   NODE_TO_ELEMENT,
 } from '../utils/weak-maps';
-import { RenderLeafProps, RenderPlaceholderProps } from './editable';
+import { type RenderLeafProps, type RenderPlaceholderProps } from './editable';
 import Leaf from './leaf';
 import { ReactEditor, useSlateStatic } from '..';
 

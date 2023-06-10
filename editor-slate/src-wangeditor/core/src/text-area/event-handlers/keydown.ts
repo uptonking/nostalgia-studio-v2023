@@ -5,8 +5,8 @@
 
 import { isHotkey } from 'is-hotkey';
 import { Editor, Transforms, Range, Node, Element } from 'slate';
-import { IDomEditor } from '../../editor/interface';
-import TextArea from '../TextArea';
+import { type IDomEditor } from '../../editor/interface';
+import type TextArea from '../TextArea';
 import Hotkeys from '../../utils/hotkeys';
 import { hasEditableTarget } from '../helpers';
 import { HAS_BEFORE_INPUT_SUPPORT, IS_CHROME, IS_SAFARI } from '../../utils/ua';

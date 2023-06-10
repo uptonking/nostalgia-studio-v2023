@@ -1,7 +1,7 @@
 import { useReducer } from 'react';
 import { useIsomorphicLayoutEffect } from '@dnd-kit/utilities';
 
-import type { ClientRect } from '../../types';
+import { type ClientRect } from '../../types';
 import { getClientRect, Rect } from '../../utilities';
 
 import { useMutationObserver } from './useMutationObserver';

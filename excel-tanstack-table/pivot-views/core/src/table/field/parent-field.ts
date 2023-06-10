@@ -4,17 +4,17 @@ import { z } from 'zod';
 import { andOptions } from '@datalking/pivot-entity';
 
 import { AbstractLookingField, AbstractReferenceField } from './field.base';
-import type { IParentField } from './field.type';
-import type { IFieldVisitor } from './field.visitor';
-import type { IParentFilterOperator } from './filter/operators';
-import type { IParentFilter } from './filter/parent.filter';
+import { type IParentField } from './field.type';
+import { type IFieldVisitor } from './field.visitor';
+import { type IParentFilterOperator } from './filter/operators';
+import { type IParentFilter } from './filter/parent.filter';
 import { ParentFieldValue } from './parent-field-value';
-import type {
-  ICreateParentFieldInput,
-  ICreateParentFieldValue,
-  ParentFieldType,
+import {
+  type ICreateParentFieldInput,
+  type ICreateParentFieldValue,
+  type ParentFieldType,
 } from './parent-field.type';
-import type { IUpdateReferenceFieldInput } from './reference-field.type';
+import { type IUpdateReferenceFieldInput } from './reference-field.type';
 import { DisplayFields, FieldId } from './value-objects/index';
 
 export class ParentField extends Mixin(

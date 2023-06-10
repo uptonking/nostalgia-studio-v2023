@@ -1,9 +1,9 @@
 import {
-  CursorEditor,
-  CursorState,
+  type CursorEditor,
+  type CursorState,
   relativeRangeToSlateRange,
 } from '@slate-yjs/core';
-import { BaseRange, Descendant, Range } from 'slate';
+import { type BaseRange, type Descendant, type Range } from 'slate';
 
 const CHILDREN_TO_CURSOR_STATE_TO_RANGE: WeakMap<
   Descendant[],

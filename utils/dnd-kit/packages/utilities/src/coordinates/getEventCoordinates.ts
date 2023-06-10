@@ -1,4 +1,4 @@
-import type { Coordinates } from './types';
+import { type Coordinates } from './types';
 import { isTouchEvent, hasViewportRelativeCoordinates } from '../event';
 
 /**

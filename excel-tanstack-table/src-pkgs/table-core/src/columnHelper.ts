@@ -1,12 +1,12 @@
-import type {
-  AccessorFn,
-  ColumnDef,
-  DisplayColumnDef,
-  GroupColumnDef,
-  IdentifiedColumnDef,
-  RowData,
+import {
+  type AccessorFn,
+  type ColumnDef,
+  type DisplayColumnDef,
+  type GroupColumnDef,
+  type IdentifiedColumnDef,
+  type RowData,
 } from './types';
-import { DeepKeys, DeepValue, RequiredKeys } from './utils';
+import { type DeepKeys, type DeepValue, RequiredKeys } from './utils';
 
 // type Person = {
 //   firstName: string

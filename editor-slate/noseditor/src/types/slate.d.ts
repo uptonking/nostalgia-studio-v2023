@@ -1,29 +1,29 @@
-import type { BaseEditor } from 'slate';
-import type { HistoryEditor } from 'slate-history';
-import type { ReactEditor } from 'slate-react';
+import { type BaseEditor } from 'slate';
+import { type HistoryEditor } from 'slate-history';
+import { type ReactEditor } from 'slate-react';
 
-import type { BlockquoteElement } from '../plugins/blockquote/types';
-import type { DividerElement } from '../plugins/divider/types';
-import type {
-  DraggableCollapsibleEditor,
-  HashedElement,
-  IdentityElement,
+import { type BlockquoteElement } from '../plugins/blockquote/types';
+import { type DividerElement } from '../plugins/divider/types';
+import {
+  type DraggableCollapsibleEditor,
+  type HashedElement,
+  type IdentityElement,
 } from '../plugins/draggable-collapsible-feature';
-import type {
-  Heading1Element,
-  Heading2Element,
-  Heading3Element,
+import {
+  type Heading1Element,
+  type Heading2Element,
+  type Heading3Element,
 } from '../plugins/heading/types';
-import type { ImageElement } from '../plugins/image/types';
-import type { LinkElementType } from '../plugins/link/types';
-import type { ListItemElement } from '../plugins/list/types';
-import type { FormattedText } from '../plugins/marks/types';
-import type { ParagraphElement } from '../plugins/paragraph/types';
-import type {
-  TableCellElement,
-  TableElement,
-  TableRowElement,
-  WithTableEditor,
+import { type ImageElement } from '../plugins/image/types';
+import { type LinkElementType } from '../plugins/link/types';
+import { type ListItemElement } from '../plugins/list/types';
+import { type FormattedText } from '../plugins/marks/types';
+import { type ParagraphElement } from '../plugins/paragraph/types';
+import {
+  type TableCellElement,
+  type TableElement,
+  type TableRowElement,
+  type WithTableEditor,
 } from '../plugins/table/types';
 
 export type CustomEditor = Omit<

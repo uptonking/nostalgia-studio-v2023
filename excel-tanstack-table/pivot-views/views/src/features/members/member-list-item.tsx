@@ -2,7 +2,7 @@ import React from 'react';
 
 import { t } from 'i18next';
 
-import type { IQueryUser } from '@datalking/pivot-core';
+import { type IQueryUser } from '@datalking/pivot-core';
 import {
   getAuthStatus,
   getAuthToken,

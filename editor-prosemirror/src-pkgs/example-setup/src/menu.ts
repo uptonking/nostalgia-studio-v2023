@@ -2,9 +2,9 @@ import { toggleMark } from 'prosemirror-commands';
 import {
   Dropdown,
   DropdownSubmenu,
-  MenuElement,
+  type MenuElement,
   MenuItem,
-  MenuItemSpec,
+  type MenuItemSpec,
   blockTypeItem,
   icons,
   joinUpItem,
@@ -14,9 +14,13 @@ import {
   undoItem,
   wrapItem,
 } from 'prosemirror-menu';
-import { MarkType, NodeType, Schema } from 'prosemirror-model';
+import { type MarkType, type NodeType, type Schema } from 'prosemirror-model';
 import { wrapInList } from 'prosemirror-schema-list';
-import { Command, EditorState, NodeSelection } from 'prosemirror-state';
+import {
+  type Command,
+  type EditorState,
+  NodeSelection,
+} from 'prosemirror-state';
 
 import { TextField, openPrompt } from './prompt';
 

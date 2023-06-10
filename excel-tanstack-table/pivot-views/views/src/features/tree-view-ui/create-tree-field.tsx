@@ -4,7 +4,7 @@ import { useSetAtom } from 'jotai';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import type { ICreateTreeFieldSchema } from '@datalking/pivot-core';
+import { type ICreateTreeFieldSchema } from '@datalking/pivot-core';
 import { createTreeFieldSchema, FieldId } from '@datalking/pivot-core';
 import {
   useCreateFieldMutation,

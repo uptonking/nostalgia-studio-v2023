@@ -1,5 +1,5 @@
-import type { PagedResult } from '@datalking/pivot-app-shared-lib';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { type PagedResult } from '@datalking/pivot-app-shared-lib';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 export interface AdminState {
   activeMenuItem?: string;

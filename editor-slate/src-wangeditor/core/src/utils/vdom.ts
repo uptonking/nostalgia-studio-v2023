@@ -5,15 +5,15 @@
 
 import camelCase from 'lodash.camelcase';
 import {
-  VNode,
+  type VNode,
   init,
   classModule,
   propsModule,
   styleModule,
   datasetModule,
-  VNodeStyle,
-  Props,
-  Dataset,
+  type VNodeStyle,
+  type Props,
+  type Dataset,
   eventListenersModule,
   attributesModule,
 } from 'snabbdom';

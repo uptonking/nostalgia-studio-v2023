@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
 
-import type {
-  Field,
-  FieldValue,
-  RecordAllValueType,
+import {
+  type Field,
+  type FieldValue,
+  type RecordAllValueType,
 } from '@datalking/pivot-core';
 import { Box } from '@datalking/pivot-ui';
-import type { CellContext } from '@tanstack/react-table';
+import { type CellContext } from '@tanstack/react-table';
 
 import { FieldValueFactory } from '../field-value/field-value.factory';
-import type { TData } from './interface';
+import { type TData } from './interface';
 import { usePinnedStyles } from './styles';
 
 interface IProps {

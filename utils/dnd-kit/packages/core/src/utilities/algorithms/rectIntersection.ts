@@ -1,6 +1,6 @@
-import type { ClientRect } from '../../types';
+import { type ClientRect } from '../../types';
 
-import type { CollisionDescriptor, CollisionDetection } from './types';
+import { type CollisionDescriptor, type CollisionDetection } from './types';
 import { sortCollisionsDesc } from './helpers';
 
 /**

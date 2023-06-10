@@ -2,8 +2,8 @@ import React from 'react';
 
 import { css } from '@linaria/core';
 import {
-  ColumnDef,
-  ColumnResizeMode,
+  type ColumnDef,
+  type ColumnResizeMode,
   flexRender,
   getCoreRowModel,
   useReactTable,

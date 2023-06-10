@@ -1,9 +1,12 @@
 import React from 'react';
-import { NodeView, EditorView } from 'prosemirror-view';
-import { Node as PMNode } from 'prosemirror-model';
+import { type NodeView, type EditorView } from 'prosemirror-view';
+import { type Node as PMNode } from 'prosemirror-model';
 
-import { PortalProviderAPI } from '../react-portals';
-import { EventDispatcher, createDispatch } from '../utils/event-dispatcher';
+import { type PortalProviderAPI } from '../react-portals';
+import {
+  type EventDispatcher,
+  createDispatch,
+} from '../utils/event-dispatcher';
 
 export interface ReactNodeProps {
   selected: boolean;

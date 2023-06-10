@@ -1,12 +1,12 @@
 import { isPlainObject } from 'is-plain-object';
 
 import {
-  Ancestor,
-  Descendant,
+  type Ancestor,
+  type Descendant,
   Editor,
-  ExtendedType,
+  type ExtendedType,
   Node,
-  Path,
+  type Path,
 } from '../../src';
 
 /**

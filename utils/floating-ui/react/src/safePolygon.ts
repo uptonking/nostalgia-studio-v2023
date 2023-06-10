@@ -1,7 +1,7 @@
-import type { Rect, Side } from '@floating-ui/core';
+import { type Rect, type Side } from '@floating-ui/core';
 
-import type { HandleCloseFn } from './hooks/useHover';
-import type { ReferenceType } from './types';
+import { type HandleCloseFn } from './hooks/useHover';
+import { type ReferenceType } from './types';
 import { contains } from './utils/contains';
 import { getChildren } from './utils/getChildren';
 import { getTarget } from './utils/getTarget';

@@ -1,7 +1,11 @@
 import { expect } from 'chai';
 import { JSONPatch } from '../src/jsonPatch';
-import { syncable, SyncableClient, SyncableServer } from '../src/syncable';
-import { JSONPatchOp } from '../src/types';
+import {
+  syncable,
+  type SyncableClient,
+  type SyncableServer,
+} from '../src/syncable';
+import { type JSONPatchOp } from '../src/types';
 
 describe('syncable', () => {
   let client: SyncableClient;

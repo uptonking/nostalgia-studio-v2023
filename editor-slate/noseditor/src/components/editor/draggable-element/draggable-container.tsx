@@ -1,17 +1,17 @@
 import React, { useCallback } from 'react';
 
 import cx from 'clsx';
-import { Element } from 'slate';
+import { type Element } from 'slate';
 import {
   type ReactEditor,
-  RenderElementProps,
+  type RenderElementProps,
   useSelected,
   useSlateStatic,
 } from 'slate-react';
 
 import { DraggableCollapsibleEditor, useDndContext } from '../../../plugins';
 import { toggleCollapsibleElement } from '../../../plugins/draggable-collapsible-feature/commands';
-import type { IdentityElement } from '../../../plugins/draggable-collapsible-feature/types';
+import { type IdentityElement } from '../../../plugins/draggable-collapsible-feature/types';
 import { ELEMENT_TO_SEMANTIC_PATH } from '../../../plugins/draggable-collapsible-feature/weakmaps';
 import { isCheckboxListItemElement } from '../../../plugins/list/utils';
 import { createListItemAttributes } from '../../../plugins/serialization/utils';

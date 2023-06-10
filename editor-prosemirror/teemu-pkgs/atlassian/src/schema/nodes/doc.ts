@@ -1,5 +1,5 @@
-import { NodeSpec } from 'prosemirror-model';
-import { ParagraphDefinition } from './paragraph';
+import { type NodeSpec } from 'prosemirror-model';
+import { type ParagraphDefinition } from './paragraph';
 
 /**
  * @name doc_node

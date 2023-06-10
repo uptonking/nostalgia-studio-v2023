@@ -1,7 +1,7 @@
 import { produce } from 'immer';
 
 import { Editor, Path, Range, Text } from '../../src';
-import { Element, ElementEntry } from './element';
+import { Element, type ElementEntry } from './element';
 
 /**
  * The `Node` union type represents all of the different types of nodes that

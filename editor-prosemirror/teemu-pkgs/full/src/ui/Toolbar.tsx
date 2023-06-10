@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { MdFormatBold, MdFormatItalic } from 'react-icons/md/index.js';
 
-import { basePluginKey, BaseState } from '../editor-plugins/base';
+import { basePluginKey, type BaseState } from '../editor-plugins/base';
 
 import { useEditorContext } from '../core/EditorContext';
 

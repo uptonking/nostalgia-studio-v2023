@@ -1,7 +1,7 @@
-import { Step } from 'prosemirror-transform';
-import { Transaction } from 'prosemirror-state';
+import { type Step } from 'prosemirror-transform';
+import { type Transaction } from 'prosemirror-state';
 
-import { PatchedStep, PMDoc } from './document';
+import { type PatchedStep, type PMDoc } from './document';
 
 // collab /join
 export interface IJoinResponse {

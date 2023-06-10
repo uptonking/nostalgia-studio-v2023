@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useLayoutEffect } from 'react';
+import { type RefObject, useEffect, useLayoutEffect } from 'react';
 
 export const useOnEscape = (
   handler: (event: KeyboardEvent) => void,

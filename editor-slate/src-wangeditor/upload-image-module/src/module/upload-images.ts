@@ -3,10 +3,11 @@
  * @author wangfupeng
  */
 
-import Uppy, { UppyFile } from '@uppy/core';
-import { IDomEditor, createUploader } from '@wangeditor/core';
+import { type UppyFile } from '@uppy/core';
+import type Uppy from '@uppy/core';
+import { type IDomEditor, createUploader } from '@wangeditor/core';
 import { insertImageNode } from '@wangeditor/basic-modules';
-import { IUploadConfigForImage } from './menu/config';
+import { type IUploadConfigForImage } from './menu/config';
 
 // 存储 editor uppy 的关系 - 缓存 uppy ，不重复创建
 const EDITOR_TO_UPPY_MAP = new WeakMap<IDomEditor, Uppy>();

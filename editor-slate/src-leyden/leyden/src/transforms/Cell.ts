@@ -1,7 +1,7 @@
 import { Editor, Transforms } from 'slate';
 
-import { Cell, CellType } from '../interfaces/Cell';
-import { Coordinates } from '../interfaces/Coordinates';
+import { type Cell, type CellType } from '../interfaces/Cell';
+import { type Coordinates } from '../interfaces/Coordinates';
 import { LeydenEditor } from '../interfaces/LeydenEditor';
 
 export interface CellTransforms {

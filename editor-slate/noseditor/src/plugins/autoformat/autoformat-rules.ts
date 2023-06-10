@@ -1,10 +1,10 @@
-import { Editor } from 'slate';
+import { type Editor } from 'slate';
 
 import { BlockquoteSpec } from '../blockquote/utils';
 import { Heading1Spec, Heading2Spec, Heading3Spec } from '../heading/utils';
 import { toggleList } from '../list/commands';
 import { ListItemSpec, ListVariants } from '../list/utils';
-import type { AutoformatRule } from './types';
+import { type AutoformatRule } from './types';
 
 export const defaultAutoformatRules: AutoformatRule[] = [
   {

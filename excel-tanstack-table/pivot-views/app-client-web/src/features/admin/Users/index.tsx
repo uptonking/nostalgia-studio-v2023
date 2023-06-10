@@ -2,7 +2,7 @@ import React from 'react';
 
 import _ from 'lodash';
 
-import type { PagedResult, User } from '@datalking/pivot-app-shared-lib';
+import { type PagedResult, type User } from '@datalking/pivot-app-shared-lib';
 import {
   Edit,
   EditAttributes,
@@ -28,11 +28,15 @@ import {
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridEventListener } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  type GridColDef,
+  type GridEventListener,
+} from '@mui/x-data-grid';
 
 import { useGet } from '../../app';
-import AlertDialog, { ShowDialogProps } from '../../ui/AlertDialog';
-import { PagingProps } from '../Data';
+import AlertDialog, { type ShowDialogProps } from '../../ui/AlertDialog';
+import { type PagingProps } from '../Data';
 import UserDetail from './Detail';
 
 /**

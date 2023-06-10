@@ -11,10 +11,10 @@
  * all situaions. Please avoid using this syntax when using Operational Transformations.
  */
 
-import type {
-  JSONPatchOp,
-  JSONPatchOpHandlerMap,
-  ApplyJSONPatchOptions,
+import {
+  type JSONPatchOp,
+  type JSONPatchOpHandlerMap,
+  type ApplyJSONPatchOptions,
 } from './types';
 import { applyPatch } from './applyPatch';
 import { transformPatch } from './transformPatch';

@@ -1,6 +1,6 @@
 import createGridComponent from './createGridComponent';
 
-import { Props, ScrollToAlign } from './createGridComponent';
+import { type Props, type ScrollToAlign } from './createGridComponent';
 
 const FixedSizeGrid = createGridComponent({
   getColumnOffset: ({ columnWidth }: Props<any>, index: number): number =>

@@ -3,11 +3,11 @@ import { ValueObject } from '@datalking/pivot-entity';
 import { OptionColor } from './option-color';
 import { OptionKey } from './option-key.vo';
 import { OptionName } from './option-name.vo';
-import type { IOption } from './option.interface';
-import type {
-  ICreateOptionSchema,
-  IMutateOptionSchema,
-  IOptionSchema,
+import { type IOption } from './option.interface';
+import {
+  type ICreateOptionSchema,
+  type IMutateOptionSchema,
+  type IOptionSchema,
 } from './option.schema';
 
 export const isOption = (o?: unknown): o is Option => o instanceof Option;

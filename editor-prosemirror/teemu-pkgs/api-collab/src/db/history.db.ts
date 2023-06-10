@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 
-import { PatchedStep } from '@example/types';
+import { type PatchedStep } from '@example/types';
 
 interface StoredData {
   docHistories: [string, DocHistory][];

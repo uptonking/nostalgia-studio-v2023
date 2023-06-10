@@ -3,10 +3,10 @@
  * @author wangfupeng
  */
 
-import { Element as SlateElement } from 'slate';
-import { h, jsx, VNode } from 'snabbdom';
+import { type Element as SlateElement } from 'slate';
+import { h, jsx, type VNode } from 'snabbdom';
 
-import { IDomEditor } from '@wangeditor/core';
+import { type IDomEditor } from '@wangeditor/core';
 
 function genRenderElem(level: number) {
   /**

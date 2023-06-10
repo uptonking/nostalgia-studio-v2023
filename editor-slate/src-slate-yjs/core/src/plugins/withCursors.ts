@@ -1,8 +1,8 @@
-import { Editor, Range } from 'slate';
-import { Awareness } from 'y-protocols/awareness';
+import { type Editor, type Range } from 'slate';
+import { type Awareness } from 'y-protocols/awareness';
 import * as Y from 'yjs';
 
-import { RelativeRange } from '../model/types';
+import { type RelativeRange } from '../model/types';
 import { slateRangeToRelativeRange } from '../utils/position';
 import { YjsEditor } from './withYjs';
 

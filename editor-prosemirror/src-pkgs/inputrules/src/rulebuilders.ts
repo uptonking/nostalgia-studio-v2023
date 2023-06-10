@@ -1,6 +1,6 @@
 import { InputRule } from './inputrules';
 import { findWrapping, canJoin } from 'prosemirror-transform';
-import { NodeType, Node, Attrs } from 'prosemirror-model';
+import { type NodeType, type Node, type Attrs } from 'prosemirror-model';
 
 /// Build an input rule for automatically wrapping a textblock when a
 /// given string is typed. The `regexp` argument is

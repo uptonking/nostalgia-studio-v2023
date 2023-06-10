@@ -6,13 +6,13 @@
 import { Range, Transforms } from 'slate';
 import scrollIntoView from 'scroll-into-view-if-needed';
 
-import { IDomEditor } from '../editor/interface';
+import { type IDomEditor } from '../editor/interface';
 import { DomEditor } from '../editor/dom-editor';
-import TextArea from './TextArea';
+import type TextArea from './TextArea';
 import { EDITOR_TO_ELEMENT, IS_FOCUSED } from '../utils/weak-maps';
 import { IS_FIREFOX } from '../utils/ua';
 import { hasEditableTarget, isTargetInsideNonReadonlyVoid } from './helpers';
-import { DOMElement } from '../utils/dom';
+import { type DOMElement } from '../utils/dom';
 
 /**
  * editor onchange 时，将 editor selection 同步给 DOM

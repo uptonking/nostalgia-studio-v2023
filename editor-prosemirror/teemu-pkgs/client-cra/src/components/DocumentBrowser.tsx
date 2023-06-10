@@ -14,8 +14,8 @@ import {
   FiUsers,
 } from 'react-icons/fi';
 
-import { Stores } from '../stores';
-import { IDBDocument } from '../types/document';
+import { type Stores } from '../stores';
+import { type IDBDocument } from '../types/document';
 
 interface IProps {
   className?: string;

@@ -4,12 +4,12 @@
  */
 
 import { Editor, Range, Element } from 'slate';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 import { DomEditor } from '../../editor/dom-editor';
-import TextArea from '../TextArea';
+import type TextArea from '../TextArea';
 import { hasEditableTarget } from '../helpers';
 import { IS_SAFARI, IS_CHROME, IS_FIREFOX } from '../../utils/ua';
-import { DOMNode } from '../../utils/dom';
+import { type DOMNode } from '../../utils/dom';
 import { hidePlaceholder } from '../place-holder';
 import { editorSelectionToDOM } from '../syncSelection';
 

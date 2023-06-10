@@ -2,9 +2,9 @@ import { assert } from 'chai';
 
 import { RGA } from './RGA';
 import { RGAIdentifier } from './RGAIdentifier';
-import { RGAInsert } from './RGAInsert';
-import { RGANode } from './RGANode';
-import { RGARemove } from './RGARemove';
+import { type RGAInsert } from './RGAInsert';
+import { type RGANode } from './RGANode';
+import { type RGARemove } from './RGARemove';
 
 const LETTERS = 'abcdefghijklmnopqrstuvwxyzåäö';
 function randomLetter(): string {

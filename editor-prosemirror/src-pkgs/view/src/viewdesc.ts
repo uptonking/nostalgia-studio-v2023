@@ -2,21 +2,21 @@ import {
   DOMSerializer,
   Fragment,
   Mark,
-  Node,
-  ParseRule,
+  type Node,
+  type ParseRule,
 } from 'prosemirror-model';
 import { TextSelection } from 'prosemirror-state';
 
 import * as browser from './browser';
 import {
-  Decoration,
-  DecorationSource,
-  NodeType,
-  WidgetConstructor,
-  WidgetType,
+  type Decoration,
+  type DecorationSource,
+  type NodeType,
+  type WidgetConstructor,
+  type WidgetType,
 } from './decoration';
-import { domIndex, DOMNode, isEquivalentPosition, nodeSize } from './dom';
-import { EditorView } from './index';
+import { domIndex, type DOMNode, isEquivalentPosition, nodeSize } from './dom';
+import { type EditorView } from './index';
 
 declare global {
   interface Node {

@@ -3,7 +3,7 @@ import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import type { ICreateOptionSchema } from '@datalking/pivot-core';
+import { type ICreateOptionSchema } from '@datalking/pivot-core';
 import { createOptionSchema, OptionKey } from '@datalking/pivot-core';
 import { useCreateOptionMutation } from '@datalking/pivot-store';
 import {
@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useCurrentTable } from '../../hooks/use-current-table';
 import { OptionColorPicker } from '../field-inputs/option-color-picker';
-import type { ICreateOptionFormProps } from './create-option-form.props';
+import { type ICreateOptionFormProps } from './create-option-form.props';
 
 export const CreateOptionForm: React.FC<ICreateOptionFormProps> = ({
   field,

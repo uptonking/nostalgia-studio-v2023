@@ -1,7 +1,7 @@
-import type { CommandProps } from '@datalking/pivot-entity';
+import { type CommandProps } from '@datalking/pivot-entity';
 import { Command } from '@datalking/pivot-entity';
 
-import type { IBulkDuplicateRecordsInput } from './bulk-duplicate-records.command.input';
+import { type IBulkDuplicateRecordsInput } from './bulk-duplicate-records.command.input';
 
 export class BulkDuplicateRecordsCommand extends Command {
   readonly ids: string[];

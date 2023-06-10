@@ -1,8 +1,8 @@
 import { type ArrowValue } from '../../../types';
 import { ARROW } from '../../../util/Constants';
-import type { AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
-import type { Point } from '../Point';
-import type { Shape } from '../Shape';
+import { type AbstractCanvas2D } from '../../canvas/AbstractCanvas2D';
+import { type Point } from '../Point';
+import { type Shape } from '../Shape';
 
 /**
  * A static class that implements all markers for VML and SVG using a registry.

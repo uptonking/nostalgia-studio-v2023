@@ -3,7 +3,7 @@ import React from 'react';
 import authProvider from 'auth0-js';
 import decode from 'jwt-decode';
 
-import type { IdentityToken } from '@datalking/pivot-app-shared-lib';
+import { type IdentityToken } from '@datalking/pivot-app-shared-lib';
 
 import {
   authOptions,

@@ -3,7 +3,7 @@ import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { history, redo, undo } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
-import { Command, EditorState, Plugin } from 'prosemirror-state';
+import { type Command, EditorState, Plugin } from 'prosemirror-state';
 import { findWrapping } from 'prosemirror-transform';
 import { EditorView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';

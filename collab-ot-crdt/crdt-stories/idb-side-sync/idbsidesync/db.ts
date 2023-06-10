@@ -1,4 +1,4 @@
-import type { OpLogEntry, Settings } from '../types/main';
+import { type OpLogEntry, type Settings } from '../types/main';
 import { HLClock } from './HLClock';
 import { HLTime } from './HLTime';
 import {

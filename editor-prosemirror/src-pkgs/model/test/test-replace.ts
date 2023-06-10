@@ -1,4 +1,4 @@
-import { Slice, Node } from 'prosemirror-model';
+import { Slice, type Node } from 'prosemirror-model';
 import { eq, doc, blockquote, h1, p, ul, li } from 'prosemirror-test-builder';
 import ist from 'ist';
 

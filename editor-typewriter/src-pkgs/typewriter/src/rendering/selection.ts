@@ -1,6 +1,6 @@
-import { EditorRange } from '@typewriter/document';
+import { type EditorRange } from '@typewriter/document';
 
-import type { Editor } from '../editor';
+import { type Editor } from '../editor';
 import { getIndexFromNodeAndOffset, getNodesForRange } from './position';
 
 /**

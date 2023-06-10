@@ -1,7 +1,7 @@
 import { Op, OpIterator } from '@typewriter/delta';
 
-import { iterator, LineIterator } from './Line';
-import type { Line, LineIds } from './lineUtils';
+import { iterator, type LineIterator } from './Line';
+import { type Line, type LineIds } from './lineUtils';
 
 export class LineOpIterator {
   lineIterator: LineIterator;

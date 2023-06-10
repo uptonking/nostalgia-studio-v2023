@@ -1,6 +1,6 @@
 import { type AttributeMapType, Delta, isEqual } from '@typewriter/delta';
 
-import { EditorRange } from './editorRange';
+import { type EditorRange } from './editorRange';
 
 export type LineIds = Map<string, Line>;
 export type LineRanges = Map<Line, EditorRange>;

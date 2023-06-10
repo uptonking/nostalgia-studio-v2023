@@ -4,14 +4,19 @@
  */
 
 import { Editor, Transforms, Range, Node } from 'slate';
-import { IDropPanelMenu, IDomEditor, DomEditor, t } from '@wangeditor/core';
-import $, { Dom7Array, DOMElement } from '../../utils/dom';
+import {
+  type IDropPanelMenu,
+  type IDomEditor,
+  DomEditor,
+  t,
+} from '@wangeditor/core';
+import $, { type Dom7Array, type DOMElement } from '../../utils/dom';
 import { genRandomStr } from '../../utils/util';
 import { TABLE_SVG } from '../../constants/svg';
 import {
-  TableElement,
-  TableCellElement,
-  TableRowElement,
+  type TableElement,
+  type TableCellElement,
+  type TableRowElement,
 } from '../custom-types';
 
 function genTableNode(rowNum: number, colNum: number): TableElement {

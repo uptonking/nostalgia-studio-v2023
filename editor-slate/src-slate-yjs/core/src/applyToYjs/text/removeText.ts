@@ -1,4 +1,4 @@
-import { Node, RemoveTextOperation } from 'slate';
+import { type Node, type RemoveTextOperation } from 'slate';
 import type Y from 'yjs';
 import { getYTarget } from '../../utils/location';
 

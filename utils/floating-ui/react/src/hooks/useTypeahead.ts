@@ -1,7 +1,11 @@
 import * as React from 'react';
 import useLayoutEffect from 'use-isomorphic-layout-effect';
 
-import type { ElementProps, FloatingContext, ReferenceType } from '../types';
+import {
+  type ElementProps,
+  type FloatingContext,
+  type ReferenceType,
+} from '../types';
 import { stopEvent } from '../utils/stopEvent';
 import { useEvent } from './utils/useEvent';
 import { useLatestRef } from './utils/useLatestRef';

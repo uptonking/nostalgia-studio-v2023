@@ -3,9 +3,9 @@
  * @author wangfupeng
  */
 
-import { Transforms, Node } from 'slate';
-import { IButtonMenu, IDomEditor, DomEditor } from '@wangeditor/core';
-import { ImageElement } from '../custom-types';
+import { Transforms, type Node } from 'slate';
+import { type IButtonMenu, type IDomEditor, DomEditor } from '@wangeditor/core';
+import { type ImageElement } from '../custom-types';
 
 abstract class ImageWidthBaseClass implements IButtonMenu {
   abstract readonly title: string; // 菜单标题

@@ -1,17 +1,17 @@
 import { Option } from 'oxide.ts';
 
 import {
-  IRecordQueryModel,
-  ITableRepository,
+  type IRecordQueryModel,
+  type ITableRepository,
   ParentAvailableSpec,
   ViewId,
   WithRecordTableId,
 } from '@datalking/pivot-core';
-import type { IQueryHandler } from '@datalking/pivot-entity';
+import { type IQueryHandler } from '@datalking/pivot-entity';
 import { andOptions } from '@datalking/pivot-entity';
 
-import type { IGetParentAvailableRecordsOutput } from './get-parent-available-records.query.interface';
-import type { GetParentAvailableRecordsQuery } from './get-parent-available-records.query';
+import { type IGetParentAvailableRecordsOutput } from './get-parent-available-records.query.interface';
+import { type GetParentAvailableRecordsQuery } from './get-parent-available-records.query';
 
 export class GetParentAvailableRecordsQueryHandler
   implements

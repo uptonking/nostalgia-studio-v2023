@@ -1,6 +1,6 @@
-import type { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
-import type { CollapsibleElement } from '../draggable-collapsible-feature/types';
+import { type CollapsibleElement } from '../draggable-collapsible-feature/types';
 
 export type Heading1Type = 'h1';
 export type Heading2Type = 'h2';

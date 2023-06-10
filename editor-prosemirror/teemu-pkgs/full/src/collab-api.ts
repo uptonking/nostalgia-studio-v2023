@@ -1,4 +1,7 @@
-import { IGetDocumentResponse, ISaveCollabStepsParams } from '@example/types';
+import {
+  type IGetDocumentResponse,
+  type ISaveCollabStepsParams,
+} from '@example/types';
 
 const COLLAB_API_URL = 'http://localhost:3400';
 

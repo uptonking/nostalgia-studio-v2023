@@ -1,4 +1,4 @@
-import type { Side } from '../types';
+import { type Side } from '../types';
 
 const oppositeSideMap = {
   left: 'right',

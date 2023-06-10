@@ -1,10 +1,10 @@
-import type { Option } from 'oxide.ts';
+import { type Option } from 'oxide.ts';
 import { None, Some } from 'oxide.ts';
 import { z } from 'zod';
 
 import { ValueObject } from '@datalking/pivot-entity';
 
-import type { Field } from '../field/index';
+import { type Field } from '../field/index';
 
 export const DEFAULT_WIDTH = 200;
 

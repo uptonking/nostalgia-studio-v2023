@@ -1,18 +1,18 @@
-import type { RowModel } from '..';
-import type { TableFeature } from '../core/table';
+import { type RowModel } from '..';
+import { type TableFeature } from '../core/table';
 import {
   type BuiltInSortingFn,
   reSplitAlphaNumeric,
   sortingFns,
 } from '../sortingFns';
-import type {
-  Column,
-  OnChangeFn,
-  Row,
-  RowData,
-  SortingFns,
-  Table,
-  Updater,
+import {
+  type Column,
+  type OnChangeFn,
+  type Row,
+  type RowData,
+  type SortingFns,
+  type Table,
+  type Updater,
 } from '../types';
 import { isFunction, makeStateUpdater } from '../utils';
 

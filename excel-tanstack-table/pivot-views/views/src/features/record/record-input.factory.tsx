@@ -5,7 +5,7 @@ import { forIn } from 'lodash-es';
 import { Controller } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
-import type { Field } from '@datalking/pivot-core';
+import { type Field } from '@datalking/pivot-core';
 import {
   ActionIcon,
   Center,

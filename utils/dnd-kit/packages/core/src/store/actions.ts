@@ -1,5 +1,5 @@
-import type { Coordinates, UniqueIdentifier } from '../types';
-import type { DroppableContainer } from './types';
+import { type Coordinates, type UniqueIdentifier } from '../types';
+import { type DroppableContainer } from './types';
 
 export enum Action {
   DragStart = 'dragStart',

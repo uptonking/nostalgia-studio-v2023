@@ -5,26 +5,26 @@
 
 import toArray from 'lodash.toarray';
 import {
-  Ancestor,
+  type Ancestor,
   Editor,
   Element,
   Node,
-  Path,
-  Point,
+  type Path,
+  type Point,
   Range,
   Text,
 } from 'slate';
 
-import HoverBar from '../menus/bar/HoverBar';
-import Toolbar from '../menus/bar/Toolbar';
-import TextArea from '../text-area/TextArea';
+import type HoverBar from '../menus/bar/HoverBar';
+import type Toolbar from '../menus/bar/Toolbar';
+import type TextArea from '../text-area/TextArea';
 import $, {
-  DOMElement,
-  DOMNode,
-  DOMPoint,
-  DOMRange,
-  DOMSelection,
-  DOMStaticRange,
+  type DOMElement,
+  type DOMNode,
+  type DOMPoint,
+  type DOMRange,
+  type DOMSelection,
+  type DOMStaticRange,
   hasShadowRoot,
   isDOMElement,
   isDOMSelection,
@@ -45,7 +45,7 @@ import {
   NODE_TO_KEY,
   NODE_TO_PARENT,
 } from '../utils/weak-maps';
-import type { IDomEditor } from './interface';
+import { type IDomEditor } from './interface';
 
 /**
  * 自定义全局 command

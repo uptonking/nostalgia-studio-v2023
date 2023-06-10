@@ -17,8 +17,8 @@ import {
 } from 'prosemirror-schema-list';
 import { undo, redo } from 'prosemirror-history';
 import { undoInputRule } from 'prosemirror-inputrules';
-import { Command } from 'prosemirror-state';
-import { Schema } from 'prosemirror-model';
+import { type Command } from 'prosemirror-state';
+import { type Schema } from 'prosemirror-model';
 
 const mac =
   typeof navigator !== 'undefined'

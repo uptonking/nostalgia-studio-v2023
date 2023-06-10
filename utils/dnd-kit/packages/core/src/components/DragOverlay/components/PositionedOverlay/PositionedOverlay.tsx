@@ -1,9 +1,9 @@
 import React, { forwardRef, useMemo } from 'react';
 
-import type { Transform } from '@dnd-kit/utilities';
+import { type Transform } from '@dnd-kit/utilities';
 import { CSS, isKeyboardEvent } from '@dnd-kit/utilities';
 
-import type { ClientRect, UniqueIdentifier } from '../../../../types';
+import { type ClientRect, type UniqueIdentifier } from '../../../../types';
 import { getRelativeTransformOrigin } from '../../../../utilities';
 
 type TransitionGetter = (

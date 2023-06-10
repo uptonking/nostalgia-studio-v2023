@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 
-import { Editor } from 'slate';
-import { DefaultLeaf, RenderLeafProps } from 'slate-react';
+import { type Editor } from 'slate';
+import { DefaultLeaf, type RenderLeafProps } from 'slate-react';
 
-import { NosPlugin } from '../plugins/types';
+import { type NosPlugin } from '../plugins/types';
 
 export const useRenderLeaf = (editor: Editor, plugins: NosPlugin[]) => {
   const renderers = plugins

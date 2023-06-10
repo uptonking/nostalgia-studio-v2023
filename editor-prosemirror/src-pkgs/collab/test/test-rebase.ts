@@ -1,5 +1,5 @@
 import { Transform } from 'prosemirror-transform';
-import { Node } from 'prosemirror-model';
+import { type Node } from 'prosemirror-model';
 import {
   schema,
   eq,

@@ -1,6 +1,6 @@
 import { Coordinates } from 'leyden';
 import { useMemo } from 'react';
-import { Descendant } from 'slate';
+import { type Descendant } from 'slate';
 
 import { useCoordinates } from './useCoordinates';
 import { useSelectedCoordinates } from './useSelectedCoordinates';

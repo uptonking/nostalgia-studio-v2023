@@ -1,5 +1,5 @@
-import type { Node } from 'prosemirror-model';
-import type { Step } from 'prosemirror-transform';
+import { type Node } from 'prosemirror-model';
+import { type Step } from 'prosemirror-transform';
 
 /** a central authority which determines in which order changes are applied.
  * - If two editors make changes concurrently, they will both go to this authority with their changes.

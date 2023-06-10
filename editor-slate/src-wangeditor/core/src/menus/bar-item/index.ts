@@ -3,15 +3,15 @@
  * @author wangfupeng
  */
 
-import { Dom7Array } from '../../utils/dom';
+import { type Dom7Array } from '../../utils/dom';
 import {
-  IButtonMenu,
-  ISelectMenu,
-  IDropPanelMenu,
-  IModalMenu,
-  IMenuGroup,
+  type IButtonMenu,
+  type ISelectMenu,
+  type IDropPanelMenu,
+  type IModalMenu,
+  type IMenuGroup,
 } from '../interface';
-import { IDomEditor } from '../../editor/interface';
+import { type IDomEditor } from '../../editor/interface';
 import { BAR_ITEM_TO_EDITOR } from '../../utils/weak-maps';
 import SimpleButton from './SimpleButton';
 import DropPanelButton from './DropPanelButton';

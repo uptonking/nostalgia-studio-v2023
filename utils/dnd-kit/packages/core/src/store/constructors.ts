@@ -1,5 +1,5 @@
-import type { UniqueIdentifier } from '../types';
-import type { DroppableContainer } from './types';
+import { type UniqueIdentifier } from '../types';
+import { type DroppableContainer } from './types';
 
 type Identifier = UniqueIdentifier | null | undefined;
 

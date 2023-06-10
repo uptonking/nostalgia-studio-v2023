@@ -1,7 +1,7 @@
 import { TestTime } from '@logux/core';
 
-import { createReporter } from '../create-reporter/index';
 import { BaseServer } from '../base-server/index';
+import { createReporter } from '../create-reporter/index';
 import { TestClient } from '../test-client/index';
 
 export class TestServer extends BaseServer {

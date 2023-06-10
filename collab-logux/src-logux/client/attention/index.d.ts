@@ -1,4 +1,4 @@
-import { Client } from '../client/index';
+import { type Client } from '../client/index';
 
 /**
  * Highlight tabs on synchronization errors.

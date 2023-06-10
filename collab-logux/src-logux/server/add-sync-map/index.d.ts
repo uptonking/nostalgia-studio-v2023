@@ -1,14 +1,14 @@
 import {
-  LoguxSubscribeAction,
-  SyncMapChangeAction,
-  SyncMapCreateAction,
-  SyncMapDeleteAction,
-  SyncMapValues,
-  SyncMapTypes,
+  type LoguxSubscribeAction,
+  type SyncMapChangeAction,
+  type SyncMapCreateAction,
+  type SyncMapDeleteAction,
+  type SyncMapTypes,
+  type SyncMapValues,
 } from '@logux/actions';
 
-import { BaseServer, ServerMeta } from '../base-server/index';
-import { Context } from '../context/index';
+import { type BaseServer, type ServerMeta } from '../base-server/index';
+import { type Context } from '../context/index';
 
 declare const WITH_TIME: unique symbol;
 

@@ -1,7 +1,7 @@
-import { equal, is } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal, is } from 'uvu/assert';
 
-import { ServerNode, TestTime, TestPair, TestLog } from '../index';
+import { ServerNode, type TestLog, TestPair, TestTime } from '../index';
 
 let node: ServerNode<{}, TestLog>;
 

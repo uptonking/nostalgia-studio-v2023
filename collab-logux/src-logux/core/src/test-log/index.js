@@ -1,5 +1,5 @@
-import { MemoryStore } from '../memory-store/index';
 import { Log } from '../log/index';
+import { MemoryStore } from '../memory-store/index';
 
 export class TestLog extends Log {
   constructor(time, id, opts = {}) {

@@ -1,18 +1,19 @@
-import { ServerConnection, MemoryStore, Log, parseId } from '@logux/core';
-import { LoguxNotFoundError } from '@logux/actions';
-import { createNanoEvents } from 'nanoevents';
-import { WebSocketServer } from 'ws';
 import { promises as fs } from 'fs';
-import { fileURLToPath } from 'url';
-import { join, dirname } from 'path';
-import UrlPattern from 'url-pattern';
+import { createNanoEvents } from 'nanoevents';
 import { nanoid } from 'nanoid';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import UrlPattern from 'url-pattern';
+import { WebSocketServer } from 'ws';
 
-import { bindControlServer } from '../bind-control-server/index';
+import { LoguxNotFoundError } from '@logux/actions';
+import { Log, MemoryStore, parseId, ServerConnection } from '@logux/core';
+
 import { bindBackendProxy } from '../bind-backend-proxy/index';
+import { bindControlServer } from '../bind-control-server/index';
+import { Context } from '../context/index';
 import { createHttpServer } from '../create-http-server/index';
 import { ServerClient } from '../server-client/index';
-import { Context } from '../context/index';
 
 const SKIP_PROCESS = Symbol('skipProcess');
 const RESEND_META = ['channels', 'users', 'clients', 'nodes'];
@@ -92,6 +93,10 @@ function normalizeChannelCallbacks(pattern, callbacks) {
   if (!callbacks || !callbacks.access) {
     throw new Error(`Channel ${pattern} must have access callback`);
   }
+}
+
+function subscriberFilterId(action) {
+  return JSON.stringify(action.filter || {});
 }
 
 export class BaseServer {
@@ -548,7 +553,7 @@ export class BaseServer {
       if (!this.subscribers[channel]) {
         this.subscribers[channel] = {};
       }
-      this.subscribers[channel][nodeId] = { filter: true };
+      this.subscribers[channel][nodeId] = { filters: { '{}': true } };
       this.log.add({ type: 'logux/subscribed', channel }, { nodes: [nodeId] });
     }
   }
@@ -593,7 +598,6 @@ export class BaseServer {
     }
 
     if (meta.channels) {
-      let ctx;
       for (let channel of meta.channels) {
         if (this.subscribers[channel]) {
           for (let nodeId in this.subscribers[channel]) {
@@ -601,15 +605,17 @@ export class BaseServer {
             if (!ignoreClients.has(clientId)) {
               let subscriber = this.subscribers[channel][nodeId];
               if (subscriber) {
-                let filter = subscriber.filter;
-                if (typeof filter === 'function') {
-                  if (!ctx) ctx = this.createContext(action, meta);
-                  filter = await filter(ctx, action, meta);
-                }
+                let ctx = this.createContext(action, meta);
                 let client = this.clientIds.get(clientId);
-                if (filter && client) {
-                  ignoreClients.add(clientId);
-                  client.node.onAdd(action, meta);
+                for (let filter of Object.values(subscriber.filters)) {
+                  filter =
+                    typeof filter === 'function'
+                      ? await filter(ctx, action, meta)
+                      : filter;
+                  if (filter && client) {
+                    ignoreClients.add(clientId);
+                    client.node.onAdd(action, meta);
+                  }
                 }
               }
             }
@@ -741,8 +747,13 @@ export class BaseServer {
             return;
           }
 
-          let filter = true;
-          if (channel.filter) filter = await channel.filter(ctx, action, meta);
+          let filterId = subscriberFilterId(action);
+          let filters = { [filterId]: true };
+
+          if (channel.filter) {
+            let filter = await channel.filter(ctx, action, meta);
+            filters = { [filterId]: filter };
+          }
 
           this.emitter.emit('report', 'subscribed', {
             actionId: meta.id,
@@ -753,8 +764,12 @@ export class BaseServer {
             this.subscribers[action.channel] = {};
             this.emitter.emit('subscribing', action, meta);
           }
+          let subscriber = this.subscribers[action.channel][ctx.nodeId];
+          if (subscriber) {
+            filters = { ...subscriber.filters, ...filters };
+          }
           this.subscribers[action.channel][ctx.nodeId] = {
-            filter,
+            filters,
             unsubscribe: channel.unsubscribe
               ? (unsubscribeAction, unsubscribeMeta) =>
                   channel.unsubscribe(ctx, unsubscribeAction, unsubscribeMeta)
@@ -806,7 +821,11 @@ export class BaseServer {
           subscriber.unsubscribe(action, meta);
           this.contexts.delete(action);
         }
-        delete this.subscribers[action.channel][clientNodeId];
+        let filterId = subscriberFilterId(action);
+        delete subscriber.filters[filterId];
+        if (Object.keys(subscriber.filters).length === 0) {
+          delete this.subscribers[action.channel][clientNodeId];
+        }
         if (Object.keys(this.subscribers[action.channel]).length === 0) {
           delete this.subscribers[action.channel];
         }

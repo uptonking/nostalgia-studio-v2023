@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback } from 'react';
+import React, { type ChangeEvent, useCallback } from 'react';
 
 import { changeSyncMapById } from '@logux/client';
 import { useClient, useFilter } from '@logux/client/react';
@@ -8,7 +8,7 @@ import { authStore } from '../../stores/auth';
 import { tasksStore } from '../../stores/tasks';
 import styles from './ToggleAction.module.css';
 
-export const ToggleAction = (): JSX.Element => {
+export const ToggleAction = () => {
   const client = useClient();
   const { id: authorId } = useStore(authStore);
   const tasks = useFilter(tasksStore, { authorId });

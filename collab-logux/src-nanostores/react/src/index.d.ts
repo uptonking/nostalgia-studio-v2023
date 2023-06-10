@@ -1,4 +1,4 @@
-import { Store, StoreValue } from 'nanostores';
+import { type Store, type StoreValue } from 'nanostores';
 
 type StoreKeys<T> = T extends { setKey: (k: infer K, v: any) => unknown }
   ? K

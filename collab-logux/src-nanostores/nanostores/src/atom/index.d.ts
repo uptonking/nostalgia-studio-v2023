@@ -1,4 +1,4 @@
-import { lastAction, actionId } from '../action/index';
+import { type actionId, type lastAction } from '../action/index';
 
 export type AllKeys<T> = T extends any ? keyof T : never;
 
@@ -24,15 +24,23 @@ export interface ReadableAtom<Value = any> {
   /**
    * Listeners count.
    */
-  lc: number;
+  readonly lc: number;
+
+  /**
+   * Low-level method to read store’s value without calling `onStart`.
+   *
+   * Try to use only {@link ReadableAtom#get}.
+   * Without subscribers, value can de undefined.
+   */
+  readonly value: Value | undefined;
 
   /**
    * Subscribe to store changes and call listener immediately.
    *
    * ```
-   * import { router } from '../store'
+   * import { $router } from '../store'
    *
-   * router.subscribe(page => {
+   * $router.subscribe(page => {
    *   console.log(page)
    * })
    * ```
@@ -60,7 +68,7 @@ export interface ReadableAtom<Value = any> {
    * initialized even if store had no listeners.
    *
    * ```js
-   * store.get()
+   * $store.get()
    * ```
    *
    * @returns Store value.
@@ -81,20 +89,12 @@ export interface WritableAtom<Value = any> extends ReadableAtom<Value> {
    * Change store value.
    *
    * ```js
-   * router.set({ path: location.pathname, page: parse(location.pathname) })
+   * $router.set({ path: location.pathname, page: parse(location.pathname) })
    * ```
    *
    * @param newValue New store value.
    */
   set(newValue: Value): void;
-
-  /**
-   * Trigger listeners without changing value in the key for performance reasons.
-   *
-   * @param changedKey Key that was changed.
-   *                   If not provided that means the whole value was changed.
-   */
-  notify(changedKey?: AllKeys<Value>): void;
 }
 
 export type Atom<Value = any> = ReadableAtom<Value> | WritableAtom<Value>;
@@ -110,14 +110,14 @@ export declare let notifyId: number;
  * import { atom, onMount } from 'nanostores'
  *
  * // Initial value
- * export const router = atom({ path: '', page: 'home' })
+ * export const $router = atom({ path: '', page: 'home' })
  *
  * function parse () {
- *   router.set({ path: location.pathname, page: parse(location.pathname) })
+ *   $router.set({ path: location.pathname, page: parse(location.pathname) })
  * }
  *
  * // Listen for URL changes on first store’s listener.
- * onMount(router, () => {
+ * onMount($router, () => {
  *   parse()
  *   window.addEventListener('popstate', parse)
  *   return () => {

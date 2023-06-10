@@ -1,6 +1,6 @@
-import { Action, AnyAction } from '@logux/core';
+import { type Action, type AnyAction } from '@logux/core';
 
-import { ActionCreator } from '../define-action/index';
+import { type ActionCreator } from '../define-action/index';
 
 export interface LoguxProcessedAction {
   type: 'logux/processed';

@@ -1,10 +1,10 @@
+import glob from 'fast-glob';
 import { join, relative } from 'path';
 import pico from 'picocolors';
-import glob from 'fast-glob';
 
-import { createReporter } from '../create-reporter/index';
 import { BaseServer } from '../base-server/index';
-import { loadOptions, oneOf, number } from '../options-loader/index';
+import { createReporter } from '../create-reporter/index';
+import { loadOptions, number, oneOf } from '../options-loader/index';
 
 let cliOptionsSpec = {
   options: {

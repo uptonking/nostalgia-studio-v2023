@@ -1,20 +1,20 @@
-import { equal, is } from 'uvu/assert';
 import { delay } from 'nanodelay';
 import { test } from 'uvu';
+import { equal, is } from 'uvu/assert';
 
+import { actionId } from '../action/index';
 import {
-  STORE_UNMOUNT_DELAY,
-  onNotify,
-  onAction,
-  onStart,
-  onMount,
-  onStop,
   action,
-  onSet,
   atom,
   map,
+  onAction,
+  onMount,
+  onNotify,
+  onSet,
+  onStart,
+  onStop,
+  STORE_UNMOUNT_DELAY,
 } from '../index';
-import { actionId } from '../action/index';
 
 test('has onStart and onStop listeners', () => {
   let events: string[] = [];
@@ -460,8 +460,8 @@ test('onAction race', async () => {
   await delay(50);
 
   equal(acc, {
-    '14': ['my-store-14', '40', 'end'],
-    '15': ['my-store-15', '10', 'end'],
+    '15': ['my-store-15', '40', 'end'],
+    '16': ['my-store-16', '10', 'end'],
   });
 
   unbindAction();

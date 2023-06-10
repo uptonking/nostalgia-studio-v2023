@@ -1,5 +1,5 @@
 import React from 'react';
 
-export const AccessDeniedPage = (): JSX.Element => {
+export const AccessDeniedPage = () => {
   return <h1>Access denied</h1>;
 };

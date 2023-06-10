@@ -1,6 +1,6 @@
-import { Connection } from '../base-node/index';
-
 import WebSocket = require('ws');
+
+import { Connection } from '../base-node/index';
 
 /**
  * Logux connection for browser WebSocket.

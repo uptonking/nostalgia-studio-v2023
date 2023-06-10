@@ -1,10 +1,11 @@
-import { existsSync, statSync, readFileSync } from 'fs';
-import { it, expect, afterEach } from 'vitest';
-import { LoguxError } from '@logux/core';
+import { existsSync, readFileSync, statSync } from 'fs';
 import { nanoid } from 'nanoid';
+import os from 'os';
 import { join } from 'path';
 import pino from 'pino';
-import os from 'os';
+import { afterEach, expect, it } from 'vitest';
+
+import { LoguxError } from '@logux/core';
 
 import { createReporter, PATH_TO_PRETTIFYING_PINO_TRANSPORT } from './index';
 

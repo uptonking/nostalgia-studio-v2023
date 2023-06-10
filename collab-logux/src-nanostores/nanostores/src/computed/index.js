@@ -1,18 +1,16 @@
+import { atom } from '../atom/index';
 import { onMount } from '../lifecycle/index';
-import { atom, notifyId } from '../atom/index';
 
 export let computed = (stores, cb) => {
   if (!Array.isArray(stores)) stores = [stores];
 
-  let diamondNotifyId;
-  let diamondArgs = [];
+  let diamondArgs;
   let run = () => {
     let args = stores.map((store) => store.get());
     if (
-      diamondNotifyId !== notifyId ||
+      diamondArgs === undefined ||
       args.some((arg, i) => arg !== diamondArgs[i])
     ) {
-      diamondNotifyId = notifyId;
       diamondArgs = args;
       derived.set(cb(...args));
     }

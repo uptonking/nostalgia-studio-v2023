@@ -1,6 +1,6 @@
 import { action, atom, computed } from 'nanostores';
 
-import type { Settings } from '../types/settings';
+import { type Settings } from '../types/settings';
 
 const settings = atom<Settings>({
   isOpen: false,

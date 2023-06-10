@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler } from 'react';
+import React, { type ChangeEventHandler } from 'react';
 
 import { CheckboxWrapper, TextWrapper } from './Checkbox.styled';
 

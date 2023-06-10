@@ -1,7 +1,13 @@
-import { equal, is, throws } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal, is, throws } from 'uvu/assert';
 
-import { ServerNode, LoguxError, TestTime, TestPair, TestLog } from '../index';
+import {
+  LoguxError,
+  ServerNode,
+  type TestLog,
+  TestPair,
+  TestTime,
+} from '../index';
 
 let node: ServerNode<{}, TestLog>;
 

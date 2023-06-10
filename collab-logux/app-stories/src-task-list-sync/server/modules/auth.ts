@@ -1,8 +1,8 @@
-import { IncomingMessage } from 'http';
+import { type IncomingMessage } from 'http';
 
-import { BaseServer } from '@logux/server/base-server';
+import { type BaseServer } from '@logux/server/base-server';
 
-import { User } from '../../protocol/index';
+import { type User } from '../../protocol/index';
 import { findUser } from '../db';
 
 const cookieSessionIdKey = 'sessionId';

@@ -1,6 +1,6 @@
-import { MapStore, Atom } from 'nanostores';
+import { type Atom, type MapStore } from 'nanostores';
 
-import { Client } from '../client/index';
+import { type Client } from '../client/index';
 
 interface CreateClientStore {
   /**

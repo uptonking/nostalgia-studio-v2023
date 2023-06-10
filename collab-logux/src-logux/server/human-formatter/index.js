@@ -1,11 +1,11 @@
-import stripAnsi from 'strip-ansi';
-import yyyymmdd from 'yyyy-mm-dd';
-import pico from 'picocolors';
+import { once } from 'events';
 import os from 'os';
+import pico from 'picocolors';
+import pino from 'pino';
 import abstractTransport from 'pino-abstract-transport';
 import { Transform } from 'stream';
-import pino from 'pino';
-import { once } from 'events';
+import stripAnsi from 'strip-ansi';
+import yyyymmdd from 'yyyy-mm-dd';
 
 import { mulberry32, onceXmur3 } from './utils';
 

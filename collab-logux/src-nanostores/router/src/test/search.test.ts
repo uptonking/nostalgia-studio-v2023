@@ -1,9 +1,10 @@
-import { cleanStores } from 'nanostores';
-import { equal } from 'uvu/assert';
 import { JSDOM } from 'jsdom';
+import { cleanStores } from 'nanostores';
 import { test } from 'uvu';
+import { equal } from 'uvu/assert';
 
-import { createSearchParams, SearchParamsStore } from '../index';
+import { type SearchParamsStore } from '../index';
+import { createSearchParams } from '../index';
 
 let dom = new JSDOM('<body></body>', { url: 'http://localhost/' });
 

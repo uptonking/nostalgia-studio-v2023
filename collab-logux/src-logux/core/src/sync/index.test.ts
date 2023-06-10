@@ -1,8 +1,8 @@
-import { equal, is, type } from 'uvu/assert';
 import { delay } from 'nanodelay';
 import { test } from 'uvu';
+import { equal, is, type } from 'uvu/assert';
 
-import { ClientNode, ServerNode, TestTime, TestPair } from '../index';
+import { ClientNode, ServerNode, TestPair, TestTime } from '../index';
 
 let destroyable: TestPair;
 

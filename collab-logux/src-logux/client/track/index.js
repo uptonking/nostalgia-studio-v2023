@@ -1,7 +1,8 @@
 export function track(client, id) {
   if (client.processing[id]) return client.processing[id][0];
 
-  let resolveCallback, rejectCallback;
+  let resolveCallback;
+  let rejectCallback;
   let promise = new Promise((resolve, reject) => {
     resolveCallback = resolve;
     rejectCallback = reject;

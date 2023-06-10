@@ -1,6 +1,6 @@
-import { Action } from '@logux/core';
+import { type Action } from '@logux/core';
 
-import { Client, ClientMeta } from '../client/index';
+import { type Client, type ClientMeta } from '../client/index';
 
 interface StatusListener {
   (

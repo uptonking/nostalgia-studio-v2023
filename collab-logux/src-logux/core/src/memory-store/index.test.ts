@@ -1,6 +1,6 @@
 import { test } from 'uvu';
 
-import { MemoryStore, eachStoreCheck } from '../index';
+import { eachStoreCheck, MemoryStore } from '../index';
 
 eachStoreCheck((desc, creator) => {
   test(

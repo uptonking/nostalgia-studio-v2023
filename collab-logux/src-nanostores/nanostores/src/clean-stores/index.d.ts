@@ -1,5 +1,4 @@
-import { MapTemplate, AnySyncTemplate } from '../deprecated/index';
-import { Store } from '../map/index';
+import { type MapCreator, type Store } from '../map/index';
 
 export const clean: unique symbol;
 
@@ -12,7 +11,7 @@ export const clean: unique symbol;
  * import { cleanStores } from 'nanostores'
  *
  * afterEach(() => {
- *   cleanStores(Router, Settings, User)
+ *   cleanStores($router, $settings)
  * })
  * ```
  *
@@ -20,5 +19,5 @@ export const clean: unique symbol;
  * @return Promise for stores destroying.
  */
 export function cleanStores(
-  ...stores: (Store | MapTemplate | AnySyncTemplate | undefined)[]
+  ...stores: (Store | MapCreator | undefined)[]
 ): void;

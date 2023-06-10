@@ -1,5 +1,5 @@
+import { map, type WritableAtom } from '../index';
 import { listenKeys } from './index';
-import { map, WritableAtom } from '../index';
 
 type TestType =
   | { id: string; isLoading: true }

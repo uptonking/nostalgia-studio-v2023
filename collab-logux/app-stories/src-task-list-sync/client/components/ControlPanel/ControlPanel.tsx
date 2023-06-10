@@ -11,7 +11,7 @@ import { Filter, filterStore } from '../../stores/filter';
 import { tasksStore } from '../../stores/tasks';
 import styles from './ControlPanel.module.css';
 
-export const ControlPanel = (): JSX.Element => {
+export const ControlPanel = () => {
   const client = useClient();
   const filter = useStore(filterStore);
   const { id: authorId } = useStore(authStore);

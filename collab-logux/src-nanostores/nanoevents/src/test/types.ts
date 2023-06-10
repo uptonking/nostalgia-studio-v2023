@@ -1,4 +1,4 @@
-import { createNanoEvents, Emitter } from '../index';
+import { createNanoEvents, type Emitter } from '../index';
 
 interface Events {
   set: (a: string, b: number) => void;

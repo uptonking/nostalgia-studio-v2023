@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 import { useStore } from '@nanostores/react';
 import { getPagePath } from '@nanostores/router';
@@ -11,7 +11,7 @@ type Props = {
   children: ReactNode;
 };
 
-export const Layout = ({ children }: Props): JSX.Element => {
+export const Layout = ({ children }: Props) => {
   const { id: userId } = useStore(authStore);
 
   return (

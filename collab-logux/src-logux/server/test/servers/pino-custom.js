@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import pino from 'pino';
 
 import { Server } from '../../index';

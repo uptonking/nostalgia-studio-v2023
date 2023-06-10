@@ -2,12 +2,12 @@ import { defineSyncMapActions, LoguxNotFoundError } from '@logux/actions';
 import {
   addSyncMap,
   addSyncMapFilter,
-  BaseServer,
+  type BaseServer,
   ChangedAt,
   NoConflictResolution,
 } from '@logux/server';
 
-import { Task } from '../../protocol/index';
+import { type Task } from '../../protocol/index';
 import {
   changeTask,
   createTask,

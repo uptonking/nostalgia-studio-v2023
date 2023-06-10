@@ -1,4 +1,4 @@
-import { ServerMeta } from '../base-server/index';
+import { type ServerMeta } from '../base-server/index';
 
 /**
  * Remove all non-allowed keys from meta.

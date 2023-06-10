@@ -1,11 +1,12 @@
-import { MapStore, cleanStores, map } from 'nanostores';
-import { it, expect, afterEach } from 'vitest';
+import { type MapStore } from 'nanostores';
+import { cleanStores, map } from 'nanostores';
+import { afterEach, expect, it } from 'vitest';
 
 import {
-  syncMapTemplate,
-  prepareForTest,
   createFilter,
   emptyInTest,
+  prepareForTest,
+  syncMapTemplate,
   TestClient,
 } from '../index';
 

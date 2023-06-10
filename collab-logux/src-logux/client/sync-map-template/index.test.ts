@@ -1,17 +1,18 @@
-import { defineChangeSyncMap, defineChangedSyncMap } from '@logux/actions';
-import { cleanStores, allTasks } from 'nanostores';
-import { it, expect, afterEach } from 'vitest';
 import { delay } from 'nanodelay';
+import { allTasks, cleanStores } from 'nanostores';
+import { afterEach, expect, it } from 'vitest';
 
+import { defineChangedSyncMap, defineChangeSyncMap } from '@logux/actions';
+
+import { type SyncMapValue } from '../index';
 import {
-  changeSyncMapById,
-  deleteSyncMapById,
   buildNewSyncMap,
-  syncMapTemplate,
   changeSyncMap,
+  changeSyncMapById,
   createSyncMap,
   deleteSyncMap,
-  SyncMapValue,
+  deleteSyncMapById,
+  syncMapTemplate,
   TestClient,
 } from '../index';
 
@@ -100,7 +101,6 @@ it('saves options to store', () => {
 });
 
 it('throws on missed client', () => {
-  // @ts-expect-error
   let post = Post('ID');
   expect(() => {
     post.listen(() => {});

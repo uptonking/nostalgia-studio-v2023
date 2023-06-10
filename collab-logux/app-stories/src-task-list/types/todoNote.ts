@@ -1,4 +1,4 @@
-import { TodoItem } from './todoItem';
+import { type TodoItem } from './todoItem';
 
 export type TodoNote = {
   id: string;

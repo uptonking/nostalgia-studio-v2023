@@ -10,7 +10,7 @@ import { NotFoundPage } from '../../pages/NotFoundPage';
 import { authStore } from '../../stores/auth';
 import { router } from '../../stores/router';
 
-export const Routes = (): JSX.Element | null => {
+export const Routes = () => {
   const page = useStore(router);
   const { id: userId } = useStore(authStore);
 

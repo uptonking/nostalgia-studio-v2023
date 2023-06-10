@@ -1,6 +1,6 @@
-import { ReadableAtom } from 'nanostores';
+import { type ReadableAtom } from 'nanostores';
 
-import { Client } from '../client/index';
+import { type Client } from '../client/index';
 
 /**
  * Auth store. Use {@link createAuth} to create it.

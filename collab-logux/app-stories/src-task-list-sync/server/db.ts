@@ -1,4 +1,4 @@
-import { Task, User } from '../protocol/index';
+import { type Task, type User } from '../protocol/index';
 
 export type TaskRecord = {
   id: string;

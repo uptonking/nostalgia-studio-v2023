@@ -12,7 +12,10 @@
     "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.cjs",
     "demo-task-list": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.task1.cjs",
     "demo-task-sync-client": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.task-sync.cjs",
-    "demo-task-sync-server": "node --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node --experimental-modules ./src-task-list-sync/server/index.ts ",
+    "demo-task-sync-server": "node --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node  ./src-task-list-sync/server/index.ts ",
+    "demo-task-sync-server-build": "webpack --stats-error-details --config webpack/webpack.config.task-sync-server.cjs",
+    "demo-task-sync-server1": "node --loader=ts-node/esm/transpile-only --experimental-specifier-resolution=node  ./src-task-list-sync/server/index.ts ",
+    "demo-task-sync-server2": "node --loader=tsm --experimental-specifier-resolution=node  ./src-task-list-sync/server/index.ts ",
     "start": "npm run demo",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
@@ -66,6 +69,8 @@
   "devDependencies": {
     "@linaria/babel-preset": "^4.4.4",
     "@linaria/webpack5-loader": "^4.1.16",
-    "circular-dependency-plugin": "^5.2.2"
+    "circular-dependency-plugin": "^5.2.2",
+    "ts-node": "^10.9.1",
+    "tsm": "^2.3.0"
   }
 }

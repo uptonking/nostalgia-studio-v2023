@@ -16,7 +16,7 @@ import { ToggleAction } from '../ToggleAction/ToggleAction';
 import styles from './TodosList.module.css';
 import { TodosListItem } from './TodosListItem';
 
-export const TodosList = (): JSX.Element => {
+export const TodosList = () => {
   const client = useClient();
   const filter = useStore(filterStore);
   const { id: authorId } = useStore(authStore);

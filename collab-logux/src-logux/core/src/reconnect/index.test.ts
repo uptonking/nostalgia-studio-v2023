@@ -1,9 +1,9 @@
-import { equal, is, not, ok, type } from 'uvu/assert';
-import { spyOn, restoreAll } from 'nanospy';
 import { delay } from 'nanodelay';
+import { restoreAll, spyOn } from 'nanospy';
 import { test } from 'uvu';
+import { equal, is, not, ok, type } from 'uvu/assert';
 
-import { Reconnect, TestPair, Message } from '../index';
+import { type Message, Reconnect, TestPair } from '../index';
 
 let listeners: { [key: string]: () => void } = {};
 const listenerMethods = {

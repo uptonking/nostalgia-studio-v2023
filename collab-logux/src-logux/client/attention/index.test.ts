@@ -1,8 +1,9 @@
-import { it, afterEach, expect } from 'vitest';
-import { LoguxError, TestPair } from '@logux/core';
 import { spyOn } from 'nanospy';
+import { afterEach, expect, it } from 'vitest';
 
-import { CrossTabClient, attention } from '../index';
+import { LoguxError, TestPair } from '@logux/core';
+
+import { attention, CrossTabClient } from '../index';
 
 let nextHidden: boolean | undefined;
 Object.defineProperty(document, 'hidden', {

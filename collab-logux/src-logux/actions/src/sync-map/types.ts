@@ -1,5 +1,5 @@
 import { syncMapTemplate } from '@logux/client';
-import { Action } from '@logux/core';
+import { type Action } from '@logux/core';
 
 import { defineCreateSyncMap } from '../index';
 

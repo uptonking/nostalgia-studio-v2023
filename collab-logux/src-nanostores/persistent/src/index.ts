@@ -6,14 +6,14 @@ import {
   type WritableAtom,
 } from 'nanostores';
 
-import type {
-  PersistentEncoder,
-  PersistentEvent,
-  PersistentEvents,
-  PersistentListener,
-  PersistentOptions,
-  PersistentSimpleOptions,
-  PersistentStore,
+import {
+  type PersistentEncoder,
+  type PersistentEvent,
+  type PersistentEvents,
+  type PersistentListener,
+  type PersistentOptions,
+  type PersistentSimpleOptions,
+  type PersistentStore,
 } from './index.d';
 
 export * from './index.d';

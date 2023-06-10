@@ -1,8 +1,10 @@
-import FakeTimers from '@sinonjs/fake-timers';
-import { equal } from 'uvu/assert';
-import { test } from 'uvu';
-
 import '../test/set-production';
+
+import { test } from 'uvu';
+import { equal } from 'uvu/assert';
+
+import FakeTimers from '@sinonjs/fake-timers';
+
 import { map, onMount } from '../index';
 
 let clock;

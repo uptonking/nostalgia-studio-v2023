@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { delay } from 'nanodelay';
 import pico from 'picocolors';
 import http from 'http';

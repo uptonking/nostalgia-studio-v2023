@@ -1,4 +1,4 @@
-import type { MapStore, WritableAtom } from 'nanostores';
+import { type MapStore, type WritableAtom } from 'nanostores';
 
 export type PersistentStore = Record<string, string>;
 
@@ -31,7 +31,7 @@ export function setPersistentEngine(
 /**
  * `window` events to be used in `setPersistentEngine`.
  */
-export const windowPersistentEvents: PersistentEvents;
+// export const windowPersistentEvents: PersistentEvents;
 
 export interface PersistentEncoder<Origin = any> {
   /**
@@ -78,7 +78,6 @@ interface PersistentMapFactory {
     initial?: Value,
     opts?: PersistentSimpleOptions,
   ): MapStore<Value>;
-
   <Value extends object>(
     name: string,
     initial: Value,
@@ -86,7 +85,7 @@ interface PersistentMapFactory {
   ): MapStore<Value>;
 }
 
-export const persistentMap: PersistentMapFactory;
+// export const persistentMap: PersistentMapFactory;
 
 interface PersistentAtomFactory {
   /**
@@ -110,7 +109,6 @@ interface PersistentAtomFactory {
     initial?: Value,
     opts?: PersistentSimpleOptions,
   ): WritableAtom<Value>;
-
   <Value>(
     name: string,
     initial: Value,
@@ -118,7 +116,7 @@ interface PersistentAtomFactory {
   ): WritableAtom<Value>;
 }
 
-export const persistentAtom: PersistentAtomFactory;
+// export const persistentAtom: PersistentAtomFactory;
 
 /**
  * Enable fake storage to test persistent stores.

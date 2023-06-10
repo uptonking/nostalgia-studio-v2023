@@ -1,3 +1,3 @@
-import { BadgeStyles } from '../index';
+import { type BadgeStyles } from '../index';
 
 export const badgeStyles: BadgeStyles;

@@ -1,6 +1,6 @@
-import { LoguxSubscribeAction, defineAction } from '@logux/actions';
+import { defineAction, type LoguxSubscribeAction } from '@logux/actions';
 
-import { Server, Action } from '../index';
+import { type Action, Server } from '../index';
 
 let server = new Server<{ locale: string }>(
   Server.loadOptions(process, {

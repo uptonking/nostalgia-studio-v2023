@@ -28,6 +28,8 @@ export const A1b1AutoInputSimple = () => {
               const items = [
                 { label: 'GitHub', url: 'https://github.com' },
                 { label: 'Zhihu', url: 'https://zhihu.com' },
+                { label: 'baidu', url: 'https://baidu.com' },
+                { label: 'baidu-tieba', url: 'https://tieba.baidu.com' },
                 { label: 'drawio', url: 'https://draw.io' },
                 { label: 'Twitter', url: 'https://twitter.com' },
               ];

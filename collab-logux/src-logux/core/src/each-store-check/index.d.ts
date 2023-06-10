@@ -1,4 +1,4 @@
-import { LogStore } from '../log/index';
+import { type LogStore } from '../log/index';
 
 /**
  * Pass all common tests for Logux store to callback.

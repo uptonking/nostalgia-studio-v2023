@@ -1,10 +1,13 @@
-import { spyOn, restoreAll, Spy } from 'nanospy';
+import { type Spy } from 'nanospy';
+import { type LoguxSubscribeAction } from '@logux/actions';
+import { type LoguxActionError } from '../index';
+
+import { spyOn, restoreAll } from 'nanospy';
 import { it, expect, afterEach } from 'vitest';
-import { LoguxSubscribeAction } from '@logux/actions';
 import { TestTime } from '@logux/core';
 import { delay } from 'nanodelay';
 
-import { TestClient, TestServer, LoguxActionError } from '../index';
+import { TestClient, TestServer } from '../index';
 
 let server: TestServer;
 afterEach(() => {
@@ -227,6 +230,17 @@ it('tracks subscriptions', async () => {
   ]);
 
   await client.unsubscribe('foo', { a: 1 });
+  expect(privateMethods(server).subscribers).toEqual({
+    foo: {
+      '10:1:1': {
+        filters: {
+          '{}': true,
+        },
+      },
+    },
+  });
+
+  await client.unsubscribe('foo');
   expect(privateMethods(server).subscribers).toEqual({});
 
   let actions4 = await client.subscribe({

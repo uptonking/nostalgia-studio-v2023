@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import ArrowIcon from '../../icons/arrow.svg';
-import { TodoNote } from '../../types';
+import { type TodoNote } from '../../types';
 import { TodoItemComponent } from '../TodoItem/TodoItemComponent';
 import {
   ArrowContainer,

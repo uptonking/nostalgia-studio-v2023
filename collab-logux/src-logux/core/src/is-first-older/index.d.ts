@@ -1,4 +1,4 @@
-import { Meta } from '../index';
+import { type Meta } from '../index';
 
 /**
  * Compare time, when log entries were created.

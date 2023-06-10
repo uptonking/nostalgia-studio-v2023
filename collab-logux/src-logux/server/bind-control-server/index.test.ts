@@ -1,10 +1,12 @@
-import { ClientNode, Log, MemoryStore, WsConnection } from '@logux/core';
-import { it, expect, afterEach } from 'vitest';
-import { delay } from 'nanodelay';
-import WebSocket from 'ws';
 import http from 'http';
+import { delay } from 'nanodelay';
+import { afterEach, expect, it } from 'vitest';
+import WebSocket from 'ws';
 
-import { BaseServer, BaseServerOptions } from '../index';
+import { ClientNode, Log, MemoryStore, WsConnection } from '@logux/core';
+
+import { type BaseServerOptions } from '../index';
+import { BaseServer } from '../index';
 
 let lastPort = 10111;
 function createServer(opts: Partial<BaseServerOptions> = {}): BaseServer {

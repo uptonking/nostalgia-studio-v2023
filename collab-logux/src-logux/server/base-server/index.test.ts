@@ -1,16 +1,20 @@
-import { MemoryStore, TestTime, Log, Action, TestLog } from '@logux/core';
-import { spy, Spy, restoreAll, spyOn } from 'nanospy';
-import { it, expect, afterEach } from 'vitest';
-import { defineAction } from '@logux/actions';
-import { fileURLToPath } from 'url';
 import { readFileSync } from 'fs';
-import { delay } from 'nanodelay';
-import WebSocket from 'ws';
-import { join } from 'path';
-import https from 'https';
 import http from 'http';
+import https from 'https';
+import { delay } from 'nanodelay';
+import { type Spy } from 'nanospy';
+import { restoreAll, spy, spyOn } from 'nanospy';
+import { join } from 'path';
+import { fileURLToPath } from 'url';
+import { afterEach, expect, it } from 'vitest';
+import WebSocket from 'ws';
 
-import { BaseServer, BaseServerOptions, ServerMeta } from '../index';
+import { defineAction } from '@logux/actions';
+import { type Action, type TestLog } from '@logux/core';
+import { Log, MemoryStore, TestTime } from '@logux/core';
+
+import { type BaseServerOptions, type ServerMeta } from '../index';
+import { BaseServer } from '../index';
 
 const ROOT = join(fileURLToPath(import.meta.url), '..', '..');
 
@@ -1015,7 +1019,7 @@ it('subscribes clients', async () => {
   expect(test.reports[2][1].meta.status).toEqual('processed');
   expect(test.app.subscribers).toEqual({
     'user/10': {
-      '10:a:uuid': { filter: true },
+      '10:a:uuid': { filters: { '{}': true } },
     },
   });
   await test.app.log.add(
@@ -1027,10 +1031,10 @@ it('subscribes clients', async () => {
   expect(events).toEqual(2);
   expect(test.app.subscribers).toEqual({
     'user/10': {
-      '10:a:uuid': { filter: true },
+      '10:a:uuid': { filters: { '{}': true } },
     },
     posts: {
-      '10:a:uuid': { filter },
+      '10:a:uuid': { filters: { '{}': filter } },
     },
   });
   await test.app.log.add(
@@ -1059,7 +1063,68 @@ it('subscribes clients', async () => {
   });
   expect(test.app.subscribers).toEqual({
     posts: {
-      '10:a:uuid': { filter },
+      '10:a:uuid': { filters: { '{}': filter } },
+    },
+  });
+});
+
+it('subscribes clients with multiple filters', async () => {
+  let test = createReporter();
+  let client: any = {
+    node: { remoteSubprotocol: '0.0.0', onAdd: () => false },
+  };
+  test.app.nodeIds.set('10:a:uuid', client);
+  test.app.clientIds.set('10:a', client);
+
+  let filter = (): boolean => false;
+  test.app.channel('posts', {
+    access() {
+      return true;
+    },
+    async filter() {
+      return filter;
+    },
+  });
+
+  await test.app.log.add(
+    { type: 'logux/subscribe', channel: 'posts' },
+    { id: '1 10:a:uuid 0' },
+  );
+  await test.app.log.add(
+    { type: 'logux/subscribe', channel: 'posts', filter: { category: 'a' } },
+    { id: '1 10:a:uuid 0' },
+  );
+  await test.app.log.add(
+    { type: 'logux/subscribe', channel: 'posts', filter: { category: 'b' } },
+    { id: '1 10:a:uuid 0' },
+  );
+  await delay(1);
+  expect(test.app.subscribers).toEqual({
+    posts: {
+      '10:a:uuid': {
+        filters: {
+          '{}': filter,
+          '{"category":"a"}': filter,
+          '{"category":"b"}': filter,
+        },
+      },
+    },
+  });
+
+  await test.app.log.add(
+    { type: 'logux/unsubscribe', channel: 'posts' },
+    { id: '2 10:a:uuid 0' },
+  );
+  await test.app.log.add(
+    { type: 'logux/unsubscribe', channel: 'posts', filter: { category: 'b' } },
+    { id: '2 10:a:uuid 0' },
+  );
+  await delay(1);
+  expect(test.app.subscribers).toEqual({
+    posts: {
+      '10:a:uuid': {
+        filters: { '{"category":"a"}': filter },
+      },
     },
   });
 });
@@ -1175,7 +1240,7 @@ it('loads initial actions during subscription', async () => {
   expect(userLoaded).toEqual(1);
   expect(test.app.subscribers).toEqual({
     'user/10': {
-      '10:uuid': { filter: true },
+      '10:uuid': { filters: { '{}': true } },
     },
   });
   expect(test.app.log.actions()).toEqual([
@@ -1423,7 +1488,7 @@ it('subscribes clients manually', async () => {
   await delay(10);
   expect(app.subscribers).toEqual({
     'users/10': {
-      'test:1:1': { filter: true },
+      'test:1:1': { filters: { '{}': true } },
     },
   });
   expect(actions).toEqual([{ type: 'logux/subscribed', channel: 'users/10' }]);

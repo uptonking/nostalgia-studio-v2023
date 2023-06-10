@@ -1,4 +1,4 @@
-import { Log, Action, Meta } from '../log/index';
+import { type Action, Log, type Meta } from '../log/index';
 
 /**
  * Log to be used in tests. It already has memory store, node ID,

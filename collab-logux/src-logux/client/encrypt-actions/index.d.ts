@@ -1,4 +1,4 @@
-import { Client } from '../client/index';
+import { type Client } from '../client/index';
 
 /**
  * Encrypt actions before sending them to server.

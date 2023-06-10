@@ -1,5 +1,12 @@
+import {
+  atom,
+  map,
+  type MapStore,
+  onStart,
+  onStop,
+  type ReadableAtom,
+} from 'nanostores';
 import { createNanoEvents } from 'nanoevents';
-import { atom, map, MapStore, onStart, onStop, ReadableAtom } from 'nanostores';
 
 type Fn = () => void;
 
@@ -81,9 +88,9 @@ export const nanoquery = ({
   subscribe('blur', () => (focus = false));
   subscribe('online', () => events.emit(RECONNECT));
 
-  const _refetchOnInterval = new Map<KeyInput, number>(),
-    _lastFetch = new Map<Key, number>(),
-    _runningFetches = new Set<Key>();
+  const _refetchOnInterval = new Map<KeyInput, number>();
+  const _lastFetch = new Map<Key, number>();
+  const _runningFetches = new Map<Key, Promise<any>>();
 
   // Used for testing to have the highest say in settings hierarchy
   let rewrittenSettings: CommonSettings = {};
@@ -103,6 +110,14 @@ export const nanoquery = ({
         events.emit(SET_CACHE, key, v, true);
       }
     };
+    const setAsLoading = () => {
+      console.log(`marking ${key} as loading`);
+      set({
+        ...store.value,
+        ...loading,
+        promise: _runningFetches.get(key),
+      });
+    };
 
     const { dedupeTime = 4000, fetcher } = {
       ...settings,
@@ -111,11 +126,17 @@ export const nanoquery = ({
 
     const now = getNow();
 
+    if (_runningFetches.has(key)) {
+      console.log('already runs', key);
+      if (!store.value.loading) setAsLoading();
+      // Do not run the same fetcher if previous one hasn't finished yet
+      return;
+    }
     if (!force) {
       const cached = cache.get(key);
       // Prevent exessive store updates
-      if (store.value.data !== cached)
-        set(cached ? { data: cached, ...notLoading } : { ...loading });
+      if (cached && store.value.data !== cached)
+        set({ data: cached, ...notLoading });
 
       const last = _lastFetch.get(key);
       if (last && last + dedupeTime > now) {
@@ -124,19 +145,13 @@ export const nanoquery = ({
         return;
       }
     }
-    if (_runningFetches.has(key)) {
-      console.log('already runs', key);
-      // Do not run the same fetcher if previous one hasn't finished yet
-      return;
-    }
-
-    _lastFetch.set(key, now);
-    _runningFetches.add(key);
 
     try {
       console.log('running fetcher', key);
       const promise = fetcher!(...keyParts);
-      set({ data: store.value.data, ...loading, promise });
+      _lastFetch.set(key, now);
+      _runningFetches.set(key, promise);
+      setAsLoading();
       const res = await promise;
       cache.set(key, res);
       set({ data: res, ...notLoading });
@@ -164,9 +179,9 @@ export const nanoquery = ({
     }
 
     const fetcherStore: PrivateFetcherStore<T> = map({
-        ...notLoading,
-      }),
-      settings = { ...globalSettings, ...fetcherSettings, fetcher };
+      ...notLoading,
+    });
+    const settings = { ...globalSettings, ...fetcherSettings, fetcher };
 
     fetcherStore.invalidate = () => {
       const { key } = fetcherStore;
@@ -181,11 +196,11 @@ export const nanoquery = ({
       }
     };
 
-    let keysInternalUnsub: Fn,
-      prevKey: Key | undefined,
-      prevKeyParts: KeyParts | undefined,
-      keyUnsub: Fn,
-      keyStore: ReturnType<typeof getKeyStore>[0];
+    let keysInternalUnsub: Fn;
+    let prevKey: Key | undefined;
+    let prevKeyParts: KeyParts | undefined;
+    let keyUnsub: Fn;
+    let keyStore: ReturnType<typeof getKeyStore>[0];
 
     let evtUnsubs: Fn[] = [];
 
@@ -376,8 +391,8 @@ const getKeyStore = (keys: KeyInput) => {
   if (typeof keys === 'string')
     return [atom([keys, [keys] as string[]] as const), () => {}] as const;
 
-  let keyStore = atom<[Key, KeyParts] | null>(null),
-    keyParts: Array<string | NoKey> = [];
+  let keyStore = atom<[Key, KeyParts] | null>(null);
+  let keyParts: Array<string | NoKey> = [];
 
   const setKeyStoreValue = () => {
     if (keyParts.some((v) => v === null || v === void 0)) {
@@ -408,10 +423,10 @@ const getKeyStore = (keys: KeyInput) => {
   return [keyStore, () => unsubs.forEach((fn) => fn())] as const;
 };
 
-const FOCUS = 1,
-  RECONNECT = 2,
-  INVALIDATE_KEYS = 3,
-  SET_CACHE = 4;
+const FOCUS = 1;
+const RECONNECT = 2;
+const INVALIDATE_KEYS = 3;
+const SET_CACHE = 4;
 
 type Events = {
   [FOCUS]: Fn;
@@ -444,5 +459,5 @@ const testKeyAgainstSelector = (key: Key, selector: KeySelector): boolean => {
 
 const getNow = () => new Date().getTime();
 
-const loading = { loading: true },
-  notLoading = { loading: false };
+const loading = { loading: true };
+const notLoading = { loading: false };

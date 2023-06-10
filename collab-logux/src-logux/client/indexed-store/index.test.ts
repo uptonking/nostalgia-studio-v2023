@@ -1,9 +1,12 @@
-import { eachStoreCheck, Action, Meta, LogPage } from '@logux/core';
-import { it, expect, afterEach } from 'vitest';
+import 'fake-indexeddb/auto';
+
 import { spyOn } from 'nanospy';
+import { afterEach, expect, it } from 'vitest';
+
+import { type Action, type LogPage, type Meta } from '@logux/core';
+import { eachStoreCheck } from '@logux/core';
 
 import { IndexedStore } from '../index';
-import 'fake-indexeddb/auto';
 
 type Entry = [Action, Meta];
 

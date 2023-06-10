@@ -3,6 +3,7 @@
   - https://github.com/orgs/logux/repositories
   - https://github.com/orgs/nanostores/repositories
   - v20230519
+  - v20230527 > nanostores v0.9
 
 ```JSON
 {

@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { delay } from 'nanodelay';
 
 import { Server } from '../../index';

@@ -1,4 +1,6 @@
-import { map, WritableAtom } from 'nanostores';
+/* eslint-disable react-hooks/rules-of-hooks */
+import { map, type WritableAtom } from 'nanostores';
+
 import { useStore } from '..';
 
 type TestType =
@@ -27,6 +29,7 @@ if (testValueSlice.isLoading) {
 }
 
 // THROWS Property 'a' does not exist on type 'TestType'.
+// @ts-expect-error fix-types
 testValueSlice.a;
 
 declare const customStore: WritableAtom<TestType> & {
@@ -34,6 +37,7 @@ declare const customStore: WritableAtom<TestType> & {
 };
 {
   // THROWS Type '"does-not-exist"' is not assignable
+  // @ts-expect-error fix-types
   useStore(customStore, { keys: ['does-not-exist'] });
 
   let testValueSlice = useStore(customStore, { keys: ['hey', 'there'] });

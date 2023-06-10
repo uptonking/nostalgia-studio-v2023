@@ -14,6 +14,7 @@ export {
   type MapStore,
   type AnyStore,
   type Store,
+  type MapCreator,
   map,
 } from './map/index';
 export * from './deep-map/index';
@@ -29,13 +30,3 @@ export { clean, cleanStores } from './clean-stores/index';
 export { listenKeys } from './listen-keys/index';
 export { keepMount } from './keep-mount/index';
 export { computed } from './computed/index';
-
-export {
-  type AnySyncTemplate,
-  type TemplateValue,
-  type TemplateStore,
-  mapTemplate,
-  type MapTemplate,
-  actionFor,
-  onBuild,
-} from './deprecated/index';

@@ -1,4 +1,4 @@
-import { LoguxError, actionEvents } from '@logux/core';
+import { actionEvents, LoguxError } from '@logux/core';
 
 import { Client } from '../client/index';
 

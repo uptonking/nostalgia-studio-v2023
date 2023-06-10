@@ -1,4 +1,4 @@
-import { LogStore, Action, Meta } from '../log/index';
+import { type Action, LogStore, type Meta } from '../log/index';
 
 /**
  * Simple memory-based log store.

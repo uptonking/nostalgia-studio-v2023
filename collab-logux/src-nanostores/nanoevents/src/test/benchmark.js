@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import benchmark from 'benchmark';
 
 import { createNanoEvents } from '../index';

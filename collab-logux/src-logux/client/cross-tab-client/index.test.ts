@@ -1,14 +1,17 @@
-import { TestLog, TestPair, TestTime, Action } from '@logux/core';
-import { it, expect, afterEach, beforeEach } from 'vitest';
-import { spyOn, restoreAll } from 'nanospy';
 import { delay } from 'nanodelay';
+import { restoreAll, spyOn } from 'nanospy';
+import { afterEach, beforeEach, expect, it } from 'vitest';
 
+import { type Action, type TestLog } from '@logux/core';
+import { TestPair, TestTime } from '@logux/core';
+
+import { type ClientOptions } from '../index';
+import { CrossTabClient } from '../index';
 import {
   breakLocalStorage,
-  setLocalStorage,
   emitStorage,
+  setLocalStorage,
 } from '../test/local-storage';
-import { CrossTabClient, ClientOptions } from '../index';
 
 class WebSocket {
   close(): void {}

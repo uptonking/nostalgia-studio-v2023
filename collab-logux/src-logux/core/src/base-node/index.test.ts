@@ -1,10 +1,16 @@
-import { equal, is, not, ok, throws, type } from 'uvu/assert';
 import { delay } from 'nanodelay';
 import { spyOn } from 'nanospy';
 import { test } from 'uvu';
+import { equal, is, not, ok, throws, type } from 'uvu/assert';
 
-import { BaseNode, TestTime, TestPair, NodeOptions, NodeState } from '../index';
-import { TestLog } from '../test-log/index';
+import {
+  BaseNode,
+  type NodeOptions,
+  type NodeState,
+  TestPair,
+  TestTime,
+} from '../index';
+import { type TestLog } from '../test-log/index';
 
 function createNode(
   opts?: NodeOptions,

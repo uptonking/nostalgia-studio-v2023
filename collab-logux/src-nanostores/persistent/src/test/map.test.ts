@@ -1,21 +1,20 @@
-import type { MapStore } from 'nanostores';
-import type { PersistentListener } from '../index';
-
-import { cleanStores } from 'nanostores';
-import { equal, is } from 'uvu/assert';
 import { delay } from 'nanodelay';
+import { type MapStore } from 'nanostores';
+import { cleanStores } from 'nanostores';
 import { test } from 'uvu';
+import { equal, is } from 'uvu/assert';
 
-import { emitLocalStorage } from './setup';
+import { type PersistentListener } from '../index';
 import {
-  windowPersistentEvents,
-  useTestStorageEngine,
-  setPersistentEngine,
-  setTestStorageKey,
   cleanTestStorage,
   getTestStorage,
   persistentMap,
+  setPersistentEngine,
+  setTestStorageKey,
+  useTestStorageEngine,
+  windowPersistentEvents,
 } from '../index';
+import { emitLocalStorage } from './setup';
 
 function clone(data: object): object {
   return JSON.parse(JSON.stringify(data));

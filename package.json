@@ -49,7 +49,7 @@
     "format:check": "npm run formatter -- --check",
     "help": "echo 'exec npm start to view the demo'",
     "preinstall": "",
-    "lint": "eslint --quiet --fix \"utils/autocomplete/**/*.{js,jsx,ts,tsx,cjs,mjs}\"",
+    "lint": "eslint --quiet --fix \"collab-logux/**/*.{js,jsx,ts,tsx,cjs,mjs}\"",
     "lint:js": "",
     "lint:style": "",
     "prepare": "",

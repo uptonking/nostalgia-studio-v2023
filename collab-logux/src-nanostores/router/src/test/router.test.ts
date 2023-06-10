@@ -1,15 +1,10 @@
-import { equal, is, throws } from 'uvu/assert';
-import { cleanStores } from 'nanostores';
 import { JSDOM } from 'jsdom';
+import { cleanStores } from 'nanostores';
 import { test } from 'uvu';
+import { equal, is, throws } from 'uvu/assert';
 
-import {
-  redirectPage,
-  createRouter,
-  getPagePath,
-  openPage,
-  Router,
-} from '../index';
+import { type Router } from '../index';
+import { createRouter, getPagePath, openPage, redirectPage } from '../index';
 
 let dom = new JSDOM('<body></body>', { url: 'http://localhost/' });
 

@@ -1,10 +1,13 @@
-import { MemoryStore, TestPair, TestTime, TestLog, Action } from '@logux/core';
+import { type TestLog, type Action } from '@logux/core';
+import { type ClientOptions } from '../index';
+
+import { MemoryStore, TestPair, TestTime } from '@logux/core';
 import { it, afterEach, expect, beforeEach } from 'vitest';
 import { restoreAll, spyOn } from 'nanospy';
 import { defineAction } from '@logux/actions';
 import { delay } from 'nanodelay';
 
-import { Client, ClientOptions } from '../index';
+import { Client } from '../index';
 import { setLocalStorage } from '../test/local-storage';
 
 type Events = {

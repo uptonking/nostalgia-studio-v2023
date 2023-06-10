@@ -1,8 +1,15 @@
-import { LoguxSubscribeAction, LoguxUnsubscribeAction } from '@logux/actions';
-import { Action, AnyAction, TestLog, TestPair } from '@logux/core';
-
-import { ServerMeta } from '../base-server/index';
-import { TestServer } from '../test-server/index';
+import {
+  type LoguxSubscribeAction,
+  type LoguxUnsubscribeAction,
+} from '@logux/actions';
+import {
+  type Action,
+  type AnyAction,
+  type TestLog,
+  type TestPair,
+} from '@logux/core';
+import { type ServerMeta } from '../base-server/index';
+import { type TestServer } from '../test-server/index';
 
 export class LoguxActionError extends Error {
   action: Action;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import ExpandIcon from '../../icons/expand.svg';
 import { toggleTodoItem } from '../../store/notesStore';
-import { TodoItem } from '../../types';
+import { type TodoItem } from '../../types';
 import { Checkbox } from '../Common/Checkbox/Checkbox';
 import { ExpandToggle, ListItemWrapper } from './TodoItemComponent.styled';
 

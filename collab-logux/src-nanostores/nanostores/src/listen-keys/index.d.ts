@@ -1,4 +1,4 @@
-import { StoreValue } from '../map/index';
+import { type StoreValue } from '../map/index';
 
 /**
  * Listen for specific keys of the store.
@@ -6,7 +6,7 @@ import { StoreValue } from '../map/index';
  * ```js
  * import { listenKeys } from 'nanostores'
  *
- * listenKeys(page, ['blocked'], () => {
+ * listenKeys($page, ['blocked'], () => {
  *   console.log('You has no access')
  * })
  * ```

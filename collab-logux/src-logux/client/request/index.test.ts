@@ -1,8 +1,11 @@
-import { TestPair, TestTime, AnyAction } from '@logux/core';
-import { it, expect } from 'vitest';
 import { delay } from 'nanodelay';
+import { expect, it } from 'vitest';
 
-import { request, RequestOptions } from '../index';
+import { type AnyAction } from '@logux/core';
+import { TestPair, TestTime } from '@logux/core';
+
+import { type RequestOptions } from '../index';
+import { request } from '../index';
 
 type Test = {
   pair: TestPair;

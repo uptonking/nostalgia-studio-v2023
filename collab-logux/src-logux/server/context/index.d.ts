@@ -1,7 +1,7 @@
-import { AnyAction } from '@logux/core';
+import { type AnyAction } from '@logux/core';
 
-import { ServerMeta } from '../base-server/index';
-import { Server } from '../server/index';
+import { type ServerMeta } from '../base-server/index';
+import { type Server } from '../server/index';
 
 /**
  * Action context.

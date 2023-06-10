@@ -1,12 +1,13 @@
-import { SyncMapValues } from '@logux/actions';
-import { MapStore } from 'nanostores';
+import { type MapStore } from 'nanostores';
 
+import { type SyncMapValues } from '@logux/actions';
+
+import { type Client } from '../client/index';
 import {
-  SyncMapTemplateLike,
-  SyncMapTemplate,
-  SyncMapStore,
+  type SyncMapStore,
+  type SyncMapTemplate,
+  type SyncMapTemplateLike,
 } from '../sync-map-template/index';
-import { Client } from '../client/index';
 
 interface PrepareForTest {
   <Value extends SyncMapValues>(

@@ -1,8 +1,9 @@
-import { TestPair } from '@logux/core';
 import { delay } from 'nanodelay';
 
-import { TestServer } from '../test-server/index';
+import { TestPair } from '@logux/core';
+
 import { Client } from '../client/index';
+import { TestServer } from '../test-server/index';
 
 export class TestClient extends Client {
   constructor(userId, opts = {}) {

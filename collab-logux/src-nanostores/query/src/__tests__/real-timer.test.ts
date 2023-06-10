@@ -60,4 +60,38 @@ test('correct events in non-conditional fetcher', async () => {
   expect(events[1]).toMatchObject({ loading: false, data: 1 });
 });
 
-const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+test('emulating useSyncExternalStore behavior', async () => {
+  const fetcher = vi.fn().mockImplementation(async () => {
+    await delay(20);
+    return 1;
+  });
+  const [makeFetcher] = nanoquery();
+
+  const store = makeFetcher('/api/some-key', { fetcher });
+
+  /**
+   * TODO: bring in real `useSyncExternalStore`/other lib integrations
+   */
+  let events: any[] = [];
+  store.get();
+  await delay();
+  const unbind = store.listen((v) => {
+    events.push(v);
+  });
+  await delay();
+  store.get();
+  unbind();
+  await delay();
+  store.listen((v) => {
+    events.push(v);
+  });
+  await delay(25);
+
+  // 3 items, because 2 subscriptions
+  expect(events.length).toBe(3);
+  expect(events[0]).toMatchObject({ loading: true });
+  expect(events[1]).toMatchObject({ loading: true });
+  expect(events[2]).toMatchObject({ loading: false, data: 1 });
+});
+
+const delay = (ms = 0) => new Promise((r) => setTimeout(r, ms));

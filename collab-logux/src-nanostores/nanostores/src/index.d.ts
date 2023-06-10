@@ -11,6 +11,7 @@ export {
   WritableStore,
   MapStoreKeys,
   StoreValue,
+  MapCreator,
   MapStore,
   AnyStore,
   Store,
@@ -24,13 +25,3 @@ export { clean, cleanStores } from './clean-stores/index';
 export { listenKeys } from './listen-keys/index';
 export { keepMount } from './keep-mount/index';
 export { computed } from './computed/index';
-
-export {
-  AnySyncTemplate,
-  TemplateValue,
-  TemplateStore,
-  mapTemplate,
-  MapTemplate,
-  actionFor,
-  onBuild,
-} from './deprecated/index';

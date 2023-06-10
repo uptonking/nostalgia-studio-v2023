@@ -1,15 +1,16 @@
+import { Component, createContext, h } from 'preact';
 import {
-  useState,
   useContext,
   useEffect,
-  useRef,
   useLayoutEffect,
+  useRef,
+  useState,
 } from 'preact/hooks';
-import { createContext, h, Component } from 'preact';
+
 import { useStore } from '@nanostores/preact';
 
-import { createFilter } from '../create-filter/index';
 import { createAuth } from '../create-auth/index';
+import { createFilter } from '../create-filter/index';
 
 export let ClientContext = /*#__PURE__*/ createContext();
 
@@ -32,6 +33,7 @@ function useSyncStore(store) {
   let value = store.get();
 
   if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     let errorProcessors = useContext(ErrorsContext) || {};
     if (
       !errorProcessors.Error &&

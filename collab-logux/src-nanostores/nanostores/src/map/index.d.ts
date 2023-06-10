@@ -1,8 +1,8 @@
-import type {
-  ReadonlyIfObject,
-  WritableAtom,
-  ReadableAtom,
-  AllKeys,
+import {
+  type AllKeys,
+  type ReadableAtom,
+  type ReadonlyIfObject,
+  type WritableAtom,
 } from '../atom/index';
 
 type KeyofBase = keyof any;
@@ -15,7 +15,10 @@ export type WritableStore<Value = any> =
 
 export type Store<Value = any> = ReadableAtom<Value> | WritableStore<Value>;
 
-export type AnyStore<Value = any> = { get(): Value };
+export type AnyStore<Value = any> = {
+  get(): Value;
+  readonly value: Value | undefined;
+};
 
 export type StoreValue<SomeStore> = SomeStore extends {
   get(): infer Value;
@@ -39,15 +42,16 @@ export interface MapStore<Value extends object = any>
    * Subscribe to store changes and call listener immediately.
    *
    * ```
-   * import { router } from '../store'
+   * import { $router } from '../store'
    *
-   * router.subscribe(page => {
+   * $router.subscribe(page => {
    *   console.log(page)
    * })
    * ```
    *
    * @param listener Callback with store value.
-   * @param changedKey Key that was changed. Will present only if `setKey` has been used to change a store
+   * @param changedKey Key that was changed. Will present only
+   *                   if `setKey` has been used to change a store.
    * @returns Function to remove listener.
    */
   subscribe(
@@ -64,7 +68,8 @@ export interface MapStore<Value extends object = any>
    * immediately.
    *
    * @param listener Callback with store value.
-   * @param changedKey Key that was changed. Will present only if `setKey` has been used to change a store
+   * @param changedKey Key that was changed. Will present only if `setKey`
+   *                   has been used to change a store.
    * @returns Function to remove listener.
    */
   listen(
@@ -78,7 +83,7 @@ export interface MapStore<Value extends object = any>
    * Change store value.
    *
    * ```js
-   * settings.set({ theme: 'dark' })
+   * $settings.set({ theme: 'dark' })
    * ```
    *
    * Operation is atomic, subscribers will be notified once with the new value.
@@ -92,13 +97,13 @@ export interface MapStore<Value extends object = any>
    * Change key in store value.
    *
    * ```js
-   * settings.setKey('theme', 'dark')
+   * $settings.setKey('theme', 'dark')
    * ```
    *
    * To delete key set `undefined`.
    *
    * ```js
-   * settings.setKey('theme', undefined)
+   * $settings.setKey('theme', undefined)
    * ```
    *
    * @param key The key name.
@@ -120,3 +125,13 @@ export interface MapStore<Value extends object = any>
 export function map<Value extends object, StoreExt extends object = {}>(
   value?: Value,
 ): MapStore<Value> & StoreExt;
+
+export interface MapCreator<
+  Value extends object = any,
+  Args extends any[] = [],
+> {
+  (id: string, ...args: Args): MapStore<Value>;
+  cache: {
+    [id: string]: MapStore<Value & { id: string }>;
+  };
+}

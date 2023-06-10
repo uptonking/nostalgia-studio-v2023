@@ -1,5 +1,5 @@
-import { LogStore } from '../log/index';
-import { TestLog } from '../test-log/index';
+import { type LogStore } from '../log/index';
+import { type TestLog } from '../test-log/index';
 
 interface TestLogOptions {
   /**

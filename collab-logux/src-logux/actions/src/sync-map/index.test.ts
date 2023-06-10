@@ -1,15 +1,16 @@
-import { syncMapTemplate } from '@logux/client';
-import { equal } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal } from 'uvu/assert';
+
+import { syncMapTemplate } from '@logux/client';
 
 import {
-  defineSyncMapActions,
-  defineCreatedSyncMap,
   defineChangedSyncMap,
-  defineDeletedSyncMap,
-  defineCreateSyncMap,
   defineChangeSyncMap,
+  defineCreatedSyncMap,
+  defineCreateSyncMap,
+  defineDeletedSyncMap,
   defineDeleteSyncMap,
+  defineSyncMapActions,
 } from '../index';
 
 type UserValue = {

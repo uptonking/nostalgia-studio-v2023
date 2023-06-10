@@ -1,8 +1,9 @@
 {
   "extends": "../../../tsconfig.base",
   "compilerOptions": {
+    "allowJs": true,
     "outDir": "dist",
     "module": "esnext"
   },
-  "include": ["./src/"]
+  "include": ["."]
 }

@@ -1,14 +1,11 @@
-import FakeTimers, { InstalledClock } from '@sinonjs/fake-timers';
-import { equal, ok } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal, ok } from 'uvu/assert';
 
-import {
-  STORE_UNMOUNT_DELAY,
-  StoreValue,
-  computed,
-  onMount,
-  atom,
-} from '../index';
+import { type InstalledClock } from '@sinonjs/fake-timers';
+import FakeTimers from '@sinonjs/fake-timers';
+
+import { type StoreValue } from '../index';
+import { atom, computed, onMount, STORE_UNMOUNT_DELAY } from '../index';
 
 let clock: InstalledClock;
 
@@ -347,6 +344,13 @@ test('is compatible with onMount', () => {
   clock.runAll();
   equal(deferrer.lc, 0);
   equal(events, 'init destroy ');
+});
+
+test('computes initial value when argument is undefined', () => {
+  let one = atom<string | undefined>(undefined);
+  let two = computed(one, (value: string | undefined) => !!value);
+  equal(one.get(), undefined);
+  equal(two.get(), false);
 });
 
 test.run();

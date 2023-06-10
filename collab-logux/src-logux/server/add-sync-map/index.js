@@ -80,12 +80,6 @@ async function sendMap(server, changedType, data, since) {
   }
 }
 
-/**
- * Add callbacks for client’s `SyncMap`.
- * @param server Server instance.
- * @param plural Prefix for channel names and action types.
- * @param operations Callbacks.
- */
 export function addSyncMap(server, plural, operations) {
   let createdType = `${plural}/created`;
   let changedType = `${plural}/changed`;

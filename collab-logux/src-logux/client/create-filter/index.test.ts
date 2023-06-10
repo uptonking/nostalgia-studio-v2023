@@ -1,16 +1,16 @@
-import { allTasks, cleanStores } from 'nanostores';
-import { it, expect, afterEach } from 'vitest';
 import { delay } from 'nanodelay';
+import { allTasks, cleanStores } from 'nanostores';
+import { afterEach, expect, it } from 'vitest';
 
+import { type FilterStore } from '../index';
 import {
-  changeSyncMapById,
-  deleteSyncMapById,
   buildNewSyncMap,
-  syncMapTemplate,
-  createSyncMap,
   changeSyncMap,
+  changeSyncMapById,
   createFilter,
-  FilterStore,
+  createSyncMap,
+  deleteSyncMapById,
+  syncMapTemplate,
   TestClient,
 } from '../index';
 

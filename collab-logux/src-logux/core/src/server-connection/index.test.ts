@@ -1,8 +1,9 @@
-import { ServerConnection, Message } from '../index';
-import { equal, is, throws } from 'uvu/assert';
-import { spyOn, restoreAll } from 'nanospy';
-import WebSocket from 'ws';
+import { restoreAll, spyOn } from 'nanospy';
 import { test } from 'uvu';
+import { equal, is, throws } from 'uvu/assert';
+import WebSocket from 'ws';
+
+import { type Message, ServerConnection } from '../index';
 
 function privateMethods(obj: object): any {
   return obj;

@@ -1,12 +1,13 @@
-import { SyncMapValues } from '@logux/actions';
-import { MapStore } from 'nanostores';
+import { type MapStore } from 'nanostores';
 
+import { type SyncMapValues } from '@logux/actions';
+
+import { type Client } from '../client/index';
 import {
-  LoadedSyncMapValue,
-  SyncMapTemplate,
-  SyncMapStore,
+  type LoadedSyncMapValue,
+  type SyncMapStore,
+  type SyncMapTemplate,
 } from '../sync-map-template/index';
-import { Client } from '../client/index';
 
 export type Filter<Value extends object> = {
   [Key in keyof Value]?: Value[Key];

@@ -1,10 +1,11 @@
-import { LoguxError, parseId } from '@logux/core';
 import cookie from 'cookie';
 import semver from 'semver';
 
-import { FilteredNode } from '../filtered-node/index';
+import { LoguxError, parseId } from '@logux/core';
+
 import { ALLOWED_META } from '../allowed-meta/index';
 import { filterMeta } from '../filter-meta/index';
+import { FilteredNode } from '../filtered-node/index';
 
 function reportDetails(client) {
   return {

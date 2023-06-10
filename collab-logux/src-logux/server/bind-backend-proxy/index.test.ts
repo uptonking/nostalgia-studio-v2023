@@ -1,8 +1,9 @@
-import { it, expect, beforeEach, afterEach, beforeAll, afterAll } from 'vitest';
-import { delay } from 'nanodelay';
 import http from 'http';
+import { delay } from 'nanodelay';
+import { afterAll, afterEach, beforeAll, beforeEach, expect, it } from 'vitest';
 
-import { BaseServer, TestServerOptions, TestServer } from '../index';
+import { type TestServerOptions } from '../index';
+import { BaseServer, TestServer } from '../index';
 
 let destroyable: { destroy(): Promise<void> }[] = [];
 let lastPort = 8111;

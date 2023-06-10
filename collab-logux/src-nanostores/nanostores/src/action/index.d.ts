@@ -1,4 +1,4 @@
-import { WritableStore } from '../map/index';
+import { type WritableStore } from '../map/index';
 
 type OmitFirstArg<F> = F extends (x: any, ...args: infer P) => infer R
   ? (...args: P) => R
@@ -13,7 +13,7 @@ export const actionId: unique symbol;
  * This wrap allows DevTools to see the name of action, which changes the store.
  *
  * ```js
- * export const increase = action(counter, 'increase', (store, value = 1) => {
+ * export const increase = action($counter, 'increase', (store, value = 1) => {
  *   if (validateMax(store.get() + value)) {
  *     store.set(store.get() + value)
  *   }

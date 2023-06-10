@@ -1,6 +1,7 @@
-import { it, expect } from 'vitest';
+import { expect, it } from 'vitest';
 
-import { filterMeta, ServerMeta } from '../index';
+import { type ServerMeta } from '../index';
+import { filterMeta } from '../index';
 
 it('filters meta', () => {
   let meta1: ServerMeta = {

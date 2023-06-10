@@ -1,6 +1,5 @@
-import type { PersistentListener } from '../index';
-
-import { setPersistentEngine, persistentAtom, persistentMap } from '../index';
+import { type PersistentListener } from '../index';
+import { persistentAtom, persistentMap, setPersistentEngine } from '../index';
 
 const windowPersistentEvents = {
   addEventListener(key: string, listener: PersistentListener) {

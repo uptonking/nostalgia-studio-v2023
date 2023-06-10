@@ -1,4 +1,9 @@
-import { Action, AnyAction, Meta, TestLog } from '@logux/core';
+import {
+  type Action,
+  type AnyAction,
+  type Meta,
+  type TestLog,
+} from '@logux/core';
 
 /**
  * Virtual server to test client.

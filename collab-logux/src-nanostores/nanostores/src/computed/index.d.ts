@@ -1,5 +1,5 @@
-import { Store, StoreValue, AnyStore } from '../map/index';
-import { ReadableAtom } from '../atom/index';
+import { type ReadableAtom } from '../atom/index';
+import { type AnyStore, type Store, type StoreValue } from '../map/index';
 
 type StoreValues<Stores extends AnyStore[]> = {
   [Index in keyof Stores]: StoreValue<Stores[Index]>;
@@ -17,10 +17,10 @@ interface Computed {
    * ```js
    * import { computed } from 'nanostores'
    *
-   * import { users } from './users.js'
+   * import { $users } from './users.js'
    *
-   * export const admins = computed(users, usersValue => {
-   *   return usersValue.filter(user => user.isAdmin)
+   * export const $admins = computed($users, users => {
+   *   return users.filter(user => user.isAdmin)
    * })
    * ```
    */

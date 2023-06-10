@@ -1,6 +1,11 @@
 import { atom, onMount } from 'nanostores';
 
-import type { ParamsArg, Router, RouterConfig, RouterOptions } from './index.d';
+import {
+  type ParamsArg,
+  type Router,
+  type RouterConfig,
+  type RouterOptions,
+} from './index.d';
 
 export * from './index.d';
 
@@ -9,7 +14,6 @@ export function createRouter<const Config extends RouterConfig>(
   opts: RouterOptions = {},
 ): Router<Config> {
   let router = atom();
-
   // @ts-expect-error fix-types
   router.routes = Object.keys(routes).map((name) => {
     let value = routes[name];

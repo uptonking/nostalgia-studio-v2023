@@ -15,7 +15,7 @@ type Props = {
   text: string;
 };
 
-export const TodosListItem = ({ id, completed, text }: Props): JSX.Element => {
+export const TodosListItem = ({ id, completed, text }: Props) => {
   const client = useClient();
   const [editableItemId, setEditableItemId] = useState('');
   const [editableInitialValue, setEditableInitialValue] = useState('');

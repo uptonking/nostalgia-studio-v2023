@@ -1,23 +1,28 @@
 import {
-  Component,
-  ComponentType,
-  Context as ReactContext,
-  ReactNode,
+  type Context as ReactContext,
+  type ComponentType,
+  type ReactNode,
 } from 'react';
-
-import { StoreValue } from 'nanostores';
-
-import { LoguxNotFoundError, SyncMapValues } from '@logux/actions';
-
-import { Client } from '../client/index';
-import { AuthStore } from '../create-auth/index';
-import { Filter, FilterOptions, FilterStore } from '../create-filter/index';
+import { type SyncMapValues, type LoguxNotFoundError } from '@logux/actions';
+import { type StoreValue } from 'nanostores';
 import {
-  ChannelDeniedError,
-  ChannelError,
-  ChannelNotFoundError,
+  type ChannelNotFoundError,
+  type ChannelDeniedError,
+  type ChannelError,
 } from '../logux-undo-error/index';
-import { SyncMapTemplateLike, SyncMapValue } from '../sync-map-template/index';
+import {
+  type SyncMapTemplateLike,
+  type SyncMapValue,
+} from '../sync-map-template/index';
+import {
+  type FilterOptions,
+  type FilterStore,
+  type Filter,
+} from '../create-filter/index';
+import { type AuthStore } from '../create-auth/index';
+import { type Client } from '../client/index';
+
+import { Component } from 'react';
 
 /**
  * Context to send Logux Client or object space to components deep in the tree.

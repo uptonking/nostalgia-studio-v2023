@@ -1,7 +1,7 @@
-import { it, expect } from 'vitest';
 import { spy } from 'nanospy';
+import { expect, it } from 'vitest';
 
-import { ResponseError, request, patch, post, get, put, del } from '../index';
+import { del, get, patch, post, put, request, ResponseError } from '../index';
 
 it('has error', () => {
   let error = new ResponseError(

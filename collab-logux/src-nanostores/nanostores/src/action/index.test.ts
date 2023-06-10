@@ -1,12 +1,12 @@
-import { equal, is } from 'uvu/assert';
 import { delay } from 'nanodelay';
 import { test } from 'uvu';
+import { equal, is } from 'uvu/assert';
 
-import { lastAction, onNotify, allTasks, action, atom } from '../index';
+import { action, allTasks, atom, lastAction, map, onNotify } from '../index';
 
 test('shows action name', () => {
   let events: (string | undefined)[] = [];
-  let store = atom(1);
+  let store = atom(0);
 
   onNotify(store, () => {
     events.push(store[lastAction]);
@@ -19,8 +19,29 @@ test('shows action name', () => {
   setProp(1);
   setProp(2);
   setProp(3);
+  equal(store.get(), 3);
 
   equal(events, ['setProp', 'setProp', 'setProp']);
+});
+
+test('shows action name for maps', () => {
+  let events: (string | undefined)[] = [];
+  let store = map({ sum: 0 });
+
+  onNotify(store, () => {
+    events.push(store[lastAction]);
+  });
+
+  let setProp = action(store, 'setSum', (s, num: number) => {
+    s.setKey('sum', num);
+  });
+
+  setProp(1);
+  setProp(2);
+  setProp(3);
+  equal(store.get(), { sum: 3 });
+
+  equal(events, ['setSum', 'setSum', 'setSum']);
 });
 
 test('supports async tasks', async () => {
@@ -45,14 +66,14 @@ test('supports async tasks', async () => {
   equal(await increaseWithDelay(), 'result');
   equal(counter.get(), 2);
 
-  counter.set(2);
+  counter.set(3);
 
   equal(events, ['increaseWithDelay', 'increaseWithDelay', undefined]);
 });
 
 test('track previous actionName correctly', () => {
   let events: (string | undefined)[] = [];
-  let store = atom(1);
+  let store = atom(0);
 
   onNotify(store, () => {
     events.push(store[lastAction]);

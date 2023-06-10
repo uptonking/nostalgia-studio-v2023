@@ -1,4 +1,5 @@
-import { it, expect, afterEach, beforeAll } from 'vitest';
+import { afterEach, beforeAll, expect, it } from 'vitest';
+
 import { LoguxError, TestPair } from '@logux/core';
 
 import { CrossTabClient, favicon } from '../index';

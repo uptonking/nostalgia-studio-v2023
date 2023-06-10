@@ -1,20 +1,20 @@
+import { delay } from 'nanodelay';
+import { afterEach, expect, it } from 'vitest';
+
 import {
   defineSyncMapActions,
   LoguxNotFoundError,
-  loguxSubscribed,
   loguxProcessed,
+  loguxSubscribed,
 } from '@logux/actions';
-import { it, expect, afterEach } from 'vitest';
-import { delay } from 'nanodelay';
 
+import { type SyncMapData, type TestClient } from '../index';
 import {
-  NoConflictResolution,
-  addSyncMapFilter,
-  SyncMapData,
-  TestServer,
-  TestClient,
   addSyncMap,
+  addSyncMapFilter,
   ChangedAt,
+  NoConflictResolution,
+  TestServer,
 } from '../index';
 
 type TaskValue = {

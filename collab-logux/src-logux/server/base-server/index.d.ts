@@ -1,24 +1,29 @@
 import {
-  Action,
-  AnyAction,
-  ID,
-  Log,
-  Meta,
-  ServerConnection,
-  LogStore,
-  TestTime,
-} from '@logux/core';
-import { Server as HTTPServer, ServerResponse, IncomingMessage } from 'http';
-import {
-  LoguxUnsubscribeAction,
-  AbstractActionCreator,
-  LoguxSubscribeAction,
-} from '@logux/actions';
-import { Unsubscribe } from 'nanoevents';
-import { LogFn } from 'pino';
+  type IncomingMessage,
+  type Server as HTTPServer,
+  type ServerResponse,
+} from 'http';
+import { type Unsubscribe } from 'nanoevents';
+import { type LogFn } from 'pino';
 
-import { Context, ChannelContext } from '../context/index';
-import { ServerClient } from '../server-client/index';
+import {
+  type AbstractActionCreator,
+  type LoguxSubscribeAction,
+  type LoguxUnsubscribeAction,
+} from '@logux/actions';
+import {
+  type Action,
+  type AnyAction,
+  type ID,
+  type Log,
+  type LogStore,
+  type Meta,
+  type ServerConnection,
+  type TestTime,
+} from '@logux/core';
+
+import { type ChannelContext, type Context } from '../context/index';
+import { type ServerClient } from '../server-client/index';
 
 export interface ServerMeta extends Meta {
   /**
@@ -720,7 +725,7 @@ export class BaseServer<
   subscribers: {
     [channel: string]: {
       [nodeId: string]: {
-        filter: ChannelFilter<{}> | true;
+        filters: Record<string, ChannelFilter<{}> | true>;
         unsubscribe?: (
           action: LoguxUnsubscribeAction,
           meta: ServerMeta,

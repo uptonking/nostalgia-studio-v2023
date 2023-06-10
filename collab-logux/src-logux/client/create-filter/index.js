@@ -1,4 +1,5 @@
 import { map, onMount, startTask } from 'nanostores';
+
 import { isFirstOlder } from '@logux/core';
 
 import { track } from '../track/index';

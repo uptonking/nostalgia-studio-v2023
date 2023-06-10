@@ -1,37 +1,36 @@
-import { cleanStores, atom, map, onMount, MapStore } from 'nanostores';
-import {
-  createElement as h,
-  ReactElement,
-  Component,
-  ReactNode,
-  useState,
-  FC,
-} from 'react';
-import { render, screen, act, cleanup } from '@testing-library/react';
-import { it, expect, afterEach } from 'vitest';
-import { LoguxNotFoundError } from '@logux/actions';
-import { restoreAll, spyOn } from 'nanospy';
+import { type FC, type ReactElement, type ReactNode } from 'react';
+import { Component, createElement as h, useState } from 'react';
+
 import { delay } from 'nanodelay';
+import { restoreAll, spyOn } from 'nanospy';
+import { type MapStore } from 'nanostores';
+import { atom, cleanStores, map, onMount } from 'nanostores';
+import { afterEach, expect, it } from 'vitest';
+
+import { LoguxNotFoundError } from '@logux/actions';
+import { act, cleanup, render, screen } from '@testing-library/react';
 
 import {
-  ChannelNotFoundError,
-  SyncMapTemplateLike,
-  ChannelDeniedError,
+  type ChannelDeniedError,
+  type ChannelError,
+  type ChannelNotFoundError,
+  type SyncMapTemplate,
+  type SyncMapTemplateLike,
+} from '../index';
+import {
   changeSyncMapById,
-  SyncMapTemplate,
-  syncMapTemplate,
-  LoguxUndoError,
   createSyncMap,
-  ChannelError,
+  LoguxUndoError,
+  syncMapTemplate,
   TestClient,
 } from '../index';
 import {
-  ClientContext,
   ChannelErrors,
+  ClientContext,
+  useAuth,
   useClient,
   useFilter,
   useSync,
-  useAuth,
 } from './index';
 
 function getCatcher(cb: () => void): [string[], FC] {

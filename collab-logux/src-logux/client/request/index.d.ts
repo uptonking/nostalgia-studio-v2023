@@ -1,6 +1,6 @@
-import { Action, AnyAction } from '@logux/core';
+import { type Action, type AnyAction } from '@logux/core';
 
-import { ClientOptions } from '../client/index';
+import { type ClientOptions } from '../client/index';
 
 export interface RequestOptions extends Omit<ClientOptions, 'userId'> {
   userId?: string;

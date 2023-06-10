@@ -1,7 +1,7 @@
-import { it, expect, describe } from 'vitest';
 import { resolve } from 'path';
+import { describe, expect, it } from 'vitest';
 
-import { loadOptions, oneOf, number } from './index';
+import { loadOptions, number, oneOf } from './index';
 
 function fakeProcess(argv, env = {}) {
   return { argv, env };

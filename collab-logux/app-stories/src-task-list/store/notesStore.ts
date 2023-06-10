@@ -3,7 +3,7 @@ import { action } from 'nanostores';
 import { persistentAtom } from '@nanostores/persistent';
 
 import { dumbTodoNotes } from '../constants/todoListConstant';
-import type { TodoNote } from '../types';
+import { type TodoNote } from '../types';
 
 const notes = persistentAtom<TodoNote[]>('notes', dumbTodoNotes, {
   encode: JSON.stringify,

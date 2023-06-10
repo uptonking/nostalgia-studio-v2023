@@ -1,9 +1,9 @@
-import { spyOn, restoreAll } from 'nanospy';
-import { equal, is, throws } from 'uvu/assert';
-import WebSocket from 'ws';
+import { restoreAll, spyOn } from 'nanospy';
 import { test } from 'uvu';
+import { equal, is, throws } from 'uvu/assert';
+import type WebSocket from 'ws';
 
-import { WsConnection, Message } from '../index';
+import { type Message, WsConnection } from '../index';
 
 class FakeWebSocket {
   opts: object;

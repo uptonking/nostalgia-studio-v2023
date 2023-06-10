@@ -1,6 +1,6 @@
-import type { DefaultEvents, Emitter, EventsMap } from './index.d';
+import { type DefaultEvents, type Emitter, type EventsMap } from './index.d';
 
-export * from './index.d';
+// export * from './index.d';
 
 export const createNanoEvents = <
   Events extends EventsMap = DefaultEvents,

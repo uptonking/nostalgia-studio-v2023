@@ -4,7 +4,7 @@ import { auth } from '../../stores/auth';
 import { TextField } from '../TextField/TextField';
 import styles from './LoginForm.module.css';
 
-export const LoginForm = (): JSX.Element => {
+export const LoginForm = () => {
   const [login, setLogin] = useState('admin');
   const [password, setPassword] = useState('admin');
 

@@ -1,6 +1,6 @@
-import { ServerConnection, ServerNode } from '@logux/core';
+import { type ServerConnection, type ServerNode } from '@logux/core';
 
-import { BaseServer } from '../base-server/index';
+import { type BaseServer } from '../base-server/index';
 
 /**
  * Logux client connected to server.

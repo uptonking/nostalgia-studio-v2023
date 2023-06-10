@@ -1,7 +1,7 @@
-import { Unsubscribe } from 'nanoevents';
+import { type Unsubscribe } from 'nanoevents';
 
-import { LoguxError, LoguxErrorOptions } from '../logux-error/index';
-import { Log, Action, AnyAction, Meta } from '../log/index';
+import { type Action, type AnyAction, type Log, type Meta } from '../log/index';
+import { type LoguxError, type LoguxErrorOptions } from '../logux-error/index';
 
 interface Authentificator<Headers extends object> {
   (nodeId: string, token: string, headers: Headers | {}): Promise<boolean>;

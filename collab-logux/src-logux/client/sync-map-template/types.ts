@@ -1,9 +1,9 @@
 import {
   buildNewSyncMap,
-  syncMapTemplate,
   changeSyncMap,
-  createSyncMap,
   Client,
+  createSyncMap,
+  syncMapTemplate,
 } from '../index';
 
 let client = new Client({

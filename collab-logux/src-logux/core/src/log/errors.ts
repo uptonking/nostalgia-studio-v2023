@@ -1,4 +1,4 @@
-import { Log, MemoryStore, Action } from '../index';
+import { type Action, Log, MemoryStore } from '../index';
 
 let log = new Log({ nodeId: 'test1', store: new MemoryStore() });
 

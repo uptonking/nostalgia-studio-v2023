@@ -1,8 +1,9 @@
-import { it, expect, beforeEach } from 'vitest';
-import { spyOn, restoreAll } from 'nanospy';
+import { restoreAll, spyOn } from 'nanospy';
+import { beforeEach, expect, it } from 'vitest';
+
 import { TestPair } from '@logux/core';
 
-import { CrossTabClient, confirm } from '../index';
+import { confirm, CrossTabClient } from '../index';
 
 function setState(client: any, state: string): void {
   client.node.setState(state);

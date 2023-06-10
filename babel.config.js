@@ -110,7 +110,7 @@ module.exports = function (api) {
               {
                 isTSX: Boolean(isEnvReact),
                 allExtensions: true,
-                onlyRemoveTypeImports: true,
+                // onlyRemoveTypeImports: true,
                 allowNamespaces: true,
                 allowDeclareFields: true,
               },

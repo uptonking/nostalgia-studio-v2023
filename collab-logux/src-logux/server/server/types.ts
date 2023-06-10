@@ -1,7 +1,10 @@
-import { LoguxSubscribeAction, defineAction } from '@logux/actions';
-
-import { Server, Action } from '../index';
 import pino from 'pino';
+
+import { type LoguxSubscribeAction } from '@logux/actions';
+import { defineAction } from '@logux/actions';
+
+import { type Action } from '../index';
+import { Server } from '../index';
 
 let server = new Server<{ locale: string }>(
   Server.loadOptions(process, {

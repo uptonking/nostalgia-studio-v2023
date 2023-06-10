@@ -1,4 +1,4 @@
-import { Action, AnyAction } from '@logux/core';
+import { type Action, type AnyAction } from '@logux/core';
 
 interface Fields {
   [key: string]: any;

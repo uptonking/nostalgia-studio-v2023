@@ -1,8 +1,9 @@
-import { useStore } from '@nanostores/react';
 import React from 'react';
 
-import { createFilter } from '../create-filter/index';
+import { useStore } from '@nanostores/react';
+
 import { createAuth } from '../create-auth/index';
+import { createFilter } from '../create-filter/index';
 
 export let ClientContext = /*#__PURE__*/ React.createContext();
 
@@ -25,6 +26,7 @@ function useSyncStore(store) {
   let value = store.get();
 
   if (process.env.NODE_ENV !== 'production') {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     let errorProcessors = React.useContext(ErrorsContext) || {};
     if (
       !errorProcessors.Error &&

@@ -54,8 +54,8 @@ describe.concurrent('fetcher tests', () => {
     const keys = ['/api', '/key'];
 
     const [makeFetcher] = nanoquery({ fetcher });
-    const store1 = makeFetcher(keys, { fetcher }),
-      store2 = makeFetcher(keys);
+    const store1 = makeFetcher(keys, { fetcher });
+    const store2 = makeFetcher(keys);
 
     store1.listen(noop);
     store2.listen(noop);
@@ -336,7 +336,8 @@ describe.concurrent('fetcher tests', () => {
     await advance();
 
     expect(events[0]).toMatchObject({ loading: false });
-    expect(events[1]).toMatchObject({ loading: true, data: undefined });
+    expect(events[1]).toMatchObject({ loading: true });
+    expect(events[1].data).toBeUndefined();
     expect(events[2]).toMatchObject({ data: '2' });
   });
 
@@ -569,13 +570,13 @@ describe.concurrent('mutator tests', () => {
     });
 
     test('invalidates keys; invalidation ignores dedupe; invalidation ignores cache; always invalidates after running mutation', async () => {
-      let counter = 0,
-        counter2 = 0;
+      let counter = 0;
+      let counter2 = 0;
       const fetcher = vi.fn().mockImplementation(async () => counter++);
       const fetcher2 = vi.fn().mockImplementation(async () => counter2++);
 
-      const keyParts = ['/api', '/key'],
-        keyParts2 = ['/api', '/key2'];
+      const keyParts = ['/api', '/key'];
+      const keyParts2 = ['/api', '/key2'];
 
       const [makeFetcher, makeMutator] = nanoquery();
       const $data = makeFetcher(keyParts, { fetcher, dedupeTime: 2e20 });
@@ -586,8 +587,8 @@ describe.concurrent('mutator tests', () => {
       $data.listen(noop);
       $data2.listen(noop);
 
-      let fetcherCallCountAfterInvalidation = -1,
-        fetcher2CallCountAfterInvalidation = -1;
+      let fetcherCallCountAfterInvalidation = -1;
+      let fetcher2CallCountAfterInvalidation = -1;
       const mutator = vi.fn().mockImplementation(({ invalidate }) => {
         invalidate(keyParts.join(''));
         invalidate(keyParts2.join(''));

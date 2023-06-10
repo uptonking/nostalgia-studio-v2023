@@ -1,17 +1,16 @@
-import type { WritableAtom } from 'nanostores';
-import type { PersistentListener } from '../index';
-
-import { cleanStores } from 'nanostores';
-import { equal, is } from 'uvu/assert';
 import { delay } from 'nanodelay';
+import { type WritableAtom } from 'nanostores';
+import { cleanStores } from 'nanostores';
 import { test } from 'uvu';
+import { equal, is } from 'uvu/assert';
 
-import { emitLocalStorage } from './setup';
+import { type PersistentListener } from '../index';
 import {
-  windowPersistentEvents,
-  setPersistentEngine,
   persistentAtom,
+  setPersistentEngine,
+  windowPersistentEvents,
 } from '../index';
+import { emitLocalStorage } from './setup';
 
 let atom: WritableAtom<string | undefined>;
 

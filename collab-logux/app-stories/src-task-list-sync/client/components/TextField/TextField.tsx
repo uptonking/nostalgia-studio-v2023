@@ -1,8 +1,8 @@
 import React, {
-  ChangeEvent,
-  ForwardedRef,
+  type ChangeEvent,
+  type ForwardedRef,
   forwardRef,
-  KeyboardEvent,
+  type KeyboardEvent,
   useCallback,
 } from 'react';
 
@@ -40,7 +40,7 @@ export const TextField = forwardRef(
       onKeyDown,
     }: Props,
     ref: ForwardedRef<HTMLInputElement>,
-  ): JSX.Element => {
+  ) => {
     const handleChange = useCallback(
       (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event);

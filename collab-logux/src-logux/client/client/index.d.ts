@@ -1,15 +1,15 @@
-import { AbstractActionCreator } from '@logux/actions';
-import { Unsubscribe } from 'nanoevents';
+import { type AbstractActionCreator } from '@logux/actions';
+import { type Unsubscribe } from 'nanoevents';
 import {
-  Connection,
-  LogStore,
-  TestTime,
-  Log,
-  ClientNode,
-  Action,
-  Meta,
-  TokenGenerator,
-  AnyAction,
+  type Connection,
+  type LogStore,
+  type TestTime,
+  type Log,
+  type ClientNode,
+  type Action,
+  type Meta,
+  type TokenGenerator,
+  type AnyAction,
 } from '@logux/core';
 
 type TabID = string;

@@ -2,7 +2,7 @@ import { useCallback, useSyncExternalStore } from 'react';
 
 import { listenKeys, type Store, type StoreValue } from 'nanostores';
 
-import type { UseStoreOptions } from './index.d';
+import { type UseStoreOptions } from './index.d';
 
 export * from './index.d';
 

@@ -1,5 +1,4 @@
-import { MapTemplate, AnySyncTemplate } from '../deprecated/index';
-import { Store } from '../map/index';
+import { type MapCreator, type Store } from '../map/index';
 
 /**
  * Prevent destructor call for the store.
@@ -9,9 +8,9 @@ import { Store } from '../map/index';
  * ```js
  * import { keepMount } from 'nanostores'
  *
- * keepMount(store)
+ * keepMount($store)
  * ```
  *
  * @param store The store.
  */
-export function keepMount(store: Store | MapTemplate | AnySyncTemplate): void;
+export function keepMount(store: Store | MapCreator): void;

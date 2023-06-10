@@ -1,7 +1,7 @@
-import { equal } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal } from 'uvu/assert';
 
-import { map, listenKeys, deepMap } from '../index';
+import { deepMap, listenKeys, map } from '../index';
 
 test('listen for specific keys', () => {
   let events: string[] = [];

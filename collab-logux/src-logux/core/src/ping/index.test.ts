@@ -1,15 +1,15 @@
-import { equal, ok, throws, type, is } from 'uvu/assert';
 import { delay } from 'nanodelay';
 import { test } from 'uvu';
+import { equal, is, ok, throws, type } from 'uvu/assert';
 
 import {
-  ServerNode,
+  type BaseNode,
   ClientNode,
-  BaseNode,
-  TestTime,
-  TestLog,
+  type NodeOptions,
+  ServerNode,
+  type TestLog,
   TestPair,
-  NodeOptions,
+  TestTime,
 } from '../index';
 
 let node: BaseNode<{}, TestLog> | undefined;

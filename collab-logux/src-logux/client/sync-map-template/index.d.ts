@@ -1,11 +1,11 @@
-import { MapStore } from 'nanostores';
+import { type MapCreator, type MapStore } from 'nanostores';
 
-import { SyncMapValues } from '@logux/actions';
-import { Action, Meta } from '@logux/core';
+import { type SyncMapValues } from '@logux/actions';
+import { type Action, type Meta } from '@logux/core';
 
-import { Client } from '../client/index';
+import { type Client } from '../client/index';
 
-interface SyncMapStoreExt {
+export interface SyncMapStoreExt {
   /**
    * Logux Client instance.
    */
@@ -54,7 +54,7 @@ export type SyncMapStore<Value extends SyncMapValues = any> = MapStore<
 export interface SyncMapTemplate<
   Value extends SyncMapValues = any,
   StoreExt = {},
-> {
+> extends MapCreator {
   (
     id: string,
     client: Client,

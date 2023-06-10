@@ -1,6 +1,6 @@
 import { cleanStores } from 'nanostores';
-import { equal } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal } from 'uvu/assert';
 
 import { createRouter, createSearchParams } from '../index';
 

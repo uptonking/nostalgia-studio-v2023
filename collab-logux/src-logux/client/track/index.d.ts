@@ -1,6 +1,6 @@
-import { Log, ID } from '@logux/core';
+import { type ID, type Log } from '@logux/core';
 
-import { Client } from '../client/index';
+import { type Client } from '../client/index';
 
 /**
  * Track for `logux/processed` or `logux/undo` answer from server

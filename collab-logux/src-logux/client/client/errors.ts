@@ -1,5 +1,5 @@
 import { defineAction } from '@logux/actions';
-import { Action } from '@logux/core';
+import { type Action } from '@logux/core';
 
 import { Client } from '../index';
 

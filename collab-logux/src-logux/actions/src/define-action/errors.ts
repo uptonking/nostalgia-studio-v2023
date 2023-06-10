@@ -1,4 +1,4 @@
-import { Action } from '@logux/core';
+import { type Action } from '@logux/core';
 
 import { defineAction } from '../index';
 

@@ -1,4 +1,4 @@
-import { Unsubscribe, Emitter } from 'nanoevents';
+import { type Unsubscribe, type Emitter } from 'nanoevents';
 
 /**
  * Action unique ID accross all nodes.

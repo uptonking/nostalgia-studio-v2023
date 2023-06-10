@@ -1,8 +1,7 @@
-#!/usr/bin/env node
-
-import { ClientNode, WsConnection, Log, MemoryStore } from '@logux/core';
 import { delay } from 'nanodelay';
 import WebSocket from 'ws';
+
+import { ClientNode, Log, MemoryStore, WsConnection } from '@logux/core';
 
 import { ALLOWED_META } from '../../index';
 

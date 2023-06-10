@@ -1,7 +1,7 @@
-import { equal, is, ok, throws } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal, is, ok, throws } from 'uvu/assert';
 
-import { LocalPair, Connection, Message } from '../index';
+import { type Connection, LocalPair, type Message } from '../index';
 
 type Event =
   | ['connect']

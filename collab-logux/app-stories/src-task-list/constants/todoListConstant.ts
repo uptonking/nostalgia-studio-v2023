@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { TodoNote } from '../types';
+import { type TodoNote } from '../types';
 
 export const dumbTodoNotes: TodoNote[] = [
   {

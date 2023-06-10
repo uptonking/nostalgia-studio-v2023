@@ -1,4 +1,5 @@
-import { BaseServer, Logger, BaseServerOptions } from '../base-server/index';
+import { type BaseServerOptions, type Logger } from '../base-server/index';
+import { BaseServer } from '../base-server/index';
 
 export interface LoggerOptions {
   /**

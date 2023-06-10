@@ -1,7 +1,13 @@
-import { equal, is, not, ok, throws, type } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal, is, not, ok, throws, type } from 'uvu/assert';
 
-import { MemoryStore, Log, Action, Meta, LogPage } from '../index';
+import {
+  type Action,
+  Log,
+  type LogPage,
+  MemoryStore,
+  type Meta,
+} from '../index';
 
 function createLog(): Log<Meta, MemoryStore> {
   return new Log({

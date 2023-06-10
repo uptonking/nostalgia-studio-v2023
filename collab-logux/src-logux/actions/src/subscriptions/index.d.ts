@@ -1,4 +1,4 @@
-import { ActionCreator } from '../define-action/index';
+import { type ActionCreator } from '../define-action/index';
 
 export interface LoguxSubscribeAction {
   type: 'logux/subscribe';

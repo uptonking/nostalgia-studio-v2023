@@ -1,5 +1,5 @@
-import { equal, instance, is } from 'uvu/assert';
 import { test } from 'uvu';
+import { equal, instance, is } from 'uvu/assert';
 
 import { MemoryStore, TestTime } from '../index';
 

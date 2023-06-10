@@ -1,8 +1,6 @@
-#!/usr/bin/env node
-
 import benchmark from 'benchmark';
 
-import { atom, action, onMount, onSet, computed } from '../index';
+import { action, atom, computed, onMount, onSet } from '../index';
 
 let suite = new benchmark.Suite();
 

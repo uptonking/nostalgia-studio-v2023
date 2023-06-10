@@ -1,37 +1,40 @@
-import {
-  FunctionComponent as FC,
-  ComponentChild,
-  Component,
-  VNode,
-  h,
-} from 'preact';
-import { cleanStores, atom, map, onMount, MapStore } from 'nanostores';
-import { render, screen, act, cleanup } from '@testing-library/preact';
-import { it, expect, afterEach } from 'vitest';
-import { LoguxNotFoundError } from '@logux/actions';
-import { spyOn, restoreAll } from 'nanospy';
-import { useState } from 'preact/hooks';
 import { delay } from 'nanodelay';
+import { restoreAll, spyOn } from 'nanospy';
+import { type MapStore } from 'nanostores';
+import { atom, cleanStores, map, onMount } from 'nanostores';
+import {
+  type ComponentChild,
+  type FunctionComponent as FC,
+  type VNode,
+} from 'preact';
+import { Component, h } from 'preact';
+import { useState } from 'preact/hooks';
+import { afterEach, expect, it } from 'vitest';
+
+import { LoguxNotFoundError } from '@logux/actions';
+import { act, cleanup, render, screen } from '@testing-library/preact';
 
 import {
-  ChannelNotFoundError,
-  SyncMapTemplateLike,
-  ChannelDeniedError,
+  type ChannelDeniedError,
+  type ChannelError,
+  type ChannelNotFoundError,
+  type SyncMapTemplate,
+  type SyncMapTemplateLike,
+} from '../index';
+import {
   changeSyncMapById,
-  SyncMapTemplate,
-  syncMapTemplate,
   createSyncMap,
   LoguxUndoError,
-  ChannelError,
+  syncMapTemplate,
   TestClient,
 } from '../index';
 import {
-  ClientContext,
   ChannelErrors,
+  ClientContext,
+  useAuth,
   useClient,
   useFilter,
   useSync,
-  useAuth,
 } from './index';
 
 function getCatcher(cb: () => void): [string[], FC] {

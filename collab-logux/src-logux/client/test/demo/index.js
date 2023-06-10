@@ -1,19 +1,19 @@
-import { MemoryStore, ClientNode, LocalPair, BaseNode, Log } from '@logux/core';
+import { BaseNode, ClientNode, LocalPair, Log, MemoryStore } from '@logux/core';
 
+import { badgeStyles } from '../../badge/styles/index';
 import {
-  CrossTabClient,
   attention,
+  badge,
   badgeEn,
   confirm,
+  CrossTabClient,
   favicon,
-  status,
-  badge,
   log,
+  status,
 } from '../../index';
-import { badgeStyles } from '../../badge/styles/index';
-import faviconOffline from './offline.png';
-import faviconNormal from './normal.png';
 import faviconError from './error.png';
+import faviconNormal from './normal.png';
+import faviconOffline from './offline.png';
 
 let pair = new LocalPair(500);
 

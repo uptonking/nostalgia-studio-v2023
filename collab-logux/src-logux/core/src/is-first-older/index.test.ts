@@ -1,7 +1,7 @@
 import { test } from 'uvu';
 import { is } from 'uvu/assert';
 
-import { isFirstOlder, Meta } from '../index';
+import { isFirstOlder, type Meta } from '../index';
 
 function createMeta(id: string, time: number): Meta {
   return { id, time, reasons: [], added: 1 };

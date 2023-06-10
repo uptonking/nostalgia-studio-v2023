@@ -1,6 +1,6 @@
-import { BaseNode, Message } from '../base-node/index';
+import { type BaseNode, type Message } from '../base-node/index';
 import { LocalPair } from '../local-pair/index';
-import { TestLog } from '../test-log/index';
+import { type TestLog } from '../test-log/index';
 
 /**
  * Two paired loopback connections with events tracking

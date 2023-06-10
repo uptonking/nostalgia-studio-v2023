@@ -1,4 +1,4 @@
-import { setPersistentEngine, persistentAtom, persistentMap } from '../index';
+import { persistentAtom, persistentMap, setPersistentEngine } from '../index';
 
 // THROWS '{ code: string; }' does not satisfy the constraint 'string'
 let lang = persistentAtom<{ code: string }>('locale', { code: 'ru' });

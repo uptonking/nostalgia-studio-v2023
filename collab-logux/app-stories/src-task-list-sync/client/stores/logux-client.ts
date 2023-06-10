@@ -2,7 +2,7 @@ import { atom, onMount } from 'nanostores';
 
 import { badge, badgeEn, confirm, CrossTabClient, log } from '@logux/client';
 import { badgeStyles } from '@logux/client/badge/styles';
-import { Client } from '@logux/client/client';
+import { type Client } from '@logux/client/client';
 
 import { subprotocol } from '../../protocol/index';
 import { authStore, logout } from './auth';
@@ -36,7 +36,7 @@ onMount(clientStore, () => {
 
   clientStore.set(client);
 
-  let authUnsubscribe = authStore.subscribe(({ id }, changedKey) => {
+  const authUnsubscribe = authStore.subscribe(({ id }, changedKey) => {
     if (!changedKey) {
       if (id) {
         client.changeUser(id);

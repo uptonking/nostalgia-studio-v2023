@@ -1,15 +1,16 @@
+import React, { useEffect, useRef, useState } from 'react';
+
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
-import { DOMParser, NodeSpec, NodeType, type Node } from 'prosemirror-model';
+import { DOMParser, type Node, NodeSpec, NodeType } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import {
+  type Command,
   EditorState,
   Plugin,
   TextSelection,
-  type Command,
 } from 'prosemirror-state';
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-import React, { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -194,7 +195,7 @@ const lintPlugin = new Plugin({
  * - 右侧操作图标基于decoration实现，绝对定位相对于xx节点，物理上是夹杂在编辑器dom中间的
  * - 问题相关数据都保存在dom对象上
  */
-export const Lint = () => {
+export const LintApp = () => {
   const editorContainer = useRef<HTMLDivElement>();
   const initialContentContainer = useRef<HTMLDivElement>();
   const view = useRef<EditorView>(null);

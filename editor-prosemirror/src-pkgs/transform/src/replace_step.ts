@@ -30,11 +30,11 @@ export class ReplaceStep extends Step {
     super();
   }
 
-  apply(doc: Node) {
+  apply(doc: Node): StepResult {
     if (this.structure && contentBetween(doc, this.from, this.to)) {
       return StepResult.fail('Structure replace would overwrite content');
     }
-    // 👉🏻 会通过 Node.replace() 方法执行修改
+    // 👉🏻 会通过 Node.replace() 方法修改model
     return StepResult.fromReplace(doc, this.from, this.to, this.slice);
   }
 

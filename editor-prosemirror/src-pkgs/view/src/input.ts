@@ -269,7 +269,7 @@ editHandlers.keypress = (view, _event) => {
         f(view, sel.$from.pos, sel.$to.pos, text),
       )
     ) {
-      // 👉🏻 简单的输入事件会执行一个insertText的操作去修改state
+      // 👇🏻 简单的输入事件会执行一个insertText的操作去修改state
       view.dispatch(view.state.tr.insertText(text).scrollIntoView());
     }
     event.preventDefault();

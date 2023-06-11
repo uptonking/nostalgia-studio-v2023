@@ -202,10 +202,11 @@ export class Decoration {
     return this.type.map(mapping, this, offset, oldOffset);
   }
 
-  /** Creates a widget decoration, which is a DOM node that's shown in
-   * the document at the given position. It is recommended that you
-   * delay rendering the widget by passing a function that will be
-   * called when the widget is actually drawn in a view, but you can
+  /** Widget decorations insert a DOM node, which isn't part of the actual document, at a given position.
+   * - Creates a widget decoration, which is a DOM node that's shown in
+   * the document at the given position.
+   * - It is recommended that you delay rendering the widget by passing a function
+   * that will be called when the widget is actually drawn in a view, but you can
    * also directly pass a DOM node. `getPos` can be used to find the
    * widget's current document position.
    */
@@ -264,7 +265,8 @@ export class Decoration {
     return new Decoration(pos, pos, new WidgetType(toDOM, spec));
   }
 
-  /** Creates an inline decoration, which adds the given attributes to
+  /** Inline decorations add styling or attributes, much like node decorations, but to all inline nodes in a given range.
+   * - Creates an inline decoration, which adds the given attributes to
    * each inline node between `from` and `to`.
    */
   static inline(
@@ -291,7 +293,8 @@ export class Decoration {
     return new Decoration(from, to, new InlineType(attrs, spec));
   }
 
-  /** Creates a node decoration. `from` and `to` should point precisely
+  /** Node decorations add styling or other DOM attributes to a single node's DOM representation.
+   * - Creates a node decoration. `from` and `to` should point precisely
    * before and after a node in the document. That node, and only that
    * node, will receive the given attributes.
    */
@@ -354,9 +357,14 @@ export interface DecorationSource {
 
 /** A collection of [decorations](#view.Decoration), organized in such
  * a way that the drawing algorithm can efficiently use and compare
- * them. This is a persistent data structure—it is not modified,
- * updates create a new value.
- * - decoration set is a data structure that mimics the tree shape of the actual document
+ * them.
+ * - DecorationSet is a data structure that mimics the tree shape of the actual document
+ * - This is a persistent data structure—it is not modified, updates create a new value.
+ * - When a transaction is applied to the state, the plugin state's `apply` method
+ *   maps the decoration set forward, causing the decorations to stay in place and ‘fit’ the new document shape.
+ *   The mapping method is (for typical, local changes) made efficient by exploiting
+ *   the tree shape of the decoration set—only the parts of the tree that are
+ *   actually touched by the changes need to be rebuilt.
  * - 既然装饰是文档节点的附属，装饰的组织方式要匹配文档的组织方式。
  * - 而将多个装饰对应到一个文档节点则是采用数据结构装饰集DecorationSet。
  * - 装饰集其实是嵌套的，每个装饰集对应文档树的一个层级，并保留有能够应用到当前层级的装饰列表
@@ -427,6 +435,7 @@ export class DecorationSet implements DecorationSource {
         result.push(span.copy(span.from + offset, span.to + offset));
     }
     for (let i = 0; i < this.children.length; i += 3) {
+      // @ts-expect-error fix-types
       if (this.children[i] < end && this.children[i + 1] > start) {
         const childOff = (this.children[i] as number) + 1;
         (this.children[i + 2] as DecorationSet).findInner(
@@ -440,20 +449,21 @@ export class DecorationSet implements DecorationSource {
     }
   }
 
-  /** Map the set of decorations in response to a change in the
-   * document.
+  /** Map the set of decorations in response to a change in the document.
+   * - the recommended way to maintain your decorations is to put the set in your plugin's state, map it forward through changes
    */
   map(
     mapping: Mapping,
     doc: Node,
     options?: {
-      /// When given, this function will be called for each decoration
-      /// that gets dropped as a result of the mapping, passing the
-      /// spec of that decoration.
+      /** When given, this function will be called for each decoration
+       * that gets dropped as a result of the mapping, passing the
+       * spec of that decoration.
+       */
       onRemove?: (decorationSpec: any) => void;
     },
   ) {
-    if (this == empty || mapping.maps.length == 0) return this;
+    if (this === empty || mapping.maps.length === 0) return this;
     return this.mapInner(mapping, doc, 0, 0, options || noSpec);
   }
 
@@ -509,6 +519,7 @@ export class DecorationSet implements DecorationSource {
         return;
 
       if (!children) children = this.children.slice();
+      // @ts-expect-error fix-types
       while (childIndex < children.length && children[childIndex] < childOffset)
         childIndex += 3;
       if (children[childIndex] == childOffset)
@@ -597,6 +608,7 @@ export class DecorationSet implements DecorationSource {
     let child;
     let local: Decoration[] | undefined;
     for (let i = 0; i < this.children.length; i += 3)
+      // @ts-expect-error fix-types
       if (this.children[i] >= offset) {
         if (this.children[i] == offset)
           child = this.children[i + 2] as DecorationSet;
@@ -781,6 +793,7 @@ function mapChildren(
   // recursively call mapInner on them and update their positions.
   let mustRebuild = false;
   for (let i = 0; i < children.length; i += 3)
+    // @ts-expect-error fix-types
     if (children[i + 1] < 0) {
       // Touched nodes
       if (children[i + 1] == -2) {
@@ -838,6 +851,7 @@ function mapChildren(
     const built = buildTree(decorations, node, 0, options);
     newLocal = built.local as Decoration[];
     for (let i = 0; i < children.length; i += 3)
+      // @ts-expect-error fix-types
       if (children[i + 1] < 0) {
         children.splice(i, 3);
         i -= 3;

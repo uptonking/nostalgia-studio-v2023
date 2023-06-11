@@ -2,8 +2,8 @@ import { Selection } from 'prosemirror-state';
 
 import * as browser from './browser';
 import {
-  type DOMSelection,
   domIndex,
+  type DOMSelection,
   isEquivalentPosition,
   selectionCollapsed,
 } from './dom';
@@ -98,8 +98,8 @@ export class DOMObserver {
           browser.ie_version <= 11 &&
           mutations.some(
             (m) =>
-              (m.type == 'childList' && m.removedNodes.length) ||
-              (m.type == 'characterData' &&
+              (m.type === 'childList' && m.removedNodes.length) ||
+              (m.type === 'characterData' &&
                 m.oldValue!.length > m.target.nodeValue!.length),
           )
         ) {

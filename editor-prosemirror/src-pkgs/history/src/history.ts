@@ -1,18 +1,18 @@
-import RopeSequence from 'rope-sequence';
+import {
+  type Command,
+  type EditorState,
+  Plugin,
+  PluginKey,
+  type SelectionBookmark,
+  type Transaction,
+} from 'prosemirror-state';
 import {
   Mapping,
   type Step,
   type StepMap,
   type Transform,
 } from 'prosemirror-transform';
-import {
-  Plugin,
-  type Command,
-  PluginKey,
-  type EditorState,
-  type Transaction,
-  type SelectionBookmark,
-} from 'prosemirror-state';
+import RopeSequence from 'rope-sequence';
 
 // ProseMirror's history isn't simply a way to roll back to a previous
 // state, because ProseMirror supports applying changes without adding
@@ -126,7 +126,7 @@ class Branch {
     histOptions: Required<HistoryOptions>,
     preserveItems: boolean,
   ) {
-    const newItems = [];
+    const newItems: Item[] = [];
     let eventCount = this.eventCount;
     let oldItems = this.items;
     let lastItem =
@@ -219,7 +219,7 @@ class Branch {
       }
     }, start);
 
-    const newMaps = [];
+    const newMaps: Item[] = [];
     for (let i = rebasedCount; i < newUntil; i++)
       newMaps.push(new Item(mapping.maps[i]));
     const items = this.items
@@ -440,7 +440,7 @@ function rangesFor(map: StepMap) {
 
 function mapRanges(ranges: readonly number[], mapping: Mapping) {
   if (!ranges) return null;
-  const result = [];
+  const result: number[] = [];
   for (let i = 0; i < ranges.length; i += 2) {
     const from = mapping.map(ranges[i], 1);
     const to = mapping.map(ranges[i + 1], -1);
@@ -449,8 +449,7 @@ function mapRanges(ranges: readonly number[], mapping: Mapping) {
   return result;
 }
 
-// Apply the latest event from one branch to the document and shift the event
-// onto the other branch.
+/** Apply the latest event from one branch to the document and shift the event onto the other branch. */
 function histTransaction(
   history: HistoryState,
   state: EditorState,
@@ -569,9 +568,9 @@ export function history(config: HistoryOptions = {}): Plugin {
         beforeinput(view, e: Event) {
           const inputType = (e as InputEvent).inputType;
           const command =
-            inputType == 'historyUndo'
+            inputType === 'historyUndo'
               ? undo
-              : inputType == 'historyRedo'
+              : inputType === 'historyRedo'
               ? redo
               : null;
           if (!command) return false;
@@ -583,7 +582,7 @@ export function history(config: HistoryOptions = {}): Plugin {
   });
 }
 
-/// A command function that undoes the last change, if any.
+/** A command function that undoes the last change, if any. */
 export const undo: Command = (state, dispatch) => {
   const hist = historyKey.getState(state);
   if (!hist || hist.done.eventCount == 0) return false;
@@ -591,7 +590,7 @@ export const undo: Command = (state, dispatch) => {
   return true;
 };
 
-/// A command function that redoes the last undone change, if any.
+/** A command function that redoes the last undone change, if any. */
 export const redo: Command = (state, dispatch) => {
   const hist = historyKey.getState(state);
   if (!hist || hist.undone.eventCount == 0) return false;
@@ -599,13 +598,13 @@ export const redo: Command = (state, dispatch) => {
   return true;
 };
 
-/// The amount of undoable events available in a given state.
+/** The amount of undoable events available in a given state. */
 export function undoDepth(state: EditorState) {
   const hist = historyKey.getState(state);
   return hist ? hist.done.eventCount : 0;
 }
 
-/// The amount of redoable events available in a given editor state.
+/** The amount of redoable events available in a given editor state. */
 export function redoDepth(state: EditorState) {
   const hist = historyKey.getState(state);
   return hist ? hist.undone.eventCount : 0;

@@ -1,7 +1,7 @@
 import { compareDeep } from './comparedeep';
 import { Fragment } from './fragment';
 import { Mark } from './mark';
-import { Slice, replace } from './replace';
+import { replace, Slice } from './replace';
 import { ResolvedPos } from './resolvedpos';
 import {
   type Attrs,
@@ -28,16 +28,15 @@ const emptyAttrs: Attrs = Object.create(null);
 export class Node {
   /// @internal
   constructor(
-    /// The type of node that this is.
+    /** The type of node that this is. */
     readonly type: NodeType,
-    /// An object mapping attribute names to values. The kind of
-    /// attributes allowed and required are
-    /// [determined](#model.NodeSpec.attrs) by the node type.
+    /** An object mapping attribute names to values.
+     * The kind of attributes allowed and required are
+     [determined](#model.NodeSpec.attrs) by the node type */
     readonly attrs: Attrs,
-    // A fragment holding the node's children.
+    /** A fragment holding the node's children. */
     content?: Fragment | null,
-    /// The marks (things like whether it is emphasized or part of a
-    /// link) applied to this node.
+    /** The marks (things like whether it is emphasized or part of a link) applied to this node. */
     readonly marks = Mark.none,
   ) {
     this.content = content || Fragment.empty;
@@ -50,10 +49,10 @@ export class Node {
   readonly text: string | undefined;
 
   /** The size of this node, as defined by the integer-based [indexing
-   * scheme](/docs/guide/#doc.indexing). For text nodes, this is the
-   * amount of characters. For other leaf nodes, it is one. For
-   * non-leaf nodes, it is the size of the content plus two (the
-   * start and end token).
+   * scheme](/docs/guide/#doc.indexing).
+   * - For text nodes, this is the amount of characters.
+   * - For other leaf nodes, it is one.
+   * - For non-leaf nodes, it is the size of the content plus two(the start and end token).
    */
   get nodeSize(): number {
     return this.isLeaf ? 1 : 2 + this.content.size;
@@ -189,9 +188,10 @@ export class Node {
 
   /** Create a new node with the same markup as this node, containing
    * the given content (or empty, if no content is given).
+   * - To update a node shallowly, you can use `copy`, which creates a similar node with new content.
    */
   copy(content: Fragment | null = null): Node {
-    if (content == this.content) return this;
+    if (content === this.content) return this;
     return new Node(this.type, this.attrs, content, this.marks);
   }
 
@@ -228,11 +228,13 @@ export class Node {
     return new Slice(content, $from.depth - depth, $to.depth - depth);
   }
 
-  /** Replace the part of the document between the given positions with
-   * the given slice. The slice must 'fit', meaning its open sides
-   * must be able to connect to the surrounding content, and its
-   * content nodes must be valid children for the node they are placed
-   * into. If any of this is violated, an error of type
+  /** Replace the part of the document between the given positions with the given slice.
+   * - To create an updated version of a whole document, you'll usually want to
+   *   use Node.replace, which replaces a given range of document with a slice of new content
+   * - The slice must 'fit', meaning its open sides must be able to connect to
+   * the surrounding content, and its content nodes must be valid children for
+   * the node they are placed into.
+   * If any of this is violated, an error of type
    * [`ReplaceError`](#model.ReplaceError) is thrown.
    */
   replace(from: number, to: number, slice: Slice) {
@@ -281,6 +283,7 @@ export class Node {
 
   /** Resolve the given position in the document, returning an
    * [object](#model.ResolvedPos) with information about its context.
+   * - get a more descriptive data structure for a position.
    * - 在state.doc级别调用resolve(pos)，可以获取全局的位置信息；
    * - 如果只是在某个子节点调用resolve(pos)，那么resolve所获得的信息就是相对这个子节点而言的。
    */
@@ -474,6 +477,7 @@ export class Node {
  *
  */
 export class TextNode extends Node {
+  // @ts-expect-error fix-types
   readonly text: string;
 
   /// @internal

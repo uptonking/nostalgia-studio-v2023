@@ -1,4 +1,5 @@
-import { type EditorView, type EditorProps } from 'prosemirror-view';
+import { type EditorProps, type EditorView } from 'prosemirror-view';
+
 import { type EditorState, type EditorStateConfig } from './state';
 import { type Transaction } from './transaction';
 
@@ -25,9 +26,18 @@ export interface PluginSpec<PluginState> {
   key?: PluginKey;
 
   /** When the plugin needs to interact with the editor view, or
-   * set something up in the DOM, use this field. The function
+   * set something up in the DOM(t means something outside the ProseMirror
+   * editor view dom. For example, a menubar), use this field. The function
    * will be called when the plugin's state is associated with an
    * editor view.
+   * - you create the element outside of the ProseMirror editor because you want
+   *   to fully control its style, where it mounts onto the page, etc. while
+   *   having it still be reactive to changes in the editor via the editorview.
+   * - In contrast, a NodeView is used to control how a specific node is rendered
+   *   but is within the editorview and semi-managed by ProseMirror. There are
+   *   a limit set of hooks like update, destroy to control the NodeView similar
+   *   to that of a PluginView (but more scoped / granular); they’re only called
+   *   when a change affects a node, not when a change affects the editor view.
    */
   view?: (view: EditorView) => PluginView;
 
@@ -85,10 +95,17 @@ function bindProps(
 }
 
 /** Plugins bundle functionality that can be added to an editor.
- * They are part of the [editor state](#state.EditorState) and
+ * - They are part of the [editor state](#state.EditorState) and
  * may influence that state and the view that contains it.
+ * - it can influence both the way transactions are applied and the way an editor based on this state behaves.
  */
 export class Plugin<PluginState = any> {
+  /** The [props](#view.EditorProps) exported by this plugin. */
+  readonly props: EditorProps<Plugin<PluginState>> = {};
+
+  /// @internal
+  key: string;
+
   constructor(
     /** The plugin's [spec object](#state.PluginSpec). */
     readonly spec: PluginSpec<PluginState>,
@@ -98,12 +115,6 @@ export class Plugin<PluginState = any> {
     }
     this.key = spec.key ? spec.key.key : createKey('plugin');
   }
-
-  /** The [props](#view.EditorProps) exported by this plugin. */
-  readonly props: EditorProps<Plugin<PluginState>> = {};
-
-  /// @internal
-  key: string;
 
   /** Extract the plugin's state field from an editor state. */
   getState(state: EditorState): PluginState | undefined {
@@ -115,7 +126,7 @@ export class Plugin<PluginState = any> {
  * [`state`](#state.PluginSpec.state) property) of this type, which
  * describes the state it wants to keep. Functions provided here are
  * always called with the plugin instance as their `this` binding.
- * - 每个插件都向总状态贡献一份⁠StateField的实例，所以主状态其实包含StateField的集合
+ * - 每个插件都向总状态贡献一份⁠StateField的实例
  */
 export interface StateField<T> {
   /** Initialize the value of the field. `config` will be the object
@@ -127,11 +138,11 @@ export interface StateField<T> {
    */
   init: (config: EditorStateConfig, instance: EditorState) => T;
 
-  /** Apply the given transaction to this state field, producing a new
-   * field value. Note that the `newState` argument is again a partially
+  /** Apply the given transaction to this state field, producing a new field value.
+   * - Note that the `newState` argument is again a partially
    * constructed state does not yet contain the state from plugins
    * coming after this one.
-   * - 表明这个插件如何影响事务过程（编辑操作是以事务的方式提交的）
+   * - 其返回值是应用完事务后插件的状态值
    */
   apply: (
     tr: Transaction,
@@ -154,6 +165,7 @@ export interface StateField<T> {
 /** 保存所有plugins的keys的映射表，自动生成的key都以$结尾 */
 const keys = Object.create(null);
 
+/** key ends with `$` */
 function createKey(name: string) {
   if (name in keys) return name + '$' + ++keys[name];
   keys[name] = 0;

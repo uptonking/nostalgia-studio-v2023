@@ -175,13 +175,12 @@ export class DOMParser {
   /// @internal
   normalizeLists: boolean;
 
-  /// Create a parser that targets the given schema, using the given
-  /// parsing rules.
+  /** Create a parser that targets the given schema, using the given parsing rules. */
   constructor(
-    /// The schema into which the parser parses.
+    /** The schema into which the parser parses. */
     readonly schema: Schema,
-    /// The set of [parse rules](#model.ParseRule) that the parser
-    /// uses, in order of precedence.
+    /** The set of [parse rules](#model.ParseRule) that the parser
+     uses, in order of precedence */
     readonly rules: readonly ParseRule[],
   ) {
     rules.forEach((rule) => {
@@ -197,7 +196,7 @@ export class DOMParser {
     });
   }
 
-  /// Parse a document from the content of a DOM node.
+  /** Parse a document from the content of a DOM node. */
   parse(dom: DOMNode, options: ParseOptions = {}): Node {
     const context = new ParseContext(this, options, false);
     context.addAll(dom, options.from, options.to);
@@ -391,17 +390,17 @@ class NodeContext {
   match: ContentMatch | null;
   content: Node[] = [];
 
-  // Marks applied to the node's children
+  /** Marks applied to the node's children */
   activeMarks: readonly Mark[] = Mark.none;
-  // Nested Marks with same type
+  /** Nested Marks with same type */
   stashMarks: Mark[] = [];
 
   constructor(
     readonly type: NodeType | null,
     readonly attrs: Attrs | null,
-    // Marks applied to this node itself
+    /** Marks applied to this node itself */
     readonly marks: readonly Mark[],
-    // Marks that can't apply here, but will be used in children if possible
+    /** Marks that can't apply here, but will be used in children if possible */
     public pendingMarks: readonly Mark[],
     readonly solid: boolean,
     match: ContentMatch | null,

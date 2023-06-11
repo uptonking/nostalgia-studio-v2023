@@ -1,8 +1,9 @@
 import { readFileSync, writeFile } from 'node:fs';
-import { Mapping, type Step } from 'prosemirror-transform';
-import { type Node } from 'prosemirror-model';
-import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+import { type Node } from 'prosemirror-model';
+import { Mapping, type Step } from 'prosemirror-transform';
 
 import { Comment, Comments } from './comments';
 import { populateDefaultInstances } from './defaultinstances';
@@ -15,9 +16,9 @@ const MAX_STEP_HISTORY = 10000;
 /** ✨ 客户端doc对应的服务端doc，本示例支持服务端多个doc
  * - 处理协作op的中心服务，决定op顺序。A collaborative editing document instance.
  * - ❓ 虽然能work，但控制台都是invalid version的异常信息
- * - ❓️ 如何在接收一个op后，拒绝另一个op
- *    - 接收一个op后，检查version变化
- * - ❓️ 服务端为什么要保存最新文档实例 this.doc?
+ * - 🤔 如何在接收一个op后，拒绝另一个op
+ *    - 接收一个op后，checkVersion会检查version有效性
+ * - 🤔 服务端为什么要保存最新文档实例 this.doc?
  *    - 用来让后连接的客户端立即获取最新文档作为初始文档
  */
 export class Instance {
@@ -96,7 +97,7 @@ export class Instance {
     if (comments) {
       for (let i = 0; i < comments.length; i++) {
         const event = comments[i];
-        if (event.type == 'delete') this.comments.deleted(event.id);
+        if (event.type === 'delete') this.comments.deleted(event.id);
         else this.comments.created(event);
       }
     }
@@ -117,8 +118,7 @@ export class Instance {
   }
 
   /** : (Number) 检查版本号必须在 `[0, this.version]` 闭区间
-   * - Check if a document version number relates to an existing
-   * document version.
+   * - Check if a document version number relates to an existing document version.
    */
   checkVersion(version: number) {
     if (version < 0 || version > this.version) {

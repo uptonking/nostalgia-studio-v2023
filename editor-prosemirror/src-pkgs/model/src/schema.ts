@@ -61,11 +61,11 @@ export class NodeType {
 
   /// @internal
   constructor(
-    /// The name the node type has in this schema.
+    /** The name the node type has in this schema. */
     readonly name: string,
-    /// A link back to the `Schema` the node type belongs to.
+    /** A link back to the `Schema` the node type belongs to. */
     readonly schema: Schema,
-    /// The spec that this type is based on
+    /** The spec that this type is based on */
     readonly spec: NodeSpec,
   ) {
     this.groups = spec.group ? spec.group.split(' ') : [];
@@ -80,40 +80,37 @@ export class NodeType {
     this.isText = name == 'text';
   }
 
-  /// True if this node type has inline content.
+  /** True if this node type has inline content. */
   inlineContent!: boolean;
-  /// True if this is a block type
+  /** True if this is a block type */
   isBlock: boolean;
-  /// True if this is the text node type.
+  /** True if this is the text node type. */
   isText: boolean;
 
-  /// True if this is an inline type.
+  /** True if this is an inline type. */
   get isInline() {
     return !this.isBlock;
   }
 
-  /// True if this is a textblock type, a block that contains inline
-  /// content.
+  /** True if this is a textblock type, a block that contains inline content. */
   get isTextblock() {
     return this.isBlock && this.inlineContent;
   }
 
-  /// True for node types that allow no content.
+  /** True for node types that allow no content. */
   get isLeaf() {
     return this.contentMatch == ContentMatch.empty;
   }
 
-  /// True when this node is an atom, i.e. when it does not have
-  /// directly editable content.
+  /** True when this node is an atom, i.e. when it does not have directly editable content. */
   get isAtom() {
     return this.isLeaf || !!this.spec.atom;
   }
 
-  /// The starting match of the node type's content expression.
+  /** The starting match of the node type's content expression. */
   contentMatch!: ContentMatch;
 
-  /// The set of marks allowed in this node. `null` means all marks
-  /// are allowed.
+  /** The set of marks allowed in this node. `null` means all marks are allowed. */
   // markSet: readonly MarkType[] | null = null;
   markSet: MarkType[] | null = null;
 
@@ -316,13 +313,13 @@ export class MarkType {
 
   /// @internal
   constructor(
-    /// The name of the mark type.
+    /** The name of the mark type. */
     readonly name: string,
     /// @internal
     readonly rank: number,
     /// The schema that this mark type instance is part of.
     readonly schema: Schema,
-    /// The spec on which the type is based.
+    /** The spec on which the type is based. */
     readonly spec: MarkSpec,
   ) {
     this.attrs = initAttrs(spec.attrs);
@@ -331,9 +328,9 @@ export class MarkType {
     this.instance = defaults ? new Mark(this, defaults) : null;
   }
 
-  /// Create a mark of this type. `attrs` may be `null` or an object
-  /// containing only some of the mark's attributes. The others, if
-  /// they have defaults, will be added.
+  /** Create a mark of this type. `attrs` may be `null` or an object
+   containing only some of the mark's attributes. The others, if
+  they have defaults, will be added. */
   create(attrs: Attrs | null = null) {
     if (!attrs && this.instance) return this.instance;
     return new Mark(this, computeAttrs(this.attrs, attrs));
@@ -763,10 +760,11 @@ function gatherMarks(schema: Schema, marks: readonly string[]) {
     if (mark) {
       found.push(mark);
     } else {
+      // eslint-disable-next-line guard-for-in
       for (const prop in schema.marks) {
         const mark = schema.marks[prop];
         if (
-          name == '_' ||
+          name === '_' ||
           (mark.spec.group && mark.spec.group.split(' ').indexOf(name) > -1)
         ) {
           found.push((ok = mark));

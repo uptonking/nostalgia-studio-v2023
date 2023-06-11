@@ -38,7 +38,7 @@ export class Authority {
       this.steps.push(step);
       this.stepClientIDs.push(clientID);
     });
-    // Signal listeners
+    // Signal listeners，useful to update view
     this.onNewSteps.forEach((f) => f());
     return this.doc;
   }

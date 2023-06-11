@@ -19,14 +19,14 @@ import {
   type Transaction,
 } from 'prosemirror-state';
 import {
-  ReplaceAroundStep,
-  type ReplaceStep,
   canJoin,
   canSplit,
   findWrapping,
   joinPoint,
   liftTarget,
+  ReplaceAroundStep,
   replaceStep,
+  type ReplaceStep,
 } from 'prosemirror-transform';
 
 /** Delete the selection, if there is one. */
@@ -117,10 +117,10 @@ function textblockAt(node: Node, side: 'start' | 'end', only = false) {
   for (
     let scan: Node | null = node;
     scan;
-    scan = side == 'start' ? scan.firstChild : scan.lastChild
+    scan = side === 'start' ? scan.firstChild : scan.lastChild
   ) {
     if (scan.isTextblock) return true;
-    if (only && scan.childCount != 1) return false;
+    if (only && scan.childCount !== 1) return false;
   }
   return false;
 }
@@ -935,6 +935,8 @@ export const macBaseKeymap: { [key: string]: Command } = {
   'Ctrl-a': selectTextblockStart,
   'Ctrl-e': selectTextblockEnd,
 };
+
+// eslint-disable-next-line guard-for-in
 for (const key in pcBaseKeymap) {
   (macBaseKeymap as any)[key] = pcBaseKeymap[key];
 }

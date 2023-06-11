@@ -24,13 +24,14 @@ export function replaceStep(
   to = from,
   slice = Slice.empty,
 ): Step | null {
-  if (from == to && !slice.size) return null;
+  if (from === to && !slice.size) return null;
 
   const $from = doc.resolve(from);
   const $to = doc.resolve(to);
   // Optimization -- avoid work if it's obvious that it's not needed.
   // 在第一层简单插入
   if (fitsTrivially($from, $to, slice)) {
+    // 创建了一个step去修改doc的内容
     return new ReplaceStep(from, to, slice);
   }
 
@@ -41,7 +42,7 @@ function fitsTrivially($from: ResolvedPos, $to: ResolvedPos, slice: Slice) {
   return (
     !slice.openStart &&
     !slice.openEnd &&
-    $from.start() == $to.start() &&
+    $from.start() === $to.start() &&
     $from.parent.canReplace($from.index(), $to.index(), slice.content)
   );
 }
@@ -504,12 +505,14 @@ export function replaceRange(
 
   const $from = tr.doc.resolve(from);
   const $to = tr.doc.resolve(to);
-  if (fitsTrivially($from, $to, slice))
+  if (fitsTrivially($from, $to, slice)) {
     return tr.step(new ReplaceStep(from, to, slice));
+  }
 
+  //
   const targetDepths = coveredDepths($from, tr.doc.resolve(to));
   // Can't replace the whole document, so remove 0 if it's present
-  if (targetDepths[targetDepths.length - 1] == 0) targetDepths.pop();
+  if (targetDepths[targetDepths.length - 1] === 0) targetDepths.pop();
   // Negative numbers represent not expansion over the whole node at
   // that depth, but replacing from $from.before(-D) to $to.pos.
   let preferredTarget = -($from.depth + 1);
@@ -518,10 +521,13 @@ export function replaceRange(
   // depths is not outside of a defining node, and adds negative
   // depths for any depth that has $from at its start and does not
   // cross a defining node.
+  // 先拿到当前的路径的深度信息，然后开始匹配适合的插入节点
   for (let d = $from.depth, pos = $from.pos - 1; d > 0; d--, pos--) {
+    // 寻找非关键节点，且深度存在，设为默认插入深度
     const spec = $from.node(d).type.spec;
     if (spec.defining || spec.definingAsContext || spec.isolating) break;
     if (targetDepths.indexOf(d) > -1) preferredTarget = d;
+    // 如果当前插入位置在节点前，则在首位插入当前深度
     else if ($from.before(d) == pos) targetDepths.splice(1, 0, -d);
   }
   // Try to fit each possible depth of the slice into each possible
@@ -530,15 +536,18 @@ export function replaceRange(
 
   const leftNodes = [];
   let preferredDepth = slice.openStart;
+  // 找到了默认的插入深度，再把当前slice的节点收集起来
   for (let content = slice.content, i = 0; ; i++) {
+    // 只收集firstChild是因为只需要关心第一个节点能不能插入，其余节点能不能插入是在node.replace中去判断的
     const node = content.firstChild!;
     leftNodes.push(node);
-    if (i == slice.openStart) break;
+    if (i === slice.openStart) break;
     content = node.content;
   }
 
   // Back up preferredDepth to cover defining textblocks directly
   // above it, possibly skipping a non-defining textblock.
+  // 这一步开始寻找适合插入深度，跳过关键节点
   for (let d = preferredDepth - 1; d >= 0; d--) {
     const type = leftNodes[d].type;
     const def = definesContent(type);
@@ -547,14 +556,14 @@ export function replaceRange(
     else if (def || !type.isTextblock) break;
   }
 
-  // 寻找适合插入的深度
+  // 跳过了关键节点，找到了默认插入深度，之后就是看看具体的节点是否能接受内容作为子节点，否则就往上寻找
   for (let j = slice.openStart; j >= 0; j--) {
     const openDepth = (j + preferredDepth + 1) % (slice.openStart + 1);
     const insert = leftNodes[openDepth];
     if (!insert) continue;
     for (let i = 0; i < targetDepths.length; i++) {
-      // Loop over possible expansion levels, starting with the
-      // preferred one
+      // Loop over possible expansion levels, starting with the preferred one
+      // 从上面找到的默认深度开始，需要适合的节点
       let targetDepth =
         targetDepths[(i + preferredTargetIndex) % targetDepths.length];
       let expand = true;
@@ -562,10 +571,12 @@ export function replaceRange(
         expand = false;
         targetDepth = -targetDepth;
       }
+      // 当前深度的上级元素
       const parent = $from.node(targetDepth - 1);
+      // 当前深度的元素在父元素中的索引，即在parent中索引
       const index = $from.index(targetDepth - 1);
 
-      // 匹配到适合插入的位置
+      // 匹配到适合插入的位置，根据schema定义判断是否可以替换到当前节点
       if (parent.canReplaceWith(index, index, insert.type, insert.marks))
         return tr.replace(
           $from.before(targetDepth),
@@ -582,6 +593,7 @@ export function replaceRange(
   // 如果未匹配到合适的插入点，直接进入replace
   const startSteps = tr.steps.length;
   for (let i = targetDepths.length - 1; i >= 0; i--) {
+    // 节点内容的替换
     tr.replace(from, to, slice);
     if (tr.steps.length > startSteps) break;
     const depth = targetDepths[i];
@@ -625,12 +637,13 @@ export function replaceRangeWith(
 ) {
   if (
     !node.isInline &&
-    from == to &&
+    from === to &&
     tr.doc.resolve(from).parent.content.size
   ) {
     const point = insertPoint(tr.doc, from, node.type);
     if (point != null) from = to = point;
   }
+  // 👇🏻
   tr.replaceRange(from, to, new Slice(Fragment.from(node), 0, 0));
 }
 
@@ -663,12 +676,14 @@ export function deleteRange(tr: Transform, from: number, to: number) {
   tr.delete(from, to);
 }
 
-// Returns an array of all depths for which $from - $to spans the
-// whole content of the nodes at that depth.
+/** Returns an array of all depths for which $from - $to spans the
+ * whole content of the nodes at that depth.
+ */
 function coveredDepths($from: ResolvedPos, $to: ResolvedPos) {
   const result = [];
   const minDepth = Math.min($from.depth, $to.depth);
   for (let d = minDepth; d >= 0; d--) {
+    // start是找到指定深度节点的内容起始的位置，end则是结束位置
     const start = $from.start(d);
     if (
       start < $from.pos - ($from.depth - d) ||

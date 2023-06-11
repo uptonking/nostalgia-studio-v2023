@@ -12,7 +12,7 @@ import {
 
 import { type Transaction } from './transaction';
 
-/** 一个空映射表 */
+/** empty Map */
 const classesById = Object.create(null);
 
 /** Superclass for editor selections. Every selection type should
@@ -43,7 +43,7 @@ export abstract class Selection {
   }
 
   /** The ranges covered by the selection.
-   * - 一个Selection对象支持多个范围
+   * - 一个Selection对象支持多个范围, see table CellSelection
    */
   ranges: readonly SelectionRange[];
 

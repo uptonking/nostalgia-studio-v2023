@@ -236,7 +236,7 @@ export function withYjs<T extends Editor>(
     }
 
     if (shouldObserveYEvent) {
-      // after updated, then change events emits to here
+      // 💡 each time ydoc change, update slate doc
       e.sharedRoot.observeDeep(handleYEvents);
     }
     const content = yTextToSlateElement(e.sharedRoot);
@@ -312,6 +312,7 @@ export function withYjs<T extends Editor>(
   // 在slateOp执行后，从本地缓存删除，将slateOp转换后apply到ytext
   e.onChange = () => {
     if (YjsEditor.connected(e)) {
+      // 💡 each time slate doc change, update ydoc
       YjsEditor.flushLocalChanges(e);
     }
     onChange();

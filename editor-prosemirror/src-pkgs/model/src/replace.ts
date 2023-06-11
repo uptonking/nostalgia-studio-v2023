@@ -6,6 +6,7 @@ import { type Schema } from './schema';
 /// Error type raised by [`Node.replace`](#model.Node.replace) when
 /// given an invalid replacement.
 export class ReplaceError extends Error {}
+
 /*
 ReplaceError = function(this: any, message: string) {
   let err = Error.call(this, message)
@@ -21,6 +22,7 @@ ReplaceError.prototype.name = "ReplaceError"
 /** A slice represents a piece cut out of a larger document. It
  * stores not only a fragment, but also the depth up to which nodes on
  * both side are ‘open’ (cut through).
+ * - slice differs from a full node or fragment in that some of the nodes at its start or end may be ‘open’.
  */
 export class Slice {
   /** Create a slice. When specifying a non-zero open depth, you must
@@ -47,7 +49,9 @@ export class Slice {
     readonly openEnd: number,
   ) {}
 
-  /** The size this slice would add when inserted into a document. */
+  /** The size this slice would add when inserted into a document.
+   * - 考虑内容到顶层节点的路径内容
+   */
   get size(): number {
     return this.content.size - this.openStart - this.openEnd;
   }
@@ -173,8 +177,9 @@ function insertInto(
 export function replace($from: ResolvedPos, $to: ResolvedPos, slice: Slice) {
   if (slice.openStart > $from.depth)
     throw new ReplaceError('Inserted content deeper than insertion position');
-  if ($from.depth - slice.openStart != $to.depth - slice.openEnd)
+  if ($from.depth - slice.openStart !== $to.depth - slice.openEnd)
     throw new ReplaceError('Inconsistent open depths');
+
   return replaceOuter($from, $to, slice, 0);
 }
 
@@ -189,7 +194,7 @@ function replaceOuter(
 ): Node {
   const index = $from.index(depth);
   const node = $from.node(depth);
-  if (index == $to.index(depth) && depth < $from.depth - slice.openStart) {
+  if (index === $to.index(depth) && depth < $from.depth - slice.openStart) {
     const inner = replaceOuter($from, $to, slice, depth + 1);
     return node.copy(node.content.replaceChild(index, inner));
   } else if (!slice.content.size) {
@@ -197,8 +202,8 @@ function replaceOuter(
   } else if (
     !slice.openStart &&
     !slice.openEnd &&
-    $from.depth == depth &&
-    $to.depth == depth
+    $from.depth === depth &&
+    $to.depth === depth
   ) {
     // Simple, flat case
     const parent = $from.parent;
@@ -261,6 +266,7 @@ function addRange(
     addNode($end.nodeBefore!, target);
 }
 
+/** return `node.copy(content)` */
 function close(node: Node, content: Fragment) {
   node.type.checkContent(content);
   return node.copy(content);

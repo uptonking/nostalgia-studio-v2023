@@ -59,13 +59,12 @@ export class Transform {
    */
   readonly docs: Node[] = [];
 
-  /** A mapping with the maps for each of the steps in this transform. 默认mapping = `new Mapping()`。 */
+  /** A mapping with the maps for each of the steps in this transform. 默认`mapping=new Mapping()` */
   readonly mapping: Mapping = new Mapping();
 
   /** Create a transform that starts with the given document. */
   constructor(
-    /** The current document (the result of applying the steps in the
-     * transform).
+    /** The current document(the result of applying the steps in the transform).
      */
     public doc: Node,
   ) {}
@@ -77,6 +76,7 @@ export class Transform {
 
   /** Apply a new step in this transform, saving the result. Throws an
    * error when the step fails.
+   * - `step.apply(this.doc)`
    */
   step(step: Step) {
     const result = this.maybeStep(step);
@@ -141,15 +141,13 @@ export class Transform {
   }
 
   /** Replace a range of the document with a given slice, using
-   * `from`, `to`, and the slice's
-   * [`openStart`](#model.Slice.openStart) property as hints, rather
-   * than fixed start and end points. This method may grow the
-   * replaced area or close open nodes in the slice in order to get a
-   * fit that is more in line with WYSIWYG expectations, by dropping
+   * `from`, `to`, and the slice's [`openStart`](#model.Slice.openStart) property
+   * as hints, rather than fixed start and end points.
+   * - This method may grow the replaced area or close open nodes in the slice in
+   * order to get a fit that is more in line with WYSIWYG expectations, by dropping
    * fully covered parent nodes of the replaced region when they are
-   * marked [non-defining as
-   * context](#model.NodeSpec.definingAsContext), or including an
-   * open parent node from the slice that _is_ marked as [defining
+   * marked [non-defining as context](#model.NodeSpec.definingAsContext), or
+   * including an open parent node from the slice that _is_ marked as [defining
    * its content](#model.NodeSpec.definingForContent).
    *
    * This is the method, for example, to handle paste. The similar

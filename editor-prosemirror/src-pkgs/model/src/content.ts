@@ -7,6 +7,7 @@ type MatchEdge = { type: NodeType; next: ContentMatch };
  * [content expression](#model.NodeSpec.content), and can be used to
  * find out whether further content matches here, and whether a given
  * position is a valid end of the node.
+ * - content expressions what sequences of child nodes are valid for this node type.
  */
 export class ContentMatch {
   /// @internal
@@ -16,7 +17,7 @@ export class ContentMatch {
 
   /// @internal
   constructor(
-    /// True when this match state represents a valid end of the node.
+    /** True when this match state represents a valid end of the node. */
     readonly validEnd: boolean,
   ) {}
 
@@ -331,7 +332,7 @@ type Edge = { term: NodeType | undefined; to: number | undefined };
 /// the entry state and the last node is the success state.
 ///
 /// Note that unlike typical NFAs, the edge ordering in this one is
-/// significant, in that it is used to contruct filler content when
+/// significant, in that it is used to construct filler content when
 /// necessary.
 function nfa(expr: Expr): Edge[][] {
   const nfa: Edge[][] = [[]];

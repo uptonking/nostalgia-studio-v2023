@@ -32,10 +32,12 @@ function collabEditor(
   const examplePlugins = exampleSetup({ schema: docSchema });
   // takes care of tracking local changes, receiving remote changes, and indicating when something has to be sent to central authority.
   const collabPlugin = collab({ version: authority.steps.length });
+
   const state = EditorState.create({
     doc: authority.doc,
     plugins: [...examplePlugins, collabPlugin],
   });
+
   const view = new EditorView(place, {
     state,
     dispatchTransaction(transaction) {
@@ -60,6 +62,7 @@ function collabEditor(
       }
     },
   });
+
   // 每次有新steps，都会tr创建更新当前editorView
   authority.onNewSteps.push(function updateEditorViewWithNewSteps() {
     const newData = authority.stepsSince(getVersion(view.state));
@@ -67,6 +70,7 @@ function collabEditor(
       receiveTransaction(view.state, newData.steps, newData.clientIDs),
     );
   });
+
   return view;
 }
 
@@ -84,6 +88,7 @@ export function PMCollabMinimalApp() {
     });
 
     let myAuthority: any;
+    // request initial doc flag
     socket.emit('hello');
 
     // 👇🏻️ 在socket连接的init事件后，才会创建EditorView

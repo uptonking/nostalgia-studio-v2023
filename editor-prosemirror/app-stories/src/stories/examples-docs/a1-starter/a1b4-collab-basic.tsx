@@ -33,6 +33,7 @@ export const ProseMirrorCollabBasic = () => {
       if (isID) {
         if (connection.current) connection.current.close();
         docNameContainer.current.textContent = decodeURIComponent(isID[1]);
+
         connection.current = new EditorConnection(
           new Reporter(),
           '/collab-backend/docs/' + isID[1],

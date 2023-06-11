@@ -4,22 +4,24 @@ import { type Mark } from './mark';
 import { type Node } from './node';
 import { type MarkType, type NodeType, type Schema } from './schema';
 
-/// A description of a DOM structure. Can be either a string, which is
-/// interpreted as a text node, a DOM node, which is interpreted as
-/// itself, a `{dom, contentDOM}` object, or an array.
-///
-/// An array describes a DOM element. The first value in the array
-/// should be a string—the name of the DOM element, optionally prefixed
-/// by a namespace URL and a space. If the second element is plain
-/// object, it is interpreted as a set of attributes for the element.
-/// Any elements after that (including the 2nd if it's not an attribute
-/// object) are interpreted as children of the DOM elements, and must
-/// either be valid `DOMOutputSpec` values, or the number zero.
-///
-/// The number zero (pronounced “hole”) is used to indicate the place
-/// where a node's child nodes should be inserted. If it occurs in an
-/// output spec, it should be the only child element in its parent
-/// node.
+/**
+ * A description of a DOM structure. Can be either a string, which is
+ interpreted as a text node, a DOM node, which is interpreted as
+ itself, a `{dom, contentDOM}` object, or an array.
+
+ *  An array describes a DOM element. The first value in the array
+ should be a string—the name of the DOM element, optionally prefixed
+ by a namespace URL and a space. If the second element is plain
+ object, it is interpreted as a set of attributes for the element.
+ Any elements after that (including the 2nd if it's not an attribute
+ object) are interpreted as children of the DOM elements, and must
+ either be valid `DOMOutputSpec` values, or the number zero.
+
+  *  The number zero (pronounced “hole”) is used to indicate the place
+  where a node's child nodes should be inserted. If it occurs in an
+ output spec, it should be the only child element in its parent
+  node.
+ */
 export type DOMOutputSpec =
   | string
   | DOMNode
@@ -30,17 +32,18 @@ export type DOMOutputSpec =
  * marks of various types to DOM nodes.
  */
 export class DOMSerializer {
-  /// Create a serializer. `nodes` should map node names to functions
-  /// that take a node and return a description of the corresponding
-  /// DOM. `marks` does the same for mark names, but also gets an
-  /// argument that tells it whether the mark's content is block or
-  /// inline content (for typical use, it'll always be inline). A mark
-  /// serializer may be `null` to indicate that marks of that type
-  /// should not be serialized.
+  /** Create a serializer. `nodes` should map node names to functions
+   * that take a node and return a description of the corresponding
+   * DOM. `marks` does the same for mark names, but also gets an
+   * argument that tells it whether the mark's content is block or
+   * inline content (for typical use, it'll always be inline). A mark
+   * serializer may be `null` to indicate that marks of that type
+   * should not be serialized.
+   */
   constructor(
-    /// The node serialization functions.
+    /** The node serialization functions. */
     readonly nodes: { [node: string]: (node: Node) => DOMOutputSpec },
-    /// The mark serialization functions.
+    /** The mark serialization functions. */
     readonly marks: {
       [mark: string]: (mark: Mark, inline: boolean) => DOMOutputSpec;
     },
@@ -132,9 +135,10 @@ export class DOMSerializer {
     return toDOM && DOMSerializer.renderSpec(doc(options), toDOM(mark, inline));
   }
 
-  /// Render an [output spec](#model.DOMOutputSpec) to a DOM node. If
-  /// the spec has a hole (zero) in it, `contentDOM` will point at the
-  /// node with the hole.
+  /** Render an [output spec](#model.DOMOutputSpec) to a DOM node. If
+   * the spec has a hole (zero) in it, `contentDOM` will point at the
+   * node with the hole.
+   */
   static renderSpec(
     doc: Document,
     structure: DOMOutputSpec,
@@ -240,6 +244,7 @@ function gatherToDOM(obj: { [node: string]: NodeType | MarkType }) {
   return result;
 }
 
+/** return `options.document || window.document` */
 function doc(options: { document?: Document }) {
   return options.document || window.document;
 }

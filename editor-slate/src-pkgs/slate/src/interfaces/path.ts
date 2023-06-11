@@ -114,7 +114,6 @@ export const Path: PathInterface = {
    * directly above or below the other. If you want exact matching, use
    * [[Path.equals]] instead.
    */
-
   compare(path: Path, another: Path): -1 | 0 | 1 {
     const min = Math.min(path.length, another.length);
 

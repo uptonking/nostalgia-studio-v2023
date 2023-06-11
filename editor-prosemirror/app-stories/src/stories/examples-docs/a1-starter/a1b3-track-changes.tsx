@@ -1,21 +1,22 @@
+import React, { useEffect, useRef, useState } from 'react';
+
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
 import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import {
+  type Command,
   EditorState,
   Plugin,
   type Transaction,
-  type Command,
 } from 'prosemirror-state';
-import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-import React, { useEffect, useRef, useState } from 'react';
 import {
   Mapping,
   type Step,
   type StepMap,
   type Transform,
 } from 'prosemirror-transform';
+import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 
 import styled from '@emotion/styled';
 
@@ -446,7 +447,7 @@ function findInBlameMap(pos: number, state: EditorState) {
  * - ❓ 自定义dispatchMy方法可视为全局修改编辑器数据的一种方式，是否有缺点
  * - 未考虑多个commit交叉重叠的复杂情况，此时revert结果可能比较意外，最好提供单独ui给用户
  */
-export const TrackChangesMinimal = () => {
+export const TrackChangesMiniApp = () => {
   const editorContainer = useRef<HTMLDivElement>();
   const initialContentContainer = useRef<HTMLDivElement>();
   // const view = useRef<EditorView>(null);

@@ -39,7 +39,7 @@ const UPDATED_SCROLL = 4;
  * marks](#state.EditorState.storedMarks).
  *
  * In addition, you can store metadata properties in a transaction, which are
- *  extra pieces of information that client code or plugins can use to describe
+ * extra pieces of information that client code or plugins can use to describe
  * what a transaction represents, so that they can update their [own
  * state](#state.StateField) accordingly.
  *
@@ -172,13 +172,14 @@ export class Transaction extends Transform {
    */
   replaceSelectionWith(node: Node, inheritMarks = true): this {
     const selection = this.selection;
-    if (inheritMarks)
+    if (inheritMarks) {
       node = node.mark(
         this.storedMarks ||
           (selection.empty
             ? selection.$from.marks()
             : selection.$from.marksAcross(selection.$to) || Mark.none),
       );
+    }
     selection.replaceWith(this, node);
     return this;
   }
@@ -207,7 +208,7 @@ export class Transaction extends Transform {
       if (!marks) {
         const $from = this.doc.resolve(from);
         marks =
-          to == from ? $from.marks() : $from.marksAcross(this.doc.resolve(to));
+          to === from ? $from.marks() : $from.marksAcross(this.doc.resolve(to));
       }
       // 👉🏻 最终会执行 tr.replaceRange()
       this.replaceRangeWith(from, to, schema.text(text, marks));
@@ -220,13 +221,15 @@ export class Transaction extends Transform {
 
   /** Store a metadata property in this transaction, keyed either by
    * name or by plugin.
+   * - It is often useful for plugins to add some extra information to a transaction.
    */
   setMeta(key: string | Plugin | PluginKey, value: any): this {
     this.meta[typeof key === 'string' ? key : key.key] = value;
     return this;
   }
 
-  /** Retrieve a metadata property for a given name or plugin. */
+  /** Retrieve a metadata property for a given name or plugin.
+   */
   getMeta(key: string | Plugin | PluginKey) {
     return this.meta[typeof key === 'string' ? key : key.key];
   }

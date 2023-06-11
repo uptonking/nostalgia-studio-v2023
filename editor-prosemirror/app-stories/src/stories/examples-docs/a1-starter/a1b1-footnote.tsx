@@ -1,21 +1,22 @@
+import React, { useEffect, useRef, useState } from 'react';
+
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
+import { history, redo, undo } from 'prosemirror-history';
+import { keymap } from 'prosemirror-keymap';
+import { MenuItem } from 'prosemirror-menu';
 import {
   DOMParser,
+  Fragment,
+  type Node,
   type NodeSpec,
   NodeType,
-  type Node,
-  Fragment,
   Schema,
 } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import { EditorState, type Transaction } from 'prosemirror-state';
-import { EditorView, type NodeView } from 'prosemirror-view';
-import React, { useEffect, useRef, useState } from 'react';
 import { insertPoint, StepMap } from 'prosemirror-transform';
-import { MenuItem } from 'prosemirror-menu';
-import { history, redo, undo } from 'prosemirror-history';
-import { keymap } from 'prosemirror-keymap';
+import { EditorView, type NodeView } from 'prosemirror-view';
 
 import styled from '@emotion/styled';
 
@@ -233,7 +234,7 @@ class FootnoteView implements NodeView {
  * - 本地示例打开子编辑器时内容默认处于选中状态，因为::selection选择器未生效，之前修改源码导致
  * - ❓ 本地示例会显示红色下划线的拼写检查，但线上示例无
  */
-export const Footnote = () => {
+export const FootnoteApp = () => {
   const editorContainer = useRef<HTMLDivElement>();
   const initialContentContainer = useRef<HTMLDivElement>();
   const view = useRef<EditorView>(null);

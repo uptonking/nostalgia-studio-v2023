@@ -61,16 +61,15 @@ export interface BaseEditor {
   children: Descendant[];
   /** contains the user's current selection, if any. Don't set it directly; use `Transforms.select` */
   selection: Selection;
-  /** contains all of the operations that have been applied since the last "change" was flushed.
-   * (Since Slate batches operations up into ticks of the event loop.) */
-  operations: Operation[];
-  /**
-   * - stores formatting to be applied when the editor inserts text. If marks is null, the formatting will be taken from the current selection.
+  /** stores formatting to be applied when the editor inserts text. If marks is null, the formatting will be taken from the current selection.
    * - Don't set it directly; use `Editor.addMark` and `Editor.removeMark`.
    * - represents text-level formatting that will be applied to the next character that is inserted.
    * - This state isn't stored in the document, and is instead stored as an extra property on the editor itself.
    */
   marks: EditorMarks | null;
+  /** contains all of the operations that have been applied since the last "change" was flushed.
+   * (Since Slate batches operations up into ticks of the event loop.) */
+  operations: Operation[];
 
   // Schema-specific node behaviors.
   /**

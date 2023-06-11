@@ -14,7 +14,7 @@ const stepsByID: {
 /** A step object represents an atomic change. It generally applies
  * only to the document it was created for, since the positions
  * stored in it will only make sense for that document.
- * - 通过Step来管理文档的改动，Step表示一个原子级的改动，既可以应用（apply）到现有文档之上，形成一个新的文档。又可以撤销（invert），把文档恢复到改动之前的状态。
+ * - 通过Step来管理文档的改动，Step表示原子级的改动，既可以apply到现有文档之上，形成一个新的文档。又可以撤销（invert），把文档恢复到改动之前的状态。
  *
  * New steps are defined by creating classes that extend `Step`,
  * overriding the `apply`, `invert`, `map`, `getMap` and `fromJSON`

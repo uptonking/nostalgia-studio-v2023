@@ -8,13 +8,14 @@ function bind<T extends Function>(f: T, self: any): T {
   return !self || !f ? f : f.bind(self);
 }
 
+/** simple fn.bind() */
 class FieldDesc<T> {
-  /** 插件初始化时候的回调函数，它接收一个config对象。
+  /** 插件初始化时候的回调函数，called in EditorState.create。
    * - 这个config对象就是从传给EditorState.create做参数的那个对象扩展出来的，出了包含最初传入EditorState.create的那些属性以外，还包括所有插件（包括内置的插件）。
    * - 也就是说所有插件看到的是一样的config，这个config对象包含了所以其他插件。
-   * - init方法是在EditorState.create的时候被调用的。
    */
   init: (config: EditorStateConfig, instance: EditorState) => T;
+
   /** 表明这个插件如何影响事务过程（编辑操作是以事务的方式提交的） */
   apply: (
     tr: Transaction,
@@ -23,12 +24,20 @@ class FieldDesc<T> {
     newState: EditorState,
   ) => T;
 
-  constructor(readonly name: string, desc: StateField<any>, self?: any) {
+  constructor(
+    /** pluginKey */
+    readonly name: string,
+    /** plugin.state */
+    desc: StateField<any>,
+    /** plugin object */
+    self?: any,
+  ) {
     this.init = bind(desc.init, self);
     this.apply = bind(desc.apply, self);
   }
 }
 
+/** 4 default state fields, doc/sel/marks/scrollToSel  */
 const baseFields = [
   new FieldDesc<Node>('doc', {
     init(config) {
@@ -67,10 +76,11 @@ const baseFields = [
   }),
 ];
 
-/** Object wrapping the part of a state object that stays the same
- * across transactions. Stored in the state's `config` property.
+/** Object wrapping the part of state object that stays the same across transactions.
+ * Stored in the state's `config` property.
  */
 class Configuration {
+  /** collections of `plugin.state.init/apply` */
   fields: FieldDesc<any>[];
   plugins: Plugin[] = [];
   pluginsByKey: { [key: string]: Plugin } = Object.create(null);
@@ -93,8 +103,7 @@ class Configuration {
   }
 }
 
-/** The type of object passed to
- * [`EditorState.create`](#state.EditorState^create).
+/** The type of object passed to [`EditorState.create`](#state.EditorState^create).
  */
 export interface EditorStateConfig {
   /** The schema to use (only relevant if no `doc` is specified). */
@@ -109,10 +118,9 @@ export interface EditorStateConfig {
   plugins?: readonly Plugin[];
 }
 
-/** The state of a ProseMirror editor is represented by an object of
- * this type. A state is a persistent data structure—it isn't
- * updated, but rather a new state value is computed from an old one
- * using the [`apply`](#state.EditorState.apply) method.
+/** The state of a ProseMirror editor is represented by an object of this type.
+ * A state is a persistent data structure—it isn't updated, but rather a new
+ * state value is computed from an old one using the [`apply`](#state.EditorState.apply) method.
  * - 编辑器状态主要包括：doc内容、selection、storedMarks、config(包括plugins/fields)
  * - pm-state状态是immutable的设计，不要用new创建，使用静态方法如create
  *
@@ -120,7 +128,7 @@ export interface EditorStateConfig {
  * [define](#state.PluginSpec.state) additional fields.
  */
 export class EditorState {
-  /** @internal pm-state状态是immutable的设计，不要用new创建，使用静态方法如create  */
+  /** @internal pm-state状态是immutable的设计，不要用new创建，使用静态方法如create */
   constructor(
     /// @internal
     readonly config: Configuration,
@@ -148,7 +156,7 @@ export class EditorState {
   }
 
   /** Start a [transaction](#state.Transaction) from this state.
-   * - 实际执行 `new Transaction(this);`，创建一个针对当前状态的事务
+   * - `new Transaction(this);`，创建一个针对当前状态的事务, every get returns a new tr
    */
   get tr(): Transaction {
     return new Transaction(this);
@@ -164,29 +172,30 @@ export class EditorState {
   /// @internal
   filterTransaction(tr: Transaction, ignore = -1) {
     for (let i = 0; i < this.config.plugins.length; i++)
-      if (i != ignore) {
+      if (i !== ignore) {
         const plugin = this.config.plugins[i];
         if (
           plugin.spec.filterTransaction &&
           !plugin.spec.filterTransaction.call(plugin, tr, this)
-        )
+        ) {
           return false;
+        }
       }
     return true;
   }
 
   /** Verbose variant of [`apply`](#state.EditorState.apply) that
    * returns the precise transactions that were applied (which might
-   * be influenced by the [transaction
-   * hooks](#state.PluginSpec.filterTransaction) of
-   * plugins) along with the new state.
+   * be influenced by the [transaction hooks](#state.PluginSpec.filterTransaction)
+   * of plugins) along with the new state.
    */
   applyTransaction(rootTr: Transaction): {
     state: EditorState;
     transactions: readonly Transaction[];
   } {
-    if (!this.filterTransaction(rootTr))
+    if (!this.filterTransaction(rootTr)) {
       return { state: this, transactions: [] };
+    }
 
     const trs = [rootTr];
     let newState = this.applyInner(rootTr);
@@ -232,16 +241,23 @@ export class EditorState {
     }
   }
 
-  /// @internal
+  /**
+   * create a new EditorState, and
+   *  @internal
+   */
   applyInner(tr: Transaction) {
-    if (!tr.before.eq(this.doc))
+    if (!tr.before.eq(this.doc)) {
       throw new RangeError('Applying a mismatched transaction');
+    }
+
     const newInstance = new EditorState(this.config);
     const fields = this.config.fields;
     for (let i = 0; i < fields.length; i++) {
       const field = fields[i];
+      // compute plugin's new state
       (newInstance as any)[field.name] = field.apply(
         tr,
+        // plugin's old state
         (this as any)[field.name],
         this,
         newInstance,
@@ -250,18 +266,17 @@ export class EditorState {
     return newInstance;
   }
 
-  /** Create a new state.
-   * - 创建editorState实例后，会把插件状态加载到editorState集合中。
-   * - 不能直接用new创建EditorState的原因是，创建state对象后要立即将plugins的状态初始化并挂载到state对象下
+  /** Create a new state. plugin.state is added to editorState instance directly
+   * - 不能直接用new EditorState()的原因是，创建state对象后要立即将plugins的状态初始化并挂载到state对象下
    */
   static create(config: EditorStateConfig) {
-    const $config = new Configuration(
+    const _config = new Configuration(
       config.doc ? config.doc.type.schema : config.schema!,
       config.plugins,
     );
-    const instance = new EditorState($config);
-    for (let i = 0; i < $config.fields.length; i++)
-      (instance as any)[$config.fields[i].name] = $config.fields[i].init(
+    const instance = new EditorState(_config);
+    for (let i = 0; i < _config.fields.length; i++)
+      (instance as any)[_config.fields[i].name] = _config.fields[i].init(
         config,
         instance,
       );

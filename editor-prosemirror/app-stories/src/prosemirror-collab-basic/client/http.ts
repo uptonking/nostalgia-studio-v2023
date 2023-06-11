@@ -21,7 +21,7 @@ export function ajax(options: AjaxOptions): Promise<unknown> {
         // / 400、500
         let text = xhr.responseText;
         if (text && /html/.test(xhr.getResponseHeader('content-type')))
-          text = makePlain(text);
+          text = makePlainDiv(text);
         const err = new Error(
           'Request failed: ' + xhr.statusText + (text ? '\n\n' + text : ''),
         );
@@ -58,7 +58,7 @@ export function ajax(options: AjaxOptions): Promise<unknown> {
   return result;
 }
 
-function makePlain(html: string) {
+function makePlainDiv(html: string) {
   const ele = document.createElement('div');
   ele.innerHTML = html;
   return ele.textContent.replace(/\n[^]*|\s+$/g, '');

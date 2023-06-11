@@ -16,7 +16,6 @@ import {
 } from 'prosemirror-state';
 
 import * as browser from './browser';
-// Exported for testing
 import { parseFromClipboard, serializeForClipboard } from './clipboard';
 import {
   Decoration,
@@ -62,7 +61,10 @@ export {
   DecorationSet,
   type DecorationSource,
 } from './decoration';
+
 export { type NodeView } from './viewdesc';
+
+// Exported for testing
 /// @internal
 export const __serializeForClipboard = serializeForClipboard;
 /// @internal
@@ -71,9 +73,9 @@ export const __parseFromClipboard = parseFromClipboard;
 export const __endComposition = endComposition;
 
 /**
- * An editor view manages the DOM structure that represents an
- * editable document. Its state and behavior are determined by its
- * [props](#view.DirectEditorProps).
+ * EditorView manages the DOM structure that represents an editable document.
+ * - EditorView displays an EditorState to the user, and allows them to perform editing actions on it.
+ * - Its state and behavior are determined by its [props](#view.DirectEditorProps).
  */
 export class EditorView {
   /**  */
@@ -250,8 +252,7 @@ export class EditorView {
     const prev = this.state;
     let redraw = false;
     let updateSel = false;
-    // When stored marks are added, stop composition, so that they can
-    // be displayed.
+    // When stored marks are added, stop composition, so that they can be displayed.
     if (state.storedMarks && this.composing) {
       clearComposition(this);
       updateSel = true;
@@ -293,7 +294,7 @@ export class EditorView {
       redraw || !this.docView.matchesNode(state.doc, outerDeco, innerDeco);
     if (updateDoc || !state.selection.eq(prev.selection)) updateSel = true;
     const oldScrollPos =
-      scroll == 'preserve' &&
+      scroll === 'preserve' &&
       updateSel &&
       this.dom.style.overflowAnchor == null &&
       storeScrollPos(this);
@@ -322,6 +323,7 @@ export class EditorView {
           : null;
         if (
           redraw ||
+          // 👇🏻 update view
           !this.docView.update(state.doc, outerDeco, innerDeco, this)
         ) {
           this.docView.updateOuterDeco([]);
@@ -358,9 +360,9 @@ export class EditorView {
 
     this.updatePluginViews(prev);
 
-    if (scroll == 'reset') {
+    if (scroll === 'reset') {
       this.dom.scrollTop = 0;
-    } else if (scroll == 'to selection') {
+    } else if (scroll === 'to selection') {
       this.scrollToSelection();
     } else if (oldScrollPos) {
       resetScrollPos(oldScrollPos);
@@ -702,7 +704,7 @@ function updateCursorWrapper(view: EditorView) {
   }
 }
 
-/** 任意一个插件都可以通过editable属性决定编辑器是否处于允许编辑状态，通过someProp遍历editable属性 */
+/** 任意一个插件都可以通过`editable`属性决定编辑器是否处于允许编辑状态，通过someProp遍历editable属性 */
 function getEditable(view: EditorView) {
   return !view.someProp('editable', (value) => value(view.state) === false);
 }
@@ -1002,6 +1004,11 @@ export interface EditorProps<P = any> {
    * node's display behavior. The third argument `getPos` is a
    * function that can be called to get the node's current position,
    * which can be useful when creating transactions to update it.
+   * - a node view is used when the node is displayed inside the editor,
+   *   but you’ll still need some way(`toDOM`) to turn the node into semantic HTML
+   *   for copy/paste and drag/drop (and possibly also export/import, if you use HTML for that) reasons.
+   * - If you define a node view, that’s what is used inside the editable DOM.
+   *   The text on the clipboard will use the `toDOM` method.
    *
    * `decorations` is an array of node or inline decorations that are
    * active around the node. They are automatically drawn in the
@@ -1047,8 +1054,8 @@ export interface EditorProps<P = any> {
    */
   clipboardTextSerializer?: (this: P, content: Slice) => string;
 
-  /** A set of [document decorations](#view.Decoration) to show in the
-   * view.
+  /** A set of [document decorations](#view.Decoration) to show in the view.
+   *
    */
   decorations?: (
     this: P,
@@ -1102,12 +1109,14 @@ export interface DirectEditorProps extends EditorProps {
   state: EditorState;
 
   /** A set of plugins to use in the view, applying their [plugin
-   * view](#state.PluginSpec.view) and
-   * [props](#state.PluginSpec.props). Passing plugins with a state
-   * component (a [state field](#state.PluginSpec.state) field or a
-   * [transaction](#state.PluginSpec.filterTransaction) filter or
+   * view](#state.PluginSpec.view) and [props](#state.PluginSpec.props).
+   * Passing plugins with a state component (a [state field](#state.PluginSpec.state)
+   * field or a [transaction](#state.PluginSpec.filterTransaction) filter or
    * appender) will result in an error, since such plugins must be
    * present in the state to work.
+   * - [Separating state and view plugins](https://discuss.prosemirror.net/t/separating-state-and-view-plugins/3970/8)
+   * - Allow plugins to be passed directly to the view, without storing them in the state.
+   * - https://github.com/ProseMirror/rfcs/pull/17
    */
   plugins?: readonly Plugin[];
 

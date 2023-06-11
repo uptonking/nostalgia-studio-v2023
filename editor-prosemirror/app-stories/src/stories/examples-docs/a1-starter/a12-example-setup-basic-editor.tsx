@@ -1,3 +1,5 @@
+import React, { useEffect, useRef, useState } from 'react';
+
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { exampleSetup } from 'prosemirror-example-setup';
 import { DOMParser, Schema } from 'prosemirror-model';
@@ -5,7 +7,6 @@ import { schema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import React, { useEffect, useRef, useState } from 'react';
 
 import { StyledContainer } from '../editor-examples.styles';
 
@@ -53,9 +54,9 @@ export const PMExampleSetupBasicEditor = () => {
         <p>This is editable text. You can focus it and start typing.</p>
         <p>
           To apply styling, you can select a piece of text and manipulate its
-          styling from the menu. The basic schema supports <em>emphasis</em>,{' '}
-          <strong>strong text</strong>,{' '}
-          <a href='http://marijnhaverbeke.nl/blog'>links</a>,{' '}
+          styling from the menu. The basic schema supports <em>emphasis</em>,
+          <strong>strong text</strong>,
+          <a href='http://marijnhaverbeke.nl/blog'>links</a>,
           <code>code font</code>, and <img src='/img/smiley.png' /> images.
         </p>
         <p>

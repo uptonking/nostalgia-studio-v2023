@@ -94,8 +94,7 @@ type CollabConfig = {
   clientID?: number | string;
 };
 
-/** Creates a plugin that enables the collaborative editing framework
- * for the editor.
+/** Creates a plugin that enables the collaborative editing framework for the editor.
  * - 文档变化时会更新 CollabState，
  */
 export function collab(config: CollabConfig = {}): Plugin {

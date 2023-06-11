@@ -1,3 +1,5 @@
+import './mark';
+
 export { Transform } from './transform';
 /// @internal
 export { TransformError } from './transform';
@@ -20,5 +22,5 @@ export {
 } from './mark_step';
 export { ReplaceStep, ReplaceAroundStep } from './replace_step';
 export { AttrStep } from './attr_step';
-import './mark';
+
 export { replaceStep } from './replace';

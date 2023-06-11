@@ -46,6 +46,10 @@ export interface NodeView {
    * will take care of rendering the node's children into it. When it
    * is not present, the node view itself is responsible for rendering
    * (or deciding not to render) its child nodes.
+   * - If the node view has a `contentDOM` property (or no `dom` property), prosemirror
+   *   will render the node's content into that, and handle content updates
+   * - If no `contentDOM`, the content becomes a black box to the editor, and how
+   *   you display it and let the user interact with it is entirely up to you.
    */
   contentDOM?: HTMLElement | null;
 
@@ -56,9 +60,9 @@ export interface NodeView {
    * them), and a [decoration source](#view.DecorationSource) that
    * represents any decorations that apply to the content of the node
    * (which again may be ignored). It should return true if it was
-   * able to update to that node, and false otherwise. If the node
-   * view has a `contentDOM` property (or no `dom` property), updating
-   * its child nodes will be handled by ProseMirror.
+   * able to update to that node, and false otherwise.
+   * - If the node view has a `contentDOM` property (or no `dom` property), prosemirror
+   *   will render the node's content into that, and handle content updates
    */
   update?: (
     node: Node,
@@ -831,7 +835,8 @@ class CompositionViewDesc extends ViewDesc {
  * a fixed nesting order, for simplicity and predictability, so in
  * some cases they will be split more often than would appear
  * necessary.
- * - Mark 在 state 中是作为 node 的一个属性，而在 ViewDesc 中，他则是作为一个高层级的节点，他可以包括其他节点（包括自己本身）,所以他在 state 和 docView 中的结构是不一致的。
+ * - Mark 在 state 中是作为 node 的一个属性，而在 ViewDesc 中，他则是作为一个高层级的节点，
+ *   他可以包括其他节点（包括自己本身）,所以他在 state 和 docView 中的结构是不一致的。
  * - 在文档模型中，Mark集合是TextNode（或者其他inline内容）的属性，不参与到树形结构的构成，
  * - 但是在ViewDesc中，由于是要和DOM树同步，所以MarkViewDesc参与树形结构的构成。
  */
@@ -1089,6 +1094,7 @@ export class NodeViewDesc extends ViewDesc {
     const localComposition =
       composition && composition.pos > -1 ? composition : null;
     const compositionInChild = composition && composition.pos < 0;
+
     // 根据 docView 创建一个 updater，主要服务于更新过程（代表当前的节点更新树，拥有子节点的子节点会创建自己的 updater）
     const updater = new ViewTreeUpdater(
       this,
@@ -1152,7 +1158,7 @@ export class NodeViewDesc extends ViewDesc {
       // May have to protect focused DOM from being changed if a composition is active
       if (localComposition)
         this.protectLocalComposition(view, localComposition);
-      // 继续处理children更新
+      // 👇🏻 继续处理children更新
       renderDescs(this.contentDOM!, this.children, view);
       if (browser.ios) iosHacks(this.dom as HTMLElement);
     }
@@ -1224,7 +1230,7 @@ export class NodeViewDesc extends ViewDesc {
 
   /** If this desc must be updated to match the given node decoration,
    * do so and return true.
-   * - 若 update 返回 false，增视为需要重建节点，否则视为成功更新。
+   * - 若 update 返回 false，则视为需要重建节点，返回 true 则证明更新成功，进行子节点的更新。
    * - 若这一步为 customNodeView，我们则可以干预这个过程
    */
   update(
@@ -1252,6 +1258,7 @@ export class NodeViewDesc extends ViewDesc {
     this.node = node;
     this.innerDeco = innerDeco;
     if (this.contentDOM) {
+      // 👇🏻
       this.updateChildren(view, this.posAtStart);
     }
     this.dirty = NOT_DIRTY;
@@ -1533,7 +1540,8 @@ class CustomNodeViewDesc extends NodeViewDesc {
  * because this should sync the subtree for a whole node at a time.
  * - ViewDesc指示DOM的更新，深度遍历从叶子节点往上遍历，完成一个层级就调用renderDescs()来更新相应的DOM。
  * - 若有需要重建的节点或者删除的节点，updater.changed 会被置为 true，进入 dom 层面的操作。
- * - 此时的操作以 update 后的 viewDescs（此时即为 docView.children）的数据为准，调整当前视图中 dom 展示的节点，不会有位置的调整，不匹配就销毁，不存在就重建
+ * - 此时的操作以 update 后的 viewDescs（此时即为 docView.children）的数据为准，调整当前
+ *   视图中 dom 展示的节点，不会有位置的调整，不匹配就销毁，不存在就重建
  */
 function renderDescs(
   parentDOM: HTMLElement,
@@ -1547,8 +1555,9 @@ function renderDescs(
     /** dom为当前视图中的dom，childDOM为desc对应的dom */
     const childDOM = desc.dom;
     if (childDOM.parentNode == parentDOM) {
-      // /ChildDOM在视图中存在
+      // /Child在视图中存在
       while (childDOM != dom) {
+        // rm()会返回nextSibling，清除不匹配的dom
         dom = rm(dom!);
         written = true;
       }
@@ -1831,11 +1840,11 @@ class ViewTreeUpdater {
   ): boolean {
     let found = -1;
     let targetDesc: ViewDesc;
-    // matchesNode()方法会比较
     if (
       index >= this.preMatch.index &&
       (targetDesc = this.preMatch.matches[index - this.preMatch.index])
         .parent == this.top &&
+      // matchesNode()方法主要就是判断是内存地址，节点属性，decorations，自元素是否是一致的。
       targetDesc.matchesNode(node, outerDeco, innerDeco)
     ) {
       found = this.top.children.indexOf(targetDesc, this.index);

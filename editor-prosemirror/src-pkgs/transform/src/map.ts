@@ -332,7 +332,12 @@ export class Mapping implements Mappable {
     return inverse;
   }
 
-  /** Map a position through this mapping. */
+  /** Map a position through this mapping.
+   * @param assoc should be -1 or 1, defaults to 1. determines with which side
+   *   the position is associated, which determines in which direction to move when
+   *   a chunk of content is inserted at the mapped position.
+   *   you can set to `-1` to keep your position in place when content is inserted on top of it.
+   */
   map(pos: number, assoc = 1) {
     if (this.mirror) {
       return this._map(pos, assoc, true) as number;

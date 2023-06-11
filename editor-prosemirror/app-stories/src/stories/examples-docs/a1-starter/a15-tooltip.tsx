@@ -1,10 +1,11 @@
+import React, { useEffect, useRef, useState } from 'react';
+
 import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
 import { DOMParser, NodeSpec, NodeType, Schema } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import { EditorState, Plugin, type PluginView } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import React, { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -84,7 +85,7 @@ const selectionSizePlugin = new Plugin({
  * - 弹出层会显示当前选中的包含空白的字符数量，并且鼠标拖选移动时数量会实时更新
  * - 要求editor最外层容器为`position: relative`，弹层会相对于它定位
  */
-export const EditorTooltipPopover = () => {
+export const TooltipPopoverApp = () => {
   const editorContainer = useRef<HTMLDivElement>();
   const initialContentContainer = useRef<HTMLDivElement>();
   const view = useRef<EditorView>(null);

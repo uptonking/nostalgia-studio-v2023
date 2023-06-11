@@ -11,7 +11,7 @@ import { type Schema } from './schema';
 export class Fragment {
   /** The size of the fragment, which is the total of the size of
    * its content nodes.
-   * - 通过 content[i].nodeSize 求和
+   * - sum of `content[i].nodeSize`
    */
   readonly size: number;
 

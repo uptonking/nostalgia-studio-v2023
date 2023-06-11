@@ -2,18 +2,18 @@ import { compareDeep } from './comparedeep';
 import { type Attrs, type MarkType, type Schema } from './schema';
 
 /** A mark is a piece of information that can be attached to a node,
- * such as it being emphasized, in code font, or a link. It has a
- * type and optionally a set of attributes that provide further
- * information (such as the target of the link). Marks are created
- * through a `Schema`, which controls which types exist and which
+ * such as it being emphasized, in code font, or a link.
+ * - It has a type and optionally a set of attributes that provide further
+ * information (such as the target of the link).
+ * - Marks are created through a `Schema`, which controls which types exist and which
  * attributes they have.
  */
 export class Mark {
   /// @internal
   constructor(
-    /// The type of this mark.
+    /** The type of this mark. */
     readonly type: MarkType,
-    /// The attributes associated with this mark.
+    /** The attributes associated with this mark. */
     readonly attrs: Attrs,
   ) {}
 

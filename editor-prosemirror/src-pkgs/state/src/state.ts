@@ -223,6 +223,7 @@ export class EditorState {
             tr.setMeta('appendedTransaction', rootTr);
             if (!seen) {
               seen = [];
+              // eslint-disable-next-line max-depth
               for (let j = 0; j < this.config.plugins.length; j++)
                 seen.push(
                   j < i
@@ -291,7 +292,7 @@ export class EditorState {
    * configuration object.
    */
   reconfigure(config: {
-    /// New set of active plugins.
+    /** New set of active plugins. */
     plugins?: readonly Plugin[];
   }) {
     const $config = new Configuration(this.schema, config.plugins);
@@ -320,6 +321,7 @@ export class EditorState {
     if (this.storedMarks)
       result.storedMarks = this.storedMarks.map((m) => m.toJSON());
     if (pluginFields && typeof pluginFields === 'object')
+      // eslint-disable-next-line guard-for-in
       for (const prop in pluginFields) {
         if (prop == 'doc' || prop == 'selection')
           throw new RangeError(
@@ -341,9 +343,9 @@ export class EditorState {
    */
   static fromJSON(
     config: {
-      /// The schema to use.
+      /** The schema to use. */
       schema: Schema;
-      /// The set of active plugins.
+      /** The set of active plugins. */
       plugins?: readonly Plugin[];
     },
     json: any,
@@ -355,22 +357,23 @@ export class EditorState {
     const $config = new Configuration(config.schema, config.plugins);
     const instance = new EditorState($config);
     $config.fields.forEach((field) => {
-      if (field.name == 'doc') {
+      if (field.name === 'doc') {
         instance.doc = Node.fromJSON(config.schema, json.doc);
-      } else if (field.name == 'selection') {
+      } else if (field.name === 'selection') {
         instance.selection = Selection.fromJSON(instance.doc, json.selection);
-      } else if (field.name == 'storedMarks') {
+      } else if (field.name === 'storedMarks') {
         if (json.storedMarks)
           instance.storedMarks = json.storedMarks.map(
             config.schema.markFromJSON,
           );
       } else {
         if (pluginFields)
+          // eslint-disable-next-line guard-for-in
           for (const prop in pluginFields) {
             const plugin = pluginFields[prop];
             const state = plugin.spec.state;
             if (
-              plugin.key == field.name &&
+              plugin.key === field.name &&
               state &&
               state.fromJSON &&
               Object.hasOwn(json, prop)

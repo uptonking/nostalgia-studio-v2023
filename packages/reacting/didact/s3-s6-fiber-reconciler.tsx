@@ -4,7 +4,7 @@ import * as React from 'react';
 
 /** one fiber for each react element and each fiber will be a unit of work */
 let nextUnitOfWork = null;
-/**  save a reference to that “last fiber tree we committed to the DOM”. */
+/** save a reference to that “last fiber tree we committed to the DOM”. */
 let currentRoot = null;
 /** keep track of the root of the fiber tree;
  * 能够获取正在构建的vdom信息，当浏览器打断时可以移除未完成构建的vdom，以免显示出不完整的ui。
@@ -33,7 +33,7 @@ function createElement(type, props = null, ...children) {
 /**
  * for children item, wrap everything that isn’t an object inside its own element
  * and create a special type for them。
- * 纯文本节点不需要额外的html标签，type仅作为标且不会生成到dom，没有children。
+ * 纯文本节点不需要额外的html标签，type仅作为标识且不会生成到dom，没有children。
  * React doesn’t wrap primitive values or create empty arrays when there aren’t children,
  * but we do it because it will simplify our code, and for our library we prefer simple code than performant code.
  */
@@ -56,7 +56,7 @@ const isGone = (prev, next) => (key) => !(key in next);
 
 /** 创建fiber节点对应的dom对象 */
 function createDom(fiber) {
-  const dom =
+  const dom: Text | HTMLElement =
     fiber.type === 'TEXT_ELEMENT'
       ? document.createTextNode('')
       : document.createElement(fiber.type);
@@ -135,11 +135,13 @@ function commitWork(fiber) {
 
 /**
  * 递归地依次创建每个vdom对应的dom，然后添加到容器parentDom。
- * 将根据vdom创建dom的循环计算过程拆分成可暂停分优先级的小任务。
- * 重构后render不再直接触发创建dom，这里只是提供配置信息。
- * 具体的创建dom由 requestIdleCallback 触发执行 workLoop
+ * - 把根据vdom创建dom的循环计算过程拆分成可暂停分优先级的小任务。
+ * - 重构后render不再直接触发创建dom，这里只是提供配置信息。
+ * - 具体的创建dom由 requestIdleCallback 触发执行 workLoop
  * we are going to break the work into small units, and after we finish each unit
  * we’ll let the browser interrupt the rendering if there’s anything else that needs to be done.
+ * @param element vdom
+ * @param container browser dom to render vdom to
  */
 function render(element, container: HTMLElement) {
   /** 构建dom树的起点 */
@@ -166,7 +168,7 @@ function workLoop(deadline) {
   // 构建dom的任务是否该让路
   let shouldYield = false;
 
-  // 任务存在且不需要让路时
+  // 👇🏻 在循环中构建
   while (nextUnitOfWork && !shouldYield) {
     // 执行构建真实dom
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
@@ -182,7 +184,10 @@ function workLoop(deadline) {
     commitRoot();
   }
 
-  // ? 为什么递归执行
+  // [Using requestIdleCallback - Chrome Developers](https://developer.chrome.com/blog/using-requestidlecallback/#faq)
+  // What happens if I set a new idle callback inside of another? The new idle callback
+  // will be scheduled to run as soon as possible, starting from the next frame (rather than the current one).
+  // 对于内层嵌套，浏览器会放在下一祯执行
   requestIdleCallback(workLoop);
 }
 
@@ -193,19 +198,19 @@ requestIdleCallback(workLoop);
 /**
  * * 只是render phase，会更新vdom，更新后的dom对象已创建但未挂载。
  * 本方法会被workLoop递归执行。
- * not only performs the current unit of work, but also returns the next unit of work.
- * To organize the units of work we’ll need a data structure: a fiber tree.
- * We’ll have one fiber for each element and each fiber will be a unit of work.
- * we will do three things for each fiber:
+ * - not only performs the current unit of work, but also returns the next unit of work.
+ * - To organize the units of work we’ll need a data structure: a fiber tree.
+ * - We’ll have one fiber for each element and each fiber will be a unit of work.
+ * - we will do three things for each fiber:
  * 1. add the element to the DOM
  * 2. create the fibers for the element’s children
  * 3. select the next unit of work
- * One of the goals of this data structure is to make it easy to find the next unit of work.
- * That’s why each fiber has a link to its first child, its next sibling and its parent.
+ * - One of the goals of this data structure is to make it easy to find the next unit of work.
+ * - That’s why each fiber has a link to its first child, its next sibling and its parent.
  */
 function performUnitOfWork(fiber): any {
   if (!fiber.dom) {
-    // 只创建dom对象，并未添加到容器dom
+    // 只创建dom对象，并未挂载到容器dom
     fiber.dom = createDom(fiber);
   }
 
@@ -235,7 +240,7 @@ function performUnitOfWork(fiber): any {
 
 /**
  * * 计算wipFiber节点的children中的要更新的vdom，将children标记为child和sibling。
- * The element is the thing we want to render to the DOM and the oldFiber is what we rendered the last time.
+ * - The element is the thing we want to render to the DOM and the oldFiber is what we rendered the last time.
  * todo Here React also uses `key`, that makes a better reconciliation.
  */
 function reconcileChildren(wipFiber, elements) {

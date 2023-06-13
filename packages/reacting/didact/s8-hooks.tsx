@@ -177,6 +177,9 @@ function workLoop(deadline) {
   // 构建vdom的任务是否该让路
   let shouldYield = false;
 
+  // 🚨 实测浏览器会无限执行此workLoop方法，因为递归，所以
+  console.log(';; in-workLoop ', shouldYield, nextUnitOfWork, wipRoot);
+
   while (nextUnitOfWork && !shouldYield) {
     // 执行完一个任务就返回下一个任务
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
@@ -194,7 +197,14 @@ function workLoop(deadline) {
   // 允许浏览器打断任务的执行，将vdom构建任务入队
   // 会在main event loop空闲时执行，一般是低优先级的任务
   // ! safari不支持此方法
+  // [Using requestIdleCallback - Chrome Developers](https://developer.chrome.com/blog/using-requestidlecallback/#faq)
+  // What happens if I set a new idle callback inside of another? The new idle callback
+  // will be scheduled to run as soon as possible, starting from the next frame (rather than the current one).
+  // 对于内层嵌套，浏览器会放在下一祯执行
   requestIdleCallback(workLoop);
+
+  // [How to stop recursive loop with `requestAnimationFrame` - Stack Overflow](https://stackoverflow.com/questions/63964705/how-to-stop-recursive-loop-with-requestanimationframe)
+  // 注意对于嵌套的requestIdleCallback(fn)这里fn并不是递归，而是基于event-loop的队列，而不入队而停止
 }
 
 requestIdleCallback(workLoop);
@@ -245,6 +255,7 @@ function updateFunctionComponent(fiber) {
   // add a hooks array to the fiber to support calling useState several times in the same component.
   wipFiber.hooks = [];
 
+  // 💡 这里会执行hook-useState，获取到最新的state
   const children = [fiber.type(fiber.props)];
 
   reconcileChildren(fiber, children);
@@ -339,21 +350,23 @@ function useState(initialState) {
 
   const actions = oldHook ? oldHook.queue : [];
 
-  // 同步执行状态更新
+  // 在updateFunctionComponent中执行useState从而执行状态更新
   actions.forEach((action) => {
     hook.state = action(hook.state);
   });
 
-  /** 只是注册更新事件，由浏览器决定空闲时的执行时间 */
+  /** 👇🏻 只是注册更新事件，由浏览器决定空闲时的执行时间
+   */
   const setState = (action) => {
     hook.queue.push(action);
 
-    // wipRoot会作为nextUnitOfWork开始执行
+    // 👇🏻 每次setState会触发从根节点全量渲染
     wipRoot = {
       dom: currentRoot.dom,
       props: currentRoot.props,
       alternate: currentRoot,
     };
+    // wipRoot会作为nextUnitOfWork开始执行
     nextUnitOfWork = wipRoot;
     deletions = [];
   };

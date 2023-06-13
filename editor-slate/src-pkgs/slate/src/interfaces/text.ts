@@ -27,6 +27,9 @@ export interface TextInterface {
   isTextList: (value: any) => value is Text[];
   isTextProps: (props: any) => props is Partial<Text>;
   matches: (text: Text, props: Partial<Text>) => boolean;
+  /**
+   * Get the leaves for a text node given decorations.
+   */
   decorations: (node: Text, decorations: Range[]) => Text[];
 }
 
@@ -103,7 +106,6 @@ export const Text: TextInterface = {
   /**
    * Get the leaves for a text node given decorations.
    */
-
   decorations(node: Text, decorations: Range[]): Text[] {
     let leaves: Text[] = [{ ...node }];
 

@@ -462,7 +462,8 @@ const IS_EDITOR_CACHE = new WeakMap<object, boolean>();
 /**
  * - All of the behaviors, content and state of a Slate editor is rolled up into a single, top-level `Editor` object.
  * - Decorations are different from Marks in that they are not stored on editor state.
- * - Commands are the high-level actions that represent a specific intent of the user. They are represented as helper functions on the `Editor` interface
+ * - Commands are the high-level actions that represent a specific intent of the user.
+ *   - They are represented as helper functions on the `Editor` interface
  *   - The concept of commands is loosely based on the DOM's built-in execCommand
  *   - Slate takes care of converting each command into a set of low-level "operations" that are applied to produce a new value
  */

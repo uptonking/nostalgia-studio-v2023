@@ -10,7 +10,7 @@ function createElement(type, props = null, ...children) {
     type,
     props: {
       ...props,
-      children: children.map((child) =>
+      children: children?.map((child) =>
         // 若child为react element vdom，则不变；若为文本，则生成文本节点vdom
         typeof child === 'object' ? child : createTextElement(child),
       ),

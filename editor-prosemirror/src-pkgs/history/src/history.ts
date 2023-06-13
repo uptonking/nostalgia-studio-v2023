@@ -351,10 +351,10 @@ function applyTransaction(
 
   const appended = tr.getMeta('appendedTransaction');
 
-  if (tr.steps.length == 0) {
+  if (tr.steps.length === 0) {
     return history;
   } else if (appended && appended.getMeta(historyKey)) {
-    if (appended.getMeta(historyKey).redo)
+    if (appended.getMeta(historyKey).redo) {
       return new HistoryState(
         history.done.addTransform(
           tr,
@@ -366,7 +366,7 @@ function applyTransaction(
         rangesFor(tr.mapping.maps[tr.steps.length - 1]),
         history.prevTime,
       );
-    else
+    } else {
       return new HistoryState(
         history.done,
         history.undone.addTransform(
@@ -378,13 +378,14 @@ function applyTransaction(
         null,
         history.prevTime,
       );
+    }
   } else if (
     tr.getMeta('addToHistory') !== false &&
     !(appended && appended.getMeta('addToHistory') === false)
   ) {
     // Group transforms that occur in quick succession into one event.
     const newGroup =
-      history.prevTime == 0 ||
+      history.prevTime === 0 ||
       (!appended &&
         (history.prevTime < (tr.time || 0) - options.newGroupDelay ||
           !isAdjacentTo(tr, history.prevRanges!)));

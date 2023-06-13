@@ -60,6 +60,7 @@ export function initHistory(initOptions: Partial<Options> = {}) {
     let lastRecorded = 0;
     let lastAction = '';
     let ignoreChange = false;
+    /** `{ undo: [], redo: [] }` */
     let stack = undoStack();
     const options: Options = { maxStack: 500, delay: 0, ...initOptions };
 
@@ -106,6 +107,10 @@ export function initHistory(initOptions: Partial<Options> = {}) {
       if (typeof entry[source] === 'function') {
         entry[source]();
       } else {
+        // if (source === 'undo') {
+        //   console.log(';; undo ', entry[source])
+        // // 内容是delta operations
+        // }
         editor.update(entry[source], Source.history);
       }
       ignoreChange = false;

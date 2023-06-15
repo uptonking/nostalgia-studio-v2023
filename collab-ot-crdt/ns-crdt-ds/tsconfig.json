@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base",
+  "compilerOptions": {
+    "outDir": "dist",
+    "alwaysStrict": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "module": "esnext"
+  },
+  "include": ["./src/"]
+}

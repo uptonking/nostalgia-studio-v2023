@@ -51,11 +51,10 @@ export function view(MyComponent) {
   };
 }
 
-
-const state = createStore({ text: "Hello World!" });
+const state = createStore({ text: 'Hello World!' });
 
 class Hello extends React.Component {
   render() {
-    return React.createElement('div', {}, state.text)
+    return React.createElement('div', {}, state.text);
   }
 }

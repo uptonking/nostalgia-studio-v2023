@@ -3,7 +3,8 @@
  * @author wangfupeng
  */
 
-import { type Range, type NodeEntry, type Node } from 'slate';
+import { type Node, type NodeEntry, type Range } from 'slate';
+
 import { type IDomEditor } from '../editor/interface';
 import { type IMenuGroup } from '../menus/interface';
 
@@ -33,6 +34,7 @@ export interface IEditorConfig {
   customAlert: (info: string, type: AlertType) => void;
 
   onCreated?: (editor: IDomEditor) => void;
+  /** 编辑器内容、选区变化时的回调函数。 */
   onChange?: (editor: IDomEditor) => void;
   onDestroyed?: (editor: IDomEditor) => void;
 

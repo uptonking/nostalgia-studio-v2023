@@ -33,7 +33,7 @@ export const B1b1WangEditSimple = () => {
   // 及时销毁 editor ，重要！
   useEffect(() => {
     return () => {
-      if (editor == null) return;
+      if (!editor) return;
       editor.destroy();
       setEditor(null);
     };

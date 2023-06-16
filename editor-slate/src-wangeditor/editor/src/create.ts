@@ -46,7 +46,7 @@ export function createEditor(
     mode = 'default',
   } = option;
 
-  let globalConfig =
+  const globalConfig =
     mode === 'simple' ? Boot.simpleEditorConfig : Boot.editorConfig;
 
   // 单独处理 hoverbarKeys
@@ -79,7 +79,7 @@ export function createToolbar(option: ICreateToolbarOption): Toolbar {
     throw new Error(`Cannot find 'selector' when create toolbar`);
   }
 
-  let globalConfig =
+  const globalConfig =
     mode === 'simple' ? Boot.simpleToolbarConfig : Boot.toolbarConfig;
   // console.log(';; toolb ', mode, globalConfig);
 

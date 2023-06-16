@@ -198,8 +198,8 @@ export const Filters: TableFeature = {
         const value = table
           .getCoreRowModel()
           .flatRows[0]?._getAllCellsByColumnId()
+          // eslint-disable-next-line no-unexpected-multiline
           [
-            // eslint-disable-next-line no-unexpected-multiline
             column.id
           ]?.getValue();
 

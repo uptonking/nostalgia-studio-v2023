@@ -36,11 +36,16 @@ export class RichTextSeq {
   private maxOp = 0;
 
   /** main data for document
-   * - map operationId to operation-value */
+   * - map operationId to operation-value
+   *
+   * todo
+   * - optimize storing each character as a separate object
+   * - optimize storing all of the operations forever
+   */
   private objects: Record<ObjectId, JsonComposite> &
     Record<typeof ROOT, Record<string, Json>> = {
-      [ROOT]: {},
-    };
+    [ROOT]: {},
+  };
 
   /** Map objectID to CRDT metadata for each object field. */
   private metadata: Record<ObjectId, Metadata> = {
@@ -115,9 +120,9 @@ export class RichTextSeq {
             inputOp.index === 0
               ? HEAD
               : getListElementId(meta, inputOp.index - 1, {
-                // ? why after tombstone
-                lookAfterTombstones: true,
-              });
+                  // ? why after tombstone
+                  lookAfterTombstones: true,
+                });
 
           for (const value of inputOp.values) {
             const { opId: result, patches } = this.makeNewOp(changeTr, {
@@ -235,6 +240,11 @@ export class RichTextSeq {
 
   /**
    * Updates the document state with one of the operations from a change.
+   * - computing a new doc state would need to iterate through the whole document
+   *   on every keystroke, which can become slow
+   * - The key idea is to augment the process of applying an operation: in addition
+   *   to updating the internal op-sets, we also produce patches that describe the
+   *   effects of that operation on the visible formatted document.
    */
   private applyOp = (op: Operation): Patch[] => {
     const metadata = this.metadata[op.obj];

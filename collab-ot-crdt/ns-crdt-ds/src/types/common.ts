@@ -151,8 +151,10 @@ type PartialPatch =
   | Omit<RemoveMarkOperationInput, 'endIndex'>;
 
 /** A patch represents a change to make to a JSON document.
- *  These are a way for Micromerge to notify a listener of incremental changes
- *  to update a document.
+ * - patches are only used to propagate updates from the CRDT to the editing UI
+ * - These are a way for Micromerge to notify a listener of incremental changes
+ *   to update a document.
+ * - Note that patches use indexes, whereas operations use opIds to identify positions in the text
  */
 export type Patch =
   | MakeListOperationInput
@@ -233,7 +235,7 @@ export interface MakeListOperationInput {
   /** Path to an object in which to insert a new field. */
   path: OperationPath;
   /** Key at which to create the array field.
-        Key should not exist at the given path. */
+   * Key should not exist at the given path. */
   key: string;
 }
 
@@ -277,13 +279,19 @@ export type InputOperation =
 export interface BaseOperation {
   /** ID of the object at the given path. */
   obj: ObjectId;
-  /** ID of the operation. In a different namespace than changes. */
+  /** ID of the operation. In a different namespace than changes.
+   * - opId has a Lamport timestamp as counter, in the form of `counter@nodeId`
+   */
   opId: OperationId;
 }
 
 export interface InsertOperation extends BaseOperation {
   action: 'set';
-  /** the ID of the reference element; we want to insert after this element */
+  /** the ID of the reference element; we want to insert after this element
+   * - To determine the position where a character is inserted, we always reference
+   *   the ID of the existing character after which we want to insert, because
+   *   these IDs remain stable over time.
+   */
   elemId: ElemId;
   /** Individual item to insert. */
   value: Json;
@@ -295,7 +303,9 @@ export interface InsertOperation extends BaseOperation {
 
 export interface DeleteOperation extends BaseOperation {
   action: 'del';
-  /** Element ID at which to delete item. */
+  /** Element ID at which to delete item.
+   * - it is not actually deleted from the document entirely, just a tombstone
+   */
   elemId: ElemId;
   /** To allow type refinements. */
   key?: undefined;

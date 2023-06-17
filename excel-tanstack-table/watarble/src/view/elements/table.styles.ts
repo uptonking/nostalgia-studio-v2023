@@ -40,3 +40,8 @@ export const tableBaseCss = css`
     }
   }
 `;
+
+export const sortedHeaderCss = css`
+  cursor: pointer;
+  user-select: none;
+`;

@@ -57,7 +57,7 @@ const features = [
 
 //
 
-export interface CoreTableState {}
+export interface CoreTableState { }
 
 export interface CoreOptions<TData extends RowData> {
   /** data for the table to display. This array should match the type you provided to `table.setRowType<...>`
@@ -131,14 +131,16 @@ export interface CoreInstance<TData extends RowData> {
    * - This property is generally used internally or by adapters.
    */
   options: RequiredKeys<TableOptionsResolved<TData>, 'state'>;
-  /** generally used by adapters to update the table options.
-   * - This function is generally used by adapters to update the table options. It can be used to update the table options directly, but it is generally not recommended to bypass your adapters strategy for updating table options.
+  /** This function is generally used by adapters to update the table options.
+   * - It can be used to update the table options directly, but it is generally
+   *   not recommended to bypass your adapters strategy for updating table options.
    */
   setOptions: (newOptions: Updater<TableOptionsResolved<TData>>) => void;
   /** get the table's current state.  */
   getState: () => TableState;
   /** update the table state.
-   * - It's recommended you pass an updater function in the form of `(prevState) => newState` to update the state, but a direct object can also be passed.
+   * - It's recommended you pass an updater function in the form of `(prevState) => newState`
+   *   to update the state, but a direct object can also be passed.
    * - If `options.onStateChange` is provided, it will be triggered by this function with the new state.
    */
   setState: (updater: Updater<TableState>) => void;
@@ -167,8 +169,8 @@ export interface CoreInstance<TData extends RowData> {
 
 /**
  * createTable workflow
- * - compute table options，合并features options
- * - compute table initialState，合并features initialState
+ * - compute table options，merge features options
+ * - compute table initialState，merge features initialState
  * - add core props and methods to table instance
  * - 逐个执行插件的createTable方法，将table实例作为参数传入来增强
  */

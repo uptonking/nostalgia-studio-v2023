@@ -64,11 +64,11 @@ export function useReactTable<TData extends RowData>(
   // Compose in the generic options to the user options
   const resolvedOptions: TableOptionsResolved<TData> = {
     state: {}, // Dummy state
-    onStateChange: () => {}, // noop
+    onStateChange: () => { }, // noop
     renderFallbackValue: null,
     ...options,
   };
-  console.log(';; tb-resolvedOptions ', resolvedOptions);
+  // console.log(';; tb-resolvedOptions ', resolvedOptions);
 
   // 👇🏻 Create a stable table instance and store it in state
   const [tableRef] = React.useState(() => ({
@@ -87,8 +87,7 @@ export function useReactTable<TData extends RowData>(
       ...state,
       ...options.state,
     },
-    // Similarly, we'll maintain both our internal state and any user-provided
-    // state.
+    // Similarly, we'll maintain both internal state and any user-provided state
     onStateChange: (updater) => {
       setState(updater);
       options.onStateChange?.(updater);

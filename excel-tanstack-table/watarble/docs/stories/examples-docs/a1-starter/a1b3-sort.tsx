@@ -4,6 +4,8 @@ import {
   type ColumnDef,
   createColumnHelper,
   getCoreRowModel,
+  getSortedRowModel,
+  type SortingState,
 } from '@tanstack/react-table';
 
 import { Watarble } from '../../../../src';
@@ -103,10 +105,11 @@ window['col'] = columns;
 /**
  * ✨ 最小react-table示例，仅展示
  */
-export const A1b1MinimalTbl = () => {
+export const A1b3Sort = () => {
   const containerRef = useRef(null);
 
   const [data] = React.useState(() => [...defaultData]);
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -116,17 +119,23 @@ export const A1b1MinimalTbl = () => {
         // @ts-expect-error fix-types
         columns: columns,
         getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        state: {
+          sorting,
+        },
+        onSortingChange: setSorting,
         debugTable: true,
       });
-      window['wt'] = watarble;
+      window['wtbl'] = watarble;
+      console.log(';; init-wtbl ', watarble?.id);
     }
-  }, [data]);
+  }, [data, sorting]);
 
   console.log(';; rows-h ', columns);
 
   return (
     <div>
-      <h2> watarble Minimal table 202306</h2>
+      <h2> sort column</h2>
       <div ref={containerRef} className={tableBaseCss} />
     </div>
   );

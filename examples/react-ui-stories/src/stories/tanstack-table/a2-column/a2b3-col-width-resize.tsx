@@ -123,9 +123,10 @@ export function A2b3ColWithResize() {
     debugHeaders: true,
     debugColumns: true,
   });
+  window['tbl'] = table;
 
   // console.log(';; render ', table.getCenterTotalSize())
-  console.log(';; tb-init ', table.initialState, table.getState(), table);
+  // console.log(';; tb-init ', table.initialState, table.getState(), table);
 
   return (
     <div className={tableBaseCss}>

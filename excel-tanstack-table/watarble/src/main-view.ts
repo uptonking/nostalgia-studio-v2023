@@ -13,7 +13,7 @@ export class MainView {
     const container = this.watarble.config.renderer.container;
     if (!this.innerRoot) {
       this.innerRoot = document.createElement('div');
-      this.innerRoot.id = 'wtb_' + this.watarble.id;
+      this.innerRoot.id = 'WTBL_' + this.watarble.id;
       container.appendChild(this.innerRoot);
     }
 

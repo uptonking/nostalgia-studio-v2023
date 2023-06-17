@@ -14,7 +14,7 @@ export class State<TData extends RowData = Array<object>> {
     const { id, environment, renderer, ...options_ } = options;
     const resolvedOptions: TableOptionsResolved<TData> = {
       state: {}, // Dummy state
-      onStateChange: options.onStateChange || (() => {}), // noop
+      onStateChange: options.onStateChange || (() => { console.log(';; stateChg ') }), // noop
       renderFallbackValue: null,
       ...options_,
     };
@@ -30,13 +30,13 @@ export class State<TData extends RowData = Array<object>> {
           ...options_.state,
         },
         // onStateChange: (updater) => {
-        //   setState(updater);
+        //   // setState(updater);
         //   options.onStateChange?.(updater);
         // },
       };
     });
 
-    window['tb'] = this.table;
+    window['tbl'] = this.table;
     // console.log(
     //   ';; tb-init ',
     //   // this.table.initialState,

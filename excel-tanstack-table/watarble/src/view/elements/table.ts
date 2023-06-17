@@ -2,7 +2,12 @@ import { h, type VNode } from 'snabbdom';
 
 import { modelNodeToVnode } from '../render-element';
 import { customRender } from '../utils';
-import { tableBaseCss } from './table.styles';
+import { sortedHeaderCss, tableBaseCss } from './table.styles';
+
+const SORT_DIRECTION_ICONS = {
+  asc: ' 🔼',
+  desc: ' 🔽',
+} as const;
 
 export const tableConfig = {
   type: 'table',
@@ -61,9 +66,38 @@ export const tableConfig = {
                     },
                     header.isPlaceholder
                       ? []
-                      : customRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
+                      : h(
+                          'div',
+                          {
+                            class: {
+                              [sortedHeaderCss]: header.column.getCanSort(),
+                            },
+                            on: {
+                              click: (e) => {
+                                console.log(
+                                  ';; beforeSort-curr-next ',
+                                  header.column.id,
+                                  header.column.getIsSorted(),
+                                  header.column.getNextSortingOrder(),
+                                );
+                                header.column.getToggleSortingHandler()(e);
+                                console.log(
+                                  ';; afterSort--curr-next ',
+                                  header.column.id,
+                                  header.column.getIsSorted(),
+                                  header.column.getNextSortingOrder(),
+                                );
+                              },
+                            },
+                          },
+                          [
+                            customRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            ),
+                            SORT_DIRECTION_ICONS[header.column.getIsSorted()] ??
+                              '',
+                          ],
                         ),
                   );
                 }),

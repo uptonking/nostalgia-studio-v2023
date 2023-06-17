@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-// import * as stories from './stories/tanstack-table';
-import * as stories from './stories/autocomplete';
-
+import * as stories from './stories/tanstack-table';
+// import * as stories from './stories/autocomplete';
 // import * as stories from './stories/tanstack-virtual';
 // import * as stories from './stories/dnd-kit';
 // import * as stories from './stories/react-window';

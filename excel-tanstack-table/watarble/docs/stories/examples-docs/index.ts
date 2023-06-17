@@ -1,4 +1,6 @@
-// export { A1b1MinimalAppTb } from './a1-starter/a1b2-minimal-react';
+export { A1b1MinimalTbl } from './a1-starter/a1b1-minimal-table';
+export { A1b2UpdateTbl } from './a1-starter/a1b2-table-update';
+
 // export { A1b3ControlledTable } from './a1-starter/a1b3-controlled';
 // export { A1c1Filter } from './a1-starter/a1c1-filter';
 // export { A1c2Sort } from './a1-starter/a1c2-sort';

@@ -124,6 +124,9 @@ export function A2b3ColWithResize() {
     debugColumns: true,
   });
 
+  // console.log(';; render ', table.getCenterTotalSize())
+  console.log(';; tb-init ', table.initialState, table.getState(), table);
+
   return (
     <div className={tableBaseCss}>
       <select

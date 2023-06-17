@@ -180,7 +180,7 @@ export function createTable<TData extends RowData>(
   }
 
   /** the table instance to return */
-  let table = { _features: features } as unknown as Table<TData>;
+  const table = { _features: features } as unknown as Table<TData>;
 
   const defaultOptions = table._features.reduce((obj, feature) => {
     return Object.assign(obj, feature.getDefaultOptions?.(table));
@@ -390,7 +390,7 @@ export function createTable<TData extends RowData>(
     getAllLeafColumns: memo(
       () => [table.getAllColumns(), table._getOrderColumnsFn()],
       (allColumns, orderColumns) => {
-        let leafColumns = allColumns.flatMap((column) =>
+        const leafColumns = allColumns.flatMap((column) =>
           column.getLeafColumns(),
         );
         return orderColumns(leafColumns);

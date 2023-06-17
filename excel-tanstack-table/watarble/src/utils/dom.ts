@@ -13,7 +13,7 @@ export function getHTMLElement(
       );
     }
 
-    return element!;
+    return element;
   }
 
   return value;

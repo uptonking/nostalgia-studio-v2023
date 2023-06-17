@@ -30,24 +30,13 @@
     "@dnd-kit/utilities": "3.2.1111"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^6.3.5",
-    "@storybook/addon-info": "^5.3.21",
-    "@storybook/addon-links": "^6.3.5",
-    "@storybook/addons": "^6.3.5",
-    "@storybook/react": "^6.3.5",
     "@types/react": "^18.2.5",
     "@types/react-dom": "^18.0.11",
     "classnames": "^2.3.2",
-    "css-loader": "^6.7.3",
     "framer-motion": "^6.2.8",
-    "postcss": "^8.4.14",
-    "postcss-loader": "^4.1.0",
-    "postcss-nested": "^5.0.1",
-    "postcss-simple-vars": "^6.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-tiny-virtual-list": "2.2.1111",
-    "style-loader": "^3.3.2",
     "tsdx": "^0.14.1"
   }
 }

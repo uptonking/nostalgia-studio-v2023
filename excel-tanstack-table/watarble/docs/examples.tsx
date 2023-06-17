@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-// import * as stories from './stories/examples-docs';
+import * as stories from './stories/examples-docs';
 
-const stories = {};
 const storiesNames = Object.keys(stories);
 
 export function ExamplesApp() {
@@ -19,7 +18,7 @@ export function ExamplesApp() {
 
   return (
     <div>
-      <h1>examples for prosemirror editor</h1>
+      <h1>examples for watarble</h1>
       <h2>当前示例: {currentStory}</h2>
       <div style={{ display: 'flex' }}>
         <div
@@ -28,7 +27,7 @@ export function ExamplesApp() {
             // padding: '8px',
             backgroundColor: 'beige',
           }}
-          className='idLeftContainer'
+          className='idEgLeftContainer'
         >
           {storiesNames.map((name, index) => (
             <div onClick={() => setCurrentStory(name)} key={index + name}>
@@ -38,11 +37,12 @@ export function ExamplesApp() {
         </div>
         <div
           style={{
+            flexGrow: 1,
             // maxWidth: '1100px',
             margin: '8px',
             // backgroundColor: 'lightyellow',
           }}
-          className='idRightContainer'
+          className='idEgRightContainer'
         >
           <CurrentExampleComponent />
         </div>

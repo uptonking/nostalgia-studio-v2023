@@ -25,7 +25,7 @@
     "@dnd-kit/utilities": "3.2.1111",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
-    "@formkit/auto-animate": "^1.0.0-beta.6",
+    "@formkit/auto-animate": "1.0.0-beta.6",
     "@hookform/resolvers": "^3.1.0",
     "@linaria/core": "^4.2.9",
     "@tanstack/react-table": "8.7.9111",

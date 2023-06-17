@@ -1,4 +1,8 @@
 import { getHTMLElement } from '../utils/dom';
+import { RegistryDefault } from '../utils/registry-default';
+import { renderVdom } from '../utils/vdom';
+import { defaultRender } from '../view/default-render';
+import * as elements from '../view/elements';
 
 export function getDefaultConfig(options) {
   const {
@@ -20,14 +24,19 @@ export function getDefaultConfig(options) {
   ) as typeof window;
   const containerElement = getHTMLElement(environment, container);
 
-  const defaultComponents = {};
+  const defaultElements = new RegistryDefault();
+  for (const [, config] of Object.entries(elements)) {
+    defaultElements.add(config.type, config.renderFn);
+  }
 
   return {
     ...core,
     environment,
     renderer: {
+      render: render || renderVdom,
+      defaultRender: defaultRender,
       container: containerElement,
-      components: defaultComponents,
+      elements: defaultElements,
     },
   };
 }

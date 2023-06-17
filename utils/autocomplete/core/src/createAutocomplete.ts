@@ -40,6 +40,7 @@ export function createAutocomplete<
 
   const subscribers: AutocompleteSubscribers<TItem> = [];
   const props = getDefaultProps(options, subscribers);
+  // 👇🏻 传入onStoreStateChange，每次state变化都会执行
   const store = createStore(stateReducer, props, onStoreStateChange);
   window['store'] = store;
 
@@ -52,6 +53,7 @@ export function createAutocomplete<
   >({ props, refresh, store, navigator: props.navigator, ...setters });
 
   function onStoreStateChange({ prevState, state }) {
+    // 👇🏻 可传入视图层更新方法
     props.onStateChange({
       prevState,
       state,

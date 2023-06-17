@@ -68,6 +68,7 @@ export function useReactTable<TData extends RowData>(
     renderFallbackValue: null,
     ...options,
   };
+  console.log(';; tb-resolvedOptions ', resolvedOptions);
 
   // 👇🏻 Create a stable table instance and store it in state
   const [tableRef] = React.useState(() => ({

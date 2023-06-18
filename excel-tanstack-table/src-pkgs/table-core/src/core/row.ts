@@ -50,7 +50,7 @@ export const createRow = <TData extends RowData>(
   subRows?: Row<TData>[],
   parentId?: string,
 ): Row<TData> => {
-  let row: CoreRow<TData> = {
+  const row: CoreRow<TData> = {
     id,
     index: rowIndex,
     original,
@@ -103,7 +103,7 @@ export const createRow = <TData extends RowData>(
     getLeafRows: () => flattenBy(row.subRows, (d) => d.subRows),
     getParentRow: () => (row.parentId ? table.getRow(row.parentId) : undefined),
     getParentRows: () => {
-      let parentRows: Row<TData>[] = [];
+      const parentRows: Row<TData>[] = [];
       let currentRow = row;
       while (true) {
         const parentRow = currentRow.getParentRow();

@@ -11,6 +11,7 @@ export const tableBaseCss = css`
     border: 1px solid black;
     /** applies only when border-collapse is separate */
     border-spacing: 0;
+    border-bottom: 0px;
   }
 
   tr:last-child td {
@@ -42,6 +43,7 @@ export const tableBaseCss = css`
 `;
 
 export const sortedHeaderCss = css`
+  display: flex;
   cursor: pointer;
   user-select: none;
 `;

@@ -9,12 +9,7 @@ import {
 } from 'snabbdom';
 
 const patch = init(
-  [
-    classModule, // makes it easy to toggle classes
-    propsModule, // for setting properties on DOM elements
-    styleModule, // handles styling on elements with support for animations
-    eventListenersModule, // attaches event listeners
-  ],
+  [classModule, propsModule, styleModule, eventListenersModule],
   undefined,
   {
     experimental: {
@@ -23,23 +18,30 @@ const patch = init(
   },
 );
 
-let oldVnode = null;
+export class VdomRenderer {
+  private oldVnode: VNode = null;
 
-export function renderVdom(
-  vnode: VNode[],
-  container: HTMLElement,
-  fullReload = false,
-) {
-  const containerVnode = h('div#' + container.id);
-  containerVnode.children = vnode;
+  render(vnode: VNode[], container: HTMLElement, fullReload = false) {
+    // should be consistent with MainView.updateView
+    const containerVnode = h('div#' + container.id);
+    containerVnode.children = vnode;
 
-  if (!oldVnode) {
-    // / if it's the first render or force reload
-    // console.log(';; patch  ', containerVnode)
-    patch(container, containerVnode);
-  } else {
-    patch(oldVnode, containerVnode);
+    if (fullReload) {
+      this.oldVnode = null;
+    }
+    // console.log(';; patch  ', containerVnode, this.oldVnode);
+
+    if (!this.oldVnode) {
+      // / if it's the first render or force reload
+      patch(container, containerVnode);
+    } else {
+      patch(this.oldVnode, containerVnode);
+    }
+
+    this.oldVnode = containerVnode;
   }
 
-  oldVnode = containerVnode;
+  reset() {
+    this.oldVnode = null;
+  }
 }

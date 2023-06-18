@@ -52,7 +52,7 @@ export function createColumn<TData extends RowData, TValue>(
 
   const accessorKey = resolvedColumnDef.accessorKey;
 
-  let id =
+  const id =
     resolvedColumnDef.id ??
     (accessorKey ? accessorKey.replace('.', '_') : undefined) ??
     (typeof resolvedColumnDef.header === 'string'
@@ -122,7 +122,7 @@ export function createColumn<TData extends RowData, TValue>(
       () => [table._getOrderColumnsFn()],
       (orderColumns) => {
         if (column.columns?.length) {
-          let leafColumns = column.columns.flatMap((column) =>
+          const leafColumns = column.columns.flatMap((column) =>
             column.getLeafColumns(),
           );
 
@@ -142,6 +142,6 @@ export function createColumn<TData extends RowData, TValue>(
     return Object.assign(obj, feature.createColumn?.(column, table));
   }, column);
 
-  // Yes, we have to convert table to uknown, because we know more than the compiler here.
+  // Yes, we have to convert table to unknown, because we know more than the compiler here.
   return column as Column<TData, TValue>;
 }

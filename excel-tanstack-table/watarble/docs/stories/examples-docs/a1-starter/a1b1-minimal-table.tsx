@@ -119,6 +119,8 @@ export const A1b1MinimalTbl = () => {
         debugTable: true,
       });
       window['wt'] = watarble;
+
+      return () => watarble.destroy();
     }
   }, [data]);
 

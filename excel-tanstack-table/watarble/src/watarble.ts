@@ -7,6 +7,7 @@ import { type WatarbleParams } from './types/api';
  * Controller for data model and views
  */
 export class Watarble {
+  /** unique id for instance, prefixed with `WTBL_` */
   id: string;
   config: any;
   state: State;
@@ -36,5 +37,14 @@ export class Watarble {
   init() {
     this.view.updateView();
     if (this.config.onChange) this.config.onChange();
+    this.state.on('MODEL_UPDATE', () => {
+      this.state.deriveModelChange();
+      console.log(';; beforeViewUp ', this.state.table.getState());
+      this.view.updateView();
+    });
+  }
+
+  destroy() {
+    this.view.destroyView();
   }
 }

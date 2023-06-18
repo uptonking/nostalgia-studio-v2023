@@ -10,10 +10,12 @@ export class MainView {
   }
 
   updateView() {
-    const container = this.watarble.config.renderer.container;
+    console.trace(';; updateView ');
+
+    const container = this.watarble.config.rendering.container;
     if (!this.innerRoot) {
       this.innerRoot = document.createElement('div');
-      this.innerRoot.id = 'WTBL_' + this.watarble.id;
+      this.innerRoot.id = this.watarble.id;
       container.appendChild(this.innerRoot);
     }
 
@@ -22,6 +24,13 @@ export class MainView {
       return vnode;
     });
 
-    this.watarble.config.renderer.render(newVnode, this.innerRoot);
+    this.watarble.config.rendering.renderer.render(newVnode, this.innerRoot);
+  }
+
+  destroyView() {
+    this.watarble.config.rendering.renderer.reset();
+    if (this.innerRoot) {
+      this.innerRoot.remove();
+    }
   }
 }

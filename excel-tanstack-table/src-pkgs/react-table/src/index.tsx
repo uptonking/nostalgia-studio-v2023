@@ -64,7 +64,7 @@ export function useReactTable<TData extends RowData>(
   // Compose in the generic options to the user options
   const resolvedOptions: TableOptionsResolved<TData> = {
     state: {}, // Dummy state
-    onStateChange: () => { }, // noop
+    onStateChange: () => {}, // noop
     renderFallbackValue: null,
     ...options,
   };
@@ -78,6 +78,8 @@ export function useReactTable<TData extends RowData>(
   // 👀 By default, manage table state here using the table's initial state
   const [state, setState] = React.useState(() => tableRef.current.initialState);
 
+  console.log(';; tableRef-setOpts1 ', tableRef.current.getState().sorting);
+
   // Compose the default state above with any user state.
   // This will allow the user to only control a subset of the state if desired.
   tableRef.current.setOptions((prev) => ({
@@ -89,10 +91,13 @@ export function useReactTable<TData extends RowData>(
     },
     // Similarly, we'll maintain both internal state and any user-provided state
     onStateChange: (updater) => {
+      console.log(';; useReactTbl-onStateChg ');
       setState(updater);
       options.onStateChange?.(updater);
     },
   }));
+
+  console.log(';; tableRef-setOpts2 ', tableRef.current.getState().sorting);
 
   return tableRef.current;
 }

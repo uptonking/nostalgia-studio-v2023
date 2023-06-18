@@ -5,17 +5,9 @@
   "license": "MIT",
   "author": "Tanner Linsley",
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./build/lib/index.d.ts",
-      "import": "./build/lib/index.mjs",
-      "default": "./build/lib/index.js"
-    },
-    "./package.json": "./package.json"
-  },
-  "main": "build/lib/index.js",
-  "module": "build/lib/index.esm.js",
-  "types": "build/lib/index.d.ts",
+  "main": "src/index.tsx",
+  "module": "src/index.tsx",
+  "types": "src/index.tsx",
   "files": [
     "build/lib/*",
     "build/umd/*",

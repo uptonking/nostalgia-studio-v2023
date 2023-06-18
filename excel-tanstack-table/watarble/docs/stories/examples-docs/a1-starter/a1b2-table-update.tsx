@@ -122,10 +122,16 @@ export const A1b2UpdateTbl = () => {
       });
       window['wt'] = watarble;
       console.log(';; init-tbl ', watarble?.id);
+      return () => {
+        // if (containerRef.current) {
+        console.log(';; destroy2 ', watarble.id);
+        watarble.destroy();
+        // }
+      };
     }
   }, [data]);
 
-  console.log(';; app ', columns);
+  console.log(';; app2 ', columns);
 
   return (
     <div>

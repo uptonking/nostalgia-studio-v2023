@@ -23,7 +23,7 @@ export const tableConfig = {
         {
           class: { idTable: true },
           style: {
-            // width: watarble.state.table.getTotalSize() + 'px',
+            width: watarble.state.table.getTotalSize() + 'px',
           },
         },
         [
@@ -36,6 +36,7 @@ export const tableConfig = {
                 'div',
                 {
                   key: headerGroup.id,
+                  class: { idTr: true },
                   style: {
                     position: 'relative',
                     height: '32px',
@@ -111,7 +112,7 @@ export const tableConfig = {
             return h(
               'div',
               {
-                class: { idRow: true },
+                class: { idTr: true },
                 style: {
                   position: 'relative',
                   display: 'flex',

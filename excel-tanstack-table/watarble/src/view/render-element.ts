@@ -23,6 +23,6 @@ export function renderElement(elemNode, watarble: Watarble): VNode {
 }
 
 export function getRendererForType(type: string, watarble: Watarble) {
-  const fn = watarble.config.renderer.elements.get(type);
-  return fn || watarble.config.renderer.defaultRender;
+  const fn = watarble.config.rendering.elements.get(type);
+  return fn || watarble.config.rendering.defaultRender;
 }

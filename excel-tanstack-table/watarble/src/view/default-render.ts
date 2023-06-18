@@ -8,5 +8,3 @@ export function defaultRender(elemNode, watarble: Watarble) {
   const vnode = children.map((child) => modelNodeToVnode(child, watarble));
   return vnode;
 }
-
-export function renderTable(elemNode, watarble: Watarble) {}

@@ -84,6 +84,7 @@ export function noop() {
   //
 }
 
+/** return a fn that can update table state by invoking `table.setState` */
 export function makeStateUpdater<K extends keyof TableState>(
   key: K,
   instance: unknown,

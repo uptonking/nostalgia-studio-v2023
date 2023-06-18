@@ -57,7 +57,7 @@ const features = [
 
 //
 
-export interface CoreTableState { }
+export interface CoreTableState {}
 
 export interface CoreOptions<TData extends RowData> {
   /** data for the table to display. This array should match the type you provided to `table.setRowType<...>`
@@ -136,7 +136,9 @@ export interface CoreInstance<TData extends RowData> {
    *   not recommended to bypass your adapters strategy for updating table options.
    */
   setOptions: (newOptions: Updater<TableOptionsResolved<TData>>) => void;
-  /** get the table's current state.  */
+  /** get the table's current state.
+   * - directly return `table.options.state`
+   */
   getState: () => TableState;
   /** update the table state.
    * - It's recommended you pass an updater function in the form of `(prevState) => newState`
@@ -169,8 +171,8 @@ export interface CoreInstance<TData extends RowData> {
 
 /**
  * createTable workflow
- * - compute table options，merge features options
- * - compute table initialState，merge features initialState
+ * - compute table options, merge features options
+ * - compute table initialState, merge features initialState
  * - add core props and methods to table instance
  * - 逐个执行插件的createTable方法，将table实例作为参数传入来增强
  */
@@ -212,13 +214,33 @@ export function createTable<TData extends RowData>(
   const queued: (() => void)[] = [];
   let queuedTimeout = false;
 
+  /** Object.assign(table, coreInstance) */
   const coreInstance: CoreInstance<TData> = {
     _features: features,
+
     options: {
       ...defaultOptions,
       ...options,
     },
+    setOptions: (updater) => {
+      const newOptions = functionalUpdate(updater, table.options);
+      table.options = mergeOptions(newOptions) as RequiredKeys<
+        TableOptionsResolved<TData>,
+        'state'
+      >;
+    },
+
     initialState,
+    getState: () => {
+      return table.options.state as TableState;
+    },
+    setState: (updater: Updater<TableState>) => {
+      table.options.onStateChange?.(updater);
+    },
+    reset: () => {
+      table.setState(table.initialState);
+    },
+
     _queue: (cb) => {
       queued.push(cb);
 
@@ -241,24 +263,6 @@ export function createTable<TData extends RowData>(
           );
       }
     },
-    reset: () => {
-      table.setState(table.initialState);
-    },
-    setOptions: (updater) => {
-      const newOptions = functionalUpdate(updater, table.options);
-      table.options = mergeOptions(newOptions) as RequiredKeys<
-        TableOptionsResolved<TData>,
-        'state'
-      >;
-    },
-
-    getState: () => {
-      return table.options.state as TableState;
-    },
-
-    setState: (updater: Updater<TableState>) => {
-      table.options.onStateChange?.(updater);
-    },
 
     _getRowId: (row: TData, index: number, parent?: Row<TData>) =>
       table.options.getRowId?.(row, index, parent) ??
@@ -266,10 +270,10 @@ export function createTable<TData extends RowData>(
 
     getCoreRowModel: () => {
       if (!table._getCoreRowModel) {
-        // 👇🏻 set default _getCoreRowModel
+        // 👇🏻 firstly set default _getCoreRowModel
         table._getCoreRowModel = table.options.getCoreRowModel(table);
       }
-
+      // then invoke
       return table._getCoreRowModel!();
     },
 

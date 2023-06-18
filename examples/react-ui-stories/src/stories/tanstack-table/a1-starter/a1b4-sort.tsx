@@ -9,6 +9,7 @@ import {
   type SortingState,
   useReactTable,
 } from '@tanstack/react-table';
+import { ReactTableDevtools } from '@tanstack/react-table-devtools';
 
 import { tableBaseCss } from '../examples.styles';
 import { makeData, type Person } from '../utils/makeData';
@@ -20,6 +21,8 @@ const SORT_DIRECTION_ICONS = {
 
 /**
  * ✨ sort
+ * - sort时表格数据未修改，仅改变state
+ * - 排序规则: 文本列默认 asc > desc > false; 数字列默认 desc > asc > false
  */
 export const A1b4Sort = () => {
   const rerender = React.useReducer(() => ({}), {})[1];
@@ -90,6 +93,8 @@ export const A1b4Sort = () => {
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  console.log(';; app-react-core1 ', sorting);
+
   const table = useReactTable({
     data,
     columns,
@@ -102,7 +107,7 @@ export const A1b4Sort = () => {
     debugTable: true,
   });
 
-  // console.log(';; rdr');
+  console.log(';; app-react-core2 ', sorting, table.getState().sorting);
 
   return (
     <div className={tableBaseCss}>
@@ -119,9 +124,8 @@ export const A1b4Sort = () => {
                           className: header.column.getCanSort()
                             ? sortedHeaderCss
                             : '',
-                          // 👇🏻 sort by click.
                           // 🤔 注意before/after的值相同;
-                          // 文本列默认asc > desc > false; 数字列默认 desc > asc > false
+                          // 文本列默认 asc > desc > false; 数字列默认 desc > asc > false
                           onClick: (e) => {
                             console.log(
                               ';; beforeSort-curr-next ',
@@ -184,6 +188,11 @@ export const A1b4Sort = () => {
         <button onClick={() => refreshData()}>Refresh Data</button>
       </div>
       <pre>{JSON.stringify(sorting, null, 2)}</pre>
+      <ReactTableDevtools
+        table={table}
+        // initialIsOpen={true}
+        initialIsOpen={true}
+      />
     </div>
   );
 };

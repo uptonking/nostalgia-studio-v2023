@@ -225,6 +225,7 @@ export const Sorting: TableFeature = {
         const hasManualValue = typeof desc !== 'undefined' && desc !== null;
 
         table.setSorting((old) => {
+          console.log(';; toggleSorting-setSorting ');
           // Find any existing sorting for this column
           const existingSorting = old?.find((d) => d.id === column.id);
           const existingIndex = old?.findIndex((d) => d.id === column.id);
@@ -233,7 +234,7 @@ export const Sorting: TableFeature = {
 
           // What should we do with this sort action?
           let sortAction: 'add' | 'remove' | 'toggle' | 'replace';
-          let nextDesc = hasManualValue ? desc : nextSortingOrder === 'desc';
+          const nextDesc = hasManualValue ? desc : nextSortingOrder === 'desc';
 
           // Multi-mode
           if (old?.length && column.getCanMultiSort() && multi) {
@@ -334,7 +335,7 @@ export const Sorting: TableFeature = {
         return (
           (column.columnDef.enableSorting ?? true) &&
           (table.options.enableSorting ?? true) &&
-          !!column.accessorFn
+          Boolean(column.accessorFn)
         );
       },
 
@@ -342,7 +343,7 @@ export const Sorting: TableFeature = {
         return (
           column.columnDef.enableMultiSort ??
           table.options.enableMultiSort ??
-          !!column.accessorFn
+          Boolean(column.accessorFn)
         );
       },
 
@@ -386,7 +387,16 @@ export const Sorting: TableFeature = {
     table: Table<TData>,
   ): SortingInstance<TData> => {
     return {
-      setSorting: (updater) => table.options.onSortingChange?.(updater),
+      setSorting: (updater) => {
+        console.log(
+          ';; onSortingChange1 ',
+          typeof updater,
+          table.getState().sorting,
+        );
+        const ret = table.options.onSortingChange?.(updater);
+        console.log(';; onSortingChange2 ', table.getState().sorting, ret);
+        return ret;
+      },
       resetSorting: (defaultState) => {
         table.setSorting(defaultState ? [] : table.initialState?.sorting ?? []);
       },

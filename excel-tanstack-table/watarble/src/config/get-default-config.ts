@@ -1,6 +1,6 @@
 import { getHTMLElement } from '../utils/dom';
 import { RegistryDefault } from '../utils/registry-default';
-import { renderVdom } from '../utils/vdom';
+import { renderVdom, VdomRenderer } from '../utils/vdom';
 import { defaultRender } from '../view/default-render';
 import * as elements from '../view/elements';
 
@@ -32,8 +32,8 @@ export function getDefaultConfig(options) {
   return {
     ...core,
     environment,
-    renderer: {
-      render: render || renderVdom,
+    rendering: {
+      renderer: render || new VdomRenderer(),
       defaultRender: defaultRender,
       container: containerElement,
       elements: defaultElements,

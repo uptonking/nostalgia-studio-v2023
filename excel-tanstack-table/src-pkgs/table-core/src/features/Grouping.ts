@@ -75,7 +75,8 @@ export interface ColumnDefaultOptions {
 }
 
 interface GroupingOptionsBase {
-  /** if true, the table will not automatically group rows using getGroupedRowModel() and instead will expect you to manually group the rows before passing them to the table.
+  /** if true, the table will not automatically group rows using getGroupedRowModel()
+   *   and instead will expect you to manually group the rows before passing them to the table.
    * - This is useful if you are doing server-side grouping and aggregation. */
   manualGrouping?: boolean;
   onGroupingChange?: OnChangeFn<GroupingState>;

@@ -126,7 +126,6 @@ export class EventEmitter<T = any> {
       return;
     }
     const newListeners = Array.from(listeners).filter(
-      // @ts-expect-error fix-types
       (wrapper) => wrapper['fn'] !== fnListener,
     );
     this.listeners[type] = new Set(newListeners);

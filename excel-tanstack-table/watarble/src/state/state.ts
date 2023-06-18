@@ -6,18 +6,24 @@ import {
   type TableOptionsResolved,
 } from '@tanstack/table-core';
 
-export class State<TData extends RowData = Array<object>> {
+import { EventEmitter } from '../utils/event-emitter';
+
+export class State<TData extends RowData = Array<object>> extends EventEmitter {
   table: Table<TData>;
   content: Array<{ type: string; children: Row<TData>[] }>;
+  store: Record<string, any>;
 
   constructor(options: any) {
+    super();
     const { id, environment, renderer, ...options_ } = options;
     const resolvedOptions: TableOptionsResolved<TData> = {
       state: {}, // Dummy state
-      onStateChange: options.onStateChange || (() => { console.log(';; stateChg ') }), // noop
+      onStateChange: options.onStateChange || (() => {}), // noop
       renderFallbackValue: null,
       ...options_,
     };
+
+    this.store = {};
 
     // console.log(';; resolvedOptions', resolvedOptions);
     this.table = createTable(resolvedOptions);
@@ -31,7 +37,9 @@ export class State<TData extends RowData = Array<object>> {
         },
         // onStateChange: (updater) => {
         //   // setState(updater);
+        //   console.log(';; onStateChange ');
         //   options.onStateChange?.(updater);
+        //   this.emit('MODEL_UPDATE');
         // },
       };
     });
@@ -44,6 +52,15 @@ export class State<TData extends RowData = Array<object>> {
     //   this.table,
     // );
 
+    this.content = [{ type: 'table', children: this.table.getRowModel().rows }];
+  }
+
+  dispatch(actions = {}) {
+    this.emit('MODEL_UPDATE');
+  }
+
+  /** compute derived state from model data */
+  deriveModelChange() {
     this.content = [{ type: 'table', children: this.table.getRowModel().rows }];
   }
 }

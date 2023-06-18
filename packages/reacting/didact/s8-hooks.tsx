@@ -4,7 +4,9 @@ import * as React from 'react';
 
 /** 即将开始执行的vdom构建任务 */
 let nextUnitOfWork = null;
-/**  save a reference to that “last fiber tree we committed to the DOM”. */
+/** for updating or deleting nodes, we need to compare the elements we receive on the render function to the last fiber tree we committed to the DOM.
+ * - So we need to save a reference to that “last fiber tree we committed to the DOM” after we finish the commit. We call it currentRoot.
+ */
 let currentRoot = null;
 /** keep track of the root of the fiber tree;
  * 能够获取正在构建的vdom信息，当浏览器打断时可以移除未完成构建的vdom，以免显示出不完整的ui。
@@ -109,6 +111,7 @@ function updateDom(dom, prevProps, nextProps) {
 /** 根据vdom更新dom的入口方法 */
 function commitRoot() {
   deletions.forEach(commitWork);
+  // ❓ 每次都从顶层根节点
   commitWork(wipRoot.child);
 
   currentRoot = wipRoot;
@@ -280,6 +283,8 @@ function reconcileChildren(wipFiber, elements) {
 
   // 注意这里用的是 !=，会检查null和undefined
   while (index < elements.length || oldFiber) {
+    /** The element is the thing we want to render to the DOM
+     * - and the oldFiber is what we rendered the last time. */
     const element = elements[index];
     let newFiber = null;
 
@@ -293,7 +298,11 @@ function reconcileChildren(wipFiber, elements) {
         props: element.props,
         dom: oldFiber.dom,
         parent: wipFiber,
+        /** We also add the alternate property to every fiber.
+         * - This property is a link to the old fiber, the fiber that we committed
+         *   to the DOM in the previous commit phase. */
         alternate: oldFiber,
+        /** use this property later, during the commit phase. */
         effectTag: 'UPDATE',
       };
     }
@@ -360,13 +369,13 @@ function useState(initialState) {
   const setState = (action) => {
     hook.queue.push(action);
 
-    // 👇🏻 每次setState会触发从根节点全量渲染
     wipRoot = {
       dom: currentRoot.dom,
       props: currentRoot.props,
       alternate: currentRoot,
     };
-    // wipRoot会作为nextUnitOfWork开始执行
+    // 👇🏻 每次setState会触发从根节点全量渲染
+    // wipRoot会作为nextUnitOfWork开始执行,由workLoop递归触发
     nextUnitOfWork = wipRoot;
     deletions = [];
   };

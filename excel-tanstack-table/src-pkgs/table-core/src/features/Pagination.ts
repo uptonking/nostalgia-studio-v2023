@@ -22,10 +22,13 @@ export interface PaginationInitialTableState {
 }
 
 export interface PaginationOptions {
-  /** When manually controlling pagination, you should supply a total pageCount value to the table if you know it. If you do not know how many pages there are, you can set this to -1. */
+  /** When manually controlling pagination, you should supply a total pageCount
+   *  value to the table if you know it.
+   * - If you do not know how many pages there are, you can set this to -1. */
   pageCount?: number;
   /** Enables manual pagination.
-   * - If `true`, the table will not automatically paginate rows using `getPaginationRowModel()` and instead will expect you to manually paginate the rows before passing them to the table.
+   * - If `true`, the table will not automatically paginate rows using `getPaginationRowModel()`
+   *   and instead will expect you to manually paginate the rows before passing them to the table.
    * - This is useful if you are doing server-side pagination and aggregation.
    */
   manualPagination?: boolean;

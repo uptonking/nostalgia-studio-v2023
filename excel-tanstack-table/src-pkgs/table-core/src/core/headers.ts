@@ -86,11 +86,11 @@ function createHeader<TData extends RowData, TValue>(
 ): Header<TData, TValue> {
   const id = options.id ?? column.id;
 
-  let header: CoreHeader<TData, TValue> = {
+  const header: CoreHeader<TData, TValue> = {
     id,
     column,
     index: options.index,
-    isPlaceholder: !!options.isPlaceholder,
+    isPlaceholder: Boolean(options.isPlaceholder),
     placeholderId: options.placeholderId,
     depth: options.depth,
     subHeaders: [],
@@ -440,7 +440,7 @@ export function buildHeaderGroups<TData extends RowData>(
   };
   findMaxDepth(allColumns);
 
-  let headerGroups: HeaderGroup<TData>[] = [];
+  const headerGroups: HeaderGroup<TData>[] = [];
 
   /** recursively */
   const createHeaderGroup = (

@@ -103,35 +103,52 @@ const columns: ColumnDef<Person>[] = [
 window['col'] = columns;
 
 /**
- * ✨ 最小react-table示例，仅展示
+ * ✨ sort
+ * - 要避免state变化时，watarble实例每次都创建新的
  */
 export const A1b3Sort = () => {
   const containerRef = useRef(null);
+  const watarble = useRef<Watarble | null>(null);
 
-  const [data] = React.useState(() => [...defaultData]);
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [data] = useState(() => [...defaultData]);
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   useEffect(() => {
     if (containerRef.current) {
-      const watarble = new Watarble({
-        container: '.idEgRightContainer',
-        data,
-        // @ts-expect-error fix-types
-        columns: columns,
-        getCoreRowModel: getCoreRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        state: {
-          sorting,
-        },
-        onSortingChange: setSorting,
-        debugTable: true,
-      });
-      window['wtbl'] = watarble;
-      console.log(';; init-wtbl ', watarble?.id);
+      if (!watarble.current) {
+        watarble.current = new Watarble({
+          container: '.idEgRightContainer',
+          data,
+          // @ts-expect-error fix-types
+          columns: columns,
+          getCoreRowModel: getCoreRowModel(),
+          getSortedRowModel: getSortedRowModel(),
+          state: {
+            sorting,
+          },
+          onSortingChange: (v) => {
+            setSorting(v);
+            watarble.current?.state.dispatch();
+          },
+          debugTable: true,
+        });
+        window['wtbl'] = watarble.current;
+        console.log(';; init-wtbl ', watarble.current?.id);
+      }
     }
   }, [data, sorting]);
 
-  console.log(';; rows-h ', columns);
+  useEffect(() => {
+    const container = containerRef.current;
+    return () => {
+      if (container && watarble.current) {
+        console.log(';; destroy3 ', watarble.current?.id);
+        watarble.current?.destroy();
+      }
+    };
+  }, []);
+
+  console.log(';; app3 ', columns);
 
   return (
     <div>

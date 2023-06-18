@@ -31,7 +31,14 @@ export function ExamplesApp() {
         >
           {storiesNames.map((name, index) => (
             <div onClick={() => setCurrentStory(name)} key={index + name}>
-              <h5 style={{ cursor: 'pointer' }}>{name}</h5>
+              <h5
+                style={{
+                  cursor: 'pointer',
+                  color: name === currentStory ? 'royalblue' : '',
+                }}
+              >
+                {name}
+              </h5>
             </div>
           ))}
         </div>

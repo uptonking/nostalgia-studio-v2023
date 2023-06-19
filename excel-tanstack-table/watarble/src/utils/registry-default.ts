@@ -5,10 +5,6 @@
 export class RegistryDefault<T> {
   content: Record<string, T> = {};
 
-  get(key: string) {
-    return this.content[key];
-  }
-
   add(key: string, value: T) {
     this.content[key] = value;
     return this;
@@ -16,5 +12,21 @@ export class RegistryDefault<T> {
 
   remove(key: string) {
     delete this.content[key];
+  }
+
+  get(key: string) {
+    return this.content[key];
+  }
+
+  getAll(): T[] {
+    return Object.values(this.content);
+  }
+
+  getKeys(): string[] {
+    return Object.keys(this.content);
+  }
+
+  contains(key: string): boolean {
+    return key in this.content;
   }
 }

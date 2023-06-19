@@ -133,15 +133,15 @@ interface FiltersOptionsBase<TData extends RowData> {
 
 type ResolvedFilterFns = keyof FilterFns extends never
   ? {
-      filterFns?: Record<string, FilterFn<any>>;
-    }
+    filterFns?: Record<string, FilterFn<any>>;
+  }
   : {
-      filterFns: Record<keyof FilterFns, FilterFn<any>>;
-    };
+    filterFns: Record<keyof FilterFns, FilterFn<any>>;
+  };
 
 export interface FiltersOptions<TData extends RowData>
   extends FiltersOptionsBase<TData>,
-    ResolvedFilterFns {}
+  ResolvedFilterFns { }
 
 export interface FiltersInstance<TData extends RowData> {
   setColumnFilters: (updater: Updater<ColumnFiltersState>) => void;
@@ -198,8 +198,7 @@ export const Filters: TableFeature = {
         const value = table
           .getCoreRowModel()
           // prettier-ignore
-          .flatRows[0]?._getAllCellsByColumnId()
-          [column.id]?.getValue();
+          .flatRows[0]?._getAllCellsByColumnId()[column.id]?.getValue();
 
         return typeof value === 'string' || typeof value === 'number';
       },
@@ -242,8 +241,8 @@ export const Filters: TableFeature = {
         return isFunction(column.columnDef.filterFn)
           ? column.columnDef.filterFn
           : column.columnDef.filterFn === 'auto'
-          ? column.getAutoFilterFn()
-          : // @ts-ignore
+            ? column.getAutoFilterFn()
+            : // @ts-ignore
             table.options.filterFns?.[column.columnDef.filterFn as string] ??
             filterFns[column.columnDef.filterFn as BuiltInFilterFn];
       },
@@ -375,8 +374,8 @@ export const Filters: TableFeature = {
         return isFunction(globalFilterFn)
           ? globalFilterFn
           : globalFilterFn === 'auto'
-          ? table.getGlobalAutoFilterFn()
-          : // @ts-ignore
+            ? table.getGlobalAutoFilterFn()
+            : // @ts-ignore
             table.options.filterFns?.[globalFilterFn as string] ??
             filterFns[globalFilterFn as BuiltInFilterFn];
       },

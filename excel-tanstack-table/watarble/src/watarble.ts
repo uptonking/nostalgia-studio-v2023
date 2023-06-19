@@ -37,6 +37,7 @@ export class Watarble {
   init() {
     this.view.updateView();
     if (this.config.onChange) this.config.onChange();
+
     this.state.on('MODEL_UPDATE', () => {
       this.state.deriveModelChange();
       console.log(';; beforeViewUp ', this.state.table.getState());

@@ -113,12 +113,14 @@ export const A1b2UpdateTbl = () => {
     if (containerRef.current) {
       const watarble = new Watarble({
         container: '.idEgRightContainer',
-        data,
-        // @ts-expect-error fix-types
-        columns: columns,
-        getCoreRowModel: getCoreRowModel(),
-        columnResizeMode: 'onChange',
-        debugTable: true,
+        table: {
+          data,
+          // @ts-expect-error fix-types
+          columns: columns,
+          getCoreRowModel: getCoreRowModel(),
+          columnResizeMode: 'onChange',
+          debugTable: true,
+        },
       });
       window['wt'] = watarble;
       console.log(';; init-tbl ', watarble?.id);

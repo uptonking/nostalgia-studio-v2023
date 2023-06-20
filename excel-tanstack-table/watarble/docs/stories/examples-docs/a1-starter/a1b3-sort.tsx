@@ -3,10 +3,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   type ColumnDef,
   createColumnHelper,
+  functionalUpdate,
   getCoreRowModel,
   getSortedRowModel,
   type SortingState,
-} from '@tanstack/react-table';
+} from '@tanstack/table-core';
 
 import { Watarble } from '../../../../src';
 import { tableBaseCss } from '../editor-examples.styles';
@@ -111,32 +112,43 @@ export const A1b3Sort = () => {
   const watarble = useRef<Watarble | null>(null);
 
   const [data] = useState(() => [...defaultData]);
-  const [sorting, setSorting] = useState<SortingState>([]);
 
   useEffect(() => {
     if (containerRef.current) {
       if (!watarble.current) {
         watarble.current = new Watarble({
           container: '.idEgRightContainer',
-          data,
-          // @ts-expect-error fix-types
-          columns: columns,
-          getCoreRowModel: getCoreRowModel(),
-          getSortedRowModel: getSortedRowModel(),
-          state: {
-            sorting,
+          table: {
+            data,
+            // @ts-expect-error fix-types
+            columns: columns,
+            getCoreRowModel: getCoreRowModel(),
+            getSortedRowModel: getSortedRowModel(),
+            state: {
+              sorting: [],
+            },
+            onSortingChange: (updater) => {
+              // const newSorting = updater(watarble.current!.state.getters.getSortingState())
+              const newSorting =
+                typeof updater === 'function'
+                  ? functionalUpdate(
+                      updater,
+                      watarble.current!.state.getters.getSortingState(),
+                    )
+                  : updater;
+              // console.log(';; chg-newSorting ', newSorting);
+              watarble.current?.state.dispatch('UPDATE_COLUMN_SORTING', {
+                sorting: newSorting,
+              });
+            },
+            debugTable: true,
           },
-          onSortingChange: (v) => {
-            setSorting(v);
-            watarble.current?.state.dispatch();
-          },
-          debugTable: true,
         });
         window['wtbl'] = watarble.current;
         console.log(';; init-wtbl ', watarble.current?.id);
       }
     }
-  }, [data, sorting]);
+  }, [data]);
 
   useEffect(() => {
     const container = containerRef.current;

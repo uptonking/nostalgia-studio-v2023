@@ -1,10 +1,4 @@
-import {
-  createTable,
-  type Row,
-  type RowData,
-  type Table,
-  type TableOptionsResolved,
-} from '@tanstack/table-core';
+import { type Row, type RowData, type Table } from '@tanstack/table-core';
 
 import {
   type CorePlugin,
@@ -24,8 +18,10 @@ import {
   type CommandHandler,
   type CommandTypes,
   type CoreCommand,
+  type CoreCommandTypes,
   type CoreGetters,
   type Getters,
+  type WatarStateOptions,
 } from '../types';
 import { DispatchResult, isCoreCommand } from '../utils/command';
 import { EventEmitter } from '../utils/event-emitter';
@@ -44,16 +40,16 @@ export interface ModelConfig {
   readonly custom: { [key: string]: any };
   readonly external: { [key: string]: any };
   readonly client: Client;
-  readonly snapshotRequested: boolean;
+  // readonly snapshotRequested: boolean;
 }
 
 /**
  * state manager of watarable, including data-model,selection, ui-state, transient-data.
- * - It is just a state manager, splitting states into plugin states.
+ * - It is just a state container, splitting states into plugin states.
  * - state can only be updated by `dispatch`, then handled by plugins.
  * - state can be used in vanillajs environment.
  */
-export class State<TData extends RowData = Array<object>>
+export class WatarState<TData extends RowData = Array<object>>
   extends EventEmitter
   implements CommandDispatcher
 {
@@ -64,7 +60,7 @@ export class State<TData extends RowData = Array<object>>
   private corePlugins: CorePlugin[] = [];
   private uiPlugins: UIPlugin[] = [];
 
-  private state: StateObserver;
+  private stateObserver: StateObserver;
 
   readonly selection: any;
 
@@ -77,9 +73,7 @@ export class State<TData extends RowData = Array<object>>
   private readonly uiHandlers: CommandHandler<Command>[] = [];
   private readonly coreHandlers: CommandHandler<CoreCommand>[] = [];
 
-  /**
-   * Internal status of the model. Important for command handling coordination
-   */
+  /** actions/commands status, useful for commands scheduling */
   private status: StatusType = Status.Ready;
 
   table: Table<TData>;
@@ -88,31 +82,23 @@ export class State<TData extends RowData = Array<object>>
 
   /** custom data, can be accessed in plugin config */
   readonly custom: { [key: string]: any };
-
   /** custom data, useful for files/images */
   readonly external: { [key: string]: any };
 
-  constructor(options: any) {
+  constructor(options: WatarStateOptions) {
     super();
 
-    const {
-      data = {},
-      config = {},
-      uuidGenerator = new UuidGenerator(),
-      id,
-      environment,
-      renderer,
-      ...options_
-    } = options;
-
     this.dispatch = this.dispatch.bind(this);
+    this.dispatchFromCorePlugin = this.dispatchFromCorePlugin.bind(this);
+    this.canDispatch = this.canDispatch.bind(this);
 
     // convert data
-    const workingData = {} as any;
+    const workingData = options.table.data;
 
-    this.state = new StateObserver();
-    this.uuidGenerator = uuidGenerator;
-    this.config = this.initConfig(config);
+    this.stateObserver = new StateObserver();
+    this.uuidGenerator = new UuidGenerator();
+    this.config = this.initConfig(options);
+    // console.log(';; wtbl-opts ', this.config)
 
     this.coreGetters = {} as CoreGetters;
     this.getters = {
@@ -130,58 +116,20 @@ export class State<TData extends RowData = Array<object>>
     Object.assign(this.getters, this.coreGetters);
 
     for (const Plugin of uiPluginRegistry.getAll()) {
-      const plugin = this.initUiPlugin(Plugin);
-      this.uiPlugins.push(plugin);
-      this.handlers.push(plugin);
-      this.uiHandlers.push(plugin);
+      this.initUiPlugin(Plugin);
     }
 
     // this.dispatch('INIT');
 
-    this.selection.observe(this, {
-      // handleEvent: () => this.emit("update"),
-    });
-
-    const resolvedOptions: TableOptionsResolved<TData> = {
-      state: {}, // Dummy state
-      onStateChange: options.onStateChange || (() => {}), // noop
-      renderFallbackValue: null,
-      ...options_,
-    };
-
-    this.store = {};
-
-    // console.log(';; resolvedOptions', resolvedOptions);
-    this.table = createTable(resolvedOptions);
-    this.table.setOptions((prev) => {
-      return {
-        ...prev,
-        ...options_,
-        state: {
-          ...this.table.initialState,
-          ...options_.state,
-        },
-        // onStateChange: (updater) => {
-        //   // setState(updater);
-        //   console.log(';; onStateChange ');
-        //   options.onStateChange?.(updater);
-        //   this.emit('MODEL_UPDATE');
-        // },
-      };
-    });
-
-    window['tbl'] = this.table;
-    // console.log(
-    //   ';; tb-init ',
-    //   // this.table.initialState,
-    //   this.table.getState(),
-    //   this.table,
-    // );
-
-    this.content = [{ type: 'table', children: this.table.getRowModel().rows }];
+    // this.selection.observe(this, {
+    //   handleEvent: () => this.emit("update"),
+    // });
   }
 
-  dispatch(type: CommandTypes, payload?: any) {
+  dispatch<T extends CommandTypes, C extends Extract<Command, { type: T }>>(
+    type: T,
+    payload?: Omit<C, 'type'>,
+  ): DispatchResult {
     // this.emit('MODEL_UPDATE');
     const command: Command = createCommand(type, payload);
     const status: StatusType = this.status;
@@ -198,16 +146,16 @@ export class State<TData extends RowData = Array<object>>
           return result;
         }
         this.status = Status.Running;
-        const { changes, commands } = this.state.recordChanges(() => {
+        const { changes, commands } = this.stateObserver.recordChanges(() => {
           if (isCoreCommand(command)) {
-            this.state.addCommand(command);
+            this.stateObserver.addCommand(command);
           }
           this.dispatchToHandlers(this.handlers, command);
           this.finalize();
         });
         // this.session.save(command, commands, changes);
         this.status = Status.Ready;
-        this.emit('update');
+        this.emit('STATE_UPDATE');
         break;
       }
       case Status.Running:
@@ -216,7 +164,7 @@ export class State<TData extends RowData = Array<object>>
           if (!dispatchResult.isSuccessful) {
             return dispatchResult;
           }
-          this.state.addCommand(command);
+          this.stateObserver.addCommand(command);
         }
         this.dispatchToHandlers(this.handlers, command);
         break;
@@ -230,6 +178,7 @@ export class State<TData extends RowData = Array<object>>
         }
         this.dispatchToHandlers(this.handlers, command);
     }
+
     return DispatchResult.Success;
   }
 
@@ -246,13 +195,13 @@ export class State<TData extends RowData = Array<object>>
   }
 
   /**
-   * Dispatch a command from a Core Plugin (or the History).
+   * Dispatch a command from a Core Plugin.
    * A command dispatched from this function is not added to the history.
    */
-  private dispatchFromCorePlugin: CommandDispatcher['dispatch'] = (
-    type: string,
-    payload?: any,
-  ) => {
+  private dispatchFromCorePlugin<
+    T extends CoreCommandTypes,
+    C extends Extract<CoreCommand, { type: T }>,
+  >(type: T, payload?: Omit<C, 'type'>): DispatchResult {
     const command = createCommand(type, payload);
     const previousStatus = this.status;
     this.status = Status.RunningCore;
@@ -261,32 +210,27 @@ export class State<TData extends RowData = Array<object>>
     this.dispatchToHandlers(handlers, command);
     this.status = previousStatus;
     return DispatchResult.Success;
-  };
-
-  /** compute derived state from model data */
-  deriveModelChange() {
-    this.content = [{ type: 'table', children: this.table.getRowModel().rows }];
   }
 
-  private initConfig(config: Partial<ModelConfig>): ModelConfig {
-    const client = config.client || {
+  private initConfig(options: Partial<ModelConfig>): ModelConfig {
+    const client = options.client || {
       id: this.uuidGenerator.uuidv4(),
       name: 'Anonymous',
     };
     return {
-      ...config,
+      ...options,
       // mode: config.mode || "normal",
-      custom: config.custom || {},
-      external: config.external || {},
+      custom: options.custom || {},
+      external: options.external || {},
       client,
-      snapshotRequested: false,
+      // snapshotRequested: false,
     };
   }
 
   private initCorePluginConfig(): CorePluginConfig {
     return {
       getters: this.coreGetters,
-      stateObserver: this.state,
+      stateObserver: this.stateObserver,
       // range: this.range,
       dispatch: this.dispatchFromCorePlugin,
       uuidGenerator: this.uuidGenerator,
@@ -317,10 +261,11 @@ export class State<TData extends RowData = Array<object>>
   private initUiPluginConfig(): UIPluginConfig {
     return {
       getters: this.getters,
-      stateObserver: this.state,
+      stateObserver: this.stateObserver,
       dispatch: this.dispatch,
       selection: this.selection,
-      custom: this.config.custom,
+      ...this.config,
+      // custom: this.config.custom,
       // moveClient: this.session.move.bind(this.session),
       // uiActions: this.config,
       // lazyEvaluation: this.config.lazyEvaluation,
@@ -343,7 +288,9 @@ export class State<TData extends RowData = Array<object>>
     }
     // this.renderers.push(...layers);
     // this.renderers.sort((p1, p2) => p1[1] - p2[1]);
-    return plugin;
+    this.uiPlugins.push(plugin);
+    this.handlers.push(plugin);
+    this.uiHandlers.push(plugin);
   }
 
   private finalize() {
@@ -365,12 +312,12 @@ export class State<TData extends RowData = Array<object>>
     return new DispatchResult();
   }
 
-  canDispatch: CommandDispatcher['canDispatch'] = (
-    type: string,
-    payload?: any,
-  ) => {
+  canDispatch<T extends CommandTypes, C extends Extract<Command, { type: T }>>(
+    type: T,
+    payload: Omit<C, 'type'>,
+  ): DispatchResult {
     return this.checkDispatchAllowed(createCommand(type, payload));
-  };
+  }
 }
 
 function createCommand(type: string, payload: any = {}): Command {

@@ -1,8 +1,18 @@
 import { h, type VNode } from 'snabbdom';
 
+import {
+  type Row,
+  type RowData,
+  type Table,
+  type TableOptionsResolved,
+} from '@tanstack/table-core';
+
+import { type Watarble } from '../../watarble';
 import { modelNodeToVnode } from '../render-element';
 import { customRender } from '../utils';
 import { sortedHeaderCss, tableBaseCss } from './table.styles';
+
+type TableElemNode = { type: 'table'; children: Row<RowData>[] };
 
 const SORT_DIRECTION_ICONS = {
   asc: ' 🔼',
@@ -11,8 +21,8 @@ const SORT_DIRECTION_ICONS = {
 
 export const tableConfig = {
   type: 'table',
-  renderFn: (elemNode, watarble): VNode => {
-    const children = elemNode.children || [];
+  renderFn: (elemNode: TableElemNode, watarble: Watarble): VNode => {
+    const rows = elemNode.children || [];
     // console.log(';; tb ', children);
 
     const vnode = h(
@@ -23,7 +33,7 @@ export const tableConfig = {
         {
           class: { idTable: true },
           style: {
-            width: watarble.state.table.getTotalSize() + 'px',
+            width: watarble.state.getters.getTotalSize() + 'px',
           },
         },
         [
@@ -31,7 +41,7 @@ export const tableConfig = {
           h(
             'div',
             {},
-            watarble.state.table.getHeaderGroups().map((headerGroup) => {
+            watarble.state.getters.getTableHeaderGroups().map((headerGroup) => {
               return h(
                 'div',
                 {
@@ -75,19 +85,19 @@ export const tableConfig = {
                             },
                             on: {
                               click: (e) => {
-                                console.log(
-                                  ';; beforeSort-curr-next ',
-                                  header.column.id,
-                                  header.column.getIsSorted(),
-                                  header.column.getNextSortingOrder(),
-                                );
+                                // console.log(
+                                //   ';; beforeSort-curr-next ',
+                                //   header.column.id,
+                                //   header.column.getIsSorted(),
+                                //   header.column.getNextSortingOrder(),
+                                // );
                                 header.column.getToggleSortingHandler()(e);
-                                console.log(
-                                  ';; afterSort--curr-next ',
-                                  header.column.id,
-                                  header.column.getIsSorted(),
-                                  header.column.getNextSortingOrder(),
-                                );
+                                // console.log(
+                                //   ';; afterSort--curr-next ',
+                                //   header.column.id,
+                                //   header.column.getIsSorted(),
+                                //   header.column.getNextSortingOrder(),
+                                // );
                               },
                             },
                           },
@@ -96,8 +106,9 @@ export const tableConfig = {
                               header.column.columnDef.header,
                               header.getContext(),
                             ),
-                            SORT_DIRECTION_ICONS[header.column.getIsSorted()] ??
-                              '',
+                            SORT_DIRECTION_ICONS[
+                              String(header.column.getIsSorted())
+                            ] ?? '',
                           ],
                         ),
                   );
@@ -106,7 +117,7 @@ export const tableConfig = {
             }),
           ),
           // / body-rows
-          ...children.map((row, index: number) => {
+          ...rows.map((row, index: number) => {
             // console.log(';; tr ', row);
 
             return h(

@@ -1,2 +1,1 @@
-export { registerInstance } from '../instances';
-export { getDefaultConfig } from './get-default-config';
+export { initConfig } from './init-config';

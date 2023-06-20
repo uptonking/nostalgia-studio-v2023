@@ -1,3 +1,3 @@
 export { Watarble } from './watarble';
-export { State } from './state';
+export { WatarState } from './state';
 export { registerInstance, getInstance } from './instances';

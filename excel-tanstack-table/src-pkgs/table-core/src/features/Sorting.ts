@@ -90,6 +90,7 @@ interface SortingOptionsBase {
   /** If true, you will be expected to sort your data before it is passed to the table.
    * - This is useful if you are doing server-side sorting. */
   manualSorting?: boolean;
+  /** If provided, this function will be called with an updaterFn when state.sorting changes. */
   onSortingChange?: OnChangeFn<SortingState>;
   enableSorting?: boolean;
   /** Enables/Disables the ability to remove sorting for the table.
@@ -225,7 +226,7 @@ export const Sorting: TableFeature = {
         const hasManualValue = typeof desc !== 'undefined' && desc !== null;
 
         table.setSorting((old) => {
-          console.log(';; toggleSorting-setSorting ');
+          // console.log(';; toggleSorting-setSorting ');
           // Find any existing sorting for this column
           const existingSorting = old?.find((d) => d.id === column.id);
           const existingIndex = old?.findIndex((d) => d.id === column.id);
@@ -388,13 +389,15 @@ export const Sorting: TableFeature = {
   ): SortingInstance<TData> => {
     return {
       setSorting: (updater) => {
-        console.log(
-          ';; onSortingChange1 ',
-          typeof updater,
-          table.getState().sorting,
-        );
+        // console.log(
+        //   ';; onSortingChange1 ',
+        //   typeof table.options.onSortingChange,
+        //   table.options.onSortingChange,
+        //   typeof updater,
+        //   table.getState().sorting,
+        // );
         const ret = table.options.onSortingChange?.(updater);
-        console.log(';; onSortingChange2 ', table.getState().sorting, ret);
+        // console.log(';; onSortingChange2 ', table.getState().sorting, ret);
         return ret;
       },
       resetSorting: (defaultState) => {

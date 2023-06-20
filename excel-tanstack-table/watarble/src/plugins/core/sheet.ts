@@ -1,0 +1,820 @@
+import {
+  type Cell,
+  type CellPosition,
+  type CoreCommand,
+  type CreateSheetCommand,
+  type HeaderIndex,
+  type Row,
+  type Sheet,
+  type SheetData,
+  type UID,
+  type WorkbookData,
+  type Zone,
+  type ZoneDimension,
+} from '../../types';
+import { CommandResults } from '../../utils/command';
+import { toCartesian } from '../../utils/coordinates';
+import { isDefined } from '../../utils/helpers';
+import { createDefaultRows } from '../../utils/state';
+import { CorePlugin } from '../plugin-core';
+
+interface SheetPluginState {
+  readonly sheets: Record<UID, Sheet | undefined>;
+  readonly orderedSheetIds: UID[];
+  readonly sheetIdsMapName: Record<string, UID | undefined>;
+  readonly cellPosition: Record<UID, CellPosition | undefined>;
+}
+
+/**
+ * manager of data tables
+ *
+ * todo extend to act as manager of views
+ */
+export class SheetPlugin
+  extends CorePlugin<SheetPluginState>
+  implements SheetPluginState
+{
+  static getters = [
+    'getSheetName',
+    'getSheet',
+    // 'getSheetIdByName',
+    'getSheetIds',
+    'getVisibleSheetIds',
+    'isSheetVisible',
+    'getCell',
+    // "getCellPosition",
+    // "getRowCells",
+    // "getNumberCols",
+    // "getNumberRows",
+    // "getNumberHeaders",
+    // "isEmpty",
+    // "getSheetSize",
+    // "getCommandZones",
+  ] as const;
+
+  readonly sheetIdsMapName: Record<string, UID | undefined> = {};
+  readonly orderedSheetIds: UID[] = [];
+  readonly sheets: Record<UID, Sheet | undefined> = {};
+  readonly cellPosition: Record<UID, CellPosition | undefined> = {};
+
+  allowDispatch(cmd: CoreCommand) {
+    switch (cmd.type) {
+      // case "CREATE_SHEET": {
+      //   return this.checkValidations(cmd, this.checkSheetName, this.checkSheetPosition);
+      // }
+      // case "HIDE_SHEET": {
+      //   if (this.getVisibleSheetIds().length === 1) {
+      //     return CommandResult.NotEnoughSheets;
+      //   }
+      //   return CommandResult.Success;
+      // }
+      case 'DELETE_SHEET':
+        return this.orderedSheetIds.length > 1
+          ? CommandResults.Success
+          : // : CommandResults.NotEnoughSheets;
+            CommandResults.CancelledForUnknownReason;
+      case 'ADD_COLUMNS_ROWS': {
+        const elements =
+          cmd.dimension === 'COL'
+            ? this.getNumberCols(cmd.sheetId)
+            : this.getNumberRows(cmd.sheetId);
+        if (cmd.base < 0 || cmd.base > elements) {
+          // return CommandResults.InvalidHeaderIndex;
+          return CommandResults.CancelledForUnknownReason;
+        } else if (cmd.quantity <= 0) {
+          // return CommandResult.InvalidQuantity;
+          return CommandResults.CancelledForUnknownReason;
+        }
+        return CommandResults.Success;
+      }
+      case 'REMOVE_COLUMNS_ROWS': {
+        const elements =
+          cmd.dimension === 'COL'
+            ? this.getNumberCols(cmd.sheetId)
+            : this.getNumberRows(cmd.sheetId);
+        if (
+          Math.min(...cmd.elements) < 0 ||
+          Math.max(...cmd.elements) > elements
+        ) {
+          // return CommandResults.InvalidHeaderIndex;
+          return CommandResults.CancelledForUnknownReason;
+        } else {
+          return CommandResults.Success;
+        }
+      }
+      default:
+        return CommandResults.Success;
+    }
+  }
+
+  handle(cmd: CoreCommand) {
+    switch (cmd.type) {
+      case 'CREATE_SHEET': {
+        const sheet = this.createSheet(
+          cmd.sheetId,
+          cmd.name || this.getNextSheetName(),
+          cmd.cols || 26,
+          cmd.rows || 100,
+          cmd.position,
+        );
+        this.history.update('sheetIdsMapName', sheet.name, sheet.id);
+        break;
+      }
+      case 'HIDE_SHEET':
+        this.hideSheet(cmd.sheetId);
+        break;
+      // case "SHOW_SHEET":
+      //   this.showSheet(cmd.sheetId);
+      //   break;
+      case 'DELETE_SHEET':
+        this.deleteSheet(this.sheets[cmd.sheetId]!);
+        break;
+      // case "DUPLICATE_SHEET":
+      //   this.duplicateSheet(cmd.sheetId, cmd.sheetIdTo);
+      //   break;
+
+      case 'REMOVE_COLUMNS_ROWS':
+        if (cmd.dimension === 'COL') {
+          this.removeColumns(this.sheets[cmd.sheetId]!, [...cmd.elements]);
+        } else {
+          this.removeRows(this.sheets[cmd.sheetId]!, [...cmd.elements]);
+        }
+        break;
+      case 'ADD_COLUMNS_ROWS':
+        if (cmd.dimension === 'COL') {
+          this.addColumns(
+            this.sheets[cmd.sheetId]!,
+            cmd.base,
+            cmd.position,
+            cmd.quantity,
+          );
+        } else {
+          this.addRows(
+            this.sheets[cmd.sheetId]!,
+            cmd.base,
+            cmd.position,
+            cmd.quantity,
+          );
+        }
+        break;
+    }
+  }
+
+  import(data: WorkbookData) {
+    // we need to fill the sheetIds mapping first, because otherwise formulas
+    // that depends on a sheet not already imported will not be able to be compiled
+    for (const sheet of data.sheets) {
+      this.sheetIdsMapName[sheet.name] = sheet.id;
+    }
+
+    for (const sheetData of data.sheets) {
+      const name =
+        sheetData.name || 'Sheet' + (Object.keys(this.sheets).length + 1);
+      const { colNumber, rowNumber } = this.getImportedSheetSize(sheetData);
+      const sheet: Sheet = {
+        id: sheetData.id,
+        name: name,
+        numberOfCols: colNumber,
+        rows: createDefaultRows(rowNumber),
+        areGridLinesVisible:
+          sheetData.areGridLinesVisible === undefined
+            ? true
+            : sheetData.areGridLinesVisible,
+        isVisible: sheetData.isVisible,
+        // panes: {
+        //   xSplit: sheetData.panes?.xSplit || 0,
+        //   ySplit: sheetData.panes?.ySplit || 0,
+        // },
+      };
+      this.orderedSheetIds.push(sheet.id);
+      this.sheets[sheet.id] = sheet;
+    }
+  }
+
+  private exportSheets(data: WorkbookData) {
+    // data.sheets = this.orderedSheetIds.filter(isDefined).map((id) => {
+    //   const sheet = this.sheets[id]!;
+    //   const sheetData: SheetData = {
+    //     id: sheet.id,
+    //     name: sheet.name,
+    //     colNumber: sheet.numberOfCols,
+    //     rowNumber: this.getters.getNumberRows(sheet.id),
+    //     rows: {},
+    //     cols: {},
+    //     merges: [],
+    //     cells: {},
+    //     conditionalFormats: [],
+    //     figures: [],
+    //     filterTables: [],
+    //     areGridLinesVisible:
+    //       sheet.areGridLinesVisible === undefined ? true : sheet.areGridLinesVisible,
+    //     isVisible: sheet.isVisible,
+    //   };
+    //   if (sheet.panes.xSplit || sheet.panes.ySplit) {
+    //     sheetData.panes = sheet.panes;
+    //   }
+    //   return sheetData;
+    // });
+  }
+
+  export(data: any) {
+    this.exportSheets(data);
+  }
+
+  getSheet(sheetId: UID): Sheet {
+    const sheet = this.sheets[sheetId];
+    if (!sheet) {
+      throw new Error(`Sheet ${sheetId} not found.`);
+    }
+    return sheet;
+  }
+
+  isSheetVisible(sheetId: UID): boolean {
+    return this.getSheet(sheetId).isVisible;
+  }
+
+  /**
+   * Return the sheet name. Throw if the sheet is not found.
+   */
+  getSheetName(sheetId: UID): string {
+    return this.getSheet(sheetId).name;
+  }
+
+  // getSheetIdByName(name: string | undefined): UID | undefined {
+  //   if (name) {
+  //     const unquotedName = getUnquotedSheetName(name);
+  //     for (const key in this.sheetIdsMapName) {
+  //       if (key.toUpperCase() === unquotedName.toUpperCase()) {
+  //         return this.sheetIdsMapName[key];
+  //       }
+  //     }
+  //   }
+  //   return undefined;
+  // }
+
+  getSheetIds(): UID[] {
+    return this.orderedSheetIds;
+  }
+
+  getVisibleSheetIds(): UID[] {
+    return this.orderedSheetIds.filter(this.isSheetVisible.bind(this));
+  }
+
+  getRow(sheetId: UID, index: HeaderIndex): Row {
+    const row = this.getSheet(sheetId).rows[index];
+    if (!row) {
+      throw new Error(`Row ${row} not found.`);
+    }
+    return row;
+  }
+
+  getCell({ sheetId, col, row }: CellPosition): Cell | undefined {
+    // const sheet = this.tryGetSheet(sheetId);
+    const sheet = this.getSheet(sheetId);
+    const cellId = sheet?.rows[row]?.cells[col];
+    if (cellId === undefined) {
+      return undefined;
+    }
+    return this.getters.getCellById(cellId);
+  }
+
+  getRowCells(sheetId: UID, row: HeaderIndex): UID[] {
+    return Object.values(this.getSheet(sheetId).rows[row]?.cells).filter(
+      isDefined,
+    );
+  }
+
+  getNumberCols(sheetId: UID) {
+    return this.getSheet(sheetId).numberOfCols;
+  }
+
+  getNumberRows(sheetId: UID) {
+    return this.getSheet(sheetId).rows.length;
+  }
+
+  // getNumberHeaders(sheetId: UID, dimension: Dimension) {
+  //   return dimension === "COL" ? this.getNumberCols(sheetId) : this.getNumberRows(sheetId);
+  // }
+
+  // getNextSheetName(baseName = "Sheet"): string {
+  //   let i = 1;
+  //   const names = this.orderedSheetIds.map(this.getSheetName.bind(this));
+  //   let name = `${baseName}${i}`;
+  //   while (names.includes(name)) {
+  //     name = `${baseName}${i}`;
+  //     i++;
+  //   }
+  //   return name;
+  // }
+
+  getSheetSize(sheetId: UID): ZoneDimension {
+    return {
+      numberOfRows: this.getNumberRows(sheetId),
+      numberOfCols: this.getNumberCols(sheetId),
+    };
+  }
+
+  getNextSheetName(baseName = 'Sheet'): string {
+    let i = 1;
+    const names = this.orderedSheetIds.map(this.getSheetName.bind(this));
+    let name = `${baseName}${i}`;
+    while (names.includes(name)) {
+      name = `${baseName}${i}`;
+      i++;
+    }
+    return name;
+  }
+
+  getSheetZone(sheetId: UID): Zone {
+    return {
+      top: 0,
+      left: 0,
+      bottom: this.getNumberRows(sheetId) - 1,
+      right: this.getNumberCols(sheetId) - 1,
+    };
+  }
+
+  /**
+   * Check if a zone only contains empty cells
+   */
+  // isEmpty(sheetId: UID, zone: Zone): boolean {
+  //   return positions(zone)
+  //     .map(({ col, row }) => this.getCell({ sheetId, col, row }))
+  //     .every((cell) => !cell || cell.content === "");
+  // }
+
+  // private updateCellPosition(cmd: UpdateCellPositionCommand) {
+  //   const { sheetId, cellId, col, row } = cmd;
+  //   if (cellId) {
+  //     this.setNewPosition(cellId, sheetId, col, row);
+  //   } else {
+  //     this.clearPosition(sheetId, col, row);
+  //   }
+  // }
+
+  /**
+   * Set the cell at a new position and clear its previous position.
+   */
+  // private setNewPosition(cellId: UID, sheetId: UID, col: HeaderIndex, row: HeaderIndex) {
+  //   const currentPosition = this.cellPosition[cellId];
+  //   if (currentPosition) {
+  //     this.clearPosition(sheetId, currentPosition.col, currentPosition.row);
+  //   }
+  //   this.history.update("cellPosition", cellId, {
+  //     row: row,
+  //     col: col,
+  //     sheetId: sheetId,
+  //   });
+  //   this.history.update("sheets", sheetId, "rows", row, "cells", col, cellId);
+  // }
+
+  /**
+   * Remove the cell at the given position (if there's one)
+   */
+  // private clearPosition(sheetId: UID, col: HeaderIndex, row: HeaderIndex) {
+  //   const cellId = this.sheets[sheetId]?.rows[row].cells[col];
+  //   if (cellId) {
+  //     this.history.update("cellPosition", cellId, undefined);
+  //     this.history.update("sheets", sheetId, "rows", row, "cells", col, undefined);
+  //   }
+  // }
+
+  private createSheet(
+    id: UID,
+    name: string,
+    colNumber: number,
+    rowNumber: number,
+    position: number,
+  ): Sheet {
+    const sheet: Sheet = {
+      id,
+      name,
+      numberOfCols: colNumber,
+      rows: createDefaultRows(rowNumber),
+      areGridLinesVisible: true,
+      isVisible: true,
+      // panes: {
+      //   xSplit: 0,
+      //   ySplit: 0,
+      // },
+    };
+    const orderedSheetIds = this.orderedSheetIds.slice();
+    orderedSheetIds.splice(position, 0, sheet.id);
+    const sheets = this.sheets;
+    this.history.update('orderedSheetIds', orderedSheetIds);
+    this.history.update('sheets', { ...sheets, [sheet.id]: sheet });
+    return sheet;
+  }
+
+  private findIndexOfTargetSheet(
+    currentIndex: HeaderIndex,
+    deltaIndex: number,
+  ): number {
+    while (
+      deltaIndex != 0 &&
+      0 <= currentIndex &&
+      currentIndex <= this.orderedSheetIds.length
+    ) {
+      if (deltaIndex > 0) {
+        currentIndex++;
+        if (this.isSheetVisible(this.orderedSheetIds[currentIndex])) {
+          deltaIndex--;
+        }
+      } else if (deltaIndex < 0) {
+        currentIndex--;
+        if (this.isSheetVisible(this.orderedSheetIds[currentIndex])) {
+          deltaIndex++;
+        }
+      }
+    }
+    if (deltaIndex === 0) {
+      return currentIndex;
+    }
+    throw new Error('There is not enough visible sheets');
+  }
+
+  // private checkSheetName(cmd: RenameSheetCommand | CreateSheetCommand): CommandResult {
+  //   const { orderedSheetIds, sheets } = this;
+  //   const name = cmd.name && cmd.name.trim().toLowerCase();
+
+  //   if (orderedSheetIds.find((id) => sheets[id]?.name.toLowerCase() === name)) {
+  //     return CommandResult.DuplicatedSheetName;
+  //   }
+  //   if (FORBIDDEN_IN_EXCEL_REGEX.test(name!)) {
+  //     return CommandResult.ForbiddenCharactersInSheetName;
+  //   }
+  //   return CommandResult.Success;
+  // }
+
+  private checkSheetPosition(cmd: CreateSheetCommand) {
+    const { orderedSheetIds } = this;
+    if (cmd.position > orderedSheetIds.length || cmd.position < 0) {
+      // return CommandResults.WrongSheetPosition;
+      return CommandResults.CancelledForUnknownReason;
+    }
+    return CommandResults.Success;
+  }
+
+  // private renameSheet(sheet: Sheet, name: string) {
+  //   const oldName = sheet.name;
+  //   this.history.update("sheets", sheet.id, "name", name.trim());
+  //   const sheetIdsMapName = Object.assign({}, this.sheetIdsMapName);
+  //   sheetIdsMapName[name] = sheet.id;
+  //   delete sheetIdsMapName[oldName];
+  //   this.history.update("sheetIdsMapName", sheetIdsMapName);
+  // }
+
+  private hideSheet(sheetId: UID) {
+    this.history.update('sheets', sheetId, 'isVisible', false);
+  }
+
+  private showSheet(sheetId: UID) {
+    this.history.update('sheets', sheetId, 'isVisible', true);
+  }
+
+  // private duplicateSheet(fromId: UID, toId: UID) {
+  //   const sheet = this.getSheet(fromId);
+  //   const toName = this.getDuplicateSheetName(sheet.name);
+  //   const newSheet: Sheet = deepCopy(sheet);
+  //   newSheet.id = toId;
+  //   newSheet.name = toName;
+  //   for (let col = 0; col <= newSheet.numberOfCols; col++) {
+  //     for (let row = 0; row <= newSheet.rows.length; row++) {
+  //       if (newSheet.rows[row]) {
+  //         newSheet.rows[row].cells[col] = undefined;
+  //       }
+  //     }
+  //   }
+  //   const orderedSheetIds = this.orderedSheetIds.slice();
+  //   const currentIndex = orderedSheetIds.indexOf(fromId);
+  //   orderedSheetIds.splice(currentIndex + 1, 0, newSheet.id);
+  //   this.history.update("orderedSheetIds", orderedSheetIds);
+  //   this.history.update("sheets", Object.assign({}, this.sheets, { [newSheet.id]: newSheet }));
+
+  //   for (const cell of Object.values(this.getters.getCells(fromId))) {
+  //     const { col, row } = this.getCellPosition(cell.id);
+  //     this.dispatch("UPDATE_CELL", {
+  //       sheetId: newSheet.id,
+  //       col,
+  //       row,
+  //       content: cell.content,
+  //       format: cell.format,
+  //       style: cell.style,
+  //     });
+  //   }
+
+  //   const sheetIdsMapName = Object.assign({}, this.sheetIdsMapName);
+  //   sheetIdsMapName[newSheet.name] = newSheet.id;
+  //   this.history.update("sheetIdsMapName", sheetIdsMapName);
+  // }
+
+  private deleteSheet(sheet: Sheet) {
+    const name = sheet.name;
+    const sheets = { ...this.sheets };
+    delete sheets[sheet.id];
+    this.history.update('sheets', sheets);
+
+    const orderedSheetIds = this.orderedSheetIds.slice();
+    const currentIndex = orderedSheetIds.indexOf(sheet.id);
+    orderedSheetIds.splice(currentIndex, 1);
+
+    this.history.update('orderedSheetIds', orderedSheetIds);
+    const sheetIdsMapName = { ...this.sheetIdsMapName };
+    delete sheetIdsMapName[name];
+    this.history.update('sheetIdsMapName', sheetIdsMapName);
+  }
+
+  /**
+   * Delete column. This requires a lot of handling:
+   * - Update all the formulas in all sheets
+   * - Move the cells
+   * - Update the cols/rows (size, number, (cells), ...)
+   * - Reevaluate the cells
+   *
+   * @param sheet ID of the sheet on which deletion should be applied
+   * @param columns Columns to delete
+   */
+  private removeColumns(sheet: Sheet, columns: HeaderIndex[]) {
+    // This is necessary because we have to delete elements in correct order:
+    // begin with the end.
+    columns.sort((a, b) => b - a);
+    for (const column of columns) {
+      // Move the cells.
+      this.moveCellOnColumnsDeletion(sheet, column);
+    }
+    const numberOfCols = this.sheets[sheet.id]!.numberOfCols;
+    this.history.update(
+      'sheets',
+      sheet.id,
+      'numberOfCols',
+      numberOfCols - columns.length,
+    );
+    // const count = columns.filter((col) => col < sheet.panes.xSplit).length;
+    // if (count) {
+    //   this.setPaneDivisions(sheet.id, sheet.panes.xSplit - count, "COL");
+    // }
+  }
+
+  /**
+   * Delete row. This requires a lot of handling:
+   * - Update the merges
+   * - Update all the formulas in all sheets
+   * - Move the cells
+   * - Update the cols/rows (size, number, (cells), ...)
+   * - Reevaluate the cells
+   *
+   * @param sheet ID of the sheet on which deletion should be applied
+   * @param rows Rows to delete
+   */
+  private removeRows(sheet: Sheet, rows: HeaderIndex[]) {
+    // This is necessary because we have to delete elements in correct order:
+    // begin with the end.
+    rows.sort((a, b) => b - a);
+
+    // for (let group of groupConsecutive(rows)) {
+    //   // Move the cells.
+    //   this.moveCellOnRowsDeletion(sheet, group[group.length - 1], group[0]);
+
+    //   // Effectively delete the element and recompute the left-right/top-bottom.
+    //   group.map((row) => this.updateRowsStructureOnDeletion(row, sheet));
+    // }
+    // const count = rows.filter((row) => row < sheet.panes.ySplit).length;
+    // if (count) {
+    //   this.setPaneDivisions(sheet.id, sheet.panes.ySplit - count, "ROW");
+    // }
+  }
+
+  private addColumns(
+    sheet: Sheet,
+    column: HeaderIndex,
+    position: 'before' | 'after',
+    quantity: number,
+  ) {
+    const index = position === 'before' ? column : column + 1;
+    // Move the cells.
+    this.moveCellsOnAddition(sheet, index, quantity, 'columns');
+
+    const numberOfCols = this.sheets[sheet.id]!.numberOfCols;
+    this.history.update(
+      'sheets',
+      sheet.id,
+      'numberOfCols',
+      numberOfCols + quantity,
+    );
+    // if (index < sheet.panes.xSplit) {
+    //   this.setPaneDivisions(sheet.id, sheet.panes.xSplit + quantity, "COL");
+    // }
+  }
+
+  private addRows(
+    sheet: Sheet,
+    row: HeaderIndex,
+    position: 'before' | 'after',
+    quantity: number,
+  ) {
+    const index = position === 'before' ? row : row + 1;
+    this.addEmptyRows(sheet, quantity);
+
+    // Move the cells.
+    this.moveCellsOnAddition(sheet, index, quantity, 'rows');
+
+    // Recompute the left-right/top-bottom.
+    this.updateRowsStructureOnAddition(sheet, row, quantity);
+    // if (index < sheet.panes.ySplit) {
+    //   this.setPaneDivisions(sheet.id, sheet.panes.ySplit + quantity, "ROW");
+    // }
+  }
+
+  private moveCellOnColumnsDeletion(sheet: Sheet, deletedColumn: number) {
+    for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
+      const row = sheet.rows[rowIndex];
+      // eslint-disable-next-line guard-for-in
+      for (const i in row.cells) {
+        const colIndex = Number(i);
+        const cellId = row.cells[i];
+        if (cellId) {
+          if (colIndex === deletedColumn) {
+            // this.dispatch("CLEAR_CELL", {
+            //   sheetId: sheet.id,
+            //   col: colIndex,
+            //   row: rowIndex,
+            // });
+          }
+          if (colIndex > deletedColumn) {
+            // this.dispatch("UPDATE_CELL_POSITION", {
+            //   sheetId: sheet.id,
+            //   cellId: cellId,
+            //   col: colIndex - 1,
+            //   row: rowIndex,
+            // });
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Move the cells after a column or rows insertion
+   */
+  private moveCellsOnAddition(
+    sheet: Sheet,
+    addedElement: HeaderIndex,
+    quantity: number,
+    dimension: 'rows' | 'columns',
+  ) {
+    // const commands: UpdateCellPositionCommand[] = [];
+    const commands: any[] = [];
+    for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
+      const row = sheet.rows[rowIndex];
+      if (dimension !== 'rows' || rowIndex >= addedElement) {
+        // eslint-disable-next-line guard-for-in
+        for (const i in row.cells) {
+          const colIndex = Number(i);
+          const cellId = row.cells[i];
+          if (cellId) {
+            if (dimension === 'rows' || colIndex >= addedElement) {
+              // commands.push({
+              //   type: "UPDATE_CELL_POSITION",
+              //   sheetId: sheet.id,
+              //   cellId: cellId,
+              //   col: colIndex + (dimension === "columns" ? quantity : 0),
+              //   row: rowIndex + (dimension === "rows" ? quantity : 0),
+              // });
+            }
+          }
+        }
+      }
+    }
+    for (const cmd of commands.reverse()) {
+      this.dispatch(cmd.type, cmd);
+    }
+  }
+
+  /**
+   * Move all the cells that are from the row under `deleteToRow` up to `deleteFromRow`
+   *
+   * b.e.
+   * move vertically with delete from 3 and delete to 5 will first clear all the cells from lines 3 to 5,
+   * then take all the row starting at index 6 and add them back at index 3
+   *
+   */
+  private moveCellOnRowsDeletion(
+    sheet: Sheet,
+    deleteFromRow: HeaderIndex,
+    deleteToRow: HeaderIndex,
+  ) {
+    const numberRows = deleteToRow - deleteFromRow + 1;
+    for (let rowIndex = 0; rowIndex < sheet.rows.length; rowIndex++) {
+      const row = sheet.rows[rowIndex];
+      if (rowIndex >= deleteFromRow && rowIndex <= deleteToRow) {
+        // eslint-disable-next-line guard-for-in
+        for (const i in row.cells) {
+          const colIndex = Number(i);
+          const cellId = row.cells[i];
+          if (cellId) {
+            // this.dispatch("CLEAR_CELL", {
+            //   sheetId: sheet.id,
+            //   col: colIndex,
+            //   row: rowIndex,
+            // });
+          }
+        }
+      }
+      if (rowIndex > deleteToRow) {
+        // eslint-disable-next-line guard-for-in
+        for (const i in row.cells) {
+          const colIndex = Number(i);
+          const cellId = row.cells[i];
+          if (cellId) {
+            // this.dispatch("UPDATE_CELL_POSITION", {
+            //   sheetId: sheet.id,
+            //   cellId: cellId,
+            //   col: colIndex,
+            //   row: rowIndex - numberRows,
+            // });
+          }
+        }
+      }
+    }
+  }
+
+  private updateRowsStructureOnDeletion(index: HeaderIndex, sheet: Sheet) {
+    const rows: Row[] = [];
+    const cellsQueue = sheet.rows.map((row) => row.cells);
+    for (const i in sheet.rows) {
+      if (Number(i) === index) {
+        continue;
+      }
+      rows.push({
+        cells: cellsQueue.shift()!,
+      });
+    }
+    this.history.update('sheets', sheet.id, 'rows', rows);
+  }
+
+  /**
+   * Update the rows of the sheet after an addition:
+   * - Rename the rows
+   *
+   * @param sheet Sheet on which the deletion occurs
+   * @param addedRow Index of the added row
+   * @param rowsToAdd Number of the rows to add
+   */
+  private updateRowsStructureOnAddition(
+    sheet: Sheet,
+    addedRow: HeaderIndex,
+    rowsToAdd: number,
+  ) {
+    const rows: Row[] = [];
+    const cellsQueue = sheet.rows.map((row) => row.cells);
+    sheet.rows.forEach(() =>
+      rows.push({
+        cells: cellsQueue.shift()!,
+      }),
+    );
+    this.history.update('sheets', sheet.id, 'rows', rows);
+  }
+
+  /**
+   * Add empty rows at the end of the rows
+   *
+   * @param sheet Sheet
+   * @param quantity Number of rows to add
+   */
+  private addEmptyRows(sheet: Sheet, quantity: number) {
+    const rows: Row[] = sheet.rows.slice();
+    for (let i = 0; i < quantity; i++) {
+      rows.push({
+        cells: {},
+      });
+    }
+    this.history.update('sheets', sheet.id, 'rows', rows);
+  }
+
+  private getImportedSheetSize(data: SheetData): {
+    rowNumber: number;
+    colNumber: number;
+  } {
+    const positions = Object.keys(data.cells).map(toCartesian);
+
+    let rowNumber = data.rowNumber;
+    let colNumber = data.colNumber;
+    for (const { col, row } of positions) {
+      rowNumber = Math.max(rowNumber, row + 1);
+      colNumber = Math.max(colNumber, col + 1);
+    }
+    return { rowNumber, colNumber };
+  }
+
+  /**
+   * Check that any "sheetId" in the command matches an existing sheet.
+   */
+  // private checkSheetExists(cmd: CoreCommand): CommandResult {
+  //   if (cmd.type !== "CREATE_SHEET" && "sheetId" in cmd && this.sheets[cmd.sheetId] === undefined) {
+  //     return CommandResult.InvalidSheetId;
+  //   } else if (cmd.type === "CREATE_SHEET" && this.sheets[cmd.sheetId] !== undefined) {
+  //     return CommandResult.DuplicatedSheetId;
+  //   }
+  //   return CommandResult.Success;
+  // }
+}

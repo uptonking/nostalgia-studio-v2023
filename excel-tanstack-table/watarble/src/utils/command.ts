@@ -6,11 +6,19 @@ import {
   type CoreCommandTypes,
 } from '../types';
 
+/** core command types, shared in collaboration */
 export const coreTypes = new Set<CoreCommandTypes>([
   'UPDATE_CELL',
-  // "UPDATE_CELL_POSITION",
-  // "CLEAR_CELL",
+  'UPDATE_CELL_POSITION',
+  'CLEAR_CELL',
   // "DELETE_CONTENT",
+  'ADD_COLUMNS_ROWS',
+  'REMOVE_COLUMNS_ROWS',
+  'HIDE_COLUMNS_ROWS',
+  // "UNHIDE_COLUMNS_ROWS",
+  'CREATE_SHEET',
+  'DELETE_SHEET',
+  // "DUPLICATE_SHEET",
 ]);
 
 export function isCoreCommand(cmd: Command): cmd is CoreCommand {

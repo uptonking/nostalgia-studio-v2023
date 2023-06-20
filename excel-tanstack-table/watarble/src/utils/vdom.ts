@@ -8,6 +8,8 @@ import {
   type VNode,
 } from 'snabbdom';
 
+import { type VdomRendererSpec } from '../types';
+
 const patch = init(
   [classModule, propsModule, styleModule, eventListenersModule],
   undefined,
@@ -18,7 +20,7 @@ const patch = init(
   },
 );
 
-export class VdomRenderer {
+export class VdomRendererDefault implements VdomRendererSpec {
   private oldVnode: VNode = null;
 
   render(vnode: VNode[], container: HTMLElement, fullReload = false) {

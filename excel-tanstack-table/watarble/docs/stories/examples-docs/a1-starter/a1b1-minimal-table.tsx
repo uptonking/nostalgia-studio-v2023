@@ -112,11 +112,13 @@ export const A1b1MinimalTbl = () => {
     if (containerRef.current) {
       const watarble = new Watarble({
         container: '.idEgRightContainer',
-        data,
-        // @ts-expect-error fix-types
-        columns: columns,
-        getCoreRowModel: getCoreRowModel(),
-        debugTable: true,
+        table: {
+          data,
+          // @ts-expect-error fix-types
+          columns: columns,
+          getCoreRowModel: getCoreRowModel(),
+          debugTable: true,
+        },
       });
       window['wt'] = watarble;
 

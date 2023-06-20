@@ -3,6 +3,7 @@ import {
   type CommandDispatcher,
   type CommandHandler,
   type CommandResult,
+  type WorkbookHistory,
 } from '../types';
 import { CommandResults } from '../utils/command';
 
@@ -14,8 +15,7 @@ import { CommandResults } from '../utils/command';
 export class BasePlugin<State = any, C = any> implements CommandHandler<C> {
   static getters: readonly string[] = [];
 
-  // protected history: WorkbookHistory<State>;
-  protected history: any;
+  protected history: WorkbookHistory<State>;
   protected dispatch: CommandDispatcher['dispatch'];
 
   constructor(
@@ -24,13 +24,13 @@ export class BasePlugin<State = any, C = any> implements CommandHandler<C> {
   ) {
     this.history = Object.assign(Object.create(stateObserver), {
       update: stateObserver.addChange.bind(stateObserver, this),
-      selectCell: () => {},
+      // selectCell: () => {},
     });
     this.dispatch = dispatch;
   }
 
   /**
-   * Export for excel should be available for all plugins, even for the UI.
+   * export is available for all plugins, even for the UI.
    */
   export(data: any) {}
 

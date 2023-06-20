@@ -1,1 +1,2 @@
-export { State } from './state';
+export { WatarState } from './watar-state';
+export { StateObserver } from './state-observer';

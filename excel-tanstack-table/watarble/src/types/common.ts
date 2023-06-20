@@ -1,4 +1,4 @@
-import { type DIRECTIONS } from '../utils/constants';
+import { type DIRECTION } from '../utils/constants';
 
 export type Alias = {} & {};
 
@@ -29,6 +29,11 @@ export interface HeaderDimensions {
   end: Pixel;
 }
 
+export interface HeaderData {
+  size?: number;
+  isHidden?: boolean;
+}
+
 export interface Position {
   col: HeaderIndex;
   row: HeaderIndex;
@@ -36,7 +41,74 @@ export interface Position {
 
 export type Dimension = 'COL' | 'ROW';
 
-export type DIRECTION = (typeof DIRECTIONS)[keyof typeof DIRECTIONS];
+/** range defined by left-right-top-bottom */
+export interface Zone {
+  left: HeaderIndex;
+  right: HeaderIndex;
+  top: HeaderIndex;
+  bottom: HeaderIndex;
+}
+
+export interface AnchorZone {
+  zone: Zone;
+  cell: Position;
+}
+
+export interface ZoneDimension {
+  numberOfRows: HeaderIndex;
+  numberOfCols: HeaderIndex;
+}
+
+export interface Selection {
+  anchor: AnchorZone;
+  zones: Zone[];
+}
+
+export type SelectionDirection = 'up' | 'down' | 'left' | 'right';
+
+export type SelectionStep = number | 'end';
+
+export interface RangePart {
+  readonly colFixed: boolean;
+  readonly rowFixed: boolean;
+}
+
+export interface Range {
+  readonly zone: Readonly<Zone>;
+  readonly parts: readonly RangePart[];
+  readonly invalidXc?: string;
+  /** true if the user provided the range with the sheet name */
+  readonly prefixSheet: boolean;
+  /** the name of any sheet that is invalid */
+  readonly invalidSheetName?: string;
+  /** the sheet on which the range is defined */
+  readonly sheetId: UID;
+}
+
+export interface RangeData {
+  // _zone: Zone | UnboundedZone;
+  _zone: Zone;
+  _sheetId: UID;
+}
+
+export type Format = string & Alias;
+
+export type FormattedValue = string & Alias;
+
+export interface Style {
+  bold?: boolean;
+  italic?: boolean;
+  strikethrough?: boolean;
+  underline?: boolean;
+  // align?: Align;
+  // wrapping?: Wrapping;
+  // verticalAlign?: VerticalAlign;
+  fillColor?: Color;
+  textColor?: Color;
+  fontSize?: number; // in pt, not in px!
+}
+
+export type DirectionType = (typeof DIRECTION)[keyof typeof DIRECTION];
 
 export type Mode = 'normal' | 'readonly';
 
@@ -72,3 +144,12 @@ export type ApplyRangeChangeResult =
 export type ApplyRangeChange = (range: Range) => ApplyRangeChangeResult;
 
 export type Increment = 1 | -1 | 0;
+
+export interface SortOptions {
+  /** If true sort the headers of the range along with the rest */
+  sortHeaders?: boolean;
+  /** If true treat empty cells as "0" instead of undefined */
+  emptyCellAsZero?: boolean;
+}
+
+export type SortDirection = 'asc' | 'desc';

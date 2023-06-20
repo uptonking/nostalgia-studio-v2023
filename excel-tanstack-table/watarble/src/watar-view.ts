@@ -1,7 +1,10 @@
 import { modelNodeToVnode } from './view/render-element';
 import { type Watarble } from './watarble';
 
-export class MainView {
+/**
+ * main view for watarble
+ */
+export class WatarView {
   watarble: Watarble;
   innerRoot: HTMLDivElement;
 
@@ -10,7 +13,7 @@ export class MainView {
   }
 
   updateView() {
-    console.trace(';; updateView ');
+    // console.trace(';; updateView ');
 
     const container = this.watarble.config.rendering.container;
     if (!this.innerRoot) {
@@ -19,10 +22,12 @@ export class MainView {
       container.appendChild(this.innerRoot);
     }
 
-    const newVnode = this.watarble.state.content.map((item) => {
-      const vnode = modelNodeToVnode(item, this.watarble);
-      return vnode;
-    });
+    const newVnode = this.watarble.state.getters
+      .getTableRowModel()
+      .map((item) => {
+        const vnode = modelNodeToVnode(item, this.watarble);
+        return vnode;
+      });
 
     this.watarble.config.rendering.renderer.render(newVnode, this.innerRoot);
   }

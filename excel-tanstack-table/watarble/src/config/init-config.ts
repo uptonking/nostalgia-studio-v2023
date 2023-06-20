@@ -1,23 +1,12 @@
+import { type WatarbleConfig, type WatarbleOptions } from '../types';
 import { getHTMLElement } from '../utils/dom';
 import { RegistryDefault } from '../utils/registry-default';
-import { renderVdom, VdomRenderer } from '../utils/vdom';
+import { VdomRendererDefault } from '../utils/vdom';
 import { defaultRender } from '../view/default-render';
 import * as elements from '../view/elements';
 
-export function getDefaultConfig(options) {
-  const {
-    classNames,
-    container,
-    getEnvironmentProps,
-    getRootProps,
-    render,
-    renderNoResults,
-    renderer,
-    detachedMediaQuery,
-    components,
-    translations,
-    ...core
-  } = options;
+export function initConfig(options: WatarbleOptions): WatarbleConfig {
+  const { container, renderer, components, ...core } = options;
 
   const environment = (
     typeof window !== 'undefined' ? window : {}
@@ -31,9 +20,9 @@ export function getDefaultConfig(options) {
 
   return {
     ...core,
-    environment,
+    // environment,
     rendering: {
-      renderer: render || new VdomRenderer(),
+      renderer: renderer || new VdomRendererDefault(),
       defaultRender: defaultRender,
       container: containerElement,
       elements: defaultElements,

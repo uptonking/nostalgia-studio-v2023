@@ -1,6 +1,17 @@
+import { type SortingState, type TableState } from '@tanstack/table-core';
+
 import { type CommandResults, type DispatchResult } from '../utils/command';
-import { type Dimension, type HeaderIndex, type UID } from './common';
-import { type Format, type RangeData, type Style, type Zone } from './excel';
+import {
+  type Dimension,
+  type Format,
+  type HeaderIndex,
+  type RangeData,
+  type SortDirection,
+  type SortOptions,
+  type Style,
+  type UID,
+  type Zone,
+} from './common';
 
 export interface SheetDependentCommand {
   sheetId: UID;
@@ -33,6 +44,30 @@ export interface UpdateCellCommand extends PositionDependentCommand {
   format?: Format;
 }
 
+/**
+ * Move a cell to a given position or clear the position.
+ */
+export interface UpdateCellPositionCommand extends PositionDependentCommand {
+  type: 'UPDATE_CELL_POSITION';
+  cellId?: UID;
+}
+
+export interface ClearCellCommand extends PositionDependentCommand {
+  type: 'CLEAR_CELL';
+}
+
+export interface DeleteCellCommand {
+  type: 'DELETE_CELL';
+  shiftDimension: Dimension;
+  zone: Zone;
+}
+
+export interface InsertCellCommand {
+  type: 'INSERT_CELL';
+  shiftDimension: Dimension;
+  zone: Zone;
+}
+
 export interface AddColumnsRowsCommand extends GridDependentCommand {
   type: 'ADD_COLUMNS_ROWS';
   base: HeaderIndex;
@@ -40,14 +75,135 @@ export interface AddColumnsRowsCommand extends GridDependentCommand {
   position: 'before' | 'after';
 }
 
-export type CoreCommand = UpdateCellCommand | AddColumnsRowsCommand;
+export interface RemoveColumnsRowsCommand extends GridDependentCommand {
+  type: 'REMOVE_COLUMNS_ROWS';
+  elements: HeaderIndex[];
+}
+
+export interface HideColumnsRowsCommand extends GridDependentCommand {
+  type: 'HIDE_COLUMNS_ROWS';
+  elements: HeaderIndex[];
+}
+
+export interface UnhideColumnsRowsCommand extends GridDependentCommand {
+  type: 'UNHIDE_COLUMNS_ROWS';
+  elements: HeaderIndex[];
+}
+
+export interface CreateSheetCommand extends SheetDependentCommand {
+  type: 'CREATE_SHEET';
+  position: number;
+  name?: string; // required in master
+  cols?: number;
+  rows?: number;
+}
+
+export interface DeleteSheetCommand extends SheetDependentCommand {
+  type: 'DELETE_SHEET';
+}
+
+export interface DuplicateSheetCommand extends SheetDependentCommand {
+  type: 'DUPLICATE_SHEET';
+  sheetIdTo: UID;
+}
+
+export interface HideSheetCommand extends SheetDependentCommand {
+  type: 'HIDE_SHEET';
+}
+
+export interface ShowSheetCommand extends SheetDependentCommand {
+  type: 'SHOW_SHEET';
+}
+
+export interface StartCommand {
+  type: 'START';
+}
+
+export interface StartEditionCommand {
+  type: 'START_EDITION';
+  text?: string;
+  // selection?: ComposerSelection;
+  selection?: any;
+}
+
+export interface StopEditionCommand {
+  type: 'STOP_EDITION';
+  cancel?: boolean;
+}
 
 export interface UndoCommand {
   type: 'UNDO';
   commands: readonly CoreCommand[];
 }
 
-export type LocalCommand = UndoCommand;
+export interface RedoCommand {
+  type: 'REDO';
+  commands: readonly CoreCommand[];
+}
+
+export interface SortCommand {
+  type: 'SORT_CELLS';
+  sheetId: UID;
+  col: number;
+  row: number;
+  zone: Zone;
+  sortDirection: SortDirection;
+  sortOptions?: SortOptions;
+}
+
+export interface ToggleColumnSortingCommand {
+  type: 'TOGGLE_COLUMN_SORTING';
+  column: UID;
+}
+
+export interface UpdateColumnSortingCommand {
+  type: 'UPDATE_COLUMN_SORTING';
+  sorting: SortingState;
+}
+
+export interface UpdateTableStateCommand {
+  type: 'UPDATE_TABLE_STATE';
+  tableState: Partial<TableState>;
+}
+
+export interface ShowToolbarCommand {
+  type: 'SET_TOOLBAR_VISIBILITY';
+  show: boolean;
+}
+
+/**
+ * core commands are shared in collaboration
+ * - core commands should be self-contain to process core state, agnostic to local state
+ */
+export type CoreCommand =
+  | UpdateCellCommand
+  | UpdateCellPositionCommand
+  | ClearCellCommand
+  | AddColumnsRowsCommand
+  | RemoveColumnsRowsCommand
+  | HideColumnsRowsCommand
+  | CreateSheetCommand
+  | DeleteSheetCommand
+  // | DuplicateSheetCommand
+  | HideSheetCommand;
+
+/**
+ * local commands process local state, can be converted to core commands, not shared in collab
+ * - local commands can use local state like activeView to process state
+ */
+export type LocalCommand =
+  | UndoCommand
+  | RedoCommand
+  | StartCommand
+  | StartEditionCommand
+  | StopEditionCommand
+  | SortCommand
+  | ToggleColumnSortingCommand
+  | UpdateColumnSortingCommand
+  | UpdateTableStateCommand
+  | DeleteCellCommand
+  | InsertCellCommand
+  | ShowToolbarCommand;
 
 export type Command = CoreCommand | LocalCommand;
 
@@ -65,9 +221,9 @@ export interface CommandHandler<T> {
 }
 
 export interface CommandDispatcher<CmdTypes = CommandTypes, Cmd = Command> {
-  dispatch<T extends CmdTypes, C extends Extract<Cmd, { type: T }>>(
-    type: {} extends Omit<C, 'type'> ? T : never,
-  ): DispatchResult;
+  // dispatch<T extends CmdTypes, C extends Extract<Cmd, { type: T }>>(
+  //   type: {} extends Omit<C, 'type'> ? T : never,
+  // ): DispatchResult;
   dispatch<T extends CmdTypes, C extends Extract<Cmd, { type: T }>>(
     type: T,
     r: Omit<C, 'type'>,

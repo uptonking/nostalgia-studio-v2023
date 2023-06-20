@@ -141,6 +141,7 @@ export interface CoreInstance<TData extends RowData> {
    */
   getState: () => TableState;
   /** update the table state.
+   * - note state is not updated immediately, `setState` only triggers `options.onStateChange()`
    * - It's recommended you pass an updater function in the form of `(prevState) => newState`
    *   to update the state, but a direct object can also be passed.
    * - If `options.onStateChange` is provided, it will be triggered by this function with the new state.

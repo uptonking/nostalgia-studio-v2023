@@ -31,6 +31,8 @@ export class CellPlugin
   extends CorePlugin<CellPluginState>
   implements CellPluginState
 {
+  static pluginKey = 'WTBL_CELL';
+
   static getters = [
     'getCells',
     'getCellById',

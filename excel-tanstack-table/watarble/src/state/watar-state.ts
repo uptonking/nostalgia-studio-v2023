@@ -6,11 +6,14 @@ import {
   type CorePluginConstructor,
 } from '../plugins/plugin-core';
 import {
-  type UIPlugin,
-  type UIPluginConfig,
-  type UIPluginConstructor,
+  type UiPlugin,
+  type UiPluginConfig,
+  type UiPluginConstructor,
 } from '../plugins/plugin-ui';
-import { corePluginRegistry, uiPluginRegistry } from '../plugins/registry';
+import {
+  getCorePluginRegistry,
+  getUiPluginRegistry,
+} from '../plugins/registry';
 import {
   type Client,
   type Command,
@@ -51,14 +54,13 @@ export interface ModelConfig {
  */
 export class WatarState<TData extends RowData = Array<object>>
   extends EventEmitter
-  implements CommandDispatcher
-{
+  implements CommandDispatcher {
   readonly config: ModelConfig;
   private corePluginConfig: CorePluginConfig;
-  private uiPluginConfig: UIPluginConfig;
+  private uiPluginConfig: UiPluginConfig;
 
   private corePlugins: CorePlugin[] = [];
-  private uiPlugins: UIPlugin[] = [];
+  private uiPlugins: UiPlugin[] = [];
 
   private stateObserver: StateObserver;
 
@@ -110,12 +112,12 @@ export class WatarState<TData extends RowData = Array<object>>
     this.corePluginConfig = this.initCorePluginConfig();
     this.uiPluginConfig = this.initUiPluginConfig();
 
-    for (const Plugin of corePluginRegistry.getAll()) {
+    for (const Plugin of getCorePluginRegistry(options.id!).getAll()) {
       this.initCorePlugin(Plugin, workingData);
     }
     Object.assign(this.getters, this.coreGetters);
 
-    for (const Plugin of uiPluginRegistry.getAll()) {
+    for (const Plugin of getUiPluginRegistry(options.id!).getAll()) {
       this.initUiPlugin(Plugin);
     }
 
@@ -258,7 +260,7 @@ export class WatarState<TData extends RowData = Array<object>>
     this.handlers.push(plugin);
   }
 
-  private initUiPluginConfig(): UIPluginConfig {
+  private initUiPluginConfig(): UiPluginConfig {
     return {
       getters: this.getters,
       stateObserver: this.stateObserver,
@@ -273,7 +275,7 @@ export class WatarState<TData extends RowData = Array<object>>
     };
   }
 
-  private initUiPlugin(Plugin: UIPluginConstructor) {
+  private initUiPlugin(Plugin: UiPluginConstructor) {
     const plugin = new Plugin(this.uiPluginConfig);
     for (const name of Plugin.getters) {
       if (!(name in plugin)) {

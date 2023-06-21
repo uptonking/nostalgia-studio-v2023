@@ -20,7 +20,7 @@ export interface CorePluginConfig {
 
 export interface CorePluginConstructor {
   new (config: CorePluginConfig): CorePlugin;
-  getters: readonly string[];
+  getters?: readonly string[];
 }
 
 /**
@@ -30,7 +30,7 @@ export class CorePlugin<State = any, C = CoreCommand> extends BasePlugin<
   State,
   C
 > {
-  protected getters: CoreGetters;
+  getters: CoreGetters;
   protected uuidGenerator: UuidGenerator;
 
   protected range: any;
@@ -47,6 +47,12 @@ export class CorePlugin<State = any, C = CoreCommand> extends BasePlugin<
     // range.addRangeProvider(this.adaptRanges.bind(this));
     this.getters = getters;
     this.uuidGenerator = uuidGenerator;
+
+    if (!new.target.pluginKey) {
+      throw new Error(
+        'pluginKey static property is required for ' + new.target.name,
+      );
+    }
   }
 
   import(data: any) {}

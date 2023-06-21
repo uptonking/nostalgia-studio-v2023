@@ -8,12 +8,14 @@ import {
 } from '@tanstack/table-core';
 
 import { type Command } from '../../types';
-import { UIPlugin, type UIPluginConfig } from '../plugin-ui';
+import { UiPlugin, type UiPluginConfig } from '../plugin-ui';
 
 /**
  * todo derive table data from core-plugin-sheet
  */
-export class TablePlugin<TData extends RowData = object> extends UIPlugin {
+export class TablePlugin<TData extends RowData = object> extends UiPlugin {
+  static pluginKey = 'WTBL_TABLE';
+
   static getters = [
     'getTableRowModel',
     'getTableHeaderGroups',
@@ -26,7 +28,7 @@ export class TablePlugin<TData extends RowData = object> extends UIPlugin {
   private table: Table<TData>;
   private tableOptions: TableOptionsResolved<TData>;
 
-  constructor(config: UIPluginConfig & { table: TableOptionsResolved<TData> }) {
+  constructor(config: UiPluginConfig & { table: TableOptionsResolved<TData> }) {
     super(config);
     this.tableOptions = config.table;
     // console.log(';; tblOpts ', this.tableOptions);

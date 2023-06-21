@@ -23,7 +23,7 @@ import {
 } from '../../types';
 import { CommandResults } from '../../utils/command';
 import { CellValueDataTypes } from '../../utils/constants';
-import { UIPlugin } from '../plugin-ui';
+import { UiPlugin } from '../plugin-ui';
 
 export interface ColumnSort {
   id: string;
@@ -34,7 +34,9 @@ export type SortingState = ColumnSort[];
 
 type CellWithIndex = { index: number; type: CellValueType; value: any };
 
-export class SortPlugin extends UIPlugin {
+export class SortPlugin extends UiPlugin {
+  static pluginKey = 'WTBL_TABLE_SORT';
+
   static getters = ['getSorting'] as const;
 
   sorting: SortingState;

@@ -1,7 +1,9 @@
 import { type Command } from '../../types';
-import { UIPlugin } from '../plugin-ui';
+import { UiPlugin } from '../plugin-ui';
 
-export class UIOptionsPlugin extends UIPlugin {
+export class UIOptionsPlugin extends UiPlugin {
+  static pluginKey = 'WTBL_UI_OPTIONS';
+
   static getters = ['shouldShowToolbar'] as const;
   private showToolbar: boolean = true;
 

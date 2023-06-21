@@ -2,7 +2,7 @@
  * a map for storing config
  * - useful for inheritance
  */
-export class RegistryDefault<T> {
+export class RegistryDefault<T = unknown> {
   content: Record<string, T> = {};
 
   add(key: string, value: T) {

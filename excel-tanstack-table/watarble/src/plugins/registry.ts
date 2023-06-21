@@ -1,17 +1,27 @@
 import { RegistryDefault } from '../utils/registry-default';
-import { CellPlugin } from './core/cell';
-import { SheetPlugin } from './core/sheet';
 import { type CorePluginConstructor } from './plugin-core';
-import { type UIPluginConstructor } from './plugin-ui';
-import { UIOptionsPlugin } from './ui-config/ui-options';
-import { SortPlugin } from './ui-table/sort';
-import { TablePlugin } from './ui-table/table';
+import { type UiPluginConstructor } from './plugin-ui';
 
-export const corePluginRegistry = new RegistryDefault<CorePluginConstructor>();
-// .add('sheet', SheetPlugin)
-// .add('cell', CellPlugin);
+const pluginsRegistry: Record<string, RegistryDefault> = {};
 
-export const uiPluginRegistry = new RegistryDefault<UIPluginConstructor>()
-  .add('uiOptions', UIOptionsPlugin)
-  .add('table', TablePlugin)
-  .add('tableSort', SortPlugin);
+export const getCorePluginRegistry = (id: string) => {
+  id = 'CORE_' + id;
+  if (pluginsRegistry[id]) {
+    return pluginsRegistry[id] as RegistryDefault<CorePluginConstructor>;
+  }
+
+  const registry = new RegistryDefault<CorePluginConstructor>();
+  pluginsRegistry[id] = registry;
+  return registry;
+};
+
+export const getUiPluginRegistry = (id: string) => {
+  id = 'UI_' + id;
+  if (pluginsRegistry[id]) {
+    return pluginsRegistry[id] as RegistryDefault<UiPluginConstructor>;
+  }
+
+  const registry = new RegistryDefault<UiPluginConstructor>();
+  pluginsRegistry[id] = registry;
+  return registry;
+};

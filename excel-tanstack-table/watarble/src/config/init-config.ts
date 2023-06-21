@@ -1,12 +1,24 @@
+import { getCorePluginRegistry, getUiPluginRegistry } from '../plugins';
 import { type WatarbleConfig, type WatarbleOptions } from '../types';
 import { getHTMLElement } from '../utils/dom';
 import { RegistryDefault } from '../utils/registry-default';
 import { VdomRendererDefault } from '../utils/vdom';
 import { defaultRender } from '../view/default-render';
 import * as elements from '../view/elements';
+import { defaultCorePlugins, defaultUiPlugins } from './defaults';
 
-export function initConfig(options: WatarbleOptions): WatarbleConfig {
-  const { container, renderer, components, ...core } = options;
+export function initConfig(
+  options: WatarbleOptions & { id: string },
+): WatarbleConfig {
+  const {
+    id,
+    container,
+    renderer,
+    components,
+    corePlugins,
+    uiPlugins,
+    ...conf
+  } = options;
 
   const environment = (
     typeof window !== 'undefined' ? window : {}
@@ -18,8 +30,24 @@ export function initConfig(options: WatarbleOptions): WatarbleConfig {
     defaultElements.add(config.type, config.renderFn);
   }
 
+  let pluginsCore = corePlugins;
+  if (!pluginsCore) {
+    pluginsCore = defaultCorePlugins;
+  }
+  for (const PlugC of pluginsCore) {
+    getCorePluginRegistry(id).add(PlugC['pluginKey'], PlugC);
+  }
+  let pluginsUi = uiPlugins;
+  if (!pluginsUi) {
+    pluginsUi = defaultUiPlugins;
+  }
+  for (const PlugU of pluginsUi) {
+    getUiPluginRegistry(id).add(PlugU['pluginKey'], PlugU);
+  }
+
   return {
-    ...core,
+    id,
+    ...conf,
     // environment,
     rendering: {
       renderer: renderer || new VdomRendererDefault(),

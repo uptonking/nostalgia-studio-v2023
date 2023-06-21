@@ -34,6 +34,8 @@ export class SheetPlugin
   extends CorePlugin<SheetPluginState>
   implements SheetPluginState
 {
+  static pluginKey = 'WTBL_SHEET';
+
   static getters = [
     'getSheetName',
     'getSheet',

@@ -16,7 +16,7 @@ export class Watarble {
 
   constructor(options?: WatarbleOptions) {
     this.id = registerInstance(this, options?.id);
-    this.config = initConfig(options);
+    this.config = initConfig({ ...options, id: this.id });
     const {
       rendering,
       renderer,

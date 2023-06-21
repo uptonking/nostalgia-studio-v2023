@@ -7,12 +7,21 @@ import {
 } from '../types';
 import { CommandResults } from '../utils/command';
 
+export abstract class PluginCommon {
+  static pluginKey: string;
+}
+
 /**
  * base class for plugin.
  * - generally dont use this, use derived class.
  * - core-plugins handle persistent data and ui-plugins handle transient data
  */
-export class BasePlugin<State = any, C = any> implements CommandHandler<C> {
+export class BasePlugin<State = any, C = any>
+  extends PluginCommon
+  implements CommandHandler<C>
+{
+  static pluginKey: string;
+
   static getters: readonly string[] = [];
 
   protected history: WorkbookHistory<State>;
@@ -22,6 +31,7 @@ export class BasePlugin<State = any, C = any> implements CommandHandler<C> {
     stateObserver: StateObserver,
     dispatch: CommandDispatcher['dispatch'],
   ) {
+    super();
     this.history = Object.assign(Object.create(stateObserver), {
       update: stateObserver.addChange.bind(stateObserver, this),
       // selectCell: () => {},

@@ -2,13 +2,13 @@ import { type Row, type RowData, type Table } from '@tanstack/table-core';
 
 import {
   type CorePlugin,
-  type CorePluginConfig,
   type CorePluginConstructor,
+  type CorePluginOptions,
 } from '../plugins/plugin-core';
 import {
   type UiPlugin,
-  type UiPluginConfig,
   type UiPluginConstructor,
+  type UiPluginOptions,
 } from '../plugins/plugin-ui';
 import {
   getCorePluginRegistry,
@@ -24,6 +24,7 @@ import {
   type CoreCommandTypes,
   type CoreGetters,
   type Getters,
+  type HistoryChange,
   type WatarStateOptions,
 } from '../types';
 import { DispatchResult, isCoreCommand } from '../utils/command';
@@ -40,6 +41,7 @@ const Status = {
 type StatusType = (typeof Status)[keyof typeof Status];
 
 export interface ModelConfig {
+  readonly id: string;
   readonly custom: { [key: string]: any };
   readonly external: { [key: string]: any };
   readonly client: Client;
@@ -56,8 +58,8 @@ export class WatarState<TData extends RowData = Array<object>>
   extends EventEmitter
   implements CommandDispatcher {
   readonly config: ModelConfig;
-  private corePluginConfig: CorePluginConfig;
-  private uiPluginConfig: UiPluginConfig;
+  private corePluginConfig: CorePluginOptions;
+  private uiPluginConfig: UiPluginOptions;
 
   private corePlugins: CorePlugin[] = [];
   private uiPlugins: UiPlugin[] = [];
@@ -78,10 +80,6 @@ export class WatarState<TData extends RowData = Array<object>>
   /** actions/commands status, useful for commands scheduling */
   private status: StatusType = Status.Ready;
 
-  table: Table<TData>;
-  content: Array<{ type: string; children: Row<TData>[] }>;
-  store: Record<string, any>;
-
   /** custom data, can be accessed in plugin config */
   readonly custom: { [key: string]: any };
   /** custom data, useful for files/images */
@@ -90,27 +88,26 @@ export class WatarState<TData extends RowData = Array<object>>
   constructor(options: WatarStateOptions) {
     super();
 
+    this.canDispatch = this.canDispatch.bind(this);
     this.dispatch = this.dispatch.bind(this);
     this.dispatchFromCorePlugin = this.dispatchFromCorePlugin.bind(this);
-    this.canDispatch = this.canDispatch.bind(this);
+    this.dispatchToCorePlugins = this.dispatchToCorePlugins.bind(this);
+    this.emitStateUpdate = this.emitStateUpdate.bind(this);
 
-    // convert data
+    // todo load and convert initial data
     const workingData = options.table.data;
 
     this.stateObserver = new StateObserver();
     this.uuidGenerator = new UuidGenerator();
     this.config = this.initConfig(options);
-    // console.log(';; wtbl-opts ', this.config)
 
     this.coreGetters = {} as CoreGetters;
-    this.getters = {
-      // isReadonly: () => this.config.mode === "readonly" || this.config.mode === "dashboard",
-    } as Getters;
-
-    this.selection = {} as any;
+    this.getters = {} as Getters;
 
     this.corePluginConfig = this.initCorePluginConfig();
     this.uiPluginConfig = this.initUiPluginConfig();
+
+    // this.selection = {} as any;
 
     for (const Plugin of getCorePluginRegistry(options.id!).getAll()) {
       this.initCorePlugin(Plugin, workingData);
@@ -121,18 +118,21 @@ export class WatarState<TData extends RowData = Array<object>>
       this.initUiPlugin(Plugin);
     }
 
-    // this.dispatch('INIT');
+    // this.dispatch('STATE_INITIALIZED');
+    this.emit('STATE_INITIALIZED');
 
     // this.selection.observe(this, {
-    //   handleEvent: () => this.emit("update"),
+    //   handleEvent: () => this.emit("STATE_UPDATE"),
     // });
   }
 
+  /**
+   * central method for update plugin states
+   */
   dispatch<T extends CommandTypes, C extends Extract<Command, { type: T }>>(
     type: T,
     payload?: Omit<C, 'type'>,
   ): DispatchResult {
-    // this.emit('MODEL_UPDATE');
     const command: Command = createCommand(type, payload);
     const status: StatusType = this.status;
     // if (this.getters.isReadonly() && !canExecuteInReadonly(command)) {
@@ -150,14 +150,15 @@ export class WatarState<TData extends RowData = Array<object>>
         this.status = Status.Running;
         const { changes, commands } = this.stateObserver.recordChanges(() => {
           if (isCoreCommand(command)) {
+            // ? why only for core cmd
             this.stateObserver.addCommand(command);
           }
           this.dispatchToHandlers(this.handlers, command);
           this.finalize();
         });
-        // this.session.save(command, commands, changes);
+        this.tryToSaveEditsHistory({ command, commands, changes });
         this.status = Status.Ready;
-        this.emit('STATE_UPDATE');
+        this.emitStateUpdate();
         break;
       }
       case Status.Running:
@@ -184,6 +185,18 @@ export class WatarState<TData extends RowData = Array<object>>
     return DispatchResult.Success;
   }
 
+  private tryToSaveEditsHistory(edits: {
+    command: Command;
+    commands: CoreCommand[];
+    changes: HistoryChange[];
+  }) {
+    const editSession = this.getters.getSession();
+    if (editSession) {
+      const { command, commands, changes } = edits;
+      editSession.save(command, commands, changes);
+    }
+  }
+
   private dispatchToHandlers(
     handlers: CommandHandler<Command>[],
     command: Command,
@@ -196,9 +209,8 @@ export class WatarState<TData extends RowData = Array<object>>
     }
   }
 
-  /**
-   * Dispatch a command from a Core Plugin.
-   * A command dispatched from this function is not added to the history.
+  /** dispatch command to all plugins
+   * - wont record changes by default
    */
   private dispatchFromCorePlugin<
     T extends CoreCommandTypes,
@@ -214,13 +226,25 @@ export class WatarState<TData extends RowData = Array<object>>
     return DispatchResult.Success;
   }
 
+  private dispatchToCorePlugins(command: CoreCommand) {
+    const result = this.checkDispatchAllowed(command);
+    if (!result.isSuccessful) {
+      return undefined;
+    }
+    // this.isReplayingCommand = true;
+    this.dispatchToHandlers(this.coreHandlers, command);
+    // this.isReplayingCommand = false;
+    return DispatchResult.Success;
+  }
+
   private initConfig(options: Partial<ModelConfig>): ModelConfig {
     const client = options.client || {
       id: this.uuidGenerator.uuidv4(),
-      name: 'Anonymous',
+      name: 'AnonymousClient',
     };
     return {
       ...options,
+      id: options.id,
       // mode: config.mode || "normal",
       custom: options.custom || {},
       external: options.external || {},
@@ -229,15 +253,19 @@ export class WatarState<TData extends RowData = Array<object>>
     };
   }
 
-  private initCorePluginConfig(): CorePluginConfig {
+  /**
+   * corePlugin.dispatch doesnot record changes by default
+   */
+  private initCorePluginConfig(): CorePluginOptions {
     return {
+      ...this.config,
       getters: this.coreGetters,
       stateObserver: this.stateObserver,
-      // range: this.range,
       dispatch: this.dispatchFromCorePlugin,
+      dispatchToCorePlugins: this.dispatchToCorePlugins,
+      emitStateUpdate: this.emitStateUpdate,
       uuidGenerator: this.uuidGenerator,
-      custom: this.config.custom,
-      external: this.config.external,
+      // range: this.range,
     };
   }
 
@@ -260,13 +288,14 @@ export class WatarState<TData extends RowData = Array<object>>
     this.handlers.push(plugin);
   }
 
-  private initUiPluginConfig(): UiPluginConfig {
+  private initUiPluginConfig(): UiPluginOptions {
     return {
+      ...this.config,
       getters: this.getters,
       stateObserver: this.stateObserver,
       dispatch: this.dispatch,
+      emitStateUpdate: this.emitStateUpdate,
       selection: this.selection,
-      ...this.config,
       // custom: this.config.custom,
       // moveClient: this.session.move.bind(this.session),
       // uiActions: this.config,
@@ -319,6 +348,11 @@ export class WatarState<TData extends RowData = Array<object>>
     payload: Omit<C, 'type'>,
   ): DispatchResult {
     return this.checkDispatchAllowed(createCommand(type, payload));
+  }
+
+  /** emit STATE_UPDATE event, mostly for view update */
+  emitStateUpdate() {
+    this.emit('STATE_UPDATE');
   }
 }
 

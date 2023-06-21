@@ -12,7 +12,7 @@ import { type VdomRendererSpec } from './rendering';
 export type WatarStateOptions<TData extends RowData = RowData> = {
   id?: string;
   table?: TableOptionsResolved<TData>;
-  onChange?: (data?: TData) => void;
+  onStateChange?: (data?: TData) => void;
   corePlugins?: CorePluginConstructor[];
   uiPlugins?: UiPluginConstructor[];
   custom?: { [key: string]: any };

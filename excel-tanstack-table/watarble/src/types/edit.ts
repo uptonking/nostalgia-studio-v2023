@@ -1,4 +1,11 @@
-import { type UID } from './common';
+import { type CoreCommand } from './command';
+import { type ClientId, type UID } from './common';
+
+export interface RevisionData {
+  readonly id: UID;
+  readonly clientId: ClientId;
+  readonly commands: readonly CoreCommand[];
+}
 
 export interface CreateRevisionOptions {
   revisionId?: UID;
@@ -7,7 +14,9 @@ export interface CreateRevisionOptions {
 }
 
 export interface HistoryChange {
+  /** root is generally plugin instance object */
   root: any;
+  /** path of change in plugin instance object */
   path: (string | number)[];
   before: any;
   after: any;

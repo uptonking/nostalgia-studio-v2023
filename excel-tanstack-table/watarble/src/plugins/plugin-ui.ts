@@ -1,12 +1,13 @@
 import { type StateObserver } from '../state/state-observer';
+import { type ModelConfig } from '../state/watar-state';
 import { type Command, type CommandDispatcher, type Getters } from '../types';
 import { BasePlugin } from './plugin-base';
 
-export interface UiPluginConfig {
+export interface UiPluginOptions extends ModelConfig {
   readonly getters: Getters;
   readonly stateObserver: StateObserver;
   readonly dispatch: CommandDispatcher['dispatch'];
-  readonly custom: { [key: string]: any };
+  readonly emitStateUpdate: () => void;
   readonly selection: any;
   // readonly selection: SelectionStreamProcessor;
   // readonly uiActions: UIActions;
@@ -14,7 +15,7 @@ export interface UiPluginConfig {
 }
 
 export interface UiPluginConstructor {
-  new (config: UiPluginConfig): UiPlugin;
+  new (config: UiPluginOptions): UiPlugin;
   getters: readonly string[];
   // layers: LAYERS[];
 }
@@ -28,7 +29,12 @@ export class UiPlugin<State = any, C = Command> extends BasePlugin<State, C> {
   getters: Getters;
   // protected ui: UIActions;
   protected selection: any;
-  constructor({ getters, stateObserver, dispatch, selection }: UiPluginConfig) {
+  constructor({
+    getters,
+    stateObserver,
+    dispatch,
+    selection,
+  }: UiPluginOptions) {
     super(stateObserver, dispatch);
     this.getters = getters;
     this.selection = selection;

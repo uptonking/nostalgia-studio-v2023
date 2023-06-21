@@ -1,5 +1,17 @@
-import { SortPlugin, TablePlugin, UIOptionsPlugin } from '../plugins';
+import {
+  BorderPlugin,
+  EditSessionPlugin,
+  HistoryPlugin,
+  SortPlugin,
+  TablePlugin,
+  UiOptionsPlugin,
+} from '../plugins';
 
-export const defaultCorePlugins = [];
+export const defaultCorePlugins = [EditSessionPlugin, BorderPlugin];
 
-export const defaultUiPlugins = [UIOptionsPlugin, TablePlugin, SortPlugin];
+export const defaultUiPlugins = [
+  HistoryPlugin,
+  TablePlugin,
+  SortPlugin,
+  UiOptionsPlugin,
+];

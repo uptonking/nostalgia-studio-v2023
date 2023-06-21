@@ -1,25 +1,26 @@
 import { type StateObserver } from '../state/state-observer';
+import { type ModelConfig } from '../state/watar-state';
 import {
   type CoreCommand,
   type CoreCommandDispatcher,
   type CoreGetters,
 } from '../types';
+import { type DispatchResult } from '../utils/command';
 import { type UuidGenerator } from '../utils/uuid';
 import { BasePlugin } from './plugin-base';
 
-export interface CorePluginConfig {
+export interface CorePluginOptions extends ModelConfig {
   readonly getters: CoreGetters;
   readonly stateObserver: StateObserver;
-  // readonly range: RangeAdapter;
-  // readonly range: any;
   readonly dispatch: CoreCommandDispatcher['dispatch'];
+  readonly dispatchToCorePlugins: (command: CoreCommand) => DispatchResult;
+  readonly emitStateUpdate: () => void;
   readonly uuidGenerator: UuidGenerator;
-  readonly custom: { [key: string]: any };
-  readonly external: { [key: string]: any };
+  // readonly range: RangeAdapter;
 }
 
 export interface CorePluginConstructor {
-  new (config: CorePluginConfig): CorePlugin;
+  new(config: CorePluginOptions): CorePlugin;
   getters?: readonly string[];
 }
 
@@ -41,7 +42,7 @@ export class CorePlugin<State = any, C = CoreCommand> extends BasePlugin<
     stateObserver,
     dispatch,
     uuidGenerator,
-  }: CorePluginConfig) {
+  }: CorePluginOptions) {
     super(stateObserver, dispatch);
     // this.range = range;
     // range.addRangeProvider(this.adaptRanges.bind(this));
@@ -55,8 +56,8 @@ export class CorePlugin<State = any, C = CoreCommand> extends BasePlugin<
     }
   }
 
-  import(data: any) {}
-  export(data: any) {}
+  import(data: any) { }
+  export(data: any) { }
 
   // garbageCollectExternalResources() {}
 }

@@ -41,11 +41,11 @@ export class Watarble {
   init() {
     // trigger first render
     this.view.updateView();
-    if (this.config.onChange) this.config.onChange();
+    if (this.config.onStateChange) this.config.onStateChange();
 
     this.state.on('STATE_UPDATE', () => {
-      // console.log(';; beforeViewUp ', this.state.table.getState());
       this.view.updateView();
+      if (this.config.onStateChange) this.config.onStateChange();
     });
   }
 

@@ -35,6 +35,7 @@ export function initConfig(
     pluginsCore = defaultCorePlugins;
   }
   for (const PlugC of pluginsCore) {
+    // todo fix types for pluginKey
     getCorePluginRegistry(id).add(PlugC['pluginKey'], PlugC);
   }
   let pluginsUi = uiPlugins;

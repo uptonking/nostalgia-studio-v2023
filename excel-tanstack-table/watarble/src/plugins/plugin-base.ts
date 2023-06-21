@@ -25,6 +25,7 @@ export class BasePlugin<State = any, C = any>
   static getters: readonly string[] = [];
 
   protected history: WorkbookHistory<State>;
+  /** corePlugin.dispatch doesnot record changes by default */
   protected dispatch: CommandDispatcher['dispatch'];
 
   constructor(

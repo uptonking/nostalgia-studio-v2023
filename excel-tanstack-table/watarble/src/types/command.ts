@@ -115,8 +115,17 @@ export interface ShowSheetCommand extends SheetDependentCommand {
   type: 'SHOW_SHEET';
 }
 
+export interface SetOutlineBorderColorCommand extends SheetDependentCommand {
+  type: 'SET_OUTLINE_BORDER_COLOR';
+  color?: string;
+}
+
 export interface StartCommand {
   type: 'START';
+}
+
+export interface StateInitializedCommand {
+  type: 'STATE_INITIALIZED';
 }
 
 export interface StartEditionCommand {
@@ -139,6 +148,19 @@ export interface UndoCommand {
 export interface RedoCommand {
   type: 'REDO';
   commands: readonly CoreCommand[];
+}
+
+export interface RequestUndoCommand {
+  type: 'REQUEST_UNDO';
+}
+
+export interface RequestRedoCommand {
+  type: 'REQUEST_REDO';
+}
+
+export interface SaveEditHistoryCommand {
+  type: 'SAVE_EDIT_HISTORY';
+  edits: any;
 }
 
 export interface SortCommand {
@@ -185,6 +207,7 @@ export type CoreCommand =
   | CreateSheetCommand
   | DeleteSheetCommand
   // | DuplicateSheetCommand
+  | SetOutlineBorderColorCommand
   | HideSheetCommand;
 
 /**
@@ -194,7 +217,11 @@ export type CoreCommand =
 export type LocalCommand =
   | UndoCommand
   | RedoCommand
+  | RequestUndoCommand
+  | RequestRedoCommand
+  | SaveEditHistoryCommand
   | StartCommand
+  | StateInitializedCommand
   | StartEditionCommand
   | StopEditionCommand
   | SortCommand
@@ -235,7 +262,7 @@ export interface CommandDispatcher<CmdTypes = CommandTypes, Cmd = Command> {
 }
 
 export interface CoreCommandDispatcher
-  extends CommandDispatcher<CoreCommandTypes, CoreCommand> {}
+  extends CommandDispatcher<CoreCommandTypes, CoreCommand> { }
 
 export type CancelledReason = Exclude<
   CommandResult,

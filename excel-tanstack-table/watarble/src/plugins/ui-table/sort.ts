@@ -39,7 +39,7 @@ export class SortPlugin extends UiPlugin {
 
   static getters = ['getSorting'] as const;
 
-  sorting: SortingState;
+  private sorting: SortingState;
 
   allowDispatch(cmd: LocalCommand): CommandResult | CommandResult[] {
     // switch (cmd.type) {

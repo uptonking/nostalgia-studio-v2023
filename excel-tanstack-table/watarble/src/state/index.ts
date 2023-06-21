@@ -1,2 +1,2 @@
 export { WatarState } from './watar-state';
-export { StateObserver } from './state-observer';
+export { StateObserver, applyChange } from './state-observer';

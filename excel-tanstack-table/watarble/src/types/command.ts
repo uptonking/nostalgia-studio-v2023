@@ -262,7 +262,7 @@ export interface CommandDispatcher<CmdTypes = CommandTypes, Cmd = Command> {
 }
 
 export interface CoreCommandDispatcher
-  extends CommandDispatcher<CoreCommandTypes, CoreCommand> { }
+  extends CommandDispatcher<CoreCommandTypes, CoreCommand> {}
 
 export type CancelledReason = Exclude<
   CommandResult,

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 
-// import { App } from './app';
-import { ExamplesApp as App } from './examples';
+import { AppShell as App } from './app';
+
+// import { ExamplesApp as App } from './examples';
 
 const render = (Component) => {
   ReactDOM.render(<Component />, document.getElementById('root'));

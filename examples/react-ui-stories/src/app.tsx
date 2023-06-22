@@ -15,4 +15,6 @@ export function App() {
   );
 }
 
+export { AppShell } from '@datalking/ui-react';
+
 export default App;

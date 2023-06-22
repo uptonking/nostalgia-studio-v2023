@@ -1,7 +1,8 @@
 {
   "name": "@datalking/watarble",
   "version": "0.1.1",
-  "description": "a toolkit for building editable tables and data grids",
+  "description": "an extensible toolkit for building editable tables and data grids.",
+  "license": "(MIT OR AGPL-3.0-or-later)",
   "type": "module",
   "main": "src/index.ts",
   "module": "src/index.ts",
@@ -19,11 +20,6 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@dnd-kit/accessibility": "3.0.1111",
-    "@dnd-kit/core": "6.0.8111",
-    "@dnd-kit/modifiers": "6.0.1111",
-    "@dnd-kit/sortable": "7.0.2111",
-    "@dnd-kit/utilities": "3.2.1111",
     "@floating-ui/core": "1.2.5111",
     "@floating-ui/dom": "1.2.5111",
     "@icon-park/react": "^1.4.2",
@@ -34,10 +30,15 @@
     "clsx": "^1.2.1",
     "is-hotkey": "^0.2.0",
     "nanoid": "^4.0.2",
-    "nanostores": "0.8.1111",
     "snabbdom": "^3.1.0"
   },
   "devDependencies": {
+    "@dnd-kit/accessibility": "3.0.1111",
+    "@dnd-kit/core": "6.0.8111",
+    "nanostores": "0.8.1111",
+    "@dnd-kit/modifiers": "6.0.1111",
+    "@dnd-kit/sortable": "7.0.2111",
+    "@dnd-kit/utilities": "3.2.1111",
     "@faker-js/faker": "^8.0.2",
     "@linaria/babel-preset": "^4.4.4",
     "@linaria/webpack5-loader": "^4.1.16",

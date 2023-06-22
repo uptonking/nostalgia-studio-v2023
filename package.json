@@ -11,6 +11,7 @@
   "workspaces": [
     "examples/*",
     "site/*",
+    "datalking/*",
     "editor-prosemirror/*",
     "editor-prosemirror/src-pkgs/*",
     "editor-prosemirror/teemu-pkgs/*",

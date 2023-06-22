@@ -20,7 +20,7 @@ export interface CorePluginOptions extends ModelConfig {
 }
 
 export interface CorePluginConstructor {
-  new(config: CorePluginOptions): CorePlugin;
+  new (config: CorePluginOptions): CorePlugin;
   getters?: readonly string[];
 }
 
@@ -56,8 +56,8 @@ export class CorePlugin<State = any, C = CoreCommand> extends BasePlugin<
     }
   }
 
-  import(data: any) { }
-  export(data: any) { }
+  import(data: any) {}
+  export(data: any) {}
 
   // garbageCollectExternalResources() {}
 }

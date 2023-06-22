@@ -1,10 +1,8 @@
 # noseditor
 
-> A collaborative block-style editor built with slate.
+> A collaborative block-style editor built with slate
 
-> collab image
-
-- features
+- ✨ features
   - customizable with your own plugins
   - block-style editor with draggable ux
   - collapsible headings and lists
@@ -12,20 +10,22 @@
   - support markdown shortcuts
   - collaboration (wip)
 # overview
-- noseditor tries to match the excellent notion-style editing experience, and provide offline support.
+- noseditor aims to match the excellent notion-style editing experience, and provide offline support.
 
-- why slate
+- why built with slate
   - slate data model is easy to understand, and react is easy to start
   - slate editor is popular so it's easy to find reusable utilities and references.
-  - noseditor's plugin design is inspired by plate editor(another popular slate editor)
+  - noseditor's plugin system is heavily inspired by plate editor(another popular slate-based editor)
 # usage
 
 ## live demo
 
 ```shell
 // start editor demo
-npm run demo
+npm start
 ```
+
+- open http://localhost:8999
 
 ## quickstart
 
@@ -46,7 +46,7 @@ npm run demo
   - [ ] image
   - [ ] codeblock
 
-- text formats
+- text-formats
   - [x] bold
   - [x] italic
   - [x] underline
@@ -61,21 +61,22 @@ npm run demo
 - collab
   - [ ] mention
   - [ ] comment
+  - [ ] image: how to make image collab
   - [ ] version history
   - [x] slate-yjs with bugs
   - [x] redo
   - [x] undo
 
 - edting
-  - [x] toolbar
   - [ ] inline-toolbar
   - [ ] slash menu /
   - [ ] serializes
   - [ ] context-menu
+  - [x] toolbar
 
 - input
-  - [x] 支持中文输入法
-  - [ ] 复制粘贴html优化
+  - [ ] optimize copy/paste html
+  - [x] Chinese input method ime
 # roadmap
 - large document is slow
 
@@ -95,4 +96,4 @@ npm run demo
 - [more dependencies](./package.json)
 # license
 - core modules are licensed under [MIT](https://spdx.org/licenses/MIT.html)
-- some plugins/utils packages are licensed under [AGPL-3.0](https://spdx.org/licenses/AGPL-3.0-or-later.html)
+- some plugins/utils/packages are licensed under [AGPL-3.0](https://spdx.org/licenses/AGPL-3.0-or-later.html)

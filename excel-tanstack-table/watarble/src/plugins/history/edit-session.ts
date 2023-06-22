@@ -75,4 +75,3 @@ export class EditSessionPlugin extends CorePlugin {
     return this.session;
   }
 }
-

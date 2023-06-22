@@ -56,7 +56,8 @@ export interface ModelConfig {
  */
 export class WatarState<TData extends RowData = Array<object>>
   extends EventEmitter
-  implements CommandDispatcher {
+  implements CommandDispatcher
+{
   readonly config: ModelConfig;
   private corePluginConfig: CorePluginOptions;
   private uiPluginConfig: UiPluginOptions;

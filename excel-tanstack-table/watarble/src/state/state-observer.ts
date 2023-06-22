@@ -56,7 +56,6 @@ export class StateObserver {
   }
 }
 
-
 /**
  * Apply the changes of the given HistoryChange to the state
  */

@@ -15,6 +15,6 @@ export function App() {
   );
 }
 
-export { AppShell } from '@datalking/ui-react';
+export { AppShell, Switch } from '@pgd/ui-react';
 
 export default App;

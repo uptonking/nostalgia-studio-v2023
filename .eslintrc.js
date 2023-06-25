@@ -159,5 +159,6 @@ module.exports = {
     'react-hooks/rules-of-hooks': 2,
     'react-hooks/exhaustive-deps': 1,
     'react/self-closing-comp': 1,
+    'react/no-children-prop': 1,
   },
 };

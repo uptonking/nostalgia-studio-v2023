@@ -1,0 +1,37 @@
+{
+  "name": "@pgd/ui-react",
+  "version": "0.1.1",
+  "type": "module",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "build": "rimraf dist && npm run build:babel",
+    "build:babel": "rimraf dist && cross-env APP_ENV=react babel src --out-dir dist --root-mode upward --extensions '.ts','.tsx' --ignore 'src/**/*.test.*','src/**/*.stories.*' --source-maps --verbose",
+    "start": "npm run demo",
+    "test": "vitest tests",
+    "test1": "jest"
+  },
+  "dependencies": {
+    "@ariakit/core": "^0.2.6",
+    "@ariakit/react-core": "^0.2.10",
+    "@floating-ui/dom": "1.2.5111",
+    "@floating-ui/react": "0.22.2111",
+    "@floating-ui/react-dom": "2.0.1111",
+    "@icon-park/react": "^1.4.2",
+    "cirrus-ui": "^0.7.1",
+    "@linaria/core": "^4.2.9",
+    "clsx": "^1.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@ariakit/test": "^0.1.14",
+    "@testing-library/dom": "^9.3.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@vitest/coverage-c8": "^0.32.2",
+    "jsdom": "^22.1.0",
+    "vitest": "^0.32.2",
+    "vitest-fail-on-console": "^0.4.1"
+  }
+}

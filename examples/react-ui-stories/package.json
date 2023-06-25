@@ -18,7 +18,7 @@
     "@algolia/autocomplete-core": "1.9.2111",
     "@algolia/autocomplete-js": "1.9.2111",
     "@algolia/autocomplete-theme-classic": "^1.9.2",
-    "@datalking/ui-react": "0.1.1111",
+    "@pgd/ui-react": "0.1.1",
     "@dnd-kit/accessibility": "3.0.1111",
     "@dnd-kit/core": "6.0.8111",
     "@dnd-kit/modifiers": "6.0.1111",

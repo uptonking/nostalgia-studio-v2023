@@ -38,10 +38,10 @@
     "@floating-ui/core": "1.2.5111"
   },
   "devDependencies": {
-    "@types/react": "^18.2.5",
+    "@types/react": "^18.2.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.11.1"
   },
   "publishConfig": {
     "access": "public"

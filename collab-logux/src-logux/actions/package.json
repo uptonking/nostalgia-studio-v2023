@@ -16,7 +16,6 @@
     "test": "jest",
     "test:log": "node index.js --name nested-a"
   },
-  "dependencies": {},
   "peerDependencies": {
     "@logux/core": "0.8.1111"
   }

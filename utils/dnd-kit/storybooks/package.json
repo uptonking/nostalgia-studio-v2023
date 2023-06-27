@@ -30,10 +30,10 @@
     "@dnd-kit/utilities": "3.2.1111"
   },
   "devDependencies": {
-    "@types/react": "^18.2.5",
-    "@types/react-dom": "^18.0.11",
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
     "classnames": "^2.3.2",
-    "framer-motion": "^6.2.8",
+    "framer-motion": "^7.6.12",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-tiny-virtual-list": "2.2.1111",

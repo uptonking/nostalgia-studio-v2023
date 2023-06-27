@@ -8,7 +8,7 @@ import {
 
 import * as Core from './api-store';
 
-export const SwitchCheckedContext = createContext(false);
+export const SwitchStoreContext = createContext(false);
 
 export function useSwitchStoreOptions(
   _props: SwitchStoreProps,

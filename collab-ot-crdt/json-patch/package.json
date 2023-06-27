@@ -17,9 +17,9 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "express": "^4.18.1",
+    "express": "^4.18.2",
     "cors": "^2.8.5",
-    "ws": "^8.9.0",
+    "ws": "^8.13.0",
     "@typewriter/json-patch": "0.4.2611"
   },
   "devDependencies": {

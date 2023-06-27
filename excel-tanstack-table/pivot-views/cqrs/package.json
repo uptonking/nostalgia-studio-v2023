@@ -18,8 +18,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@datalking/pivot-core": "^0.0.1",
-    "@datalking/pivot-entity": "^0.0.1",
+    "@datalking/pivot-core": "0.0.1",
+    "@datalking/pivot-entity": "0.0.1",
     "oxide.ts": "^1.1.0",
     "zod": "^3.21.4"
   },

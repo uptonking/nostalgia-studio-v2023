@@ -13,6 +13,6 @@ render(App);
 
 if ((module as any).hot) {
   (module as any).hot.accept('./examples.tsx', () => {
-    render(App);
+    // render(App);
   });
 }

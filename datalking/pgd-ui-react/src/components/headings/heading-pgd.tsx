@@ -56,5 +56,4 @@ export const Heading2 = createHeading({ type: 'h2' });
 export const Heading3 = createHeading({ type: 'h3' });
 export const Heading4 = createHeading({ type: 'h4' });
 
-export const h1Css = css`
-`;
+export const h1Css = css``;

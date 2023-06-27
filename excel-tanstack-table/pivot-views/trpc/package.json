@@ -9,11 +9,10 @@
     "lint": "eslint *.ts*"
   },
   "dependencies": {
-    "@datalking/pivot-core": "^0.0.1",
-    "@datalking/pivot-cqrs": "^0.0.1",
-    "@datalking/pivot-entity": "^0.0.1",
+    "@datalking/pivot-core": "0.0.1",
+    "@datalking/pivot-cqrs": "0.0.1",
+    "@datalking/pivot-entity": "0.0.1",
     "@trpc/server": "^10.18.0",
     "zod": "^3.21.4"
-  },
-  "devDependencies": {}
+  }
 }

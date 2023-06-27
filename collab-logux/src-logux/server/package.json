@@ -36,6 +36,5 @@
     "url-pattern": "^1.0.3",
     "ws": "^8.13.0",
     "yyyy-mm-dd": "^1.0.2"
-  },
-  "peerDependencies": {}
+  }
 }

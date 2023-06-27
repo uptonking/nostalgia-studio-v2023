@@ -5,6 +5,7 @@ import {
   createElement,
 } from '@ariakit/react-core/utils/system';
 import { css } from '@linaria/core';
+import { themed } from '@pgd/ui-tokens';
 
 import {
   type SwitchOptions,
@@ -24,7 +25,7 @@ export type SwitchProps = SwitchPropsCore & {
 
 /**
  * styled switch component.
- * - use `SwitchUnstyled` to get more control.
+ * - if you want more control, use `SwitchUnstyled`.
  */
 export const Switch = (props: SwitchProps) => {
   const { startText, children, endText, ...props_ } = props;
@@ -53,78 +54,60 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const rootCss = css`
-  /* the length of switch */
-  --track-size: calc(var(--thumb-size) * 2);
-  --track-padding: 2px;
-  --track-inactive: hsl(80 0% 80%);
-  --track-active: hsl(80 60% 45%);
-  --track-color-inactive: var(--track-inactive);
-  --track-color-active: var(--track-active);
-
-  /* the size of on/off */
-  --thumb-size: 2rem;
-  --thumb: hsl(0 0% 100%);
-  --thumb-highlight: hsl(0 0% 0% / 25%);
-  --thumb-color: var(--thumb);
-  --thumb-color-highlight: var(--thumb-highlight);
-
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 1.5rem;
+  gap: ${themed.spacing.rem.n6};
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 
   & > input {
-    --thumb-position: 0%;
-    --thumb-transition-duration: 0.25s;
-
-    /* removes the visual checkmark supplied by the browser.  */
+    /* default-width of switch is 4rem; default-width of on/off is 2rem */
+    /* removes the visual checkmark supplied by the browser */
     appearance: none;
     position: relative;
 
-    inline-size: var(--track-size);
-    block-size: var(--thumb-size);
-    padding: var(--track-padding);
+    inline-size: ${themed.spacing.rem.n16};
+    block-size: ${themed.spacing.rem.n8};
+    padding: ${themed.spacing.rem.n0half};
     border: none;
-    border-radius: var(--track-size);
-    outline-offset: 5px;
-    background: var(--track-color-inactive);
+    border-radius: ${themed.spacing.rem.n16};
+    outline-offset: ${themed.border.outlineOffset.n4};
+    background: ${themed.palette.gray300};
+    cursor: pointer;
   }
 
   & > input::before {
     content: '';
     position: absolute;
-    inline-size: calc(var(--thumb-size) * 0.9);
-    block-size: calc(var(--thumb-size) * 0.9);
+    inline-size: calc(${themed.spacing.rem.n8} * 0.9);
+    block-size: calc(${themed.spacing.rem.n8} * 0.9);
     border-radius: 50%;
-    box-shadow: 0 0 0 var(--highlight-size) var(--thumb-color-highlight);
-    transform: translateX(var(--thumb-position));
-    transition: transform var(--thumb-transition-duration) ease,
-      box-shadow 0.25s ease;
-    background: var(--thumb-color);
+    transform: translateX(0);
+    transition: transform ${themed.transition.period.n200} ease,
+      box-shadow ${themed.transition.period.n200} ease;
+    background-color: ${themed.palette.white};
   }
 
   & > input:checked {
-    --thumb-position: calc(var(--track-size) - 115%);
-    /* --thumb-position: calc((var(--track-size) - 100%) * var(--isLTR)); */
-    background: var(--track-color-active);
+    background: ${themed.palette.blue500};
+
+    &::before {
+      transform: translateX(
+        calc(${themed.spacing.rem.n16} - ${themed.spacing.rem.n8})
+      );
+    }
   }
 
   & > input:disabled {
     cursor: not-allowed;
-    --thumb-color: transparent;
 
     &::before {
       cursor: not-allowed;
-      box-shadow: inset 0 0 0 2px hsl(0 0% 100% / 50%);
-
-      /* @media (prefers-color-scheme: dark) {
-        & {
-          box-shadow: inset 0 0 0 2px hsl(0 0% 0% / 50%);
-        }
-      } */
+      /* box-shadow: inset ${themed.shadow.sm}; */
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+      background-color: transparent;
     }
   }
 `;

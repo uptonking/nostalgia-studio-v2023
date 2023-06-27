@@ -16,7 +16,7 @@
     "test:watch": "TZ=UTC vitest"
   },
   "dependencies": {
-    "@datalking/pivot-entity": "^0.0.1",
+    "@datalking/pivot-entity": "0.0.1",
     "array-move": "^4.0.0",
     "date-fns": "^2.30.0",
     "lodash": "^4.17.21",

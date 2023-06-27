@@ -18,6 +18,5 @@
   },
   "dependencies": {
     "nanoevents": "7.0.1111"
-  },
-  "peerDependencies": {}
+  }
 }

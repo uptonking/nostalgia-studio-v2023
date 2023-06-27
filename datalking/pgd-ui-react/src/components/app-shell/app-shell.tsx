@@ -1,32 +1,44 @@
-import React from 'react';
+import '@pgd/ui-tokens/pgd-t-tailwind.css';
+
+import React, { useState } from 'react';
 
 import { css } from '@linaria/core';
 
 import { globalNormalizeCss } from '../../styles';
+import { AppShellStoreContext, useAppShellStore } from './api-hooks';
 import { Header } from './header';
 import { MainContent } from './main-content';
 import { Sidebar } from './sidebar';
 
-export const AppShell = () => {
+type AppShellProps = {
+  defaultIsSidebarOpen?: boolean;
+};
+
+export const AppShell = (props: AppShellProps) => {
+  const { defaultIsSidebarOpen } = props;
+
+  const appShellStore = useAppShellStore({ defaultIsSidebarOpen });
+
   return (
-    <div className={globalNormalizeCss + ' ' + rootCss}>
-      <Sidebar />
-      <div className={mainContainerCss}>
+    <AppShellStoreContext.Provider value={appShellStore}>
+      <div className={globalNormalizeCss + ' ' + rootCss}>
         <Header />
-        <MainContent />
+        <div className={mainContainerCss}>
+          <Sidebar />
+          <MainContent />
+        </div>
       </div>
-    </div>
+    </AppShellStoreContext.Provider>
   );
 };
 
 const rootCss = css`
-  display: flex;
   height: 100%;
 `;
 
 const mainContainerCss = css`
-  overflow: auto;
+  /* overflow: auto;
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  flex-direction: column; */
+  /* width: 100%; */
 `;

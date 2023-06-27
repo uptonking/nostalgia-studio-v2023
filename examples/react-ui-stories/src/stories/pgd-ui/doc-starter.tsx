@@ -13,4 +13,6 @@ type ComponentDocStarterProps = {
 /**
  * component doc and demo page
  */
-export const ComponentDocStarter = (props: ComponentDocStarterProps) => {};
+export const ComponentDocStarter = (props: ComponentDocStarterProps) => {
+  // return ()
+};

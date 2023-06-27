@@ -29,7 +29,7 @@ import {
   type Props,
 } from '@ariakit/react-core/utils/types';
 
-import { SwitchCheckedContext, type SwitchStore } from './api-hooks';
+import { type SwitchStore, SwitchStoreContext } from './api-hooks';
 
 function getNonArrayValue<T>(value: T) {
   if (Array.isArray(value)) {
@@ -141,9 +141,9 @@ export const useSwitch = createHook<SwitchOptions>(
     props = useWrapElement(
       props,
       (element) => (
-        <SwitchCheckedContext.Provider value={isChecked}>
+        <SwitchStoreContext.Provider value={isChecked}>
           {element}
-        </SwitchCheckedContext.Provider>
+        </SwitchStoreContext.Provider>
       ),
       [isChecked],
     );

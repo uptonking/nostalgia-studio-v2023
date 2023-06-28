@@ -186,8 +186,8 @@ export const tokens = {
   'border.radius.md': '0.375rem',
   'border.radius.lg': '0.5rem',
   'border.radius.xl': '0.75rem',
-  'border.radius.2xl': '1rem',
-  'border.radius.3xl': '1.5rem',
+  'border.radius.xl2': '1rem',
+  'border.radius.xl3': '1.5rem',
   'border.radius.full': '9999px',
   'border.width.n0': '0',
   'border.width.default': '1px',
@@ -283,8 +283,8 @@ export const tokens = {
   'size.blur.md': '12px',
   'size.blur.lg': '16px',
   'size.blur.xl': '24px',
-  'size.blur.2xl': '40px',
-  'size.blur.3xl': '64px',
+  'size.blur.xl2': '40px',
+  'size.blur.xl3': '64px',
   'size.lineHeight.none': 1,
   'size.lineHeight.tight': 1.25,
   'size.lineHeight.snug': 1.375,
@@ -303,19 +303,19 @@ export const tokens = {
   'width.screens.md': '768px',
   'width.screens.lg': '1024px',
   'width.screens.xl': '1280px',
-  'width.screens.2xl': '1536px',
+  'width.screens.xl2': '1536px',
   'width.max.n0': '0',
   'width.max.xs': '205rem',
   'width.max.sm': '24rem',
   'width.max.md': '28rem',
   'width.max.lg': '32rem',
   'width.max.xl': '36rem',
-  'width.max.2xl': '42rem',
-  'width.max.3xl': '48rem',
-  'width.max.4xl': '56rem',
-  'width.max.5xl': '64rem',
-  'width.max.6xl': '72rem',
-  'width.max.7xl': '80rem',
+  'width.max.xl2': '42rem',
+  'width.max.xl3': '48rem',
+  'width.max.xl4': '56rem',
+  'width.max.xl5': '64rem',
+  'width.max.xl6': '72rem',
+  'width.max.xl7': '80rem',
   'width.stroke.n0': 0,
   'width.stroke.n1': 1,
   'width.stroke.n2': 2,
@@ -324,13 +324,13 @@ export const tokens = {
   'width.columns.md': '28rem',
   'width.columns.lg': '32rem',
   'width.columns.xl': '36rem',
-  'width.columns.2xl': '42rem',
-  'width.columns.3xl': '48rem',
-  'width.columns.4xl': '56rem',
-  'width.columns.5xl': '64rem',
-  'width.columns.6xl': '72rem',
+  'width.columns.xl2': '42rem',
+  'width.columns.xl3': '48rem',
+  'width.columns.xl4': '56rem',
+  'width.columns.xl5': '64rem',
+  'width.columns.xl6': '72rem',
   /** 1280px */
-  'width.columns.7xl': '80rem',
+  'width.columns.xl7': '80rem',
   'shadow.sm': {
     offsetX: '0',
     offsetY: '1px',
@@ -394,7 +394,7 @@ export const tokens = {
     spread: '-6px',
     color: '#0000001a',
   },
-  'shadow.2xl': {
+  'shadow.xl2p2': {
     offsetX: '0',
     offsetY: '25px',
     blur: '50px',
@@ -452,14 +452,14 @@ export const tokens = {
   'font.size.base': '1rem',
   'font.size.lg': '1.125rem',
   'font.size.xl': '1.25rem',
-  'font.size.2xl': '1.5rem',
-  'font.size.3xl': '1.875rem',
-  'font.size.4xl': '2.25rem',
-  'font.size.5xl': '3rem',
-  'font.size.6xl': '3.75rem',
-  'font.size.7xl': '4.5rem',
-  'font.size.8xl': '6rem',
-  'font.size.9xl': '8rem',
+  'font.size.xl2': '1.5rem',
+  'font.size.xl3': '1.875rem',
+  'font.size.xl4': '2.25rem',
+  'font.size.xl5': '3rem',
+  'font.size.xl6': '3.75rem',
+  'font.size.xl7': '4.5rem',
+  'font.size.xl8': '6rem',
+  'font.size.xl9': '8rem',
   'font.weight.thin': 100,
   'font.weight.extralight': 200,
   'font.weight.light': 300,
@@ -489,36 +489,36 @@ export const tokens = {
     fontSize: '1.25rem',
     lineHeight: 1.75,
   },
-  'font.text.2xl': {
+  'font.text.xl2': {
     fontSize: '1.5rem',
     lineHeight: 2,
   },
-  'font.text.3xl': {
+  'font.text.xl3': {
     fontSize: '1.875rem',
     lineHeight: 2.25,
   },
-  'font.text.4xl': {
+  'font.text.xl4': {
     fontSize: '2.25rem',
     lineHeight: 2.5,
   },
-  'font.text.5xl': {
+  'font.text.xl5': {
     fontSize: '3rem',
     lineHeight: 1,
   },
-  'font.text.6xl': {
+  'font.text.xl6': {
     fontSize: '3.75rem',
     lineHeight: 1,
   },
-  'font.text.7xl': {
+  'font.text.xl7': {
     fontSize: '4.5rem',
     lineHeight: 1,
   },
-  'font.text.8xl': {
+  'font.text.xl8': {
     fontSize: '6rem',
     lineHeight: 1,
   },
-  'font.text.9xl': {
-    fontSize: '1.25rem',
+  'font.text.xl9': {
+    fontSize: '8rem',
     lineHeight: 1,
   },
   'font.text.letterSpacing.tighter': '-0.05em',
@@ -5462,7 +5462,7 @@ export const meta = {
     $type: 'dimension',
     $value: '0.75rem',
   },
-  'border.radius.2xl': {
+  'border.radius.xl2': {
     _original: {
       $value: '1rem',
     },
@@ -5475,11 +5475,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'border.radius.2xl',
+    id: 'border.radius.xl2',
     $type: 'dimension',
     $value: '1rem',
   },
-  'border.radius.3xl': {
+  'border.radius.xl3': {
     _original: {
       $value: '1.5rem',
     },
@@ -5492,7 +5492,7 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'border.radius.3xl',
+    id: 'border.radius.xl3',
     $type: 'dimension',
     $value: '1.5rem',
   },
@@ -5778,7 +5778,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.px',
@@ -5795,7 +5796,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n0',
@@ -5812,7 +5814,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n0half',
@@ -5829,7 +5832,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n1',
@@ -5846,7 +5850,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n1half',
@@ -5863,7 +5868,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n2',
@@ -5880,7 +5886,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n2half',
@@ -5897,7 +5904,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n3',
@@ -5914,7 +5922,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n3half',
@@ -5931,7 +5940,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n4',
@@ -5948,7 +5958,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n5',
@@ -5965,7 +5976,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n6',
@@ -5982,7 +5994,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n7',
@@ -5999,7 +6012,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n8',
@@ -6016,7 +6030,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n9',
@@ -6033,7 +6048,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n10',
@@ -6050,7 +6066,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n11',
@@ -6067,7 +6084,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n12',
@@ -6084,7 +6102,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n14',
@@ -6101,7 +6120,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n16',
@@ -6118,7 +6138,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n20',
@@ -6135,7 +6156,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n24',
@@ -6152,7 +6174,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n28',
@@ -6169,7 +6192,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n32',
@@ -6186,7 +6210,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n36',
@@ -6203,7 +6228,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n40',
@@ -6220,7 +6246,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n44',
@@ -6237,7 +6264,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n48',
@@ -6254,7 +6282,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n52',
@@ -6271,7 +6300,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n56',
@@ -6288,7 +6318,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n60',
@@ -6305,7 +6336,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n64',
@@ -6322,7 +6354,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n72',
@@ -6339,7 +6372,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n80',
@@ -6356,7 +6390,8 @@ export const meta = {
         requiredModes: [],
       },
       $name: 'pgd-theme-tailwind',
-      $description: 'design tokens for pgd tailwind theme',
+      $description:
+        'spacing values can be used for both spacing/gap and size/width/height',
       $type: 'dimension',
     },
     id: 'spacing.rem.n96',
@@ -7096,7 +7131,7 @@ export const meta = {
     $type: 'dimension',
     $value: '24px',
   },
-  'size.blur.2xl': {
+  'size.blur.xl2': {
     _original: {
       $value: '40px',
     },
@@ -7109,11 +7144,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'size.blur.2xl',
+    id: 'size.blur.xl2',
     $type: 'dimension',
     $value: '40px',
   },
-  'size.blur.3xl': {
+  'size.blur.xl3': {
     _original: {
       $value: '64px',
     },
@@ -7126,7 +7161,7 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'size.blur.3xl',
+    id: 'size.blur.xl3',
     $type: 'dimension',
     $value: '64px',
   },
@@ -7436,7 +7471,7 @@ export const meta = {
     $type: 'dimension',
     $value: '1280px',
   },
-  'width.screens.2xl': {
+  'width.screens.xl2': {
     _original: {
       $value: '1536px',
     },
@@ -7449,7 +7484,7 @@ export const meta = {
       $description: 'useful for breakpoints',
       $type: 'dimension',
     },
-    id: 'width.screens.2xl',
+    id: 'width.screens.xl2',
     $type: 'dimension',
     $value: '1536px',
   },
@@ -7555,7 +7590,7 @@ export const meta = {
     $type: 'dimension',
     $value: '36rem',
   },
-  'width.max.2xl': {
+  'width.max.xl2': {
     _original: {
       $value: '42rem',
     },
@@ -7568,11 +7603,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.max.2xl',
+    id: 'width.max.xl2',
     $type: 'dimension',
     $value: '42rem',
   },
-  'width.max.3xl': {
+  'width.max.xl3': {
     _original: {
       $value: '48rem',
     },
@@ -7585,11 +7620,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.max.3xl',
+    id: 'width.max.xl3',
     $type: 'dimension',
     $value: '48rem',
   },
-  'width.max.4xl': {
+  'width.max.xl4': {
     _original: {
       $value: '56rem',
     },
@@ -7602,11 +7637,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.max.4xl',
+    id: 'width.max.xl4',
     $type: 'dimension',
     $value: '56rem',
   },
-  'width.max.5xl': {
+  'width.max.xl5': {
     _original: {
       $value: '64rem',
     },
@@ -7619,11 +7654,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.max.5xl',
+    id: 'width.max.xl5',
     $type: 'dimension',
     $value: '64rem',
   },
-  'width.max.6xl': {
+  'width.max.xl6': {
     _original: {
       $value: '72rem',
     },
@@ -7636,11 +7671,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.max.6xl',
+    id: 'width.max.xl6',
     $type: 'dimension',
     $value: '72rem',
   },
-  'width.max.7xl': {
+  'width.max.xl7': {
     _original: {
       $value: '80rem',
     },
@@ -7653,7 +7688,7 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.max.7xl',
+    id: 'width.max.xl7',
     $type: 'dimension',
     $value: '80rem',
   },
@@ -7793,7 +7828,7 @@ export const meta = {
     $type: 'dimension',
     $value: '36rem',
   },
-  'width.columns.2xl': {
+  'width.columns.xl2': {
     _original: {
       $value: '42rem',
     },
@@ -7806,11 +7841,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.columns.2xl',
+    id: 'width.columns.xl2',
     $type: 'dimension',
     $value: '42rem',
   },
-  'width.columns.3xl': {
+  'width.columns.xl3': {
     _original: {
       $value: '48rem',
     },
@@ -7823,11 +7858,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.columns.3xl',
+    id: 'width.columns.xl3',
     $type: 'dimension',
     $value: '48rem',
   },
-  'width.columns.4xl': {
+  'width.columns.xl4': {
     _original: {
       $value: '56rem',
     },
@@ -7840,11 +7875,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.columns.4xl',
+    id: 'width.columns.xl4',
     $type: 'dimension',
     $value: '56rem',
   },
-  'width.columns.5xl': {
+  'width.columns.xl5': {
     _original: {
       $value: '64rem',
     },
@@ -7857,11 +7892,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.columns.5xl',
+    id: 'width.columns.xl5',
     $type: 'dimension',
     $value: '64rem',
   },
-  'width.columns.6xl': {
+  'width.columns.xl6': {
     _original: {
       $value: '72rem',
     },
@@ -7874,11 +7909,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.columns.6xl',
+    id: 'width.columns.xl6',
     $type: 'dimension',
     $value: '72rem',
   },
-  'width.columns.7xl': {
+  'width.columns.xl7': {
     _original: {
       $value: '80rem',
       $description: '1280px',
@@ -7892,7 +7927,7 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'width.columns.7xl',
+    id: 'width.columns.xl7',
     $type: 'dimension',
     $value: '80rem',
     $description: '1280px',
@@ -8158,7 +8193,7 @@ export const meta = {
       color: '#0000001a',
     },
   },
-  'shadow.2xl': {
+  'shadow.xl2p2': {
     _original: {
       $value: {
         offsetX: '0px',
@@ -8177,7 +8212,7 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'shadow',
     },
-    id: 'shadow.2xl',
+    id: 'shadow.xl2p2',
     $type: 'shadow',
     $value: {
       offsetX: '0',
@@ -8424,7 +8459,7 @@ export const meta = {
     $type: 'dimension',
     $value: '1.25rem',
   },
-  'font.size.2xl': {
+  'font.size.xl2': {
     _original: {
       $value: '1.5rem',
     },
@@ -8437,11 +8472,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'font.size.2xl',
+    id: 'font.size.xl2',
     $type: 'dimension',
     $value: '1.5rem',
   },
-  'font.size.3xl': {
+  'font.size.xl3': {
     _original: {
       $value: '1.875rem',
     },
@@ -8454,11 +8489,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'font.size.3xl',
+    id: 'font.size.xl3',
     $type: 'dimension',
     $value: '1.875rem',
   },
-  'font.size.4xl': {
+  'font.size.xl4': {
     _original: {
       $value: '2.25rem',
     },
@@ -8471,11 +8506,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'font.size.4xl',
+    id: 'font.size.xl4',
     $type: 'dimension',
     $value: '2.25rem',
   },
-  'font.size.5xl': {
+  'font.size.xl5': {
     _original: {
       $value: '3rem',
     },
@@ -8488,11 +8523,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'font.size.5xl',
+    id: 'font.size.xl5',
     $type: 'dimension',
     $value: '3rem',
   },
-  'font.size.6xl': {
+  'font.size.xl6': {
     _original: {
       $value: '3.75rem',
     },
@@ -8505,11 +8540,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'font.size.6xl',
+    id: 'font.size.xl6',
     $type: 'dimension',
     $value: '3.75rem',
   },
-  'font.size.7xl': {
+  'font.size.xl7': {
     _original: {
       $value: '4.5rem',
     },
@@ -8522,11 +8557,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'font.size.7xl',
+    id: 'font.size.xl7',
     $type: 'dimension',
     $value: '4.5rem',
   },
-  'font.size.8xl': {
+  'font.size.xl8': {
     _original: {
       $value: '6rem',
     },
@@ -8539,11 +8574,11 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'font.size.8xl',
+    id: 'font.size.xl8',
     $type: 'dimension',
     $value: '6rem',
   },
-  'font.size.9xl': {
+  'font.size.xl9': {
     _original: {
       $value: '8rem',
     },
@@ -8556,7 +8591,7 @@ export const meta = {
       $description: 'design tokens for pgd tailwind theme',
       $type: 'dimension',
     },
-    id: 'font.size.9xl',
+    id: 'font.size.xl9',
     $type: 'dimension',
     $value: '8rem',
   },
@@ -8828,10 +8863,10 @@ export const meta = {
       lineHeight: 1.75,
     },
   },
-  'font.text.2xl': {
+  'font.text.xl2': {
     _original: {
       $value: {
-        fontSize: '{font.size.2xl}',
+        fontSize: '{font.size.xl2}',
         lineHeight: 2,
       },
     },
@@ -8844,17 +8879,17 @@ export const meta = {
       $description: '13 predefined font-size from tailwind',
       $type: 'typography',
     },
-    id: 'font.text.2xl',
+    id: 'font.text.xl2',
     $type: 'typography',
     $value: {
       fontSize: '1.5rem',
       lineHeight: 2,
     },
   },
-  'font.text.3xl': {
+  'font.text.xl3': {
     _original: {
       $value: {
-        fontSize: '{font.size.3xl}',
+        fontSize: '{font.size.xl3}',
         lineHeight: 2.25,
       },
     },
@@ -8867,17 +8902,17 @@ export const meta = {
       $description: '13 predefined font-size from tailwind',
       $type: 'typography',
     },
-    id: 'font.text.3xl',
+    id: 'font.text.xl3',
     $type: 'typography',
     $value: {
       fontSize: '1.875rem',
       lineHeight: 2.25,
     },
   },
-  'font.text.4xl': {
+  'font.text.xl4': {
     _original: {
       $value: {
-        fontSize: '{font.size.4xl}',
+        fontSize: '{font.size.xl4}',
         lineHeight: 2.5,
       },
     },
@@ -8890,17 +8925,17 @@ export const meta = {
       $description: '13 predefined font-size from tailwind',
       $type: 'typography',
     },
-    id: 'font.text.4xl',
+    id: 'font.text.xl4',
     $type: 'typography',
     $value: {
       fontSize: '2.25rem',
       lineHeight: 2.5,
     },
   },
-  'font.text.5xl': {
+  'font.text.xl5': {
     _original: {
       $value: {
-        fontSize: '{font.size.5xl}',
+        fontSize: '{font.size.xl5}',
         lineHeight: 1,
       },
     },
@@ -8913,17 +8948,17 @@ export const meta = {
       $description: '13 predefined font-size from tailwind',
       $type: 'typography',
     },
-    id: 'font.text.5xl',
+    id: 'font.text.xl5',
     $type: 'typography',
     $value: {
       fontSize: '3rem',
       lineHeight: 1,
     },
   },
-  'font.text.6xl': {
+  'font.text.xl6': {
     _original: {
       $value: {
-        fontSize: '{font.size.6xl}',
+        fontSize: '{font.size.xl6}',
         lineHeight: 1,
       },
     },
@@ -8936,17 +8971,17 @@ export const meta = {
       $description: '13 predefined font-size from tailwind',
       $type: 'typography',
     },
-    id: 'font.text.6xl',
+    id: 'font.text.xl6',
     $type: 'typography',
     $value: {
       fontSize: '3.75rem',
       lineHeight: 1,
     },
   },
-  'font.text.7xl': {
+  'font.text.xl7': {
     _original: {
       $value: {
-        fontSize: '{font.size.7xl}',
+        fontSize: '{font.size.xl7}',
         lineHeight: 1,
       },
     },
@@ -8959,17 +8994,17 @@ export const meta = {
       $description: '13 predefined font-size from tailwind',
       $type: 'typography',
     },
-    id: 'font.text.7xl',
+    id: 'font.text.xl7',
     $type: 'typography',
     $value: {
       fontSize: '4.5rem',
       lineHeight: 1,
     },
   },
-  'font.text.8xl': {
+  'font.text.xl8': {
     _original: {
       $value: {
-        fontSize: '{font.size.8xl}',
+        fontSize: '{font.size.xl8}',
         lineHeight: 1,
       },
     },
@@ -8982,17 +9017,17 @@ export const meta = {
       $description: '13 predefined font-size from tailwind',
       $type: 'typography',
     },
-    id: 'font.text.8xl',
+    id: 'font.text.xl8',
     $type: 'typography',
     $value: {
       fontSize: '6rem',
       lineHeight: 1,
     },
   },
-  'font.text.9xl': {
+  'font.text.xl9': {
     _original: {
       $value: {
-        fontSize: '{font.size.xl}',
+        fontSize: '{font.size.xl9}',
         lineHeight: 1,
       },
     },
@@ -9005,10 +9040,10 @@ export const meta = {
       $description: '13 predefined font-size from tailwind',
       $type: 'typography',
     },
-    id: 'font.text.9xl',
+    id: 'font.text.xl9',
     $type: 'typography',
     $value: {
-      fontSize: '1.25rem',
+      fontSize: '8rem',
       lineHeight: 1,
     },
   },

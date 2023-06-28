@@ -4,7 +4,7 @@ import cx from 'clsx';
 
 import { useStoreState } from '@ariakit/react-core/utils/store';
 import { css } from '@linaria/core';
-import { themed } from '@pgd/ui-tokens';
+import { fixed, themed } from '@pgd/ui-tokens';
 
 import { useAppShellContext } from './api-hooks';
 
@@ -15,16 +15,25 @@ export const Sidebar = () => {
   });
 
   return (
-    <aside className={cx(rootCss, { [rootPositionCss]: !isSidebarOpen })}>
-      <div className={rootInnerCss}>sidebar</div>
+    <aside
+      className={cx(rootCss, {
+        [rootPositionCss]: !isSidebarOpen,
+      })}
+    >
+      <div className={rootInnerCss}>
+        sidebar------------------------------------------------------
+      </div>
     </aside>
   );
 };
 
 const rootCss = css`
   position: fixed;
+  overflow-y: auto;
   width: ${themed.spacing.rem.n64};
+  height: 100%;
   /* transform: translateX(0); */
+  border-right: ${themed.border.presets.default};
   transition: transform ${themed.transition.period.n200} ease;
 `;
 
@@ -33,10 +42,9 @@ const rootPositionCss = css`
 `;
 
 const rootInnerCss = css`
+  /* position: absolute; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   /* padding: 0 16px; */
-  border-right: 1px solid #f3f5f7;
-  overflow: auto;
 `;

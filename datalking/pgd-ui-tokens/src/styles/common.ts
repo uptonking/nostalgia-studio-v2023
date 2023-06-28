@@ -1,13 +1,7 @@
 import { css } from '@linaria/core';
 
-export const cardBoxCss = css`
-  padding: 24px;
-  margin-bottom: 24px;
-  border-radius: 10px;
-  background-color: #ffffff;
-`;
-
 // ------ css utils ------
+
 export const flex = css`
   display: flex;
 `;
@@ -19,4 +13,14 @@ export const invisible = css`
 `;
 export const visible = css`
   visibility: visible;
+`;
+export const fixed = css`
+  position: fixed;
+`;
+
+export const widthFull = css`
+  width: 100%;
+`;
+export const heightFull = css`
+  height: 100%;
 `;

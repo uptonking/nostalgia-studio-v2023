@@ -29,6 +29,15 @@ export const globalNormalizeCss = css`
       margin: 0; /* Remove the margin in all browsers. */
     }
 
+    /* /make content full height */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      /* min-height: 100%; */
+    }
+
     /* ==== Grouping content ==== */
 
     /**

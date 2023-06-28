@@ -5,6 +5,9 @@
 # overview
 - compile w3c compliant design tokens to css variables and js variables
 # usage
+- write your design tokens in `./src/tokens/theme-tailwind.tokens.json`
+  - everytime tokens are updated, you need to rebuild using `npm run build:tokens`
+  - the building outputs to `./src/outputs`; don't edit files in this folder
 
 ```typescript
 // import css variables at the entry of your application
@@ -24,3 +27,7 @@ const StyledDiv = styled.dev`
 background-color: themed.color.brand.primary;
 `;
 ```
+
+# roadmap
+- [ ] typography composite type outputs 2 css variables
+  - but custom conversion script only outputs 1

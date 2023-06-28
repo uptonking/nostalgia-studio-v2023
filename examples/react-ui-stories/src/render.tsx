@@ -1,18 +1,22 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+
+import { createRoot } from 'react-dom/client';
 
 import { AppShell as App } from './app';
 
 // import { ExamplesApp as App } from './examples';
 
+const rootElem = document.getElementById('root');
+const rootRender = createRoot(rootElem);
+
 const render = (Component) => {
-  ReactDOM.render(<Component />, document.getElementById('root'));
+  rootRender.render(<Component container={rootElem} />);
 };
 
 render(App);
 
 if ((module as any).hot) {
   (module as any).hot.accept('./examples.tsx', () => {
-    // render(App);
+    // root.render(App);
   });
 }

@@ -5,26 +5,26 @@
  */
 
 import {
-  BorderToken,
-  ColorToken,
-  CubicBezierToken,
-  DimensionToken,
-  DurationToken,
-  FontFamilyToken,
-  FontWeightToken,
-  NumberToken,
-  ParsedBorderToken,
-  ParsedColorToken,
-  ParsedCubicBezierToken,
-  ParsedDimensionToken,
-  ParsedDurationToken,
-  ParsedFontFamilyToken,
-  ParsedFontWeightToken,
-  ParsedNumberToken,
-  ParsedShadowToken,
-  ParsedTypographyToken,
-  ShadowToken,
-  TypographyToken,
+  type BorderToken,
+  type ColorToken,
+  type CubicBezierToken,
+  type DimensionToken,
+  type DurationToken,
+  type FontFamilyToken,
+  type FontWeightToken,
+  type NumberToken,
+  type ParsedBorderToken,
+  type ParsedColorToken,
+  type ParsedCubicBezierToken,
+  type ParsedDimensionToken,
+  type ParsedDurationToken,
+  type ParsedFontFamilyToken,
+  type ParsedFontWeightToken,
+  type ParsedNumberToken,
+  type ParsedShadowToken,
+  type ParsedTypographyToken,
+  type ShadowToken,
+  type TypographyToken,
 } from '@cobalt-ui/core';
 
 export declare const tokens: {
@@ -205,8 +205,8 @@ export declare const tokens: {
   'border.radius.md': DimensionToken['$value'];
   'border.radius.lg': DimensionToken['$value'];
   'border.radius.xl': DimensionToken['$value'];
-  'border.radius.2xl': DimensionToken['$value'];
-  'border.radius.3xl': DimensionToken['$value'];
+  'border.radius.xl2': DimensionToken['$value'];
+  'border.radius.xl3': DimensionToken['$value'];
   'border.radius.full': DimensionToken['$value'];
   'border.width.n0': DimensionToken['$value'];
   'border.width.default': DimensionToken['$value'];
@@ -301,8 +301,8 @@ export declare const tokens: {
   'size.blur.md': DimensionToken['$value'];
   'size.blur.lg': DimensionToken['$value'];
   'size.blur.xl': DimensionToken['$value'];
-  'size.blur.2xl': DimensionToken['$value'];
-  'size.blur.3xl': DimensionToken['$value'];
+  'size.blur.xl2': DimensionToken['$value'];
+  'size.blur.xl3': DimensionToken['$value'];
   'size.lineHeight.none': NumberToken['$value'];
   'size.lineHeight.tight': NumberToken['$value'];
   'size.lineHeight.snug': NumberToken['$value'];
@@ -321,19 +321,19 @@ export declare const tokens: {
   'width.screens.md': DimensionToken['$value'];
   'width.screens.lg': DimensionToken['$value'];
   'width.screens.xl': DimensionToken['$value'];
-  'width.screens.2xl': DimensionToken['$value'];
+  'width.screens.xl2': DimensionToken['$value'];
   'width.max.n0': DimensionToken['$value'];
   'width.max.xs': DimensionToken['$value'];
   'width.max.sm': DimensionToken['$value'];
   'width.max.md': DimensionToken['$value'];
   'width.max.lg': DimensionToken['$value'];
   'width.max.xl': DimensionToken['$value'];
-  'width.max.2xl': DimensionToken['$value'];
-  'width.max.3xl': DimensionToken['$value'];
-  'width.max.4xl': DimensionToken['$value'];
-  'width.max.5xl': DimensionToken['$value'];
-  'width.max.6xl': DimensionToken['$value'];
-  'width.max.7xl': DimensionToken['$value'];
+  'width.max.xl2': DimensionToken['$value'];
+  'width.max.xl3': DimensionToken['$value'];
+  'width.max.xl4': DimensionToken['$value'];
+  'width.max.xl5': DimensionToken['$value'];
+  'width.max.xl6': DimensionToken['$value'];
+  'width.max.xl7': DimensionToken['$value'];
   'width.stroke.n0': NumberToken['$value'];
   'width.stroke.n1': NumberToken['$value'];
   'width.stroke.n2': NumberToken['$value'];
@@ -342,12 +342,12 @@ export declare const tokens: {
   'width.columns.md': DimensionToken['$value'];
   'width.columns.lg': DimensionToken['$value'];
   'width.columns.xl': DimensionToken['$value'];
-  'width.columns.2xl': DimensionToken['$value'];
-  'width.columns.3xl': DimensionToken['$value'];
-  'width.columns.4xl': DimensionToken['$value'];
-  'width.columns.5xl': DimensionToken['$value'];
-  'width.columns.6xl': DimensionToken['$value'];
-  'width.columns.7xl': DimensionToken['$value'];
+  'width.columns.xl2': DimensionToken['$value'];
+  'width.columns.xl3': DimensionToken['$value'];
+  'width.columns.xl4': DimensionToken['$value'];
+  'width.columns.xl5': DimensionToken['$value'];
+  'width.columns.xl6': DimensionToken['$value'];
+  'width.columns.xl7': DimensionToken['$value'];
   'shadow.sm': ShadowToken['$value'];
   'shadow.default': ShadowToken['$value'];
   'shadow.default2': ShadowToken['$value'];
@@ -357,7 +357,7 @@ export declare const tokens: {
   'shadow.lg2': ShadowToken['$value'];
   'shadow.xl': ShadowToken['$value'];
   'shadow.xl2': ShadowToken['$value'];
-  'shadow.2xl': ShadowToken['$value'];
+  'shadow.xl2p2': ShadowToken['$value'];
   'shadow.inner': ShadowToken['$value'];
   'font.family.sans': FontFamilyToken['$value'];
   'font.family.serif': FontFamilyToken['$value'];
@@ -367,14 +367,14 @@ export declare const tokens: {
   'font.size.base': DimensionToken['$value'];
   'font.size.lg': DimensionToken['$value'];
   'font.size.xl': DimensionToken['$value'];
-  'font.size.2xl': DimensionToken['$value'];
-  'font.size.3xl': DimensionToken['$value'];
-  'font.size.4xl': DimensionToken['$value'];
-  'font.size.5xl': DimensionToken['$value'];
-  'font.size.6xl': DimensionToken['$value'];
-  'font.size.7xl': DimensionToken['$value'];
-  'font.size.8xl': DimensionToken['$value'];
-  'font.size.9xl': DimensionToken['$value'];
+  'font.size.xl2': DimensionToken['$value'];
+  'font.size.xl3': DimensionToken['$value'];
+  'font.size.xl4': DimensionToken['$value'];
+  'font.size.xl5': DimensionToken['$value'];
+  'font.size.xl6': DimensionToken['$value'];
+  'font.size.xl7': DimensionToken['$value'];
+  'font.size.xl8': DimensionToken['$value'];
+  'font.size.xl9': DimensionToken['$value'];
   'font.weight.thin': FontWeightToken['$value'];
   'font.weight.extralight': FontWeightToken['$value'];
   'font.weight.light': FontWeightToken['$value'];
@@ -389,14 +389,14 @@ export declare const tokens: {
   'font.text.base': TypographyToken['$value'];
   'font.text.lg': TypographyToken['$value'];
   'font.text.xl': TypographyToken['$value'];
-  'font.text.2xl': TypographyToken['$value'];
-  'font.text.3xl': TypographyToken['$value'];
-  'font.text.4xl': TypographyToken['$value'];
-  'font.text.5xl': TypographyToken['$value'];
-  'font.text.6xl': TypographyToken['$value'];
-  'font.text.7xl': TypographyToken['$value'];
-  'font.text.8xl': TypographyToken['$value'];
-  'font.text.9xl': TypographyToken['$value'];
+  'font.text.xl2': TypographyToken['$value'];
+  'font.text.xl3': TypographyToken['$value'];
+  'font.text.xl4': TypographyToken['$value'];
+  'font.text.xl5': TypographyToken['$value'];
+  'font.text.xl6': TypographyToken['$value'];
+  'font.text.xl7': TypographyToken['$value'];
+  'font.text.xl8': TypographyToken['$value'];
+  'font.text.xl9': TypographyToken['$value'];
   'font.text.letterSpacing.tighter': DimensionToken['$value'];
   'font.text.letterSpacing.tight': DimensionToken['$value'];
   'font.text.letterSpacing.normal': DimensionToken['$value'];
@@ -903,8 +903,8 @@ export declare const meta: {
   'border.radius.md': ParsedDimensionToken;
   'border.radius.lg': ParsedDimensionToken;
   'border.radius.xl': ParsedDimensionToken;
-  'border.radius.2xl': ParsedDimensionToken;
-  'border.radius.3xl': ParsedDimensionToken;
+  'border.radius.xl2': ParsedDimensionToken;
+  'border.radius.xl3': ParsedDimensionToken;
   'border.radius.full': ParsedDimensionToken;
   'border.width.n0': ParsedDimensionToken;
   'border.width.default': ParsedDimensionToken;
@@ -999,8 +999,8 @@ export declare const meta: {
   'size.blur.md': ParsedDimensionToken;
   'size.blur.lg': ParsedDimensionToken;
   'size.blur.xl': ParsedDimensionToken;
-  'size.blur.2xl': ParsedDimensionToken;
-  'size.blur.3xl': ParsedDimensionToken;
+  'size.blur.xl2': ParsedDimensionToken;
+  'size.blur.xl3': ParsedDimensionToken;
   'size.lineHeight.none': ParsedNumberToken;
   'size.lineHeight.tight': ParsedNumberToken;
   'size.lineHeight.snug': ParsedNumberToken;
@@ -1019,19 +1019,19 @@ export declare const meta: {
   'width.screens.md': ParsedDimensionToken;
   'width.screens.lg': ParsedDimensionToken;
   'width.screens.xl': ParsedDimensionToken;
-  'width.screens.2xl': ParsedDimensionToken;
+  'width.screens.xl2': ParsedDimensionToken;
   'width.max.n0': ParsedDimensionToken;
   'width.max.xs': ParsedDimensionToken;
   'width.max.sm': ParsedDimensionToken;
   'width.max.md': ParsedDimensionToken;
   'width.max.lg': ParsedDimensionToken;
   'width.max.xl': ParsedDimensionToken;
-  'width.max.2xl': ParsedDimensionToken;
-  'width.max.3xl': ParsedDimensionToken;
-  'width.max.4xl': ParsedDimensionToken;
-  'width.max.5xl': ParsedDimensionToken;
-  'width.max.6xl': ParsedDimensionToken;
-  'width.max.7xl': ParsedDimensionToken;
+  'width.max.xl2': ParsedDimensionToken;
+  'width.max.xl3': ParsedDimensionToken;
+  'width.max.xl4': ParsedDimensionToken;
+  'width.max.xl5': ParsedDimensionToken;
+  'width.max.xl6': ParsedDimensionToken;
+  'width.max.xl7': ParsedDimensionToken;
   'width.stroke.n0': ParsedNumberToken;
   'width.stroke.n1': ParsedNumberToken;
   'width.stroke.n2': ParsedNumberToken;
@@ -1040,12 +1040,12 @@ export declare const meta: {
   'width.columns.md': ParsedDimensionToken;
   'width.columns.lg': ParsedDimensionToken;
   'width.columns.xl': ParsedDimensionToken;
-  'width.columns.2xl': ParsedDimensionToken;
-  'width.columns.3xl': ParsedDimensionToken;
-  'width.columns.4xl': ParsedDimensionToken;
-  'width.columns.5xl': ParsedDimensionToken;
-  'width.columns.6xl': ParsedDimensionToken;
-  'width.columns.7xl': ParsedDimensionToken;
+  'width.columns.xl2': ParsedDimensionToken;
+  'width.columns.xl3': ParsedDimensionToken;
+  'width.columns.xl4': ParsedDimensionToken;
+  'width.columns.xl5': ParsedDimensionToken;
+  'width.columns.xl6': ParsedDimensionToken;
+  'width.columns.xl7': ParsedDimensionToken;
   'shadow.sm': ParsedShadowToken;
   'shadow.default': ParsedShadowToken;
   'shadow.default2': ParsedShadowToken;
@@ -1055,7 +1055,7 @@ export declare const meta: {
   'shadow.lg2': ParsedShadowToken;
   'shadow.xl': ParsedShadowToken;
   'shadow.xl2': ParsedShadowToken;
-  'shadow.2xl': ParsedShadowToken;
+  'shadow.xl2p2': ParsedShadowToken;
   'shadow.inner': ParsedShadowToken;
   'font.family.sans': ParsedFontFamilyToken;
   'font.family.serif': ParsedFontFamilyToken;
@@ -1065,14 +1065,14 @@ export declare const meta: {
   'font.size.base': ParsedDimensionToken;
   'font.size.lg': ParsedDimensionToken;
   'font.size.xl': ParsedDimensionToken;
-  'font.size.2xl': ParsedDimensionToken;
-  'font.size.3xl': ParsedDimensionToken;
-  'font.size.4xl': ParsedDimensionToken;
-  'font.size.5xl': ParsedDimensionToken;
-  'font.size.6xl': ParsedDimensionToken;
-  'font.size.7xl': ParsedDimensionToken;
-  'font.size.8xl': ParsedDimensionToken;
-  'font.size.9xl': ParsedDimensionToken;
+  'font.size.xl2': ParsedDimensionToken;
+  'font.size.xl3': ParsedDimensionToken;
+  'font.size.xl4': ParsedDimensionToken;
+  'font.size.xl5': ParsedDimensionToken;
+  'font.size.xl6': ParsedDimensionToken;
+  'font.size.xl7': ParsedDimensionToken;
+  'font.size.xl8': ParsedDimensionToken;
+  'font.size.xl9': ParsedDimensionToken;
   'font.weight.thin': ParsedFontWeightToken;
   'font.weight.extralight': ParsedFontWeightToken;
   'font.weight.light': ParsedFontWeightToken;
@@ -1087,14 +1087,14 @@ export declare const meta: {
   'font.text.base': ParsedTypographyToken;
   'font.text.lg': ParsedTypographyToken;
   'font.text.xl': ParsedTypographyToken;
-  'font.text.2xl': ParsedTypographyToken;
-  'font.text.3xl': ParsedTypographyToken;
-  'font.text.4xl': ParsedTypographyToken;
-  'font.text.5xl': ParsedTypographyToken;
-  'font.text.6xl': ParsedTypographyToken;
-  'font.text.7xl': ParsedTypographyToken;
-  'font.text.8xl': ParsedTypographyToken;
-  'font.text.9xl': ParsedTypographyToken;
+  'font.text.xl2': ParsedTypographyToken;
+  'font.text.xl3': ParsedTypographyToken;
+  'font.text.xl4': ParsedTypographyToken;
+  'font.text.xl5': ParsedTypographyToken;
+  'font.text.xl6': ParsedTypographyToken;
+  'font.text.xl7': ParsedTypographyToken;
+  'font.text.xl8': ParsedTypographyToken;
+  'font.text.xl9': ParsedTypographyToken;
   'font.text.letterSpacing.tighter': ParsedDimensionToken;
   'font.text.letterSpacing.tight': ParsedDimensionToken;
   'font.text.letterSpacing.normal': ParsedDimensionToken;

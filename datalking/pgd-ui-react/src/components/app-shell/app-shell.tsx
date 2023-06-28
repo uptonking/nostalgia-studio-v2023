@@ -20,6 +20,7 @@ type AppShellProps = {
   container: HTMLElement;
   defaultIsSidebarOpen?: boolean;
   mainContent?: React.ReactNode;
+  sidebarContent?: React.ReactNode;
 };
 
 /**
@@ -32,6 +33,7 @@ export const AppShell = (props: AppShellProps) => {
     defaultIsSidebarOpen,
     container,
     mainContent = <DocPage {...docTestData} />,
+    sidebarContent = <input />,
   } = props;
 
   const appShellStore = useAppShellStore({ defaultIsSidebarOpen });
@@ -58,7 +60,7 @@ export const AppShell = (props: AppShellProps) => {
             [mainContainerWidth]: isSidebarOpen,
           })}
         >
-          <Sidebar />
+          <Sidebar>{sidebarContent}</Sidebar>
           <MainContent>{mainContent}</MainContent>
         </div>
       </div>

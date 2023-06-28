@@ -35,7 +35,7 @@ export const docTestData: ComponentDocStarterProps = {
  */
 export const DocPage = (props: ComponentDocStarterProps = docTestData) => {
   const { title, previews, usage } = props;
-  console.log(';; page ', title, props);
+  // console.log(';; page ', title, props);
 
   return (
     <div>
@@ -79,5 +79,6 @@ const demoContainerCss = css`
   /* width:100%; */
   min-height: ${themed.spacing.rem.n64};
   /* margin: ${themed.spacing.rem.n6}; */
+  border-radius: ${themed.border.radius.xl3};
   background-color: ${themed.palette.gray50};
 `;

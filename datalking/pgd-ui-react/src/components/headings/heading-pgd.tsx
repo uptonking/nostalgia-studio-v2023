@@ -24,14 +24,17 @@ function getHeadingStyle(type: CreateHeadingOptions['type'] = 'h1') {
 }
 
 function createHeading({ type = 'h1' }: CreateHeadingOptions = {}) {
-  return ({ children, className, style }: HeadingProps = {}) => {
-    const hStyle = useMemo(() => getHeadingStyle(type), []);
-    return (
-      <Heading className={cx(hStyle, className)} style={style}>
-        {children || ' '}
-      </Heading>
-    );
-  };
+  // return a react component
+  return React.forwardRef<HTMLHeadingElement, HeadingProps>(
+    ({ children, className, style } = {}, ref) => {
+      const hStyle = useMemo(() => getHeadingStyle(type), []);
+      return (
+        <Heading ref={ref} className={cx(hStyle, className)} style={style}>
+          {children || ' '}
+        </Heading>
+      );
+    },
+  );
 }
 
 export const Heading1 = createHeading();
@@ -43,13 +46,13 @@ export { HeadingLevel, Heading };
 
 export const h1Css = css`
   font-size: ${themed.font.size.xl4};
-  font-weight: 600;
+  font-weight: 500;
   line-height: ${themed.size.lineHeight.rem.n10};
 `;
 
 export const h2Css = css`
   font-size: ${themed.font.size.xl3};
-  font-weight: 600;
+  font-weight: 500;
   line-height: ${themed.size.lineHeight.rem.n9};
 `;
 

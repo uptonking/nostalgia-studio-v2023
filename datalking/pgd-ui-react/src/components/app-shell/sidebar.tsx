@@ -8,7 +8,15 @@ import { fixed, themed } from '@pgd/ui-tokens';
 
 import { useAppShellContext } from './api-hooks';
 
-export const Sidebar = () => {
+const defaultSidebarContent =
+  'sidebar------------------------------------------------------';
+
+type SidebarProps = {
+  children?: React.ReactNode;
+};
+
+export const Sidebar = (props: SidebarProps) => {
+  const { children } = props;
   const appShellStore = useAppShellContext();
   const isSidebarOpen = useStoreState(appShellStore, (state) => {
     return state.isSidebarOpen;
@@ -20,9 +28,7 @@ export const Sidebar = () => {
         [rootPositionCss]: !isSidebarOpen,
       })}
     >
-      <div className={rootInnerCss}>
-        sidebar------------------------------------------------------
-      </div>
+      <div className={rootInnerCss}>{children || defaultSidebarContent}</div>
     </aside>
   );
 };

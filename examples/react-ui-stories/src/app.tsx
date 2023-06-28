@@ -15,6 +15,4 @@ export function App() {
   );
 }
 
-export { AppShell, Switch } from '@pgd/ui-react';
-
 export default App;

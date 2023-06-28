@@ -6,13 +6,14 @@ import { useStoreState } from '@ariakit/react-core/utils/store';
 import { css } from '@linaria/core';
 import { themed } from '@pgd/ui-tokens';
 
-import { cardBoxCss } from '../../styles';
-import { Switch } from '../switch';
 import { useAppShellContext } from './api-hooks';
 
 type MainContentProps = {
   children?: React.ReactNode;
 };
+
+const defaultMainContent =
+  'content------------------------------------------------------';
 
 export const MainContent = (props: MainContentProps) => {
   const { children } = props;
@@ -24,12 +25,7 @@ export const MainContent = (props: MainContentProps) => {
 
   return (
     <div className={cx(rootCss, { [rootPositionCss]: isSidebarOpen })}>
-      <div className={rootInnerCss}>
-        <div className={cardBoxCss}>
-          <h3>{children || 'content'}</h3>
-          <Switch> ready for interview</Switch>
-        </div>
-      </div>
+      <div className={rootInnerCss}>{children || defaultMainContent}</div>
     </div>
   );
 };
@@ -59,20 +55,20 @@ const infoPanelCss = css`
   /* width: 30%; */
 `;
 
-export const MainContentTest = (props: MainContentProps) => {
-  const { children } = props;
+// export const MainContentTest = (props: MainContentProps) => {
+//   const { children } = props;
 
-  return (
-    <div className={cx(rootCss)}>
-      <div className={rootInnerCss}>
-        <div className={cardBoxCss}>
-          <h3>content</h3>
-          <Switch> ready for interview</Switch>
-        </div>
-      </div>
-      <div className={infoPanelCss}>
-        <div className={cardBoxCss}>description</div>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className={cx(rootCss)}>
+//       <div className={rootInnerCss}>
+//         <div className={cardBoxCss}>
+//           <h3>content</h3>
+//           <Switch> ready for interview</Switch>
+//         </div>
+//       </div>
+//       <div className={infoPanelCss}>
+//         <div className={cardBoxCss}>description</div>
+//       </div>
+//     </div>
+//   );
+// };

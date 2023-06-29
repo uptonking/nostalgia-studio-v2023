@@ -25,7 +25,9 @@ export const MainContent = (props: MainContentProps) => {
 
   return (
     <div className={cx(rootCss, { [rootPositionCss]: isSidebarOpen })}>
-      <div className={rootInnerCss}>{children || defaultMainContent}</div>
+      <div id='mainContent' className={rootInnerCss}>
+        {children || defaultMainContent}
+      </div>
     </div>
   );
 };
@@ -35,6 +37,7 @@ const rootCss = css`
   overflow-y: auto;
   margin-left: ${themed.spacing.rem.n6};
   margin-right: ${themed.spacing.rem.n6};
+  min-height: 100%;
   /* display: flex; */
   /* background-color: #f3f5f7; */
   transition: transform ${themed.transition.period.n200} ease;

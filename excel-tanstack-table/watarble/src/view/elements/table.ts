@@ -25,6 +25,9 @@ export const tableConfig = {
     const rows = elemNode.children || [];
     // console.log(';; tb ', children);
 
+    const borderColor =
+      watarble.state.getters.getOutlineBorderColor() || '#000';
+
     const vnode = h(
       'div',
       { class: { [tableBaseCss]: true } },
@@ -144,6 +147,7 @@ export const tableConfig = {
                       padding: '0.5rem',
                       left: cell.column.getStart() + 'px',
                       width: cell.column.getSize() + 'px',
+                      borderColor: borderColor,
                     },
                   },
                   customRender(cell.column.columnDef.cell, cell.getContext()),

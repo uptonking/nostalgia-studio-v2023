@@ -1,15 +1,23 @@
 import React, { type ReactNode } from 'react';
 
+import cx from 'clsx';
+
 import { css } from '@linaria/core';
 import { themed } from '@pgd/ui-tokens';
 
 import { Heading, Heading1, Heading2, HeadingLevel } from '../headings';
 import { Switch } from '../switch';
 
-type ComponentDocStarterProps = {
+type DocPageProps = {
   title?: string;
   desc?: ReactNode;
-  previews?: { title: string; demo: ReactNode; doc?: ReactNode }[];
+  previews?: {
+    title: string;
+    demo: ReactNode;
+    /** demo shows at center by default; but sometimes it's useful to show it from top */
+    demoNotCenter?: boolean;
+    doc?: ReactNode;
+  }[];
   usage?: ReactNode;
   props?: ReactNode;
   styles?: ReactNode;
@@ -17,7 +25,7 @@ type ComponentDocStarterProps = {
   notes?: ReactNode;
 };
 
-export const docTestData: ComponentDocStarterProps = {
+export const docTestData: DocPageProps = {
   title: 'table',
   desc: 'table built with tanstack-table',
   previews: [
@@ -33,7 +41,7 @@ export const docTestData: ComponentDocStarterProps = {
 /**
  * component doc and demo page
  */
-export const DocPage = (props: ComponentDocStarterProps = docTestData) => {
+export const DocPage = (props: DocPageProps = docTestData) => {
   const { title, previews, usage } = props;
   // console.log(';; page ', title, props);
 
@@ -43,11 +51,17 @@ export const DocPage = (props: ComponentDocStarterProps = docTestData) => {
         {title ? <Heading1>{title}</Heading1> : null}
         <div>
           {previews?.map((preview) => {
-            const { title: name, demo, doc } = preview;
+            const { title: name, demo, demoNotCenter, doc } = preview;
             return (
               <HeadingLevel key={name}>
                 <Heading2>{name}</Heading2>
-                <div className={demoContainerCss}>{demo}</div>
+                <div
+                  className={cx(demoContainerCss, {
+                    [demoNotCenterCss]: demoNotCenter,
+                  })}
+                >
+                  {demo}
+                </div>
                 {doc ? doc : null}
               </HeadingLevel>
             );
@@ -81,4 +95,9 @@ const demoContainerCss = css`
   /* margin: ${themed.spacing.rem.n6}; */
   border-radius: ${themed.border.radius.xl3};
   background-color: ${themed.palette.gray50};
+`;
+
+const demoNotCenterCss = css`
+  align-items: start;
+  padding-top: ${themed.spacing.rem.n6};
 `;

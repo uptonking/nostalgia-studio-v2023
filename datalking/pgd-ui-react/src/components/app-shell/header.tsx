@@ -5,7 +5,7 @@ import { themed } from '@pgd/ui-tokens';
 
 import { useAppShellContext } from './api-hooks';
 
-type HeaderProps = {
+export type HeaderProps = {
   /** component shown at the left of header. fully customizable */
   logoPart?: React.ReactNode;
   /** component shown at the logo text/icon. not so customizable as `logoPart` */
@@ -63,7 +63,7 @@ const logoPartCss = css`
 
 const logoCss = css`
   color: ${themed.color.brand.primary};
-  font-size: ${themed.font.size.xl3};
+  font-size: ${themed.font.size.xl2};
   font-weight: 600;
   line-height: ${themed.size.lineHeight.rem.n9};
 `;

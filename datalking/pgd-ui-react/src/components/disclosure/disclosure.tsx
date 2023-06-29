@@ -109,14 +109,21 @@ if (process.env.NODE_ENV !== 'production') {
 const rootCss = css`
   display: flex;
   justify-content: space-between;
+  width: 100%;
   min-width: ${themed.spacing.rem.n52};
   padding-left: ${themed.spacing.rem.n2half};
   padding-right: ${themed.spacing.rem.n2half};
   padding-top: ${themed.spacing.rem.n2};
   padding-bottom: ${themed.spacing.rem.n2};
+  border: none;
+  background-color: ${themed.palette.gray100};
   /* color: ${themed.palette.slate700}; */
   /* font-size: ${themed.font.size.sm}; */
   /* line-height: ${themed.size.lineHeight.rem.n5}; */
 
   cursor: pointer;
+
+  &:hover {
+    /* background-color: ${themed.palette.gray100}; */
+  }
 `;

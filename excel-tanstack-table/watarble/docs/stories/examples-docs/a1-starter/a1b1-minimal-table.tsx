@@ -98,7 +98,7 @@ const columns: ColumnDef<Person>[] = [
     ],
   },
 ];
-window['col'] = columns;
+// window['col'] = columns;
 
 /**
  * ✨ 最小react-table示例，仅展示
@@ -111,7 +111,9 @@ export const A1b1MinimalTbl = () => {
   useEffect(() => {
     if (containerRef.current) {
       const watarble = new Watarble({
-        container: '.idEgRightContainer',
+        container:
+          (document.querySelector('#mainContent') as HTMLElement) ||
+          '.idEgRightContainer',
         table: {
           data,
           // @ts-expect-error fix-types

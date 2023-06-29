@@ -145,7 +145,7 @@ export const LazyList = (props) => {
         setLoading(false);
         // 👇🏻 recursively load all items
         // loadItems();
-      }, 2500);
+      }, 1500);
     }
   }, [items, itemsToDisplay, loading, page]);
 

@@ -48,9 +48,9 @@ const rootPositionCss = css`
 `;
 
 const rootInnerCss = css`
-  /* position: absolute; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: ${themed.spacing.rem.n5};
   /* padding: 0 16px; */
 `;

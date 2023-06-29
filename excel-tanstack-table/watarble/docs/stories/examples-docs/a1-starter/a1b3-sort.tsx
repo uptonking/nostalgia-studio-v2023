@@ -101,7 +101,7 @@ const columns: ColumnDef<Person>[] = [
     ],
   },
 ];
-window['col'] = columns;
+// window['col'] = columns;
 
 /**
  * ✨ sort
@@ -117,7 +117,9 @@ export const A1b3Sort = () => {
     if (containerRef.current) {
       if (!watarble.current) {
         watarble.current = new Watarble({
-          container: '.idEgRightContainer',
+          container:
+            (document.querySelector('#mainContent') as HTMLElement) ||
+            '.idEgRightContainer',
           table: {
             data,
             // @ts-expect-error fix-types

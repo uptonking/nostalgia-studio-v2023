@@ -99,7 +99,7 @@ const columns: ColumnDef<Person>[] = [
     ],
   },
 ];
-window['col'] = columns;
+// window['col'] = columns;
 
 /**
  * ✨ sort
@@ -116,7 +116,9 @@ export const A1b4UndoRedo = () => {
     if (containerRef.current) {
       if (!watarble.current) {
         watarble.current = new Watarble({
-          container: '.idEgRightContainer',
+          container:
+            (document.querySelector('#mainContent') as HTMLElement) ||
+            '.idEgRightContainer',
           onStateChange: forceUpdate,
           table: {
             data,
@@ -160,12 +162,15 @@ export const A1b4UndoRedo = () => {
     };
   }, []);
 
-  console.log(
-    ';; app4-undo ',
-    window['undo']?.length,
-    window['redo']?.length,
-    columns,
-  );
+  // console.log(
+  //   ';; app4-undo ',
+  //   window['undo']?.length,
+  //   window['redo']?.length,
+  //   columns,
+  // );
+
+  const borderColor =
+    watarble.current?.state.getters.getOutlineBorderColor() || '#000';
 
   return (
     <div>
@@ -173,10 +178,11 @@ export const A1b4UndoRedo = () => {
       <div
         style={{
           display: 'flex',
+          gap: 32,
+          alignItems: 'center',
           // justifyContent: 'space-around',
-          borderStyle: 'solid',
-          borderWidth: 4,
-          borderColor: watarble.current?.state.getters.getOutlineBorderColor(),
+          // borderStyle: 'solid',
+          // borderWidth: 4,
         }}
       >
         <div>
@@ -204,12 +210,13 @@ export const A1b4UndoRedo = () => {
         </button>
         <button
           style={{
-            backgroundColor:
-              watarble.current?.state.getters.getOutlineBorderColor(),
+            color: borderColor,
             padding: '3px 6px',
+            borderColor,
+            borderWidth: '1px',
           }}
         >
-          color: {watarble.current?.state.getters.getOutlineBorderColor()}
+          color: {borderColor}
         </button>
       </div>
 

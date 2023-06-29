@@ -188,7 +188,7 @@ const rootCss = css`
   /* display: flex; */
   /* justify-content: space-between; */
   min-width: ${themed.spacing.rem.n52};
-  min-height: ${themed.spacing.rem.n40};
+  min-height: ${themed.spacing.rem.n32};
   padding-left: ${themed.spacing.rem.n3};
   padding-top: ${themed.spacing.rem.n2};
   padding-bottom: ${themed.spacing.rem.n2};

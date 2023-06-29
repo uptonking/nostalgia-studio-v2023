@@ -11,7 +11,7 @@ import { globalNormalizeCss, heightFull, themed } from '@pgd/ui-tokens';
 import { DocPage } from '../doc-page';
 import { docTestData } from '../doc-page/doc-page';
 import { AppShellStoreContext, useAppShellStore } from './api-hooks';
-import { Header } from './header';
+import { Header, type HeaderProps } from './header';
 import { MainContent } from './main-content';
 import { Sidebar } from './sidebar';
 
@@ -21,7 +21,7 @@ type AppShellProps = {
   defaultIsSidebarOpen?: boolean;
   mainContent?: React.ReactNode;
   sidebarContent?: React.ReactNode;
-};
+} & HeaderProps;
 
 /**
  * Classic webapp layout with a header, a sidebar, a content-area
@@ -30,10 +30,11 @@ type AppShellProps = {
  */
 export const AppShell = (props: AppShellProps) => {
   const {
-    defaultIsSidebarOpen,
     container,
+    defaultIsSidebarOpen,
     mainContent = <DocPage {...docTestData} />,
     sidebarContent = <input />,
+    ...headerProps
   } = props;
 
   const appShellStore = useAppShellStore({ defaultIsSidebarOpen });
@@ -54,7 +55,7 @@ export const AppShell = (props: AppShellProps) => {
   return (
     <AppShellStoreContext.Provider value={appShellStore}>
       <div className={cx(globalNormalizeCss, rootCss)}>
-        <Header />
+        <Header {...headerProps} />
         <div
           className={cx(mainContainerCss, {
             [mainContainerWidth]: isSidebarOpen,

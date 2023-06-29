@@ -37,6 +37,7 @@
     "@tanstack/react-table-devtools": "8.7.9111",
     "@tanstack/react-virtual": "3.0.1111",
     "@tanstack/table-core": "8.7.9111",
+    "@datalking/watarble": "0.1.1",
     "cirrus-ui": "^0.7.1",
     "classnames": "^2.3.2",
     "clsx": "^1.2.1",

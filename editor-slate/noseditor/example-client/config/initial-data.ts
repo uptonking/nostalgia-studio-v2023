@@ -355,4 +355,4 @@ const simpleTableData: Descendant[] = [
 
 addIdToEditorData(simpleTableData);
 
-export { initialData, simpleTableData };
+export { initialData, listData, simpleTableData };

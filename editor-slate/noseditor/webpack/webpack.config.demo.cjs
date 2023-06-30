@@ -1,7 +1,8 @@
 const path = require('path');
 const { merge } = require('webpack-merge');
-const devServerConfig = require('../../../webpack/webpack.server');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const devServerConfig = require('../../../webpack/webpack.server');
 
 module.exports = merge(devServerConfig, {
   entry: path.resolve(__dirname, '../example-client/render.tsx'),
@@ -10,6 +11,12 @@ module.exports = merge(devServerConfig, {
     path: path.resolve(__dirname, '../dist'),
   },
   plugins: [
+    new webpack.DefinePlugin({
+      // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      __TEST__: JSON.stringify(false),
+      __DEV__: JSON.stringify(true),
+      'process.env': JSON.stringify(process.env),
+    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       // template: path.resolve(process.cwd(), 'demo.html'),

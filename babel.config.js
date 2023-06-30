@@ -41,6 +41,7 @@ module.exports = function (api) {
   const plugins = [
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     ['@babel/plugin-proposal-class-properties', { loose: false }],
+    '@babel/plugin-transform-private-methods',
     // ['@babel/plugin-syntax-import-assertions'],
     isEnvReactHotReload && 'react-refresh/babel',
   ].filter(Boolean);

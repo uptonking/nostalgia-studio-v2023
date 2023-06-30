@@ -6,8 +6,12 @@ import { useSlate } from 'slate-react';
 import { css } from '@linaria/core';
 
 import { themed } from '../../../styles';
-import { DraggableCollapsibleEditor } from '../../draggable-collapsible-feature/collapsible-editor';
-import { toggleCollapsibleElement } from '../../draggable-collapsible-feature/commands/toggle-collapsible-element';
+import {
+  DraggableCollapsibleEditor,
+} from '../../draggable-collapsible-feature/collapsible-editor';
+import {
+  toggleCollapsibleElement,
+} from '../../draggable-collapsible-feature/commands/toggle-collapsible-element';
 import { type ElementProps } from '../../types';
 import { checkItem } from '../commands';
 import {
@@ -33,7 +37,12 @@ export const ListItem = (
   return (
     <div
       {...attributes}
-      className={cx('nos-elem', 'list-item', `list-item-${listType}`)}
+      className={cx(
+        // listItemDefaultCss,
+        'nos-elem',
+        'list-item',
+        `list-item-${listType}`,
+      )}
     >
       {isBulletedListItemElement(element) ? (
         <button

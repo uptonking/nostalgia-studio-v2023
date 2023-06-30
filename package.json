@@ -103,6 +103,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.18.0",
     "@babel/plugin-syntax-import-assertions": "^7.18.0",
     "@babel/plugin-syntax-jsx": "^7.18.0",
+    "@babel/plugin-transform-private-methods": "^7.18.0",
     "@babel/preset-env": "^7.18.0",
     "@babel/preset-react": "^7.18.0",
     "@babel/preset-typescript": "^7.18.0",

@@ -12,15 +12,18 @@ type ParagraphBaseProps = {
   style?: React.CSSProperties;
 } & React.HTMLProps<HTMLParagraphElement>;
 
-export const ParagraphBase = (props_: ParagraphBaseProps) => {
+export const ParagraphBase = React.forwardRef<
+  HTMLParagraphElement,
+  ParagraphBaseProps
+>((props_, ref) => {
   const { className, children, ...props } = props_;
 
   return (
-    <p className={cx(pCss, className)} {...props}>
+    <p ref={ref} className={cx(pCss, className)} {...props}>
       {children}
     </p>
   );
-};
+});
 
 const pCss = css`
   line-height: ${themed.font.family.lineHeight.default};

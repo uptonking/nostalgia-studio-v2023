@@ -8,8 +8,6 @@ import {
   type CustomEditor,
   type CustomElement,
   type CustomText,
-} from '../../src';
-import {
   DndFeatureProvider,
   DragOverlayContent,
   useEditor,
@@ -20,7 +18,12 @@ import {
   useRenderLeaf,
 } from '../../src';
 import { NosNavbar, NosToolbar } from '../components/noseditor-full';
-import { initialData, initialDataLong, simpleTableData } from '../config';
+import {
+  initialData,
+  initialDataLong,
+  listData,
+  simpleTableData,
+} from '../config';
 
 export const NosEditorFullFeatures = (props) => {
   const { id = 'main', initialValue = initialData } = props;

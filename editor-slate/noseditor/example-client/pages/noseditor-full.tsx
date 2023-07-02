@@ -26,7 +26,7 @@ import {
 } from '../config';
 
 export const NosEditorFullFeatures = (props) => {
-  const { id = 'main', initialValue = initialData } = props;
+  const { id = 'mainNosEditor', initialValue = initialData } = props;
 
   const forceRerender = useReducer(() => ({}), {})[1];
 

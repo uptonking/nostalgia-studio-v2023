@@ -132,8 +132,8 @@ export const DndFeatureProvider = ({
 
     document.body.classList.add('dragging');
 
-    setActiveId(active.id);
-    setOverId(active.id);
+    setActiveId(active.id as string);
+    setOverId(active.id as string);
   }, []);
 
   const handleDragMove = ({ delta }: DragMoveEvent) => {
@@ -141,7 +141,7 @@ export const DndFeatureProvider = ({
   };
 
   const handleDragOver = ({ over }: DragOverEvent) => {
-    setOverId(over?.id ?? null);
+    setOverId((over?.id as string) ?? null);
   };
 
   const handleDragEnd = useCallback(
@@ -217,7 +217,7 @@ export const DndFeatureProvider = ({
             dropAnimation={{
               duration: 220,
               easing: 'cubic-bezier(.43,.96,.36,1.13)',
-              dragSourceOpacity: 0,
+              // dragSourceOpacity: 0,
             }}
           >
             {activeId &&

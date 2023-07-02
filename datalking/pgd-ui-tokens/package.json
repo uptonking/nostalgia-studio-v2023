@@ -1,6 +1,6 @@
 {
   "name": "@pgd/ui-tokens",
-  "version": "0.1.1",
+  "version": "0.0.1",
   "description": "design tokens for pgd(prospect garden design)",
   "type": "module",
   "main": "src/index.ts",

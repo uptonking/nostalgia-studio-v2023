@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// import * as noseditor from '@datalking/noseditor/example-client/examples';
 import * as watarble from '@datalking/watarble/docs/stories/examples-docs';
 import { css } from '@linaria/core';
 import { AppShell, DisclosureDefault } from '@pgd/ui-react';
@@ -10,7 +11,9 @@ import * as pgdUi from './stories/pgd-ui';
 import * as tanstackTable from './stories/tanstack-table';
 import * as tanstackVirtual from './stories/tanstack-virtual';
 
+/** titles for examples' catalog */
 const docsCatalogTitles = {
+  // noseditor: 'noseditor',
   watarble: 'watarble table framework',
   pgdUi: 'pgd-ui for react',
   tanstackTable: 'tanstack table',
@@ -18,7 +21,9 @@ const docsCatalogTitles = {
   dndkit: 'dnd-kit',
 };
 
+/** examples component by catalog */
 const docsStoriesByCatalog = {
+  // noseditor,
   watarble,
   pgdUi,
   tanstackTable,

@@ -1,6 +1,6 @@
 {
   "name": "@datalking/watarble",
-  "version": "0.1.1",
+  "version": "0.0.1",
   "description": "an extensible toolkit for building editable tables and data grids.",
   "license": "(MIT OR AGPL-3.0-or-later)",
   "type": "module",

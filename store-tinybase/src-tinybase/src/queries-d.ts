@@ -12,18 +12,18 @@
  * @since v2.0.0
  */
 
-import type { Id, IdOrNull, Ids } from './common-d';
-import type {
-  Cell,
-  CellCallback,
-  CellOrUndefined,
-  GetCell,
-  GetCellChange,
-  Row,
-  RowCallback,
-  Store,
-  Table,
-  TableCallback,
+import { type Id, type IdOrNull, type Ids } from './common-d';
+import {
+  type Cell,
+  type CellCallback,
+  type CellOrUndefined,
+  type GetCell,
+  type GetCellChange,
+  type Row,
+  type RowCallback,
+  type Store,
+  type Table,
+  type TableCallback,
 } from './store-d';
 
 /**

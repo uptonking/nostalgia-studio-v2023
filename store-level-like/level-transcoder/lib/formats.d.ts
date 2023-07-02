@@ -1,4 +1,4 @@
-import { Encoding, IEncoding } from './encoding';
+import { Encoding, type IEncoding } from './encoding';
 
 export class BufferFormat<TIn, TOut> extends Encoding<TIn, Buffer, TOut> {
   constructor(options: Omit<IEncoding<TIn, Buffer, TOut>, 'format'>);

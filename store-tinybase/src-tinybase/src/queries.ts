@@ -1,4 +1,4 @@
-import type { Id, IdOrNull, Ids } from './common-d';
+import { type Id, type IdOrNull, type Ids } from './common-d';
 import { getAggregateValue, numericAggregators } from './common/aggregators';
 import {
   arrayEvery,
@@ -19,8 +19,8 @@ import {
 } from './common/coll';
 import { getCreateFunction, getDefinableFunctions } from './common/definable';
 import {
-  IdMap,
-  IdMap2,
+  type IdMap,
+  type IdMap2,
   mapEnsure,
   mapForEach,
   mapGet,
@@ -35,7 +35,7 @@ import {
   isFunction,
   isUndefined,
 } from './common/other';
-import { IdSet, setAdd, setNew } from './common/set';
+import { type IdSet, setAdd, setNew } from './common/set';
 import {
   ADD,
   CELL,
@@ -49,28 +49,28 @@ import {
   SORTED_ROW_IDS,
   TABLE,
 } from './common/strings';
-import type {
-  Aggregate,
-  AggregateAdd,
-  AggregateRemove,
-  AggregateReplace,
-  createQueries as createQueriesDecl,
-  GetTableCell,
-  Group,
-  Having,
-  Join,
-  Queries,
-  QueriesListenerStats,
-  Select,
-  Where,
+import {
+  type Aggregate,
+  type AggregateAdd,
+  type AggregateRemove,
+  type AggregateReplace,
+  type createQueries as createQueriesDecl,
+  type GetTableCell,
+  type Group,
+  type Having,
+  type Join,
+  type Queries,
+  type QueriesListenerStats,
+  type Select,
+  type Where,
 } from './queries-d';
-import type {
-  Cell,
-  CellOrUndefined,
-  GetCell,
-  GetCellChange,
-  Row,
-  Store,
+import {
+  type Cell,
+  type CellOrUndefined,
+  type GetCell,
+  type GetCellChange,
+  type Row,
+  type Store,
 } from './store-d';
 
 type StoreWithCreateMethod = Store & { createStore: () => Store };

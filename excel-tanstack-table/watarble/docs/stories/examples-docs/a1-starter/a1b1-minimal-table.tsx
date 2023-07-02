@@ -128,7 +128,7 @@ export const A1b1MinimalTbl = () => {
     }
   }, [data]);
 
-  console.log(';; rows-h ', columns);
+  // console.log(';; wtbl ', columns);
 
   return (
     <div>

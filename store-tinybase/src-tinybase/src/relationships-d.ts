@@ -11,8 +11,8 @@
  * @module relationships
  */
 
-import type { Id, IdOrNull, Ids } from './common-d';
-import type { GetCell, RowCallback, Store } from './store-d';
+import { type Id, type IdOrNull, type Ids } from './common-d';
+import { type GetCell, type RowCallback, type Store } from './store-d';
 
 /**
  * The Relationship type represents the concept of a map that connects one Row

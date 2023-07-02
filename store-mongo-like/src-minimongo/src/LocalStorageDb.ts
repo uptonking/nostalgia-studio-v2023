@@ -4,13 +4,13 @@ import * as utils from './utils';
 import { processFind } from './utils';
 import { compileSort } from './selector';
 import {
-  Doc,
-  MinimongoCollection,
-  MinimongoCollectionFindOneOptions,
-  MinimongoCollectionFindOptions,
-  MinimongoDb,
+  type Doc,
+  type MinimongoCollection,
+  type MinimongoCollectionFindOneOptions,
+  type MinimongoCollectionFindOptions,
+  type MinimongoDb,
 } from './types';
-import { Item, MinimongoLocalCollection } from '.';
+import { type Item, type MinimongoLocalCollection } from '.';
 
 export default class LocalStorageDb implements MinimongoDb {
   collections: { [collectionName: string]: MinimongoCollection<any> };

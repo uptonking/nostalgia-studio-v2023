@@ -2,14 +2,14 @@ import { applyDevTools } from 'prosemirror-dev-toolkit';
 import { buildMenuItems, exampleSetup } from 'prosemirror-example-setup';
 import {
   DOMParser,
-  NodeSpec,
+  type NodeSpec,
   NodeType,
-  Node,
+  type Node,
   Fragment,
   Schema,
 } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState, type Transaction } from 'prosemirror-state';
 import { EditorView, type NodeView } from 'prosemirror-view';
 import React, { useEffect, useRef, useState } from 'react';
 import { insertPoint, StepMap } from 'prosemirror-transform';

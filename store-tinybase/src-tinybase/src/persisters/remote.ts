@@ -1,10 +1,10 @@
-import type { Callback, Json } from '../common-d';
+import { type Callback, type Json } from '../common-d';
 import { ifNotUndefined, isUndefined } from '../common/other';
 import {
-  createRemotePersister as createRemotePersisterDecl,
-  Persister,
+  type createRemotePersister as createRemotePersisterDecl,
+  type Persister,
 } from '../persisters-d';
-import type { Store } from '../store-d';
+import { type Store } from '../store-d';
 import { createCustomPersister } from './common';
 
 const getETag = (response: Response) => response.headers.get('ETag');

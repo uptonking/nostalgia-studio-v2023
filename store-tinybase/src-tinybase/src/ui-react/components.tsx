@@ -1,57 +1,57 @@
 /** @jsx createElement */
 
-import React, { ReactElement, useContext } from 'react';
+import React, { type ReactElement, useContext } from 'react';
 
-import type { CheckpointIds } from '../checkpoints-d';
-import type { Id, Ids } from '../common-d';
+import { type CheckpointIds } from '../checkpoints-d';
+import { type Id, type Ids } from '../common-d';
 import { arrayMap } from '../common/array';
-import { IdObj } from '../common/obj';
+import { type IdObj } from '../common/obj';
 import { isArray, isUndefined } from '../common/other';
 import { EMPTY_STRING } from '../common/strings';
-import type { Relationships } from '../relationships-d';
-import type { Store } from '../store-d';
+import { type Relationships } from '../relationships-d';
+import { type Store } from '../store-d';
 import {
-  BackwardCheckpointsProps,
-  BackwardCheckpointsView as BackwardCheckpointsViewDecl,
-  CellProps,
-  CellView as CellViewDecl,
-  CheckpointProps,
-  CheckpointView as CheckpointViewDecl,
-  CurrentCheckpointProps,
-  CurrentCheckpointView as CurrentCheckpointViewDecl,
-  ForwardCheckpointsProps,
-  ForwardCheckpointsView as ForwardCheckpointsViewDecl,
-  IndexProps,
-  IndexView as IndexViewDecl,
-  LinkedRowsProps,
-  LinkedRowsView as LinkedRowsViewDecl,
-  LocalRowsProps,
-  LocalRowsView as LocalRowsViewDecl,
-  MetricProps,
-  MetricView as MetricViewDecl,
-  Provider as ProviderDecl,
-  ProviderProps,
-  RelationshipsOrRelationshipsId,
-  RemoteRowProps,
-  RemoteRowView as RemoteRowViewDecl,
-  ResultCellProps,
-  ResultCellView as ResultCellViewDecl,
-  ResultRowProps,
-  ResultRowView as ResultRowViewDecl,
-  ResultSortedTableProps,
-  ResultSortedTableView as ResultSortedTableViewDecl,
-  ResultTableProps,
-  ResultTableView as ResultTableViewDecl,
-  RowProps,
-  RowView as RowViewDecl,
-  SliceProps,
-  SliceView as SliceViewDecl,
-  SortedTableProps,
-  SortedTableView as SortedTableViewDecl,
-  TableProps,
-  TablesProps,
-  TablesView as TablesViewDecl,
-  TableView as TableViewDecl,
+  type BackwardCheckpointsProps,
+  type BackwardCheckpointsView as BackwardCheckpointsViewDecl,
+  type CellProps,
+  type CellView as CellViewDecl,
+  type CheckpointProps,
+  type CheckpointView as CheckpointViewDecl,
+  type CurrentCheckpointProps,
+  type CurrentCheckpointView as CurrentCheckpointViewDecl,
+  type ForwardCheckpointsProps,
+  type ForwardCheckpointsView as ForwardCheckpointsViewDecl,
+  type IndexProps,
+  type IndexView as IndexViewDecl,
+  type LinkedRowsProps,
+  type LinkedRowsView as LinkedRowsViewDecl,
+  type LocalRowsProps,
+  type LocalRowsView as LocalRowsViewDecl,
+  type MetricProps,
+  type MetricView as MetricViewDecl,
+  type Provider as ProviderDecl,
+  type ProviderProps,
+  type RelationshipsOrRelationshipsId,
+  type RemoteRowProps,
+  type RemoteRowView as RemoteRowViewDecl,
+  type ResultCellProps,
+  type ResultCellView as ResultCellViewDecl,
+  type ResultRowProps,
+  type ResultRowView as ResultRowViewDecl,
+  type ResultSortedTableProps,
+  type ResultSortedTableView as ResultSortedTableViewDecl,
+  type ResultTableProps,
+  type ResultTableView as ResultTableViewDecl,
+  type RowProps,
+  type RowView as RowViewDecl,
+  type SliceProps,
+  type SliceView as SliceViewDecl,
+  type SortedTableProps,
+  type SortedTableView as SortedTableViewDecl,
+  type TableProps,
+  type TablesProps,
+  type TablesView as TablesViewDecl,
+  type TableView as TableViewDecl,
 } from '../ui-react.d';
 import {
   Context,

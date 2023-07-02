@@ -1,5 +1,6 @@
-import ws, { WebSocket, WebSocketServer, type ServerOptions } from 'ws';
-import http from 'node:http';
+import type ws from 'ws';
+import { WebSocket, WebSocketServer, type ServerOptions } from 'ws';
+import type http from 'node:http';
 import cors from 'cors';
 import express from 'express';
 import {

@@ -1,5 +1,5 @@
-import type { Id } from '../common-d';
-import type { Cell, CellOrUndefined, Store } from '../store-d';
+import { type Id } from '../common-d';
+import { type Cell, type CellOrUndefined, type Store } from '../store-d';
 import { isFiniteNumber, isTypeStringOrBoolean, isUndefined } from './other';
 import { getTypeOf, NUMBER } from './strings';
 

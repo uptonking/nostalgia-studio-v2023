@@ -1,11 +1,10 @@
 import pluginCSS from '@cobalt-ui/plugin-css';
 import pluginJS from '@cobalt-ui/plugin-js';
-import pluginSass from '@cobalt-ui/plugin-sass';
 
 /** @type import('@cobalt-ui/core').Config */
 export default {
   outDir: './src/styles/',
-  tokens: './src/styles/theme-default-tokens.json',
+  tokens: './src/styles/theme-default.tokens.json',
   plugins: [
     pluginCSS({
       prefix: 'nos-',

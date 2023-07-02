@@ -1,5 +1,5 @@
-import { Coll, collSize2 } from './coll';
-import { IdMap, mapNew } from './map';
+import { type Coll, collSize2 } from './coll';
+import { type IdMap, mapNew } from './map';
 
 /** 2-tuple [ Value1, Value2 ] */
 export type Pair<Value> = [Value, Value];

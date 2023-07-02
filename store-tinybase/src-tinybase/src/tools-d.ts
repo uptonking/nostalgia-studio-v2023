@@ -10,8 +10,8 @@
  * @since v2.2.0
  */
 
-import type { Id } from './common-d';
-import type { Schema, Store } from './store-d';
+import { type Id } from './common-d';
+import { type Schema, type Store } from './store-d';
 
 /**
  * The StoreStats type describes a set of statistics about the Store, and

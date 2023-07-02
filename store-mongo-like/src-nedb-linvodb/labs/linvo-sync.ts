@@ -1,7 +1,7 @@
 import async from 'async';
 import _ from 'lodash';
 
-import type { Model } from '../src';
+import { type Model } from '../src';
 
 /**
  * 这里同步的粒度在row/一条数据代表的对象

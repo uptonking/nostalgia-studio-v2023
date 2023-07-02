@@ -1,8 +1,8 @@
 import {
-  Encoding,
-  MixedEncoding,
-  KnownEncoding,
-  KnownEncodingName,
+  type Encoding,
+  type MixedEncoding,
+  type KnownEncoding,
+  type KnownEncodingName,
 } from './lib/encoding';
 
 export class Transcoder<T = any> {

@@ -1,11 +1,17 @@
-import type { Id } from '../common-d';
+import { type Id } from '../common-d';
 import { collValues } from '../common/coll';
-import { IdMap, mapEnsure, mapForEach, mapNew, mapSet } from '../common/map';
+import {
+  type IdMap,
+  mapEnsure,
+  mapForEach,
+  mapNew,
+  mapSet,
+} from '../common/map';
 import { objIsEmpty, objMap } from '../common/obj';
 import { isString, isUndefined } from '../common/other';
 import { pairNew } from '../common/pairs';
 import { BOOLEAN, DEFAULT, EMPTY_STRING, TYPE } from '../common/strings';
-import type { Cell, Schema } from '../store-d';
+import { type Cell, type Schema } from '../store-d';
 import { camel, comment, flat, getCodeFunctions, join, snake } from './code';
 import {
   A_FUNCTION_FOR,

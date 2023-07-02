@@ -195,11 +195,10 @@ export const Filters: TableFeature = {
       maxLeafRowFilterDepth: 100,
       globalFilterFn: 'auto',
       getColumnCanGlobalFilter: (column) => {
-        const value = table
+        const firstRowCells = table
           .getCoreRowModel()
-          // prettier-ignore
-          .flatRows[0]?._getAllCellsByColumnId()
-          [column.id]?.getValue();
+          .flatRows[0]?._getAllCellsByColumnId();
+        const value = firstRowCells[column.id]?.getValue();
 
         return typeof value === 'string' || typeof value === 'number';
       },

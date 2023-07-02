@@ -1,4 +1,4 @@
-import type { Id } from '../common-d';
+import { type Id } from '../common-d';
 import { arrayIsEmpty, arrayMap } from './array';
 import { ifNotUndefined, isInstanceOf, isUndefined } from './other';
 

@@ -33,7 +33,7 @@ for (const [cat, stories] of Object.entries(docsStoriesByCatalog)) {
   }
 }
 
-console.log(';; docsStoriesBy ', docsStoriesByCatalog, allDocsStories);
+// console.log(';; docsStoriesBy ', docsStoriesByCatalog, allDocsStories);
 
 type DocsSidebarProps = {
   onDocChange?: (docName: string) => void;

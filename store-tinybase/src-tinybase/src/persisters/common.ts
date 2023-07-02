@@ -1,9 +1,9 @@
-import type { Callback, Id } from '../common-d';
+import { type Callback, type Id } from '../common-d';
 import { objFreeze } from '../common/obj';
 import { DEBUG, ifNotUndefined, isUndefined } from '../common/other';
 import { EMPTY_STRING } from '../common/strings';
-import type { Persister, PersisterStats } from '../persisters-d';
-import type { Store, Tables } from '../store-d';
+import { type Persister, type PersisterStats } from '../persisters-d';
+import { type Store, type Tables } from '../store-d';
 
 export const createCustomPersister = (
   store: Store,

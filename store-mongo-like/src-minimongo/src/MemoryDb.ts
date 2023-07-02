@@ -4,13 +4,13 @@ import * as utils from './utils';
 import { processFind } from './utils';
 import { compileSort } from './selector';
 import {
-  Doc,
-  Item,
+  type Doc,
+  type Item,
   MinimongoCollection,
-  MinimongoCollectionFindOneOptions,
-  MinimongoCollectionFindOptions,
-  MinimongoDb,
-  MinimongoLocalCollection,
+  type MinimongoCollectionFindOneOptions,
+  type MinimongoCollectionFindOptions,
+  type MinimongoDb,
+  type MinimongoLocalCollection,
 } from './types';
 
 export default class MemoryDb implements MinimongoDb {

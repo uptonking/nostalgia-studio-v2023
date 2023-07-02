@@ -1,4 +1,4 @@
-import { BufferFormat, ViewFormat, UTF8Format } from './formats';
+import { type BufferFormat, type ViewFormat, type UTF8Format } from './formats';
 
 /**
  * Encodes {@link TIn} to {@link TFormat} and decodes

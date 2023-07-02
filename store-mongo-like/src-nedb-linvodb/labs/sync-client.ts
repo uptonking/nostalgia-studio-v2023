@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import type { Model } from '../src';
+import { type Model } from '../src';
 import { EventEmitter } from '../src/utils/event-emitter';
 import {
   createSync,

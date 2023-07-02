@@ -1,12 +1,12 @@
 import {
   AbstractLevel,
-  AbstractDatabaseOptions,
-  AbstractOpenOptions,
-  NodeCallback,
+  type AbstractDatabaseOptions,
+  type AbstractOpenOptions,
+  type NodeCallback,
 } from 'abstract-level';
 
 // Requires `npm install @types/readable-stream`.
-import { Duplex } from 'readable-stream';
+import { type Duplex } from 'readable-stream';
 
 /**
  * Guest database that reads and writes to the host's database.

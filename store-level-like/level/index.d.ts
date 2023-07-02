@@ -1,6 +1,6 @@
 import * as AbstractLevel from 'abstract-level';
-import * as ClassicLevel from 'classic-level';
-import * as BrowserLevel from 'browser-level';
+import type * as ClassicLevel from 'classic-level';
+import type * as BrowserLevel from 'browser-level';
 
 /**
  * Universal {@link AbstractLevel} database for Node.js and browsers.

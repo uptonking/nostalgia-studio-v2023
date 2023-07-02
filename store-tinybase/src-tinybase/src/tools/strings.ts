@@ -1,4 +1,4 @@
-import type { Id } from '../common-d';
+import { type Id } from '../common-d';
 import { EMPTY_STRING } from '../common/strings';
 
 const THE_CONTENT_OF = 'the content of';

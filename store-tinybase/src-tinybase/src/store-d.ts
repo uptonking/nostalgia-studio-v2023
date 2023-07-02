@@ -11,7 +11,7 @@
  * @module store
  */
 
-import type { Id, IdOrNull, Ids, Json } from './common-d';
+import { type Id, type IdOrNull, type Ids, type Json } from './common-d';
 
 /**
  * The Tables type is the data structure representing all of the data in a

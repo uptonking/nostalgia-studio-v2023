@@ -1,5 +1,5 @@
-import type { Id } from '../common-d';
-import { IdMap } from './map';
+import { type Id } from '../common-d';
+import { type IdMap } from './map';
 import { isArray, isUndefined } from './other';
 
 export type IdSet = Set<Id>;

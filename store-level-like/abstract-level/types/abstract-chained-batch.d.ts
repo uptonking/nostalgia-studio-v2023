@@ -1,6 +1,6 @@
-import * as Transcoder from 'level-transcoder';
-import { AbstractSublevel } from './abstract-sublevel';
-import { NodeCallback } from './interfaces';
+import type * as Transcoder from 'level-transcoder';
+import { type AbstractSublevel } from './abstract-sublevel';
+import { type NodeCallback } from './interfaces';
 
 export class AbstractChainedBatch<TDatabase, KDefault, VDefault> {
   constructor(db: TDatabase);

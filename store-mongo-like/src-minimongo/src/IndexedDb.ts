@@ -6,12 +6,12 @@ import { processFind } from './utils';
 import { compileSort } from './selector';
 import {
   MinimongoCollection,
-  MinimongoCollectionFindOneOptions,
-  MinimongoCollectionFindOptions,
+  type MinimongoCollectionFindOneOptions,
+  type MinimongoCollectionFindOptions,
   MinimongoDb,
-  MinimongoLocalDb,
+  type MinimongoLocalDb,
 } from './types';
-import { MinimongoLocalCollection } from '.';
+import { type MinimongoLocalCollection } from '.';
 
 // Create a database backed by IndexedDb. options must contain namespace: <string to uniquely identify database>
 export default class IndexedDb implements MinimongoLocalDb {

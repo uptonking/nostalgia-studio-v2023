@@ -1,4 +1,4 @@
-import * as Transcoder from 'level-transcoder';
+import type * as Transcoder from 'level-transcoder';
 import { AbstractLevel } from './abstract-level';
 
 /**

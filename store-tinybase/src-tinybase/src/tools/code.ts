@@ -1,4 +1,4 @@
-import type { Id } from '../common-d';
+import { type Id } from '../common-d';
 import {
   arrayForEach,
   arrayMap,
@@ -10,7 +10,7 @@ import {
 } from '../common/array';
 import { collHas, collValues } from '../common/coll';
 import {
-  IdMap,
+  type IdMap,
   mapEnsure,
   mapGet,
   mapMap,
@@ -18,8 +18,8 @@ import {
   mapSet,
 } from '../common/map';
 import { isArray } from '../common/other';
-import { Pair, pairNewMap } from '../common/pairs';
-import { IdSet2, setAdd, setNew } from '../common/set';
+import { type Pair, pairNewMap } from '../common/pairs';
+import { type IdSet2, setAdd, setNew } from '../common/set';
 import { EMPTY_STRING } from '../common/strings';
 
 type LINE = string;

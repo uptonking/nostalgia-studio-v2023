@@ -11,8 +11,8 @@
  * @module checkpoints
  */
 
-import type { Id, IdOrNull, Ids } from './common-d';
-import type { Store } from './store-d';
+import { type Id, type IdOrNull, type Ids } from './common-d';
+import { type Store } from './store-d';
 
 /**
  * The CheckpointIds type is a representation of the list of checkpoint Ids

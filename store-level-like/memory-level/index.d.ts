@@ -1,8 +1,8 @@
 import {
-  AbstractDatabaseOptions,
+  type AbstractDatabaseOptions,
   AbstractLevel,
-  AbstractOpenOptions,
-  NodeCallback,
+  type AbstractOpenOptions,
+  type NodeCallback,
 } from 'abstract-level';
 
 /**

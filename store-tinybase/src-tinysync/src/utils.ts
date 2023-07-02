@@ -1,7 +1,7 @@
 /** @unused */
 
-import type { CellOrUndefined } from 'tinybase';
-import type { Id } from 'tinybase/src/common-d';
+import { type CellOrUndefined } from 'tinybase';
+import { type Id } from 'tinybase/src/common-d';
 
 import {
   arrayForEach,

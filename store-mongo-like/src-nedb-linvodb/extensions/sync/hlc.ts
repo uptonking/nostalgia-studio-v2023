@@ -1,4 +1,4 @@
-import type { Id } from 'tinybase/src/common-d';
+import { type Id } from 'tinybase/src/common-d';
 
 import { fromB64, isUndefined, stringHash, toB64 } from './common';
 

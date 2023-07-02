@@ -1,4 +1,4 @@
-import type { Id, IdOrNull, Ids } from './common-d';
+import { type Id, type IdOrNull, type Ids } from './common-d';
 import {
   collDel,
   collForEach,
@@ -13,21 +13,21 @@ import {
   getRowCellFunction,
 } from './common/definable';
 import { getListenerFunctions } from './common/listeners';
-import { IdMap, mapForEach, mapGet, mapNew, mapSet } from './common/map';
+import { type IdMap, mapForEach, mapGet, mapNew, mapSet } from './common/map';
 import { objFreeze } from './common/obj';
 import { DEBUG, ifNotUndefined, isUndefined } from './common/other';
-import { IdSet, IdSet3, setAdd, setNew } from './common/set';
+import { type IdSet, type IdSet3, setAdd, setNew } from './common/set';
 import { EMPTY_STRING } from './common/strings';
 import {
-  createRelationships as createRelationshipsDecl,
-  LinkedRowIdsListener,
-  LocalRowIdsListener,
-  RelationshipCallback,
-  Relationships,
-  RelationshipsListenerStats,
-  RemoteRowIdListener,
+  type createRelationships as createRelationshipsDecl,
+  type LinkedRowIdsListener,
+  type LocalRowIdsListener,
+  type RelationshipCallback,
+  type Relationships,
+  type RelationshipsListenerStats,
+  type RemoteRowIdListener,
 } from './relationships-d';
-import type { GetCell, Store } from './store-d';
+import { type GetCell, type Store } from './store-d';
 
 type Relationship = [IdMap<Id>, IdMap<IdSet>, IdMap<IdSet>, IdMap<number>];
 

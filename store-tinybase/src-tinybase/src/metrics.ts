@@ -1,4 +1,4 @@
-import type { Id, IdOrNull } from './common-d';
+import { type Id, type IdOrNull } from './common-d';
 import { getAggregateValue, numericAggregators } from './common/aggregators';
 import { collSize, collSize2 } from './common/coll';
 import {
@@ -7,7 +7,7 @@ import {
   getRowCellFunction,
 } from './common/definable';
 import { getListenerFunctions } from './common/listeners';
-import { IdMap, mapGet, mapNew } from './common/map';
+import { type IdMap, mapGet, mapNew } from './common/map';
 import { objFreeze } from './common/obj';
 import {
   DEBUG,
@@ -16,19 +16,19 @@ import {
   isFunction,
   isUndefined,
 } from './common/other';
-import { IdSet2 } from './common/set';
+import { type IdSet2 } from './common/set';
 import { EMPTY_STRING, SUM } from './common/strings';
-import type {
-  Aggregate,
-  AggregateAdd,
-  AggregateRemove,
-  AggregateReplace,
-  createMetrics as createMetricsDecl,
-  MetricListener,
-  Metrics,
-  MetricsListenerStats,
+import {
+  type Aggregate,
+  type AggregateAdd,
+  type AggregateRemove,
+  type AggregateReplace,
+  type createMetrics as createMetricsDecl,
+  type MetricListener,
+  type Metrics,
+  type MetricsListenerStats,
 } from './metrics-d';
-import type { GetCell, Store } from './store-d';
+import { type GetCell, type Store } from './store-d';
 
 type Aggregators = [
   Aggregate,

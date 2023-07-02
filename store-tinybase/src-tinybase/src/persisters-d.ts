@@ -27,8 +27,8 @@
  * @module persisters
  */
 
-import type { Callback } from './common-d';
-import type { Store, Tables } from './store-d';
+import { type Callback } from './common-d';
+import { type Store, type Tables } from './store-d';
 
 /**
  * The PersisterStats type describes the number of times a Persister object has

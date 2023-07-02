@@ -14,6 +14,7 @@ module.exports = {
     },
     ecmaVersion: 2022,
     sourceType: 'module',
+    // project: ['tsconfig.base.json'],
   },
   settings: {
     react: {
@@ -119,6 +120,10 @@ module.exports = {
     '@typescript-eslint/no-inferrable-types': 0,
     '@typescript-eslint/no-namespace': 1,
     '@typescript-eslint/no-non-null-asserted-optional-chain': 1,
+    '@typescript-eslint/no-unnecessary-type-constraint': 1,
+    // '@typescript-eslint/no-floating-promises': 2,
+    // '@typescript-eslint/no-misused-promises': 2,
+    // '@typescript-eslint/await-thenable': 2,
     '@typescript-eslint/parameter-properties': 1,
     '@typescript-eslint/ban-types': 1,
     '@typescript-eslint/ban-ts-comment': 1,
@@ -138,7 +143,6 @@ module.exports = {
     '@typescript-eslint/consistent-type-definitions': 0,
     '@typescript-eslint/class-literal-property-style': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
-    '@typescript-eslint/no-unnecessary-type-constraint': 1,
     '@typescript-eslint/triple-slash-reference': 1,
     'react/no-find-dom-node': 1,
     'react/no-deprecated': 1,

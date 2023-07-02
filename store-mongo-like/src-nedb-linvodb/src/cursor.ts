@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import * as docUtils from './document';
-import type { Model } from './model';
+import { type Model } from './model';
 import { EventEmitter } from './utils/event-emitter';
 
 const INDEX_BUILDING_DEBOUNCE = 10;

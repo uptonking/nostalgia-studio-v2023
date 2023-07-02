@@ -1,6 +1,6 @@
 import { Observable } from 'lib0/observable';
 
-import type { Doc } from '../internals';
+import { type Doc } from '../internals';
 
 /**
  * This is an abstract interface that all Connectors should implement to keep them interchangeable.

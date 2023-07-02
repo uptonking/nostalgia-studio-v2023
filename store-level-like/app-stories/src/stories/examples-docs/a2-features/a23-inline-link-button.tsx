@@ -2,7 +2,7 @@ import { isKeyHotkey } from 'is-hotkey';
 import isUrl from 'is-url';
 import React, { useMemo } from 'react';
 import {
-  BaseEditor,
+  type BaseEditor,
   Descendant,
   Editor,
   Range,
@@ -10,10 +10,10 @@ import {
   Transforms,
   createEditor,
 } from 'slate';
-import { HistoryEditor, withHistory } from 'slate-history';
+import { type HistoryEditor, withHistory } from 'slate-history';
 import {
   DefaultEditable as Editable,
-  ReactEditor,
+  type ReactEditor,
   Slate,
   useFocused,
   useSelected,
@@ -24,7 +24,7 @@ import {
 import { css } from '@emotion/css';
 
 import { Button, Icon, Toolbar } from '../components';
-import type { ButtonElement, LinkElement } from '../types/custom-types';
+import { type ButtonElement, type LinkElement } from '../types/custom-types';
 
 type CustomEditor = BaseEditor & ReactEditor & HistoryEditor;
 type CustomText = { text: string; bold?: true };

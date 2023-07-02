@@ -1,6 +1,12 @@
 import { AVG, MAX, MIN, SUM } from './strings';
-import { Coll, collForEach, collIsEmpty, collSize, collValues } from './coll';
-import { IdMap, mapNew } from './map';
+import {
+  type Coll,
+  collForEach,
+  collIsEmpty,
+  collSize,
+  collValues,
+} from './coll';
+import { type IdMap, mapNew } from './map';
 import { isUndefined, mathMax, mathMin } from './other';
 import { arraySum } from './array';
 

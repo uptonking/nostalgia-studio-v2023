@@ -11,8 +11,8 @@
  * @module metrics
  */
 
-import type { Id, IdOrNull, Ids } from './common-d';
-import type { GetCell, Store } from './store-d';
+import { type Id, type IdOrNull, type Ids } from './common-d';
+import { type GetCell, type Store } from './store-d';
 
 /**
  * The Metric type is simply an alias, but represents a number formed by

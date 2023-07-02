@@ -1,4 +1,4 @@
-import { createSync } from './sync';
+import { type createSync } from './sync';
 
 type SyncUtil = ReturnType<typeof createSync>;
 

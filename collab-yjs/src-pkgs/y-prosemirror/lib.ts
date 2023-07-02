@@ -2,7 +2,7 @@ import * as error from 'lib0/error';
 import * as eventloop from 'lib0/eventloop';
 import * as map from 'lib0/map';
 import { Node, type Schema } from 'prosemirror-model'; // eslint-disable-line
-import type { EditorView } from 'prosemirror-view';
+import { type EditorView } from 'prosemirror-view';
 import * as Y from 'yjs';
 
 import { ySyncPluginKey } from './plugins/keys';

@@ -2,12 +2,16 @@ import { arrayEvery, arrayLength, arrayMap } from './common/array';
 import { getCellType } from './common/cell';
 import { collForEach } from './common/coll';
 import { getCreateFunction } from './common/definable';
-import { IdMap, mapEnsure, mapNew, mapSet } from './common/map';
+import { type IdMap, mapEnsure, mapNew, mapSet } from './common/map';
 import { objFreeze, objIsEmpty } from './common/obj';
 import { jsonParse } from './common/other';
 import { DEFAULT, TYPE } from './common/strings';
-import type { Cell, Schema, Store } from './store-d';
-import { createTools as createToolsDecl, StoreStats, Tools } from './tools-d';
+import { type Cell, type Schema, type Store } from './store-d';
+import {
+  type createTools as createToolsDecl,
+  type StoreStats,
+  type Tools,
+} from './tools-d';
 import { getStoreApi as getStoreApiImpl } from './tools/api';
 import { formatJsDoc, length } from './tools/code';
 

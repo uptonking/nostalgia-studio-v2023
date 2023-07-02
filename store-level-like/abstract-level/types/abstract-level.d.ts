@@ -1,18 +1,21 @@
 import { EventEmitter } from 'events';
-import { IManifest } from 'level-supports';
-import * as Transcoder from 'level-transcoder';
+import { type IManifest } from 'level-supports';
+import type * as Transcoder from 'level-transcoder';
 
-import { AbstractChainedBatch } from './abstract-chained-batch';
+import { type AbstractChainedBatch } from './abstract-chained-batch';
 import {
-  AbstractIterator,
-  AbstractIteratorOptions,
-  AbstractKeyIterator,
-  AbstractKeyIteratorOptions,
-  AbstractValueIterator,
-  AbstractValueIteratorOptions,
+  type AbstractIterator,
+  type AbstractIteratorOptions,
+  type AbstractKeyIterator,
+  type AbstractKeyIteratorOptions,
+  type AbstractValueIterator,
+  type AbstractValueIteratorOptions,
 } from './abstract-iterator';
-import { AbstractSublevel, AbstractSublevelOptions } from './abstract-sublevel';
-import { NodeCallback, RangeOptions } from './interfaces';
+import {
+  type AbstractSublevel,
+  type AbstractSublevelOptions,
+} from './abstract-sublevel';
+import { type NodeCallback, type RangeOptions } from './interfaces';
 
 /**
  * Abstract class for a lexicographically sorted key-value database.

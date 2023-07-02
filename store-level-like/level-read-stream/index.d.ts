@@ -2,10 +2,10 @@ import { Readable } from 'readable-stream';
 
 // Assumed to be installed side-by-side, declared as an optional peerDependency.
 import {
-  AbstractLevel,
-  AbstractIteratorOptions,
-  AbstractKeyIteratorOptions,
-  AbstractValueIteratorOptions,
+  type AbstractLevel,
+  type AbstractIteratorOptions,
+  type AbstractKeyIteratorOptions,
+  type AbstractValueIteratorOptions,
 } from 'abstract-level';
 
 // NOTE: the types of readable-stream don't have generic type parameters

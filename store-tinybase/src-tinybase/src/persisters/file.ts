@@ -1,12 +1,12 @@
-import { FSWatcher, promises, watch } from 'fs';
+import { type FSWatcher, promises, watch } from 'fs';
 
-import type { Callback, Json } from '../common-d';
+import { type Callback, type Json } from '../common-d';
 import { UTF8 } from '../common/strings';
 import {
-  createFilePersister as createFilePersisterDecl,
-  Persister,
+  type createFilePersister as createFilePersisterDecl,
+  type Persister,
 } from '../persisters-d';
-import type { Store } from '../store-d';
+import { type Store } from '../store-d';
 import { createCustomPersister } from './common';
 
 export const createFilePersister: typeof createFilePersisterDecl = (

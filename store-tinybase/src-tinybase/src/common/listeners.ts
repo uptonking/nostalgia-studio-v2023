@@ -1,38 +1,45 @@
-import type {
-  CheckpointIdsListener,
-  CheckpointListener,
-  Checkpoints,
+import {
+  type CheckpointIdsListener,
+  type CheckpointListener,
+  type Checkpoints,
 } from '../checkpoints-d';
-import type { Id, IdOrNull, Ids } from '../common-d';
-import type {
-  Indexes,
-  SliceIdsListener,
-  SliceRowIdsListener,
+import { type Id, type IdOrNull, type Ids } from '../common-d';
+import {
+  type Indexes,
+  type SliceIdsListener,
+  type SliceRowIdsListener,
 } from '../indexes.d';
-import type { MetricListener, Metrics } from '../metrics-d';
-import type {
-  LocalRowIdsListener,
-  Relationships,
-  RemoteRowIdListener,
+import { type MetricListener, type Metrics } from '../metrics-d';
+import {
+  type LocalRowIdsListener,
+  type Relationships,
+  type RemoteRowIdListener,
 } from '../relationships-d';
-import type {
-  CellIdsListener,
-  CellListener,
-  InvalidCellListener,
-  RowIdsListener,
-  RowListener,
-  Store,
-  TableIdsListener,
-  TableListener,
-  TablesListener,
-  TransactionListener,
+import {
+  type CellIdsListener,
+  type CellListener,
+  type InvalidCellListener,
+  type RowIdsListener,
+  type RowListener,
+  type Store,
+  type TableIdsListener,
+  type TableListener,
+  type TablesListener,
+  type TransactionListener,
 } from '../store-d';
 import { arrayForEach, arrayLength, arrayPush } from './array';
 import { collDel, collForEach, collIsEmpty } from './coll';
-import { IdMap, mapGet, mapNew, mapSet, Node, visitTree } from './map';
+import {
+  type IdMap,
+  mapGet,
+  mapNew,
+  mapSet,
+  type Node,
+  visitTree,
+} from './map';
 import { ifNotUndefined, isUndefined } from './other';
 import { getPoolFunctions } from './pool';
-import { IdSet, setAdd, setNew } from './set';
+import { type IdSet, setAdd, setNew } from './set';
 import { EMPTY_STRING } from './strings';
 
 export type IdSetNode = Node<IdOrNull, IdSet> | IdSet;

@@ -1,5 +1,5 @@
-import { KnownEncodingInput, KnownEncodingOutput } from './encoding';
-import { BufferFormat, ViewFormat, UTF8Format } from './formats';
+import { type KnownEncodingInput, type KnownEncodingOutput } from './encoding';
+import { type BufferFormat, type ViewFormat, type UTF8Format } from './formats';
 
 export const utf8: UTF8Format<
   KnownEncodingInput<'utf8'>,

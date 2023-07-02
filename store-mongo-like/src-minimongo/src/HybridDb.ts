@@ -2,15 +2,15 @@ import _ from 'lodash';
 import { processFind } from './utils';
 import * as utils from './utils';
 import {
-  Doc,
-  Item,
-  MinimongoBaseCollection,
-  MinimongoCollection,
-  MinimongoCollectionFindOneOptions,
-  MinimongoDb,
-  MinimongoLocalCollection,
+  type Doc,
+  type Item,
+  type MinimongoBaseCollection,
+  type MinimongoCollection,
+  type MinimongoCollectionFindOneOptions,
+  type MinimongoDb,
+  type MinimongoLocalCollection,
 } from './types';
-import { MinimongoLocalDb } from '.';
+import { type MinimongoLocalDb } from '.';
 
 /** Bridges a local and remote database, querying from the local first and then
  * getting the remote. Also uploads changes from local to remote.

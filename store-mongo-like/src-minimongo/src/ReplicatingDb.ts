@@ -2,12 +2,12 @@ import _ from 'lodash';
 import * as utils from './utils';
 import { compileSort } from './selector';
 import {
-  Doc,
+  type Doc,
   MinimongoCollection,
-  MinimongoCollectionFindOneOptions,
-  MinimongoDb,
-  MinimongoLocalCollection,
-  MinimongoLocalDb,
+  type MinimongoCollectionFindOneOptions,
+  type MinimongoDb,
+  type MinimongoLocalCollection,
+  type MinimongoLocalDb,
 } from './types';
 
 /** Replicates data into a both a master and a replica db. Assumes both are identical at start

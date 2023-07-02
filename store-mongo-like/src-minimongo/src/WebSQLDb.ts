@@ -4,11 +4,11 @@ import * as utils from './utils';
 import { processFind } from './utils';
 import { compileSort } from './selector';
 import {
-  Doc,
-  MinimongoCollection,
-  MinimongoCollectionFindOneOptions,
-  MinimongoDb,
-  MinimongoLocalCollection,
+  type Doc,
+  type MinimongoCollection,
+  type MinimongoCollectionFindOneOptions,
+  type MinimongoDb,
+  type MinimongoLocalCollection,
 } from './types';
 
 // Do nothing callback for success

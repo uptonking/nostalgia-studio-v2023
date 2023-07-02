@@ -1,4 +1,4 @@
-import { defaultSorter, Id, Ids, Json } from './common-d';
+import { defaultSorter, type Id, type Ids, type Json } from './common-d';
 import {
   arrayFilter,
   arrayForEach,
@@ -19,11 +19,11 @@ import {
   collSize3,
   collSize4,
 } from './common/coll';
-import { getListenerFunctions, IdSetNode } from './common/listeners';
+import { getListenerFunctions, type IdSetNode } from './common/listeners';
 import {
-  IdMap,
-  IdMap2,
-  IdMap3,
+  type IdMap,
+  type IdMap2,
+  type IdMap3,
   mapClone,
   mapClone2,
   mapEnsure,
@@ -36,8 +36,8 @@ import {
   mapToObj,
 } from './common/map';
 import {
-  IdObj,
-  IdObj2,
+  type IdObj,
+  type IdObj2,
   isObject,
   objDel,
   objFreeze,
@@ -56,9 +56,16 @@ import {
   jsonParse,
   jsonString,
 } from './common/other';
-import { Pair, pairCollSize2, pairNew, pairNewMap } from './common/pairs';
+import { type Pair, pairCollSize2, pairNew, pairNewMap } from './common/pairs';
 import { getPoolFunctions } from './common/pool';
-import { IdSet, IdSet2, IdSet3, IdSet4, setAdd, setNew } from './common/set';
+import {
+  type IdSet,
+  type IdSet2,
+  type IdSet3,
+  type IdSet4,
+  setAdd,
+  setNew,
+} from './common/set';
 import {
   ADD,
   CELL,
@@ -76,25 +83,25 @@ import {
   TYPE,
 } from './common/strings';
 import {
-  Cell,
-  CellCallback,
-  CellChange,
-  CellOrUndefined,
-  CellSchema,
-  ChangedCells,
-  GetCellChange,
-  InvalidCells,
-  MapCell,
-  Row,
-  RowCallback,
-  Schema,
-  SortedRowIdsListener,
-  Store,
-  StoreListenerStats,
-  Table,
-  TableCallback,
-  Tables,
-  TransactionListener,
+  type Cell,
+  type CellCallback,
+  type CellChange,
+  type CellOrUndefined,
+  type CellSchema,
+  type ChangedCells,
+  type GetCellChange,
+  type InvalidCells,
+  type MapCell,
+  type Row,
+  type RowCallback,
+  type Schema,
+  type SortedRowIdsListener,
+  type Store,
+  type StoreListenerStats,
+  type Table,
+  type TableCallback,
+  type Tables,
+  type TransactionListener,
 } from './store-d';
 
 type SchemaMap = IdMap2<CellSchema>;

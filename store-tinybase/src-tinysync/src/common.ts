@@ -1,5 +1,5 @@
-import type { Id } from 'tinybase/src/common-d';
-import type { CellOrUndefined, Store } from 'tinybase/src/store-d';
+import { type Id } from 'tinybase/src/common-d';
+import { type CellOrUndefined, type Store } from 'tinybase/src/store-d';
 
 const MASK6 = 63;
 

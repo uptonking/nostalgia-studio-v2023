@@ -1,13 +1,13 @@
 import {
-  CheckpointCallback,
-  CheckpointIds,
-  CheckpointIdsListener,
-  CheckpointListener,
-  Checkpoints,
-  CheckpointsListenerStats,
-  createCheckpoints as createCheckpointsDecl,
+  type CheckpointCallback,
+  type CheckpointIds,
+  type CheckpointIdsListener,
+  type CheckpointListener,
+  type Checkpoints,
+  type CheckpointsListenerStats,
+  type createCheckpoints as createCheckpointsDecl,
 } from './checkpoints-d';
-import type { Id, IdOrNull, Ids } from './common-d';
+import { type Id, type IdOrNull, type Ids } from './common-d';
 import {
   arrayClear,
   arrayForEach,
@@ -24,8 +24,8 @@ import { collForEach, collHas, collIsEmpty, collSize2 } from './common/coll';
 import { getCreateFunction } from './common/definable';
 import { getListenerFunctions } from './common/listeners';
 import {
-  IdMap,
-  IdMap2,
+  type IdMap,
+  type IdMap2,
   mapEnsure,
   mapForEach,
   mapGet,
@@ -34,9 +34,9 @@ import {
 } from './common/map';
 import { objFreeze } from './common/obj';
 import { DEBUG, ifNotUndefined, isUndefined } from './common/other';
-import { IdSet2 } from './common/set';
+import { type IdSet2 } from './common/set';
 import { EMPTY_STRING } from './common/strings';
-import type { Cell, CellOrUndefined, Store } from './store-d';
+import { type Cell, type CellOrUndefined, type Store } from './store-d';
 
 type OldNew = [Cell | undefined, Cell | undefined];
 type Delta = IdMap2<IdMap<OldNew>>;

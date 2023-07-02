@@ -1,11 +1,11 @@
 // Assumed to be installed side-by-side, declared as an optional peerDependency.
 import {
-  AbstractLevel,
-  AbstractIteratorOptions,
-  AbstractKeyIteratorOptions,
-  AbstractValueIteratorOptions,
-  AbstractBatchOptions,
-  AbstractBatchOperation,
+  type AbstractLevel,
+  type AbstractIteratorOptions,
+  type AbstractKeyIteratorOptions,
+  type AbstractValueIteratorOptions,
+  type AbstractBatchOptions,
+  type AbstractBatchOperation,
 } from 'abstract-level';
 
 /**

@@ -1,27 +1,27 @@
 import React from 'react';
 
-import type { Checkpoints } from '../checkpoints-d';
-import type { Id } from '../common-d';
-import { IdObj, objGet } from '../common/obj';
+import { type Checkpoints } from '../checkpoints-d';
+import { type Id } from '../common-d';
+import { type IdObj, objGet } from '../common/obj';
 import { isString, isUndefined } from '../common/other';
-import type { Indexes } from '../indexes.d';
-import type { Metrics } from '../metrics-d';
-import type { Queries } from '../queries-d';
-import type { Relationships } from '../relationships-d';
-import type { Store } from '../store-d';
+import { type Indexes } from '../indexes.d';
+import { type Metrics } from '../metrics-d';
+import { type Queries } from '../queries-d';
+import { type Relationships } from '../relationships-d';
+import { type Store } from '../store-d';
 import {
-  CheckpointsOrCheckpointsId,
-  IndexesOrIndexesId,
-  MetricsOrMetricsId,
-  QueriesOrQueriesId,
-  RelationshipsOrRelationshipsId,
-  StoreOrStoreId,
-  useCheckpoints as useCheckpointsDecl,
-  useIndexes as useIndexesDecl,
-  useMetrics as useMetricsDecl,
-  useQueries as useQueriesDecl,
-  useRelationships as useRelationshipsDecl,
-  useStore as useStoreDecl,
+  type CheckpointsOrCheckpointsId,
+  type IndexesOrIndexesId,
+  type MetricsOrMetricsId,
+  type QueriesOrQueriesId,
+  type RelationshipsOrRelationshipsId,
+  type StoreOrStoreId,
+  type useCheckpoints as useCheckpointsDecl,
+  type useIndexes as useIndexesDecl,
+  type useMetrics as useMetricsDecl,
+  type useQueries as useQueriesDecl,
+  type useRelationships as useRelationshipsDecl,
+  type useStore as useStoreDecl,
 } from '../ui-react.d';
 
 const { createContext, useContext } = React;

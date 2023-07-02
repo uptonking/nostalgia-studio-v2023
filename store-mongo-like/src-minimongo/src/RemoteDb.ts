@@ -3,13 +3,13 @@ import * as utils from './utils';
 import jQueryHttpClient from './jQueryHttpClient';
 import * as quickfind from './quickfind';
 import {
-  MinimongoDb,
+  type MinimongoDb,
   MinimongoCollection,
-  Doc,
-  MinimongoCollectionFindOptions,
-  MinimongoCollectionFindOneOptions,
+  type Doc,
+  type MinimongoCollectionFindOptions,
+  type MinimongoCollectionFindOneOptions,
 } from './types';
-import { MinimongoBaseCollection } from '.';
+import { type MinimongoBaseCollection } from '.';
 
 export default class RemoteDb implements MinimongoDb {
   collections: { [collectionName: string]: Collection<any> };

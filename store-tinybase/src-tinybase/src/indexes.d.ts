@@ -11,8 +11,8 @@
  * @module indexes
  */
 
-import type { Id, IdOrNull, Ids, SortKey } from './common-d';
-import type { GetCell, RowCallback, Store } from './store-d';
+import { type Id, type IdOrNull, type Ids, type SortKey } from './common-d';
+import { type GetCell, type RowCallback, type Store } from './store-d';
 
 /**
  * The Index type represents the concept of a map of Slice objects, keyed by Id.

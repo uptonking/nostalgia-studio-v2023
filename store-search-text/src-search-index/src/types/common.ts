@@ -1,4 +1,4 @@
-import { AbstractLevel } from 'abstract-level';
+import { type AbstractLevel } from 'abstract-level';
 
 export interface SearchIndexOptions {
   db?: AbstractLevel<string, unknown>;

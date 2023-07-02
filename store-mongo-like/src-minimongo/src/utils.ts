@@ -15,8 +15,8 @@ import { default as WebSQLDb } from './WebSQLDb';
 import { compileDocumentSelector, compileSort } from './selector';
 import {
   MinimongoCollection,
-  MinimongoDb,
-  MinimongoLocalCollection,
+  type MinimongoDb,
+  type MinimongoLocalCollection,
 } from './types';
 
 // Test window.localStorage

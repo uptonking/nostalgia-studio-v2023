@@ -1,4 +1,10 @@
-import { defaultSorter, Id, IdOrNull, Ids, SortKey } from './common-d';
+import {
+  defaultSorter,
+  type Id,
+  type IdOrNull,
+  type Ids,
+  type SortKey,
+} from './common-d';
 import { arrayIsSorted, arrayMap, arraySort } from './common/array';
 import {
   collDel,
@@ -16,7 +22,7 @@ import {
 } from './common/definable';
 import { getListenerFunctions } from './common/listeners';
 import {
-  IdMap,
+  type IdMap,
   mapForEach,
   mapGet,
   mapKeys,
@@ -25,18 +31,24 @@ import {
 } from './common/map';
 import { objFreeze } from './common/obj';
 import { DEBUG, ifNotUndefined, isArray, isUndefined } from './common/other';
-import { IdSet, IdSet2, IdSet3, setAdd, setNew } from './common/set';
+import {
+  type IdSet,
+  type IdSet2,
+  type IdSet3,
+  setAdd,
+  setNew,
+} from './common/set';
 import { EMPTY_STRING, id } from './common/strings';
 import {
-  createIndexes as createIndexesDecl,
-  IndexCallback,
-  Indexes,
-  IndexesListenerStats,
-  SliceCallback,
-  SliceIdsListener,
-  SliceRowIdsListener,
+  type createIndexes as createIndexesDecl,
+  type IndexCallback,
+  type Indexes,
+  type IndexesListenerStats,
+  type SliceCallback,
+  type SliceIdsListener,
+  type SliceRowIdsListener,
 } from './indexes.d';
-import type { GetCell, Store } from './store-d';
+import { type GetCell, type Store } from './store-d';
 
 export const createIndexes: typeof createIndexesDecl = getCreateFunction(
   (store: Store): Indexes => {

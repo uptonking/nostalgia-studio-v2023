@@ -130,7 +130,8 @@ export const sortAndMergeDeleteSet = (ds) => {
     // i is the current pointer
     // j refers to the current insert position for the pointed item
     // try to merge dels[i] into dels[j-1] or set dels[j]=dels[i]
-    let i, j;
+    let i;
+    let j;
     for (i = 1, j = 1; i < dels.length; i++) {
       const left = dels[j - 1];
       const right = dels[i];

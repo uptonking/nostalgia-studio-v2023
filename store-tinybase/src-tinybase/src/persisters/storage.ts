@@ -1,10 +1,10 @@
-import type { Callback, Json } from '../common-d';
+import { type Callback, type Json } from '../common-d';
 import {
-  createLocalPersister as createLocalPersisterDecl,
-  createSessionPersister as createSessionPersisterDecl,
-  Persister,
+  type createLocalPersister as createLocalPersisterDecl,
+  type createSessionPersister as createSessionPersisterDecl,
+  type Persister,
 } from '../persisters-d';
-import type { Store } from '../store-d';
+import { type Store } from '../store-d';
 import { createCustomPersister } from './common';
 
 const STORAGE = 'storage';

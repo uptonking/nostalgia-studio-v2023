@@ -23,47 +23,57 @@
  * @module ui-react
  */
 
-import { ComponentType, ReactElement } from 'react';
+import { type ComponentType, type ReactElement } from 'react';
 
 import {
-  CheckpointIds,
-  CheckpointIdsListener,
-  CheckpointListener,
-  Checkpoints,
+  type CheckpointIds,
+  type CheckpointIdsListener,
+  type CheckpointListener,
+  type Checkpoints,
 } from './checkpoints-d';
-import { Callback, Id, IdOrNull, Ids, ParameterizedCallback } from './common-d';
-import { Indexes, SliceIdsListener, SliceRowIdsListener } from './indexes.d';
-import { MetricListener, Metrics } from './metrics-d';
-import { Persister } from './persisters-d';
 import {
-  Queries,
-  ResultCellIdsListener,
-  ResultCellListener,
-  ResultRowIdsListener,
-  ResultRowListener,
-  ResultTableListener,
+  type Callback,
+  type Id,
+  type IdOrNull,
+  type Ids,
+  type ParameterizedCallback,
+} from './common-d';
+import {
+  type Indexes,
+  type SliceIdsListener,
+  type SliceRowIdsListener,
+} from './indexes.d';
+import { type MetricListener, type Metrics } from './metrics-d';
+import { type Persister } from './persisters-d';
+import {
+  type Queries,
+  type ResultCellIdsListener,
+  type ResultCellListener,
+  type ResultRowIdsListener,
+  type ResultRowListener,
+  type ResultTableListener,
 } from './queries-d';
 import {
-  LinkedRowIdsListener,
-  LocalRowIdsListener,
-  Relationships,
-  RemoteRowIdListener,
+  type LinkedRowIdsListener,
+  type LocalRowIdsListener,
+  type Relationships,
+  type RemoteRowIdListener,
 } from './relationships-d';
 import {
-  Cell,
-  CellIdsListener,
-  CellListener,
-  MapCell,
-  Row,
-  RowIdsListener,
-  RowListener,
-  SortedRowIdsListener,
-  Store,
-  Table,
-  TableIdsListener,
-  TableListener,
-  Tables,
-  TablesListener,
+  type Cell,
+  type CellIdsListener,
+  type CellListener,
+  type MapCell,
+  type Row,
+  type RowIdsListener,
+  type RowListener,
+  type SortedRowIdsListener,
+  type Store,
+  type Table,
+  type TableIdsListener,
+  type TableListener,
+  type Tables,
+  type TablesListener,
 } from './store-d';
 
 /**

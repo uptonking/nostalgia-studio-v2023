@@ -1,7 +1,7 @@
 import bson from 'bson';
 import _ from 'lodash';
 
-import type { CreateIndexOptions } from './types/common';
+import { type CreateIndexOptions } from './types/common';
 
 const ObjectId = bson.ObjectID;
 

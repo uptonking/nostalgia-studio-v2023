@@ -1,7 +1,7 @@
-import type { Id } from '../common-d';
+import { type Id } from '../common-d';
 import { arrayLength, arrayMap } from './array';
 import { collDel, collForEach, collHas, collIsEmpty } from './coll';
-import { IdObj } from './obj';
+import { type IdObj } from './obj';
 import { ifNotUndefined, isUndefined } from './other';
 
 export type IdMap<Value> = Map<Id, Value>;

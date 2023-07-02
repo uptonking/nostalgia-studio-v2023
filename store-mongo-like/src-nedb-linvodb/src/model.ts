@@ -1,4 +1,4 @@
-import type { AbstractLevel } from 'abstract-level';
+import { type AbstractLevel } from 'abstract-level';
 import async from 'async';
 import hat from 'hat';
 import { EntryStream } from 'level-read-stream';
@@ -10,9 +10,9 @@ import { Cursor } from './cursor';
 import * as docUtils from './document';
 import { Index } from './indexes';
 import * as schemas from './schemas';
-import type {
-  CreateIndexOptions,
-  DatastoreDefaultsOptions,
+import {
+  type CreateIndexOptions,
+  type DatastoreDefaultsOptions,
 } from './types/common';
 import { Bagpipe } from './utils/bagpipe';
 import { EventEmitter } from './utils/event-emitter';

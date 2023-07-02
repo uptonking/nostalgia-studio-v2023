@@ -1,5 +1,5 @@
-import type { Id } from 'tinybase/src/common-d';
-import type { CellOrUndefined, Store } from 'tinybase/src/store-d';
+import { type Id } from 'tinybase/src/common-d';
+import { type CellOrUndefined, type Store } from 'tinybase/src/store-d';
 
 import {
   arrayForEach,
@@ -7,8 +7,8 @@ import {
   arrayReduce,
   collClear,
   collIsEmpty,
-  IdMap2,
-  IdMap3,
+  type IdMap2,
+  type IdMap3,
   ifNotUndefined,
   isObject,
   isUndefined,
@@ -20,7 +20,7 @@ import {
   mapSet,
   setOrDelCell,
 } from './common';
-import { getHlcFunctions, Hlc } from './hlc';
+import { getHlcFunctions, type Hlc } from './hlc';
 
 // /** [stringTable: string[], json: string]; */
 export type Changes = string;

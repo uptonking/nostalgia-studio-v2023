@@ -1,5 +1,5 @@
-import * as Transcoder from 'level-transcoder';
-import { RangeOptions, NodeCallback } from './interfaces';
+import type * as Transcoder from 'level-transcoder';
+import { type RangeOptions, type NodeCallback } from './interfaces';
 
 export interface AbstractIteratorOptions<K, V> extends RangeOptions<K> {
   /**

@@ -1,7 +1,7 @@
 'use strict';
 
 const test = require('tape');
-const uuid = require('uuid/v4');
+const uuid = require('uuid');
 const suite = require('abstract-level/test');
 const { BrowserLevel } = require('..');
 

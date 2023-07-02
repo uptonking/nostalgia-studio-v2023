@@ -1,11 +1,11 @@
-import type { Checkpoints } from '../checkpoints-d';
-import type { Id, Ids, SortKey } from '../common-d';
-import type { Indexes } from '../indexes.d';
-import type { Metrics } from '../metrics-d';
-import type { Queries } from '../queries-d';
-import type { Relationships } from '../relationships-d';
-import type { Cell, GetCell, Store } from '../store-d';
-import type { Tools } from '../tools-d';
+import { type Checkpoints } from '../checkpoints-d';
+import { type Id, type Ids, type SortKey } from '../common-d';
+import { type Indexes } from '../indexes.d';
+import { type Metrics } from '../metrics-d';
+import { type Queries } from '../queries-d';
+import { type Relationships } from '../relationships-d';
+import { type Cell, type GetCell, type Store } from '../store-d';
+import { type Tools } from '../tools-d';
 import { arrayForEach, arrayIsEmpty, arrayIsEqual } from './array';
 import {
   collClear,
@@ -16,8 +16,8 @@ import {
   collValues,
 } from './coll';
 import {
-  IdMap,
-  IdMap2,
+  type IdMap,
+  type IdMap2,
   mapEnsure,
   mapForEach,
   mapGet,
@@ -26,7 +26,7 @@ import {
   mapSet,
 } from './map';
 import { ifNotUndefined, isArray, isString, isUndefined } from './other';
-import { IdSet2, setAdd, setNew } from './set';
+import { type IdSet2, setAdd, setNew } from './set';
 import { EMPTY_STRING } from './strings';
 
 type OnChangedDecl<RowValue> = (

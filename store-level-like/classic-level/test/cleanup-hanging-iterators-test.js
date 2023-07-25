@@ -77,10 +77,13 @@ global.gc &&
         db.iterator({ highWaterMarkBytes: 0 }).next(function () {});
       }
 
-      setTimeout(function () {
-        global.gc();
-        done();
-      }, Math.floor(Math.random() * 50));
+      setTimeout(
+        function () {
+          global.gc();
+          done();
+        },
+        Math.floor(Math.random() * 50),
+      );
     },
   );
 

@@ -258,7 +258,7 @@ export async function syncProductsHandler(
             interval: p.recurring?.interval,
             intervalCount: p.recurring?.interval_count,
             freeTrialDays: p.recurring?.trial_period_days,
-          } as Price),
+          }) as Price,
       ),
   }));
 

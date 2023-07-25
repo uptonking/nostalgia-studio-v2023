@@ -94,7 +94,8 @@ const ContainerStyles = css<StyleProps>`
       props['data-node-type'] === 'expand' ? `-${akLayoutGutterOffset}px` : `0`
     } 0`};
 
-  transition: background 0.3s ${akEditorSwoopCubicBezier},
+  transition:
+    background 0.3s ${akEditorSwoopCubicBezier},
     border-color 0.3s ${akEditorSwoopCubicBezier};
   padding: ${gridSize}px;
 

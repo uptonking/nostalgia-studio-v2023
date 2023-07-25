@@ -22,8 +22,11 @@ export const textInputCss = css`
 
 export const headerMenuContainerCss = css`
   border-radius: 6px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.12),
-    0 4px 6px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.12),
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 4px 6px rgba(0, 0, 0, 0.12),
+    0 8px 16px rgba(0, 0, 0, 0.12),
     0 16px 32px rgba(0, 0, 0, 0.12);
   background-color: white;
 `;
@@ -37,8 +40,19 @@ export const menuItemBtnCss = css`
   background-color: transparent;
   color: #757575;
   font-size: 0.875rem;
-  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
-    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+  font-family:
+    Inter,
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    'avenir next',
+    avenir,
+    'segoe ui',
+    'helvetica neue',
+    helvetica,
+    Ubuntu,
+    noto,
+    arial,
     sans-serif;
   text-align: left;
   text-transform: capitalize;

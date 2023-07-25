@@ -1,4 +1,5 @@
 {
+  "git.path": "/usr/bin/git",
   "[markdown]": {
     "editor.acceptSuggestionOnEnter": "on",
     "editor.defaultFormatter": "mervin.markdown-formatter",

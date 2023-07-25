@@ -10,10 +10,11 @@ export function getChildren<RT extends ReferenceType = ReferenceType>(
   let currentChildren = allChildren;
 
   while (currentChildren.length) {
-    currentChildren = nodes.filter((node) =>
-      currentChildren?.some(
-        (n) => node.parentId === n.id && node.context?.open,
-      ),
+    currentChildren = nodes.filter(
+      (node) =>
+        currentChildren?.some(
+          (n) => node.parentId === n.id && node.context?.open,
+        ),
     );
 
     allChildren = allChildren.concat(currentChildren);

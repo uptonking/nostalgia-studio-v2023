@@ -1,10 +1,9 @@
 import React from 'react';
 import { HighlightDetail } from '../../types';
 
-export type ReactComponentConstructor = new (props: any) => React.Component<
-  any,
-  any
->;
+export type ReactComponentConstructor = new (
+  props: any,
+) => React.Component<any, any>;
 
 interface Part {
   value: string;

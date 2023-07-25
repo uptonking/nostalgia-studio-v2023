@@ -24,7 +24,7 @@ function mockCreatePromiseResolveValue(resolve: any) {
     () =>
       ({
         submit: () => Promise.resolve(resolve),
-      } as any),
+      }) as any,
   );
 }
 

@@ -181,7 +181,7 @@ describe('RendererBridgeImplementation', () => {
         () =>
           ({
             duration: 1100,
-          } as BridgeUtils.PerformanceMatrices),
+          }) as BridgeUtils.PerformanceMatrices,
       );
 
       jest.spyOn(nativeBridgeAPI, 'onContentRendered');

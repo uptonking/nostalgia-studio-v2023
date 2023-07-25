@@ -10,7 +10,10 @@ import { type View } from '../view';
 import { BaseViewSpecification } from './base-view-specification';
 
 abstract class BaseViewFieldOptionSpec extends BaseViewSpecification {
-  constructor(public readonly fieldId: string, public readonly view: View) {
+  constructor(
+    public readonly fieldId: string,
+    public readonly view: View,
+  ) {
     super(view);
   }
 
@@ -51,7 +54,11 @@ export class WithFieldOption extends BaseViewSpecification {
 }
 
 export class WithFieldWidth extends BaseViewFieldOptionSpec {
-  constructor(fieldId: string, view: View, public readonly width: number) {
+  constructor(
+    fieldId: string,
+    view: View,
+    public readonly width: number,
+  ) {
     super(fieldId, view);
   }
 
@@ -71,7 +78,11 @@ export class WithFieldWidth extends BaseViewFieldOptionSpec {
 }
 
 export class WithFieldVisibility extends BaseViewFieldOptionSpec {
-  constructor(fieldId: string, view: View, public readonly hidden: boolean) {
+  constructor(
+    fieldId: string,
+    view: View,
+    public readonly hidden: boolean,
+  ) {
     super(fieldId, view);
   }
   isSatisfiedBy(t: Table): boolean {

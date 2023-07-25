@@ -389,7 +389,7 @@ class TableComponent extends React.Component<ComponentProps, TableState> {
     const shadowStyle = tableOverflowShadowsOptimization
       ? memoizeOne(
           (visible) =>
-            ({ visibility: visible ? 'visible' : 'hidden' } as CSSProperties),
+            ({ visibility: visible ? 'visible' : 'hidden' }) as CSSProperties,
         )
       : NOOP;
 

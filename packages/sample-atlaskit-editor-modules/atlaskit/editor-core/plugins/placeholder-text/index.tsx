@@ -45,7 +45,7 @@ export function createPlugin(
         ({
           showInsertPanelAt: null,
           allowInserting,
-        } as PluginState),
+        }) as PluginState,
       apply: (tr: Transaction, state: PluginState) => {
         const meta = tr.getMeta(pluginKey) as Partial<PluginState>;
         if (meta && meta.showInsertPanelAt !== undefined) {

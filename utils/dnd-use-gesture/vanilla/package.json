@@ -1,0 +1,23 @@
+{
+  "name": "@use-gesture/vanilla",
+  "version": "10.2.2711",
+  "description": "Vanilla target for @use-gesture",
+  "keywords": [
+    "drag",
+    "scroll"
+  ],
+  "homepage": "https://use-gesture.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmndrs/use-gesture.git",
+    "directory": "packages/vanilla"
+  },
+  "license": "MIT",
+  "author": "Paul Henschel",
+  "sideEffects": false,
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "dependencies": {
+    "@use-gesture/core": "10.2.2711"
+  }
+}

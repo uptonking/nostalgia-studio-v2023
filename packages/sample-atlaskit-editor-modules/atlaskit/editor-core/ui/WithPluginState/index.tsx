@@ -208,16 +208,19 @@ export default class WithPluginState<
     }
 
     const keys = Object.keys(plugins);
-    return keys.reduce<Writeable<NamedPluginStates<P>>>((acc, propName) => {
-      const pluginKey = plugins[propName as keyof P];
-      if (!pluginKey) {
+    return keys.reduce<Writeable<NamedPluginStates<P>>>(
+      (acc, propName) => {
+        const pluginKey = plugins[propName as keyof P];
+        if (!pluginKey) {
+          return acc;
+        }
+        acc[propName as keyof NamedPluginStates<P>] = pluginKey.getState(
+          editorView.state,
+        );
         return acc;
-      }
-      acc[propName as keyof NamedPluginStates<P>] = pluginKey.getState(
-        editorView.state,
-      );
-      return acc;
-    }, {} as Writeable<NamedPluginStates<P>>);
+      },
+      {} as Writeable<NamedPluginStates<P>>,
+    );
   }
 
   private subscribe(props: Props<P>): void {

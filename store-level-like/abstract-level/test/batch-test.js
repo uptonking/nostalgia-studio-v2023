@@ -158,16 +158,16 @@ exports.args = function (test, testCommon) {
         );
       });
 
-      db.batch([{ key: 'key', value: 'value', type: 'foo' }]).catch(function (
-        err,
-      ) {
-        t.is(err.name, 'TypeError');
-        t.is(
-          err.message,
-          "A batch operation must have a type property that is 'put' or 'del'",
-          'correct error message (promise)',
-        );
-      });
+      db.batch([{ key: 'key', value: 'value', type: 'foo' }]).catch(
+        function (err) {
+          t.is(err.name, 'TypeError');
+          t.is(
+            err.message,
+            "A batch operation must have a type property that is 'put' or 'del'",
+            'correct error message (promise)',
+          );
+        },
+      );
     }),
   );
 

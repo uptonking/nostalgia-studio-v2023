@@ -27,7 +27,7 @@
     "@emotion/styled": "^11.11.0",
     "@formkit/auto-animate": "1.0.0-beta.6",
     "@hookform/resolvers": "^3.1.0",
-    "@linaria/core": "^4.2.10",
+    "@linaria/core": "^4.5.3",
     "@tanstack/react-table": "8.7.9111",
     "@tanstack/react-virtual": "3.0.1111",
     "date-fns": "^2.30.0",
@@ -51,13 +51,13 @@
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
-    "@linaria/babel-preset": "^4.4.5",
-    "@linaria/webpack5-loader": "^4.1.17",
+    "@linaria/babel-preset": "^4.5.3",
+    "@linaria/webpack5-loader": "^4.5.3",
     "@loadable/component": "^5.15.3",
     "@types/loadable__component": "^5.13.4",
     "@types/lodash-es": "^4.17.7",
-    "@types/react": "^18.2.6",
-    "@types/react-dom": "^18.2.4",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
     "type-fest": "^3.10.0"
   }
 }

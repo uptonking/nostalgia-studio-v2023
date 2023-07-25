@@ -8175,14 +8175,11 @@
               l.setSelection(new me(d));
             else {
               let m = l.mapping.map(c);
-              l.mapping.maps[l.mapping.maps.length - 1].forEach(function (
-                t,
-                e,
-                n,
-                r,
-              ) {
-                return (m = r);
-              }),
+              l.mapping.maps[l.mapping.maps.length - 1].forEach(
+                function (t, e, n, r) {
+                  return (m = r);
+                },
+              ),
                 l.setSelection(lr(t, d, l.doc.resolve(m)));
             }
             t.focus(), t.dispatch(l.setMeta('uiEvent', 'drop'));

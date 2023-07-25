@@ -7,8 +7,7 @@ export type Formatter<T extends { [k: string]: MessageValue }> =
 
 export const noPropFormatter =
   (messageDescriptor: FormattedMessage.MessageDescriptor): Formatter<{}> =>
-  (props) =>
-    <FormattedMessage {...props} {...messageDescriptor} />;
+  (props) => <FormattedMessage {...props} {...messageDescriptor} />;
 
 export const NoAccessWarning: Formatter<{ name: string }> = ({
   name,

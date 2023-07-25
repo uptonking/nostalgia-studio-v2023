@@ -193,7 +193,10 @@ const InsertMenuWrapper = styled.div`
   height: ${getInsertMenuHeight}px;
   background-color: ${themed({ light: N0, dark: DN50 })()};
   border-radius: ${borderRadius()}px;
-  box-shadow: 0 0 0 1px ${N30A}, 0 2px 1px ${N30A}, 0 0 20px -6px ${N60A};
+  box-shadow:
+    0 0 0 1px ${N30A},
+    0 2px 1px ${N30A},
+    0 0 20px -6px ${N60A};
 `;
 
 const ItemBefore = styled.div`

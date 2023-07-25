@@ -24,7 +24,9 @@ export const menuCss = css`
   width: max-content;
   padding: 4px;
   border-radius: ${themed.size.borderRadius.xs};
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    2px 4px 12px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   outline: 0;
   color: ${themed.color.text.muted};

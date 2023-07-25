@@ -152,12 +152,11 @@ export class AltTextEditComponent extends React.Component<
       />
     );
 
-    const errorsList = (this.state.validationErrors || []).map(function (
-      error,
-      index,
-    ) {
-      return <ErrorMessage key={index}>{error}</ErrorMessage>;
-    });
+    const errorsList = (this.state.validationErrors || []).map(
+      function (error, index) {
+        return <ErrorMessage key={index}>{error}</ErrorMessage>;
+      },
+    );
 
     return (
       <Container>

@@ -19,9 +19,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.3.0",
-    "@types/node": "^18.11.18",
-    "@types/react": "^18.2.6",
-    "@types/react-dom": "^18.2.4",
+    "@types/node": "14.18.36",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
     "@types/react-icons": "^3.0.0",
     "@types/styled-components": "^5.1.26",
     "postcss": "^8.4.14",
@@ -29,9 +29,9 @@
     "rollup": "^2.77.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.32.1",
-    "sass": "^1.62.1",
+    "sass": "^1.64.1",
     "tslib": "^2.4.0",
-    "typescript": "^5.0.3"
+    "typescript": "^5.1.6"
   },
   "peerDependencies": {
     "react-icons": "^4.4.0",

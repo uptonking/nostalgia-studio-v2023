@@ -28,6 +28,9 @@ function DraggableItem({
   const { attributes, isDragging, transform, setNodeRef, listeners } =
     useDraggable({ id });
 
+  // 👇🏻 在drag过程中会不停rerender
+  console.log(';; renderDragItem ', transform);
+
   return (
     <button
       ref={setNodeRef}
@@ -68,10 +71,15 @@ function DroppableItem({ id = 'hiDropItem', children }: DroppableProps) {
         height: 150,
         border: '1px solid',
         margin: 20,
-        borderColor: isOver ? '#4c9ffe' : '#EEE',
+        borderColor: isOver
+          ? '#006870'
+          : typeof children === 'string'
+          ? '#EEE'
+          : '#133d7e',
       }}
       ref={setNodeRef}
     >
+      {/* <span>{typeof children}</span> */}
       {children}
     </div>
   );

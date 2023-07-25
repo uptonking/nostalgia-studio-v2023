@@ -427,7 +427,7 @@ describe('replaceContent', () => {
       () =>
         ({
           duration: 1100,
-        } as BridgeUtils.PerformanceMatrices),
+        }) as BridgeUtils.PerformanceMatrices,
     );
   });
 

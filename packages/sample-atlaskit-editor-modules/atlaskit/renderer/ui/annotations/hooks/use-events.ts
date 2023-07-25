@@ -49,16 +49,19 @@ export const useAnnotationStateByTypeEvent = ({
       if (!payload) {
         return;
       }
-      const nextStates = Object.values(payload).reduce((acc, curr) => {
-        if (curr.annotationType === type) {
-          return {
-            ...acc,
-            [curr.id]: curr.state,
-          };
-        }
+      const nextStates = Object.values(payload).reduce(
+        (acc, curr) => {
+          if (curr.annotationType === type) {
+            return {
+              ...acc,
+              [curr.id]: curr.state,
+            };
+          }
 
-        return acc;
-      }, {} as Record<AnnotationId, AnnotationMarkStates | null>);
+          return acc;
+        },
+        {} as Record<AnnotationId, AnnotationMarkStates | null>,
+      );
 
       setStates({
         ...states,

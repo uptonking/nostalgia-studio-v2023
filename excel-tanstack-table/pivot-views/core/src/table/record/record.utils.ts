@@ -22,7 +22,7 @@ export const createRecordInputs = (
             type: field.type,
             field,
             value,
-          } as ICreateFieldValueSchema_internal),
+          }) as ICreateFieldValueSchema_internal,
       ),
     ),
     filter((f) => f.isSome()),

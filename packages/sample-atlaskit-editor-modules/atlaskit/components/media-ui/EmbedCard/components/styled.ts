@@ -99,7 +99,9 @@ const wrapperStyles = css`
   &:after {
     content: '';
     background: transparent;
-    transition: background 0.3s, box-shadow 0.3s;
+    transition:
+      background 0.3s,
+      box-shadow 0.3s;
     position: absolute;
     width: calc(100% + ${gridSize(2)});
     height: calc(100% + ${gridSize(1)});

@@ -14,7 +14,7 @@ export const getTabbableOptions = () =>
       ResizeObserver.toString().includes('[native code]')
         ? 'full'
         : 'none',
-  } as const);
+  }) as const;
 
 export function getTabbableIn(
   container: HTMLElement,

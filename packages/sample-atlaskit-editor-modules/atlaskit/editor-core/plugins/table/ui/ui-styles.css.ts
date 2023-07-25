@@ -81,7 +81,8 @@ const Button = (cssString?: string) => css`
   margin: 0px;
   padding: 0px;
   text-decoration: none;
-  transition: background 0.1s ease-out 0s,
+  transition:
+    background 0.1s ease-out 0s,
     box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
   outline: none !important;
   cursor: none;

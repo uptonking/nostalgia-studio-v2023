@@ -202,8 +202,19 @@ const optionItemCss = css`
   border-radius: 4px;
   text-transform: capitalize;
   cursor: pointer;
-  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
-    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+  font-family:
+    Inter,
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    'avenir next',
+    avenir,
+    'segoe ui',
+    'helvetica neue',
+    helvetica,
+    Ubuntu,
+    noto,
+    arial,
     sans-serif;
 `;
 
@@ -213,8 +224,19 @@ const addOptionItemInputCss = css`
   border: none;
   background-color: transparent;
   font-size: 1rem;
-  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
-    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+  font-family:
+    Inter,
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    'avenir next',
+    avenir,
+    'segoe ui',
+    'helvetica neue',
+    helvetica,
+    Ubuntu,
+    noto,
+    arial,
     sans-serif;
   &:focus {
     outline: none;

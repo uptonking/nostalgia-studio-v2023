@@ -32,14 +32,15 @@ export function Routings() {
       ))}
       {routes
         .filter((r) => Boolean(r.params))
-        .map((route) =>
-          route.params?.map((pathParam) => (
-            <Route
-              key={route.path + pathParam}
-              path={route.path + pathParam}
-              element={<RouteElement route={route} />}
-            />
-          )),
+        .map(
+          (route) =>
+            route.params?.map((pathParam) => (
+              <Route
+                key={route.path + pathParam}
+                path={route.path + pathParam}
+                element={<RouteElement route={route} />}
+              />
+            )),
         )}
     </Routes>
   );

@@ -31,18 +31,21 @@ function lightProcessPluginsList(
   /**
    * First pass to collect pluginsOptions
    */
-  const pluginsOptions = editorPlugins.reduce((acc, plugin) => {
-    if (plugin.pluginsOptions) {
-      Object.keys(plugin.pluginsOptions).forEach((pluginName) => {
-        if (!acc[pluginName]) {
-          acc[pluginName] = [];
-        }
-        acc[pluginName].push(plugin.pluginsOptions![pluginName]);
-      });
-    }
+  const pluginsOptions = editorPlugins.reduce(
+    (acc, plugin) => {
+      if (plugin.pluginsOptions) {
+        Object.keys(plugin.pluginsOptions).forEach((pluginName) => {
+          if (!acc[pluginName]) {
+            acc[pluginName] = [];
+          }
+          acc[pluginName].push(plugin.pluginsOptions![pluginName]);
+        });
+      }
 
-    return acc;
-  }, {} as Record<string, any>);
+      return acc;
+    },
+    {} as Record<string, any>,
+  );
 
   /**
    * Process plugins

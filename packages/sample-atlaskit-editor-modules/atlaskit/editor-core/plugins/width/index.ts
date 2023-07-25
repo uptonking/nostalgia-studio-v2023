@@ -21,7 +21,7 @@ export function createPlugin(
         ({
           width: document.body.offsetWidth,
           containerWidth: document.body.offsetWidth,
-        } as WidthPluginState),
+        }) as WidthPluginState,
       apply(tr, pluginState: WidthPluginState) {
         const meta: WidthPluginState | undefined = tr.getMeta(pluginKey);
 

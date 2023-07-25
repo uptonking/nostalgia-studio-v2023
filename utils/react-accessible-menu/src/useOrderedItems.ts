@@ -140,8 +140,8 @@ export const useOrderedItems = (
 
   const moveFocusToCharacter = useCallback((character: string) => {
     const key = character[0].toLowerCase();
-    const item = items.current.find((item) =>
-      item.searchLabel?.toLowerCase().startsWith(key),
+    const item = items.current.find(
+      (item) => item.searchLabel?.toLowerCase().startsWith(key),
     );
     if (item) {
       focusItem(item);

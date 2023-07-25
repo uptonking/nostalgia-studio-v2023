@@ -56,7 +56,9 @@ export const Overlay: ComponentClass<
   justify-content: space-between;
   flex-direction: column;
   background: transparent;
-  transition: 0.3s background ${easeOutCubic}, 0.3s border-color;
+  transition:
+    0.3s background ${easeOutCubic},
+    0.3s border-color;
   padding: 16px;
 
   ${({ hasError, noHover }: OverlayProps) => {
@@ -136,7 +138,9 @@ export const Overlay: ComponentClass<
 
     .bottom-row {
       opacity: 0;
-      transition: transform 0.2s, opacity 0.5s;
+      transition:
+        transform 0.2s,
+        opacity 0.5s;
       /* This is the height of the overlay footer, needs to be present now since the parent uses flex and 100% doesn't look right anymore */
       transform: translateY(35px);
 

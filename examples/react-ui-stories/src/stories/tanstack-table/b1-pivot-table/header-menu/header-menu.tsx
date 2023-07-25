@@ -272,8 +272,19 @@ const columnTypeTextCss = css`
   color: #9e9e9e;
   text-transform: capitalize;
   font-size: 0.75rem;
-  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
-    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+  font-family:
+    Inter,
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    'avenir next',
+    avenir,
+    'segoe ui',
+    'helvetica neue',
+    helvetica,
+    Ubuntu,
+    noto,
+    arial,
     sans-serif;
   font-weight: 600;
 `;

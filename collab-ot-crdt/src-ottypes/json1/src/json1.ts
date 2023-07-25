@@ -215,7 +215,10 @@ const isValidKey = (container: Doc | undefined, key: Key): boolean =>
     ? Array.isArray(container)
     : typeof container === 'object';
 
-const maybeGetChild = (container: Doc | undefined, key: Key): Doc | undefined =>
+const maybeGetChild = (
+  container: Doc | undefined,
+  key: Key,
+): Doc | undefined =>
   isValidKey(container, key) ? (container as any)[key] : undefined;
 
 // *******

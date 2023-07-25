@@ -383,10 +383,13 @@ export function createTable<TData extends RowData>(
     _getAllFlatColumnsById: memo(
       () => [table.getAllFlatColumns()],
       (flatColumns) => {
-        return flatColumns.reduce((acc, column) => {
-          acc[column.id] = column;
-          return acc;
-        }, {} as Record<string, Column<TData, unknown>>);
+        return flatColumns.reduce(
+          (acc, column) => {
+            acc[column.id] = column;
+            return acc;
+          },
+          {} as Record<string, Column<TData, unknown>>,
+        );
       },
       {
         key: process.env.NODE_ENV === 'development' && 'getAllFlatColumnsById',

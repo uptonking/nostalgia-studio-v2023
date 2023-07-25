@@ -41,7 +41,10 @@ class DropCursorView {
   timeout: number = -1;
   handlers: { name: string; handler: (event: Event) => void }[];
 
-  constructor(readonly editorView: EditorView, options: DropCursorOptions) {
+  constructor(
+    readonly editorView: EditorView,
+    options: DropCursorOptions,
+  ) {
     this.width = options.width || 1;
     this.color = options.color || 'black';
     this.class = options.class;

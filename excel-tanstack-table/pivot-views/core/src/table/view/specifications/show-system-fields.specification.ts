@@ -6,7 +6,10 @@ import { type View } from '../view';
 import { BaseViewSpecification } from './base-view-specification';
 
 export class WithShowSystemFieldsSpec extends BaseViewSpecification {
-  constructor(view: View, public readonly showSystemFields = false) {
+  constructor(
+    view: View,
+    public readonly showSystemFields = false,
+  ) {
     super(view);
   }
   isSatisfiedBy(t: Table): boolean {

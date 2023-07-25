@@ -19,7 +19,9 @@ import { TypeAheadItemsList } from './TypeAheadItemsList';
 export const TypeAheadContent = styled.div`
   background: ${N0};
   border-radius: ${borderRadius()}px;
-  box-shadow: 0 0 1px ${N60A}, 0 4px 8px -2px ${N50A};
+  box-shadow:
+    0 0 1px ${N60A},
+    0 4px 8px -2px ${N50A};
   padding: ${divide(gridSize, 2)}px 0;
   width: 320px;
   max-height: 380px; /* ~5.5 visibile items */

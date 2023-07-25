@@ -1,0 +1,28 @@
+import { registerAction, hoverAction } from '@use-gesture/core/actions';
+import {
+  type EventTypes,
+  type UserHoverConfig,
+  type Handler,
+} from '@use-gesture/core/types';
+import { Recognizer } from './Recognizer';
+
+interface HoverGestureConstructor {
+  new <EventType = EventTypes['hover']>(
+    target: EventTarget,
+    handler: Handler<'hover', EventType>,
+    config?: UserHoverConfig,
+  ): HoverGesture;
+}
+
+export interface HoverGesture extends Recognizer<'hover'> {}
+
+export const HoverGesture: HoverGestureConstructor = function <
+  EventType = EventTypes['hover'],
+>(
+  target: EventTarget,
+  handler: Handler<'hover', EventType>,
+  config?: UserHoverConfig,
+) {
+  registerAction(hoverAction);
+  return new Recognizer(target, { hover: handler }, config || {}, 'hover');
+} as any;

@@ -18,8 +18,8 @@ export class Listeners {
   }
 
   public removeAll = () => {
-    this.listeners.forEach((listener) =>
-      this.target?.removeEventListener(...listener),
+    this.listeners.forEach(
+      (listener) => this.target?.removeEventListener(...listener),
     );
   };
 }

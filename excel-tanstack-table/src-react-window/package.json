@@ -24,8 +24,8 @@
   },
   "devDependencies": {
     "@types/memoize-one": "^5.1.2",
-    "@types/react": "^18.2.6",
+    "@types/react": "^18.2.15",
     "classnames": "^2.3.2",
-    "clsx": "^1.2.1"
+    "clsx": "^2.0.0"
   }
 }

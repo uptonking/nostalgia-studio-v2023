@@ -1,5 +1,8 @@
 export class Vector2 {
-  constructor(public readonly x: number, public readonly y: number) {}
+  constructor(
+    public readonly x: number,
+    public readonly y: number,
+  ) {}
 
   add({ x: thatX, y: thatY }: Vector2): Vector2 {
     const { x: thisX, y: thisY } = this;
@@ -34,7 +37,10 @@ export class Vector2 {
 }
 
 export class Rectangle {
-  constructor(public readonly width: number, public readonly height: number) {}
+  constructor(
+    public readonly width: number,
+    public readonly height: number,
+  ) {}
 
   get aspectRatio(): number {
     return this.width / this.height;

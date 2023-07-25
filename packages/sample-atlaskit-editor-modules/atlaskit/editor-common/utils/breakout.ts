@@ -40,7 +40,10 @@ const breakoutConsts: any = {
         return '100%';
     }
   },
-  calcLineLength: (containerWidth?: number, allowDynamicTextSizing?: boolean) =>
+  calcLineLength: (
+    containerWidth?: number,
+    allowDynamicTextSizing?: boolean,
+  ) =>
     allowDynamicTextSizing && containerWidth
       ? breakoutConsts.mapBreakpointToLayoutMaxWidth(
           breakoutConsts.getBreakpoint(containerWidth),

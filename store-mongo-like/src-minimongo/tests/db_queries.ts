@@ -17,12 +17,12 @@ export default function () {
   before(function (this: any) {
     // Test a filter to return specified rows (in order)
     return (this.testFilter = function (filter: any, ids: any, done: any) {
-      return this.col
-        .find(filter, { sort: ['_id'] })
-        .fetch(function (results: any) {
-          assert.deepEqual(_.map(results, '_id'), ids);
-          done();
-        });
+      return this.col.find(filter, { sort: ['_id'] }).fetch(function (
+        results: any,
+      ) {
+        assert.deepEqual(_.map(results, '_id'), ids);
+        done();
+      });
     });
   });
 
@@ -154,12 +154,12 @@ export default function () {
     });
 
     it('includes fields', function (done: any) {
-      return this.col
-        .find({ _id: '1' }, { fields: { a: 1 } })
-        .fetch(function (results: any) {
-          assert.deepEqual(results[0], { _id: '1', a: 'Alice' });
-          done();
-        });
+      return this.col.find({ _id: '1' }, { fields: { a: 1 } }).fetch(function (
+        results: any,
+      ) {
+        assert.deepEqual(results[0], { _id: '1', a: 'Alice' });
+        done();
+      });
     });
 
     it('includes subfields', function (done: any) {
@@ -181,13 +181,13 @@ export default function () {
     });
 
     it('excludes fields', function (done: any) {
-      return this.col
-        .find({ _id: '1' }, { fields: { a: 0 } })
-        .fetch(function (results: any) {
-          assert.isUndefined(results[0].a);
-          assert.equal(results[0].b, 1);
-          done();
-        });
+      return this.col.find({ _id: '1' }, { fields: { a: 0 } }).fetch(function (
+        results: any,
+      ) {
+        assert.isUndefined(results[0].a);
+        assert.equal(results[0].b, 1);
+        done();
+      });
     });
 
     it('excludes subfields', function (done: any) {
@@ -295,30 +295,30 @@ export default function () {
     });
 
     it('sorts descending', function (done: any) {
-      return this.col
-        .find({}, { sort: [['a', 'desc']] })
-        .fetch(function (results: any) {
-          assert.deepEqual(_.map(results, '_id'), ['2', '3', '1']);
-          done();
-        });
+      return this.col.find({}, { sort: [['a', 'desc']] }).fetch(function (
+        results: any,
+      ) {
+        assert.deepEqual(_.map(results, '_id'), ['2', '3', '1']);
+        done();
+      });
     });
 
     it('limits', function (done: any) {
-      return this.col
-        .find({}, { sort: ['a'], limit: 2 })
-        .fetch(function (results: any) {
-          assert.deepEqual(_.map(results, '_id'), ['1', '3']);
-          done();
-        });
+      return this.col.find({}, { sort: ['a'], limit: 2 }).fetch(function (
+        results: any,
+      ) {
+        assert.deepEqual(_.map(results, '_id'), ['1', '3']);
+        done();
+      });
     });
 
     it('skips', function (done: any) {
-      return this.col
-        .find({}, { sort: ['a'], skip: 2 })
-        .fetch(function (results: any) {
-          assert.deepEqual(_.map(results, '_id'), ['2']);
-          done();
-        });
+      return this.col.find({}, { sort: ['a'], skip: 2 }).fetch(function (
+        results: any,
+      ) {
+        assert.deepEqual(_.map(results, '_id'), ['2']);
+        done();
+      });
     });
 
     // MemoryDb is much faster if we relax this constraint
@@ -717,12 +717,12 @@ export default function () {
           },
         },
       };
-      return this.col
-        .find(selector, { sort: ['_id'] })
-        .fetch(function (results: any) {
-          assert.deepEqual(_.map(results, '_id'), ['1', '2', '3', '4']);
-          done();
-        });
+      return this.col.find(selector, { sort: ['_id'] }).fetch(function (
+        results: any,
+      ) {
+        assert.deepEqual(_.map(results, '_id'), ['1', '2', '3', '4']);
+        done();
+      });
     });
 
     return it('handles undefined', function (done: any) {

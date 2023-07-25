@@ -8,9 +8,8 @@ import { isArrayWithLength } from './auth';
  */
 export function getAllowedRoutes(routes) {
   // 当前登录用户所具有的权限，这里必须是数组
-  let curUserRoles: string[] = JSON.parse(
-    localStorage.getItem('curuser'),
-  )?.roles;
+  let curUserRoles: string[] = JSON.parse(localStorage.getItem('curuser'))
+    ?.roles;
 
   // 默认普通用户，用于测试
   if (!curUserRoles) curUserRoles = ['user'];

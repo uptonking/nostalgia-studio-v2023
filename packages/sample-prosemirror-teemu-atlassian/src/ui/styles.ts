@@ -8,7 +8,8 @@ const akGridSize = gridSize() + 'px';
 
 // Taken from the style of inline dialog components
 export const dropShadow = css`
-  box-shadow: 0 0 1px rgba(9, 30, 66, 0.31),
+  box-shadow:
+    0 0 1px rgba(9, 30, 66, 0.31),
     0 4px 8px -2px rgba(9, 30, 66, 0.25);
 `;
 

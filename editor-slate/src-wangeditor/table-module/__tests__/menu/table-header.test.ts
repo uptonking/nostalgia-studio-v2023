@@ -83,7 +83,7 @@ describe('Table Module Table Header Menu', () => {
     jest.spyOn(slate.Range, 'isCollapsed').mockImplementation(() => true);
     jest
       .spyOn(core.DomEditor, 'getSelectedNodeByType')
-      .mockImplementation(() => ({} as any));
+      .mockImplementation(() => ({}) as any);
 
     expect(tableHeaderMenu.isDisabled(editor)).toBeFalsy();
   });

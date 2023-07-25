@@ -49,7 +49,10 @@ const debug = (...message: any[]) => {};
  */
 
 export class AndroidInputManager {
-  constructor(private editor: ReactEditor, private restoreDOM: () => void) {
+  constructor(
+    private editor: ReactEditor,
+    private restoreDOM: () => void,
+  ) {
     this.editor = editor;
     this.restoreDOM = restoreDOM;
   }

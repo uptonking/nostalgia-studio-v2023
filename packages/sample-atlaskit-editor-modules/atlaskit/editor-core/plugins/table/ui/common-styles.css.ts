@@ -68,8 +68,8 @@ const rangeSelectionStyles = `
 
 const sentinelStyles = `.${ClassName.TABLE_CONTAINER} {
   > .${ClassName.TABLE_STICKY_SENTINEL_TOP}, > .${
-  ClassName.TABLE_STICKY_SENTINEL_BOTTOM
-} {
+    ClassName.TABLE_STICKY_SENTINEL_BOTTOM
+  } {
     position: absolute;
     width: 100%;
     height: 0px;

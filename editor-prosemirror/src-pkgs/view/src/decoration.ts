@@ -32,7 +32,10 @@ export class WidgetType implements DecorationType {
   spec: any;
   side: number;
 
-  constructor(readonly toDOM: WidgetConstructor, spec: any) {
+  constructor(
+    readonly toDOM: WidgetConstructor,
+    spec: any,
+  ) {
     this.spec = spec || noSpec;
     this.side = this.spec.side || 0;
   }
@@ -74,7 +77,10 @@ export class WidgetType implements DecorationType {
 export class InlineType implements DecorationType {
   spec: any;
 
-  constructor(readonly attrs: DecorationAttrs, spec: any) {
+  constructor(
+    readonly attrs: DecorationAttrs,
+    spec: any,
+  ) {
     this.spec = spec || noSpec;
   }
 
@@ -118,7 +124,10 @@ export class InlineType implements DecorationType {
  */
 export class NodeType implements DecorationType {
   spec: any;
-  constructor(readonly attrs: DecorationAttrs, spec: any) {
+  constructor(
+    readonly attrs: DecorationAttrs,
+    spec: any,
+  ) {
     this.spec = spec || noSpec;
   }
 

@@ -8,7 +8,10 @@ import { type View } from '../view';
 import { BaseViewSpecification } from './base-view-specification';
 
 export class WithSorts extends BaseViewSpecification {
-  constructor(public readonly sorts: Sorts | null, public readonly view: View) {
+  constructor(
+    public readonly sorts: Sorts | null,
+    public readonly view: View,
+  ) {
     super(view);
   }
 

@@ -20,7 +20,9 @@ export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
 export const ConfirmationPopup: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background: #fff;
   border-radius: ${borderRadius()}px;
-  box-shadow: 0 4px 8px -2px ${N60A}, 0 0 1px ${N60A};
+  box-shadow:
+    0 4px 8px -2px ${N60A},
+    0 0 1px ${N60A};
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

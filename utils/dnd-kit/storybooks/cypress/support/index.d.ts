@@ -31,7 +31,7 @@ declare namespace Cypress {
           initialRect: ClientRect;
           finalRect: ClientRect;
           delta: {x: number; y: number};
-        }
+        },
       ]
     >;
 

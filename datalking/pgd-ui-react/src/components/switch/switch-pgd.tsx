@@ -85,7 +85,8 @@ export const rootCss = css`
     block-size: calc(${themed.spacing.rem.n8} * 0.9);
     border-radius: 50%;
     transform: translateX(0);
-    transition: transform ${themed.transition.period.n200} ease,
+    transition:
+      transform ${themed.transition.period.n200} ease,
       box-shadow ${themed.transition.period.n200} ease;
     background-color: ${themed.palette.white};
   }

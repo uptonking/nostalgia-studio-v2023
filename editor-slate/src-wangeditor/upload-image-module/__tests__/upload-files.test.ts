@@ -58,7 +58,7 @@ describe('Upload image menu upload files util', () => {
         ({
           addFile: jest.fn(),
           upload: jest.fn(),
-        } as any),
+        }) as any,
     );
     const editor = createEditor();
 

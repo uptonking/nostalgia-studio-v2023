@@ -40,11 +40,11 @@
     "ts": "gulp ts"
   },
   "devDependencies": {
-    "@types/node": "^18.11.18",
+    "@types/node": "14.18.36",
     "ts-unused-exports": "^9.0.1"
   },
   "peerDependencies": {
-    "prettier": "^2.8.7",
+    "prettier": "^3.0.0",
     "react": "^18.2.0"
   },
   "peerDependenciesMeta": {

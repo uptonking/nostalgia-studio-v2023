@@ -443,7 +443,10 @@ export class TextSelection extends Selection {
 Selection.jsonID('text', TextSelection);
 
 class TextBookmark {
-  constructor(readonly anchor: number, readonly head: number) {}
+  constructor(
+    readonly anchor: number,
+    readonly head: number,
+  ) {}
 
   map(mapping: Mappable) {
     return new TextBookmark(mapping.map(this.anchor), mapping.map(this.head));

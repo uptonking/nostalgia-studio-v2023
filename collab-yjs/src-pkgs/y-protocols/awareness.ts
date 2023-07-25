@@ -71,35 +71,38 @@ export class Awareness extends Observable {
      * @type {Map<number, MetaClientState>}
      */
     this.meta = new Map();
-    this._checkInterval = /** @type {any} */ setInterval(() => {
-      const now = time.getUnixTime();
-      if (
-        this.getLocalState() !== null &&
-        outdatedTimeout / 2 <=
-          now -
-            /** @type {{lastUpdated:number}} */ this.meta.get(this.clientID)!
-              .lastUpdated
-      ) {
-        // renew local clock
-        this.setLocalState(this.getLocalState());
-      }
-      /**
-       * @type {Array<number>}
-       */
-      const remove = [] as number[];
-      this.meta.forEach((meta, clientid) => {
+    this._checkInterval = /** @type {any} */ setInterval(
+      () => {
+        const now = time.getUnixTime();
         if (
-          clientid !== this.clientID &&
-          outdatedTimeout <= now - meta.lastUpdated &&
-          this.states.has(clientid)
+          this.getLocalState() !== null &&
+          outdatedTimeout / 2 <=
+            now -
+              /** @type {{lastUpdated:number}} */ this.meta.get(this.clientID)!
+                .lastUpdated
         ) {
-          remove.push(clientid);
+          // renew local clock
+          this.setLocalState(this.getLocalState());
         }
-      });
-      if (remove.length > 0) {
-        removeAwarenessStates(this, remove, 'timeout');
-      }
-    }, math.floor(outdatedTimeout / 10));
+        /**
+         * @type {Array<number>}
+         */
+        const remove = [] as number[];
+        this.meta.forEach((meta, clientid) => {
+          if (
+            clientid !== this.clientID &&
+            outdatedTimeout <= now - meta.lastUpdated &&
+            this.states.has(clientid)
+          ) {
+            remove.push(clientid);
+          }
+        });
+        if (remove.length > 0) {
+          removeAwarenessStates(this, remove, 'timeout');
+        }
+      },
+      math.floor(outdatedTimeout / 10),
+    );
     doc.on('destroy', () => {
       this.destroy();
     });

@@ -82,7 +82,10 @@ export class WithNewView extends BaseViewSpecification {
 }
 
 export class WithViewName extends BaseViewSpecification {
-  constructor(public readonly view: View, public readonly name: ViewName) {
+  constructor(
+    public readonly view: View,
+    public readonly name: ViewName,
+  ) {
     super(view);
   }
 

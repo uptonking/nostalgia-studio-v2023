@@ -175,12 +175,12 @@ export default () =>
             {},
             { exclude: ['2', '4'] },
             () => {
-              return this.col
-                .find({}, { sort: ['_id'] })
-                .fetch(function (results: any) {
-                  assert.deepEqual(_.map(results, '_id'), ['1', '2', '5']);
-                  done();
-                });
+              return this.col.find({}, { sort: ['_id'] }).fetch(function (
+                results: any,
+              ) {
+                assert.deepEqual(_.map(results, '_id'), ['1', '2', '5']);
+                done();
+              });
             },
           );
         },
@@ -205,12 +205,12 @@ export default () =>
             { _id: { $lt: '3' } },
             {},
             () => {
-              return this.col
-                .find({}, { sort: ['_id'] })
-                .fetch(function (results: any) {
-                  assert.deepEqual(_.map(results, '_id'), ['1', '3']);
-                  done();
-                });
+              return this.col.find({}, { sort: ['_id'] }).fetch(function (
+                results: any,
+              ) {
+                assert.deepEqual(_.map(results, '_id'), ['1', '3']);
+                done();
+              });
             },
           );
         },
@@ -232,12 +232,12 @@ export default () =>
             {},
             { sort: ['_id'], limit: 2 },
             () => {
-              return this.col
-                .find({}, { sort: ['_id'] })
-                .fetch(function (results: any) {
-                  assert.deepEqual(_.map(results, '_id'), ['1', '3']);
-                  done();
-                });
+              return this.col.find({}, { sort: ['_id'] }).fetch(function (
+                results: any,
+              ) {
+                assert.deepEqual(_.map(results, '_id'), ['1', '3']);
+                done();
+              });
             },
           );
         },
@@ -264,12 +264,12 @@ export default () =>
               {},
               { sort: ['_id'], limit: 2 },
               () => {
-                return this.col
-                  .find({}, { sort: ['_id'] })
-                  .fetch(function (results: any) {
-                    assert.deepEqual(_.map(results, '_id'), ['1', '3', '4']);
-                    done();
-                  });
+                return this.col.find({}, { sort: ['_id'] }).fetch(function (
+                  results: any,
+                ) {
+                  assert.deepEqual(_.map(results, '_id'), ['1', '3', '4']);
+                  done();
+                });
               },
             );
           });
@@ -296,12 +296,12 @@ export default () =>
             {},
             { limit: 2 },
             () => {
-              return this.col
-                .find({}, { sort: ['_id'] })
-                .fetch(function (results: any) {
-                  assert.deepEqual(_.map(results, '_id'), ['1', '2', '3', '4']);
-                  done();
-                });
+              return this.col.find({}, { sort: ['_id'] }).fetch(function (
+                results: any,
+              ) {
+                assert.deepEqual(_.map(results, '_id'), ['1', '2', '3', '4']);
+                done();
+              });
             },
           );
         },
@@ -319,12 +319,12 @@ export default () =>
         {},
         () => {
           return this.col.uncache({ a: 'b' }, () => {
-            return this.col
-              .find({}, { sort: ['_id'] })
-              .fetch(function (results: any) {
-                assert.deepEqual(_.map(results, '_id'), ['1', '3']);
-                done();
-              });
+            return this.col.find({}, { sort: ['_id'] }).fetch(function (
+              results: any,
+            ) {
+              assert.deepEqual(_.map(results, '_id'), ['1', '3']);
+              done();
+            });
           });
         },
       );
@@ -342,12 +342,12 @@ export default () =>
         () => {
           return this.col.upsert({ _id: '2', a: 'b' }, () => {
             return this.col.uncache({ a: 'b' }, () => {
-              return this.col
-                .find({}, { sort: ['_id'] })
-                .fetch(function (results: any) {
-                  assert.deepEqual(_.map(results, '_id'), ['1', '2', '3']);
-                  done();
-                });
+              return this.col.find({}, { sort: ['_id'] }).fetch(function (
+                results: any,
+              ) {
+                assert.deepEqual(_.map(results, '_id'), ['1', '2', '3']);
+                done();
+              });
             });
           });
         },
@@ -389,12 +389,12 @@ export default () =>
           { _id: '3', a: 'c' },
         ],
         () => {
-          return this.col
-            .find({}, { sort: ['_id'] })
-            .fetch(function (results: any) {
-              assert.deepEqual(_.map(results, '_id'), ['1', '2', '3']);
-              done();
-            });
+          return this.col.find({}, { sort: ['_id'] }).fetch(function (
+            results: any,
+          ) {
+            assert.deepEqual(_.map(results, '_id'), ['1', '2', '3']);
+            done();
+          });
         },
       );
     });
@@ -434,12 +434,12 @@ export default () =>
         {},
         () => {
           return this.col.uncacheList(['2'], () => {
-            return this.col
-              .find({}, { sort: ['_id'] })
-              .fetch(function (results: any) {
-                assert.deepEqual(_.map(results, '_id'), ['1', '3']);
-                done();
-              });
+            return this.col.find({}, { sort: ['_id'] }).fetch(function (
+              results: any,
+            ) {
+              assert.deepEqual(_.map(results, '_id'), ['1', '3']);
+              done();
+            });
           });
         },
       );
@@ -457,12 +457,12 @@ export default () =>
         () => {
           return this.col.upsert({ _id: '2', a: 'b' }, () => {
             return this.col.uncacheList(['2'], () => {
-              return this.col
-                .find({}, { sort: ['_id'] })
-                .fetch(function (results: any) {
-                  assert.deepEqual(_.map(results, '_id'), ['1', '2', '3']);
-                  done();
-                });
+              return this.col.find({}, { sort: ['_id'] }).fetch(function (
+                results: any,
+              ) {
+                assert.deepEqual(_.map(results, '_id'), ['1', '2', '3']);
+                done();
+              });
             });
           });
         },

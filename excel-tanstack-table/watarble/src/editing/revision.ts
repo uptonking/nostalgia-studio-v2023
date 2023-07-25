@@ -9,7 +9,10 @@ import {
 
 /** T is mostly Revision */
 export class Operation<T = unknown> {
-  constructor(readonly id: UID, readonly data: T) {}
+  constructor(
+    readonly id: UID,
+    readonly data: T,
+  ) {}
 }
 
 /**

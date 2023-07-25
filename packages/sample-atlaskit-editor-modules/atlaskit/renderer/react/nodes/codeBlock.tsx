@@ -41,6 +41,9 @@ export default styled(CodeBlock)`
       width: `${gridSize()}px`,
     })};
     background-attachment: local, scroll, scroll;
-    background-position: 100% 0, 100% 0, 0 0;
+    background-position:
+      100% 0,
+      100% 0,
+      0 0;
   }
 `;

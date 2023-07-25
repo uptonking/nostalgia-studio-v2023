@@ -10,7 +10,10 @@ import { type IRecordVisitor } from './interface';
 export abstract class BaseRecordSpecification<
   V extends FieldValue,
 > extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(public readonly fieldId: string, public readonly value: V) {
+  constructor(
+    public readonly fieldId: string,
+    public readonly value: V,
+  ) {
     super();
   }
 
@@ -26,7 +29,10 @@ export abstract class BaseRecordSpecification<
 export abstract class BaseRecordQuerySpecification<
   T = unknown,
 > extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(public readonly fieldId: string, public readonly value: T) {
+  constructor(
+    public readonly fieldId: string,
+    public readonly value: T,
+  ) {
     super();
   }
 

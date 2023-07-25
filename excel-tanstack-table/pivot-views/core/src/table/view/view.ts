@@ -100,9 +100,8 @@ export class View extends ValueObject<IView> {
   }
 
   public getFieldSort(fieldId: string): Option<ISortDirection> {
-    const direction = this.sorts?.sorts.find(
-      (s) => s.fieldId === fieldId,
-    )?.direction;
+    const direction = this.sorts?.sorts.find((s) => s.fieldId === fieldId)
+      ?.direction;
     return Option(direction);
   }
 
@@ -172,8 +171,9 @@ export class View extends ValueObject<IView> {
   }
 
   public getOrderedFields(fields: Field[]): Field[] {
-    return sortBy(fields, (field) =>
-      this.fieldsOrder?.order.indexOf(field.id.value),
+    return sortBy(
+      fields,
+      (field) => this.fieldsOrder?.order.indexOf(field.id.value),
     );
   }
 

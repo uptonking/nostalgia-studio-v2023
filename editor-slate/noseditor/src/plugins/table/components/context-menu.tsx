@@ -195,7 +195,9 @@ const tableContextMenuCss = css`
   line-height: 20px;
   background: #fff;
   border-radius: 4px;
-  box-shadow: 0 9px 28px rgb(0 0 0 / 5%), 0 6px 16px rgb(0 0 0 / 8%),
+  box-shadow:
+    0 9px 28px rgb(0 0 0 / 5%),
+    0 6px 16px rgb(0 0 0 / 8%),
     0 3px 6px rgb(0 0 0 / 12%);
   font-size: 14px;
 

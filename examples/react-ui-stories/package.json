@@ -15,7 +15,6 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@algolia/autocomplete-core": "1.9.2111",
     "@algolia/autocomplete-js": "1.9.2111",
     "@algolia/autocomplete-theme-classic": "^1.9.2",
     "@datalking/noseditor": "0.0.1",
@@ -31,7 +30,7 @@
     "@floating-ui/react": "0.22.2111",
     "@floating-ui/react-dom": "2.0.1111",
     "@icon-park/react": "^1.4.2",
-    "@linaria/core": "^4.2.10",
+    "@linaria/core": "^4.5.3",
     "@pgd/ui-react": "0.0.1",
     "@pgd/ui-tokens": "0.0.1",
     "@tanstack/match-sorter-utils": "8.7.9111",
@@ -42,8 +41,8 @@
     "@tanstack/table-core": "8.7.9111",
     "cirrus-ui": "^0.7.1",
     "classnames": "^2.3.2",
-    "clsx": "^1.2.1",
-    "cross-fetch": "^3.1.6",
+    "clsx": "^2.0.0",
+    "cross-fetch": "^4.0.0",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.2",
@@ -57,8 +56,8 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@linaria/babel-preset": "^4.4.5",
-    "@linaria/webpack5-loader": "^4.1.17",
+    "@linaria/babel-preset": "^4.5.3",
+    "@linaria/webpack5-loader": "^4.5.3",
     "circular-dependency-plugin": "^5.2.2"
   }
 }

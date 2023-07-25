@@ -6,7 +6,10 @@ import { SerializedCellSelection } from './types';
 import { inSameTable } from './utils/tables';
 
 export class CellBookmark {
-  constructor(public readonly anchor: number, public readonly head: number) {}
+  constructor(
+    public readonly anchor: number,
+    public readonly head: number,
+  ) {}
 
   public map(mapping: Mapping): CellBookmark {
     return new CellBookmark(mapping.map(this.anchor), mapping.map(this.head));

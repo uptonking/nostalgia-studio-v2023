@@ -22,11 +22,10 @@ export const Container = styled.div`
   overflow: auto;
   padding: 0;
 
-  ${({ provider }: { provider: boolean }) =>
-    css`
-      width: ${provider
-        ? RECENT_SEARCH_WIDTH_IN_PX
-        : RECENT_SEARCH_WIDTH_WITHOUT_ITEMS_IN_PX}px;
-    `};
+  ${({ provider }: { provider: boolean }) => css`
+    width: ${provider
+      ? RECENT_SEARCH_WIDTH_IN_PX
+      : RECENT_SEARCH_WIDTH_WITHOUT_ITEMS_IN_PX}px;
+  `};
   line-height: initial;
 `;

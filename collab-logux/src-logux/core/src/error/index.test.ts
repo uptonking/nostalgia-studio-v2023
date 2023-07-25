@@ -71,9 +71,12 @@ test('sends error on unknown message type', async () => {
 
 test('throws a error on error message by default', () => {
   node = createNode();
-  throws(() => {
-    privateMethods(node).onMessage(['error', 'wrong-format', '1']);
-  }, new LoguxError('wrong-format', '1', true));
+  throws(
+    () => {
+      privateMethods(node).onMessage(['error', 'wrong-format', '1']);
+    },
+    new LoguxError('wrong-format', '1', true),
+  );
 });
 
 test('does not throw errors which are not relevant to code', () => {

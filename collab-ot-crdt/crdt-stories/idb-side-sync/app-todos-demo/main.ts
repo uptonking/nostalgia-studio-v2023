@@ -259,8 +259,8 @@ export async function render() {
           <h2 class="${classes.modalTitle}">Edit To-Do</h2>
           <div class="flex flex-col">
             <input value="${sanitize(editingTodo.name)}" class="${
-      classes.textInput
-    }" />
+              classes.textInput
+            }" />
             <button id="btn-edit-save" class="${
               classes.buttonPrimary
             } mt-4 mb-4">Save</button>

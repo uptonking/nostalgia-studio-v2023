@@ -42,8 +42,8 @@ export const useReferenceDisplayValues = (
     }
   }
   for (const foreignRecord of foreignRecords) {
-    const values = displayFields.map((fieldId) =>
-      foreignRecord.values[fieldId]?.toString(),
+    const values = displayFields.map(
+      (fieldId) => foreignRecord.values[fieldId]?.toString(),
     );
     data = unionBy(
       data,

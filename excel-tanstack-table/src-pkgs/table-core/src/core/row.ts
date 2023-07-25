@@ -130,10 +130,13 @@ export const createRow = <TData extends RowData>(
     _getAllCellsByColumnId: memo(
       () => [row.getAllCells()],
       (allCells) => {
-        return allCells.reduce((acc, cell) => {
-          acc[cell.column.id] = cell;
-          return acc;
-        }, {} as Record<string, Cell<TData, unknown>>);
+        return allCells.reduce(
+          (acc, cell) => {
+            acc[cell.column.id] = cell;
+            return acc;
+          },
+          {} as Record<string, Cell<TData, unknown>>,
+        );
       },
       {
         key:

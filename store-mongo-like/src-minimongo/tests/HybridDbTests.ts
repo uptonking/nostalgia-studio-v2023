@@ -403,14 +403,14 @@ describe('HybridDb', function () {
           };
         };
 
-        this.hc
-          .find({}, { interim: false, timeout: 1000 })
-          .fetch(function (data: any) {
-            assert.equal(data.length, 2);
-            assert.equal(data[0].a, 1);
-            assert.equal(data[1].a, 4);
-            done();
-          }, fail);
+        this.hc.find({}, { interim: false, timeout: 1000 }).fetch(function (
+          data: any,
+        ) {
+          assert.equal(data.length, 2);
+          assert.equal(data[0].a, 1);
+          assert.equal(data[1].a, 4);
+          done();
+        }, fail);
         return this.clock.tick(1);
       }); // Tick for setTimeout 0
 
@@ -433,14 +433,14 @@ describe('HybridDb', function () {
           };
         };
 
-        this.hc
-          .find({}, { interim: false, timeout: 1000 })
-          .fetch(function (data: any) {
-            assert.equal(data.length, 2);
-            assert.equal(data[0].a, 1);
-            assert.equal(data[1].a, 2);
-            done();
-          }, fail);
+        this.hc.find({}, { interim: false, timeout: 1000 }).fetch(function (
+          data: any,
+        ) {
+          assert.equal(data.length, 2);
+          assert.equal(data[0].a, 1);
+          assert.equal(data[1].a, 2);
+          done();
+        }, fail);
         return this.clock.tick(1);
       }); // Tick for setTimeout 0
 

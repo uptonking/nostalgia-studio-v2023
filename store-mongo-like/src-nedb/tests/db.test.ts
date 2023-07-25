@@ -1171,15 +1171,14 @@ describe('Database', function () {
                 assert.isNotNull(err);
                 assert.isUndefined(doc);
 
-                d.findOne({ a: 2 }, { a: 0, hello: 1 }).exec(function (
-                  err,
-                  doc,
-                ) {
-                  assert.isNotNull(err);
-                  assert.isUndefined(doc);
+                d.findOne({ a: 2 }, { a: 0, hello: 1 }).exec(
+                  function (err, doc) {
+                    assert.isNotNull(err);
+                    assert.isUndefined(doc);
 
-                  done();
-                });
+                    done();
+                  },
+                );
               });
             });
           });

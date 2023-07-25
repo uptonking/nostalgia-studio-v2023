@@ -85,7 +85,10 @@ class Configuration {
   plugins: Plugin[] = [];
   pluginsByKey: { [key: string]: Plugin } = Object.create(null);
 
-  constructor(readonly schema: Schema, plugins?: readonly Plugin[]) {
+  constructor(
+    readonly schema: Schema,
+    plugins?: readonly Plugin[],
+  ) {
     this.fields = baseFields.slice();
     if (plugins)
       plugins.forEach((plugin) => {

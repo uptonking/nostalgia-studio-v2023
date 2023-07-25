@@ -36,10 +36,9 @@ export interface ActionCreator<
  * @returns Function which return an action.
  */
 interface DefineAction {
-  <CreatedAction extends Action>(type: CreatedAction['type']): ActionCreator<
-    CreatedAction,
-    [Omit<CreatedAction, 'type'>]
-  >;
+  <CreatedAction extends Action>(
+    type: CreatedAction['type'],
+  ): ActionCreator<CreatedAction, [Omit<CreatedAction, 'type'>]>;
 
   <CreatedAction extends Action, CreatorArgs extends any[]>(
     type: CreatedAction['type'],

@@ -1,0 +1,44 @@
+{
+  "name": "@use-gesture/core",
+  "version": "10.2.2711",
+  "description": "Core engine for receiving gestures",
+  "homepage": "https://use-gesture.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmndrs/use-gesture.git",
+    "directory": "packages/core"
+  },
+  "license": "MIT",
+  "author": "Paul Henschel",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "module": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./types": {
+      "module": "./src/types/index.ts",
+      "default": "./src/types/index.ts"
+    },
+    "./utils": {
+      "module": "./src/utils/index.ts",
+      "default": "./src/utils/index.ts"
+    },
+    "./actions": {
+      "module": "./src/actions.ts",
+      "default": "./src/actions.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "preconstruct": {
+    "exports": true,
+    "entrypoints": [
+      "./index.ts",
+      "./utils.ts",
+      "./actions.ts",
+      "./types.ts"
+    ]
+  }
+}

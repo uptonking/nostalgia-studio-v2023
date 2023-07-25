@@ -5,7 +5,10 @@ import { type JSONPatchOp } from '../src/types';
 import { text } from '../src/custom/delta';
 
 class JSONLikeObject {
-  constructor(public firstName: string, public lastName: string) {}
+  constructor(
+    public firstName: string,
+    public lastName: string,
+  ) {}
   toJSON() {
     return { name: this.firstName + ' ' + this.lastName };
   }

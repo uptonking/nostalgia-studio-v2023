@@ -12,19 +12,22 @@ export function mapToAlgoliaResponse<THit>(
       .map((result) => (result as SearchResponse<THit>).hits)
       .filter(Boolean),
     facetHits: rawResults
-      .map((result) =>
-        (result as SearchForFacetValuesResponse).facetHits?.map((facetHit) => {
-          // Bring support for the highlighting components.
-          return {
-            label: facetHit.value,
-            count: facetHit.count,
-            _highlightResult: {
-              label: {
-                value: facetHit.highlighted,
-              },
+      .map(
+        (result) =>
+          (result as SearchForFacetValuesResponse).facetHits?.map(
+            (facetHit) => {
+              // Bring support for the highlighting components.
+              return {
+                label: facetHit.value,
+                count: facetHit.count,
+                _highlightResult: {
+                  label: {
+                    value: facetHit.highlighted,
+                  },
+                },
+              };
             },
-          };
-        }),
+          ),
       )
       .filter(Boolean),
   };

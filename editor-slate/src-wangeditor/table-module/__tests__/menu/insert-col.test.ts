@@ -73,7 +73,7 @@ describe('Table Module Insert Col Menu', () => {
     jest.spyOn(slate.Range, 'isCollapsed').mockImplementation(() => true);
     jest
       .spyOn(core.DomEditor, 'getSelectedNodeByType')
-      .mockImplementation(() => ({} as any));
+      .mockImplementation(() => ({}) as any);
 
     expect(insertColMenu.isDisabled(editor)).toBeFalsy();
   });

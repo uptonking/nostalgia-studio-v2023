@@ -30,7 +30,18 @@ const appCss = css`
   overflow: hidden;
   width: 100%;
   padding: 10px;
-  font-family: Inter, Roboto, -apple-system, BlinkMacSystemFont, 'avenir next',
-    avenir, 'segoe ui', 'helvetica neue', helvetica, Ubuntu, noto, arial,
+  font-family:
+    Inter,
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    'avenir next',
+    avenir,
+    'segoe ui',
+    'helvetica neue',
+    helvetica,
+    Ubuntu,
+    noto,
+    arial,
     sans-serif;
 `;

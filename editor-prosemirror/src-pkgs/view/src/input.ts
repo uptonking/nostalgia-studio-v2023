@@ -981,7 +981,10 @@ editHandlers.paste = (view, _event) => {
 
 /** 简单的class，只定义了2个属性slice/move */
 class Dragging {
-  constructor(readonly slice: Slice, readonly move: boolean) {}
+  constructor(
+    readonly slice: Slice,
+    readonly move: boolean,
+  ) {}
 }
 
 /** 根据操作系统返回字符串 `altKey` 或 `ctrlKey` */

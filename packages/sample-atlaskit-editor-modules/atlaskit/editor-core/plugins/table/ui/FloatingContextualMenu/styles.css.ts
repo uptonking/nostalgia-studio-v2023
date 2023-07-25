@@ -9,7 +9,9 @@ export const tablePopupStyles = css`
   .${ClassName.CONTEXTUAL_SUBMENU} {
     border-radius: ${borderRadius()}px;
     background: white;
-    box-shadow: 0 4px 8px -2px ${N60A}, 0 0 1px ${N60A};
+    box-shadow:
+      0 4px 8px -2px ${N60A},
+      0 0 1px ${N60A};
     display: block;
     position: absolute;
     top: 0;

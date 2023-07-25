@@ -348,7 +348,9 @@ export const editorDefaultCss = css`
       /* uncomment to show vertical indicator-line */
       /* content: ''; */
       margin-left: 10px;
-      transition: 200ms box-shadow, 200ms background-color;
+      transition:
+        200ms box-shadow,
+        200ms background-color;
     }
 
     .list-line:hover::before {

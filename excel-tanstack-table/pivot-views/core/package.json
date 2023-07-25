@@ -33,6 +33,6 @@
     "@types/lodash-es": "^4.17.7",
     "@types/mime-types": "^2.1.1",
     "i18next": "^22.4.15",
-    "rimraf": "^5.0.0"
+    "rimraf": "^5.0.1"
   }
 }

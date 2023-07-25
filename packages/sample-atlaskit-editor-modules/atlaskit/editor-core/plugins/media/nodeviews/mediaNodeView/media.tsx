@@ -198,7 +198,7 @@ export class MediaNode extends Component<MediaNodeProps, MediaNodeState> {
     // there is a possibility mediaClientConfig will be part of a identifier,
     // so this might be not an issue
     const mediaClientConfig: MediaClientConfig = viewMediaClientConfig || {
-      authProvider: () => ({} as any),
+      authProvider: () => ({}) as any,
     };
 
     return (

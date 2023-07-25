@@ -11,7 +11,10 @@ export class WithRatingMax extends CompositeSpecification<
   Table,
   ITableSpecVisitor
 > {
-  constructor(public readonly field: RatingField, public readonly max: number) {
+  constructor(
+    public readonly field: RatingField,
+    public readonly max: number,
+  ) {
     super();
   }
 

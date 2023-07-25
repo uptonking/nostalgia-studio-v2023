@@ -147,7 +147,10 @@ const tableSharedStyle = css`
               width: `${gridSize()}px`,
             })};
             background-attachment: local, scroll, scroll;
-            background-position: 100% 0, 100% 0, 0 0;
+            background-position:
+              100% 0,
+              100% 0,
+              0 0;
             background-color: ${themed({
               light: 'rgb(235, 237, 240)',
               dark: 'rgb(36, 47, 66)',

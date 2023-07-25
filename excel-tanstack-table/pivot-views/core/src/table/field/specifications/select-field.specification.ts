@@ -8,7 +8,10 @@ import { type SelectField } from '../select-field';
 import { BaseFieldSpecification } from './base-field.specification';
 
 export class WithOptions extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly options: Options) {
+  constructor(
+    field: SelectField,
+    public readonly options: Options,
+  ) {
     super(field);
   }
 
@@ -28,7 +31,10 @@ export class WithOptions extends BaseFieldSpecification<SelectField> {
 }
 
 export class WithOption extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly option: Option) {
+  constructor(
+    field: SelectField,
+    public readonly option: Option,
+  ) {
     super(field);
   }
 
@@ -51,7 +57,10 @@ export class WithOption extends BaseFieldSpecification<SelectField> {
   }
 }
 export class WithNewOption extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly option: Option) {
+  constructor(
+    field: SelectField,
+    public readonly option: Option,
+  ) {
     super(field);
   }
 
@@ -74,7 +83,10 @@ export class WithNewOption extends BaseFieldSpecification<SelectField> {
 }
 
 export class WithoutOption extends BaseFieldSpecification<SelectField> {
-  constructor(field: SelectField, public readonly optionKey: OptionKey) {
+  constructor(
+    field: SelectField,
+    public readonly optionKey: OptionKey,
+  ) {
     super(field);
   }
 

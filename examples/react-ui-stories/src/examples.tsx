@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 
-import * as stories from './stories/tanstack-table';
+// import * as stories from './stories/tanstack-table';
 // import * as stories from './stories/autocomplete';
 // import * as stories from './stories/tanstack-virtual';
 // import * as stories from './stories/dnd-kit';
+import * as stories from './stories/dnd-use-gesture';
+
 // import * as stories from './stories/react-window';
 // import * as stories from './stories/react-tiny-virtual-list';
 // import * as stories from './stories/reactjs-popup';
@@ -42,6 +44,7 @@ export function ExamplesApp() {
           style={{
             flexGrow: 1,
             // maxWidth: '1100px',
+            height: '100%',
             margin: '8px',
             // backgroundColor: 'lightyellow',
           }}

@@ -14,12 +14,11 @@
     "test": "jest --config=jest.config.js",
     "test:log": "node index.js --name nested-a"
   },
-  "dependencies": {},
   "devDependencies": {
     "@atao60/fse-cli": "^0.1.7",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^11.1.1",
     "polished": "^4.1.1",
     "style-dictionary": "^3.0.0-rc.8",
-    "tinycolor2": "^1.4.2"
+    "tinycolor2": "^1.6.0"
   }
 }

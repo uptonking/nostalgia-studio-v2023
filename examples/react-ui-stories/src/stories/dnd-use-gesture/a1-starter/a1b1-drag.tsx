@@ -3,23 +3,31 @@ import React, { useEffect, useRef, useState } from 'react';
 import { css } from '@linaria/core';
 import { DragGesture } from '@use-gesture/vanilla';
 
+/**
+ * ✨ drag div anywhere
+ *
+ * - ❓ not-yet
+ *   - 内层元素的onClick方法在gesture回调函数之后才执行
+ */
 function Draggable() {
   // const ref = useRef<HTMLDivElement>(null);
   const dragTarget = useRef<HTMLDivElement>(null);
+  const dragGesture = useRef<DragGesture>();
 
   const [color, setColor] = useState('black');
-  const toggleColor = () =>
+  const toggleColor = () => {
+    // console.log(';; toggle-color ');
     setColor((c) => (c === 'black' ? '#952e3a' : 'black'));
+  };
 
-  const [coords, set] = useState({ x: 0, y: 0 });
-  const dragGesture = useRef<DragGesture>();
+  const [mvOffset, setMvOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     dragGesture.current = new DragGesture(
-      dragTarget.current!,
+      dragTarget.current,
       ({ active, ...state }) => {
         console.log(';; doState ', state.movement, state.offset, state);
-        set({ x: state.offset[0], y: state.offset[1] });
+        setMvOffset({ x: state.offset[0], y: state.offset[1] });
       },
     );
 
@@ -33,20 +41,23 @@ function Draggable() {
 
   return (
     <>
+      {/* draggable-elements, with position: absolute */}
       <div
         ref={dragTarget}
         tabIndex={-1}
         className={dragElemCss}
-        style={{ transform: `translate3d(${coords.x}px, ${coords.y}px, 0px)` }}
+        style={{
+          transform: `translate3d(${mvOffset.x}px, ${mvOffset.y}px, 0px)`,
+        }}
       >
         <div
           onClick={toggleColor}
-          className={dragInfoCss}
+          className={dragHandleCss}
           style={{ backgroundColor: color }}
         >
-          <span>drag-me</span>
+          <span>👏🏻 Drag Me</span>
           <span>
-            x:{Math.round(coords.x)}, y:{Math.round(coords.y)}
+            x:{Math.round(mvOffset.x)}, y:{Math.round(mvOffset.y)}
           </span>
         </div>
       </div>
@@ -75,8 +86,8 @@ const rootCss = css`
 `;
 
 const bgElemCss = css`
-  height: 200px;
   width: 200px;
+  height: 200px;
   background-color: #133d7e;
 `;
 
@@ -90,7 +101,7 @@ const dragElemCss = css`
   user-select: none;
 `;
 
-const dragInfoCss = css`
+const dragHandleCss = css`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -98,6 +109,7 @@ const dragInfoCss = css`
   width: 80%;
   height: 80%;
   margin: 10%;
+  border: 1px solid #fff;
   background-color: #000;
   color: #fff;
   font-size: 1.125rem;

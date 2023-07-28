@@ -14,7 +14,6 @@
     "test1": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
   },
-  "dependencies": {},
   "devDependencies": {
     "runtime-import": "^2.0.0"
   }

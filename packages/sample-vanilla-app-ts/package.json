@@ -15,7 +15,5 @@
     "test": "jest",
     "test1": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
-  },
-  "dependencies": {},
-  "devDependencies": {}
+  }
 }

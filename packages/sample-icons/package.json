@@ -14,9 +14,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
   },
-  "dependencies": {},
   "devDependencies": {
-    "fs-extra": "^10.0.0",
-    "sass": "^1.35.1"
+    "fs-extra": "^11.1.1",
+    "sass": "^1.64.1"
   }
 }

@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import {
   DndContext,
@@ -23,9 +22,9 @@ type DraggableProps = {
  */
 function DraggableItem({
   id = 'hiDragItem',
-  children = '🤔 Drag Me',
+  children = '👏🏻 Drag Me',
 }: DraggableProps) {
-  const { attributes, isDragging, transform, setNodeRef, listeners } =
+  const { isDragging, transform, attributes, listeners, setNodeRef } =
     useDraggable({ id });
 
   // 👇🏻 在drag过程中会不停rerender
@@ -74,8 +73,8 @@ function DroppableItem({ id = 'hiDropItem', children }: DroppableProps) {
         borderColor: isOver
           ? '#006870'
           : typeof children === 'string'
-          ? '#EEE'
-          : '#133d7e',
+            ? '#EEE'
+            : '#575a5d',
       }}
       ref={setNodeRef}
     >
@@ -87,22 +86,22 @@ function DroppableItem({ id = 'hiDropItem', children }: DroppableProps) {
 
 /** 一个可拖拽元素，一个可放置容器 */
 export const OneDragOneDropApp = () => {
-  const DropId = 'DROP_ID';
+  const DROP_ID = 'DROP_ID';
   const [isDropped, setIsDropped] = useState(false);
 
-  const draggableMarkup = <DraggableItem>Drag me</DraggableItem>;
+  const draggableElement = <DraggableItem>👏🏻 Drag Anywhere</DraggableItem>;
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      {isDropped ? null : draggableMarkup}
-      <DroppableItem id={DropId}>
-        {isDropped ? draggableMarkup : 'Drop here'}
+      {isDropped ? null : draggableElement}
+      <DroppableItem id={DROP_ID}>
+        {isDropped ? draggableElement : 'Drop Here'}
       </DroppableItem>
     </DndContext>
   );
 
   function handleDragEnd(event) {
-    if (event.over?.id === DropId) {
+    if (event.over?.id === DROP_ID) {
       setIsDropped(true);
     } else {
       setIsDropped(false);

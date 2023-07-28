@@ -38,13 +38,13 @@
     "unified": "^9.2.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.1.1",
     "@types/unist": "^2.0.5",
-    "@types/jest": "^27.4.1",
-    "@types/react": "^18.0.6",
-    "@types/react-dom": "^18.0.6",
+    "@types/jest": "^29.5.3",
+    "@types/react": "^18.2.17",
+    "@types/react-dom": "^18.2.7",
     "node-polyfill-webpack-plugin": "^2.0.1"
   }
 }

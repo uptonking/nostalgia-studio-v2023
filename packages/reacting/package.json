@@ -15,7 +15,5 @@
     "start": "npm run demo",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:log": "node index.js --name nested-a"
-  },
-  "dependencies": {},
-  "devDependencies": {}
+  }
 }

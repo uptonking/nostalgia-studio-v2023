@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { css } from '@linaria/core';
 import { DragGesture } from '@use-gesture/vanilla';
@@ -15,10 +15,10 @@ function Draggable() {
   const dragGesture = useRef<DragGesture>();
 
   const [color, setColor] = useState('black');
-  const toggleColor = () => {
+  const toggleColor = useCallback(() => {
     // console.log(';; toggle-color ');
     setColor((c) => (c === 'black' ? '#952e3a' : 'black'));
-  };
+  },[])
 
   const [mvOffset, setMvOffset] = useState({ x: 0, y: 0 });
 
@@ -41,7 +41,7 @@ function Draggable() {
 
   return (
     <>
-      {/* draggable-elements, with position: absolute */}
+      {/* draggable-elements, with `position: absolute` */}
       <div
         ref={dragTarget}
         tabIndex={-1}

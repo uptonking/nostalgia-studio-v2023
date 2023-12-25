@@ -1,7 +1,7 @@
-import { type PointerType } from '../types';
 import {
   type DragConfig,
   type InternalDragOptions,
+  type PointerType,
   type Vector2,
 } from '../types';
 import { V } from '../utils/maths';

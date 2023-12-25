@@ -15,9 +15,9 @@
   },
   "bookmarks.saveBookmarksInProject": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": false,
-    "source.organizeImports": false,
-    "source.sortMembers": false
+    "source.fixAll": "never",
+    "source.organizeImports": "never",
+    "source.sortMembers": "never"
   },
   "editor.formatOnSaveMode": "modificationsIfAvailable",
   "explorer.fileNesting.enabled": true,

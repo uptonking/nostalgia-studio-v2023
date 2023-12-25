@@ -13,6 +13,10 @@ export const globalNormalizeCss = css`
       box-sizing: border-box;
     }
 
+    * {
+      text-wrap: balance;
+    }
+
     html {
       /* Improve consistency of default fonts in all browsers. (https://github.com/sindresorhus/modern-normalize/issues/3) */
       font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,

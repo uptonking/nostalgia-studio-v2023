@@ -41,22 +41,22 @@ type AllowedIndexes<
 > = Tuple extends readonly []
   ? Keys
   : Tuple extends readonly [infer _, ...infer Tail]
-  ? AllowedIndexes<Tail, Keys | Tail['length']>
-  : Keys;
+    ? AllowedIndexes<Tail, Keys | Tail['length']>
+    : Keys;
 
 export type DeepKeys<T> = unknown extends T
   ? keyof T
   : object extends T
-  ? string
-  : T extends readonly any[] & IsTuple<T>
-  ? AllowedIndexes<T> | DeepKeysPrefix<T, AllowedIndexes<T>>
-  : T extends any[]
-  ? never & 'Dynamic length array indexing is not supported'
-  : T extends Date
-  ? never
-  : T extends object
-  ? (keyof T & string) | DeepKeysPrefix<T, keyof T>
-  : never;
+    ? string
+    : T extends readonly any[] & IsTuple<T>
+      ? AllowedIndexes<T> | DeepKeysPrefix<T, AllowedIndexes<T>>
+      : T extends any[]
+        ? never & 'Dynamic length array indexing is not supported'
+        : T extends Date
+          ? never
+          : T extends object
+            ? (keyof T & string) | DeepKeysPrefix<T, keyof T>
+            : never;
 
 type DeepKeysPrefix<T, TPrefix> = TPrefix extends keyof T & (number | string)
   ? `${TPrefix}.${DeepKeys<T[TPrefix]> & string}`

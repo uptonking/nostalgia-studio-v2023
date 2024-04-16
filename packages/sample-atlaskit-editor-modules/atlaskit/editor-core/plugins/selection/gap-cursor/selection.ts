@@ -31,8 +31,8 @@ export class GapCursorSelection extends Selection {
     const targetNode = isValidTargetNode(nodeBefore)
       ? nodeBefore
       : isValidTargetNode(nodeAfter)
-      ? nodeAfter
-      : null;
+        ? nodeAfter
+        : null;
 
     if (!targetNode || parent.isTextblock) {
       return false;

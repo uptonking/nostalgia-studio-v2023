@@ -95,8 +95,8 @@ export const getHlcFunctions = (
           ? Math.max(counter, remoteCounter)
           : counter
         : logicalTime == remoteLogicalTime
-        ? remoteCounter
-        : -1;
+          ? remoteCounter
+          : -1;
   };
 
   return [getHlc, seenHlc];

@@ -61,8 +61,8 @@ export function autoUpdate(
           ...(isElement(reference)
             ? getOverflowAncestors(reference)
             : reference.contextElement
-            ? getOverflowAncestors(reference.contextElement)
-            : []),
+              ? getOverflowAncestors(reference.contextElement)
+              : []),
           ...getOverflowAncestors(floating),
         ]
       : [];

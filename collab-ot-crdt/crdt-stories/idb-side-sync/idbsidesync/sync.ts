@@ -76,9 +76,8 @@ export async function sync(options: { forceFullSync?: boolean } = {}) {
         let mostRecentKnownOplogTimeForRemoteClient: Date | null = null;
         try {
           // 查询clientId在本地的最新记录
-          const mostRecentEntry = await db.getMostRecentEntryForClient(
-            remoteClientId,
-          );
+          const mostRecentEntry =
+            await db.getMostRecentEntryForClient(remoteClientId);
           if (mostRecentEntry) {
             mostRecentKnownOplogTimeForRemoteClient = new Date(
               HLTime.parse(mostRecentEntry.hlcTime).millis(),

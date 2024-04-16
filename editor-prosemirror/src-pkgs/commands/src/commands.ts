@@ -945,10 +945,10 @@ const mac =
   typeof navigator !== 'undefined'
     ? /Mac|iP(hone|[oa]d)/.test(navigator.platform)
     : // @ts-ignore
-    typeof os !== 'undefined' && os.platform
-    ? // @ts-ignore
-      os.platform() === 'darwin'
-    : false;
+      typeof os !== 'undefined' && os.platform
+      ? // @ts-ignore
+        os.platform() === 'darwin'
+      : false;
 
 /** Depending on the detected platform, this will hold
  * [`pcBasekeymap`](#commands.pcBaseKeymap) or

@@ -1,6 +1,6 @@
 {
   "name": "@examples-hub/popperjs-app-vanillajs-ts",
-  "version": "1.0.0111",
+  "version": "0.0.1111",
   "main": "src/index.ts",
   "module": "src/index.ts",
   "scripts": {

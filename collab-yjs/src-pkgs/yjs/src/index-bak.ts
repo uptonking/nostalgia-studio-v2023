@@ -97,11 +97,11 @@ const glo =
   /** @type {any} */ typeof globalThis !== 'undefined'
     ? globalThis
     : typeof window !== 'undefined'
-    ? window
-    : // @ts-ignore
-    typeof global !== 'undefined'
-    ? global
-    : {};
+      ? window
+      : // @ts-ignore
+        typeof global !== 'undefined'
+        ? global
+        : {};
 
 const importIdentifier = '__ $YJS$ __';
 

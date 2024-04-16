@@ -50,10 +50,10 @@ export class MenuItem implements MenuElement {
     const dom = spec.render
       ? spec.render(view)
       : spec.icon
-      ? getIcon(spec.icon)
-      : spec.label
-      ? crel('div', null, translate(view, spec.label))
-      : null;
+        ? getIcon(spec.icon)
+        : spec.label
+          ? crel('div', null, translate(view, spec.label))
+          : null;
     if (!dom) throw new RangeError('MenuItem without icon or label property');
     if (spec.title) {
       const title =

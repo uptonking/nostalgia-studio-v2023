@@ -229,11 +229,11 @@ export function getNodesForRange(
       isCollapsed && !frozen
         ? [anchorNode, anchorOffset]
         : frozen &&
-          (isCollapsed ||
-            range[1] - range[0] ===
-              direction * editor.doc.getLineAt(range[0]).length)
-        ? [anchorNode, anchorOffset + (anchorFirst ? 1 : -1)]
-        : getNodeAndOffset(editor, range[1], anchorFirst ? 1 : 0);
+            (isCollapsed ||
+              range[1] - range[0] ===
+                direction * editor.doc.getLineAt(range[0]).length)
+          ? [anchorNode, anchorOffset + (anchorFirst ? 1 : -1)]
+          : getNodeAndOffset(editor, range[1], anchorFirst ? 1 : 0);
 
     return [anchorNode, anchorOffset, focusNode, focusOffset];
   }

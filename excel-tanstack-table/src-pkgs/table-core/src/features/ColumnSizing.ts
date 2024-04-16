@@ -142,8 +142,8 @@ export const ColumnSizing: TableFeature = {
         const columns = !position
           ? table.getVisibleLeafColumns()
           : position === 'left'
-          ? table.getLeftVisibleLeafColumns()
-          : table.getRightVisibleLeafColumns();
+            ? table.getLeftVisibleLeafColumns()
+            : table.getRightVisibleLeafColumns();
 
         const index = columns.findIndex((d) => d.id === column.id);
 

@@ -45,9 +45,8 @@ export const insertMacroFromMacroBrowser =
     }
 
     // opens MacroBrowser for editing "macroNode" if passed in
-    const newMacro: MacroAttributes = await macroProvider.openMacroBrowser(
-      macroNode,
-    );
+    const newMacro: MacroAttributes =
+      await macroProvider.openMacroBrowser(macroNode);
     if (newMacro && macroNode) {
       const { state, dispatch } = view;
       const currentLayout = (macroNode && macroNode.attrs.layout) || 'default';

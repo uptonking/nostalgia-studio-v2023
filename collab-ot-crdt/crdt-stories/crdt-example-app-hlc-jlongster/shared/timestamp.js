@@ -199,11 +199,11 @@ Timestamp.recv = function (clock, msg) {
     lNew === lOld && lNew === lMsg
       ? Math.max(cOld, cMsg) + 1
       : lNew === lOld
-      ? cOld + 1
-      : lNew === lMsg
-      ? cMsg + 1
-      : // 💡 若本地物理时钟大，则重置counter为0
-        0;
+        ? cOld + 1
+        : lNew === lMsg
+          ? cMsg + 1
+          : // 💡 若本地物理时钟大，则重置counter为0
+            0;
 
   // Check the result for drift and counter overflow
   if (lNew - phys > config.maxDrift) {

@@ -379,8 +379,8 @@ export const mergeUpdatesV2 = (
             return dec1.curr.constructor === dec2.curr.constructor
               ? 0
               : dec1.curr.constructor === Skip
-              ? 1
-              : -1; // we are filtering skips anyway.
+                ? 1
+                : -1; // we are filtering skips anyway.
           } else {
             return clockDiff;
           }

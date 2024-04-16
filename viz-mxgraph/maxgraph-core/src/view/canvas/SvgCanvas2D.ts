@@ -452,8 +452,8 @@ export class SvgCanvas2D extends AbstractCanvas2D {
         align === ALIGN.RIGHT
           ? 'end'
           : align === ALIGN.LEFT
-          ? 'start'
-          : 'middle';
+            ? 'start'
+            : 'middle';
 
       const alt = this.createElement('text');
       alt.setAttribute('x', String(Math.round(x + s.dx)));
@@ -1311,15 +1311,15 @@ export class SvgCanvas2D extends AbstractCanvas2D {
         valign === ALIGN.TOP
           ? 'flex-start'
           : valign === ALIGN.BOTTOM
-          ? 'flex-end'
-          : 'center'
+            ? 'flex-end'
+            : 'center'
       }; ` +
         `justify-content: unsafe ${
           align === ALIGN.LEFT
             ? 'flex-start'
             : align === ALIGN.RIGHT
-            ? 'flex-end'
-            : 'center'
+              ? 'flex-end'
+              : 'center'
         }; `,
       this.getTextCss(),
       s,
@@ -1608,8 +1608,8 @@ export class SvgCanvas2D extends AbstractCanvas2D {
       align === ALIGN.RIGHT
         ? 'end'
         : align === ALIGN.CENTER
-        ? 'middle'
-        : 'start';
+          ? 'middle'
+          : 'start';
 
     // Text-anchor start is default in SVG
     if (anchor !== 'start') {

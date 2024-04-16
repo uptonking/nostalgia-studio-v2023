@@ -104,8 +104,8 @@ export function createFeatureFlagsFromProps(props: EditorProps): FeatureFlags {
       typeof props.featureFlags?.useUnpredictableInputRule === 'boolean'
         ? !!props.featureFlags?.useUnpredictableInputRule
         : props.UNSAFE_allowUndoRedoButtons
-        ? false
-        : true,
+          ? false
+          : true,
     ),
 
     showAvatarGroupAsPlugin: Boolean(

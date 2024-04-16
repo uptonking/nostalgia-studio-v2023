@@ -295,10 +295,10 @@ export class CodeMirror5Adapter {
                 change.to.line < pos.line
                   ? pos.ch
                   : change.text.length <= 1
-                  ? pos.ch -
-                    (change.to.ch - change.from.ch) +
-                    sumLengths(change.text)
-                  : pos.ch - change.to.ch + last(change.text).length,
+                    ? pos.ch -
+                      (change.to.ch - change.from.ch) +
+                      sumLengths(change.text)
+                    : pos.ch - change.to.ch + last(change.text).length,
             }) +
             sumLengths(change.removed) -
             sumLengths(change.text)

@@ -9,10 +9,10 @@ export const ie = !!(ie_upto10 || ie_11up || ie_edge);
 export const ie_version = ie_upto10
   ? (document as any).documentMode
   : ie_11up
-  ? Number(ie_11up[1])
-  : ie_edge
-  ? Number(ie_edge[1])
-  : 0;
+    ? Number(ie_11up[1])
+    : ie_edge
+      ? Number(ie_edge[1])
+      : 0;
 
 export const gecko = !ie && /gecko\/(\d+)/i.test(agent);
 export const gecko_version =

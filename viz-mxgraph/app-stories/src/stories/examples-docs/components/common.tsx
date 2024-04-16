@@ -44,8 +44,8 @@ export const Button = forwardRef(
             ? 'white'
             : '#aaa'
           : active
-          ? 'black'
-          : '#ccc',
+            ? 'black'
+            : '#ccc',
       }}
     />
   ),

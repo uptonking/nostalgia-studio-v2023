@@ -34,8 +34,8 @@ export type ValidEventArgs<
 > = K extends keyof EmitterEvents<T>
   ? EmitterEvents<T>[K]
   : K extends keyof T
-  ? ValidArgs<T[K]>
-  : never;
+    ? ValidArgs<T[K]>
+    : never;
 
 /**
  * Valid event listener args from `T`.

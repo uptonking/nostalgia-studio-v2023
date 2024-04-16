@@ -45,7 +45,7 @@
     "dependency-check": "^4.1.0",
     "du": "^1.0.0",
     "faucet": "^0.0.3",
-    "glob": "^10.3.3",
+    "glob": "^10.3.10",
     "mkfiletree": "^2.0.0",
     "node-gyp": "^9.0.0",
     "nyc": "^15.1.0",
@@ -53,7 +53,7 @@
     "prebuildify-ci": "^1.0.4",
     "prebuildify-cross": "^5.0.0",
     "readfiletree": "^1.0.0",
-    "rimraf": "^5.0.1",
+    "rimraf": "^5.0.5",
     "tape": "^5.6.1",
     "tempy": "^1.0.1"
   },

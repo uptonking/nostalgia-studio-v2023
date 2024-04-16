@@ -231,8 +231,8 @@ for (const Ctor of [
     Ctor === MinimalIterator
       ? (e) => e
       : Ctor === MinimalKeyIterator
-      ? (e) => e[0]
-      : (e) => e[1];
+        ? (e) => e[0]
+        : (e) => e[1];
 
   Ctor.prototype._next = function (callback) {
     const entry = this[kEntries][this[kPosition]++];

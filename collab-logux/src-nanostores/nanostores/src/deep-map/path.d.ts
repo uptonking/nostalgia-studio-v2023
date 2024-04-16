@@ -27,16 +27,16 @@ export type AllPaths<
       | `${P}[${number}]`
       | AllPaths<U, `${P}[${number}]`, Subtract<MaxDepth, 1>>
   : T extends BaseDeepMap
-  ? MaxDepth extends 0
-    ? never
-    : {
-        [K in keyof T]-?: K extends string | number
-          ?
-              | AllPaths<T[K], ConcatPath<P, `${K}`>, Subtract<MaxDepth, 1>>
-              | (P extends '' ? never : P)
-          : never;
-      }[keyof T]
-  : P;
+    ? MaxDepth extends 0
+      ? never
+      : {
+          [K in keyof T]-?: K extends string | number
+            ?
+                | AllPaths<T[K], ConcatPath<P, `${K}`>, Subtract<MaxDepth, 1>>
+                | (P extends '' ? never : P)
+            : never;
+        }[keyof T]
+    : P;
 
 type IsNumber<T extends string> = T extends `${number}` ? true : false;
 

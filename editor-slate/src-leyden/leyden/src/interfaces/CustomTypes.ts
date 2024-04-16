@@ -76,14 +76,14 @@ type DefaultExtendedComponentTypeEntries<T extends ExtendableComponentTypes> = {
   [extendableComponentDefaultKey]: T extends 'Text'
     ? WithText<string> & WithValidator<'numeric'>
     : T extends 'Cells'
-    ? WithChildren<Text[]> &
-        WithDataOptional<unknown> &
-        WithIsVoid<false> &
-        WithIsInline<false>
-    : WithChildren<Text[]> &
-        WithDataOptional<unknown> &
-        WithIsVoid<true> &
-        WithIsInline<true>;
+      ? WithChildren<Text[]> &
+          WithDataOptional<unknown> &
+          WithIsVoid<false> &
+          WithIsInline<false>
+      : WithChildren<Text[]> &
+          WithDataOptional<unknown> &
+          WithIsVoid<true> &
+          WithIsInline<true>;
 };
 
 type EmptyProp = Record<string, unknown>;
@@ -124,10 +124,10 @@ export type ExtendedType<T extends ExtendableTypes> =
         ? K
         : DefaultExtendedComponentTypeEntries<T>
       : T extends 'Validator'
-      ? K extends string
-        ? K
+        ? K extends string
+          ? K
+          : never
         : never
-      : never
     : never;
 
 export type ExtendedElementsArgsType<

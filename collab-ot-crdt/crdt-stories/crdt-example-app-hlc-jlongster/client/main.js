@@ -117,8 +117,8 @@ function saveActiveElement() {
   _activeElement = el.id
     ? '#' + el.id
     : el.className
-    ? '.' + el.className.replace(/ ?hover\:[^ ]*/g, '').replace(/ /g, '.')
-    : null;
+      ? '.' + el.className.replace(/ ?hover\:[^ ]*/g, '').replace(/ /g, '.')
+      : null;
 
   if (_activeElement && _activeElement.endsWith('.')) {
     _activeElement = _activeElement.slice(0, _activeElement.length - 1);

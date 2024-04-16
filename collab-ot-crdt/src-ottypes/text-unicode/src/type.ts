@@ -208,10 +208,10 @@ const componentPreLength = (c: TextOpComponent): number =>
   typeof c === 'number'
     ? c
     : typeof c === 'string'
-    ? 0
-    : typeof c.d === 'number'
-    ? c.d
-    : strPosToUni(c.d);
+      ? 0
+      : typeof c.d === 'number'
+        ? c.d
+        : strPosToUni(c.d);
 
 const componentPostLength = (c: TextOpComponent): number =>
   typeof c === 'number' ? c : typeof c === 'string' ? strPosToUni(c) : 0;

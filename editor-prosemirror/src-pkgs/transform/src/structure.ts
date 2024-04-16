@@ -422,8 +422,8 @@ export function dropPoint(doc: Node, pos: number, slice: Slice): number | null {
         d == $pos.depth
           ? 0
           : $pos.pos <= ($pos.start(d + 1) + $pos.end(d + 1)) / 2
-          ? -1
-          : 1;
+            ? -1
+            : 1;
       const insertPos = $pos.index(d) + (bias > 0 ? 1 : 0);
       const parent = $pos.node(d);
       let fits: boolean | null = false;
@@ -440,8 +440,8 @@ export function dropPoint(doc: Node, pos: number, slice: Slice): number | null {
         return bias == 0
           ? $pos.pos
           : bias < 0
-          ? $pos.before(d + 1)
-          : $pos.after(d + 1);
+            ? $pos.before(d + 1)
+            : $pos.after(d + 1);
     }
   }
   return null;

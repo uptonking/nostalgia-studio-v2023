@@ -22,10 +22,10 @@ if (typeof navigator !== 'undefined') {
   result.ie_version = ieUpTo10
     ? (document as any).documentMode || 6
     : ie11up
-    ? Number(ie11up[1])
-    : ieEdge
-    ? Number(ieEdge[1])
-    : null;
+      ? Number(ie11up[1])
+      : ieEdge
+        ? Number(ieEdge[1])
+        : null;
   result.gecko = !ie && /gecko\/\d/i.test(navigator.userAgent);
   result.chrome = !ie && /Chrome\//.test(navigator.userAgent);
   result.chrome_version = parseInt(

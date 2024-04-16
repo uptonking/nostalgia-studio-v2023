@@ -264,8 +264,8 @@ function atEndOfCell(
             ? 'down'
             : 'up'
           : dir > 0
-          ? 'right'
-          : 'left';
+            ? 'right'
+            : 'left';
       return view.endOfTextblock(dirStr) ? cellPos : null;
     }
   }

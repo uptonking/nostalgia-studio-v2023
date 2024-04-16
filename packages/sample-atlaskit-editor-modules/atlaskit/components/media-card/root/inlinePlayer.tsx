@@ -59,8 +59,8 @@ export const getPreferredVideoArtifact = (
     return artifacts['video_1280.mp4']
       ? 'video_1280.mp4'
       : artifacts['video_640.mp4']
-      ? 'video_640.mp4'
-      : undefined;
+        ? 'video_640.mp4'
+        : undefined;
   }
 
   return undefined;

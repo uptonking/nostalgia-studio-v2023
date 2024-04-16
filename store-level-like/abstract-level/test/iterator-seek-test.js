@@ -54,8 +54,8 @@ exports.seek = function (test, testCommon) {
       mode === 'iterator'
         ? (e) => e
         : mode === 'keys'
-        ? (e) => e[0]
-        : (e) => e[1];
+          ? (e) => e[0]
+          : (e) => e[1];
 
     test(`${mode}().seek() to string target`, async function (t) {
       const db = testCommon.factory();

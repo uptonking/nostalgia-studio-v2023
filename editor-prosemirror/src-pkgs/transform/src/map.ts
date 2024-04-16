@@ -144,10 +144,10 @@ export class StepMap implements Mappable {
         const side = !oldSize
           ? assoc
           : pos == start
-          ? -1
-          : pos == end
-          ? 1
-          : assoc;
+            ? -1
+            : pos == end
+              ? 1
+              : assoc;
         const result = start + diff + (side < 0 ? 0 : newSize);
         if (simple) return result;
         const recover =

@@ -241,10 +241,10 @@ export const Filters: TableFeature = {
         return isFunction(column.columnDef.filterFn)
           ? column.columnDef.filterFn
           : column.columnDef.filterFn === 'auto'
-          ? column.getAutoFilterFn()
-          : // @ts-ignore
-            table.options.filterFns?.[column.columnDef.filterFn as string] ??
-            filterFns[column.columnDef.filterFn as BuiltInFilterFn];
+            ? column.getAutoFilterFn()
+            : // @ts-ignore
+              table.options.filterFns?.[column.columnDef.filterFn as string] ??
+              filterFns[column.columnDef.filterFn as BuiltInFilterFn];
       },
       getCanFilter: () => {
         return (
@@ -374,10 +374,10 @@ export const Filters: TableFeature = {
         return isFunction(globalFilterFn)
           ? globalFilterFn
           : globalFilterFn === 'auto'
-          ? table.getGlobalAutoFilterFn()
-          : // @ts-ignore
-            table.options.filterFns?.[globalFilterFn as string] ??
-            filterFns[globalFilterFn as BuiltInFilterFn];
+            ? table.getGlobalAutoFilterFn()
+            : // @ts-ignore
+              table.options.filterFns?.[globalFilterFn as string] ??
+              filterFns[globalFilterFn as BuiltInFilterFn];
       },
 
       setColumnFilters: (updater: Updater<ColumnFiltersState>) => {

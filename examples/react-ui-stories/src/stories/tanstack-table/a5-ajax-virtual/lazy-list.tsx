@@ -71,6 +71,9 @@ export function A5t1LazyList() {
   );
 }
 
+/**
+ * forked from https://github.com/omer73364/lazy-load-list /MIT/202202/js
+ */
 export const LazyList = (props) => {
   const {
     renderItem = () => null,

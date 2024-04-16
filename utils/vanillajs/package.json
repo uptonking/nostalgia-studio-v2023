@@ -22,8 +22,8 @@
     "test:utils1": "NODE_OPTIONS='--experimental-vm-modules --experimental-specifier-resolution=node --loader=ts-node/esm/transpile-only' jest"
   },
   "dependencies": {
-    "@faker-js/faker": "^8.0.2",
-    "classnames": "^2.3.2",
+    "@faker-js/faker": "^8.3.1",
+    "classnames": "^2.5.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "express-session": "^1.17.2",
@@ -40,7 +40,7 @@
     "@types/express-session": "^1.17.4",
     "@types/mime-types": "^2.1.1",
     "@types/multer": "^1.4.7",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2"
   },
   "peerDependencies": {
     "sqlite": "^4.0.23",

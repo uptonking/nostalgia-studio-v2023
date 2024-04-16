@@ -4,14 +4,14 @@ export default function createKeyRange(options) {
     options.gte !== undefined
       ? options.gte
       : options.gt !== undefined
-      ? options.gt
-      : undefined;
+        ? options.gt
+        : undefined;
   const upper =
     options.lte !== undefined
       ? options.lte
       : options.lt !== undefined
-      ? options.lt
-      : undefined;
+        ? options.lt
+        : undefined;
   const lowerExclusive = options.gte === undefined;
   const upperExclusive = options.lte === undefined;
 

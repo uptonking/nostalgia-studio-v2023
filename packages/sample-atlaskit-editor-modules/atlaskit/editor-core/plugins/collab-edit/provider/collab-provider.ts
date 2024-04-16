@@ -103,9 +103,8 @@ export class CollabProvider implements CollabEditProvider {
     const currentVersion = getVersion(this.getState());
 
     try {
-      const { doc, version, steps } = await this.channel.getSteps(
-        currentVersion,
-      );
+      const { doc, version, steps } =
+        await this.channel.getSteps(currentVersion);
 
       /**
        * Remove steps from queue where the version is older than

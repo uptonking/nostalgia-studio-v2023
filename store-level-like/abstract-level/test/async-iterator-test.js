@@ -43,8 +43,8 @@ exports.asyncIterator = function (test, testCommon) {
           return mode === 'iterator'
             ? [key, value]
             : mode === 'keys'
-            ? key
-            : value;
+              ? key
+              : value;
         }),
       );
     });
@@ -73,8 +73,8 @@ exports.asyncIterator = function (test, testCommon) {
             return mode === 'iterator'
               ? [key, value]
               : mode === 'keys'
-              ? key
-              : value;
+                ? key
+                : value;
           }),
         );
 
@@ -114,8 +114,8 @@ exports.asyncIterator = function (test, testCommon) {
             return mode === 'iterator'
               ? [key, value]
               : mode === 'keys'
-              ? key
-              : value;
+                ? key
+                : value;
           }),
         );
 

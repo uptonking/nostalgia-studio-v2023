@@ -928,8 +928,8 @@ class ParseContext {
             depth > 0 || (depth == 0 && useRoot)
               ? this.nodes[depth].type
               : option && depth >= minDepth
-              ? option.node(depth - minDepth).type
-              : null;
+                ? option.node(depth - minDepth).type
+                : null;
           if (!next || (next.name != part && next.groups.indexOf(part) == -1))
             return false;
           depth--;

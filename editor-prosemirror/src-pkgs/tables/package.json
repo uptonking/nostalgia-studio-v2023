@@ -45,7 +45,7 @@
     "prosemirror-menu": "1.2.1111",
     "prosemirror-schema-basic": "1.2.1111",
     "prosemirror-test-builder": "1.1.0111",
-    "typescript": "^5.1.6"
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "typecheck": "tsc --noEmit",

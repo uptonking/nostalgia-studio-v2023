@@ -151,8 +151,8 @@ export const safeInsert =
     const $insertPos = hasPosition
       ? tr.doc.resolve(position)
       : tr.selection instanceof NodeSelection
-      ? tr.doc.resolve($from.pos + 1)
-      : $from;
+        ? tr.doc.resolve($from.pos + 1)
+        : $from;
     const { parent } = $insertPos;
 
     // try to replace selected node
@@ -183,9 +183,9 @@ export const safeInsert =
       const pos = hasPosition
         ? $insertPos.pos
         : isSelectableNode(content)
-        ? // for atom nodes selection position after insertion is the previous pos
-          tr.selection.$anchor.pos - 1
-        : tr.selection.$anchor.pos;
+          ? // for atom nodes selection position after insertion is the previous pos
+            tr.selection.$anchor.pos - 1
+          : tr.selection.$anchor.pos;
       return cloneTr(setSelection(content, pos, tr));
     }
 

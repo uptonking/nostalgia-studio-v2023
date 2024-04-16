@@ -72,8 +72,8 @@ export const createControlsHoverDecoration = (
       type === 'column'
         ? ClassName.HOVERED_COLUMN
         : type === 'row'
-        ? ClassName.HOVERED_ROW
-        : ClassName.HOVERED_TABLE,
+          ? ClassName.HOVERED_ROW
+          : ClassName.HOVERED_TABLE,
     );
 
     let key: TableDecorations;

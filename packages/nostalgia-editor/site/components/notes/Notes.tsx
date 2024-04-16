@@ -140,15 +140,15 @@ export default function Notes({
                   background: isSelected
                     ? '#54acdc'
                     : isActive
-                    ? '#f4f6fb'
-                    : 'white',
+                      ? '#f4f6fb'
+                      : 'white',
                   borderLeftColor: isSelected
                     ? isActive
                       ? 'white'
                       : '#54acdc'
                     : isActive
-                    ? '#aeb1dd'
-                    : 'white',
+                      ? '#aeb1dd'
+                      : 'white',
                   cursor: 'pointer',
                   padding: '0.5rem 2rem',
                   paddingLeft: 'calc(2rem - 4px)',

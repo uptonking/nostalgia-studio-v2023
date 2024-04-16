@@ -146,8 +146,8 @@ export const MultipleDecks = () => {
             zIndex: isDragOverlay
               ? undefined
               : isDragging
-              ? deck.length - overIndex
-              : deck.length - index,
+                ? deck.length - overIndex
+                : deck.length - index,
           };
         }}
         minimal

@@ -265,8 +265,8 @@ class Iterator {
       options.keys && options.values
         ? 'iterator'
         : options.keys
-        ? 'keys'
-        : 'values';
+          ? 'keys'
+          : 'values';
     this[kIterator] = db[this[kMode]](options);
     this[kLimit] = limit < 0 ? Infinity : limit;
     this[kEncode] = encode;

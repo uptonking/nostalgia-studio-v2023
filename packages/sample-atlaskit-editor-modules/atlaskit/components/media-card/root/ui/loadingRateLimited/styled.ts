@@ -13,19 +13,18 @@ export const LoadingRateLimitedContainer = styled.div`
   flex-direction: column;
 `;
 
-export const WarningIconWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  width: 100%;
-  justify-content: center;
-  display: flex;
-  /* Required to allow end users to select text in the error message */
-  cursor: auto;
-  user-select: text;
-  > svg {
-    width: 45px;
-  }
-`;
+export const WarningIconWrapper: ComponentClass<HTMLAttributes<{}>> =
+  styled.div`
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    /* Required to allow end users to select text in the error message */
+    cursor: auto;
+    user-select: text;
+    > svg {
+      width: 45px;
+    }
+  `;
 
 export type StyledTextProps = {
   breakpoint: Breakpoint;

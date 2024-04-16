@@ -48,8 +48,8 @@ export const dragConfigResolver = {
       typeof preventScroll === 'number'
         ? preventScroll
         : preventScroll || (preventScroll === undefined && value)
-        ? DEFAULT_PREVENT_SCROLL_DELAY
-        : undefined;
+          ? DEFAULT_PREVENT_SCROLL_DELAY
+          : undefined;
     if (!SUPPORT.touchscreen || preventScroll === false) return undefined;
     return value ? value : preventScroll !== undefined ? 'y' : undefined;
   },

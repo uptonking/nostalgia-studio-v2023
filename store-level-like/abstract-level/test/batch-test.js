@@ -352,8 +352,8 @@ exports.batch = function (test, testCommon) {
         encoding === 'utf8'
           ? values[0]
           : encoding === 'view'
-          ? values[1]
-          : values[2];
+            ? values[1]
+            : values[2];
 
       await db.open();
       await db.batch(

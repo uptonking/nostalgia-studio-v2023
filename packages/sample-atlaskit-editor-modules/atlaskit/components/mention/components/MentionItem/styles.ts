@@ -95,9 +95,8 @@ export const MentionItemStyle: ComponentClass<
   cursor: pointer;
 `;
 
-export const AccessSectionStyle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  padding-left: 5px;
-  color: ${N500};
-`;
+export const AccessSectionStyle: ComponentClass<HTMLAttributes<{}>> =
+  styled.div`
+    padding-left: 5px;
+    color: ${N500};
+  `;

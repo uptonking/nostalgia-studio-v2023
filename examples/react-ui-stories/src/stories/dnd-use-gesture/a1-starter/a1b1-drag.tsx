@@ -18,7 +18,7 @@ function Draggable() {
   const toggleColor = useCallback(() => {
     // console.log(';; toggle-color ');
     setColor((c) => (c === 'black' ? '#952e3a' : 'black'));
-  },[])
+  }, []);
 
   const [mvOffset, setMvOffset] = useState({ x: 0, y: 0 });
 

@@ -73,10 +73,12 @@ const getWildcardedLeaves = (
     p == arrayLength(path)
       ? arrayPush(leaves, node)
       : path[p] === null
-      ? collForEach(node as Node<IdOrNull, IdSet>, (node) => deep(node, p + 1))
-      : arrayForEach([path[p], null], (id) =>
-          deep(mapGet(node as Node<IdOrNull, IdSet>, id) as IdSetNode, p + 1),
-        );
+        ? collForEach(node as Node<IdOrNull, IdSet>, (node) =>
+            deep(node, p + 1),
+          )
+        : arrayForEach([path[p], null], (id) =>
+            deep(mapGet(node as Node<IdOrNull, IdSet>, id) as IdSetNode, p + 1),
+          );
   deep(deepIdSet, 0);
   return leaves;
 };
@@ -159,10 +161,10 @@ export const getListenerFunctions = (
         index == arrayLength(idOrNulls)
           ? (listener as any)(thing, ...ids, ...extraArgsGetter(ids))
           : isUndefined(idOrNulls[index])
-          ? arrayForEach(idNullGetters[index](...ids), (id) =>
-              callWithIds(...ids, id),
-            )
-          : callWithIds(...ids, idOrNulls[index] as Id);
+            ? arrayForEach(idNullGetters[index](...ids), (id) =>
+                callWithIds(...ids, id),
+              )
+            : callWithIds(...ids, idOrNulls[index] as Id);
       };
       callWithIds();
     });

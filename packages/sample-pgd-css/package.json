@@ -18,8 +18,8 @@
     "@pgd/design-tokens": "1.0.0"
   },
   "devDependencies": {
-    "@atao60/fse-cli": "^0.1.7",
-    "fs-extra": "^11.1.1",
-    "sass": "^1.64.1"
+    "@atao60/fse-cli": "^0.1.9",
+    "fs-extra": "^11.2.0",
+    "sass": "^1.69.5"
   }
 }

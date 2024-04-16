@@ -231,8 +231,8 @@ export const createCheckpoints: typeof createCheckpointsDecl =
       const action = arrayHas(backwardIds, checkpointId)
         ? goBackwardImpl
         : arrayHas(forwardIds, checkpointId)
-        ? goForwardImpl
-        : null;
+          ? goForwardImpl
+          : null;
       while (!isUndefined(action) && checkpointId != currentId) {
         action();
       }

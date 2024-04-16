@@ -19,12 +19,12 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@linaria/babel-preset": "^4.5.3",
-    "@linaria/core": "^4.5.3",
-    "@linaria/react": "^4.5.3",
-    "@linaria/webpack5-loader": "^4.5.3",
+    "@linaria/babel-preset": "^4.5.4",
+    "@linaria/core": "^4.5.4",
+    "@linaria/react": "^4.5.4",
+    "@linaria/webpack5-loader": "^4.5.4",
     "circular-dependency-plugin": "^5.2.2",
-    "classnames": "^2.3.2",
-    "clsx": "^2.0.0"
+    "classnames": "^2.5.1",
+    "clsx": "^2.1.0"
   }
 }

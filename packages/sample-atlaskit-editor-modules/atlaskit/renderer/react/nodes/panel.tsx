@@ -82,8 +82,8 @@ const Panel = (props: Props) => {
   const panelType = allowCustomPanels
     ? type
     : type === PanelType.CUSTOM
-    ? PanelType.INFO
-    : type;
+      ? PanelType.INFO
+      : type;
 
   const getIcon = () => {
     if (panelType === PanelType.CUSTOM) {

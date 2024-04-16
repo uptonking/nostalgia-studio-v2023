@@ -49,28 +49,26 @@ export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`
   transition: opacity 0.3s;
 `;
 
-export const PlaceholderFallback: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  display: inline-flex;
-  align-items: center;
+export const PlaceholderFallback: ComponentClass<HTMLAttributes<{}>> =
+  styled.div`
+    display: inline-flex;
+    align-items: center;
 
-  & > img {
-    margin: 0 4px;
-  }
-`;
+    & > img {
+      margin: 0 4px;
+    }
+  `;
 
-export const PlaceholderFallbackParams: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.span`
-  display: inline-block;
-  max-width: 200px;
-  margin-left: 5px;
-  color: ${N70};
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-`;
+export const PlaceholderFallbackParams: ComponentClass<HTMLAttributes<{}>> =
+  styled.span`
+    display: inline-block;
+    max-width: 200px;
+    margin-left: 5px;
+    color: ${N70};
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  `;
 
 export const StyledImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   max-height: 16px;

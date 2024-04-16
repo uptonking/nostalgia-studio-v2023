@@ -1345,8 +1345,8 @@ export class GraphView extends EventSource {
     let edgeStyle = this.isLoopStyleEnabled(edge, points, source, target)
       ? edge.style.loopStyle ?? this.graph.defaultLoopStyle
       : !edge.style.noEdgeStyle ?? false
-      ? edge.style.edgeStyle
-      : null;
+        ? edge.style.edgeStyle
+        : null;
 
     // Converts string values to objects
     if (typeof edgeStyle === 'string') {

@@ -57,13 +57,13 @@ function saveActiveElement() {
   _activeElement = el?.id
     ? '#' + el.id
     : el?.className
-    ? '.' +
-      el.className
-        .replace(/ ?hover:[^ ]*/g, '')
-        .replace(/ /g, '.')
-        .replace(/:/g, '\\:')
-        .replace(/.$/, '')
-    : null;
+      ? '.' +
+        el.className
+          .replace(/ ?hover:[^ ]*/g, '')
+          .replace(/ /g, '.')
+          .replace(/:/g, '\\:')
+          .replace(/.$/, '')
+      : null;
 }
 function restoreActiveElement() {
   const autofocusElements = qsa('[autofocus]');

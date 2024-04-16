@@ -34,12 +34,12 @@ export declare type RecursiveKeyOf<
 > = T extends TerminalType
   ? never
   : IsAny<T> extends true
-  ? never
-  : {
-      [K in keyof T & string]: [Prefix] extends [never]
-        ? K | RecursiveKeyOf<T[K], K>
-        : `${Prefix}.${K}` | RecursiveKeyOf<T[K], `${Prefix}.${K}`>;
-    }[keyof T & string];
+    ? never
+    : {
+        [K in keyof T & string]: [Prefix] extends [never]
+          ? K | RecursiveKeyOf<T[K], K>
+          : `${Prefix}.${K}` | RecursiveKeyOf<T[K], `${Prefix}.${K}`>;
+      }[keyof T & string];
 
 export declare type TypeIfUndefined<C, T, T2> = [C] extends [undefined]
   ? T
@@ -58,8 +58,8 @@ export declare type DeepPropertyType<
       : never
     : never
   : P extends keyof TT
-  ? TT[P]
-  : never;
+    ? TT[P]
+    : never;
 export {};
 
 export declare type StringIfNever<C> = TypeIfNever<C, string>;

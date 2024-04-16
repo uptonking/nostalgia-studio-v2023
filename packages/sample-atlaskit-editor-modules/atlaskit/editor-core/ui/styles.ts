@@ -53,11 +53,10 @@ export const Wrapper: ComponentClass<
     isSmall ? '40px' : 'auto'};
 `;
 
-export const ExpandIconWrapper: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.span`
-  margin-left: -8px;
-`;
+export const ExpandIconWrapper: ComponentClass<HTMLAttributes<{}>> =
+  styled.span`
+    margin-left: -8px;
+  `;
 
 export const TriggerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;

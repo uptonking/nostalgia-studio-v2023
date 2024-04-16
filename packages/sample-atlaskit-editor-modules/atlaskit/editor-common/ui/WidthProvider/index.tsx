@@ -30,9 +30,8 @@ export function createWidthContext(width: number = 0): WidthConsumerContext {
   return { width, breakpoint: getBreakpoint(width) };
 }
 
-export const WidthContext = React.createContext<WidthConsumerContext>(
-  createWidthContext(),
-);
+export const WidthContext =
+  React.createContext<WidthConsumerContext>(createWidthContext());
 
 const { Provider, Consumer } = WidthContext;
 export { Consumer as WidthConsumer };

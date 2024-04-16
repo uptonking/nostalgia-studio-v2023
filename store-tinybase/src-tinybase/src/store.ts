@@ -297,8 +297,8 @@ export const createStore = (): Store => {
           () => cellInvalid(tableId, rowId, cellId, cell),
         )
       : isUndefined(getCellType(cell))
-      ? cellInvalid(tableId, rowId, cellId, cell)
-      : cell;
+        ? cellInvalid(tableId, rowId, cellId, cell)
+        : cell;
 
   const addDefaultsToRow = (row: Row, tableId: Id, rowId?: Id): Row => {
     ifNotUndefined(

@@ -204,8 +204,8 @@ function GridVirtualizerVariable({ rows, columns }) {
                       ? ''
                       : listItemEvenCss
                     : virtualRow.index % 2
-                    ? ''
-                    : listItemEvenCss)
+                      ? ''
+                      : listItemEvenCss)
                 }
                 style={{
                   position: 'absolute',

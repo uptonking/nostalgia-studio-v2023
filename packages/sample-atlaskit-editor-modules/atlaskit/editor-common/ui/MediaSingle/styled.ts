@@ -55,8 +55,8 @@ export function calcLegacyWidth(
       return isResized
         ? `${width}px`
         : fullWidthMode
-        ? getWidthIfFullWidthMode(width)
-        : getWidthIfDefaultMode(width);
+          ? getWidthIfFullWidthMode(width)
+          : getWidthIfDefaultMode(width);
   }
 }
 
@@ -182,8 +182,8 @@ const RenderFallbackContainer = ({
       height
         ? `height: ${height}px;`
         : paddingBottom
-        ? `padding-bottom: ${paddingBottom};`
-        : ''
+          ? `padding-bottom: ${paddingBottom};`
+          : ''
     }
 
     /* Fixes extra padding problem in Firefox */

@@ -175,8 +175,8 @@ export function adjustDate(
     activeSegment === 'day'
       ? addDays(originalDate, adjustment)
       : activeSegment === 'month'
-      ? addMonths(originalDate, adjustment)
-      : addYears(originalDate, adjustment);
+        ? addMonths(originalDate, adjustment)
+        : addYears(originalDate, adjustment);
 
   return dateToDateType(newDate);
 }

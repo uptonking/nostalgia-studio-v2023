@@ -234,8 +234,8 @@ export const createQueries: typeof createQueriesDecl = getCreateFunction(
           isFunction(arg1)
             ? arg1
             : isUndefined(arg3)
-            ? (getTableCell) => getTableCell(arg1) === arg2
-            : (getTableCell) => getTableCell(arg1, arg2 as Id) === arg3,
+              ? (getTableCell) => getTableCell(arg1) === arg2
+              : (getTableCell) => getTableCell(arg1, arg2 as Id) === arg3,
         );
 
       const group = (
@@ -462,12 +462,12 @@ export const createQueries: typeof createQueriesDecl = getCreateFunction(
             ...((isUndefined(arg2)
               ? [tableId, rootRowId, arg1]
               : arg1 === tableId
-              ? [tableId, rootRowId, arg2]
-              : [
-                  mapGet(joins, arg1)?.[0] as Id,
-                  mapGet(mapGet(joins, arg1)?.[4], rootRowId)?.[0],
-                  arg2,
-                ]) as [Id, Id, Id]),
+                ? [tableId, rootRowId, arg2]
+                : [
+                    mapGet(joins, arg1)?.[0] as Id,
+                    mapGet(mapGet(joins, arg1)?.[4], rootRowId)?.[0],
+                    arg2,
+                  ]) as [Id, Id, Id]),
           );
         selectJoinWhereStore.transaction(() =>
           arrayEvery(wheres, (where) => where(getTableCell))

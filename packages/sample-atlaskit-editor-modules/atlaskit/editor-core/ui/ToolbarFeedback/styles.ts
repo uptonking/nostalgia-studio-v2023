@@ -50,19 +50,17 @@ export const ConfirmationText: ComponentClass<HTMLAttributes<{}>> = styled.div`
   }
 `;
 
-export const ConfirmationHeader: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  background-color: ${P400};
-  height: 100px;
-  width: 100%;
-  display: inline-block;
-`;
+export const ConfirmationHeader: ComponentClass<HTMLAttributes<{}>> =
+  styled.div`
+    background-color: ${P400};
+    height: 100px;
+    width: 100%;
+    display: inline-block;
+  `;
 
-export const ConfirmationImg: ComponentClass<
-  ImgHTMLAttributes<{}>
-> = styled.img`
-  width: 100px;
-  display: block;
-  margin: 25px auto 0 auto;
-`;
+export const ConfirmationImg: ComponentClass<ImgHTMLAttributes<{}>> =
+  styled.img`
+    width: 100px;
+    display: block;
+    margin: 25px auto 0 auto;
+  `;

@@ -107,6 +107,6 @@ export type PluginConfig<PluginFactory, T> = PluginFactory extends (
   ? Exclude<unknown, Args> extends never
     ? PluginFactory | [PluginFactory]
     : Exclude<Args, Exclude<Args, undefined>> extends never
-    ? [PluginFactory, Args]
-    : PluginFactory | [PluginFactory] | [PluginFactory, Args]
+      ? [PluginFactory, Args]
+      : PluginFactory | [PluginFactory] | [PluginFactory, Args]
   : never;

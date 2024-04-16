@@ -26,8 +26,8 @@ const getValidPos = (tr: Transaction, pos: number) => {
   return backwardSelection
     ? backwardSelection.from
     : forwardSelection
-    ? forwardSelection.from
-    : pos;
+      ? forwardSelection.from
+      : pos;
 };
 export class PluginState {
   private decorationSet: DecorationSet;

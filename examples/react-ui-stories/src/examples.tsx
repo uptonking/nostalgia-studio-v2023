@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 
-// import * as stories from './stories/tanstack-table';
+import * as stories from './stories/tanstack-table';
 // import * as stories from './stories/autocomplete';
 // import * as stories from './stories/tanstack-virtual';
 // import * as stories from './stories/dnd-kit';
-import * as stories from './stories/dnd-use-gesture';
+// import * as stories from './stories/dnd-use-gesture';
 
 // import * as stories from './stories/react-window';
 // import * as stories from './stories/react-tiny-virtual-list';
 // import * as stories from './stories/reactjs-popup';
 
 const storiesNames = Object.keys(stories);
+// console.log(';; stories ', stories)
 
 export function ExamplesApp() {
   const [currentStory, setCurrentStory] = useState(storiesNames[0]);

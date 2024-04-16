@@ -13,27 +13,27 @@ export type GetCurrentContextByState<T extends LoadState> =
   T extends LoadState.Idle
     ? IdleContext
     : T extends LoadState.LoadSchema
-    ? IdleContext
-    : T extends LoadState.SchemaReady
-    ? SchemaReadyContext
-    : T extends LoadState.LoadPlugin
-    ? LoadPluginContext
-    : T extends LoadState.Complete
-    ? CompleteContext
-    : AnyRecord;
+      ? IdleContext
+      : T extends LoadState.SchemaReady
+        ? SchemaReadyContext
+        : T extends LoadState.LoadPlugin
+          ? LoadPluginContext
+          : T extends LoadState.Complete
+            ? CompleteContext
+            : AnyRecord;
 
 export type GetNextContextByState<T extends LoadState> =
   T extends LoadState.Idle
     ? IdleContext
     : T extends LoadState.LoadSchema
-    ? SchemaReadyContext
-    : T extends LoadState.SchemaReady
-    ? LoadPluginContext
-    : T extends LoadState.LoadPlugin
-    ? CompleteContext
-    : T extends LoadState.Complete
-    ? CompleteContext
-    : AnyRecord;
+      ? SchemaReadyContext
+      : T extends LoadState.SchemaReady
+        ? LoadPluginContext
+        : T extends LoadState.LoadPlugin
+          ? CompleteContext
+          : T extends LoadState.Complete
+            ? CompleteContext
+            : AnyRecord;
 
 export interface IdleContext {
   remark: Processor<RemarkOptions>;

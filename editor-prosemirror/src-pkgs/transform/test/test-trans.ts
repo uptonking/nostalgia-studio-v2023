@@ -686,8 +686,8 @@ describe('Transform', () => {
       const slice = !source
         ? Slice.empty
         : source instanceof Slice
-        ? source
-        : source.slice((source as any).tag.a, (source as any).tag.b);
+          ? source
+          : source.slice((source as any).tag.a, (source as any).tag.b);
       testTransform(
         new Transform(doc).replace(
           tag(doc, 'a'),
@@ -1151,8 +1151,8 @@ describe('Transform', () => {
       const slice = !source
         ? Slice.empty
         : source instanceof Slice
-        ? source
-        : source.slice((source as any).tag.a, (source as any).tag.b, true);
+          ? source
+          : source.slice((source as any).tag.a, (source as any).tag.b, true);
       testTransform(
         new Transform(doc).replaceRange(
           tag(doc, 'a'),

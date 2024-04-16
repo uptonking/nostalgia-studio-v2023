@@ -22,24 +22,23 @@ export const MentionPickerStyle: ComponentClass<
     props.visible ? 'block' : 'none'};
 `;
 
-export const MentionPickerInfoStyle: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
-  background: #fff;
-  color: ${N100};
-  border: 1px solid ${noDialogContainerBorderColor};
-  border-radius: ${noDialogContainerBorderRadius};
-  box-shadow: ${noDialogContainerBoxShadow};
-  display: block;
-  width: ${mentionListWidth};
-  white-space: nowrap;
+export const MentionPickerInfoStyle: ComponentClass<HTMLAttributes<{}>> =
+  styled.div`
+    background: #fff;
+    color: ${N100};
+    border: 1px solid ${noDialogContainerBorderColor};
+    border-radius: ${noDialogContainerBorderRadius};
+    box-shadow: ${noDialogContainerBoxShadow};
+    display: block;
+    width: ${mentionListWidth};
+    white-space: nowrap;
 
-  & {
-    p {
-      margin: 0;
-      overflow: hidden;
-      padding: 9px;
-      text-overflow: ellipsis;
+    & {
+      p {
+        margin: 0;
+        overflow: hidden;
+        padding: 9px;
+        text-overflow: ellipsis;
+      }
     }
-  }
-`;
+  `;

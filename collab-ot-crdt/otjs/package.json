@@ -17,8 +17,8 @@
     "test:log": "node index.js --name nested-a"
   },
   "dependencies": {
-    "@faker-js/faker": "^8.0.2",
-    "classnames": "^2.3.2",
+    "@faker-js/faker": "^8.3.1",
+    "classnames": "^2.5.1",
     "codemirror": "^5.65.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "@types/codemirror": "^5.60.5",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.0.2",
     "npm-run-all": "^4.1.5",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2"
   }
 }

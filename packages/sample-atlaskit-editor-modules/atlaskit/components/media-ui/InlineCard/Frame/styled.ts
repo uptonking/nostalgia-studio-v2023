@@ -83,30 +83,29 @@ const withoutHover = ({ withoutHover }: WrapperProps) => {
 // NB: `padding` consistent with @mentions.
 // NB: `display: inline` required for `box-decoration-break` to work.
 // NB: `box-decoration-break` required for retaining properties (border-radius) on wrap.
-export const Wrapper: ComponentClass<
-  AnchorHTMLAttributes<{}> & WrapperProps
-> = styled.a`
-  line-height: 16px;
-  padding: 1px 0.24em 2px 0.24em;
-  ${(props) =>
-    props.withoutBackground ? `padding-left: 0; margin-left:-2px;` : ''}
-  display: inline;
-  box-decoration-break: clone;
-  border-radius: ${akBorderRadius()}px;
-  color: ${themed({ light: B400, dark: '#4794FF' })};
-  background-color: ${(props) =>
-    props.withoutBackground
-      ? ''
-      : themed({ light: 'white', dark: BACKGROUND_COLOR_DARK })};
-  ${(props) => (props.withoutBackground ? '' : e100())};
-  ${isInteractive}
-  ${isSelected};
-  ${withoutHover}
-  transition: 0.1s all ease-in-out;
-  -moz-user-select: none;
+export const Wrapper: ComponentClass<AnchorHTMLAttributes<{}> & WrapperProps> =
+  styled.a`
+    line-height: 16px;
+    padding: 1px 0.24em 2px 0.24em;
+    ${(props) =>
+      props.withoutBackground ? `padding-left: 0; margin-left:-2px;` : ''}
+    display: inline;
+    box-decoration-break: clone;
+    border-radius: ${akBorderRadius()}px;
+    color: ${themed({ light: B400, dark: '#4794FF' })};
+    background-color: ${(props) =>
+      props.withoutBackground
+        ? ''
+        : themed({ light: 'white', dark: BACKGROUND_COLOR_DARK })};
+    ${(props) => (props.withoutBackground ? '' : e100())};
+    ${isInteractive}
+    ${isSelected};
+    ${withoutHover}
+    transition: 0.1s all ease-in-out;
+    -moz-user-select: none;
 
-  &:hover ${TitleWrapper} {
-    text-decoration: ${({ withoutHover }) =>
-      withoutHover ? 'none' : 'underline'};
-  }
-`;
+    &:hover ${TitleWrapper} {
+      text-decoration: ${({ withoutHover }) =>
+        withoutHover ? 'none' : 'underline'};
+    }
+  `;

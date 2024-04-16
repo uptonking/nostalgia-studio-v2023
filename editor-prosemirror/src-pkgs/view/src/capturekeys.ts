@@ -17,8 +17,8 @@ function moveSelectionBlock(state: EditorState, dir: number) {
   const $start = !$side.parent.inlineContent
     ? $side
     : $side.depth
-    ? state.doc.resolve(dir > 0 ? $side.after() : $side.before())
-    : null;
+      ? state.doc.resolve(dir > 0 ? $side.after() : $side.before())
+      : null;
   return $start && Selection.findFrom($start, dir);
 }
 
@@ -41,8 +41,8 @@ function selectHorizontally(view: EditorView, dir: number, mods: string) {
       const node = $head.textOffset
         ? null
         : dir < 0
-        ? $head.nodeBefore
-        : $head.nodeAfter;
+          ? $head.nodeBefore
+          : $head.nodeAfter;
       let desc;
       if (!node || node.isText) return false;
       const nodePos = dir < 0 ? $head.pos - node.nodeSize : $head.pos;

@@ -159,11 +159,11 @@
             s.isText
               ? ((o += s.text.slice(Math.max(t, a) - a, e - a)), (i = !n))
               : s.isLeaf
-              ? (r
-                  ? (o += typeof r === 'function' ? r(s) : r)
-                  : s.type.spec.leafText && (o += s.type.spec.leafText(s)),
-                (i = !n))
-              : !i && s.isBlock && ((o += n), (i = !0));
+                ? (r
+                    ? (o += typeof r === 'function' ? r(s) : r)
+                    : s.type.spec.leafText && (o += s.type.spec.leafText(s)),
+                  (i = !n))
+                : !i && s.isBlock && ((o += n), (i = !0));
           },
           0,
         ),
@@ -214,8 +214,8 @@
       return t == e
         ? r.empty
         : t == 0 && e == this.content.length
-        ? this
-        : new r(this.content.slice(t, e));
+          ? this
+          : new r(this.content.slice(t, e));
     }),
     (r.prototype.replaceChild = function (t, e) {
       const n = this.content[t];
@@ -678,8 +678,8 @@
       return e
         ? this.parent.child(t).cut(0, e)
         : t == 0
-        ? null
-        : this.parent.child(t - 1);
+          ? null
+          : this.parent.child(t - 1);
     }),
     (S.prototype.posAtIndex = function (t, e) {
       e = this.resolveDepth(e);
@@ -1691,10 +1691,10 @@
           s == '_'
             ? null
             : s
-            ? et(this, s.split(' '))
-            : '' != s && o.inlineContent
-            ? null
-            : []);
+              ? et(this, s.split(' '))
+              : '' != s && o.inlineContent
+                ? null
+                : []);
     }
     for (const a in this.marks) {
       const c = this.marks[a];
@@ -1907,8 +1907,8 @@
     return null != e
       ? (e ? 1 : 0) | (e === 'full' ? 2 : 0)
       : t && t.whitespace == 'pre'
-      ? 3
-      : -5 & n;
+        ? 3
+        : -5 & n;
   }
   const at = function (t, e, n, r, o, i, s) {
     (this.type = t),
@@ -1971,9 +1971,9 @@
       return this.type
         ? this.type.inlineContent
         : this.content.length
-        ? this.content[0].isInline
-        : t.parentNode &&
-          !rt.hasOwnProperty(t.parentNode.nodeName.toLowerCase());
+          ? this.content[0].isInline
+          : t.parentNode &&
+            !rt.hasOwnProperty(t.parentNode.nodeName.toLowerCase());
     });
   var ct = function (t, e, n) {
     (this.parser = t), (this.options = e), (this.isOpen = n), (this.open = 0);
@@ -2100,8 +2100,8 @@
             r && it.hasOwnProperty(r) && n
               ? (n.appendChild(e), (e = n))
               : r == 'li'
-              ? (n = e)
-              : r && (n = null);
+                ? (n = e)
+                : r && (n = null);
           }
         })(t);
       const o =
@@ -2172,8 +2172,8 @@
         typeof e.contentElement === 'string'
           ? (c = t.querySelector(e.contentElement))
           : typeof e.contentElement === 'function'
-          ? (c = e.contentElement(t))
-          : e.contentElement && (c = e.contentElement),
+            ? (c = e.contentElement(t))
+            : e.contentElement && (c = e.contentElement),
           this.findAround(t, c, !0),
           this.addAll(c);
       }
@@ -2319,8 +2319,8 @@
             a > 0 || (a == 0 && o)
               ? e.nodes[a].type
               : r && a >= i
-              ? r.node(a - i).type
-              : null;
+                ? r.node(a - i).type
+                : null;
           if (!l || (l.name != c && l.groups.indexOf(c) == -1)) return !1;
           a--;
         }
@@ -3286,8 +3286,8 @@
         (o == r.depth
           ? ((i = r.nodeBefore), (s = r.nodeAfter))
           : n > 0
-          ? ((i = r.node(o + 1)), a++, (s = r.node(o).maybeChild(a)))
-          : ((i = r.node(o).maybeChild(a - 1)), (s = r.node(o + 1))),
+            ? ((i = r.node(o + 1)), a++, (s = r.node(o).maybeChild(a)))
+            : ((i = r.node(o).maybeChild(a - 1)), (s = r.node(o + 1))),
         i && !i.isTextblock && $t(i, s) && r.node(o).canReplace(a, a + 1))
       )
         return e;
@@ -3323,8 +3323,8 @@
           a == r.depth
             ? 0
             : r.pos <= (r.start(a + 1) + r.end(a + 1)) / 2
-            ? -1
-            : 1;
+              ? -1
+              : 1;
         const l = r.index(a) + (c > 0 ? 1 : 0);
         const p = r.node(a);
         let h = !1;
@@ -3485,8 +3485,8 @@
       return e > -1
         ? new It(r.pos, e, this.$to.pos, this.$to.end(), c, n)
         : c.size || r.pos != this.$to.pos
-        ? new Et(r.pos, o.pos, c)
-        : null;
+          ? new Et(r.pos, o.pos, c)
+          : null;
     }),
     (Kt.prototype.findFittable = function () {
       for (let t = 1; t <= 2; t++)
@@ -4919,10 +4919,10 @@
   const qe = Ve
     ? document.documentMode
     : Fe
-    ? Number(Fe[1])
-    : _e
-    ? Number(_e[1])
-    : 0;
+      ? Number(Fe[1])
+      : _e
+        ? Number(_e[1])
+        : 0;
   const Le = !$e && /gecko\/(\d+)/i.test(Be);
   Le && (/Firefox\/(\d+)/.exec(Be) || [0, 0])[1];
   const je = !$e && /Chrome\/(\d+)/.exec(Be);
@@ -5097,8 +5097,8 @@
             u.left > e.left
               ? u.left - e.left
               : u.right < e.left
-              ? e.left - u.right
-              : 0;
+                ? e.left - u.right
+                : 0;
           if (f < o) {
             (n = c),
               (o = f),
@@ -5136,8 +5136,8 @@
           return { node: t, offset: 0 };
         })(n, r)
       : !n || (o && n.nodeType == 1)
-      ? { node: t, offset: i }
-      : gn(n, r);
+        ? { node: t, offset: i }
+        : gn(n, r);
   }
   function yn(t, e) {
     return (
@@ -5282,10 +5282,10 @@
           n < 0 && !i
             ? (l++, (p = -1))
             : n >= 0 && i == o.nodeValue.length
-            ? (c--, (p = 1))
-            : n < 0
-            ? c--
-            : l++,
+              ? (c--, (p = 1))
+              : n < 0
+                ? c--
+                : l++,
           Mn(kn(en(o, c, l), 1), p < 0)
         );
       }
@@ -5316,8 +5316,8 @@
         v.nodeType == 3
           ? en(v, sn(v) - (a ? 0 : 1))
           : 1 != v.nodeType || (v.nodeName == 'BR' && v.nextSibling)
-          ? null
-          : v;
+            ? null
+            : v;
       if (g) return Mn(kn(g, 1), !1);
     }
     if (s == null && i < sn(o)) {
@@ -5331,8 +5331,8 @@
         ? y.nodeType == 3
           ? en(y, 0, a ? 0 : 1)
           : y.nodeType == 1
-          ? y
-          : null
+            ? y
+            : null
         : null;
       if (w) return Mn(kn(w, -1), !0);
     }
@@ -5445,8 +5445,8 @@
                       );
                     })
                   : n == 'left' || n == 'backward'
-                  ? i
-                  : s;
+                    ? i
+                    : s;
               })(t, e, n)));
   }
   const In = function (t, e, n, r) {
@@ -6040,8 +6040,8 @@
           p
             ? (c = new qn(t, n, r, o, h, u || null, f, p, i, s + 1))
             : n.isText
-            ? new Fn(t, n, r, o, h, f, i)
-            : new e(t, n, r, o, h, u || null, f, i, s + 1)
+              ? new Fn(t, n, r, o, h, f, i)
+              : new e(t, n, r, o, h, u || null, f, i, s + 1)
         );
       }),
       (e.prototype.parseRule = function () {
@@ -6494,8 +6494,8 @@
             a == 'class'
               ? (r.class = (r.class ? r.class + ' ' : '') + c)
               : a == 'style'
-              ? (r.style = (r.style ? r.style + ';' : '') + c)
-              : 'nodeName' != a && (r[a] = c));
+                ? (r.style = (r.style ? r.style + ';' : '') + c)
+                : 'nodeName' != a && (r[a] = c));
         }
     }
     return o;
@@ -7185,40 +7185,41 @@
     return n == 8 || (Ue && n == 72 && r == 'c')
       ? xr(t, -1) || gr(t)
       : n == 46 || (Ue && n == 68 && r == 'c')
-      ? xr(t, 1) || yr(t)
-      : n == 13 ||
-        n == 27 ||
-        (n == 37 || (Ue && n == 66 && r == 'c')
-          ? dr(t, -1, r) || gr(t)
-          : n == 39 || (Ue && n == 70 && r == 'c')
-          ? dr(t, 1, r) || yr(t)
-          : n == 38 || (Ue && n == 80 && r == 'c')
-          ? kr(t, -1, r) || gr(t)
-          : n == 40 || (Ue && n == 78 && r == 'c')
-          ? (function (t) {
-              if (!Ke || t.state.selection.$head.parentOffset > 0) return !1;
-              const e = t.domSelection();
-              const n = e.focusNode;
-              const r = e.focusOffset;
-              if (
-                n &&
-                n.nodeType == 1 &&
-                r == 0 &&
-                n.firstChild &&
-                n.firstChild.contentEditable == 'false'
-              ) {
-                const o = n.firstChild;
-                Sr(t, o, 'true'),
-                  setTimeout(function () {
-                    return Sr(t, o, 'false');
-                  }, 20);
-              }
-              return !1;
-            })(t) ||
-            kr(t, 1, r) ||
-            yr(t)
-          : r == (Ue ? 'm' : 'c') &&
-            (n == 66 || n == 73 || n == 89 || n == 90));
+        ? xr(t, 1) || yr(t)
+        : n == 13 ||
+          n == 27 ||
+          (n == 37 || (Ue && n == 66 && r == 'c')
+            ? dr(t, -1, r) || gr(t)
+            : n == 39 || (Ue && n == 70 && r == 'c')
+              ? dr(t, 1, r) || yr(t)
+              : n == 38 || (Ue && n == 80 && r == 'c')
+                ? kr(t, -1, r) || gr(t)
+                : n == 40 || (Ue && n == 78 && r == 'c')
+                  ? (function (t) {
+                      if (!Ke || t.state.selection.$head.parentOffset > 0)
+                        return !1;
+                      const e = t.domSelection();
+                      const n = e.focusNode;
+                      const r = e.focusOffset;
+                      if (
+                        n &&
+                        n.nodeType == 1 &&
+                        r == 0 &&
+                        n.firstChild &&
+                        n.firstChild.contentEditable == 'false'
+                      ) {
+                        const o = n.firstChild;
+                        Sr(t, o, 'true'),
+                          setTimeout(function () {
+                            return Sr(t, o, 'false');
+                          }, 20);
+                      }
+                      return !1;
+                    })(t) ||
+                    kr(t, 1, r) ||
+                    yr(t)
+                  : r == (Ue ? 'm' : 'c') &&
+                    (n == 66 || n == 73 || n == 89 || n == 90));
   }
   function Cr(t, e) {
     for (
@@ -7766,8 +7767,8 @@
         ? (t.input.mouseDown && t.input.mouseDown.done(),
           (t.input.mouseDown = new Xr(t, s, n, !!r)))
         : (i == 'doubleClick' ? Hr : Ur)(t, s.pos, s.inside, n)
-        ? n.preventDefault()
-        : $r(t, 'pointer'));
+          ? n.preventDefault()
+          : $r(t, 'pointer'));
   };
   var Xr = function (t, e, n, r) {
     let o;
@@ -7856,23 +7857,23 @@
           this.allowDefault || !e
             ? $r(this.view, 'pointer')
             : Kr(this.view, e.pos, e.inside, t, this.selectNode)
-            ? t.preventDefault()
-            : t.button == 0 &&
-              (this.flushed ||
-                (Ke && this.mightDrag && !this.mightDrag.node.isAtom) ||
-                (Je &&
-                  !(this.view.state.selection instanceof fe) &&
-                  Math.min(
-                    Math.abs(e.pos - this.view.state.selection.from),
-                    Math.abs(e.pos - this.view.state.selection.to),
-                  ) <= 2))
-            ? (Wr(
-                this.view,
-                ce.near(this.view.state.doc.resolve(e.pos)),
-                'pointer',
-              ),
-              t.preventDefault())
-            : $r(this.view, 'pointer');
+              ? t.preventDefault()
+              : t.button == 0 &&
+                  (this.flushed ||
+                    (Ke && this.mightDrag && !this.mightDrag.node.isAtom) ||
+                    (Je &&
+                      !(this.view.state.selection instanceof fe) &&
+                      Math.min(
+                        Math.abs(e.pos - this.view.state.selection.from),
+                        Math.abs(e.pos - this.view.state.selection.to),
+                      ) <= 2))
+                ? (Wr(
+                    this.view,
+                    ce.near(this.view.state.doc.resolve(e.pos)),
+                    'pointer',
+                  ),
+                  t.preventDefault())
+                : $r(this.view, 'pointer');
       }
     }),
     (Xr.prototype.move = function (t) {
@@ -8463,8 +8464,8 @@
             return new go(e.sort(Mo), a);
           })(this.children, i || [], t, e, n, r, o)
         : i
-        ? new go(i.sort(Mo), mo)
-        : yo;
+          ? new go(i.sort(Mo), mo)
+          : yo;
     }),
     (go.prototype.add = function (t, e) {
       return e.length
@@ -8525,8 +8526,8 @@
       return n == this.children && r == this.local
         ? this
         : r.length || n.length
-        ? new go(r, n)
-        : yo;
+          ? new go(r, n)
+          : yo;
     }),
     (go.prototype.forChild = function (t, e) {
       if (this == yo) return this;
@@ -9369,8 +9370,8 @@
         (t.appendChild
           ? t.appendChild(this.dom)
           : typeof t === 'function'
-          ? t(this.dom)
-          : t.mount && (this.mounted = !0)),
+            ? t(this.dom)
+            : t.mount && (this.mounted = !0)),
       (this.editable = Wo(this)),
       Jo(this),
       (this.nodeViews = Ko(this)),
@@ -9526,8 +9527,8 @@
       const c = e
         ? 'reset'
         : t.scrollToSelection > n.scrollToSelection
-        ? 'to selection'
-        : 'preserve';
+          ? 'to selection'
+          : 'preserve';
       const l = r || !this.docView.matchesNode(t.doc, a, s);
       (!l && t.selection.eq(n.selection)) || (o = !0);
       let p;
@@ -9607,13 +9608,13 @@
         c == 'reset'
           ? (this.dom.scrollTop = 0)
           : c == 'to selection'
-          ? this.scrollToSelection()
-          : y &&
-            ((d = (f = y).refDOM),
-            (m = f.refTop),
-            (v = f.stack),
-            (g = d ? d.getBoundingClientRect().top : 0),
-            mn(v, g == 0 ? 0 : g - m));
+            ? this.scrollToSelection()
+            : y &&
+              ((d = (f = y).refDOM),
+              (m = f.refTop),
+              (v = f.stack),
+              (g = d ? d.getBoundingClientRect().top : 0),
+              mn(v, g == 0 ? 0 : g - m));
     }),
     (qo.prototype.scrollToSelection = function () {
       const t = this;
@@ -10292,8 +10293,8 @@
         return e <= n
           ? this.left.slice(t, e)
           : t >= n
-          ? this.right.slice(t - n, e - n)
-          : this.left.slice(t, n).append(this.right.slice(0, e - n));
+            ? this.right.slice(t - n, e - n)
+            : this.left.slice(t, n).append(this.right.slice(0, e - n));
       }),
       (e.prototype.leafAppend = function (t) {
         const n = this.right.leafAppend(t);
@@ -11608,8 +11609,8 @@
             i.indexAfter(-1) < i.node(-2).childCount
               ? 1
               : i.indexAfter(-2) < i.node(-3).childCount
-              ? 2
-              : 3;
+                ? 2
+                : 3;
           l = l.append(r.from(t.createAndFill()));
           const d = i.before(i.depth - (h - 1));
           const m = e.tr.replace(d, i.after(-f), new p(l, 4 - h, 0));
@@ -12206,10 +12207,10 @@
     const n = e.render
       ? e.render(t)
       : e.icon
-      ? ua(e.icon)
-      : e.label
-      ? ca('div', null, ma(t, e.label))
-      : null;
+        ? ua(e.icon)
+        : e.label
+          ? ca('div', null, ma(t, e.label))
+          : null;
     if (!n) throw new RangeError('MenuItem without icon or label property');
     if (e.title) {
       const r = typeof e.title === 'function' ? e.title(t.state) : e.title;
@@ -12756,11 +12757,11 @@
         t.keyCode == 27
           ? (t.preventDefault(), r())
           : 13 != t.keyCode || t.ctrlKey || t.metaKey || t.shiftKey
-          ? t.keyCode == 9 &&
-            window.setTimeout(function () {
-              e.contains(document.activeElement) || r();
-            }, 500)
-          : (t.preventDefault(), h());
+            ? t.keyCode == 9 &&
+              window.setTimeout(function () {
+                e.contains(document.activeElement) || r();
+              }, 500)
+            : (t.preventDefault(), h());
       });
     const u = c.elements[0];
     u && u.focus();

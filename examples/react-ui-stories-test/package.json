@@ -20,25 +20,25 @@
     "@dnd-kit/modifiers": "6.0.1111",
     "@dnd-kit/sortable": "7.0.2111",
     "@dnd-kit/utilities": "3.2.1111",
-    "@faker-js/faker": "^8.0.2",
-    "@linaria/core": "^4.5.3",
-    "@linaria/react": "^4.5.3",
-    "@tanstack/react-query": "^5.0.0-alpha.31",
+    "@faker-js/faker": "^8.3.1",
+    "@linaria/core": "^4.5.4",
+    "@linaria/react": "^4.5.4",
+    "@tanstack/react-query": "^5.14.6",
     "@tanstack/react-virtual": "3.0.1111",
     "cirrus-ui": "^0.7.1",
-    "classnames": "^2.3.2",
-    "clsx": "^2.0.0",
+    "classnames": "^2.5.1",
+    "clsx": "^2.1.0",
     "cross-fetch": "^4.0.0",
     "debug": "^4.3.4",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tinycolor2": "^1.6.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@linaria/babel-preset": "^4.5.3",
-    "@linaria/webpack5-loader": "^4.5.3",
+    "@linaria/babel-preset": "^4.5.4",
+    "@linaria/webpack5-loader": "^4.5.4",
     "circular-dependency-plugin": "^5.2.2"
   }
 }

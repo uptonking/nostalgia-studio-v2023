@@ -395,8 +395,8 @@ export function Main() {
                               activeIndex === i
                                 ? 'rgba(0,200,255,0.2)'
                                 : i === selectedIndex
-                                ? 'rgba(0,0,50,0.05)'
-                                : 'transparent',
+                                  ? 'rgba(0,0,50,0.05)'
+                                  : 'transparent',
                             fontWeight: i === selectedIndex ? 'bold' : 'normal',
                           }}
                           ref={(node) => {

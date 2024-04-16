@@ -28,8 +28,8 @@ for (const deferred of [false, true]) {
       mode === 'iterator' || def
         ? AbstractIterator
         : mode === 'keys'
-        ? AbstractKeyIterator
-        : AbstractValueIterator;
+          ? AbstractKeyIterator
+          : AbstractValueIterator;
     const privateMethod = def ? '_iterator' : '_' + mode;
     const publicMethod = mode;
 

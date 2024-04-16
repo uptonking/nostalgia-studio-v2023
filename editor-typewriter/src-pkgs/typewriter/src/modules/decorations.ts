@@ -317,8 +317,8 @@ export class Decorator {
       typeof value === 'number'
         ? doc.getLineAt(value)
         : typeof value === 'string'
-        ? (doc.getLineBy(value) as Line)
-        : value;
+          ? (doc.getLineBy(value) as Line)
+          : value;
     return this.clearLines([line]);
   }
 

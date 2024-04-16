@@ -10,10 +10,10 @@
     ('undefined' !== typeof window
       ? window
       : 'undefined' !== typeof global
-      ? global
-      : 'undefined' !== typeof self
-      ? self
-      : this
+        ? global
+        : 'undefined' !== typeof self
+          ? self
+          : this
     ).uuidv4 = e();
   }
 })(function () {

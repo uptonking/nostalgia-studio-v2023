@@ -66,8 +66,8 @@ export function getSortedRowModel<TData extends RowData>(): (
                   return aUndefined && bUndefined
                     ? 0
                     : aUndefined
-                    ? columnInfo.sortUndefined
-                    : -columnInfo.sortUndefined;
+                      ? columnInfo.sortUndefined
+                      : -columnInfo.sortUndefined;
                 }
               }
 

@@ -19,8 +19,8 @@ export function getAlignmentSides(
         ? 'right'
         : 'left'
       : alignment === 'start'
-      ? 'bottom'
-      : 'top';
+        ? 'bottom'
+        : 'top';
 
   if (rects.reference[length] > rects.floating[length]) {
     mainAlignmentSide = getOppositePlacement(mainAlignmentSide);

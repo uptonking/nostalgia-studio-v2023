@@ -35,7 +35,7 @@
     "dom7": "^3.0.0",
     "lodash.isequal": "^4.5.0",
     "lodash.throttle": "^4.1.1",
-    "nanoid": "^4.0.2",
+    "nanoid": "^5.0.4",
     "slate": "0.78.1111",
     "snabbdom": "^3.1.0"
   },

@@ -319,12 +319,12 @@ class Fitter {
           slice.openEnd,
         )
       : sliceDepth == 0
-      ? Slice.empty
-      : new Slice(
-          dropFromFragment(slice.content, sliceDepth - 1, 1),
-          sliceDepth - 1,
-          openEndCount < 0 ? slice.openEnd : sliceDepth - 1,
-        );
+        ? Slice.empty
+        : new Slice(
+            dropFromFragment(slice.content, sliceDepth - 1, 1),
+            sliceDepth - 1,
+            openEndCount < 0 ? slice.openEnd : sliceDepth - 1,
+          );
   }
 
   mustMoveInline() {

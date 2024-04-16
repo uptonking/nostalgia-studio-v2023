@@ -249,8 +249,8 @@ function amountFor(colType: ColType): (amount: number) => number {
         ? -amount
         : amount
       : amount < 0
-      ? -amount
-      : amount;
+        ? -amount
+        : amount;
 }
 
 function widthFor(

@@ -18,20 +18,20 @@
     "@floating-ui/react": "0.22.2111",
     "@floating-ui/react-dom": "2.0.1111",
     "@icon-park/react": "^1.4.2",
-    "@linaria/core": "^4.5.3",
+    "@linaria/core": "^4.5.4",
     "@pgd/ui-tokens": "0.0.1",
     "cirrus-ui": "^0.7.1",
-    "clsx": "^2.0.0",
+    "clsx": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@ariakit/test": "^0.1.14",
     "@testing-library/dom": "^9.3.1",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.1.6",
+    "@testing-library/react": "^14.1.2",
     "@vitest/coverage-c8": "^0.32.2",
-    "jsdom": "^22.1.0",
+    "jsdom": "^23.0.1",
     "vitest": "^0.32.2",
     "vitest-fail-on-console": "^0.4.1"
   }

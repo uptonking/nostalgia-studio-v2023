@@ -234,8 +234,8 @@ export function splitListItem(itemType: NodeType): Command {
           $from.indexAfter(-1) < $from.node(-2).childCount
             ? 1
             : $from.indexAfter(-2) < $from.node(-3).childCount
-            ? 2
-            : 3;
+              ? 2
+              : 3;
         // Add a second list item with an empty default start node
         wrap = wrap.append(Fragment.from(itemType.createAndFill()));
         const start = $from.before($from.depth - (depthBefore - 1));

@@ -122,8 +122,8 @@ const shallowClone = (obj: Doc) =>
   Array.isArray(obj)
     ? obj.slice()
     : obj !== null && typeof obj === 'object'
-    ? { ...obj }
-    : obj;
+      ? { ...obj }
+      : obj;
 
 const hasPick = (c?: JSONOpComponent | null) =>
   c && (c.p != null || c.r !== undefined);
@@ -212,8 +212,8 @@ const isValidKey = (container: Doc | undefined, key: Key): boolean =>
   container == null
     ? false
     : typeof key === 'number'
-    ? Array.isArray(container)
-    : typeof container === 'object';
+      ? Array.isArray(container)
+      : typeof container === 'object';
 
 const maybeGetChild = (
   container: Doc | undefined,
@@ -266,12 +266,12 @@ const getEditType = (c?: JSONOpComponent | null) =>
   c == null
     ? null
     : c.et
-    ? typeOrThrow(c.et)
-    : c.es
-    ? subtypes['text-unicode']
-    : c.ena != null
-    ? subtypes.number
-    : null;
+      ? typeOrThrow(c.et)
+      : c.es
+        ? subtypes['text-unicode']
+        : c.ena != null
+          ? subtypes.number
+          : null;
 
 // I'm using terneries here because .ena might be 0.
 const getEdit = (c: JSONOpComponent) =>
@@ -553,8 +553,8 @@ function apply(snapshot: Doc | undefined, op: JSONOp) {
           subDoc === expectedChild
             ? container
             : subDoc === undefined
-            ? removeChild(container as Doc[] | DocObj, d)
-            : replaceChild(container as Doc[] | DocObj, d, subDoc);
+              ? removeChild(container as Doc[] | DocObj, d)
+              : replaceChild(container as Doc[] | DocObj, d, subDoc);
       } else if (hasPick(d)) {
         assert(subDoc !== undefined, 'Cannot pick up or remove undefined');
         if (d.p != null) held[d.p] = subDoc;

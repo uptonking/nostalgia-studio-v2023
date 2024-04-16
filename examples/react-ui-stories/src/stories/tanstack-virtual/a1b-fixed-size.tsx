@@ -192,8 +192,8 @@ function GridVirtualizerFixed() {
                       ? ''
                       : listItemEvenCss
                     : virtualRow.index % 2
-                    ? ''
-                    : listItemEvenCss)
+                      ? ''
+                      : listItemEvenCss)
                 }
                 style={{
                   position: 'absolute',

@@ -82,28 +82,26 @@ const Container: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
   }
 `;
 
-const AvatarSection: React.ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.div`
-  /* stylelint-disable value-no-vendor-prefix */
-  -ms-grid-row: 1;
-  -ms-grid-column: 1;
-  /* stylelint-enable */
-  grid-area: avatar-area;
-  margin-right: 8px;
-`;
+const AvatarSection: React.ComponentClass<React.HTMLAttributes<{}>> =
+  styled.div`
+    /* stylelint-disable value-no-vendor-prefix */
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+    /* stylelint-enable */
+    grid-area: avatar-area;
+    margin-right: 8px;
+  `;
 
-const EditorSection: React.ComponentClass<
-  React.HTMLAttributes<{}>
-> = styled.div`
-  /* stylelint-disable value-no-vendor-prefix */
-  -ms-grid-row: 1;
-  -ms-grid-column: 2;
-  /* stylelint-enable */
-  grid-area: editor-area;
-  /* min-width: 0; behavior is described here https://stackoverflow.com/a/43312314 */
-  min-width: 0;
-`;
+const EditorSection: React.ComponentClass<React.HTMLAttributes<{}>> =
+  styled.div`
+    /* stylelint-disable value-no-vendor-prefix */
+    -ms-grid-row: 1;
+    -ms-grid-column: 2;
+    /* stylelint-enable */
+    grid-area: editor-area;
+    /* min-width: 0; behavior is described here https://stackoverflow.com/a/43312314 */
+    min-width: 0;
+  `;
 
 export default class Editor extends React.Component<Props, State> {
   private readonly beforeUnloadHandler: any;

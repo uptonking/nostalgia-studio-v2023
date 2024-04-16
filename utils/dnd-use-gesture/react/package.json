@@ -23,6 +23,6 @@
     "@use-gesture/core": "10.2.2711"
   },
   "peerDependencies": {
-    "react": ">= 16.8.0"
+    "react": "^18.2.0"
   }
 }

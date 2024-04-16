@@ -572,8 +572,8 @@ export function history(config: HistoryOptions = {}): Plugin {
             inputType === 'historyUndo'
               ? undo
               : inputType === 'historyRedo'
-              ? redo
-              : null;
+                ? redo
+                : null;
           if (!command) return false;
           e.preventDefault();
           return command(view.state, view.dispatch);

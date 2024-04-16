@@ -21,10 +21,10 @@
     "@types/socket.io": "^3.0.1",
     "@types/winston": "^2.4.4",
     "dotenv": "^16.0.3",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.0.2",
     "rollup": "^2.77.0",
     "tslib": "^2.4.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
     "@example/full-v2": "0.0.1111",

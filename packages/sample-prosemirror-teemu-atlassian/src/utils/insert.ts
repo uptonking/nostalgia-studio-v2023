@@ -33,8 +33,8 @@ export const insertSelectedItem =
         maybeNode instanceof Node || isInputFragment
           ? maybeNode
           : typeof maybeNode === 'string'
-          ? state.schema.text(maybeNode)
-          : Node.fromJSON(state.schema, maybeNode);
+            ? state.schema.text(maybeNode)
+            : Node.fromJSON(state.schema, maybeNode);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);

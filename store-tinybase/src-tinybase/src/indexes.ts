@@ -73,8 +73,8 @@ export const createIndexes: typeof createIndexesDecl = getCreateFunction(
         isUndefined(value)
           ? EMPTY_STRING
           : isArray(value)
-          ? arrayMap(value, id)
-          : id(value),
+            ? arrayMap(value, id)
+            : id(value),
     );
     const [addListener, callListeners, delListenerImpl] = getListenerFunctions(
       () => indexes,

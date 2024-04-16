@@ -21,8 +21,8 @@ export const utf8 = new UTF8Format({
     return BufferWithFallback.isBuffer(data)
       ? data.toString('utf8')
       : ArrayBuffer.isView(data)
-      ? textDecoder.decode(data)
-      : String(data);
+        ? textDecoder.decode(data)
+        : String(data);
   },
   decode: identity,
   name: 'utf8',
@@ -43,12 +43,12 @@ export const utf8 = new UTF8Format({
         return BufferWithFallback.isBuffer(data)
           ? data
           : ArrayBuffer.isView(data)
-          ? BufferWithFallback.from(
-              data.buffer,
-              data.byteOffset,
-              data.byteLength,
-            )
-          : BufferWithFallback.from(String(data), 'utf8');
+            ? BufferWithFallback.from(
+                data.buffer,
+                data.byteOffset,
+                data.byteLength,
+              )
+            : BufferWithFallback.from(String(data), 'utf8');
       },
       decode: function (data) {
         return data.toString('utf8');
@@ -75,8 +75,8 @@ export const buffer = new BufferFormat({
     return BufferWithFallback.isBuffer(data)
       ? data
       : ArrayBuffer.isView(data)
-      ? BufferWithFallback.from(data.buffer, data.byteOffset, data.byteLength)
-      : BufferWithFallback.from(String(data), 'utf8');
+        ? BufferWithFallback.from(data.buffer, data.byteOffset, data.byteLength)
+        : BufferWithFallback.from(String(data), 'utf8');
   },
   decode: identity,
   name: 'buffer',
@@ -114,12 +114,12 @@ export const view = new ViewFormat({
         return BufferWithFallback.isBuffer(data)
           ? data
           : ArrayBuffer.isView(data)
-          ? BufferWithFallback.from(
-              data.buffer,
-              data.byteOffset,
-              data.byteLength,
-            )
-          : BufferWithFallback.from(String(data), 'utf8');
+            ? BufferWithFallback.from(
+                data.buffer,
+                data.byteOffset,
+                data.byteLength,
+              )
+            : BufferWithFallback.from(String(data), 'utf8');
       },
       decode: identity,
       name: `${this.name}+buffer`,

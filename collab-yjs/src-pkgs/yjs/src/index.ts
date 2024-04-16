@@ -5880,8 +5880,8 @@ const mergeUpdatesV2 = (
             return dec1.curr.constructor === dec2.curr.constructor
               ? 0
               : dec1.curr.constructor === Skip
-              ? 1
-              : -1; // we are filtering skips anyway.
+                ? 1
+                : -1; // we are filtering skips anyway.
           } else {
             return clockDiff;
           }
@@ -7374,8 +7374,8 @@ const insertText = (transaction, parent, currPos, text, attributes) => {
     text.constructor === String
       ? new ContentString(/** @type {string} */ text)
       : text instanceof AbstractType
-      ? new ContentType(text)
-      : new ContentEmbed(text);
+        ? new ContentType(text)
+        : new ContentEmbed(text);
   let { left, right, index } = currPos;
   if (parent._searchMarker) {
     updateMarkerChanges(
@@ -11009,11 +11009,11 @@ const glo =
   /** @type {any} */ typeof globalThis !== 'undefined'
     ? globalThis
     : typeof window !== 'undefined'
-    ? window
-    : // @ts-ignore
-    typeof global !== 'undefined'
-    ? global
-    : {};
+      ? window
+      : // @ts-ignore
+        typeof global !== 'undefined'
+        ? global
+        : {};
 
 const importIdentifier = '__ $YJS$ __';
 

@@ -47,14 +47,14 @@
     "@types/lodash": "^4.14.194",
     "@types/mocha": "^10.0.1",
     "browser-level": "1.0.1111",
-    "chai": "^4.3.7",
+    "chai": "^5.0.0",
     "mocha": "^10.2.0",
     "mocha-junit-reporter": "^2.2.1",
-    "node-polyfill-webpack-plugin": "^2.0.1",
-    "nodemon": "^3.0.1",
+    "node-polyfill-webpack-plugin": "^3.0.0",
+    "nodemon": "^3.0.2",
     "npm-run-all": "^4.1.5",
     "pedding": "^1.1.0",
-    "rimraf": "^5.0.1",
-    "ts-node": "^10.9.1"
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2"
   }
 }

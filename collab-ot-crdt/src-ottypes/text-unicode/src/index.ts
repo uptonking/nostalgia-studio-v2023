@@ -55,8 +55,8 @@ export const remove = (pos: number, textOrLen: string | number) =>
   dlen(textOrLen) === 0
     ? []
     : pos === 0
-    ? [{ d: textOrLen }]
-    : [pos, { d: textOrLen }];
+      ? [{ d: textOrLen }]
+      : [pos, { d: textOrLen }];
 
 export {
   default as makeType,

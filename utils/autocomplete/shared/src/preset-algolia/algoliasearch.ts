@@ -21,8 +21,8 @@ type ClientSearchV5 = AnyToUnknown<
 type ClientV5 = ClientLiteV5 extends SearchClientShape
   ? ClientLiteV5
   : ClientSearchV5 extends SearchClientShape
-  ? ClientSearchV5
-  : unknown;
+    ? ClientSearchV5
+    : unknown;
 
 type PickForClient<TMapping extends { v4: unknown; v5: unknown }> =
   ClientV5 extends SearchClientShape ? TMapping['v5'] : TMapping['v4'];

@@ -1,7 +1,6 @@
+import chai from 'chai';
 import fs from 'fs';
 import path from 'path';
-
-import chai from 'chai';
 
 import { createLineStream as byline } from '../src/byline';
 import { __dirname } from './utils/fs';

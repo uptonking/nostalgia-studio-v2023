@@ -20,20 +20,20 @@ for (const mode of ['iterator', 'keys', 'values']) {
     mode === 'iterator'
       ? AbstractIterator
       : mode === 'keys'
-      ? AbstractKeyIterator
-      : AbstractValueIterator;
+        ? AbstractKeyIterator
+        : AbstractValueIterator;
   const DeferredCtor =
     mode === 'iterator'
       ? DeferredIterator
       : mode === 'keys'
-      ? DeferredKeyIterator
-      : DeferredValueIterator;
+        ? DeferredKeyIterator
+        : DeferredValueIterator;
   const nextArgs =
     mode === 'iterator'
       ? ['key', 'value']
       : mode === 'keys'
-      ? ['key']
-      : ['value'];
+        ? ['key']
+        : ['value'];
   const privateMethod = '_' + mode;
   const publicMethod = mode;
 

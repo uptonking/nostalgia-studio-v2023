@@ -109,8 +109,8 @@ export const safeInsert =
     const $insertPos = position
       ? tr.doc.resolve(position)
       : isNodeSelection(tr.selection)
-      ? tr.doc.resolve($from.pos + 1)
-      : $from;
+        ? tr.doc.resolve($from.pos + 1)
+        : $from;
 
     let lookDirection: LookDirection | undefined;
     const insertPosEnd = $insertPos.end();
@@ -235,8 +235,8 @@ export const insertSelectedItem =
         maybeNode instanceof Node || isInputFragment
           ? maybeNode
           : typeof maybeNode === 'string'
-          ? state.schema.text(maybeNode)
-          : Node.fromJSON(state.schema, maybeNode);
+            ? state.schema.text(maybeNode)
+            : Node.fromJSON(state.schema, maybeNode);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(e);

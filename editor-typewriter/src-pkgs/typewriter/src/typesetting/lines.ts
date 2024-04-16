@@ -59,8 +59,8 @@ export const list = registerLineType({
         typeof id === 'string'
           ? editor.doc.getLineBy(id)
           : editor.doc.selection
-          ? editor.doc.getLineAt(editor.doc.selection[0])
-          : null;
+            ? editor.doc.getLineAt(editor.doc.selection[0])
+            : null;
       if (!line) return false;
       const [at] = editor.doc.getLineRange(line);
       const format = { list: 'check' } as AttributeMapType;
@@ -79,8 +79,8 @@ export const list = registerLineType({
     const list = node.hasAttribute('data-checked')
       ? 'check'
       : parent && parent.nodeName === 'OL'
-      ? 'ordered'
-      : 'bullet';
+        ? 'ordered'
+        : 'bullet';
     while (parent) {
       if (/^UL|OL$/.test(parent.nodeName)) indent++;
       else if (parent.nodeName !== 'LI') break;

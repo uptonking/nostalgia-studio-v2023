@@ -1,20 +1,12 @@
 // @ts-check
 
 /** @type {import("syncpack").RcFile} */
+
 const config = {
   // "customTypes": [],
-  dependencyTypes: [
-    'dev',
-    'overrides',
-    'peer',
-    'pnpmOverrides',
-    'prod',
-    'resolutions',
-    'workspace',
-  ],
+  dependencyTypes: ['dev', 'prod', 'peer', 'resolutions'],
   filter: '.',
   indent: '  ',
-  semverRange: '',
   // "sortAz": [
   //   "contributors",
   //   "dependencies",
@@ -25,7 +17,7 @@ const config = {
   //   "scripts"
   // ],
   sortFirst: ['name', 'description', 'version', 'author'],
-  source: ['package.json', 'packages/*/package.json'],
+  // source: ['package.json'],
   semverGroups: [
     {
       packages: ['@examples-hub/react-play-versions'],

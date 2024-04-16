@@ -125,9 +125,9 @@ function createSpec(nodes?: Array<string>, marks?: Array<string>) {
                 Array.isArray((specs as any)[subItem])
                   ? (specs as any)[subItem]
                   : isString(subItem)
-                  ? subItem
-                  : // Now `NoMark` produces `items: []`, should be fixed in generator
-                    ['text', subItem],
+                    ? subItem
+                    : // Now `NoMark` produces `items: []`, should be fixed in generator
+                      ['text', subItem],
               )
               // Remove unsupported nodes & marks
               // Filter nodes

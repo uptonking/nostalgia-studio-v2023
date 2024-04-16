@@ -115,8 +115,8 @@ jsdoc
               const returnVal = evalReturnRegex
                 ? `: ${evalReturnRegex[1]}`
                 : item.returns
-                ? item.returns.map((r) => r.type.names.join('|')).join('|')
-                : '';
+                  ? item.returns.map((r) => r.type.names.join('|')).join('|')
+                  : '';
               strBuilder.push(
                 `<b><code>${
                   item.kind === 'class' ? 'new ' : ''

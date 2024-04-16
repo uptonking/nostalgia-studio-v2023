@@ -50,8 +50,8 @@ export function toggleHeader(type: ToggleType): Command {
         type === 'column'
           ? isHeaderRowEnabled
           : type === 'row'
-          ? isHeaderColumnEnabled
-          : false;
+            ? isHeaderColumnEnabled
+            : false;
 
       let selectionStartsAt = isHeaderEnabled ? 1 : 0;
 
@@ -59,8 +59,8 @@ export function toggleHeader(type: ToggleType): Command {
         type === 'column'
           ? new Rect(0, selectionStartsAt, 1, rect.map.height)
           : type === 'row'
-          ? new Rect(selectionStartsAt, 0, rect.map.width, 1)
-          : rect;
+            ? new Rect(selectionStartsAt, 0, rect.map.width, 1)
+            : rect;
 
       let newType: NodeType;
 

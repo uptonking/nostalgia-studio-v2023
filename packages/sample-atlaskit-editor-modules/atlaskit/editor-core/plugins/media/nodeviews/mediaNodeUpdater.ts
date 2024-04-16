@@ -145,8 +145,8 @@ export class MediaNodeUpdater {
   };
 
   getObjectId = async (): Promise<string | undefined> => {
-    const contextIdentifierProvider = await this.props
-      .contextIdentifierProvider;
+    const contextIdentifierProvider =
+      await this.props.contextIdentifierProvider;
 
     return contextIdentifierProvider && contextIdentifierProvider.objectId;
   };
@@ -385,9 +385,8 @@ export class MediaNodeUpdater {
       nodeContextId
     ) {
       const mediaClient = getMediaClient(uploadMediaClientConfig);
-      const auth = await uploadMediaClientConfig.getAuthFromContext(
-        nodeContextId,
-      );
+      const auth =
+        await uploadMediaClientConfig.getAuthFromContext(nodeContextId);
       const objectId = await this.getObjectId();
       const { id, collection } = attrs;
       const source = {

@@ -23,15 +23,15 @@
     "@floating-ui/dom": "1.2.5111",
     "@floating-ui/react": "0.22.2111",
     "@floating-ui/react-dom": "2.0.1111",
-    "@linaria/core": "^4.5.3",
-    "clsx": "^2.0.0",
+    "@linaria/core": "^4.5.4",
+    "clsx": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@linaria/babel-preset": "^4.5.3",
-    "@linaria/core": "^4.5.3",
-    "@linaria/react": "^4.5.3",
-    "@linaria/webpack5-loader": "^4.5.3"
+    "@linaria/babel-preset": "^4.5.4",
+    "@linaria/core": "^4.5.4",
+    "@linaria/react": "^4.5.4",
+    "@linaria/webpack5-loader": "^4.5.4"
   }
 }

@@ -100,8 +100,8 @@ export function scrollIntoViewIfNeeded(element: HTMLElement) {
     offsetTop + offsetHeight > offsetParentHeight + scrollTop
       ? 1
       : scrollTop > offsetTop
-      ? -1
-      : 0;
+        ? -1
+        : 0;
 
   if (direction !== 0 && offsetParent) {
     offsetParent.scrollTop =

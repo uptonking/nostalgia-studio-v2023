@@ -35,8 +35,8 @@ for (const mode of ['iterator', 'keys', 'values']) {
           mode === 'iterator'
             ? 'TestIterator'
             : mode === 'keys'
-            ? 'DefaultKeyIterator'
-            : 'DefaultValueIterator',
+              ? 'DefaultKeyIterator'
+              : 'DefaultValueIterator',
         );
       } else {
         t.is(
@@ -44,8 +44,8 @@ for (const mode of ['iterator', 'keys', 'values']) {
           mode === 'iterator'
             ? DeferredIterator
             : mode === 'keys'
-            ? DeferredKeyIterator
-            : DeferredValueIterator,
+              ? DeferredKeyIterator
+              : DeferredValueIterator,
         );
       }
     };
@@ -90,8 +90,8 @@ for (const mode of ['iterator', 'keys', 'values']) {
           mode === 'iterator'
             ? [x.key, x.value]
             : mode === 'keys'
-            ? x.key
-            : x.value,
+              ? x.key
+              : x.value,
         ),
       );
       t.ok(closed, 'closed');

@@ -4,10 +4,10 @@ import { type ReadableAtom } from 'nanostores';
 type Split<S extends string, D extends string> = string extends S
   ? string[]
   : S extends ''
-  ? []
-  : S extends `${infer T}${D}${infer U}`
-  ? [T, ...Split<U, D>]
-  : [S];
+    ? []
+    : S extends `${infer T}${D}${infer U}`
+      ? [T, ...Split<U, D>]
+      : [S];
 
 // Converting path array to object
 type PathToParams<PathArray, Params = {}> = PathArray extends [
@@ -37,8 +37,8 @@ type ParamsFromConfig<K extends RouterConfig> = {
   [key in keyof K]: K[key] extends Pattern<infer P>
     ? P
     : K[key] extends string
-    ? ParseUrl<K[key]>
-    : never;
+      ? ParseUrl<K[key]>
+      : never;
 };
 
 type MappedC<A, B> = {
@@ -52,10 +52,10 @@ export type ParamsArg<
 > = keyof ParamsFromConfig<Config>[PageName] extends never
   ? []
   : keyof ParamsFromConfig<Config>[PageName] extends OptionalKeys<
-      ParamsFromConfig<Config>[PageName]
-    >
-  ? [ParamsFromConfig<Config>[PageName]?]
-  : [ParamsFromConfig<Config>[PageName]];
+        ParamsFromConfig<Config>[PageName]
+      >
+    ? [ParamsFromConfig<Config>[PageName]?]
+    : [ParamsFromConfig<Config>[PageName]];
 
 type Pattern<RouteParams> = Readonly<
   [RegExp, (...parts: string[]) => RouteParams]

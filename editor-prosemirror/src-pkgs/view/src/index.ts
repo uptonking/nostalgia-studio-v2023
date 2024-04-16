@@ -288,8 +288,8 @@ export class EditorView {
       prev.plugins != state.plugins && !prev.doc.eq(state.doc)
         ? 'reset'
         : (state as any).scrollToSelection > (prev as any).scrollToSelection
-        ? 'to selection'
-        : 'preserve';
+          ? 'to selection'
+          : 'preserve';
     const updateDoc =
       redraw || !this.docView.matchesNode(state.doc, outerDeco, innerDeco);
     if (updateDoc || !state.selection.eq(prev.selection)) updateSel = true;

@@ -656,10 +656,10 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
         markExpr === '_'
           ? null
           : markExpr
-          ? gatherMarks(this, markExpr.split(' '))
-          : markExpr === '' || !type.inlineContent
-          ? []
-          : null;
+            ? gatherMarks(this, markExpr.split(' '))
+            : markExpr === '' || !type.inlineContent
+              ? []
+              : null;
     }
 
     // eslint-disable-next-line guard-for-in
@@ -670,8 +670,8 @@ export class Schema<Nodes extends string = any, Marks extends string = any> {
         excl == null
           ? [type]
           : excl == ''
-          ? []
-          : gatherMarks(this, excl.split(' '));
+            ? []
+            : gatherMarks(this, excl.split(' '));
     }
 
     this.nodeFromJSON = this.nodeFromJSON.bind(this);

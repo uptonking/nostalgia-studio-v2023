@@ -124,14 +124,14 @@
     "rusha": "^0.8.13",
     "styled-components": "^5.3.0",
     "url-parse": "^1.4.5",
-    "uuid": "^9.0.0",
+    "uuid": "^9.0.1",
     "w3c-keyname": "^2.2.4"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^14.0.0",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.1.1",
-    "@types/jest": "^29.5.3",
+    "@types/jest": "^29.5.11",
     "@types/linkify-it": "^2.0.4",
     "@types/prosemirror-commands": "^1.0.4",
     "@types/prosemirror-dropcursor": "^1.0.1",
@@ -145,12 +145,12 @@
     "@types/prosemirror-state": "^1.2.6",
     "@types/prosemirror-view": "^1.17.1",
     "@types/raf-schd": "^4.0.0",
-    "@types/react": "^18.2.17",
-    "@types/react-dom": "^18.2.7",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
     "@types/react-icons": "^3.0.0",
     "@types/react-intl": "^2.3.18",
     "@types/refractor": "^3.0.1",
     "@types/styled-components": "^5.1.10",
-    "node-polyfill-webpack-plugin": "^2.0.1"
+    "node-polyfill-webpack-plugin": "^3.0.0"
   }
 }

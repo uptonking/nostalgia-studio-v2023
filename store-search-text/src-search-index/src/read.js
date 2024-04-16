@@ -139,40 +139,40 @@ export default function read(ops, cache) {
               }),
             )
           : scoreOps.TYPE === 'PRODUCT'
-          ? results.map((r) => ({
-              ...r,
-              _score: Number(
-                filterMatch(r._match)
-                  .reduce((acc, cur) => acc * Number(cur.SCORE), 1)
-                  .toFixed(2),
-              ),
-            }))
-          : scoreOps.TYPE === 'CONCAT'
-          ? results.map((r) => ({
-              ...r,
-              _score: filterMatch(r._match).reduce(
-                (acc, cur) => acc + cur.SCORE,
-                '',
-              ),
-            }))
-          : scoreOps.TYPE === 'SUM'
-          ? results.map((r) => ({
-              ...r,
-              _score: Number(
-                filterMatch(r._match)
-                  .reduce((acc, cur) => acc + Number(cur.SCORE), 0)
-                  .toFixed(2),
-              ), // TODO: make precision an option
-            }))
-          : scoreOps.TYPE === 'VALUE'
-          ? results.map((r) => ({
-              ...r,
-              _score: filterMatch(r._match).reduce(
-                (acc, cur) => acc + cur.VALUE,
-                '',
-              ),
-            }))
-          : null,
+            ? results.map((r) => ({
+                ...r,
+                _score: Number(
+                  filterMatch(r._match)
+                    .reduce((acc, cur) => acc * Number(cur.SCORE), 1)
+                    .toFixed(2),
+                ),
+              }))
+            : scoreOps.TYPE === 'CONCAT'
+              ? results.map((r) => ({
+                  ...r,
+                  _score: filterMatch(r._match).reduce(
+                    (acc, cur) => acc + cur.SCORE,
+                    '',
+                  ),
+                }))
+              : scoreOps.TYPE === 'SUM'
+                ? results.map((r) => ({
+                    ...r,
+                    _score: Number(
+                      filterMatch(r._match)
+                        .reduce((acc, cur) => acc + Number(cur.SCORE), 0)
+                        .toFixed(2),
+                    ), // TODO: make precision an option
+                  }))
+                : scoreOps.TYPE === 'VALUE'
+                  ? results.map((r) => ({
+                      ...r,
+                      _score: filterMatch(r._match).reduce(
+                        (acc, cur) => acc + cur.VALUE,
+                        '',
+                      ),
+                    }))
+                  : null,
       ),
     );
   };

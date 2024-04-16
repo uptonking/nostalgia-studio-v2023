@@ -22,9 +22,8 @@ export class StorageImpl implements Storage {
 
 export function createCollabProviderFactory(fetchProxy: FetchProxy) {
   return async (bridge: WebBridgeImpl) => {
-    const { documentAri, baseUrl } = await createPromise(
-      'getCollabConfig',
-    ).submit();
+    const { documentAri, baseUrl } =
+      await createPromise('getCollabConfig').submit();
 
     if (window.webkit) {
       fetchProxy.add(baseUrl);

@@ -213,8 +213,8 @@ function findOffsetInNode(
           rect.left > coords.left
             ? rect.left - coords.left
             : rect.right < coords.left
-            ? coords.left - rect.right
-            : 0;
+              ? coords.left - rect.right
+              : 0;
         if (dx < dxClosest) {
           closest = child;
           dxClosest = dx;
@@ -572,10 +572,11 @@ export function coordsAtPos(view: EditorView, pos: number, side: number): Rect {
             nodeSize(before) - (supportEmptyRange ? 0 : 1),
           )
         : // BR nodes tend to only return the rectangle before them.
-        // Only use them if they are the last element in their parent
-        before.nodeType == 1 && (before.nodeName != 'BR' || !before.nextSibling)
-        ? before
-        : null;
+          // Only use them if they are the last element in their parent
+          before.nodeType == 1 &&
+            (before.nodeName != 'BR' || !before.nextSibling)
+          ? before
+          : null;
     if (target)
       return flattenV(singleRect(target as Range | HTMLElement, 1), false);
   }
@@ -586,10 +587,10 @@ export function coordsAtPos(view: EditorView, pos: number, side: number): Rect {
     const target = !after
       ? null
       : after.nodeType == 3
-      ? textRange(after as Text, 0, supportEmptyRange ? 0 : 1)
-      : after.nodeType == 1
-      ? after
-      : null;
+        ? textRange(after as Text, 0, supportEmptyRange ? 0 : 1)
+        : after.nodeType == 1
+          ? after
+          : null;
     if (target)
       return flattenV(singleRect(target as Range | HTMLElement, -1), true);
   }

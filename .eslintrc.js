@@ -41,7 +41,7 @@ module.exports = {
   rules: {
     // 'no-inline-comments':2,
     // 'multiline-comment-style': ["error", 'starred-block'],
-    'import/consistent-type-specifier-style': ['error', 'prefer-inline'],
+    'import/consistent-type-specifier-style': ['warn', 'prefer-inline'],
     'no-param-reassign': 1,
     'no-invalid-this': 0,
     'no-unused-vars': 0,

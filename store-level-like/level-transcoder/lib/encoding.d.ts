@@ -133,16 +133,16 @@ export type KnownEncoding<N extends KnownEncodingName, TFormat> = Encoding<
 export type KnownEncodingInput<N extends KnownEncodingName> = N extends 'utf8'
   ? string | Buffer | Uint8Array
   : N extends 'buffer'
-  ? Buffer | Uint8Array | string
-  : N extends 'view'
-  ? Uint8Array | string
-  : N extends 'json'
-  ? any
-  : N extends 'hex'
-  ? Buffer | string
-  : N extends 'base64'
-  ? Buffer | string
-  : never;
+    ? Buffer | Uint8Array | string
+    : N extends 'view'
+      ? Uint8Array | string
+      : N extends 'json'
+        ? any
+        : N extends 'hex'
+          ? Buffer | string
+          : N extends 'base64'
+            ? Buffer | string
+            : never;
 
 /**
  * Type utility to get the output type of a built-in encoding identified by its name.
@@ -150,16 +150,16 @@ export type KnownEncodingInput<N extends KnownEncodingName> = N extends 'utf8'
 export type KnownEncodingOutput<N extends KnownEncodingName> = N extends 'utf8'
   ? string
   : N extends 'buffer'
-  ? Buffer
-  : N extends 'view'
-  ? Uint8Array
-  : N extends 'json'
-  ? any
-  : N extends 'hex'
-  ? string
-  : N extends 'base64'
-  ? string
-  : never;
+    ? Buffer
+    : N extends 'view'
+      ? Uint8Array
+      : N extends 'json'
+        ? any
+        : N extends 'hex'
+          ? string
+          : N extends 'base64'
+            ? string
+            : never;
 
 /**
  * Type utility to use a {@link MixedEncoding} with an untyped format.

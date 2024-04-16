@@ -80,7 +80,7 @@ export async function login(req: express.Request, res: express.Response) {
     // logger.warn(
     //   'Auth not enabled - dev mode no password login: ' + user?.email,
     // );
-    logger.warn('Mocking login without pass for: ' + email)
+    logger.warn('Mocking login without pass for: ' + email);
 
     res.json({
       token: createToken({

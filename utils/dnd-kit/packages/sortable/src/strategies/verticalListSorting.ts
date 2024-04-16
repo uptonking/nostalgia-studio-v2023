@@ -81,13 +81,13 @@ function getItemGap(
     return previousRect
       ? currentRect.top - (previousRect.top + previousRect.height)
       : nextRect
-      ? nextRect.top - (currentRect.top + currentRect.height)
-      : 0;
+        ? nextRect.top - (currentRect.top + currentRect.height)
+        : 0;
   }
 
   return nextRect
     ? nextRect.top - (currentRect.top + currentRect.height)
     : previousRect
-    ? currentRect.top - (previousRect.top + previousRect.height)
-    : 0;
+      ? currentRect.top - (previousRect.top + previousRect.height)
+      : 0;
 }

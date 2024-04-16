@@ -432,8 +432,8 @@ test('opening & closing sublevel', function (t) {
       mode === 'iterator' || def
         ? AbstractIterator
         : mode === 'keys'
-        ? AbstractKeyIterator
-        : AbstractValueIterator;
+          ? AbstractKeyIterator
+          : AbstractValueIterator;
     const privateMethod = def ? '_iterator' : '_' + mode;
     const publicMethod = mode;
 
@@ -506,8 +506,8 @@ test('sublevel operations are prefixed', function (t) {
       mode === 'iterator' || def
         ? AbstractIterator
         : mode === 'keys'
-        ? AbstractKeyIterator
-        : AbstractValueIterator;
+          ? AbstractKeyIterator
+          : AbstractValueIterator;
     const privateMethod = def ? '_iterator' : '_' + mode;
     const publicMethod = mode;
 
@@ -814,8 +814,8 @@ test('sublevel encodings', function (t) {
       mode === 'iterator' || def
         ? AbstractIterator
         : mode === 'keys'
-        ? AbstractKeyIterator
-        : AbstractValueIterator;
+          ? AbstractKeyIterator
+          : AbstractValueIterator;
     const privateMethod = def ? '_iterator' : '_' + mode;
     const publicMethod = mode;
 

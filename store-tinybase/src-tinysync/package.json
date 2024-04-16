@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "tinybase": "2.2.6111",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.2"
   }
 }

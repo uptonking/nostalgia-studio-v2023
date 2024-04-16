@@ -131,10 +131,10 @@ export function Flip() {
               localFallbackPlacements[0] === 'undefined'
                 ? 'undefined'
                 : localFallbackPlacements[0] == null
-                ? '[]'
-                : localFallbackPlacements.length === 12
-                ? 'all'
-                : ''
+                  ? '[]'
+                  : localFallbackPlacements.length === 12
+                    ? 'all'
+                    : ''
             }`}
             onClick={() =>
               setFallbackPlacements(
@@ -150,9 +150,9 @@ export function Flip() {
                 fallbackPlacements === undefined
                   ? 'black'
                   : localFallbackPlacements?.length ===
-                    fallbackPlacements?.length
-                  ? 'black'
-                  : '',
+                      fallbackPlacements?.length
+                    ? 'black'
+                    : '',
             }}
           >
             {localFallbackPlacements[0] === 'undefined'

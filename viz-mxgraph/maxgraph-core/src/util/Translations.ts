@@ -176,8 +176,8 @@ export class Translations {
       lan != null
         ? lan
         : Client.language != null
-        ? Client.language.toLowerCase()
-        : NONE;
+          ? Client.language.toLowerCase()
+          : NONE;
 
     if (lan !== NONE) {
       const defaultBundle = Translations.getDefaultBundle(basename, lan);

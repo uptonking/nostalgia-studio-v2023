@@ -14,8 +14,8 @@ export const resizeColumn = (
     amount > 0
       ? growColumn(resizeState, colIndex, amount, selectedColumns)
       : amount < 0
-      ? shrinkColumn(resizeState, colIndex, amount, selectedColumns)
-      : resizeState;
+        ? shrinkColumn(resizeState, colIndex, amount, selectedColumns)
+        : resizeState;
 
   updateColgroup(newState, tableRef);
 

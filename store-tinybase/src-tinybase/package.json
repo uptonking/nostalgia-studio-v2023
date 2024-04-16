@@ -44,13 +44,9 @@
     "ts-unused-exports": "^9.0.1"
   },
   "peerDependencies": {
-    "prettier": "^3.0.0",
     "react": "^18.2.0"
   },
   "peerDependenciesMeta": {
-    "prettier": {
-      "optional": true
-    },
     "react": {
       "optional": true
     }

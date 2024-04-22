@@ -27,7 +27,7 @@ export const NosNavbar = (props: NosNavbarProps) => {
 
   return (
     <div className='nosedit-navbar'>
-      <div className={logoCss}>NosEditor</div>
+      <div className={logoCss}>Noseditor</div>
 
       <div className='flex gap-3'>
         <IconButton onClick={() => setIsReadOnly((v) => !v)}>

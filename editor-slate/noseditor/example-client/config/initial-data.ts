@@ -20,7 +20,15 @@ export function addIdToEditorData(validData: Descendant[]) {
 const initialData: Descendant[] = [
   {
     type: 'h1',
-    children: [{ text: 'Dragon' }],
+    children: [{ text: 'Noseditor' }],
+  },
+  {
+    type: 'p',
+    children: [
+      {
+        text: 'Noseditor is a notion-like block style editor'
+      },
+    ],
   },
   {
     type: 'p',
@@ -29,6 +37,36 @@ const initialData: Descendant[] = [
         text: 'A dragon is a snake-like legendary creature that appears in the folklore of many cultures worldwide. Beliefs about dragons vary considerably through regions, but dragons in western cultures since the High Middle Ages have often been depicted as winged, horned, four-legged, and capable of breathing fire. Dragons in eastern cultures are usually depicted as wingless, four-legged, serpentine creatures with above-average intelligence.',
       },
     ],
+  },
+  {
+    "type": "listItem",
+    "depth": 0,
+    "listType": "bulleted",
+    "children": [
+      {
+        "text": "list item 1"
+      }
+    ]
+  },
+  {
+    "type": "listItem",
+    "depth": 0,
+    "listType": "bulleted",
+    "children": [
+      {
+        "text": "list item can be dragged to reorder or indent/dedent"
+      }
+    ]
+  },
+  {
+    "type": "listItem",
+    "depth": 0,
+    "listType": "bulleted",
+    "children": [
+      {
+        "text": "list item A"
+      }
+    ]
   },
   {
     type: 'h2',
@@ -47,6 +85,136 @@ const initialData: Descendant[] = [
         text: 'The word dragon entered the English language in the early 13th century from Old French dragon, which in turn comes from Latin: draconem (nominative draco) meaning "huge serpent, dragon", from Ancient Greek δράκων, drákōn (genitive δράκοντος, drákontos) "serpent, giant seafish". The Greek and Latin term referred to any great serpent, not necessarily mythological.',
       },
     ],
+  },
+  {
+    "type": "table",
+    "children": [
+      {
+        "type": "tableRow",
+        "children": [
+          {
+            "type": "tableCell",
+            "children": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": "context menu is supported inside table"
+                  }
+                ],
+              }
+            ],
+          },
+          {
+            "type": "tableCell",
+            "children": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ],
+              }
+            ],
+          }
+        ],
+      },
+      {
+        "type": "tableRow",
+        "children": [
+          {
+            "type": "tableCell",
+            "children": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ],
+              }
+            ],
+          },
+          {
+            "type": "tableCell",
+            "children": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ],
+              }
+            ],
+          }
+        ],
+      },
+      {
+        "type": "tableRow",
+        "children": [
+          {
+            "type": "tableCell",
+            "children": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ],
+              }
+            ],
+          },
+          {
+            "type": "tableCell",
+            "children": [
+              {
+                "type": "p",
+                "children": [
+                  {
+                    "text": ""
+                  }
+                ],
+              }
+            ],
+          }
+        ],
+      }
+    ],
+    "originTable": [
+      [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      [
+        [
+          2,
+          0
+        ],
+        [
+          2,
+          1
+        ]
+      ]
+    ]
   },
   {
     type: 'p',
@@ -117,6 +285,14 @@ const initialData: Descendant[] = [
   {
     type: 'hr',
     children: [{ text: '' }],
+  },
+  {
+    type: 'p',
+    children: [
+      {
+        text: 'Write more...'
+      },
+    ],
   },
 ];
 addIdToEditorData(initialData);

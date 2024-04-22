@@ -15,6 +15,7 @@
     "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
     "build:types": "",
     "build:design-tokens": "npx co build && node --experimental-specifier-resolution=node --loader ts-node/esm/transpile-only ./scripts/styles/convert-tokens.ts",
+    "build:demo": "cross-env APP_ENV=react NODE_ENV=production webpack --config webpack/webpack.config.demo.prod.cjs",
     "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.cjs",
     "demo-yjs-client": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.yjs.cjs",
     "demo-yjs-server": "node --experimental-specifier-resolution=node --loader ts-node/esm/transpile-only ./example-server/index.ts",
@@ -50,8 +51,8 @@
     "react-resize-detector": "^7.0.0",
     "slate": "0.78.1111",
     "slate-history": "0.66.1111",
-    "slate-react": "0.79.1111",
     "slate-hyperscript": "0.77.1111",
+    "slate-react": "0.79.1111",
     "tree-crawl": "^1.1.0",
     "yjs": "13.5.4111",
     "zustand": "^3.7.1"
@@ -65,12 +66,12 @@
     "@faker-js/faker": "^8.3.1",
     "@linaria/babel-preset": "^4.5.4",
     "@linaria/webpack5-loader": "^4.5.4",
-    "fs-extra": "^11.2.0",
     "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
+    "fs-extra": "^11.2.0",
     "nodemon": "^3.0.2",
     "npm-run-all": "^4.1.5",
-    "typescript": "^5.3.3",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   }
 }

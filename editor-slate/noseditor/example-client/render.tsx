@@ -1,16 +1,17 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+
+import { createRoot } from 'react-dom/client';
 
 import { NosEditorFullApp as App } from './app';
 
 const render = (Component) => {
-  ReactDOM.render(<Component />, document.getElementById('root'));
+  createRoot(document.getElementById('root')).render(<Component />);
 };
 
 render(App);
 
-if ((module as any).hot) {
-  (module as any).hot.accept('./app.tsx', () => {
-    render(App);
-  });
-}
+// if ((module as any).hot) {
+//   (module as any).hot.accept('./app.tsx', () => {
+//     render(App);
+//   });
+// }

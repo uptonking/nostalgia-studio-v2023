@@ -89,18 +89,18 @@ export type ToolbarConfigType = ActionItemType[][];
 export const defaultToolbarConfig: ToolbarConfigType = [
   [
     // todo undo/redo
-    {
-      type: 'button',
-      icon: UndoIcon,
-      action: 'undo',
-      title: 'Undo',
-    },
-    {
-      type: 'button',
-      icon: RedoIcon,
-      action: 'redo',
-      title: 'Redo',
-    },
+    // {
+    //   type: 'button',
+    //   icon: UndoIcon,
+    //   action: 'undo',
+    //   title: 'Undo',
+    // },
+    // {
+    //   type: 'button',
+    //   icon: RedoIcon,
+    //   action: 'redo',
+    //   title: 'Redo',
+    // },
     // todo paint-format
     // todo block-type
     {

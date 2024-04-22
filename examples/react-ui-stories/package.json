@@ -8,6 +8,7 @@
     "build": "rimraf dist && npm run build:prod",
     "build:babel": "rimraf dist && BABEL_ENV=build babel src --out-dir dist --root-mode upward --ignore 'src/**/*.test.js','src/**/*.stories.js' --source-maps --verbose",
     "build:prod": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
+    "build:demo": "rimraf dist && cross-env APP_ENV=react NODE_ENV=production webpack --config webpack/webpack.config.demo.prod.cjs",
     "build:types": "",
     "demo": "cross-env APP_ENV=reacthot webpack serve --hot --config webpack/webpack.config.demo.cjs",
     "start": "npm run demo",

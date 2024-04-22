@@ -26,7 +26,7 @@ const initialData: Descendant[] = [
     type: 'p',
     children: [
       {
-        text: 'Noseditor is a notion-like block style editor'
+        text: 'Noseditor is a notion-like block style editor',
       },
     ],
   },
@@ -39,34 +39,34 @@ const initialData: Descendant[] = [
     ],
   },
   {
-    "type": "listItem",
-    "depth": 0,
-    "listType": "bulleted",
-    "children": [
+    type: 'listItem',
+    depth: 0,
+    listType: 'bulleted',
+    children: [
       {
-        "text": "list item 1"
-      }
-    ]
+        text: 'list item 1',
+      },
+    ],
   },
   {
-    "type": "listItem",
-    "depth": 0,
-    "listType": "bulleted",
-    "children": [
+    type: 'listItem',
+    depth: 0,
+    listType: 'bulleted',
+    children: [
       {
-        "text": "list item can be dragged to reorder or indent/dedent"
-      }
-    ]
+        text: 'list item can be dragged to reorder or indent/dedent',
+      },
+    ],
   },
   {
-    "type": "listItem",
-    "depth": 0,
-    "listType": "bulleted",
-    "children": [
+    type: 'listItem',
+    depth: 0,
+    listType: 'bulleted',
+    children: [
       {
-        "text": "list item A"
-      }
-    ]
+        text: 'list item A',
+      },
+    ],
   },
   {
     type: 'h2',
@@ -87,134 +87,116 @@ const initialData: Descendant[] = [
     ],
   },
   {
-    "type": "table",
-    "children": [
+    type: 'table',
+    children: [
       {
-        "type": "tableRow",
-        "children": [
+        type: 'tableRow',
+        children: [
           {
-            "type": "tableCell",
-            "children": [
+            type: 'tableCell',
+            children: [
               {
-                "type": "p",
-                "children": [
+                type: 'p',
+                children: [
                   {
-                    "text": "context menu is supported inside table"
-                  }
+                    text: 'context menu is supported inside table',
+                  },
                 ],
-              }
+              },
             ],
           },
           {
-            "type": "tableCell",
-            "children": [
+            type: 'tableCell',
+            children: [
               {
-                "type": "p",
-                "children": [
+                type: 'p',
+                children: [
                   {
-                    "text": ""
-                  }
+                    text: '',
+                  },
                 ],
-              }
+              },
             ],
-          }
+          },
         ],
       },
       {
-        "type": "tableRow",
-        "children": [
+        type: 'tableRow',
+        children: [
           {
-            "type": "tableCell",
-            "children": [
+            type: 'tableCell',
+            children: [
               {
-                "type": "p",
-                "children": [
+                type: 'p',
+                children: [
                   {
-                    "text": ""
-                  }
+                    text: '',
+                  },
                 ],
-              }
+              },
             ],
           },
           {
-            "type": "tableCell",
-            "children": [
+            type: 'tableCell',
+            children: [
               {
-                "type": "p",
-                "children": [
+                type: 'p',
+                children: [
                   {
-                    "text": ""
-                  }
+                    text: '',
+                  },
                 ],
-              }
+              },
             ],
-          }
+          },
         ],
       },
       {
-        "type": "tableRow",
-        "children": [
+        type: 'tableRow',
+        children: [
           {
-            "type": "tableCell",
-            "children": [
+            type: 'tableCell',
+            children: [
               {
-                "type": "p",
-                "children": [
+                type: 'p',
+                children: [
                   {
-                    "text": ""
-                  }
+                    text: '',
+                  },
                 ],
-              }
+              },
             ],
           },
           {
-            "type": "tableCell",
-            "children": [
+            type: 'tableCell',
+            children: [
               {
-                "type": "p",
-                "children": [
+                type: 'p',
+                children: [
                   {
-                    "text": ""
-                  }
+                    text: '',
+                  },
                 ],
-              }
+              },
             ],
-          }
+          },
         ],
-      }
+      },
     ],
-    "originTable": [
+    originTable: [
       [
-        [
-          0,
-          0
-        ],
-        [
-          0,
-          1
-        ]
+        [0, 0],
+        [0, 1],
       ],
       [
-        [
-          1,
-          0
-        ],
-        [
-          1,
-          1
-        ]
+        [1, 0],
+        [1, 1],
       ],
       [
-        [
-          2,
-          0
-        ],
-        [
-          2,
-          1
-        ]
-      ]
-    ]
+        [2, 0],
+        [2, 1],
+      ],
+    ],
   },
   {
     type: 'p',
@@ -290,7 +272,7 @@ const initialData: Descendant[] = [
     type: 'p',
     children: [
       {
-        text: 'Write more...'
+        text: 'Write more...',
       },
     ],
   },

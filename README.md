@@ -3,6 +3,9 @@
 > markdown-based and content-centric web app for data and ideas.
 
 - ⚠️️: still under development! use at your own risk!
+  - most examples are built with nodejs v20
+  - start with `npm install --legacy-peer-deps`
+
 # projects
 - [materials-repo](https://github.com/datalking/nostalgia-studio-lab/blob/main/packages/materials-repo)
   - knowledge base powered by markdown/mdx files

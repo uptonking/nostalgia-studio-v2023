@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Moment from 'react-moment';
 
 import { type Drawing } from '@datalking/pivot-app-shared-lib';

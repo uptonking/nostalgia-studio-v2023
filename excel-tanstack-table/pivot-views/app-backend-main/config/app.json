@@ -19,6 +19,26 @@
       "sslCert": null
     }
   },
+  "development-pg": {
+    "db": {
+      "url": null,
+      "username": "postgres",
+      "password": "111111",
+      "database": "PivotApp",
+      "schema": "public",
+      "host": "localhost",
+      "port": "5432",
+      "ssl": false,
+      "dialect": "postgres"
+    },
+    "service": {
+      "port": 3001,
+      "protocol": "http",
+      "host": "localhost",
+      "sslKey": null,
+      "sslCert": null
+    }
+  },
   "production": {
     "db": {
       "url": "$DB_URL",

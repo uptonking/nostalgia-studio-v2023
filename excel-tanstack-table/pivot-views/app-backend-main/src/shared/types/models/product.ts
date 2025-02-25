@@ -22,7 +22,8 @@ export const ProductDefinition = {
     type: DataTypes.STRING,
   },
   images: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
+    // type: DataTypes.ARRAY(DataTypes.STRING),
+    type: DataTypes.STRING,
   },
   keywords: {
     type: DataTypes.STRING,

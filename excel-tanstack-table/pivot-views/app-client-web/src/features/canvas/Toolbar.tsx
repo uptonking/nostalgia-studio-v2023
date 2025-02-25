@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
+
 import { MonetizationOn, AttachMoney, Settings } from '@mui/icons-material';
 import { Stack, Fab, Box } from '@mui/material';
 import { useAppDispatch } from '../../shared/store';

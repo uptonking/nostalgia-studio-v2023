@@ -11,8 +11,11 @@ import appConfig from '../../config/app.json' assert { type: 'json' };
 import packageJson from '../../package.json' assert { type: 'json' };
 import logger from './logger';
 
+dotenv.config({});
+
 // Anti-webpack sorcery
 const env = process['env'];
+// console.log(';; 📌 process.env ', process?.['env']?.['DB_URL'], process?.env);
 
 export const config: Config = getConfig();
 export default config;
@@ -81,10 +84,12 @@ export function parseDatabaseConfig(
   production: boolean,
   db: { url: string | null; ssl: boolean; schema: string; port?: string },
 ) {
-  if (!production) {
+  if (!production && !process?.['env']?.['DB_URL']) {
     return db as unknown as DBUrl;
   }
-  const url = env.DB_URL || (envRemoveLeading$(db.url) as string);
+  const url =
+    process?.['env']?.['DB_URL'] || (envRemoveLeading$(db.url) as string);
+  // console.log(';; parseDBURL ', url);
   if (!url) {
     logger.error('DB_URL is not set');
     return db as unknown as DBUrl;
@@ -92,12 +97,13 @@ export function parseDatabaseConfig(
   const database = url.slice(url.lastIndexOf('/') + 1);
   const regex = /(\w+):\/\/(\w+):(.*)@(.*):(\d+)\/(\w+)/;
   const found = url.match(regex);
-  const dialect = found?.[1] || 'postgres';
+  const dialect =
+    found?.[1] || (url.startsWith('sqlite://') ? 'sqlite' : 'postgres');
   const username = found?.[2] || '';
   const password = found?.[3] || '';
   const host = found?.[4] || '';
   return {
-    database,
+    database: url.startsWith('sqlite://') ? url : database,
     host,
     port: db.port || '5432',
     username,
@@ -109,7 +115,6 @@ export function parseDatabaseConfig(
 }
 
 export function getConfig(): Config {
-  dotenv.config({});
 
   // const isProd = !['development', 'test'].includes(
   //   env.NODE_ENV?.toLowerCase() || '',
@@ -127,7 +132,10 @@ export function getConfig(): Config {
     dialect,
   } = parseDatabaseConfig(isProd, serviceConfig.db);
 
-  const DB_URL = `${dialect}://${username}:${password}@${host}:${dbPort}/${database}`;
+  const DB_URL = database.startsWith('sqlite://')
+    ? database
+    : `${dialect}://${username}:${password}@${host}:${dbPort}/${database}`;
+  // console.log(';; 🛢️ DB_URL', DB_URL);
   const osHost = os.hostname();
   const isLocalhost = !isProd || osHost.includes('local');
   const port =

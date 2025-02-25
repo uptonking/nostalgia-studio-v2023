@@ -246,7 +246,8 @@ export async function syncProductsHandler(
     productId: product.id,
     title: product.name,
     description: product.description as string,
-    imageUrl: product.images[0],
+    // imageUrl: product.images[0],
+    imageUrl: product.images,
     prices: prices.data
       .filter((p) => p.product === product.id)
       .map(

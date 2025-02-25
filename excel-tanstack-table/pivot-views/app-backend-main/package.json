@@ -38,6 +38,7 @@
     "jwks-rsa": "^3.0.1",
     "openapi-types": "^12.1.0",
     "pg": "^8.11.0",
+    "sqlite3": "^5.1.0",
     "sequelize": "^6.31.1",
     "socket.io": "^4.6.1",
     "swagger-jsdoc": "6.2.8",
